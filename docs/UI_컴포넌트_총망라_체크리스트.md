@@ -45,8 +45,8 @@
 |---|---|---|---|---|---|
 | Color Palette | 브랜드/시맨틱 색상 값 | 토큰 | 있음 | 1 | Figma "Color" 프레임에서 정확한 hex값까지 확인 완료(아래 표 참고) |
 | Typography Scale | 제목·본문 텍스트 스타일 값 | 토큰 | 있음 | 1 | Figma "MES Design System": Pretendard Bold/SemiBold/Medium/Regular × 사이즈 스케일 |
-| Spacing Scale | 여백·간격 단위 값 | 토큰 | 없음 | 2 | |
-| Radius Scale | 모서리 둥글기 값 | 토큰 | 없음 | 2 | |
+| Spacing Scale | 여백·간격 단위 값 | 토큰 | 부분 | 2 | 1차 실측 파일럿에서 로컬 변수 `padding/1`=2px, `padding/3`=8px 확인됨 — 전체 스텝(0/2/4 등)은 아직 미확인 |
+| Radius Scale | 모서리 둥글기 값 | 토큰 | 부분 | 2 | 1차 실측 파일럿에서 액션류·입력류·표시류가 공통으로 4px(`radius/small1`) 사용 확인, 오버레이류(모달)는 16px — 전체 스텝 체계는 추가 실측 필요 |
 | Shadow/Elevation Scale | 그림자·고도 값 | 토큰 | 있음 | 1 | Figma "컴포넌트 라이브러리" 파일 Foundation의 "Shadow" 프레임 확인 |
 | Icon Set | 아이콘 에셋 모음 | 토큰 | 부분 | 2 | Figma "컴포넌트 라이브러리" 파일에는 "ICON - 크기별 제작필요"로 명시되어 팀에서도 미완성 인지 중. 이전 MES 파일에서 80여개 확인했던 것과의 관계는 별도 확인 필요 |
 | Z-index Scale | 겹침 순서 값 | 토큰 | 없음 | 2 | |
@@ -64,7 +64,7 @@
 | 30 | #E4E7EE | surface |
 | 40 | #D7DCE5 | |
 | 50 | #B4C0D3 | |
-| 60 | #96A0B5 | |
+| 60 | ~~#96A0B5~~ → #99A3B8(실측 재확인, 19번 섹션 참고) | |
 | 70 | #8491A7 | |
 | 80 | #67738E | |
 | 90 | #5C667B | |
@@ -535,3 +535,5 @@ Select와 같은 방식으로, 티어 1~2 항목을 하나씩 골라 `component.
 | Nested Modal | 15번 섹션 | 2-depth 모달의 정확한 구조 (Side Modal "검사/커스텀 정보 등록"에서 겹친 형태로 추정만 한 상태) |
 | 검사 판정 버튼 "-"(대시) | 16-4번 섹션 | 정확한 의미 — 사용자 측 내부 확인 대기 중. [컴포넌트 기능 변형 심층분석](./컴포넌트_기능_변형_심층분석.md) 참고 |
 | Breakpoint Scale | 0번 섹션 | 데스크탑에 반응형 자체가 실제로 필요한지 재검토 |
+| Gray 60 색상값 | 0-1번 섹션 | 기재값 `#96A0B5`과 1차 실측 파일럿에서 확인된 Figma 라이브 변수값 `#99A3B8`이 다름 — Gray/Primary/System 팔레트 전체를 변수 기준으로 재실측 필요. [신규 컴포넌트 설계 프로세스 Step C-1](./신규_컴포넌트_설계_프로세스.md) 참고 |
+| Radius/Spacing 로컬 변수 vs FMS Make Metrics | 0번 섹션 | 실제 컴포넌트는 로컬 변수(`radius/small1`, `padding/1`, `padding/3`)를 쓰는데, `search_design_system`에는 이름이 다른 별도 컬렉션("FMS Make Metrics": radius/sm·md·lg)이 잡힘 — 후자가 미사용 보일러플레이트인지 확인 필요 |
