@@ -533,4 +533,7 @@ Select와 같은 방식으로, 티어 1~2 항목을 하나씩 골라 `component.
 | Icon Set | 0번 섹션 | Figma에 "ICON - 크기별 제작필요"로 명시된 것과, 이전 MES 파일에서 확인했던 80여개 아이콘의 관계 |
 | **System Color (Warning/Success) 데스크탑 신설 필요** | 0-1번 섹션 | 재확인 완료 — 데스크탑 Figma엔 Danger만 있고 Warning/Success 그룹 자체가 없음(모바일엔 있음). 데스크탑에도 만들지, 모바일과 같은 값을 쓸지는 디자인 결정 필요 |
 | Nested Modal | 15번 섹션 | 2-depth 모달의 정확한 구조 (Side Modal "검사/커스텀 정보 등록"에서 겹친 형태로 추정만 한 상태) |
-| 검사 판정 버튼 "-"(대시) | 16-4번 섹션 | 정확한 의미 — 사용자 측 내부 확인 대기 중. [컴포넌트 기능 변형 심층분석](./컴포넌트_기능_변형_�
+| 검사 판정 버튼 "-"(대시) | 16-4번 섹션 | 정확한 의미 — 사용자 측 내부 확인 대기 중. [컴포넌트 기능 변형 심층분석](./컴포넌트_기능_변형_심층분석.md) 참고 |
+| Breakpoint Scale | 0번 섹션 | 데스크탑에 반응형 자체가 실제로 필요한지 재검토 |
+| Radius/Spacing 로컬 변수 vs FMS Make Metrics | 0번 섹션 | 실제 컴포넌트는 로컬 변수(`radius/small1`, `padding/1`, `padding/3`)를 쓰는데, `search_design_system`에는 이름이 다른 별도 컬렉션("FMS Make Metrics": radius/sm·md·lg, "gray-900" 등)이 잡힘 — 후자가 미사용 보일러플레이트인지 확인 필요 |
+| Radius 사이즈별 연동 여부 | 전체 | **"공용 규칙 없음"으로 결론 확정**(10개 컴포넌트 실측 완료 — Button/Input/Selectbox/Badge/Center Modal/Toast/Tab Item/Sidebar/Confirm Dialog/Table). Input·Selectbox는 사이즈 연동(4px→3px), Button은 고정(4px), Sidebar는 한 컴포넌트 안에서만 4종(4/8/2/111px) 공존. 열려있는 질문이 아니라 **확정된 방법론**: 티어1 나머지 ~30개 컴포넌트를 코드화할 때마다 매번 개별 실측 필수(패밀리·기존 실측값으로 유추 금지). 자세한 근거는 [신규 컴포넌트 설계 프로세스 Step C-1](./신규_컴포넌트_설계_프로세스.md) 참고 |
