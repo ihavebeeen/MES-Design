@@ -18,6 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Filter } from "@/components/ui/filter";
 import { Tag } from "@/components/ui/tag";
+import { Toast } from "@/components/ui/toast";
 import { SlidersHorizontal, X } from "lucide-react";
 
 /**
@@ -414,6 +415,15 @@ export default function Home() {
             icon={<SlidersHorizontal className="size-3.5 shrink-0 opacity-80" />}
             className="w-[200px]"
           />
+        </Sample>
+      </Section>
+
+      <Section title="Toast (RED/BLUE — 서로 다른 개별 프레임이라 gap/아이콘크기/색 실측값이 다름)">
+        <Sample label="Toast · red">
+          <Toast variant="red" message="필수 항목을 입력해주세요." onClose={() => {}} />
+        </Sample>
+        <Sample label="Toast · blue">
+          <Toast variant="blue" message="선택한 n건이 합격 처리되었습니다." onClose={() => {}} />
         </Sample>
       </Section>
     </div>
