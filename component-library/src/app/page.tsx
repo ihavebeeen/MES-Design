@@ -9,6 +9,7 @@ export default function Home() {
       <div className="flex items-center gap-4">
         <Button size="basic">Basic 버튼</Button>
         <Button size="small">Small 버튼</Button>
+        <Button size="xsmall">Xsmall 버튼</Button>
         <Button size="basic" disabled>
           비활성
         </Button>
