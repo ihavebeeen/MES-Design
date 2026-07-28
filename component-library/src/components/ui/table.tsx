@@ -77,9 +77,28 @@ import { IconArrow } from "../icons/icon-arrow";
  * - 원본에 있던 "기본-disable", "분할", "분할-disable" 변형(node 9873:83780 하위)은
  *   여전히 미실측 — disabled prop은 opacity 처리로 임시 구현
  * - 그룹행 들여쓰기(depth당 20px)는 스크린샷 육안 대조 기반 판단값, 정확한 px 미확인
- * - 실제 화면 최상단에 보였던 "Level 1/2/3 그룹화 설정 바"(그룹 기준 컬럼 선택 UI)는
- *   Table 컴포넌트 자체가 아니라 그 위에 얹히는 별도의 조회 설정 컴포넌트로 판단해 이번
- *   범위에서 제외함 — 필요시 별도 컴포넌트로 요청 바람
+ *
+ * ── 6. 2026-07-28 3차 피드백(같은 날, 2차 화면 재검토 후) 4건 ───────
+ * (1) "체크박스가 겹쳐 보임" → 원인: 그룹행 펼침 버튼을 체크박스와 거의 동일한 스타일
+ *     (흰 배경 + 회색 테두리의 둥근 사각형)로 만들어서, 둘 다 "빈 체크박스처럼 생긴 사각형"
+ *     이 나란히 붙어 있는 것처럼 보였던 게 원인 — 실제 좌표 겹침은 아니었지만 시각적으로
+ *     구분이 안 됐음. 펼침 버튼에서 테두리·배경 박스를 완전히 제거하고 화살표 아이콘만
+ *     남긴 형태(plain icon button)로 바꿔서 체크박스와 명확히 구분되게 수정.
+ * (2) "3단계 그룹화(생산일>설비>담당기사)가 안 됨" → 컴포넌트 자체는 1차 개편에서 이미
+ *     `TableGroup.groups` 재귀 구조로 깊이 제한 없이 지원하고 있었음(2단만 데모했던 게
+ *     문제) — 데모 페이지를 지시일→설비→담당기사 3단 중첩으로 재구성해서 실제로 3단계가
+ *     동작함을 보여줌. 컴포넌트 로직 변경 없음.
+ * (3) "접힘/펼침 회전이 90도가 아니라 180도여야 함" → 펼침 상태를 위쪽(rotate-90), 접힘
+ *     상태를 아래쪽(-rotate-90)으로 바꿔서 두 상태가 정확히 180도(위⇄아래) 차이가 나도록
+ *     수정(기존엔 왼쪽↔위쪽, 90도 차이였음).
+ * (4) "그룹화 단계별로 헤더에서 한꺼번에 접는 버튼이 필요, 3단계면 3개" → 헤더 행 맨
+ *     앞(체크박스 왼쪽)에 그룹 트리의 최대 깊이만큼(`getMaxGroupDepth`) 마스터 토글
+ *     버튼을 렌더링. 버튼 하나당 해당 depth의 모든 그룹을 재귀로 모아서(`getGroupsAtDepth`)
+ *     한꺼번에 접거나 펼침 — 그중 하나라도 펼쳐져 있으면 전부 접고, 전부 접혀있으면 전부
+ *     펼침. 정확한 위치/스타일은 실제 화면(Figma 아님) 상단에 보였던 아이콘 배치를 육안
+ *     대조한 판단값. (참고) 그 화면 최상단의 "Level 1/2/3 그룹 기준 컬럼 선택 바"(어떤
+ *     컬럼으로 그룹화할지 고르는 UI) 자체는 여전히 범위 밖 — 이번엔 이미 정해진 그룹
+ *     트리를 depth별로 한꺼번에 접고 펴는 버튼만 추가함.
  */
 
 export interface TableColumn<T> {
@@ -133,6 +152,23 @@ function collectGroupRowIds<T>(group: TableGroup<T>): string[] {
 function collectAllRowIds<T>(groups?: TableGroup<T>[], rows?: TableRowData<T>[]): string[] {
   if (groups) return groups.flatMap(collectGroupRowIds);
   return (rows ?? []).map((r) => r.id);
+}
+
+/** 그룹 트리의 최대 깊이(1부터, 그룹이 없으면 0) — 헤더의 depth별 일괄 접기 버튼 개수 산정용 */
+function getMaxGroupDepth<T>(groups?: TableGroup<T>[]): number {
+  if (!groups || groups.length === 0) return 0;
+  return 1 + Math.max(0, ...groups.map((g) => getMaxGroupDepth(g.groups)));
+}
+
+/** 특정 depth(0부터)에 있는 그룹 전체를 재귀로 모음 — 그 depth "한꺼번에 접기" 버튼용 */
+function getGroupsAtDepth<T>(
+  groups: TableGroup<T>[] | undefined,
+  targetDepth: number,
+  currentDepth = 0
+): TableGroup<T>[] {
+  if (!groups) return [];
+  if (currentDepth === targetDepth) return groups;
+  return groups.flatMap((g) => getGroupsAtDepth(g.groups, targetDepth, currentDepth + 1));
 }
 
 function Cell({
@@ -248,13 +284,18 @@ function GroupHeaderRow<T>({
             <button
               type="button"
               onClick={onToggleCollapse}
-              className="flex shrink-0 items-center gap-2.5 whitespace-nowrap"
+              className="flex shrink-0 items-center gap-2 whitespace-nowrap"
               style={{ paddingLeft: depth * 20 }}
             >
-              <span className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-white">
+              {/* 2026-07-28 3차 피드백(1): 테두리·배경 박스 제거 — 체크박스처럼 보여서
+                  체크박스와 겹쳐 보인다는 지적에 아이콘만 남긴 형태로 변경 */}
+              <span className="flex size-[18px] shrink-0 items-center justify-center">
                 <IconArrow
                   size={12}
-                  className={cn("text-mes-gray-130 transition-transform", isCollapsed ? "rotate-0" : "rotate-90")}
+                  className={cn(
+                    "text-mes-gray-130 transition-transform",
+                    isCollapsed ? "-rotate-90" : "rotate-90"
+                  )}
                 />
               </span>
               <span className="whitespace-nowrap text-[14px] font-medium leading-[1.3] text-mes-gray-130">
@@ -416,13 +457,59 @@ function Table<T>({
   const toggleCollapse = (groupId: string, currentlyCollapsed: boolean) => {
     setCollapsed((prev) => ({ ...prev, [groupId]: !currentlyCollapsed }));
   };
+  /** 2026-07-28 3차 피드백(4): depth 하나를 통째로 접거나 펼침 — 하나라도 펼쳐져 있으면
+   *  전부 접고, 전부 접혀 있으면 전부 펼침 */
+  const toggleAllAtDepth = (depth: number) => {
+    const groupsAtDepth = getGroupsAtDepth(groups, depth);
+    const anyExpanded = groupsAtDepth.some(
+      (g) => !(collapsed[g.id] ?? g.defaultExpanded === false)
+    );
+    setCollapsed((prev) => {
+      const next = { ...prev };
+      groupsAtDepth.forEach((g) => {
+        next[g.id] = anyExpanded;
+      });
+      return next;
+    });
+  };
+  const groupLevelCount = React.useMemo(() => getMaxGroupDepth(groups), [groups]);
 
   return (
     <div className={cn("w-full overflow-x-auto rounded-[4px] border border-mes-gray-30", className)}>
       <div className="min-w-max">
         {/* 헤더 */}
         <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 bg-mes-gray-10 px-[20px]">
-          <div className="flex h-full shrink-0 items-center pr-[12px]">
+          {/* 2026-07-28 3차 피드백(4): 그룹 depth별 "한꺼번에 접기/펼치기" 버튼 —
+              그룹이 N단이면 N개가 체크박스 왼쪽에 나열됨 */}
+          {Array.from({ length: groupLevelCount }).map((_, depth) => {
+            const groupsAtDepth = getGroupsAtDepth(groups, depth);
+            const anyExpanded = groupsAtDepth.some(
+              (g) => !(collapsed[g.id] ?? g.defaultExpanded === false)
+            );
+            return (
+              <button
+                key={depth}
+                type="button"
+                onClick={() => toggleAllAtDepth(depth)}
+                title={`${depth + 1}단 전체 ${anyExpanded ? "접기" : "펼치기"}`}
+                className="flex size-[18px] shrink-0 items-center justify-center"
+              >
+                <IconArrow
+                  size={12}
+                  className={cn(
+                    "text-mes-gray-130 transition-transform",
+                    anyExpanded ? "rotate-90" : "-rotate-90"
+                  )}
+                />
+              </button>
+            );
+          })}
+          <div
+            className={cn(
+              "flex h-full shrink-0 items-center pr-[12px]",
+              groupLevelCount > 0 && "pl-[12px]"
+            )}
+          >
             <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} color="black" />
           </div>
           {columns.map((col, i) => (

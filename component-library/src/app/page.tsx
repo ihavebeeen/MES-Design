@@ -221,14 +221,34 @@ const rowR6 = { id: "r6", data: { date: "2025-10-28", shift: "주간", equipment
 const rowR7 = { id: "r7", data: { date: "2025-10-27", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" }, isNew: true };
 const rowR8 = { id: "r8", data: { date: "2025-10-26", shift: "야간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } };
 
+/**
+ * 2026-07-28 3차 피드백 "3단계 그룹화(지시일>설비>담당기사)도 실제로 되는지 보여줘" 반영 —
+ * 기존 2단(지시일>설비) 구조에서 설비 그룹 바로 아래에 담당기사 그룹을 한 단 더 끼워
+ * 넣음(rows를 groups로 감쌈). 컴포넌트는 이미 재귀 구조라 로직 변경 없이 데이터만 바꿔서
+ * 3단이 됨.
+ */
 const productionGroups: TableGroup<ProductionRow>[] = [
   {
     id: "date-1030",
     label: "지시일: 2025-10-30",
     summary: { packCount: 8, qty: 4000, defectQty: 10, packQty: 40 },
     groups: [
-      { id: "eq1-1030", label: "설비: 성형기 1호", summary: { packCount: 5, qty: 2000, defectQty: 10, packQty: 20 }, rows: [rowR1] },
-      { id: "eq2-1030", label: "설비: 성형기 2호", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR4] },
+      {
+        id: "eq1-1030",
+        label: "설비: 성형기 1호",
+        summary: { packCount: 5, qty: 2000, defectQty: 10, packQty: 20 },
+        groups: [
+          { id: "mgr-eq1-1030", label: "담당기사: 김수현", summary: { packCount: 5, qty: 2000, defectQty: 10, packQty: 20 }, rows: [rowR1] },
+        ],
+      },
+      {
+        id: "eq2-1030",
+        label: "설비: 성형기 2호",
+        summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
+        groups: [
+          { id: "mgr-eq2-1030", label: "담당기사: 김수현", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR4] },
+        ],
+      },
     ],
   },
   {
@@ -236,7 +256,14 @@ const productionGroups: TableGroup<ProductionRow>[] = [
     label: "지시일: 2025-10-29",
     summary: { packCount: 10, qty: 4000, defectQty: 20, packQty: 40 },
     groups: [
-      { id: "eq1-1029", label: "설비: 성형기 1호", summary: { packCount: 10, qty: 4000, defectQty: 20, packQty: 40 }, rows: [rowR2, rowR3] },
+      {
+        id: "eq1-1029",
+        label: "설비: 성형기 1호",
+        summary: { packCount: 10, qty: 4000, defectQty: 20, packQty: 40 },
+        groups: [
+          { id: "mgr-eq1-1029", label: "담당기사: 김수현", summary: { packCount: 10, qty: 4000, defectQty: 20, packQty: 40 }, rows: [rowR2, rowR3] },
+        ],
+      },
     ],
   },
   {
@@ -244,7 +271,14 @@ const productionGroups: TableGroup<ProductionRow>[] = [
     label: "지시일: 2025-10-28",
     summary: { packCount: 6, qty: 4000, defectQty: 0, packQty: 40 },
     groups: [
-      { id: "eq2-1028", label: "설비: 성형기 2호", summary: { packCount: 6, qty: 4000, defectQty: 0, packQty: 40 }, rows: [rowR5, rowR6] },
+      {
+        id: "eq2-1028",
+        label: "설비: 성형기 2호",
+        summary: { packCount: 6, qty: 4000, defectQty: 0, packQty: 40 },
+        groups: [
+          { id: "mgr-eq2-1028", label: "담당기사: 김수현", summary: { packCount: 6, qty: 4000, defectQty: 0, packQty: 40 }, rows: [rowR5, rowR6] },
+        ],
+      },
     ],
   },
   {
@@ -252,7 +286,14 @@ const productionGroups: TableGroup<ProductionRow>[] = [
     label: "지시일: 2025-10-27",
     summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
     groups: [
-      { id: "eq2-1027", label: "설비: 성형기 2호", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR7] },
+      {
+        id: "eq2-1027",
+        label: "설비: 성형기 2호",
+        summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
+        groups: [
+          { id: "mgr-eq2-1027", label: "담당기사: 김수현", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR7] },
+        ],
+      },
     ],
   },
   {
@@ -260,7 +301,14 @@ const productionGroups: TableGroup<ProductionRow>[] = [
     label: "지시일: 2025-10-26",
     summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
     groups: [
-      { id: "eq2-1026", label: "설비: 성형기 2호", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR8] },
+      {
+        id: "eq2-1026",
+        label: "설비: 성형기 2호",
+        summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
+        groups: [
+          { id: "mgr-eq2-1026", label: "담당기사: 김수현", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR8] },
+        ],
+      },
     ],
   },
 ];
@@ -710,19 +758,22 @@ export default function Home() {
       <section className="flex w-full max-w-[1100px] flex-col gap-4 pb-8">
         <h2 className="text-[14px] font-semibold text-mes-gray-130">
           Table (원본 node 9873:83780 + 수정본 실제화면 node 16938:42501 대조 실측 + 2026-07-28
-          2차 실제화면 피드백 반영)
+          2·3차 실제화면 피드백 반영)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
           1차 반영: 헤더 배경 Gray-10, 세로 점선 구분선(기본 Gray-40), 선택행(Primary-20
           배경)·신규행(빨간 점, r7)은 구분선이 한 단계 진한 Gray-30. 2차 반영(실제 운영 화면
-          스크린샷 기준 판단값, Figma 실측 아님): (1) 지시일→설비 2단 그룹화로 재귀 중첩 지원
-          데모(깊이 제한 없이 3단 이상도 동일 구조로 가능), depth별 배경색은 판단값(핑크→
-          파랑→옅은 파랑), (2) 그룹 합계열·(4) 총계열이 헤더 컬럼 위치와 어긋나던 버그를
-          &quot;라벨을 첫 컬럼 Cell 안에 넣기&quot; 방식으로 구조적으로 수정, (3) 그룹 헤더 행에도
-          체크박스 추가 + 신규 indeterminate(중간선택) 상태 지원(`checkbox.tsx`에 prop 추가,
-          최상단 전체선택 체크박스도 동일 적용), (5) 헤더 텍스트 정렬을 데이터 셀과 항상
-          일치하도록 수정(기존엔 헤더만 기본값이 가운데로 강제돼 있던 버그). disable/분할
-          변형은 여전히 미실측(체크리스트 참고).
+          스크린샷 기준 판단값, Figma 실측 아님): (1) 다단 그룹화 재귀 중첩 지원, depth별
+          배경색은 판단값(핑크→파랑→옅은 파랑), (2) 그룹 합계열·(4) 총계열이 헤더 컬럼
+          위치와 어긋나던 버그를 &quot;라벨을 첫 컬럼 Cell 안에 넣기&quot; 방식으로 구조적으로
+          수정, (3) 그룹 헤더 행에도 체크박스 추가 + 신규 indeterminate(중간선택) 상태
+          지원(`checkbox.tsx`에 prop 추가, 최상단 전체선택 체크박스도 동일 적용), (5) 헤더
+          텍스트 정렬을 데이터 셀과 항상 일치하도록 수정. 3차 반영(같은 날 재검토): (1) 그룹
+          펼침 버튼이 체크박스처럼 보여서 겹쳐 보인다는 지적에 테두리·배경 제거하고 아이콘만
+          남김, (2) 지시일→설비→담당기사 3단 그룹화 데모로 재구성(컴포넌트 로직 변경 없이
+          데이터만), (3) 펼침/접힘 회전을 90도(왼쪽↔위) → 180도(위↔아래)로 수정, (4) 헤더
+          맨 앞에 그룹 depth별(지금은 3개) 전체 접기/펼치기 버튼 추가. disable/분할 변형은
+          여전히 미실측(체크리스트 참고).
         </p>
         <Table
           columns={productionColumns}
