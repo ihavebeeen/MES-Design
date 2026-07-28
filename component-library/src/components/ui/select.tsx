@@ -40,7 +40,12 @@ import { cn } from "@/lib/utils";
  * - hover(선택 안 됨): 배경 gray20(판단값 — 다른 컴포넌트의 "옅은 강조" 패턴과 동일하게 맞춤)
  * - selected(선택됨): 배경 #E8F0FE(담당자 확인, 실제 서비스 화면 스크린샷 기준. 근무조 선택 콤보박스 예시).
  *   우측 체크 아이콘은 넣지 않음(2026-07-28 담당자 지적: "체크 표시 빼라" — 실제 화면에도 없음)
- * - selected + hover: 배경 #E8F0FE 유지 + 테두리 추가(아래 TODO 참고)
+ * - hover: 선택 여부와 무관하게 모든 항목에 무조건 테두리가 생김(2026-07-28 담당자 정정 —
+ *   "아웃라인은 두 번 강조하는 게 아니다. 호버 시엔 무조건 생기는 거다". 이전엔 선택된
+ *   항목이 호버됐을 때만 테두리를 추가하는 특별 규칙이었는데, 이건 선택 항목에만 강조를
+ *   두 겹으로 쌓는 셈이라 잘못된 규칙이었음 — 지금은 selected 여부와 상관없이 hover 시
+ *   테두리 하나만 동일하게 적용되는 단일 규칙으로 통일). 배경은 기존 규칙 유지(선택 안 된
+ *   항목 hover는 gray20, 선택된 항목은 hover 여부와 무관하게 항상 #E8F0FE)
  * - disabled: opacity 50%로 흐리게, 클릭 불가
  *
  * ── 4. 미확인 상태로 남은 값(TODO — 확인되는 대로 교체) ─────────
@@ -134,7 +139,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-[4px] border border-transparent px-2 py-[5px] text-[13px] leading-[1.5] outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[state=unchecked]:data-[highlighted]:bg-mes-gray-20 data-[state=checked]:bg-[#e8f0fe] data-[state=checked]:data-[highlighted]:border-mes-primary-40",
+      "relative flex w-full cursor-default select-none items-center rounded-[4px] border border-transparent px-2 py-[5px] text-[13px] leading-[1.5] outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[state=unchecked]:data-[highlighted]:bg-mes-gray-20 data-[state=checked]:bg-[#e8f0fe] data-[highlighted]:border-mes-primary-40",
       className
     )}
     {...props}

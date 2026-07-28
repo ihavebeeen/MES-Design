@@ -13,137 +13,236 @@ import {
 } from "@/components/ui/select";
 import { Combobox } from "@/components/ui/combobox";
 
+/**
+ * 컴포넌트별 예시를 "행/열이 맞는 그리드 + 컴포넌트명·상태값 라벨 병기" 형태로 정리한
+ * 미리보기 페이지 (2026-07-28 담당자 지적 반영: 단순히 나눠 배치하는 게 아니라
+ * 오와 열을 맞추고, 각 예시마다 컴포넌트명과 상태값을 같이 표기할 것).
+ */
+
+function Sample({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col items-start gap-1.5">
+      <span className="font-mono text-[11px] leading-none text-mes-gray-70">{label}</span>
+      <div className="flex items-center">{children}</div>
+    </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <h2 className="text-[14px] font-semibold text-mes-gray-130">{title}</h2>
+      <div className="grid grid-cols-4 items-end gap-x-6 gap-y-6">{children}</div>
+    </section>
+  );
+}
+
+const shiftOptions = [
+  { value: "day", label: "주간 근무조" },
+  { value: "night", label: "야간 근무조" },
+  { value: "swing", label: "교대 근무조" },
+  { value: "bom1", label: "BOM-2026-001" },
+  { value: "bom2", label: "BOM-2026-002" },
+];
+
 export default function Home() {
   const [comboValue, setComboValue] = useState<string>("");
-  const shiftOptions = [
-    { value: "day", label: "주간 근무조" },
-    { value: "night", label: "야간 근무조" },
-    { value: "swing", label: "교대 근무조" },
-    { value: "bom1", label: "BOM-2026-001" },
-    { value: "bom2", label: "BOM-2026-002" },
-  ];
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-mes-gray-10 p-16">
+    <div className="flex min-h-screen flex-col items-center gap-10 bg-mes-gray-10 p-16">
       <h1 className="text-xl font-semibold text-mes-gray-130">
         MES 컴포넌트 라이브러리 — 스캐폴딩 확인용
       </h1>
-      <div className="flex items-center gap-4">
-        <Button size="basic">Basic 버튼</Button>
-        <Button size="small">Small 버튼</Button>
-        <Button size="xsmall">Xsmall 버튼</Button>
-        <Button size="basic" disabled>
-          비활성
-        </Button>
-      </div>
-      <div className="flex items-center gap-4">
-        <Button size="basic" startIcon={<Plus size={16} />}>
-          아이콘 왼쪽
-        </Button>
-        <Button size="basic" endIcon={<Plus size={16} />}>
-          아이콘 오른쪽
-        </Button>
-        <Button
-          size="basic"
-          startIcon={<Plus size={16} />}
-          endIcon={<Plus size={16} />}
-        >
-          아이콘 양쪽
-        </Button>
-      </div>
-      <div className="flex items-center gap-4">
-        <Button size="basic" variant="fillMain">
-          fillMain
-        </Button>
-        <Button size="basic" variant="fillGray">
-          fillGray
-        </Button>
-        <Button size="basic" variant="fillBlack">
-          fillBlack
-        </Button>
-        <Button size="basic" variant="fillRed">
-          fillRed
-        </Button>
-        <Button size="basic" variant="lineMain">
-          lineMain
-        </Button>
-        <Button size="basic" variant="lineBlacktxt">
-          lineBlacktxt
-        </Button>
-        <Button size="basic" variant="opacityMain">
-          opacityMain
-        </Button>
-      </div>
 
-      <div className="flex items-center gap-3">
-        <Input placeholder="내용 입력" className="w-[220px]" />
-        <Input defaultValue="내용" className="w-[220px]" />
-        <Input placeholder="내용 입력" readOnly defaultValue="내용" className="w-[220px]" />
-        <Input placeholder="내용 입력" disabled className="w-[220px]" />
-        <Input size="small" placeholder="내용 입력" className="w-[220px]" />
-        <Input size="small" defaultValue="내용" className="w-[220px]" />
-      </div>
+      <Section title="Button — 사이즈">
+        <Sample label="Button · Basic · Default">
+          <Button size="basic">Basic 버튼</Button>
+        </Sample>
+        <Sample label="Button · Small · Default">
+          <Button size="small">Small 버튼</Button>
+        </Sample>
+        <Sample label="Button · Xsmall · Default">
+          <Button size="xsmall">Xsmall 버튼</Button>
+        </Sample>
+        <Sample label="Button · Basic · Disabled">
+          <Button size="basic" disabled>
+            비활성
+          </Button>
+        </Sample>
+      </Section>
 
-      <div className="flex items-center gap-3">
-        <Select>
-          <SelectTrigger className="w-[220px]">
-            <SelectValue placeholder="내용 입력" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">옵션 1</SelectItem>
-            <SelectItem value="2">옵션 2</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select defaultValue="1">
-          <SelectTrigger className="w-[220px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">내용</SelectItem>
-            <SelectItem value="2">옵션 2</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select disabled>
-          <SelectTrigger className="w-[220px]">
-            <SelectValue placeholder="내용 입력" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">옵션 1</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select>
-          <SelectTrigger size="small" className="w-[220px]">
-            <SelectValue placeholder="내용 입력" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">옵션 1</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <Section title="Button — 아이콘">
+        <Sample label="Button · StartIcon">
+          <Button size="basic" startIcon={<Plus size={16} />}>
+            아이콘 왼쪽
+          </Button>
+        </Sample>
+        <Sample label="Button · EndIcon">
+          <Button size="basic" endIcon={<Plus size={16} />}>
+            아이콘 오른쪽
+          </Button>
+        </Sample>
+        <Sample label="Button · Start+EndIcon">
+          <Button
+            size="basic"
+            startIcon={<Plus size={16} />}
+            endIcon={<Plus size={16} />}
+          >
+            아이콘 양쪽
+          </Button>
+        </Sample>
+      </Section>
 
-      <div className="flex items-center gap-3">
-        <Combobox
-          options={shiftOptions}
-          value={comboValue}
-          onValueChange={setComboValue}
-          placeholder="근무조 선택"
-          searchPlaceholder="BOM 검색"
-          className="w-[220px]"
-        />
-        <Combobox
-          options={shiftOptions}
-          placeholder="내용 입력"
-          searchPlaceholder="검색"
-          size="small"
-          className="w-[220px]"
-        />
-        <Combobox
-          options={shiftOptions}
-          placeholder="내용 입력"
-          disabled
-          className="w-[220px]"
-        />
-      </div>
+      <Section title="Button — 컬러 variant (7종)">
+        <Sample label="Button · fillMain">
+          <Button size="basic" variant="fillMain">
+            fillMain
+          </Button>
+        </Sample>
+        <Sample label="Button · fillGray">
+          <Button size="basic" variant="fillGray">
+            fillGray
+          </Button>
+        </Sample>
+        <Sample label="Button · fillBlack">
+          <Button size="basic" variant="fillBlack">
+            fillBlack
+          </Button>
+        </Sample>
+        <Sample label="Button · fillRed">
+          <Button size="basic" variant="fillRed">
+            fillRed
+          </Button>
+        </Sample>
+        <Sample label="Button · lineMain">
+          <Button size="basic" variant="lineMain">
+            lineMain
+          </Button>
+        </Sample>
+        <Sample label="Button · lineBlacktxt">
+          <Button size="basic" variant="lineBlacktxt">
+            lineBlacktxt
+          </Button>
+        </Sample>
+        <Sample label="Button · opacityMain">
+          <Button size="basic" variant="opacityMain">
+            opacityMain
+          </Button>
+        </Sample>
+      </Section>
+
+      <Section title="Input">
+        <Sample label="Input · Default(placeholder)">
+          <Input placeholder="내용 입력" className="w-[200px]" />
+        </Sample>
+        <Sample label="Input · Default(filled)">
+          <Input defaultValue="내용" className="w-[200px]" />
+        </Sample>
+        <Sample label="Input · Readonly">
+          <Input placeholder="내용 입력" readOnly defaultValue="내용" className="w-[200px]" />
+        </Sample>
+        <Sample label="Input · Disabled">
+          <Input placeholder="내용 입력" disabled className="w-[200px]" />
+        </Sample>
+        <Sample label="Input · Small(placeholder)">
+          <Input size="small" placeholder="내용 입력" className="w-[200px]" />
+        </Sample>
+        <Sample label="Input · Small(filled)">
+          <Input size="small" defaultValue="내용" className="w-[200px]" />
+        </Sample>
+      </Section>
+
+      <Section title="Select (Selectbox)">
+        <Sample label="Select · Default(placeholder)">
+          <Select>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="내용 입력" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">옵션 1</SelectItem>
+              <SelectItem value="2">옵션 2</SelectItem>
+            </SelectContent>
+          </Select>
+        </Sample>
+        <Sample label="Select · Default(selected)">
+          <Select defaultValue="1">
+            <SelectTrigger className="w-[200px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">내용</SelectItem>
+              <SelectItem value="2">옵션 2</SelectItem>
+            </SelectContent>
+          </Select>
+        </Sample>
+        <Sample label="Select · Small">
+          <Select>
+            <SelectTrigger size="small" className="w-[200px]">
+              <SelectValue placeholder="내용 입력" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">옵션 1</SelectItem>
+            </SelectContent>
+          </Select>
+        </Sample>
+        <Sample label="Select · Disabled">
+          <Select disabled>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="내용 입력" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">옵션 1</SelectItem>
+            </SelectContent>
+          </Select>
+        </Sample>
+      </Section>
+
+      <Section title="Combobox (검색 내장 셀렉트)">
+        <Sample label="Combobox · Default(제어형, 검색 가능)">
+          <Combobox
+            options={shiftOptions}
+            value={comboValue}
+            onValueChange={setComboValue}
+            placeholder="근무조 선택"
+            searchPlaceholder="근무조 검색"
+            className="w-[200px]"
+          />
+        </Sample>
+        <Sample label="Combobox · Default(비제어, 초기값 있음)">
+          <Combobox
+            options={shiftOptions}
+            defaultValue="night"
+            searchPlaceholder="근무조 검색"
+            className="w-[200px]"
+          />
+        </Sample>
+        <Sample label="Combobox · Small(비제어, 초기값 있음)">
+          <Combobox
+            options={shiftOptions}
+            defaultValue="bom1"
+            searchPlaceholder="BOM 검색"
+            size="small"
+            className="w-[200px]"
+          />
+        </Sample>
+        <Sample label="Combobox · Small · Disabled">
+          <Combobox
+            options={shiftOptions}
+            defaultValue="bom1"
+            size="small"
+            disabled
+            className="w-[200px]"
+          />
+        </Sample>
+        <Sample label="Combobox · Default · Disabled">
+          <Combobox
+            options={shiftOptions}
+            placeholder="내용 입력"
+            disabled
+            className="w-[200px]"
+          />
+        </Sample>
+      </Section>
     </div>
   );
 }

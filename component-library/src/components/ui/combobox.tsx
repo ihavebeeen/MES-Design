@@ -44,7 +44,10 @@ import { selectTriggerVariants } from "./select";
  * - hover(선택 안 됨): 배경 gray20(판단값)
  * - selected: 배경 #E8F0FE(담당자 확인). 우측 체크 아이콘은 넣지 않음(2026-07-28 담당자
  *   지적: "체크 표시 빼라" — 실제 화면에도 없음)
- * - selected + hover: 배경 #E8F0FE 유지 + 테두리 추가(아래 TODO)
+ * - hover: 선택 여부와 무관하게 모든 항목에 무조건 테두리가 생김(2026-07-28 담당자 정정,
+ *   select.tsx와 공통 규칙 — "아웃라인은 두 번 강조하는 게 아니다. 호버 시엔 무조건
+ *   생기는 거다". select.tsx 주석 참고). 배경은 기존 규칙 유지(선택 안 된 항목 hover는
+ *   gray20, 선택된 항목은 hover 여부와 무관하게 항상 #E8F0FE)
  * - disabled: 옵션 리스트 자체엔 현재 disabled 옵션 개념 없음(전체 Combobox disabled만 지원)
  *
  * ── 5. 미확인 상태로 남은 값(TODO — 확인되는 대로 교체) ─────────
@@ -64,6 +67,7 @@ export interface ComboboxOption {
 export interface ComboboxProps {
   options: ComboboxOption[];
   value?: string;
+  defaultValue?: string;
   onValueChange?: (value: string) => void;
   placeholder?: string;
   searchPlaceholder?: string;
@@ -78,6 +82,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
     {
       options,
       value,
+      defaultValue,
       onValueChange,
       placeholder = "선택",
       searchPlaceholder = "검색",
@@ -92,7 +97,19 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
     const [query, setQuery] = React.useState("");
     const searchInputRef = React.useRef<HTMLInputElement>(null);
 
-    const selected = options.find((o) => o.value === value);
+    // 비제어(uncontrolled) 사용 지원 — value/onValueChange를 안 넘겨도 defaultValue 기준으로
+    // 내부에서 선택 상태를 갖는다. 2026-07-28 담당자 지적: "작은 사이즈 콤보박스는 왜 선택이
+    // 안 돼" — 원인은 컴포넌트가 완전 제어형(controlled-only)이라 부모가 value/onValueChange를
+    // 안 넘기면 클릭해도 아무 반응이 없었던 것. 이후로는 안 넘겨도 기본 동작하도록 함.
+    const [internalValue, setInternalValue] = React.useState(defaultValue);
+    const isControlled = value !== undefined;
+    const currentValue = isControlled ? value : internalValue;
+    const handleSelect = (nextValue: string) => {
+      if (!isControlled) setInternalValue(nextValue);
+      onValueChange?.(nextValue);
+    };
+
+    const selected = options.find((o) => o.value === currentValue);
     const filtered = React.useMemo(() => {
       if (!query.trim()) return options;
       const q = query.trim().toLowerCase();
@@ -154,20 +171,18 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                 </div>
               ) : (
                 filtered.map((option) => {
-                  const isSelected = option.value === value;
+                  const isSelected = option.value === currentValue;
                   return (
                     <button
                       key={option.value}
                       type="button"
                       onClick={() => {
-                        onValueChange?.(option.value);
+                        handleSelect(option.value);
                         setOpen(false);
                       }}
                       className={cn(
-                        "relative flex w-full cursor-default select-none items-center rounded-[4px] border border-transparent px-2 py-[5px] text-left text-[13px] leading-[1.5] outline-none transition-colors",
-                        isSelected
-                          ? "bg-[#e8f0fe] hover:border-mes-primary-40"
-                          : "hover:bg-mes-gray-20"
+                        "relative flex w-full cursor-default select-none items-center rounded-[4px] border border-transparent px-2 py-[5px] text-left text-[13px] leading-[1.5] outline-none transition-colors hover:border-mes-primary-40",
+                        isSelected ? "bg-[#e8f0fe]" : "hover:bg-mes-gray-20"
                       )}
                     >
                       <span className="line-clamp-1">{option.label}</span>
