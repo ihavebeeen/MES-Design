@@ -1,5 +1,7 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 
 export default function Home() {
   return (
@@ -52,6 +54,32 @@ export default function Home() {
         <Button size="basic" variant="opacityMain">
           opacityMain
         </Button>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <Input placeholder="내용 입력" className="w-[220px]" />
+        <Input defaultValue="내용" className="w-[220px]" />
+        <Input placeholder="내용 입력" readOnly defaultValue="내용" className="w-[220px]" />
+        <Input placeholder="내용 입력" disabled className="w-[220px]" />
+        <Input size="small" placeholder="내용 입력" className="w-[220px]" />
+        <Input size="small" defaultValue="내용" className="w-[220px]" />
+      </div>
+
+      <div className="flex items-center gap-3">
+        <Select className="w-[220px]">
+          <option value="">내용 입력</option>
+          <option value="1">옵션 1</option>
+        </Select>
+        <Select defaultValue="1" className="w-[220px]">
+          <option value="1">내용</option>
+          <option value="2">옵션 2</option>
+        </Select>
+        <Select disabled className="w-[220px]">
+          <option value="">내용 입력</option>
+        </Select>
+        <Select size="small" className="w-[220px]">
+          <option value="">내용 입력</option>
+        </Select>
       </div>
     </div>
   );
