@@ -105,4 +105,11 @@ npx eslint .            # 린트 검사
 - ConfirmDialog 완성(`confirm-dialog.tsx`, Radix Dialog 기반) — node 11106:37629
   "modal-error" 정밀실측(에러 톤 + 버튼 1개 형태만). 확인/취소 2버튼형이나 다른 톤
   변형은 미실측(체크리스트 19번 섹션 등록)
+- RadioChoiceDialog 완성(`radio-choice-dialog.tsx`, Radix Dialog 기반) — node
+  18840:61182 "modal"(실측 인스턴스명 "투입품목 추가") 정밀실측. 라디오 2택+되돌릴 수
+  없음 경고배너+취소/다음 버튼 구조, 기존 `Radio` 컴포넌트 재사용. radius 16px/그림자
+  `0px 0px 24px rgba(0,0,0,.2)`로 ConfirmDialog(radius 12px/그림자 다름)와 값이 달라
+  임의로 맞추지 않고 각각 실측값 유지(체크리스트 19번 섹션 등록). 담당자가 지목한 "삭제
+  모달 - 드롭다운/라디오버튼" 중 라디오 쪽으로 추정되나 실측 문구 자체는 "삭제"가 아니라
+  "투입품목 추가"라 재확인 필요, 드롭다운 쪽은 아직 미전달
 - 나머지 몰큘/오가니즘(Table/Center Modal/Page Top Tab Item/Sidebar)은 아직 코드 없음

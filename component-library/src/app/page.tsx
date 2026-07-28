@@ -20,6 +20,7 @@ import { Filter } from "@/components/ui/filter";
 import { Tag } from "@/components/ui/tag";
 import { Toast } from "@/components/ui/toast";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { RadioChoiceDialog } from "@/components/ui/radio-choice-dialog";
 import { SlidersHorizontal, X } from "lucide-react";
 
 /**
@@ -95,6 +96,7 @@ export default function Home() {
     group: ["normal", "admin"],
   });
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [radioDialogOpen, setRadioDialogOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-10 bg-mes-gray-10 p-16">
@@ -444,6 +446,27 @@ export default function Home() {
         heading="삭제 불가합니다."
         description="이미 사용되었거나 후속 작업(생산, 출하, 연동) 진행 이력이 있어 삭제 불가합니다."
         actions={[{ label: "확인", onClick: () => setDialogOpen(false) }]}
+      />
+
+      <Section title="RadioChoiceDialog (라디오 2택 + 경고배너 팝업 — node 18840:61182 실측, 원래 문구는 &quot;투입품목 추가&quot;)">
+        <Sample label="RadioChoiceDialog · 열기">
+          <Button size="basic" onClick={() => setRadioDialogOpen(true)}>
+            투입품목 추가
+          </Button>
+        </Sample>
+      </Section>
+
+      <RadioChoiceDialog
+        open={radioDialogOpen}
+        onOpenChange={setRadioDialogOpen}
+        title="투입품목 추가"
+        question="투입품목 추가 방식을 선택하세요."
+        options={[
+          { title: "삭제 후 재등록", description: "기존 투입품목 내역을 전체 삭제하고 처음부터 다시 등록합니다." },
+          { title: "투입품목 추가", description: "기존 투입품목 내역을 유지하고 누락된 품목을 추가합니다." },
+        ]}
+        warning="선택한 내용을 되돌릴 수 없습니다."
+        onConfirm={() => setRadioDialogOpen(false)}
       />
     </div>
   );
