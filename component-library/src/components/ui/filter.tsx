@@ -28,6 +28,16 @@ import { FilterTag } from "./filter-tag";
  * 카테고리별로 선택된 옵션이 1개면 FilterTag를 type2(카운트 뱃지, 값="1")로, 2개 이상이면
  * type1("전체보기")으로 자동 표시. 태그의 X를 누르면 해당 카테고리 선택을 전부 해제.
  * (실제 화면 예시: "설비명" 하위에서 1개 체크 → "설비명 1" 태그가 트리거 옆에 표시됨)
+ *
+ * ── 4. 플라이아웃 패널 크기 축소(2026-07-28 담당자 지적: "필터 사이즈가 왤케 커") ───
+ * 트리거(node 9873:83762)는 재확인 결과 이미 실측값과 정확히 일치해서 그대로 둠(변경 없음).
+ * 문제는 조립형으로 만든 플라이아웃 패널 쪽이었음 — 처음 잡았던 카테고리 열 200px/옵션 열
+ * 220px가 담당자가 보여준 실제 화면 스크린샷(그룹명/설비명 카테고리 목록, 좁은 열에 텍스트가
+ * 잘려서 마우스 올리면 툴팁으로 전체 텍스트가 뜨는 형태) 대비 너무 넓었음 — 카테고리 열
+ * 140px, 옵션 열 180px로 축소하고, 행 padding도 좁혀서(px-1.5 py-1) 더 조밀하게 만듦.
+ * 긴 라벨은 truncate 처리하고 `title` 속성으로 네이티브 툴팁을 붙여 실제 화면의 "잘림+
+ * 호버 툴팁" 동작을 재현함. 여전히 Figma에 이 패널 자체의 실측 가능한 노드는 없어서
+ * 정확한 px 값이 아니라 화면 비율 기반 재조정(판단값)이라는 점은 동일함.
  */
 
 export interface FilterOption {
@@ -140,22 +150,23 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
             className="z-50 flex overflow-hidden rounded-[8px] border border-mes-gray-30 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.12)]"
           >
             {/* 1단: 카테고리 목록 */}
-            <div className="flex w-[200px] flex-col gap-2 border-r border-mes-gray-30 p-2">
+            <div className="flex w-[140px] flex-col gap-1.5 border-r border-mes-gray-30 p-2">
               <SearchBox value={categoryQuery} onChange={setCategoryQuery} placeholder="검색" />
-              <div className="flex max-h-[280px] flex-col overflow-y-auto">
+              <div className="flex max-h-[240px] flex-col overflow-y-auto">
                 {filteredCategories.map((category) => {
                   const isActive = category.id === activeCategoryId;
                   return (
                     <button
                       key={category.id}
                       type="button"
+                      title={category.label}
                       onClick={() => setActiveCategoryId(category.id)}
                       className={cn(
-                        "flex items-center justify-between rounded-[4px] px-2 py-[6px] text-left text-[13px] leading-[1.5] text-mes-gray-130",
+                        "flex items-center justify-between gap-1 rounded-[4px] px-1.5 py-1 text-left text-[13px] leading-[1.5] text-mes-gray-130",
                         isActive ? "bg-mes-gray-20" : "hover:bg-mes-gray-20"
                       )}
                     >
-                      <span>{category.label}</span>
+                      <span className="truncate">{category.label}</span>
                       {category.options.length > 0 && (
                         <ChevronRight className="size-3.5 shrink-0 text-mes-gray-60" />
                       )}
@@ -167,25 +178,26 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
 
             {/* 2단: 선택된 카테고리의 체크박스 서브목록 */}
             {activeCategory && (
-              <div className="flex w-[220px] flex-col gap-2 p-2">
+              <div className="flex w-[180px] flex-col gap-1.5 p-2">
                 <SearchBox
                   value={optionQuery}
                   onChange={setOptionQuery}
                   placeholder={`${activeCategory.label} 검색`}
                 />
-                <div className="flex max-h-[280px] flex-col overflow-y-auto">
+                <div className="flex max-h-[240px] flex-col overflow-y-auto">
                   {filteredOptions.map((option) => {
                     const checked = (value[activeCategory.id] ?? []).includes(option.id);
                     return (
                       <label
                         key={option.id}
-                        className="flex cursor-pointer items-center gap-2 rounded-[4px] px-2 py-[6px] text-[13px] leading-[1.5] text-mes-gray-130 hover:bg-mes-gray-20"
+                        title={option.label}
+                        className="flex cursor-pointer items-center gap-1.5 rounded-[4px] px-1.5 py-1 text-[13px] leading-[1.5] text-mes-gray-130 hover:bg-mes-gray-20"
                       >
                         <Checkbox
                           checked={checked}
                           onChange={() => toggleOption(activeCategory.id, option.id)}
                         />
-                        {option.label}
+                        <span className="truncate">{option.label}</span>
                       </label>
                     );
                   })}
