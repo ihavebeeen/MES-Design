@@ -19,6 +19,7 @@ import { Progress } from "@/components/ui/progress";
 import { Filter } from "@/components/ui/filter";
 import { Tag } from "@/components/ui/tag";
 import { Toast } from "@/components/ui/toast";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { SlidersHorizontal, X } from "lucide-react";
 
 /**
@@ -93,6 +94,7 @@ export default function Home() {
     perm: ["normal"],
     group: ["normal", "admin"],
   });
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-10 bg-mes-gray-10 p-16">
@@ -426,6 +428,23 @@ export default function Home() {
           <Toast variant="blue" message="선택한 n건이 합격 처리되었습니다." onClose={() => {}} />
         </Sample>
       </Section>
+
+      <Section title="ConfirmDialog (작은 확인/안내 팝업 — 에러 톤 1버튼 형태만 실측됨)">
+        <Sample label="ConfirmDialog · 열기">
+          <Button size="basic" onClick={() => setDialogOpen(true)}>
+            삭제 시도
+          </Button>
+        </Sample>
+      </Section>
+
+      <ConfirmDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        title="삭제 불가"
+        heading="삭제 불가합니다."
+        description="이미 사용되었거나 후속 작업(생산, 출하, 연동) 진행 이력이 있어 삭제 불가합니다."
+        actions={[{ label: "확인", onClick: () => setDialogOpen(false) }]}
+      />
     </div>
   );
 }

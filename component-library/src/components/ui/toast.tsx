@@ -13,14 +13,15 @@ import { cn } from "@/lib/utils";
  *
  * ⚠ 두 색상이 하나의 공유 컴포넌트에서 나온 variant가 아니라 **서로 다른 두 개의 개별
  * 프레임**이었음(Badge의 orange/yellow처럼 이름-값 불일치는 아니지만, 컴포넌트 하나로
- * 묶여 있지 않아서 값 자체가 서로 다름) — 아래처럼 실측값이 서로 다른 부분이 있는데,
- * 임의로 통일하지 않고 각각 실측 그대로 반영함:
+ * 묶여 있지 않아서 값 자체가 서로 다름) — 아래처럼 실측값이 서로 다른 부분이 있었는데,
+ * 콘텐츠-닫기버튼 간 gap만 담당자 결정으로 8px로 통일하고, 나머지는 실측 그대로 유지함:
  * - 배경색: RED는 `#F04452`로 확정 Danger-60과 정확히 일치. BLUE는 `#156BE9`인데
  *   확정 Primary-60(`#1573FB`)과 미묘하게 다른 값 — 팔레트에 억지로 편입시키지 않고
  *   컴포넌트에 원본 값 그대로 둠(출처와 함께 기록)
  * - 테두리: RED `rgba(255,108,108,.2)`, BLUE `rgba(26,61,112,.6)` — 서로 다른
  *   반투명 색(팔레트 토큰 아님, 각각 원본 그대로)
- * - 콘텐츠와 닫기 버튼 사이 간격: RED는 8px, BLUE는 16px로 다름 — 실측 그대로 유지
+ * - 콘텐츠와 닫기 버튼 사이 간격: 실측 당시 RED 8px/BLUE 16px로 서로 달랐으나,
+ *   2026-07-28 담당자 결정으로 **둘 다 8px로 통일**(RED 값 기준)
  * - 닫기 아이콘 크기: RED는 16px, BLUE는 18px로 다름 — 실측 그대로 유지
  * - radius: RED 30px, BLUE 84px로 코드 값은 다르지만 높이 46px의 절반(23px)보다 둘 다
  *   커서 브라우저에서 렌더링되는 실제 모양은 동일한 완전 캡슐(pill) 형태 — 시각적으로
@@ -49,16 +50,14 @@ export interface ToastProps {
   className?: string;
 }
 
-const toastStyles: Record<ToastVariant, { bg: string; border: string; gap: string }> = {
+const toastStyles: Record<ToastVariant, { bg: string; border: string }> = {
   red: {
     bg: "bg-mes-danger-60",
     border: "border-[rgba(255,108,108,0.2)]",
-    gap: "gap-2",
   },
   blue: {
     bg: "bg-[#156be9]",
     border: "border-[rgba(26,61,112,0.6)]",
-    gap: "gap-4",
   },
 };
 
@@ -72,10 +71,9 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       <div
         ref={ref}
         className={cn(
-          "inline-flex h-[46px] items-center justify-center rounded-full border p-4 drop-shadow-[0_0_12px_rgba(0,0,0,0.2)]",
+          "inline-flex h-[46px] items-center justify-center gap-2 rounded-full border p-4 drop-shadow-[0_0_12px_rgba(0,0,0,0.2)]",
           styles.bg,
           styles.border,
-          styles.gap,
           className
         )}
       >

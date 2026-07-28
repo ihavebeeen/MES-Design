@@ -100,7 +100,9 @@ npx eslint .            # 린트 검사
 - Tag(범용 3색)를 Button과 동일한 startIcon/endIcon 슬롯 구조로 재구현 — Figma에 X 아이콘이
   앞뒤 2개 있던 건 중복 실수가 아니라 원래 이런 슬롯 구조였음을 담당자가 확인해줌
 - Toast 완성(`toast.tsx`) — TOAST-RED/TOAST-BLUE 두 개 개별 프레임 정밀실측. 스낵바는 없음
-  (담당자 확인). 두 색상이 공유 컴포넌트가 아니라서 gap/닫기아이콘 크기/테두리색이 서로
-  다름 — 실측 그대로 반영, BLUE 배경색(#156BE9)은 Primary-60과 다른 별도값으로 유지
-- 나머지 몰큘/오가니즘(Confirm Dialog/Table/Center Modal/Page Top Tab Item/Sidebar)은
-  아직 코드 없음
+  (담당자 확인). gap은 담당자 결정으로 8px 통일, 나머지(닫기아이콘 크기/테두리색/BLUE
+  배경색이 Primary-60과 다른 점)는 실측 그대로 유지
+- ConfirmDialog 완성(`confirm-dialog.tsx`, Radix Dialog 기반) — node 11106:37629
+  "modal-error" 정밀실측(에러 톤 + 버튼 1개 형태만). 확인/취소 2버튼형이나 다른 톤
+  변형은 미실측(체크리스트 19번 섹션 등록)
+- 나머지 몰큘/오가니즘(Table/Center Modal/Page Top Tab Item/Sidebar)은 아직 코드 없음
