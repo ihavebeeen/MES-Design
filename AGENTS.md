@@ -126,4 +126,16 @@ npx eslint .            # 린트 검사
   실제 Gray-130) 2건 수정. Toast RED/ConfirmDialog/Filter 트리거 아이콘은 재검증 결과
   기존 값 그대로 정확함을 확인. Progress Bar도 라벨 44px 고정폭 우측정렬 구조가 빠져있던
   것을 재실측해 복원(자릿수 바뀔 때 전체폭이 흔들리던 문제 수정)
-- 나머지 몰큘/오가니즘(Table/Center Modal/Page Top Tab Item/Sidebar)은 아직 코드 없음
+- Table 완성(`table.tsx`) — 원본 정의 node 9873:83780("Table")과 실제 수정 화면
+  node 16938:42501("생산계획(일) 리스트", 담당자가 "테이블 디자인 수정"으로 지목) 대조
+  실측. 수정본에서 확인된 변경점: 헤더 배경 Gray-10 추가, 셀 우측 점선 세로 구분선,
+  선택행(Primary-20 배경)·신규행(좌측 빨간 점) 둘 다 구분선이 기본 Gray-40보다 진한
+  Gray-30으로 바뀜(3개 행 대조로 발견, 담당자가 언급 안 한 부분). 그룹행 핑크 배경
+  `#fde9ea`(팔레트 밖 원본값 유지), 그룹 집계값/총계행 SemiBold 우측정렬. 빨간 점 색은
+  변수 바인딩 없어(`get_variable_defs` 빈 응답) Danger-60으로 판단. 체크박스는 기존
+  `Checkbox` 재사용(미선택 상태 시각 약간 불일치, 체크리스트 등록). 미확인: 원본의
+  기본-disable/분할/분할-disable 변형(다음 라운드). 구현 중 `DataRow`/`GroupHeaderRow`/
+  `TotalsRow`를 처음엔 `Table` 내부 클로저로 선언했다가 eslint
+  `react-hooks/static-components`("Cannot create components during render")에 걸려
+  모듈 스코프로 전부 끌어올리고 필요 값을 prop으로 명시 전달하도록 리팩터링
+- 나머지 몰큘/오가니즘(Center Modal/Page Top Tab Item/Sidebar)은 아직 코드 없음

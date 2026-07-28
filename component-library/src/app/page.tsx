@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Combobox } from "@/components/ui/combobox";
+import { Table, type TableColumn, type TableGroup } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Radio } from "@/components/ui/radio";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -127,6 +128,100 @@ const filterCategories = [
   { id: "modified", label: "최종변경일", options: [{ id: "today", label: "오늘" }] },
 ];
 
+/**
+ * Table 데모용 데이터 — node 16938:42501("생산계획(일) 리스트" 실제 화면) 값을 그대로 인용.
+ * 컬럼 폭은 그 화면에서 실측한 px 그대로(합계 약 1858px, 가로 스크롤 필요).
+ */
+interface ProductionRow {
+  date: string;
+  shift: string;
+  equipment: string;
+  manager: string;
+  item: string;
+  itemType: string;
+  packCount: number;
+  startTime: string;
+  endTime: string;
+  unit: string;
+  qty: number;
+  defectQty: number;
+  packQty: number;
+  warehouse: string;
+}
+
+const productionColumns: TableColumn<ProductionRow>[] = [
+  { key: "date", label: "지시일", width: 106, align: "center" },
+  { key: "shift", label: "근무조", width: 57 },
+  { key: "equipment", label: "설비", width: 125 },
+  { key: "manager", label: "담당기사", width: 65 },
+  {
+    key: "item",
+    label: "품목명",
+    width: 148,
+    render: (row) => (
+      <a href="#" className="text-mes-primary-60 underline">
+        {row.item}
+      </a>
+    ),
+  },
+  { key: "itemType", label: "품목구분", width: 80 },
+  { key: "packCount", label: "포장인원", width: 69, align: "right" },
+  { key: "startTime", label: "시작시간", width: 124, align: "center" },
+  { key: "endTime", label: "종료시간", width: 124, align: "center" },
+  { key: "unit", label: "단위", width: 51, align: "center" },
+  { key: "qty", label: "생산수량", width: 104, align: "right" },
+  { key: "defectQty", label: "불량수량", width: 104, align: "right" },
+  {
+    key: "input",
+    label: "투입",
+    width: 91,
+    align: "center",
+    render: () => (
+      <a href="#" className="text-[13px] font-semibold text-mes-primary-60 underline">
+        투입정보
+      </a>
+    ),
+  },
+  { key: "packQty", label: "포장수량", width: 100, align: "right" },
+  {
+    key: "lot",
+    label: "라벨정보",
+    width: 91,
+    align: "center",
+    render: () => (
+      <a href="#" className="text-[13px] font-semibold text-mes-primary-60 underline">
+        LOT조회
+      </a>
+    ),
+  },
+  { key: "warehouse", label: "창고명", width: 106 },
+];
+
+const productionGroups: TableGroup<ProductionRow>[] = [
+  {
+    id: "eq1",
+    label: "설비 : 성형기 1호",
+    summary: { packCount: 15, qty: 6000, defectQty: 30, packQty: 60 },
+    rows: [
+      { id: "r1", data: { date: "2025-10-30", shift: "주간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } },
+      { id: "r2", data: { date: "2025-10-29", shift: "주간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } },
+      { id: "r3", data: { date: "2025-10-29", shift: "야간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } },
+    ],
+  },
+  {
+    id: "eq2",
+    label: "설비 : 성형기 2호",
+    summary: { packCount: 15, qty: 12000, defectQty: 0, packQty: 160 },
+    rows: [
+      { id: "r4", data: { date: "2025-10-30", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } },
+      { id: "r5", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } },
+      { id: "r6", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } },
+      { id: "r7", data: { date: "2025-10-27", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" }, isNew: true },
+      { id: "r8", data: { date: "2025-10-26", shift: "야간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } },
+    ],
+  },
+];
+
 export default function Home() {
   const [comboValue, setComboValue] = useState<string>("");
   const [filterValue, setFilterValue] = useState<Record<string, string[]>>({
@@ -135,6 +230,7 @@ export default function Home() {
   });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [radioDialogOpen, setRadioDialogOpen] = useState(false);
+  const [tableSelectedIds, setTableSelectedIds] = useState<string[]>(["r4"]);
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-10 bg-mes-gray-10 p-16">
@@ -566,6 +662,25 @@ export default function Home() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="flex w-full max-w-[1100px] flex-col gap-4 pb-8">
+        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+          Table (원본 node 9873:83780 + 수정본 실제화면 node 16938:42501 대조 실측)
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          수정본에서 확인된 변경점 반영: 헤더 배경 Gray-10 추가, 세로 점선 구분선(기본
+          Gray-40), 그룹행(핑크 #fde9ea)에 집계값, 선택행(Primary-20 배경)·신규행(빨간 점)은
+          구분선이 한 단계 진한 Gray-30으로 바뀜. r7 행에 빨간 점(&quot;이번 세션에서 추가된
+          정보&quot;) 표시됨. disable/분할 변형은 아직 미실측(체크리스트 참고).
+        </p>
+        <Table
+          columns={productionColumns}
+          groups={productionGroups}
+          selectedIds={tableSelectedIds}
+          onSelectedIdsChange={setTableSelectedIds}
+          totals={{ qty: "18,000", defectQty: 30, packQty: 360 }}
+        />
       </section>
     </div>
   );
