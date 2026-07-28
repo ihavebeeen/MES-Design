@@ -91,9 +91,10 @@ npx eslint .            # 린트 검사
 - Progress Bar 완성(`progress.tsx`) — 트랙 Gray-40, 채움 Gray-100
 - 필터 전용 Tag(`filter-tag.tsx`, type1/type2), 범용 3색 Tag(`tag.tsx`, node 9873:83675 —
   담당자 확인상 실사용 빈도 낮음, Badge가 주력), Filter 트리거+활성태그(`filter.tsx`) 완성
-- Filter 플라이아웃(카테고리 목록 → 체크박스 서브목록 2단, `filter-flyout.tsx`) 완성 —
-  Figma에 실측 가능한 노드가 없어 담당자 승인 하에 조립형으로 구현(정밀실측 아님, 명시적으로
-  구분해서 기록). Select/Combobox 패널 스타일 관례 재사용
+- Filter를 트리거+플라이아웃+활성태그 통합 컴포넌트로 완성(`filter.tsx` 하나로 병합, 기존
+  `filter-flyout.tsx`는 삭제). 담당자가 실제 화면으로 확인해준 대로 카테고리 목록의 선택
+  인디케이터(파란 점)는 제거했고, 체크박스 선택 시 트리거 옆에 태그가 자동 생성되도록
+  연동(1개 선택="{카테고리} 1" 개수 뱃지, 2개 이상="{카테고리} : 전체보기")
 - Select/Combobox 트리거에 `icon` prop 추가 완료 — 기본 ChevronDown 대신 다른 아이콘으로 교체 가능
 - Tag(범용 3색)를 Button과 동일한 startIcon/endIcon 슬롯 구조로 재구현 — Figma에 X 아이콘이
   앞뒤 2개 있던 건 중복 실수가 아니라 원래 이런 슬롯 구조였음을 담당자가 확인해줌

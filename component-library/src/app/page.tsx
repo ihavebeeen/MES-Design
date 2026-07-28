@@ -19,7 +19,6 @@ import { Progress } from "@/components/ui/progress";
 import { Filter } from "@/components/ui/filter";
 import { Tag } from "@/components/ui/tag";
 import { SlidersHorizontal, X } from "lucide-react";
-import { FilterFlyout } from "@/components/ui/filter-flyout";
 
 /**
  * 컴포넌트별 예시를 "행/열이 맞는 그리드 + 컴포넌트명·상태값 라벨 병기" 형태로 정리한
@@ -90,7 +89,8 @@ const filterCategories = [
 export default function Home() {
   const [comboValue, setComboValue] = useState<string>("");
   const [filterValue, setFilterValue] = useState<Record<string, string[]>>({
-    perm: ["normal", "admin", "acc", "gong", "manager"],
+    perm: ["normal"],
+    group: ["normal", "admin"],
   });
 
   return (
@@ -328,29 +328,24 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Filter (필터 추가 트리거 + 활성 태그)">
-        <Sample label="Filter · btn-only(선택 없음)">
-          <Filter />
-        </Sample>
-        <Sample label="Filter · add-tag(type2 x2 + type1 x1)">
-          <Filter
-            tags={[
-              { category: "품목", value: "5" },
-              { category: "품목", value: "23" },
-              { category: "품목" },
-            ]}
-          />
-        </Sample>
-        <Sample label="FilterFlyout · 2단 카테고리→체크박스(조립형, 담당자 승인)">
-          <FilterFlyout
-            categories={filterCategories}
-            value={filterValue}
-            onChange={(categoryId, optionIds) =>
-              setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
-            }
-          />
-        </Sample>
-      </Section>
+      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+          Filter (트리거 + 플라이아웃 + 활성 태그, 통합 컴포넌트)
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          &ldquo;필터 추가&rdquo; 클릭 → 카테고리 선택 → 체크박스 선택 → 트리거 옆에 태그
+          자동 표시(1개 선택 시 개수 뱃지, 2개 이상이면 &ldquo;전체보기&rdquo;) → 태그의
+          X로 선택 해제. 좁은 그리드에서 팝업이 옆 카드와 겹쳐 보이는 문제 때문에 이
+          컴포넌트만 별도 넓은 영역에 배치함.
+        </p>
+        <Filter
+          categories={filterCategories}
+          value={filterValue}
+          onChange={(categoryId, optionIds) =>
+            setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
+          }
+        />
+      </section>
 
       <Section title="Tag (범용 3색 — 실사용 빈도 낮음, Badge를 우선 사용)">
         <Sample label="Tag · main · start+endIcon(실측 그대로)">
