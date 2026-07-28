@@ -186,7 +186,7 @@
 | Badge | 상태/개수 배지 | 아톰 | 있음 | 1 | 2026-07-28 클라우드MES 파일 node 13687:33504 기준 정밀실측 후 코드화 완료(`badge.tsx`, 7종). orange/yellow는 Figma 컴포넌트 이름과 실제 색상이 다름(각각 실제로는 gray/blue) — 원본 오류 추정, 확인 필요(19번 섹션 참고) |
 | Chip / Tag | 태그·라벨 | 아톰 | 있음 | 1 | 2026-07-28 완료. 필터 전용 태그(node 9873:83747, `filter-tag.tsx`)와 범용 3색 태그(node 9873:83675, `tag.tsx`, fill-main/gray/red) 둘 다 정밀실측해 코드화 완료. 담당자 확인: 범용 3색 태그는 "거의 안 씀", 실제로는 Badge(badge.tsx)를 훨씬 많이 사용 — 최소 구현만 해둠 |
 | Tooltip | 말풍선 설명 | 아톰 | 없음 | 2 | |
-| Progress Bar | 진행률 막대 | 아톰 | 있음 | 1 | 2026-07-28 클라우드MES 파일 node 20144:101580 기준 정밀실측 후 코드화 완료(`progress.tsx`). 트랙 Gray-40, 채움 Gray-100(담당자 확인) |
+| Progress Bar | 진행률 막대 | 아톰 | 있음 | 1 | 2026-07-28 클라우드MES 파일 node 20144:101580 기준 정밀실측 후 코드화 완료(`progress.tsx`). 트랙 Gray-40, 채움 Gray-100(담당자 확인). 같은 날 담당자 지적으로 재실측: 바-라벨 간격 자체는 2px가 맞았지만, 라벨이 44px 고정폭 박스 안에서 우측정렬되는 구조(자릿수 바뀌어도 컴포넌트 전체 폭 고정)가 처음 구현 때 빠져있던 걸 발견해 복원 |
 | Progress Circle | 진행률 원형 | 아톰 | 없음 | 4 | |
 | Skeleton | 로딩 중 placeholder | 아톰 | 없음 | 2 | |
 | Stat / KPI Card | 숫자 지표 카드 | 몰큘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Asset/Templates의 "Dashboard Card" 확인 |

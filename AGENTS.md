@@ -118,4 +118,12 @@ npx eslint .            # 린트 검사
   outline·filled 등 진짜 다른 도형 존재)를 구분해서 구현. filter.tsx/toast.tsx(RED만)/
   confirm-dialog.tsx/radio-choice-dialog.tsx의 기존 lucide 대체 아이콘을 실제 벡터로
   교체 완료. 상세는 `docs/아이콘_매핑표.md` 참고
+- 아이콘 색상 전수 재검증(2026-07-28) — 담당자 지적으로 각 아이콘 인스턴스 node ID별
+  `get_variable_defs`를 다시 개별 호출해 재검증. `get_design_context`의 "Property
+  1=black" 같은 컴포넌트 설명 텍스트는 인스턴스별 실제 색과 무관한 공용 설명이라는 것을
+  발견(재발방지 규칙 추가, `docs/신규_컴포넌트_설계_프로세스.md` 참고) — 이 착오로
+  RadioChoiceDialog 경고아이콘(Gray-130→실제 Gray-60), FilterTag 닫기아이콘(Primary-60→
+  실제 Gray-130) 2건 수정. Toast RED/ConfirmDialog/Filter 트리거 아이콘은 재검증 결과
+  기존 값 그대로 정확함을 확인. Progress Bar도 라벨 44px 고정폭 우측정렬 구조가 빠져있던
+  것을 재실측해 복원(자릿수 바뀔 때 전체폭이 흔들리던 문제 수정)
 - 나머지 몰큘/오가니즘(Table/Center Modal/Page Top Tab Item/Sidebar)은 아직 코드 없음

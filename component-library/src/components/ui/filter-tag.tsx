@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { IconX } from "../icons/icon-x";
 
 /**
  * MES FilterTag (필터에서 쓰는 태그/칩) — Figma 실측 기반 + 담당자 정책 결정 반영
@@ -25,9 +25,12 @@ import { cn } from "@/lib/utils";
  * Primary-60, 닫기(X) 아이콘 12px(클릭 히트영역 5px 패딩 포함 실질 22x22). 개수 뱃지는
  * 흰 텍스트 12px Medium, Primary-60 배경의 완전 라운드(높이 14px, 최소너비 14px, 좌우 padding 4px)
  *
- * ── 판단값(미실측) ────────────────────────────────────────────
- * - 닫기 아이콘 색: Figma 컴포넌트 이름이 "Property 1=black"(설명: "close, 닫기")이라 검정 계열로
- *   추정되지만 벡터 이미지라 정확한 hex를 코드로 못 뽑음 — Primary-60(라벨과 동일 색)으로 처리해둠
+ * ── 2026-07-28 아이콘 실측 재검증 ──────────────────────────────
+ * 닫기 아이콘: 처음엔 Figma 컴포넌트 설명("Property 1=black")만 보고 검정 계열로 추정하되
+ * 벡터라 정확한 hex를 못 뽑아 Primary-60(라벨과 동일 색)으로 임시 처리했었음 — 이후 담당자가
+ * Figma에서 직접 SVG export해준 실제 아이콘(`IconX`)으로 교체하고, node 9873:83761의
+ * `get_variable_defs`를 재조회해 실제 바인딩 색이 Gray-130(#011327)임을 확인해 수정함
+ * (Primary-60이 아니었음 — 판단값을 실측값으로 교정).
  */
 
 export interface FilterTagProps {
@@ -56,9 +59,9 @@ const FilterTag = React.forwardRef<HTMLDivElement, FilterTagProps>(
         type="button"
         onClick={onRemove}
         aria-label="필터 제거"
-        className="inline-flex shrink-0 items-center justify-center p-[5px] text-mes-primary-60"
+        className="inline-flex shrink-0 items-center justify-center p-[5px] text-mes-gray-130"
       >
-        <X className="size-3" />
+        <IconX size={12} />
       </button>
     </div>
   )
