@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #011327;
+
+  /* ── MES Design System 색상 토큰 (Figma "Color" 프레임 실측, 2026-07-16 get_variable_defs 재검증 완료) ── */
+  /* Gray */
+  --mes-gray-0: #ffffff;
+  --mes-gray-10: #f8fafc;
+  --mes-gray-20: #eff2f8;
+  --mes-gray-30: #e4e7ee;
+  --mes-gray-40: #d7dce5;
+  --mes-gray-50: #b4c0d3;
+  --mes-gray-60: #99a3b8;
+  --mes-gray-70: #8491a7;
+  --mes-gray-80: #67738e;
+  --mes-gray-90: #5c667b;
+  --mes-gray-100: #475067;
+  --mes-gray-110: #373f57;
+  --mes-gray-120: #292e41;
+  --mes-gray-130: #011327;
+  --mes-gray-140: #000000;
+
+  /* Primary */
+  --mes-primary-10: #eff8ff;
+  --mes-primary-20: #e8f5ff;
+  --mes-primary-30: #c7e4ff;
+  --mes-primary-40: #7bbbff;
+  --mes-primary-50: #4096ff;
+  --mes-primary-60: #1573fb;
+  --mes-primary-70: #0958d9;
+  --mes-primary-80: #003eb3;
+  --mes-primary-90: #002c8c;
+  --mes-primary-100: #001d66;
+  --mes-primary-110: #00113d;
+
+  /* Danger */
+  --mes-danger-10: #fbeff0;
+  --mes-danger-20: #f5d6d9;
+  --mes-danger-30: #ffb7bc;
+  --mes-danger-40: #fb8992;
+  --mes-danger-50: #fd6672;
+  --mes-danger-60: #f04452;
+  --mes-danger-70: #ab2b36;
+  --mes-danger-80: #7a1f26;
+  --mes-danger-90: #521419;
+  --mes-danger-100: #310c0f;
+  --mes-danger-110: #21080a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* MES 색상 토큰을 Tailwind 유틸리티로 노출 (예: bg-mes-primary-60, text-mes-gray-130) */
+  --color-mes-gray-0: var(--mes-gray-0);
+  --color-mes-gray-10: var(--mes-gray-10);
+  --color-mes-gray-20: var(--mes-gray-20);
+  --color-mes-gray-30: var(--mes-gray-30);
+  --color-mes-gray-40: var(--mes-gray-40);
+  --color-mes-gray-50: var(--mes-gray-50);
+  --color-mes-gray-60: var(--mes-gray-60);
+  --color-mes-gray-70: var(--mes-gray-70);
+  --color-mes-gray-80: var(--mes-gray-80);
+  --color-mes-gray-90: var(--mes-gray-90);
+  --color-mes-gray-100: var(--mes-gray-100);
+  --color-mes-gray-110: var(--mes-gray-110);
+  --color-mes-gray-120: var(--mes-gray-120);
+  --color-mes-gray-130: var(--mes-gray-130);
+  --color-mes-gray-140: var(--mes-gray-140);
+
+  --color-mes-primary-10: var(--mes-primary-10);
+  --color-mes-primary-20: var(--mes-primary-20);
+  --color-mes-primary-30: var(--mes-primary-30);
+  --color-mes-primary-40: var(--mes-primary-40);
+  --color-mes-primary-50: var(--mes-primary-50);
+  --color-mes-primary-60: var(--mes-primary-60);
+  --color-mes-primary-70: var(--mes-primary-70);
+  --color-mes-primary-80: var(--mes-primary-80);
+  --color-mes-primary-90: var(--mes-primary-90);
+  --color-mes-primary-100: var(--mes-primary-100);
+  --color-mes-primary-110: var(--mes-primary-110);
+
+  --color-mes-danger-10: var(--mes-danger-10);
+  --color-mes-danger-20: var(--mes-danger-20);
+  --color-mes-danger-30: var(--mes-danger-30);
+  --color-mes-danger-40: var(--mes-danger-40);
+  --color-mes-danger-50: var(--mes-danger-50);
+  --color-mes-danger-60: var(--mes-danger-60);
+  --color-mes-danger-70: var(--mes-danger-70);
+  --color-mes-danger-80: var(--mes-danger-80);
+  --color-mes-danger-90: var(--mes-danger-90);
+  --color-mes-danger-100: var(--mes-danger-100);
+  --color-mes-danger-110: var(--mes-danger-110);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Pretendard", Arial, Helvetica, sans-serif;
+}
