@@ -26,8 +26,11 @@ import { cn } from "@/lib/utils";
  * - 선택된 항목 강조 배경: `#E8F0FE`(담당자 확인, 실제 서비스 화면 스크린샷 기준. 근무조 선택 콤보박스 예시)
  *
  * 미확인 상태로 남은 값(TODO — 확인되는 대로 교체):
- * - 선택된 항목에 마우스 올렸을 때(hover) 나타나는 테두리 색 — 배경(#E8F0FE)은 확인됐지만 테두리 색은 아직 모름
- * - 지금은 hover에 테두리 없이 배경만 처리해둠(임의 색 넣지 않음)
+ * - 선택된 항목에 마우스 올렸을 때(hover) 나타나는 테두리 색 — 배경(#E8F0FE)은 확인됐지만 테두리 색은
+ *   아직 모름. 담당자가 "primary 팔레트에서 배경보다 1~2단계 진한 색 아니냐"는 가설을 제시했으나,
+ *   배경 #E8F0FE 자체가 확정 Primary 팔레트 11단계 중 어느 값과도 정확히 일치하지 않아(Primary-20
+ *   #E8F5FF와 가장 비슷하지만 다른 값) 유추만으로 확정할 수 없음 — 우선 Primary-40(#7BBBFF)을
+ *   임시값으로 넣어둠(combobox.tsx와 동일 처리). devtools 실측값 확인되면 즉시 교체.
  *
  * 판단해서 채운 값(미실측, 담당자가 "이외엔 판단해서 채워달라"고 확인함 — 정확한 값 나오면 교체 필요):
  * - 패널 radius: 8px
@@ -116,7 +119,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-[4px] py-[5px] pr-6 text-[13px] leading-[1.5] outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus:bg-mes-gray-20 data-[state=checked]:bg-[#e8f0fe]",
+      "relative flex w-full cursor-default select-none items-center rounded-[4px] border border-transparent py-[5px] pr-6 text-[13px] leading-[1.5] outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[state=unchecked]:data-[highlighted]:bg-mes-gray-20 data-[state=checked]:bg-[#e8f0fe] data-[state=checked]:data-[highlighted]:border-mes-primary-40",
       className
     )}
     {...props}

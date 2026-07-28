@@ -146,7 +146,7 @@
 | Search Input | 검색창 | 몰큘 | 있음 | 1 | 위 Input 매트릭스에 search 컬럼 포함 |
 | Password Input | 비밀번호 입력(보기/숨기기) | 몰큘 | 없음 | 2 | 로그인 화면 필수 |
 | Select (Dropdown) | 단일 선택 드롭다운 | 몰큘 | 있음 | 1 | Figma "Selectbox" 확인됨 |
-| Combobox | 검색 가능한 선택형 드롭다운 | 몰큘 | 없음 | 2 | |
+| Combobox | 검색 가능한 선택형 드롭다운 | 몰큘 | 있음 | 1 | 2026-07-28 코드화 완료(`combobox.tsx`, Radix Popover 기반) — Selectbox와 별도 컴포넌트로 분리. 상세는 19번 섹션 참고 |
 | Multi-select / Tag Input | 다중 선택·태그 입력 | 몰큘 | 없음 | 2 | 필터 등에 활용. 18-1 Select 변형 분석의 결론(MES 필터에서 실사용 가능성 높음)을 반영해 티어3→2로 상향 |
 | Date Picker | 날짜 선택기 | 오가니즘 | 없음 | 2 | |
 | Date Range Picker | 기간(시작~종료) 선택기 | 오가니즘 | 없음 | 2 | |
@@ -539,4 +539,4 @@ Select와 같은 방식으로, 티어 1~2 항목을 하나씩 골라 `component.
 | Breakpoint Scale | 0번 섹션 | 데스크탑에 반응형 자체가 실제로 필요한지 재검토 |
 | Radius/Spacing 로컬 변수 vs FMS Make Metrics | 0번 섹션 | 실제 컴포넌트는 로컬 변수(`radius/small1`, `padding/1`, `padding/3`)를 쓰는데, `search_design_system`에는 이름이 다른 별도 컬렉션("FMS Make Metrics": radius/sm·md·lg, "gray-900" 등)이 잡힘 — 후자가 미사용 보일러플레이트인지 확인 필요 |
 | Radius 사이즈별 연동 여부 | 전체 | **"공용 규칙 없음"으로 결론 확정**(10개 컴포넌트 실측 완료 — Button/Input/Selectbox/Badge/Center Modal/Toast/Tab Item/Sidebar/Confirm Dialog/Table). Input·Selectbox는 사이즈 연동(4px→3px), Button은 고정(4px), Sidebar는 한 컴포넌트 안에서만 4종(4/8/2/111px) 공존. 열려있는 질문이 아니라 **확정된 방법론**: 티어1 나머지 ~30개 컴포넌트를 코드화할 때마다 매번 개별 실측 필수(패밀리·기존 실측값으로 유추 금지). 자세한 근거는 [신규 컴포넌트 설계 프로세스 Step C-1](./신규_컴포넌트_설계_프로세스.md) 참고 |
-| **Selectbox / Combobox(검색 가능한 셀렉트) 구분 필요** | 3번 섹션(입력·폼) | 2026-07-28 코드화 중 발견: 실제 서비스엔 검색창이 내장된 콤보박스(클래스명 `.searchable-select-dropdown`, 예: 근무조 선택)가 있는데, 현재 디자인 시스템에는 일반 Selectbox와 구분 없이 섞여 있음. 담당자 확인 — "디자인 시스템 만들 때 Selectbox/Combobox로 나눠야 할 것 같다"는 인식. 코드는 우선 일반 Select만 구현해뒀고, 검색 내장형은 별도 컴포넌트로 추후 설계 필요. 선택된 항목 강조 배경색은 `#E8F0FE`로 확인됨(호버 시 테두리도 있는데 색상 미확인 — devtools 확인 필요) |
+| ~~Selectbox / Combobox(검색 가능한 셀렉트) 구분 필요~~ → **분리 완료** | 3번 섹션(입력·폼) | 2026-07-28 코드화 중 발견 → 같은 날 분리 완료: 실제 서비스엔 검색창이 내장된 콤보박스(클래스명 `.searchable-select-dropdown`, 예: 근무조 선택)가 있어 일반 Selectbox와 별도 컴포넌트(`combobox.tsx`, Radix Popover 기반)로 분리 구현함. 트리거 박스는 Selectbox와 동일 규격 재사용, 검색창은 node `20140:101487` 실측, 목록 패널은 Selectbox 패널과 동일 스타일 공유. 선택 항목 배경 `#E8F0FE`(확인됨) 적용. **남은 TODO**: 선택 항목 hover 테두리 색 — `#E8F0FE`가 확정 Primary 팔레트 11단계 중 어느 값과도 정확히 일치하지 않아(Primary-20 `#E8F5FF`와 가장 근접하나 다른 값) "배경보다 1~2단계 진하게"라는 담당자 가설을 실측 없이 확정할 수 없었음 — 우선 Primary-40(`#7BBBFF`)을 임시값으로 넣어둠, devtools 실측값 나오면 select.tsx·combobox.tsx 양쪽 다 교체 필요 |

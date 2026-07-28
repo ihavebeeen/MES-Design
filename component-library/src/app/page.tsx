@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,8 +11,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Combobox } from "@/components/ui/combobox";
 
 export default function Home() {
+  const [comboValue, setComboValue] = useState<string>("");
+  const shiftOptions = [
+    { value: "day", label: "주간 근무조" },
+    { value: "night", label: "야간 근무조" },
+    { value: "swing", label: "교대 근무조" },
+    { value: "bom1", label: "BOM-2026-001" },
+    { value: "bom2", label: "BOM-2026-002" },
+  ];
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-mes-gray-10 p-16">
       <h1 className="text-xl font-semibold text-mes-gray-130">
@@ -106,6 +119,30 @@ export default function Home() {
             <SelectItem value="1">옵션 1</SelectItem>
           </SelectContent>
         </Select>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <Combobox
+          options={shiftOptions}
+          value={comboValue}
+          onValueChange={setComboValue}
+          placeholder="근무조 선택"
+          searchPlaceholder="BOM 검색"
+          className="w-[220px]"
+        />
+        <Combobox
+          options={shiftOptions}
+          placeholder="내용 입력"
+          searchPlaceholder="검색"
+          size="small"
+          className="w-[220px]"
+        />
+        <Combobox
+          options={shiftOptions}
+          placeholder="내용 입력"
+          disabled
+          className="w-[220px]"
+        />
       </div>
     </div>
   );
