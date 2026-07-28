@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { CircleAlert, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import { Radio } from "./radio";
+import { IconExclamationCircle } from "../icons/icon-exclamation-circle";
+import { IconX } from "../icons/icon-x";
 
 /**
  * MES RadioChoiceDialog (라디오 선택형 확인 모달) — Figma 실측 기반
@@ -48,10 +49,11 @@ import { Radio } from "./radio";
  * 정확히 일치함(get_variable_defs 재대조: main60=#1573fb, gray50/gray60 계열) →
  * 새로 만들지 않고 기존 `Radio` 컴포넌트를 그대로 재사용함(중복 구현 방지).
  *
- * ── 3. 아이콘 대체(실측 불가, 담당자 승인된 예외) ───────────────
- * 경고 배너 아이콘은 벡터 이미지라 lucide `CircleAlert`로 대체(Toast/ConfirmDialog와
- * 동일한 대체 아이콘). 색은 스크린샷 기준 Gray-130 판단(배너 전체가 저채도 회색 톤이라
- * danger 색이 아님 — 텍스트와 동일 색으로 처리).
+ * ── 3. 아이콘 (2026-07-28 실제 SVG로 교체) ───────────────────
+ * 경고 배너 아이콘은 담당자가 Figma에서 직접 SVG export한 실측 벡터(`IconExclamationCircle`,
+ * Toast/ConfirmDialog와 동일 아이콘 컴포넌트 재사용)로 교체. 색은 스크린샷 기준 Gray-130
+ * 판단 유지(배너 전체가 저채도 회색 톤이라 danger 색이 아님 — 텍스트와 동일 색으로 처리).
+ * 헤더 닫기 아이콘도 실제 SVG(`IconX`)로 교체.
  *
  * ── 4. 확인 필요 ────────────────────────────────────────────────
  * - 이 노드가 정말 "삭제모달 - 라디오버튼" 변형이 맞는지(문구가 삭제가 아님) 담당자 재확인.
@@ -125,7 +127,7 @@ function RadioChoiceDialog({
                 aria-label="닫기"
                 className="flex size-8 shrink-0 items-center justify-center text-mes-gray-130"
               >
-                <X className="size-5" />
+                <IconX size={20} />
               </button>
             </DialogPrimitive.Close>
           </div>
@@ -161,7 +163,7 @@ function RadioChoiceDialog({
 
             {warning && (
               <div className="flex w-full items-center justify-center gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-4">
-                <CircleAlert className="size-4 shrink-0 text-mes-gray-130" />
+                <IconExclamationCircle size={16} className="shrink-0 text-mes-gray-130" />
                 <p className="text-center text-[14px] font-normal leading-[1.5] text-mes-gray-130">
                   {warning}
                 </p>

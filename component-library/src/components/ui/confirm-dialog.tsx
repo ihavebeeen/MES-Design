@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { CircleAlert, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button, type ButtonProps } from "./button";
+import { IconExclamationCircle } from "../icons/icon-exclamation-circle";
+import { IconX } from "../icons/icon-x";
 
 /**
  * MES ConfirmDialog (확인/안내용 작은 팝업) — Figma 실측 기반
@@ -27,10 +28,10 @@ import { Button, type ButtonProps } from "./button";
  * - 푸터: padding 20px, 버튼 높이 40px(Button 컴포넌트의 size="basic"와 동일 규격),
  *   버튼이 1개일 땐 너비 100%(flex-1)
  *
- * ── 2. 아이콘/색상(실측+판단) ───────────────────────────────────
- * 본문 아이콘은 "mes/icon-exclamation-circle"(Toast RED와 동일 계열) — 벡터라 정확한
- * SVG는 못 가져와 lucide `CircleAlert`로 대체, 색은 스크린샷 기준 Danger-60 판단.
- * 헤더 닫기 아이콘은 Figma에서 "Property 1=black"으로 명명돼 있어 Gray-130(거의 검정)으로 처리.
+ * ── 2. 아이콘/색상(2026-07-28 실제 SVG로 교체) ───────────────────
+ * 본문 아이콘은 "mes/icon-exclamation-circle"(Toast RED와 동일 계열) — 담당자가 Figma에서
+ * 직접 SVG export한 실측 벡터(`IconExclamationCircle`)로 교체, 색은 Danger-60 그대로 유지.
+ * 헤더 닫기 아이콘도 실제 SVG(`IconX`)로 교체, Figma "Property 1=black" 명명대로 Gray-130 처리.
  * 푸터 버튼 배경(#011327)은 확정 Gray-130과 정확히 일치 — Button 컴포넌트의
  * variant="fillBlack"과 동일해서 그대로 재사용함.
  *
@@ -83,13 +84,13 @@ function ConfirmDialog({
                 aria-label="닫기"
                 className="flex size-8 shrink-0 items-center justify-center text-mes-gray-130"
               >
-                <X className="size-5" />
+                <IconX size={20} />
               </button>
             </DialogPrimitive.Close>
           </div>
 
           <div className="flex shrink-0 items-center gap-5 p-8">
-            <CircleAlert className="size-11 shrink-0 text-mes-danger-60" />
+            <IconExclamationCircle size={44} className="shrink-0 text-mes-danger-60" />
             <div className="flex flex-col gap-1">
               <p className="text-[16px] font-semibold leading-[1.5] text-mes-gray-130">
                 {heading}

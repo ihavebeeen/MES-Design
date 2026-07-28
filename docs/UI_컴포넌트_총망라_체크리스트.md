@@ -533,7 +533,7 @@ Select와 같은 방식으로, 티어 1~2 항목을 하나씩 골라 `component.
 
 | 항목 | 위치 | 확인할 내용 |
 |---|---|---|
-| ~~Icon Set~~ → **아이콘 시트 확인 완료, 실제 SVG는 여전히 다운로드 불가** | 0번 섹션 | node 9873:81854/81855(fileKey F4n5Zr04PAbiRjfIFQAo6v)에서 아이콘 컴포넌트 40개 패밀리 확인. `download_assets`가 준 임시 URL을 curl/web_fetch 둘 다로 시도했으나 이번에도 네트워크 차단(HTTP 403/빈 응답) — 노드를 줘도 이 환경 자체의 구조적 제약이라 해소 안 됨. `get_screenshot`(base64 인라인)으로 육안 대조해 lucide-react 매핑표 작성 완료 → [아이콘_매핑표.md](./아이콘_매핑표.md) 참고. 기존 사용 중인 대체 아이콘 4종(SlidersHorizontal/Plus/X/CircleAlert)은 일치 재확인됨. 정확한 벡터가 필요하면 담당자가 Figma에서 직접 SVG export해서 저장소에 넣어주는 방법이 유일한 해결책 |
+| ~~Icon Set~~ → **실제 SVG 33종 확보 및 컴포넌트화 완료** | 0번 섹션 | 이 환경에서 Figma 애셋 CDN 직접 다운로드는 끝까지 불가(HTTP 403 재확인)했으나, 담당자가 Figma에서 직접 SVG export해 `component-library/icon/mes/`에 넣어줘서 해결됨. 33개 파일 전부 분석해 `component-library/src/components/icons/`에 실측 벡터 기반 React 컴포넌트로 구현 완료(색상 variant는 currentColor로 일반화, 형태가 실제로 다른 것은 variant prop으로 분리, flat-* 4종은 2톤 고정색 유지) → 상세 내용 [아이콘_매핑표.md](./아이콘_매핑표.md) "2026-07-28 실측 SVG 반영 결과" 참고. 기존 lucide 대체 아이콘 사용처(filter.tsx/toast.tsx/confirm-dialog.tsx/radio-choice-dialog.tsx)도 실제 벡터로 교체 완료. 아직 미확보: mes/icon-setting, Toast BLUE의 CHECK 아이콘 |
 | **System Color (Warning/Success) 데스크탑 신설 필요** | 0-1번 섹션 | 재확인 완료 — 데스크탑 Figma엔 Danger만 있고 Warning/Success 그룹 자체가 없음(모바일엔 있음). 데스크탑에도 만들지, 모바일과 같은 값을 쓸지는 디자인 결정 필요 |
 | Nested Modal | 15번 섹션 | 2-depth 모달의 정확한 구조 (Side Modal "검사/커스텀 정보 등록"에서 겹친 형태로 추정만 한 상태) |
 | 검사 판정 버튼 "-"(대시) | 16-4번 섹션 | 정확한 의미 — 사용자 측 내부 확인 대기 중. [컴포넌트 기능 변형 심층분석](./컴포넌트_기능_변형_심층분석.md) 참고 |

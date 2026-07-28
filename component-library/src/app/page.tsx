@@ -21,7 +21,45 @@ import { Tag } from "@/components/ui/tag";
 import { Toast } from "@/components/ui/toast";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { RadioChoiceDialog } from "@/components/ui/radio-choice-dialog";
-import { SlidersHorizontal, X } from "lucide-react";
+import { X } from "lucide-react";
+import {
+  IconArrow,
+  IconArrowDownRight,
+  IconArrowLine,
+  IconBell,
+  IconBox,
+  IconCalendar,
+  IconChartBar,
+  IconCompany,
+  IconCopy,
+  IconDownload,
+  IconExclamationCircle,
+  IconFileNote,
+  IconFilter,
+  IconFlatBoxCheck,
+  IconFlatFileCheck,
+  IconFlatIn,
+  IconFlatOut,
+  IconGrid,
+  IconGroupDown,
+  IconMedalCheck,
+  IconPlus,
+  IconQaO,
+  IconQaTriangle,
+  IconQaX,
+  IconReload,
+  IconScan,
+  IconSearch,
+  IconShare,
+  IconStar,
+  IconTrash,
+  IconTrendingDown,
+  IconTrendingUp,
+  IconUserMono,
+  IconWrench,
+  IconX,
+  IconXCircle,
+} from "@/components/icons";
 
 /**
  * 컴포넌트별 예시를 "행/열이 맞는 그리드 + 컴포넌트명·상태값 라벨 병기" 형태로 정리한
@@ -247,7 +285,7 @@ export default function Home() {
         </Sample>
         <Sample label="Select · 커스텀 아이콘(꺾쇠 대신)">
           <Select>
-            <SelectTrigger className="w-[200px]" icon={<SlidersHorizontal className="size-3.5 shrink-0 opacity-80" />}>
+            <SelectTrigger className="w-[200px]" icon={<IconFilter size={14} className="shrink-0 opacity-80" />}>
               <SelectValue placeholder="정렬 기준" />
             </SelectTrigger>
             <SelectContent>
@@ -416,7 +454,7 @@ export default function Home() {
             options={shiftOptions}
             placeholder="정렬 기준"
             searchPlaceholder="검색"
-            icon={<SlidersHorizontal className="size-3.5 shrink-0 opacity-80" />}
+            icon={<IconFilter size={14} className="shrink-0 opacity-80" />}
             className="w-[200px]"
           />
         </Sample>
@@ -468,6 +506,67 @@ export default function Home() {
         warning="선택한 내용을 되돌릴 수 없습니다."
         onConfirm={() => setRadioDialogOpen(false)}
       />
+
+      <section className="flex w-full max-w-[960px] flex-col gap-4 pb-8">
+        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+          아이콘 라이브러리 (담당자가 Figma에서 직접 SVG export해 전달 — 대체 아님, 실측 벡터)
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          출처: fileKey F4n5Zr04PAbiRjfIFQAo6v, node 20150:103713(&quot;Section 3&quot;) 하위.
+          색상 variant는 대부분 currentColor로 일반화(className으로 색 지정), flat-* 4종만
+          2톤 고정색이라 원본 hex 그대로 유지.
+        </p>
+        <div className="grid grid-cols-8 gap-4 text-mes-gray-130">
+          {[
+            { label: "calendar", node: <IconCalendar /> },
+            { label: "filter", node: <IconFilter /> },
+            { label: "plus", node: <IconPlus /> },
+            { label: "search", node: <IconSearch /> },
+            { label: "x", node: <IconX /> },
+            { label: "arrow", node: <IconArrow /> },
+            { label: "star·outline", node: <IconStar /> },
+            { label: "star·filled", node: <IconStar variant="filled" /> },
+            { label: "arrow-line", node: <IconArrowLine /> },
+            { label: "bell·outline", node: <IconBell /> },
+            { label: "bell·filled", node: <IconBell variant="filled" /> },
+            { label: "user·line", node: <IconUserMono /> },
+            { label: "user·solid", node: <IconUserMono variant="solid" /> },
+            { label: "group-down", node: <IconGroupDown /> },
+            { label: "grid", node: <IconGrid /> },
+            { label: "chart-bar", node: <IconChartBar /> },
+            { label: "wrench", node: <IconWrench /> },
+            { label: "box", node: <IconBox /> },
+            { label: "medal-check", node: <IconMedalCheck /> },
+            { label: "company", node: <IconCompany /> },
+            { label: "download", node: <IconDownload /> },
+            { label: "copy", node: <IconCopy /> },
+            { label: "trash", node: <IconTrash /> },
+            { label: "exclamation-circle", node: <IconExclamationCircle /> },
+            { label: "x-circle", node: <IconXCircle /> },
+            { label: "arrow-down-right", node: <IconArrowDownRight /> },
+            { label: "flat-in", node: <IconFlatIn /> },
+            { label: "flat-out", node: <IconFlatOut /> },
+            { label: "flat-box-check", node: <IconFlatBoxCheck /> },
+            { label: "trending-down", node: <IconTrendingDown /> },
+            { label: "trending-up", node: <IconTrendingUp /> },
+            { label: "flat-file-check", node: <IconFlatFileCheck /> },
+            { label: "scan", node: <IconScan /> },
+            { label: "share", node: <IconShare /> },
+            { label: "qa-x", node: <IconQaX /> },
+            { label: "qa-triangle", node: <IconQaTriangle /> },
+            { label: "qa-o", node: <IconQaO /> },
+            { label: "reload", node: <IconReload /> },
+            { label: "file-note", node: <IconFileNote /> },
+          ].map(({ label, node }) => (
+            <div key={label} className="flex flex-col items-center gap-1.5">
+              <div className="flex size-10 items-center justify-center rounded border border-mes-gray-30 bg-white">
+                {node}
+              </div>
+              <span className="font-mono text-[10px] leading-none text-mes-gray-70">{label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

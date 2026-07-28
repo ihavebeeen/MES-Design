@@ -2,23 +2,21 @@
 
 import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { ChevronRight, SlidersHorizontal, Search } from "lucide-react";
+import { ChevronRight, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "./checkbox";
 import { FilterTag } from "./filter-tag";
+import { IconFilter } from "../icons/icon-filter";
 
 /**
  * MES Filter (필터 추가 트리거 + 카테고리→체크박스 플라이아웃 + 활성 필터 태그) — 통합 구현
  *
- * ── 1. 트리거 아이콘 (2026-07-28 담당자 지적으로 교체) ────────────
- * node 9873:83762 하위 "mes/icon-filter"(9873:83765/83769)는 벡터 이미지라 SVG를 직접
- * 못 받아왔었고, 처음엔 의미상 "필터"니까 lucide `Filter`(깔때기 모양) 아이콘으로 임의
- * 대체했었음 — 담당자가 "내가 분명 노드를 줬는데 왜 네 맘대로 아이콘을 넣냐"고 지적.
- * get_design_context로 받은 도형 좌표를 다시 분석해보니(Ellipse 3개가 각각 위/중간/아래
- * 가로줄에서 서로 다른 좌우 위치에 있고, Vector 선분들이 그 사이를 잇는 구조) 이건 깔때기가
- * 아니라 "가로선 3개 + 각 선 위의 조절점" 형태 — lucide `SlidersHorizontal`과 정확히 같은
- * 구조. 실제 SVG 파일을 직접 못 받는 건 여전하지만(샌드박스에서 Figma 에셋 서버로 네트워크
- * 요청이 막혀 있음), 임의 선택이 아니라 좌표 구조 분석 기반으로 아이콘을 다시 골랐음.
+ * ── 1. 트리거 아이콘 (2026-07-28 실제 SVG로 교체 완료) ────────────
+ * 처음엔 벡터 이미지라 SVG를 직접 못 받아와서 lucide `Filter`(깔때기)로 임의 대체했다가
+ * 담당자 지적으로 좌표 구조 분석 기반 `SlidersHorizontal`로 교체했었음. 이후 담당자가
+ * Figma에서 직접 SVG export(node 20150:103713 하위, `icon-filter/.../Variant7.svg`)를
+ * 저장소에 넣어줘서 이제 진짜 벡터(`IconFilter`, `../icons/icon-filter.tsx`)를 씀 —
+ * 결과적으로 좌표분석 추론이 정확했음이 실측으로 재확인됨(원 3개+선 6개 구조 일치).
  *
  * ── 2. 트리거+태그 레이아웃 (2026-07-28 담당자 지적 2건 반영) ────
  * 기존엔 트리거 버튼과 활성 태그들이 테두리 하나를 공유하는 통짜 박스였는데, 1차로
@@ -133,7 +131,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
               activeTags.length > 0 ? "rounded-l-[4px]" : "rounded-[4px]"
             )}
           >
-            <SlidersHorizontal className="size-4" />
+            <IconFilter size={16} />
             필터 추가
           </button>
         </PopoverPrimitive.Trigger>

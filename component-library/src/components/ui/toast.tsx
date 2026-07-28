@@ -1,8 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { CircleAlert, CircleCheck, X } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { IconExclamationCircle } from "../icons/icon-exclamation-circle";
+import { IconX } from "../icons/icon-x";
 
 /**
  * MES Toast (짧게 떴다 사라지는 알림) — Figma 실측 기반
@@ -32,10 +34,12 @@ import { cn } from "@/lib/utils";
  * 높이 46px, 내부 패딩 16px, 아이콘-텍스트 간 gap 8px, 텍스트 Pretendard SemiBold 15px
  * 흰색, drop-shadow `0 0 12px rgba(0,0,0,.2)`(둘 다 동일)
  *
- * ── 아이콘 대체(판단값) ────────────────────────────────────────
- * RED는 "mes/icon-exclamation-circle", BLUE는 "CHECK"라는 별도 벡터 이미지라 정확한
- * SVG를 못 가져와서 각각 의미가 가장 가까운 lucide 아이콘(CircleAlert / CircleCheck)으로
- * 대체함.
+ * ── 아이콘 (2026-07-28 RED만 실제 SVG로 교체) ───────────────────
+ * RED는 "mes/icon-exclamation-circle" — 담당자가 Figma에서 직접 SVG export한 실측
+ * 벡터(`IconExclamationCircle`, ../icons/icon-exclamation-circle.tsx)로 교체 완료.
+ * BLUE의 "CHECK" 아이콘은 아직 export 안 됨 — 여전히 lucide `CircleCheck`로 대체 중
+ * (판단값, 실제 SVG 받으면 교체 필요).
+ * 닫기(X) 버튼도 실제 SVG(`IconX`, ../icons/icon-x.tsx)로 교체 완료.
  *
  * 표시/자동 닫힘 타이밍 로직은 Figma 범위 밖이라 이 컴포넌트엔 없음(단순 프레젠테이션
  * 컴포넌트) — 실제 노출 시점·지속시간 제어는 사용하는 쪽에서 구현.
@@ -64,8 +68,7 @@ const toastStyles: Record<ToastVariant, { bg: string; border: string }> = {
 const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
   ({ variant, message, onClose, className }, ref) => {
     const styles = toastStyles[variant];
-    const Icon = variant === "red" ? CircleAlert : CircleCheck;
-    const closeIconSize = variant === "red" ? "size-4" : "size-[18px]";
+    const closeIconSize = variant === "red" ? 16 : 18;
 
     return (
       <div
@@ -78,13 +81,17 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
         )}
       >
         <div className="flex shrink-0 items-center gap-2">
-          <Icon className="size-[22px] shrink-0 text-white" />
+          {variant === "red" ? (
+            <IconExclamationCircle size={22} className="shrink-0 text-white" />
+          ) : (
+            <CircleCheck className="size-[22px] shrink-0 text-white" />
+          )}
           <p className="shrink-0 whitespace-nowrap text-[15px] font-semibold leading-[1.5] text-white">
             {message}
           </p>
         </div>
         <button type="button" onClick={onClose} aria-label="닫기" className="shrink-0 text-white">
-          <X className={closeIconSize} />
+          <IconX size={closeIconSize} />
         </button>
       </div>
     );

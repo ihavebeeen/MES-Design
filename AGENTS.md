@@ -112,4 +112,10 @@ npx eslint .            # 린트 검사
   임의로 맞추지 않고 각각 실측값 유지(체크리스트 19번 섹션 등록). 담당자가 지목한 "삭제
   모달 - 드롭다운/라디오버튼" 중 라디오 쪽으로 추정되나 실측 문구 자체는 "삭제"가 아니라
   "투입품목 추가"라 재확인 필요, 드롭다운 쪽은 아직 미전달
+- 아이콘 라이브러리 신규 구축(`component-library/src/components/icons/`, 33개 컴포넌트) —
+  담당자가 Figma에서 직접 SVG export해 `component-library/icon/mes/`에 전달, 색상
+  variant(currentColor 일반화)와 실제 형태가 다른 variant(bell/star/userMono는
+  outline·filled 등 진짜 다른 도형 존재)를 구분해서 구현. filter.tsx/toast.tsx(RED만)/
+  confirm-dialog.tsx/radio-choice-dialog.tsx의 기존 lucide 대체 아이콘을 실제 벡터로
+  교체 완료. 상세는 `docs/아이콘_매핑표.md` 참고
 - 나머지 몰큘/오가니즘(Table/Center Modal/Page Top Tab Item/Sidebar)은 아직 코드 없음
