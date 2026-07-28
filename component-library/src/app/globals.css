@@ -65,7 +65,16 @@
   --background: #ffffff;
   --foreground: #011327;
 
-  /* ── MES Design System 색상 토큰 (Figma "Color" 프레임 실측, 2026-07-16 get_variable_defs 재검증 완료) ── */
+  /* ── MES Design System 색상 토큰 — 확정(CONFIRMED) ──
+     Gray/Primary(main)/Danger(system-red) 3개 팔레트, 각 단계 hex 값.
+     검증 이력:
+       1차: 2026-07-16, 컴포넌트 라이브러리 파일(qEAQNTqXf76bYydyupti2V) get_variable_defs 전체 대조
+            → Gray60 오기재(#96A0B5 표기 vs 실제 #99A3B8) 1건 발견·수정
+       2차: 2026-07-28, 클라우드MES 파일(F4n5Zr04PAbiRjfIFQAo6v) node 9873:81596 get_variable_defs 재대조
+            → 1차 값과 100% 일치, 추가 오차 없음
+     서로 다른 두 파일에서 각각 실측해 교차검증 완료된 값이므로 이 팔레트는 확정 상태로 취급한다.
+     이 3개 팔레트에 없는 색이 필요하면(예: Button opacityMain hover의 #D4EAFF — 팔레트 밖 hover 전용 임시값으로 확인됨)
+     임의로 팔레트에 편입시키지 말고 컴포넌트 코드에 arbitrary value로 남기고 출처를 주석에 남긴다. ── */
   /* Gray */
   --mes-gray-0: #ffffff;
   --mes-gray-10: #f8fafc;

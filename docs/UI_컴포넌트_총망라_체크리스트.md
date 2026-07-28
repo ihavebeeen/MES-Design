@@ -107,6 +107,8 @@
 | 110 | #21080A | |
 
 > **재확인 완료(2026-07-16, `get_variable_defs`로 팔레트 전체 대조)**: Gray/Primary/Danger 팔레트의 각 단계 hex값을 Figma 라이브 변수로 교차 검증한 결과, Gray 60(`#96A0B5`→`#99A3B8`, 위 표에 반영됨) 1건만 오기재였고 나머지는 전부 일치했다. Danger 외 System Color(Warning/Success)는 데스크탑 Foundation의 "System Color" 구역에 Danger 그룹만 존재하고 Warning/Success 그룹 자체가 없음을 확인 — 모바일 체크리스트엔 있는 값이므로, 데스크탑에도 만들지 여부와 값(모바일과 동일하게 갈지)은 디자인 결정이 필요하다(19번 섹션에 등록).
+>
+> **2차 재검증 완료(2026-07-28, 다른 파일에서 교차 대조) → 팔레트 확정(CONFIRMED)**: 컴포넌트 라이브러리 파일이 아닌 별도 파일인 클라우드MES(fileKey `F4n5Zr04PAbiRjfIFQAo6v`) node `9873:81596`의 `get_variable_defs`로 같은 팔레트를 다시 대조한 결과 위 표와 100% 일치, 추가 오차 없음. 서로 다른 두 파일에서 각각 실측해 일치를 확인했으므로 이 팔레트는 더 이상 열린 질문이 아니라 확정값으로 취급한다(코드 쪽 반영: `component-library/src/app/globals.css`). 단, 팔레트 밖의 개별 hover 임시색(예: Button `opacityMain` hover의 `#D4EAFF` — 담당자 확인 결과 팔레트 색이 아니라 hover용으로 별도로 넣은 값) 같은 예외는 팔레트에 편입시키지 않고 해당 컴포넌트 코드에 출처와 함께 개별 기록한다.
 
 ---
 
