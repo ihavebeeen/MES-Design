@@ -52,10 +52,13 @@ MES(생산관리시스템) 제품의 UI 컴포넌트 라이브러리를 Figma �
 
 기존에 이미 개발/배포된 MES 시스템이 있으며, 장기적으로는 이 신규 컴포넌트 라이브러리 기준으로 기존 화면을 리팩토링하는 것도 목표에 포함된다(현재 일정 미확정, 컴포넌트 라이브러리 완성이 선행 조건). 원자 단위 컴포넌트(버튼/뱃지/모달 등)는 화면별 매핑 불필요 — 교체 시 전 화면에 자동 반영됨. MES 특화 복합 패턴(화면 템플릿 등)만 화면 대응 기록이 의미 있음.
 
-## 현재 진행 상태 (최종 갱신: 2026-07-27)
+## 현재 진행 상태 (최종 갱신: 2026-07-28)
 
 - 데스크탑/모바일 컴포넌트 체크리스트 문서화 완료 (전수 재검증 완료)
 - 신규 컴포넌트 설계 SOP 문서화 완료
 - 주요 컴포넌트 기능 변형 심층 분석 완료
-- Figma `get_design_context` 실측 파일럿 완료 — 5개 패밀리 전체 커버 10개 컴포넌트(Button/Input Textbox/Selectbox/Badge/Center Modal/Toast/Page Top Tab Item/Sidebar(SNB)/Confirm Dialog/Table) 실측, 색상 팔레트(Gray/Primary/Danger) 전체 대조 완료. 핵심 발견: radius는 패밀리 단위 공용값이 없고 컴포넌트별(때로는 사이즈별)로 다름 — 자세한 내용은 `docs/신규_컴포넌트_설계_프로세스.md` Step C-1 참고
-- 실제 코드(컴포넌트 구현)는 아직 없음 — 다음 단계는 티어1 컴포넌트(40개)부터 코드화 시작, 파일럿에서 다루지 않은 나머지는 코드화 시점마다 개별 실측
+- Figma `get_design_context` 실측 파일럿 완료 — 5개 패밀리 전체 커버 10개 컴포넌트(Button/Input Textbox/Selectbox/Badge/Center Modal/Toast/Page Top Tab Item/Sidebar(SNB)/Confirm Dialog/Table) 실측
+- 색상 팔레트(Gray/Primary/Danger) 확정(CONFIRMED) — 서로 다른 두 Figma 파일에서 각각 재대조해 100% 일치 확인(2026-07-16, 2026-07-28)
+- 코드 스캐폴딩 완료(`component-library/`) — Next.js 16 + React 19 + TypeScript + Tailwind CSS v4, shadcn/ui 스타일 컨벤션(수동 구성, CLI는 네트워크 제약으로 미사용), Pretendard 폰트 자체 호스팅
+- Button 컴포넌트 완성 — 사이즈 3종(basic/small/xsmall) × 컬러 7종(fillMain/fillGray/fillBlack/fillRed/lineMain/lineBlacktxt/opacityMain) × 상태(Default/hover/disabled), 아이콘 옵션(startIcon/endIcon) 포함. Figma에 press 상태 자체가 없어 미구현
+- 나머지 9개 실측 완료 컴포넌트(Input Textbox/Selectbox/Badge/Center Modal/Toast/Confirm Dialog/Table/Page Top Tab Item/Sidebar)는 아직 코드 없음 — 다음 단계는 이 컴포넌트들 순차 코드화, 파일럿에서 다루지 않은 티어1 나머지는 코드화 시점마다 개별 실측
