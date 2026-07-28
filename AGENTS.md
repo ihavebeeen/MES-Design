@@ -88,5 +88,11 @@ npx eslint .            # 린트 검사
 - Input Textbox / Selectbox 완성 — Figma 정밀 실측(획 두께 포함), Selectbox는 Radix Select 기반 커스텀 드롭다운으로 구현
 - Combobox(검색 내장 셀렉트) 신규 완성 — Selectbox와 별도 컴포넌트로 분리(`combobox.tsx`, Radix Popover 기반). 선택 항목 hover 테두리 색은 미실측 임시값(Primary-40) 적용 중 — devtools 확인 필요(체크리스트 19번 섹션 참고)
 - Badge/Radio/Checkbox 완성 — 클라우드MES 파일 정밀실측(`badge.tsx`/`radio.tsx`/`checkbox.tsx`). Badge는 Figma 이름-색상 불일치 2건(orange=실제 gray, yellow=실제 blue) 발견해 실측값 그대로 반영, 원본 확인 필요(체크리스트 19번 섹션). Checkbox는 이전 체크리스트에 "없음"으로 잘못 기재돼 있었으나 실제로 존재함을 확인해 정정. Radio/Checkbox 둘 다 disabled+선택됨 조합은 Figma에 없어 판단값 처리
-- 남은 아톰: Chip/Tag, Progress Bar(둘 다 티어1, Figma "있음"이지만 아직 정밀실측 전)
-- 나머지 몰큘/오가니즘(Toast/Confirm Dialog/Table/Center Modal/Page Top Tab Item/Sidebar)은 아직 코드 없음 — 프로젝트 규칙상(토큰→아톰→몰큘→오가니즘 순) 남은 아톰부터 마저 끝내는 게 원칙
+- Progress Bar 완성(`progress.tsx`) — 트랙 Gray-40, 채움 Gray-100
+- 필터 전용 Tag(`filter-tag.tsx`, type1/type2)와 Filter 트리거+활성태그(`filter.tsx`) 완성 —
+  단, "필터 추가" 클릭 시 나오는 2단계 체크박스 플라이아웃 패널은 실측 범위 밖(정확한 노드
+  필요, 체크리스트 19번 섹션). 범용 다색 Chip/Tag(체크리스트 원문 "3색")는 별도 확인 필요
+- Select/Combobox 트리거에 꺾쇠 대신 커스텀 아이콘을 쓰는 variant 필요성 논의 중 — 아톰
+  마무리(Chip/Tag 범용판) 이후 진행 예정
+- 나머지 몰큘/오가니즘(Toast/Confirm Dialog/Table/Center Modal/Page Top Tab Item/Sidebar,
+  Filter 플라이아웃 패널)은 아직 코드 없음

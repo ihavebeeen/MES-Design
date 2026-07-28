@@ -15,6 +15,8 @@ import { Combobox } from "@/components/ui/combobox";
 import { Badge } from "@/components/ui/badge";
 import { Radio } from "@/components/ui/radio";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/progress";
+import { Filter } from "@/components/ui/filter";
 
 /**
  * 컴포넌트별 예시를 "행/열이 맞는 그리드 + 컴포넌트명·상태값 라벨 병기" 형태로 정리한
@@ -257,6 +259,36 @@ export default function Home() {
         </Sample>
         <Sample label="Checkbox · Disabled+Checked(판단값)">
           <Checkbox disabled defaultChecked />
+        </Sample>
+      </Section>
+
+      <Section title="Progress Bar">
+        <Sample label="Progress · 78%">
+          <Progress value={78} className="w-[160px]" />
+        </Sample>
+        <Sample label="Progress · 0%">
+          <Progress value={0} className="w-[160px]" />
+        </Sample>
+        <Sample label="Progress · 50%">
+          <Progress value={50} className="w-[160px]" />
+        </Sample>
+        <Sample label="Progress · 100%">
+          <Progress value={100} className="w-[160px]" />
+        </Sample>
+      </Section>
+
+      <Section title="Filter (필터 추가 트리거 + 활성 태그) — 플라이아웃 패널은 미구현">
+        <Sample label="Filter · btn-only(선택 없음)">
+          <Filter />
+        </Sample>
+        <Sample label="Filter · add-tag(type2 x2 + type1 x1)">
+          <Filter
+            tags={[
+              { category: "품목", value: "5" },
+              { category: "품목", value: "23" },
+              { category: "품목" },
+            ]}
+          />
         </Sample>
       </Section>
 
