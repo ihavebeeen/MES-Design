@@ -1,6 +1,67 @@
 @import "tailwindcss";
 
+/* ── Pretendard (로컬 폰트 파일, public/fonts) ──
+   Google Fonts 등 외부 CDN 접근이 막힌 환경에서도 동작하도록 자체 호스팅.
+   파일 출처: 사용자 제공(otf, 8종 굵기). */
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-ExtraLight.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-ExtraBold.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
+  --mes-font-sans: "Pretendard", Arial, Helvetica, sans-serif;
   --background: #ffffff;
   --foreground: #011327;
 
@@ -52,6 +113,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --font-sans: var(--mes-font-sans);
 
   /* MES 색상 토큰을 Tailwind 유틸리티로 노출 (예: bg-mes-primary-60, text-mes-gray-130) */
   --color-mes-gray-0: var(--mes-gray-0);
@@ -98,5 +160,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Pretendard", Arial, Helvetica, sans-serif;
+  font-family: var(--mes-font-sans);
 }
