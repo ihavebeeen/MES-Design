@@ -18,6 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Filter } from "@/components/ui/filter";
 import { Tag } from "@/components/ui/tag";
+import { SlidersHorizontal, X } from "lucide-react";
 import { FilterFlyout } from "@/components/ui/filter-flyout";
 
 /**
@@ -239,6 +240,17 @@ export default function Home() {
             </SelectContent>
           </Select>
         </Sample>
+        <Sample label="Select · 커스텀 아이콘(꺾쇠 대신)">
+          <Select>
+            <SelectTrigger className="w-[200px]" icon={<SlidersHorizontal className="size-3.5 shrink-0 opacity-80" />}>
+              <SelectValue placeholder="정렬 기준" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">최신순</SelectItem>
+              <SelectItem value="2">이름순</SelectItem>
+            </SelectContent>
+          </Select>
+        </Sample>
       </Section>
 
       <Section title="Badge (7종 — orange/yellow는 Figma 이름과 실제 색이 다름, 아래 라벨에 실제색 병기)">
@@ -341,13 +353,15 @@ export default function Home() {
       </Section>
 
       <Section title="Tag (범용 3색 — 실사용 빈도 낮음, Badge를 우선 사용)">
-        <Sample label="Tag · main">
-          <Tag color="main">태그 텍스트</Tag>
+        <Sample label="Tag · main · start+endIcon(실측 그대로)">
+          <Tag color="main" startIcon={<X className="size-3" />} endIcon={<X className="size-3" />}>
+            태그 텍스트
+          </Tag>
         </Sample>
-        <Sample label="Tag · gray">
-          <Tag color="gray">태그 텍스트</Tag>
+        <Sample label="Tag · gray · endIcon만(실사용 예시)">
+          <Tag color="gray" endIcon={<X className="size-3" />}>태그 텍스트</Tag>
         </Sample>
-        <Sample label="Tag · red">
+        <Sample label="Tag · red · 아이콘 없음">
           <Tag color="red">태그 텍스트</Tag>
         </Sample>
       </Section>
@@ -394,6 +408,15 @@ export default function Home() {
             options={shiftOptions}
             placeholder="내용 입력"
             disabled
+            className="w-[200px]"
+          />
+        </Sample>
+        <Sample label="Combobox · 커스텀 아이콘(꺾쇠 대신)">
+          <Combobox
+            options={shiftOptions}
+            placeholder="정렬 기준"
+            searchPlaceholder="검색"
+            icon={<SlidersHorizontal className="size-3.5 shrink-0 opacity-80" />}
             className="w-[200px]"
           />
         </Sample>

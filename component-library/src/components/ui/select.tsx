@@ -62,6 +62,10 @@ import { cn } from "@/lib/utils";
  * ── 6. Selectbox vs Combobox 구분 (2026-07-28 분리 완료) ────────
  * 실제 서비스엔 검색창이 내장된 콤보박스(`.searchable-select-dropdown`, 예: 근무조 선택)가 별도로
  * 있어 `combobox.tsx`로 분리 구현함. 이 파일(select.tsx)은 검색 없는 일반 Select 전용.
+ *
+ * ── 7. 트리거 아이콘 커스터마이징 (2026-07-28 추가) ──────────────
+ * 담당자 요청으로 트리거 우측 아이콘을 기본 꺾쇠(ChevronDown) 대신 다른 아이콘으로 바꿀 수
+ * 있도록 `icon` prop 추가. 예: 필터/설정 트리거처럼 꺾쇠가 아닌 고유 아이콘을 쓰는 경우.
  */
 
 const Select = SelectPrimitive.Root;
@@ -85,12 +89,15 @@ const selectTriggerVariants = cva(
 
 export interface SelectTriggerProps
   extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
-    VariantProps<typeof selectTriggerVariants> {}
+    VariantProps<typeof selectTriggerVariants> {
+  /** 트리거 우측 아이콘 — 기본값은 ChevronDown, 다른 아이콘으로 교체 가능 */
+  icon?: React.ReactNode;
+}
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   SelectTriggerProps
->(({ className, size, children, ...props }, ref) => (
+>(({ className, size, children, icon, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(selectTriggerVariants({ size, className }))}
@@ -98,7 +105,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className="size-3 shrink-0 opacity-80" />
+      {icon ?? <ChevronDown className="size-3 shrink-0 opacity-80" />}
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));

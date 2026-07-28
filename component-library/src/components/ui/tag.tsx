@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -20,12 +19,13 @@ import { cn } from "@/lib/utils";
  * - 높이 22px, radius 2px, 좌우 padding 8px/상하 3px, 요소 간 gap 4px
  * - 텍스트 Pretendard SemiBold 12px/line-height 150%/letter-spacing -0.15px, 흰색 고정
  * - fill-main: 배경 Primary-60 / fill-gray: 배경 Gray-90(#5C667B) / fill-red: 배경 Danger-60
- * - 닫기(X) 아이콘 12px, 흰색("Property 1=white" 컴포넌트, 설명: "close, 닫기")
  *
- * ── 특이사항(그대로 반영, 임의로 안 고침) ─────────────────────────
- * Figma 원본에 X 아이콘이 텍스트 앞뒤로 2개 있음(좌측 1개 + 우측 1개) — 일반적인 태그
- * UX 관례상 닫기 버튼은 보통 1개(우측)인 경우가 많아 편집 중 남은 중복으로 추정되지만,
- * 실측 그대로 앞뒤 2개 구조로 구현해둠. 좌측 X가 실수라면 알려주면 제거.
+ * ── 아이콘 슬롯(2026-07-28 담당자 정정) ────────────────────────
+ * Figma 원본엔 X(닫기) 아이콘이 텍스트 앞뒤로 2개 있었는데, 이건 실수/중복이 아니라
+ * "Button과 마찬가지로 앞에도 아이콘, 뒤에도 아이콘이 들어갈 수 있는 구조"라서였음 —
+ * 즉 Tag도 Button처럼 `startIcon`/`endIcon`을 각각 독립적으로 받는 범용 아이콘 슬롯
+ * 구조. 실측 인스턴스는 두 슬롯 모두에 X 아이콘을 넣어 쓴 예시였을 뿐, 닫기 전용이
+ * 아님 — button.tsx의 startIcon/endIcon 패턴과 동일하게 구현함.
  */
 
 export type TagColor = "main" | "gray" | "red";
@@ -36,15 +36,14 @@ const tagColorClasses: Record<TagColor, string> = {
   red: "bg-mes-danger-60",
 };
 
-export interface TagProps {
+export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   color?: TagColor;
-  children: React.ReactNode;
-  onRemove?: () => void;
-  className?: string;
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
 }
 
 const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
-  ({ color = "main", children, onRemove, className }, ref) => (
+  ({ color = "main", startIcon, endIcon, children, className, ...props }, ref) => (
     <span
       ref={ref}
       className={cn(
@@ -52,14 +51,11 @@ const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
         tagColorClasses[color],
         className
       )}
+      {...props}
     >
-      <button type="button" onClick={onRemove} aria-label="태그 삭제" className="shrink-0">
-        <X className="size-3" />
-      </button>
+      {startIcon}
       <span>{children}</span>
-      <button type="button" onClick={onRemove} aria-label="태그 삭제" className="shrink-0">
-        <X className="size-3" />
-      </button>
+      {endIcon}
     </span>
   )
 );

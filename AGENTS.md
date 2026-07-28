@@ -94,6 +94,8 @@ npx eslint .            # 린트 검사
 - Filter 플라이아웃(카테고리 목록 → 체크박스 서브목록 2단, `filter-flyout.tsx`) 완성 —
   Figma에 실측 가능한 노드가 없어 담당자 승인 하에 조립형으로 구현(정밀실측 아님, 명시적으로
   구분해서 기록). Select/Combobox 패널 스타일 관례 재사용
-- Select/Combobox 트리거에 꺾쇠 대신 커스텀 아이콘을 쓰는 variant 필요성 논의 중 — 다음 단계
+- Select/Combobox 트리거에 `icon` prop 추가 완료 — 기본 ChevronDown 대신 다른 아이콘으로 교체 가능
+- Tag(범용 3색)를 Button과 동일한 startIcon/endIcon 슬롯 구조로 재구현 — Figma에 X 아이콘이
+  앞뒤 2개 있던 건 중복 실수가 아니라 원래 이런 슬롯 구조였음을 담당자가 확인해줌
 - 나머지 몰큘/오가니즘(Toast/Confirm Dialog/Table/Center Modal/Page Top Tab Item/Sidebar)은
   아직 코드 없음

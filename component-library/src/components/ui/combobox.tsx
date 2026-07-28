@@ -57,6 +57,9 @@ import { selectTriggerVariants } from "./select";
  *   임시값으로 넣어둠(select.tsx와 동일 처리). devtools 실측값 확인되면 즉시 교체.
  *
  * 키보드 탐색(방향키 이동 등)은 1차 버전엔 미포함 — 클릭/검색만 지원. 필요하면 추후 추가.
+ *
+ * ── 트리거 아이콘 커스터마이징 (2026-07-28 추가) ────────────────
+ * select.tsx와 동일하게 `icon` prop 추가 — 기본 꺾쇠(ChevronDown) 대신 다른 아이콘으로 교체 가능.
  */
 
 export interface ComboboxOption {
@@ -75,6 +78,8 @@ export interface ComboboxProps {
   size?: "default" | "small";
   disabled?: boolean;
   className?: string;
+  /** 트리거 우측 아이콘 — 기본값은 ChevronDown, 다른 아이콘으로 교체 가능(2026-07-28 추가) */
+  icon?: React.ReactNode;
 }
 
 const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
@@ -90,6 +95,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       size = "default",
       disabled,
       className,
+      icon,
     },
     ref
   ) => {
@@ -140,7 +146,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             )}
           >
             <span className="line-clamp-1">{selected ? selected.label : placeholder}</span>
-            <ChevronDown className="size-3 shrink-0 opacity-80" />
+            {icon ?? <ChevronDown className="size-3 shrink-0 opacity-80" />}
           </button>
         </PopoverPrimitive.Trigger>
 
