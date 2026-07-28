@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { ChevronRight, Filter as FilterIcon, Search } from "lucide-react";
+import { ChevronRight, SlidersHorizontal, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "./checkbox";
 import { FilterTag } from "./filter-tag";
@@ -10,34 +10,32 @@ import { FilterTag } from "./filter-tag";
 /**
  * MES Filter (필터 추가 트리거 + 카테고리→체크박스 플라이아웃 + 활성 필터 태그) — 통합 구현
  *
- * 2026-07-28 담당자 피드백으로 트리거/플라이아웃/태그를 하나의 컴포넌트로 통합함(이전엔
- * filter.tsx=트리거+정적 태그, filter-flyout.tsx=플라이아웃 패널이 따로 분리돼 있어서
- * 데모에서 서로 안 이어지고 시각적으로 엮여 보이는 문제가 있었음).
+ * ── 1. 트리거 아이콘 (2026-07-28 담당자 지적으로 교체) ────────────
+ * node 9873:83762 하위 "mes/icon-filter"(9873:83765/83769)는 벡터 이미지라 SVG를 직접
+ * 못 받아왔었고, 처음엔 의미상 "필터"니까 lucide `Filter`(깔때기 모양) 아이콘으로 임의
+ * 대체했었음 — 담당자가 "내가 분명 노드를 줬는데 왜 네 맘대로 아이콘을 넣냐"고 지적.
+ * get_design_context로 받은 도형 좌표를 다시 분석해보니(Ellipse 3개가 각각 위/중간/아래
+ * 가로줄에서 서로 다른 좌우 위치에 있고, Vector 선분들이 그 사이를 잇는 구조) 이건 깔때기가
+ * 아니라 "가로선 3개 + 각 선 위의 조절점" 형태 — lucide `SlidersHorizontal`과 정확히 같은
+ * 구조. 실제 SVG 파일을 직접 못 받는 건 여전하지만(샌드박스에서 Figma 에셋 서버로 네트워크
+ * 요청이 막혀 있음), 임의 선택이 아니라 좌표 구조 분석 기반으로 아이콘을 다시 골랐음.
  *
- * ── 1. 트리거+태그 컨테이너(실측) ─────────────────────────────
- * 출처: node 9873:83762("fillter-group"). 배경 흰색, 테두리 1px Gray-30, radius 4px,
- * 높이 32px. "필터 추가" 버튼 구역은 활성 태그가 있을 때만 우측에 1px Gray-30 구분선.
+ * ── 2. 트리거+태그 레이아웃 (2026-07-28 담당자 지적: "여전히 개 길어") ────
+ * 기존엔 트리거 버튼과 활성 태그들이 테두리 하나를 공유하는 통짜 박스였는데, 담당자가
+ * "선택한 필터가 없으면 필터 추가 영역만 노출하고, 필터가 생기면 그 필터를 hug하는
+ * 좌우 패딩 5px짜리 흰 배경+회색 테두리 박스가 따로 있는 형태"로 명확히 지정함 — 트리거
+ * 박스와 태그 박스를 서로 다른 두 개의 독립된 박스로 분리(사이 간격은 실측 없음, 판단값
+ * gap-2). 태그가 없으면 태그 박스 자체가 렌더링되지 않아 트리거만 남음.
  *
- * ── 2. 플라이아웃 패널(조립형 — Figma에 실측 가능한 노드 없음, 담당자 승인) ────
- * 1단(카테고리 목록): 검색창 + 카테고리 행. 담당자 확인(2026-07-28, 실제 화면 스크린샷
- * 기준): **선택된 카테고리를 표시하는 좌측 점 같은 인디케이터는 없음** — 이전 구현에서
- * 넣었던 파란 점을 제거함. 카테고리 행은 라벨 + (하위 옵션 있으면) ChevronRight만 표시.
- * 2단(서브 옵션): 카테고리 클릭 시 1단 오른쪽에 나란히 열림, 자체 검색창 + 체크박스 목록.
+ * ── 3. 활성 필터 태그 표시 규칙 (2026-07-28 담당자 정책 결정) ────────
+ * 원래 Figma엔 1개 선택 시/2개 이상 선택 시를 구분하는 type1·type2가 있었으나, 실사용
+ * 확인 중 "전체보기" 문구가 실제 전체선택 여부와 무관해 혼란을 준다는 게 확인돼 폐지 —
+ * 이제 선택 개수와 무관하게 항상 "{카테고리} [선택개수]" 형태로 통일(filter-tag.tsx 참고).
+ * 태그의 X를 누르면 해당 카테고리 선택을 전부 해제.
  *
- * ── 3. 활성 필터 태그 자동 생성 규칙(2026-07-28 담당자 확인) ────────
- * 카테고리별로 선택된 옵션이 1개면 FilterTag를 type2(카운트 뱃지, 값="1")로, 2개 이상이면
- * type1("전체보기")으로 자동 표시. 태그의 X를 누르면 해당 카테고리 선택을 전부 해제.
- * (실제 화면 예시: "설비명" 하위에서 1개 체크 → "설비명 1" 태그가 트리거 옆에 표시됨)
- *
- * ── 4. 플라이아웃 패널 크기 축소(2026-07-28 담당자 지적: "필터 사이즈가 왤케 커") ───
- * 트리거(node 9873:83762)는 재확인 결과 이미 실측값과 정확히 일치해서 그대로 둠(변경 없음).
- * 문제는 조립형으로 만든 플라이아웃 패널 쪽이었음 — 처음 잡았던 카테고리 열 200px/옵션 열
- * 220px가 담당자가 보여준 실제 화면 스크린샷(그룹명/설비명 카테고리 목록, 좁은 열에 텍스트가
- * 잘려서 마우스 올리면 툴팁으로 전체 텍스트가 뜨는 형태) 대비 너무 넓었음 — 카테고리 열
- * 140px, 옵션 열 180px로 축소하고, 행 padding도 좁혀서(px-1.5 py-1) 더 조밀하게 만듦.
- * 긴 라벨은 truncate 처리하고 `title` 속성으로 네이티브 툴팁을 붙여 실제 화면의 "잘림+
- * 호버 툴팁" 동작을 재현함. 여전히 Figma에 이 패널 자체의 실측 가능한 노드는 없어서
- * 정확한 px 값이 아니라 화면 비율 기반 재조정(판단값)이라는 점은 동일함.
+ * ── 4. 플라이아웃 패널 크기(조립형, Figma에 실측 노드 없음) ────────
+ * 카테고리 열 140px, 옵션 열 180px, 그림자/테두리/radius는 Select·Combobox 패널 관례
+ * 재사용. 긴 라벨은 truncate + title 속성 네이티브 툴팁으로 처리.
  */
 
 export interface FilterOption {
@@ -113,12 +111,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
     .filter((c) => c.selected.length > 0);
 
   return (
-    <div
-      className={cn(
-        "inline-flex h-8 items-center rounded-[4px] border border-mes-gray-30 bg-white",
-        className
-      )}
-    >
+    <div className={cn("inline-flex items-center gap-2", className)}>
       <PopoverPrimitive.Root
         open={open}
         onOpenChange={(next) => {
@@ -133,12 +126,9 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
         <PopoverPrimitive.Trigger asChild>
           <button
             type="button"
-            className={cn(
-              "flex h-full shrink-0 items-center gap-[6px] px-3 text-[14px] font-medium text-mes-gray-130",
-              activeTags.length > 0 && "border-r border-mes-gray-30"
-            )}
+            className="flex h-8 items-center gap-[6px] rounded-[4px] border border-mes-gray-30 bg-white px-3 text-[14px] font-medium text-mes-gray-130"
           >
-            <FilterIcon className="size-4" />
+            <SlidersHorizontal className="size-4" />
             필터 추가
           </button>
         </PopoverPrimitive.Trigger>
@@ -209,12 +199,12 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
       </PopoverPrimitive.Root>
 
       {activeTags.length > 0 && (
-        <div className="flex h-full shrink-0 items-center gap-[5px] px-[5px]">
+        <div className="flex h-8 items-center gap-[5px] rounded-[4px] border border-mes-gray-30 bg-white px-[5px]">
           {activeTags.map(({ category, selected }) => (
             <FilterTag
               key={category.id}
               category={category.label}
-              value={selected.length === 1 ? String(selected.length) : undefined}
+              count={selected.length}
               onRemove={() => onChange(category.id, [])}
             />
           ))}

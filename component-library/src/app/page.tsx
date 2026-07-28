@@ -333,10 +333,10 @@ export default function Home() {
           Filter (트리거 + 플라이아웃 + 활성 태그, 통합 컴포넌트)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          &ldquo;필터 추가&rdquo; 클릭 → 카테고리 선택 → 체크박스 선택 → 트리거 옆에 태그
-          자동 표시(1개 선택 시 개수 뱃지, 2개 이상이면 &ldquo;전체보기&rdquo;) → 태그의
-          X로 선택 해제. 좁은 그리드에서 팝업이 옆 카드와 겹쳐 보이는 문제 때문에 이
-          컴포넌트만 별도 넓은 영역에 배치함.
+          &ldquo;필터 추가&rdquo; 클릭 → 카테고리 선택 → 체크박스 선택 → 트리거 옆에
+          선택 개수가 적힌 태그가 자동 표시(예: &ldquo;그룹명 2&rdquo;) → 태그의 X로
+          선택 해제. 선택된 필터가 없으면 트리거 박스만 노출되고, 있으면 그 태그들을
+          hug하는 별도의 흰색/회색 테두리 박스가 옆에 나타남.
         </p>
         <Filter
           categories={filterCategories}
