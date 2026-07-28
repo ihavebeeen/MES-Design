@@ -20,12 +20,14 @@ import { FilterTag } from "./filter-tag";
  * 구조. 실제 SVG 파일을 직접 못 받는 건 여전하지만(샌드박스에서 Figma 에셋 서버로 네트워크
  * 요청이 막혀 있음), 임의 선택이 아니라 좌표 구조 분석 기반으로 아이콘을 다시 골랐음.
  *
- * ── 2. 트리거+태그 레이아웃 (2026-07-28 담당자 지적: "여전히 개 길어") ────
- * 기존엔 트리거 버튼과 활성 태그들이 테두리 하나를 공유하는 통짜 박스였는데, 담당자가
+ * ── 2. 트리거+태그 레이아웃 (2026-07-28 담당자 지적 2건 반영) ────
+ * 기존엔 트리거 버튼과 활성 태그들이 테두리 하나를 공유하는 통짜 박스였는데, 1차로
  * "선택한 필터가 없으면 필터 추가 영역만 노출하고, 필터가 생기면 그 필터를 hug하는
- * 좌우 패딩 5px짜리 흰 배경+회색 테두리 박스가 따로 있는 형태"로 명확히 지정함 — 트리거
- * 박스와 태그 박스를 서로 다른 두 개의 독립된 박스로 분리(사이 간격은 실측 없음, 판단값
- * gap-2). 태그가 없으면 태그 박스 자체가 렌더링되지 않아 트리거만 남음.
+ * 좌우 패딩 5px짜리 흰 배경+회색 테두리 박스가 따로 있는 형태"로 분리 지시받아 두 개의
+ * 독립된 박스(트리거 박스 / 태그 박스)로 나눔. 이후 2차로 "두 박스 사이에 왜 간격이
+ * 있냐, 붙여야지"라는 지적을 받아 간격(gap)을 없애고 두 박스가 서로 맞닿도록 수정함
+ * — 별도 박스이되 시각적으로는 하나처럼 딱 붙어 보이는 상태. 태그가 없으면 태그 박스
+ * 자체가 렌더링되지 않아 트리거만 남음.
  *
  * ── 3. 활성 필터 태그 표시 규칙 (2026-07-28 담당자 정책 결정) ────────
  * 원래 Figma엔 1개 선택 시/2개 이상 선택 시를 구분하는 type1·type2가 있었으나, 실사용
@@ -111,7 +113,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
     .filter((c) => c.selected.length > 0);
 
   return (
-    <div className={cn("inline-flex items-center gap-2", className)}>
+    <div className={cn("inline-flex items-center", className)}>
       <PopoverPrimitive.Root
         open={open}
         onOpenChange={(next) => {
@@ -126,7 +128,10 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
         <PopoverPrimitive.Trigger asChild>
           <button
             type="button"
-            className="flex h-8 items-center gap-[6px] rounded-[4px] border border-mes-gray-30 bg-white px-3 text-[14px] font-medium text-mes-gray-130"
+            className={cn(
+              "flex h-8 items-center gap-[6px] border border-mes-gray-30 bg-white px-3 text-[14px] font-medium text-mes-gray-130",
+              activeTags.length > 0 ? "rounded-l-[4px]" : "rounded-[4px]"
+            )}
           >
             <SlidersHorizontal className="size-4" />
             필터 추가
@@ -199,7 +204,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
       </PopoverPrimitive.Root>
 
       {activeTags.length > 0 && (
-        <div className="flex h-8 items-center gap-[5px] rounded-[4px] border border-mes-gray-30 bg-white px-[5px]">
+        <div className="flex h-8 items-center gap-[5px] rounded-r-[4px] border border-l-0 border-mes-gray-30 bg-white px-[5px]">
           {activeTags.map(({ category, selected }) => (
             <FilterTag
               key={category.id}
