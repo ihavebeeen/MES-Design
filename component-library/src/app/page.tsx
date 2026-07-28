@@ -1,7 +1,13 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function Home() {
   return (
@@ -66,19 +72,39 @@ export default function Home() {
       </div>
 
       <div className="flex items-center gap-3">
-        <Select className="w-[220px]">
-          <option value="">내용 입력</option>
-          <option value="1">옵션 1</option>
+        <Select>
+          <SelectTrigger className="w-[220px]">
+            <SelectValue placeholder="내용 입력" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1">옵션 1</SelectItem>
+            <SelectItem value="2">옵션 2</SelectItem>
+          </SelectContent>
         </Select>
-        <Select defaultValue="1" className="w-[220px]">
-          <option value="1">내용</option>
-          <option value="2">옵션 2</option>
+        <Select defaultValue="1">
+          <SelectTrigger className="w-[220px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1">내용</SelectItem>
+            <SelectItem value="2">옵션 2</SelectItem>
+          </SelectContent>
         </Select>
-        <Select disabled className="w-[220px]">
-          <option value="">내용 입력</option>
+        <Select disabled>
+          <SelectTrigger className="w-[220px]">
+            <SelectValue placeholder="내용 입력" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1">옵션 1</SelectItem>
+          </SelectContent>
         </Select>
-        <Select size="small" className="w-[220px]">
-          <option value="">내용 입력</option>
+        <Select>
+          <SelectTrigger size="small" className="w-[220px]">
+            <SelectValue placeholder="내용 입력" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1">옵션 1</SelectItem>
+          </SelectContent>
         </Select>
       </div>
     </div>

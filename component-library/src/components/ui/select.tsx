@@ -1,33 +1,47 @@
+"use client";
+
 import * as React from "react";
-import { ChevronDown } from "lucide-react";
+import * as SelectPrimitive from "@radix-ui/react-select";
+import { Check, ChevronDown } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /**
- * MES Select (Selectbox) — Figma 실측 기반
- * 출처: 클라우드MES 파일(fileKey F4n5Zr04PAbiRjfIFQAo6v) node 9873:82969 하위,
- * size=Default/small × status=Default(9873:83021)/focus(9873:83032)/입력완료(9873:83035), small Default(9873:83038)/입력완료(9873:83041)
- * Input(input.tsx)과 배경·테두리·글자색·radius·padding이 전부 동일 — 담당자 확인, 같은 위계 컴포넌트.
- * 차이는 우측 화살표 아이콘(12px, Figma "mes/icon-arrow") 하나뿐.
+ * MES Select (Selectbox) — Figma 실측 기반, Radix Select로 구현(네이티브 select에서 교체)
  *
- * 사이즈:
- * - default: height 32px, 텍스트 좌측 padding 10px, 텍스트-아이콘 gap 10px, 아이콘 12px, 우측 padding 10px, radius 4px, 폰트 14px
- * - small: height 22px, 좌측 padding 6px, gap/아이콘 크기는 동일(10px/12px), 우측 padding 6px, radius 3px, 폰트 13px
+ * 트리거 박스 — 출처: 클라우드MES 파일(F4n5Zr04PAbiRjfIFQAo6v) node 9873:82969 하위
+ * (9873:83021/83032/83035/83038/83041). Input(input.tsx)과 배경·테두리·글자색·radius·padding 동일 — 같은 위계.
+ * - default: height 32px, 좌우 padding 10px, radius 4px, 폰트 14px
+ * - small: height 22px, 좌우 padding 6px, radius 3px, 폰트 13px
+ * - focus 상태 테두리는 Input과 같은 패턴(#011327/gray130)이 아니라 열림 상태(data-[state=open])에도 동일하게 적용
+ * - Figma에 selectbox의 readonly/disable 상태가 없어 disable만 표준 동작으로 최소 처리, readonly는 미구현
  *
- * Figma에는 selectbox의 readonly/disable 상태가 없음(디자인 자체에 없는 것으로 확인 — 재발 방지 규칙에 따라 Input 값을 유추해서
- * 채우지 않고, disabled만 HTML 표준 disabled 동작으로 최소 처리해둠. readonly는 구현 안 함).
+ * 펼침 목록 패널 — 출처: node 20140:101510 하위(20140:101474) 실측 + 담당자 제공 실측값(2026-07-28):
+ * - 테두리 1px, 색 #E4E7EE(gray30)
+ * - 내부 패딩 8px
+ * - 그림자: 담당자가 실제 서비스 devtools에서 확인해 준 값 `.searchable-select-dropdown { box-shadow: 0 2px 8px rgba(0,0,0,.12) }` 사용
+ *   (Figma 쪽엔 이 컴포넌트가 없어서 담당자가 대충 잡아둔 값(0 4px 20px rgba(0,0,0,.10))이 있었으나,
+ *   실제 서비스에 이미 적용 중인 값이 있어 그쪽을 채택함 — 이견 있으면 알려주면 바로 교체)
+ * - 항목 간격(row pitch) 30px(패널 실측), 폰트 Pretendard Regular 13px/line-height 150%, 텍스트 색 gray130
  *
- * 구현 방식: 네이티브 <select>를 appearance-none으로 스타일링 + 아이콘은 절대배치 오버레이.
- * 네이티브 select라 브라우저 기본 접근성/키보드 동작은 그대로 유지되지만, 드롭다운 목록 자체 디자인은 OS 기본값을 따름
- * — Figma의 커스텀 리스트 디자인까지 재현하려면 추후 Radix Select 등으로 교체가 필요함(TODO, 아직 미실측).
+ * 판단해서 채운 값(미실측, 담당자가 "이외엔 판단해서 채워달라"고 확인함— 정확한 값 나오면 교체 필요):
+ * - 패널 radius: 8px
+ * - 항목 hover 배경: gray20(다른 컴포넌트의 "옅은 강조" 패턴과 동일하게 맞춤)
+ * - 항목 좌우 padding: 패널 패딩(8px)만 적용, 항목 자체엔 추가 padding 없음(실측 좌측 오프셋 9px와 거의 일치)
+ * - 선택 항목 체크 아이콘: Radix 표준 패턴으로 추가(스크린샷엔 없었지만 접근성/사용성상 넣음)
  */
-const selectVariants = cva(
-  "w-full appearance-none bg-white border border-mes-gray-30 text-mes-gray-130 outline-none transition-colors focus:border-mes-gray-130 disabled:cursor-not-allowed disabled:border-mes-gray-30 disabled:bg-mes-gray-30 disabled:text-mes-gray-70",
+
+const Select = SelectPrimitive.Root;
+const SelectGroup = SelectPrimitive.Group;
+const SelectValue = SelectPrimitive.Value;
+
+const selectTriggerVariants = cva(
+  "flex w-full items-center justify-between gap-2.5 bg-white border border-mes-gray-30 text-mes-gray-130 outline-none transition-colors data-[placeholder]:text-mes-gray-60 data-[state=open]:border-mes-gray-130 disabled:cursor-not-allowed disabled:border-mes-gray-30 disabled:bg-mes-gray-30 disabled:text-mes-gray-70 [&>span]:line-clamp-1",
   {
     variants: {
       size: {
-        default: "h-8 pl-[10px] pr-8 rounded-[4px] text-[14px]",
-        small: "h-[22px] pl-[6px] pr-7 rounded-[3px] text-[13px]",
+        default: "h-8 px-[10px] rounded-[4px] text-[14px]",
+        small: "h-[22px] px-[6px] rounded-[3px] text-[13px]",
       },
     },
     defaultVariants: {
@@ -36,31 +50,82 @@ const selectVariants = cva(
   }
 );
 
-export interface SelectProps
-  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "size">,
-    VariantProps<typeof selectVariants> {}
+export interface SelectTriggerProps
+  extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
+    VariantProps<typeof selectTriggerVariants> {}
 
-const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, size, children, ...props }, ref) => {
-    return (
-      <div className="relative w-full">
-        <select
-          className={cn(selectVariants({ size, className }))}
-          ref={ref}
-          {...props}
-        >
-          {children}
-        </select>
-        <ChevronDown
-          className={cn(
-            "pointer-events-none absolute top-1/2 size-3 -translate-y-1/2 text-current",
-            size === "small" ? "right-[6px]" : "right-[10px]"
-          )}
-        />
-      </div>
-    );
-  }
-);
-Select.displayName = "Select";
+const SelectTrigger = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Trigger>,
+  SelectTriggerProps
+>(({ className, size, children, ...props }, ref) => (
+  <SelectPrimitive.Trigger
+    ref={ref}
+    className={cn(selectTriggerVariants({ size, className }))}
+    {...props}
+  >
+    {children}
+    <SelectPrimitive.Icon asChild>
+      <ChevronDown className="size-3 shrink-0 opacity-80" />
+    </SelectPrimitive.Icon>
+  </SelectPrimitive.Trigger>
+));
+SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
-export { Select, selectVariants };
+const SelectContent = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
+>(({ className, children, position = "popper", ...props }, ref) => (
+  <SelectPrimitive.Portal>
+    <SelectPrimitive.Content
+      ref={ref}
+      position={position}
+      className={cn(
+        "relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-hidden rounded-[8px] border border-mes-gray-30 bg-white p-2 text-mes-gray-130 shadow-[0_2px_8px_rgba(0,0,0,0.12)]",
+        position === "popper" &&
+          "data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1",
+        className
+      )}
+      {...props}
+    >
+      <SelectPrimitive.Viewport
+        className={cn(
+          position === "popper" &&
+            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+        )}
+      >
+        {children}
+      </SelectPrimitive.Viewport>
+    </SelectPrimitive.Content>
+  </SelectPrimitive.Portal>
+));
+SelectContent.displayName = SelectPrimitive.Content.displayName;
+
+const SelectItem = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Item
+    ref={ref}
+    className={cn(
+      "relative flex w-full cursor-default select-none items-center py-[5px] pr-6 text-[13px] leading-[1.5] outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus:bg-mes-gray-20",
+      className
+    )}
+    {...props}
+  >
+    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    <SelectPrimitive.ItemIndicator className="absolute right-0 flex items-center">
+      <Check className="size-3.5" />
+    </SelectPrimitive.ItemIndicator>
+  </SelectPrimitive.Item>
+));
+SelectItem.displayName = SelectPrimitive.Item.displayName;
+
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  selectTriggerVariants,
+};
