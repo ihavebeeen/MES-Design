@@ -12,6 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Combobox } from "@/components/ui/combobox";
+import { Badge } from "@/components/ui/badge";
+import { Radio } from "@/components/ui/radio";
+import { Checkbox } from "@/components/ui/checkbox";
 
 /**
  * 컴포넌트별 예시를 "행/열이 맞는 그리드 + 컴포넌트명·상태값 라벨 병기" 형태로 정리한
@@ -194,6 +197,66 @@ export default function Home() {
               <SelectItem value="1">옵션 1</SelectItem>
             </SelectContent>
           </Select>
+        </Sample>
+      </Section>
+
+      <Section title="Badge (7종 — orange/yellow는 Figma 이름과 실제 색이 다름, 아래 라벨에 실제색 병기)">
+        <Sample label="Badge · blue">
+          <Badge variant="blue">출하중</Badge>
+        </Sample>
+        <Sample label="Badge · red">
+          <Badge variant="red">취소요청</Badge>
+        </Sample>
+        <Sample label="Badge · orange(실제=gray)">
+          <Badge variant="orange">대기</Badge>
+        </Sample>
+        <Sample label="Badge · yellow(실제=blue, Figma 오류 추정)">
+          <Badge variant="yellow">승인중</Badge>
+        </Sample>
+        <Sample label="Badge · gray(배경 없음)">
+          <Badge variant="gray">완료</Badge>
+        </Sample>
+        <Sample label="Badge · variant6(용도 미확인)">
+          <Badge variant="variant6">완료</Badge>
+        </Sample>
+        <Sample label="Badge · variant7(용도 미확인)">
+          <Badge variant="variant7">완료</Badge>
+        </Sample>
+      </Section>
+
+      <Section title="Radio">
+        <Sample label="Radio · Unselected">
+          <Radio name="demo-radio-unsel" />
+        </Sample>
+        <Sample label="Radio · Selected">
+          <Radio name="demo-radio-sel" defaultChecked />
+        </Sample>
+        <Sample label="Radio · Disabled(선택 안 됨)">
+          <Radio name="demo-radio-disabled-off" disabled />
+        </Sample>
+        <Sample label="Radio · Disabled(선택됨, Figma에 없어 판단값)">
+          <Radio name="demo-radio-disabled-on" disabled defaultChecked />
+        </Sample>
+      </Section>
+
+      <Section title="Checkbox (Figma에 disabled 상태 자체가 없음 — 판단값으로 구현)">
+        <Sample label="Checkbox · Unchecked">
+          <Checkbox />
+        </Sample>
+        <Sample label="Checkbox · Checked · main">
+          <Checkbox defaultChecked color="main" />
+        </Sample>
+        <Sample label="Checkbox · Checked · gray">
+          <Checkbox defaultChecked color="gray" />
+        </Sample>
+        <Sample label="Checkbox · Checked · black">
+          <Checkbox defaultChecked color="black" />
+        </Sample>
+        <Sample label="Checkbox · Disabled(판단값)">
+          <Checkbox disabled />
+        </Sample>
+        <Sample label="Checkbox · Disabled+Checked(판단값)">
+          <Checkbox disabled defaultChecked />
         </Sample>
       </Section>
 

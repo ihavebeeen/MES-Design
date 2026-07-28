@@ -128,8 +128,8 @@
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Checkbox | 체크박스 | 아톰 | 없음 | 2 | |
-| Radio Button | 라디오버튼 | 아톰 | 있음 | 1 | Figma "MES Design System" Direction 섹션 확인 |
+| Checkbox | 체크박스 | 아톰 | 있음 | 1 | 2026-07-28 재확인: 클라우드MES 파일(F4n5Zr04PAbiRjfIFQAo6v) node 9873:82462에 실제로 존재함(이전에 "없음"으로 기재됐던 건 이 파일을 확인 안 했던 것) — 코드화 완료(`checkbox.tsx`). 단, disabled 상태는 Figma에 없어 판단값으로 구현 |
+| Radio Button | 라디오버튼 | 아톰 | 있음 | 1 | Figma "MES Design System" Direction 섹션 확인. 2026-07-28 클라우드MES 파일 node 9873:82508 기준 정밀실측 후 코드화 완료(`radio.tsx`) |
 | Switch / Toggle | 온오프 스위치 | 아톰 | 없음 | 2 | |
 | Segmented Control | 세그먼트형 선택 컨트롤 | 몰큘 | 없음 | 4 | |
 | Slider (Range) | 범위 슬라이더 | 아톰 | 없음 | 3 | 수치 필터 범위 지정 등에 활용 가능 |
@@ -182,7 +182,7 @@
 | Card | 카드 | 몰큘 | 없음 | 2 | |
 | Avatar | 프로필 이미지 | 아톰 | 없음 | 4 | |
 | Avatar Group | 아바타 겹침 그룹 | 몰큘 | 없음 | 5 | |
-| Badge | 상태/개수 배지 | 아톰 | 있음 | 1 | Default/Primary/Danger 3종 |
+| Badge | 상태/개수 배지 | 아톰 | 있음 | 1 | 2026-07-28 클라우드MES 파일 node 13687:33504 기준 정밀실측 후 코드화 완료(`badge.tsx`, 7종). orange/yellow는 Figma 컴포넌트 이름과 실제 색상이 다름(각각 실제로는 gray/blue) — 원본 오류 추정, 확인 필요(19번 섹션 참고) |
 | Chip / Tag | 태그·라벨 | 아톰 | 있음 | 1 | 3색 + 제거가능형 + MES 상태배지 |
 | Tooltip | 말풍선 설명 | 아톰 | 없음 | 2 | |
 | Progress Bar | 진행률 막대 | 아톰 | 있음 | 1 | 90%/50%/0% 상태 확인 |
@@ -540,3 +540,6 @@ Select와 같은 방식으로, 티어 1~2 항목을 하나씩 골라 `component.
 | Radius/Spacing 로컬 변수 vs FMS Make Metrics | 0번 섹션 | 실제 컴포넌트는 로컬 변수(`radius/small1`, `padding/1`, `padding/3`)를 쓰는데, `search_design_system`에는 이름이 다른 별도 컬렉션("FMS Make Metrics": radius/sm·md·lg, "gray-900" 등)이 잡힘 — 후자가 미사용 보일러플레이트인지 확인 필요 |
 | Radius 사이즈별 연동 여부 | 전체 | **"공용 규칙 없음"으로 결론 확정**(10개 컴포넌트 실측 완료 — Button/Input/Selectbox/Badge/Center Modal/Toast/Tab Item/Sidebar/Confirm Dialog/Table). Input·Selectbox는 사이즈 연동(4px→3px), Button은 고정(4px), Sidebar는 한 컴포넌트 안에서만 4종(4/8/2/111px) 공존. 열려있는 질문이 아니라 **확정된 방법론**: 티어1 나머지 ~30개 컴포넌트를 코드화할 때마다 매번 개별 실측 필수(패밀리·기존 실측값으로 유추 금지). 자세한 근거는 [신규 컴포넌트 설계 프로세스 Step C-1](./신규_컴포넌트_설계_프로세스.md) 참고 |
 | ~~Selectbox / Combobox(검색 가능한 셀렉트) 구분 필요~~ → **분리 완료** | 3번 섹션(입력·폼) | 2026-07-28 코드화 중 발견 → 같은 날 분리 완료: 실제 서비스엔 검색창이 내장된 콤보박스(클래스명 `.searchable-select-dropdown`, 예: 근무조 선택)가 있어 일반 Selectbox와 별도 컴포넌트(`combobox.tsx`, Radix Popover 기반)로 분리 구현함. 트리거 박스는 Selectbox와 동일 규격 재사용, 검색창은 node `20140:101487` 실측, 목록 패널은 Selectbox 패널과 동일 스타일 공유. 선택 항목 배경 `#E8F0FE`(확인됨) 적용. **남은 TODO**: 선택 항목 hover 테두리 색 — `#E8F0FE`가 확정 Primary 팔레트 11단계 중 어느 값과도 정확히 일치하지 않아(Primary-20 `#E8F5FF`와 가장 근접하나 다른 값) "배경보다 1~2단계 진하게"라는 담당자 가설을 실측 없이 확정할 수 없었음 — 우선 Primary-40(`#7BBBFF`)을 임시값으로 넣어둠, devtools 실측값 나오면 select.tsx·combobox.tsx 양쪽 다 교체 필요 |
+| **Badge "orange"/"yellow" 이름-색상 불일치** | 4번 섹션(피드백/상태) | 2026-07-28 정밀실측 중 발견: Figma 컴포넌트 property 이름이 "ORANGE"인데 실제 배경색은 회색(Gray-40), "YELLOW"인데 실제 배경색은 파랑(Primary-60, BLUE variant와 완전히 동일)임. 원본 Figma 자체의 배경색 지정 누락/오류로 추정 — 임의로 노란색·주황색을 지어내지 않고 실측된 그대로(`badge.tsx`에 orange=gray, yellow=blue로) 구현해둠. 디자이너가 원본을 고칠지, 아니면 이름만 바꿀지 확인 필요 |
+| **Badge variant6/variant7 용도 불명확** | 4번 섹션(피드백/상태) | 두 property 모두 Figma에서 이름이 지어지지 않은 채(자동생성명) 남아있고, 둘 다 텍스트는 "완료"로 동일한데 스타일만 다름(연한 배경형 vs 흰바탕 테두리형). 상태 구분용인지 디자인 시안 정리 중 남은 잔여물인지 확인 필요 |
+| **Checkbox/Radio "disabled + 선택됨" 조합 미정의** | 3번 섹션(입력·폼) | Radio는 Figma에 disable property가 있지만 선택 안 된 상태 기준으로만 있고, 선택됨+비활성 조합은 없음. Checkbox는 Figma에 disabled 상태 자체가 아예 없음(3색 checked + unchecked만 있음). 두 컴포넌트 모두 disabled+checked 조합 스타일을 판단값으로 채워둠(`radio.tsx`/`checkbox.tsx` 주석 참고) — 정확한 디자인 나오면 교체 필요 |

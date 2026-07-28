@@ -87,4 +87,6 @@ npx eslint .            # 린트 검사
 - Button 컴포넌트 완성 — 사이즈 3종 × 컬러 7종 × 상태(Default/hover/disabled), 아이콘 옵션 포함
 - Input Textbox / Selectbox 완성 — Figma 정밀 실측(획 두께 포함), Selectbox는 Radix Select 기반 커스텀 드롭다운으로 구현
 - Combobox(검색 내장 셀렉트) 신규 완성 — Selectbox와 별도 컴포넌트로 분리(`combobox.tsx`, Radix Popover 기반). 선택 항목 hover 테두리 색은 미실측 임시값(Primary-40) 적용 중 — devtools 확인 필요(체크리스트 19번 섹션 참고)
-- 나머지 7개 실측 완료 컴포넌트(Badge/Center Modal/Toast/Confirm Dialog/Table/Page Top Tab Item/Sidebar)는 아직 코드 없음 — 다음 단계는 이 컴포넌트들 순차 코드화
+- Badge/Radio/Checkbox 완성 — 클라우드MES 파일 정밀실측(`badge.tsx`/`radio.tsx`/`checkbox.tsx`). Badge는 Figma 이름-색상 불일치 2건(orange=실제 gray, yellow=실제 blue) 발견해 실측값 그대로 반영, 원본 확인 필요(체크리스트 19번 섹션). Checkbox는 이전 체크리스트에 "없음"으로 잘못 기재돼 있었으나 실제로 존재함을 확인해 정정. Radio/Checkbox 둘 다 disabled+선택됨 조합은 Figma에 없어 판단값 처리
+- 남은 아톰: Chip/Tag, Progress Bar(둘 다 티어1, Figma "있음"이지만 아직 정밀실측 전)
+- 나머지 몰큘/오가니즘(Toast/Confirm Dialog/Table/Center Modal/Page Top Tab Item/Sidebar)은 아직 코드 없음 — 프로젝트 규칙상(토큰→아톰→몰큘→오가니즘 순) 남은 아톰부터 마저 끝내는 게 원칙
