@@ -30,6 +30,29 @@ export default function Home() {
           아이콘 양쪽
         </Button>
       </div>
+      <div className="flex items-center gap-4">
+        <Button size="basic" variant="fillMain">
+          fillMain
+        </Button>
+        <Button size="basic" variant="fillGray">
+          fillGray
+        </Button>
+        <Button size="basic" variant="fillBlack">
+          fillBlack
+        </Button>
+        <Button size="basic" variant="fillRed">
+          fillRed
+        </Button>
+        <Button size="basic" variant="lineMain">
+          lineMain
+        </Button>
+        <Button size="basic" variant="lineBlacktxt">
+          lineBlacktxt
+        </Button>
+        <Button size="basic" variant="opacityMain">
+          opacityMain
+        </Button>
+      </div>
     </div>
   );
 }

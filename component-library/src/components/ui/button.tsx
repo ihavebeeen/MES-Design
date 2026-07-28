@@ -5,29 +5,45 @@ import { cn } from "@/lib/utils";
 
 /**
  * MES Button — Figma 실측 기반
- * 출처: 컴포넌트 라이브러리 파일 fill-main(163:8435/163:8345) + 클라우드MES 파일 실제 매트릭스(9873:83097 하위)
+ * 출처: 컴포넌트 라이브러리 파일 fill-main(163:8435/163:8345) + 클라우드MES 파일 전체 컬러 매트릭스(9873:83097 하위, fileKey F4n5Zr04PAbiRjfIFQAo6v)
+ * variant 이름은 Figma의 type= 값을 그대로 camelCase로 옮김 — 대응 관계 추적 쉽게 하려는 목적, 임의로 이름 바꾸지 않음.
  *
- * 현재 구현된 값:
- * - size=basic: radius 4px, height 40px(hug), 좌우 padding 16px, 폰트 Pretendard SemiBold 15px/line-height 150%
- * - size=small: radius 4px, height 32px(hug), 좌우 padding 10px, 폰트 Pretendard SemiBold 14px/line-height 150%
- * - size=xsmall: radius 2px(담당자 확인 완료 — basic/small의 4px과 다름), height 22px(hug), 좌우 padding 8px, 폰트 Pretendard SemiBold 12px/line-height 150%
- * - color=primary(fill-main): bg #1573FB(mes-primary-60), text #FFFFFF, hover bg #0958D9(mes-primary-70)
- * - disabled: bg #D7DCE5(mes-gray-40), text #99A3B8(mes-gray-60) — 오파시티 처리 아님, 실제 배경·글자색이 바뀜
- *   (2026-07-28, 클라우드MES 파일 node 9873:83198에서 실측 확인)
- * - 버튼 너비는 hug(내용에 맞춰 자동, 고정값 없음) — inline-flex + 너비 미지정으로 이미 충족
- * - 아이콘: Figma에서도 별도 variant/property가 아니라 인스턴스별로 아이콘 레이어를 지우거나 남기는 방식이라고 확인함
- *   (담당자 확인, 2026-07-28) → 코드에서도 고정 아이콘을 넣지 않고 startIcon/endIcon prop으로 필요할 때만 넘기는 방식으로 구현
+ * 사이즈(size):
+ * - basic: radius 4px, height 40px(hug), 좌우 padding 16px, 폰트 Pretendard SemiBold 15px/line-height 150%
+ * - small: radius 4px, height 32px(hug), 좌우 padding 10px, 폰트 Pretendard SemiBold 14px/line-height 150%
+ * - xsmall: radius 2px(담당자 확인 완료 — basic/small의 4px과 다름), height 22px(hug), 좌우 padding 8px, 폰트 Pretendard SemiBold 12px/line-height 150%
+ * 버튼 너비는 hug(내용에 맞춰 자동, 고정값 없음) — inline-flex + 너비 미지정으로 이미 충족.
  *
- * TODO(미실측): fill-gray/fill-black/fill-red/line-main/line-blacktxt/opacity-main 등 나머지 7개 color type,
- * hover 외 press 상태, 각 사이즈별 아이콘 실제 크기. 클라우드MES 파일 9873:83097 하위에 전체 매트릭스 노드가 있음 —
- * 재발 방지 규칙에 따라 필요해질 때 개별 노드ID로 실측 후 추가한다.
+ * 컬러(variant) — 전부 클라우드MES 파일 size=basic 기준 노드로 실측, Default/hover 값만 있고 Figma 자체에 press 상태는 없음:
+ * - fillMain(9873:83097 계열/기본): bg #1573FB(primary-60)→hover #0958D9(primary-70), text white
+ * - fillGray(9873:83213/83218): bg #D7DCE5(gray-40)→hover #B4C0D3(gray-50), text #011327(gray-130)
+ * - fillBlack(9873:83223/83228): bg #011327(gray-130)→hover #373F57(gray-110), text white
+ * - fillRed(9873:83233/83238): bg #F04452(danger-60)→hover #AB2B36(danger-70), text white
+ * - lineMain(9873:83243/83248): bg white→hover #EFF8FF(primary-10), border 1px #1573FB(primary-60), text #1573FB
+ * - lineBlacktxt(9873:83203/83208): bg white→hover #F8FAFC(gray-10), border 1px #E4E7EE(gray-30), text #011327(gray-130)
+ * - opacityMain(9873:83253/83258): bg #E8F5FF(primary-20)→hover #D4EAFF(팔레트 스텝에 없는 값, arbitrary 처리), text #1573FB
+ *
+ * disabled(9873:83198): bg #D7DCE5(gray-40), text #99A3B8(gray-60) — 오파시티 처리 아니고 variant와 무관하게 항상 동일한 외형으로 통일(Figma도 그렇게 되어있음)
+ *
+ * 아이콘: Figma에서도 별도 variant/property가 아니라 인스턴스별로 아이콘 레이어를 지우거나 남기는 방식이라 확인함(담당자 확인, 2026-07-28)
+ * → 코드에서도 고정 아이콘을 넣지 않고 startIcon/endIcon prop으로 필요할 때만 넘기는 방식으로 구현.
+ *
+ * TODO(미실측): press 상태는 Figma 자체에 없어서 구현 안 함. 사이즈별(small/xsmall) 아이콘 실제 크기도 아직 미확인.
  */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-1.5 rounded whitespace-nowrap font-semibold leading-[150%] transition-colors disabled:pointer-events-none disabled:bg-mes-gray-40 disabled:text-mes-gray-60",
+  "inline-flex items-center justify-center gap-1.5 rounded whitespace-nowrap font-semibold leading-[150%] transition-colors disabled:pointer-events-none disabled:border-mes-gray-40 disabled:bg-mes-gray-40 disabled:text-mes-gray-60",
   {
     variants: {
       variant: {
-        primary: "bg-mes-primary-60 text-white hover:bg-mes-primary-70",
+        fillMain: "bg-mes-primary-60 text-white hover:bg-mes-primary-70",
+        fillGray: "bg-mes-gray-40 text-mes-gray-130 hover:bg-mes-gray-50",
+        fillBlack: "bg-mes-gray-130 text-white hover:bg-mes-gray-110",
+        fillRed: "bg-mes-danger-60 text-white hover:bg-mes-danger-70",
+        lineMain:
+          "bg-white text-mes-primary-60 border border-mes-primary-60 hover:bg-mes-primary-10",
+        lineBlacktxt:
+          "bg-white text-mes-gray-130 border border-mes-gray-30 hover:bg-mes-gray-10",
+        opacityMain: "bg-mes-primary-20 text-mes-primary-60 hover:bg-[#d4eaff]",
       },
       size: {
         basic: "h-10 px-4 text-[15px] rounded-[4px]",
@@ -36,7 +52,7 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "primary",
+      variant: "fillMain",
       size: "basic",
     },
   }
