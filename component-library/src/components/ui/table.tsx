@@ -79,11 +79,11 @@ import { IconArrow } from "../icons/icon-arrow";
  * - 그룹행 들여쓰기(depth당 20px)는 스크린샷 육안 대조 기반 판단값, 정확한 px 미확인
  *
  * ── 6. 2026-07-28 3차 피드백(같은 날, 2차 화면 재검토 후) 4건 ───────
- * (1) "체크박스가 겹쳐 보임" → 원인: 그룹행 펼침 버튼을 체크박스와 거의 동일한 스타일
- *     (흰 배경 + 회색 테두리의 둥근 사각형)로 만들어서, 둘 다 "빈 체크박스처럼 생긴 사각형"
- *     이 나란히 붙어 있는 것처럼 보였던 게 원인 — 실제 좌표 겹침은 아니었지만 시각적으로
- *     구분이 안 됐음. 펼침 버튼에서 테두리·배경 박스를 완전히 제거하고 화살표 아이콘만
- *     남긴 형태(plain icon button)로 바꿔서 체크박스와 명확히 구분되게 수정.
+ * (1) "체크박스가 겹쳐 보임" → 이때는 원인을 "펼침 버튼이 체크박스와 스타일이 비슷해서"
+ *     라고 스스로 추측하고, 요청받지도 않은 채 펼침 버튼의 테두리·배경 박스를 제거해버림.
+ *     ↓↓↓ 4차에서 이 판단이 틀렸다는 게 확인됨(아래 7번 참고) — 실제 원인은 스타일이
+ *     아니라 위치/정렬 문제였을 가능성이 높음(체크박스 자체가 최좌측 고정이 아니었거나,
+ *     헤더 마스터 토글 버튼이 체크박스보다 왼쪽에 있었던 것 등).
  * (2) "3단계 그룹화(생산일>설비>담당기사)가 안 됨" → 컴포넌트 자체는 1차 개편에서 이미
  *     `TableGroup.groups` 재귀 구조로 깊이 제한 없이 지원하고 있었음(2단만 데모했던 게
  *     문제) — 데모 페이지를 지시일→설비→담당기사 3단 중첩으로 재구성해서 실제로 3단계가
@@ -99,6 +99,16 @@ import { IconArrow } from "../icons/icon-arrow";
  *     대조한 판단값. (참고) 그 화면 최상단의 "Level 1/2/3 그룹 기준 컬럼 선택 바"(어떤
  *     컬럼으로 그룹화할지 고르는 UI) 자체는 여전히 범위 밖 — 이번엔 이미 정해진 그룹
  *     트리를 depth별로 한꺼번에 접고 펴는 버튼만 추가함.
+ *
+ * ── 7. 2026-07-28 4차 정정: 펼침 버튼 디자인은 "원본에서 더 멀어진" 임의 변경이었음 ──
+ * 3차의 (1)에서 스스로 판단해 제거했던 펼침 버튼의 테두리·배경 박스가, 실제로는 원본
+ * 디자인 값 그대로였다는 걸 담당자가 정확한 수치로 재확인시켜줌: **22x22px, 배경
+ * Gray-0(`#FFFFFF`), radius 3px, 스트로크 Gray-50(`#B4C0D3`) inside 1px**. 요청받지
+ * 않은 범위에서 "이게 더 원본에 가까울 것"이라고 스스로 판단한 게 실제로는 틀렸던
+ * 사례 — 재발 방지 규칙 7번(요청 범위를 스스로 넓히지 않기)의 실제 근거. 그룹행 펼침
+ * 버튼과 헤더 마스터 토글 버튼 둘 다 위 수치로 원상 복구함. (여전히 미해결: 헤더 마스터
+ * 토글 버튼의 위치가 체크박스보다 왼쪽인 문제, 그로 인한 헤더-바디 컬럼 정렬 어긋남 —
+ * `docs/Table_수정_대기목록.md` 1·2번 참고)
  */
 
 export interface TableColumn<T> {
@@ -287,9 +297,11 @@ function GroupHeaderRow<T>({
               className="flex shrink-0 items-center gap-2 whitespace-nowrap"
               style={{ paddingLeft: depth * 20 }}
             >
-              {/* 2026-07-28 3차 피드백(1): 테두리·배경 박스 제거 — 체크박스처럼 보여서
-                  체크박스와 겹쳐 보인다는 지적에 아이콘만 남긴 형태로 변경 */}
-              <span className="flex size-[18px] shrink-0 items-center justify-center">
+              {/* 2026-07-28 4차 정정: 3차에서 "체크박스와 겹쳐 보인다"는 지적을 스스로
+                  "박스 제거"로 해석해 테두리·배경을 없앴었는데, 이게 오히려 원본에서
+                  더 멀어진 임의 변경이었음 — 담당자가 정확한 값을 다시 지정: 22x22px,
+                  배경 Gray-0(흰색), radius 3px, 스트로크 Gray-50 inside 1px. 원상 복구 */}
+              <span className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-mes-gray-0">
                 <IconArrow
                   size={12}
                   className={cn(
@@ -479,8 +491,12 @@ function Table<T>({
       <div className="min-w-max">
         {/* 헤더 */}
         <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 bg-mes-gray-10 px-[20px]">
-          {/* 2026-07-28 3차 피드백(4): 그룹 depth별 "한꺼번에 접기/펼치기" 버튼 —
-              그룹이 N단이면 N개가 체크박스 왼쪽에 나열됨 */}
+          {/* 2026-07-28 3차 피드백(4): 그룹 depth별 "한꺼번에 접기/펼치기" 버튼.
+              [알려진 미해결 이슈 — docs/Table_수정_대기목록.md 1·2번] 체크박스보다
+              왼쪽에 있어 "체크박스 항상 최좌측" 규칙에 어긋나고, 이 버튼들의 폭만큼
+              바디 행에 스페이서가 없어 헤더-바디 컬럼이 밀리는 버그가 있음 — 이번엔
+              버튼 자체의 시각 디자인(22x22/Gray-0/radius3/Gray-50 테두리, 아래 4차
+              정정 사항)만 맞추고, 위치/정렬 버그는 다음 세션에서 별도로 고침. */}
           {Array.from({ length: groupLevelCount }).map((_, depth) => {
             const groupsAtDepth = getGroupsAtDepth(groups, depth);
             const anyExpanded = groupsAtDepth.some(
@@ -492,7 +508,7 @@ function Table<T>({
                 type="button"
                 onClick={() => toggleAllAtDepth(depth)}
                 title={`${depth + 1}단 전체 ${anyExpanded ? "접기" : "펼치기"}`}
-                className="flex size-[18px] shrink-0 items-center justify-center"
+                className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-mes-gray-0"
               >
                 <IconArrow
                   size={12}
