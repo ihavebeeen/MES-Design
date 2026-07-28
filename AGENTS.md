@@ -89,10 +89,11 @@ npx eslint .            # 린트 검사
 - Combobox(검색 내장 셀렉트) 신규 완성 — Selectbox와 별도 컴포넌트로 분리(`combobox.tsx`, Radix Popover 기반). 선택 항목 hover 테두리 색은 미실측 임시값(Primary-40) 적용 중 — devtools 확인 필요(체크리스트 19번 섹션 참고)
 - Badge/Radio/Checkbox 완성 — 클라우드MES 파일 정밀실측(`badge.tsx`/`radio.tsx`/`checkbox.tsx`). Badge는 Figma 이름-색상 불일치 2건(orange=실제 gray, yellow=실제 blue) 발견해 실측값 그대로 반영, 원본 확인 필요(체크리스트 19번 섹션). Checkbox는 이전 체크리스트에 "없음"으로 잘못 기재돼 있었으나 실제로 존재함을 확인해 정정. Radio/Checkbox 둘 다 disabled+선택됨 조합은 Figma에 없어 판단값 처리
 - Progress Bar 완성(`progress.tsx`) — 트랙 Gray-40, 채움 Gray-100
-- 필터 전용 Tag(`filter-tag.tsx`, type1/type2)와 Filter 트리거+활성태그(`filter.tsx`) 완성 —
-  단, "필터 추가" 클릭 시 나오는 2단계 체크박스 플라이아웃 패널은 실측 범위 밖(정확한 노드
-  필요, 체크리스트 19번 섹션). 범용 다색 Chip/Tag(체크리스트 원문 "3색")는 별도 확인 필요
-- Select/Combobox 트리거에 꺾쇠 대신 커스텀 아이콘을 쓰는 variant 필요성 논의 중 — 아톰
-  마무리(Chip/Tag 범용판) 이후 진행 예정
-- 나머지 몰큘/오가니즘(Toast/Confirm Dialog/Table/Center Modal/Page Top Tab Item/Sidebar,
-  Filter 플라이아웃 패널)은 아직 코드 없음
+- 필터 전용 Tag(`filter-tag.tsx`, type1/type2), 범용 3색 Tag(`tag.tsx`, node 9873:83675 —
+  담당자 확인상 실사용 빈도 낮음, Badge가 주력), Filter 트리거+활성태그(`filter.tsx`) 완성
+- Filter 플라이아웃(카테고리 목록 → 체크박스 서브목록 2단, `filter-flyout.tsx`) 완성 —
+  Figma에 실측 가능한 노드가 없어 담당자 승인 하에 조립형으로 구현(정밀실측 아님, 명시적으로
+  구분해서 기록). Select/Combobox 패널 스타일 관례 재사용
+- Select/Combobox 트리거에 꺾쇠 대신 커스텀 아이콘을 쓰는 variant 필요성 논의 중 — 다음 단계
+- 나머지 몰큘/오가니즘(Toast/Confirm Dialog/Table/Center Modal/Page Top Tab Item/Sidebar)은
+  아직 코드 없음

@@ -17,6 +17,8 @@ import { Radio } from "@/components/ui/radio";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Filter } from "@/components/ui/filter";
+import { Tag } from "@/components/ui/tag";
+import { FilterFlyout } from "@/components/ui/filter-flyout";
 
 /**
  * 컴포넌트별 예시를 "행/열이 맞는 그리드 + 컴포넌트명·상태값 라벨 병기" 형태로 정리한
@@ -50,8 +52,45 @@ const shiftOptions = [
   { value: "bom2", label: "BOM-2026-002" },
 ];
 
+const filterCategories = [
+  {
+    id: "group",
+    label: "그룹명",
+    options: [
+      { id: "normal", label: "NORMAL_USER" },
+      { id: "admin", label: "SUPER_ADMIN" },
+      { id: "acc", label: "경리팀" },
+    ],
+  },
+  {
+    id: "desc",
+    label: "그룹설명",
+    options: [{ id: "d1", label: "설명 A" }],
+  },
+  {
+    id: "member",
+    label: "구성원",
+    options: [{ id: "m1", label: "홍길동" }],
+  },
+  {
+    id: "perm",
+    label: "권한 설정",
+    options: [
+      { id: "normal", label: "NORMAL_USER" },
+      { id: "admin", label: "SUPER_ADMIN" },
+      { id: "acc", label: "경리팀" },
+      { id: "gong", label: "공무팀" },
+      { id: "manager", label: "관리자" },
+    ],
+  },
+  { id: "modified", label: "최종변경일", options: [{ id: "today", label: "오늘" }] },
+];
+
 export default function Home() {
   const [comboValue, setComboValue] = useState<string>("");
+  const [filterValue, setFilterValue] = useState<Record<string, string[]>>({
+    perm: ["normal", "admin", "acc", "gong", "manager"],
+  });
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-10 bg-mes-gray-10 p-16">
@@ -277,7 +316,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Filter (필터 추가 트리거 + 활성 태그) — 플라이아웃 패널은 미구현">
+      <Section title="Filter (필터 추가 트리거 + 활성 태그)">
         <Sample label="Filter · btn-only(선택 없음)">
           <Filter />
         </Sample>
@@ -289,6 +328,27 @@ export default function Home() {
               { category: "품목" },
             ]}
           />
+        </Sample>
+        <Sample label="FilterFlyout · 2단 카테고리→체크박스(조립형, 담당자 승인)">
+          <FilterFlyout
+            categories={filterCategories}
+            value={filterValue}
+            onChange={(categoryId, optionIds) =>
+              setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
+            }
+          />
+        </Sample>
+      </Section>
+
+      <Section title="Tag (범용 3색 — 실사용 빈도 낮음, Badge를 우선 사용)">
+        <Sample label="Tag · main">
+          <Tag color="main">태그 텍스트</Tag>
+        </Sample>
+        <Sample label="Tag · gray">
+          <Tag color="gray">태그 텍스트</Tag>
+        </Sample>
+        <Sample label="Tag · red">
+          <Tag color="red">태그 텍스트</Tag>
         </Sample>
       </Section>
 
