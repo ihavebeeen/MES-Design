@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -12,6 +13,21 @@ export default function Home() {
         <Button size="xsmall">Xsmall 버튼</Button>
         <Button size="basic" disabled>
           비활성
+        </Button>
+      </div>
+      <div className="flex items-center gap-4">
+        <Button size="basic" startIcon={<Plus size={16} />}>
+          아이콘 왼쪽
+        </Button>
+        <Button size="basic" endIcon={<Plus size={16} />}>
+          아이콘 오른쪽
+        </Button>
+        <Button
+          size="basic"
+          startIcon={<Plus size={16} />}
+          endIcon={<Plus size={16} />}
+        >
+          아이콘 양쪽
         </Button>
       </div>
     </div>
