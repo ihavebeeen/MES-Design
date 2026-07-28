@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check } from "lucide-react";
+import { Check, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -34,6 +34,15 @@ import { cn } from "@/lib/utils";
  * ── 4. 확인 필요 ────────────────────────────────────────────────
  * - "default"(회색)/"main"(파랑)/"black"(검정) 3가지 체크됨 색상이 실제로 어떤 상황에서
  *   각각 쓰이는지 확인 필요(Badge의 variant6/7처럼 용도 불명확한 다색 변형 패턴).
+ *
+ * ── 5. (2026-07-28 추가) 중간선택(indeterminate) 상태 ────────────────
+ * Figma/실측 근거 없음 — 담당자가 실제 화면(생산실적 그룹화 조회 테이블) 스크린샷을 보여주며
+ * "그룹화 영역 체크박스에 중간체크 상태가 필요하다, 없으면 대충 보고 만들어봐(파랑/까망
+ * 버전)"라고 요청해 판단으로 구현. 네이티브 `<input>` DOM의 `indeterminate` 프로퍼티를
+ * ref로 세팅하고 브라우저 기본 `:indeterminate` CSS 의사클래스를 그대로 활용(Tailwind
+ * `peer-indeterminate:` variant는 별도 설정 없이 동작). 체크마크 대신 `Minus`(대시) 아이콘
+ * 표시, 배경색은 `checked` 상태와 동일한 색상 사용. main/black 두 색상 모두 지원(gray는
+ * 실사용 확인 안 됐지만 동일 패턴으로 같이 추가).
  */
 
 export type CheckboxColor = "main" | "gray" | "black";
@@ -44,42 +53,69 @@ const checkedStyles: Record<CheckboxColor, string> = {
   black: "peer-checked:border-mes-gray-130 peer-checked:bg-mes-gray-130",
 };
 
+const indeterminateStyles: Record<CheckboxColor, string> = {
+  main: "peer-indeterminate:border-mes-primary-60 peer-indeterminate:bg-mes-primary-60",
+  gray: "peer-indeterminate:border-mes-gray-50 peer-indeterminate:bg-mes-gray-50",
+  black: "peer-indeterminate:border-mes-gray-130 peer-indeterminate:bg-mes-gray-130",
+};
+
 export interface CheckboxProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size" | "color"> {
   color?: CheckboxColor;
+  /** 일부만 선택된 상태(하위 항목 중 일부만 체크됨) — 판단 구현, 위 주석 5번 참고 */
+  indeterminate?: boolean;
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, color = "main", disabled, ...props }, ref) => (
-    <span className={cn("relative inline-flex size-6 shrink-0 items-center justify-center", className)}>
-      <input
-        ref={ref}
-        type="checkbox"
-        disabled={disabled}
-        className="peer absolute inset-0 size-6 cursor-pointer appearance-none disabled:cursor-not-allowed"
-        {...props}
-      />
-      {/* 박스 */}
-      <span
-        aria-hidden
-        className={cn(
-          "pointer-events-none absolute inset-px rounded-[3px] border border-mes-gray-40 bg-white transition-colors",
-          checkedStyles[color],
-          "peer-disabled:border-mes-gray-30 peer-disabled:bg-mes-gray-30"
-        )}
-      />
-      {/* 체크마크(선택됨일 때만 보임) */}
-      <Check
-        aria-hidden
-        strokeWidth={3}
-        className={cn(
-          "pointer-events-none absolute size-3.5 text-white opacity-0 transition-opacity",
-          "peer-checked:opacity-100",
-          "peer-disabled:text-mes-gray-60"
-        )}
-      />
-    </span>
-  )
+  ({ className, color = "main", disabled, indeterminate = false, ...props }, ref) => {
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
+    React.useEffect(() => {
+      if (inputRef.current) inputRef.current.indeterminate = indeterminate;
+    }, [indeterminate]);
+
+    return (
+      <span className={cn("relative inline-flex size-6 shrink-0 items-center justify-center", className)}>
+        <input
+          ref={inputRef}
+          type="checkbox"
+          disabled={disabled}
+          className="peer absolute inset-0 size-6 cursor-pointer appearance-none disabled:cursor-not-allowed"
+          {...props}
+        />
+        {/* 박스 */}
+        <span
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-px rounded-[3px] border border-mes-gray-40 bg-white transition-colors",
+            checkedStyles[color],
+            indeterminateStyles[color],
+            "peer-disabled:border-mes-gray-30 peer-disabled:bg-mes-gray-30"
+          )}
+        />
+        {/* 체크마크(완전 선택됐을 때만 보임) */}
+        <Check
+          aria-hidden
+          strokeWidth={3}
+          className={cn(
+            "pointer-events-none absolute size-3.5 text-white opacity-0 transition-opacity",
+            "peer-checked:opacity-100",
+            "peer-disabled:text-mes-gray-60"
+          )}
+        />
+        {/* 중간선택 마크(대시, indeterminate일 때만 보임) */}
+        <Minus
+          aria-hidden
+          strokeWidth={3}
+          className={cn(
+            "pointer-events-none absolute size-3.5 text-white opacity-0 transition-opacity",
+            "peer-indeterminate:opacity-100",
+            "peer-disabled:text-mes-gray-60"
+          )}
+        />
+      </span>
+    );
+  }
 );
 Checkbox.displayName = "Checkbox";
 

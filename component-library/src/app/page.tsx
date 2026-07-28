@@ -149,22 +149,31 @@ interface ProductionRow {
   warehouse: string;
 }
 
+/**
+ * 컬럼 정렬(align) 기준 — 2026-07-28 2차 피드백 "헤더 정렬이 제멋대로" 반영해 재조정.
+ * 텍스트(이름류)=좌측, 짧은 코드/시간/단위=가운데, 숫자·금액=우측. 실제 화면 스크린샷
+ * 육안 대조 기반 판단이며 Figma 실측은 아님.
+ * "지시일(date)" 컬럼은 데모에서 Level 1 그룹 라벨로만 쓰고 별도 컬럼으로는 노출하지
+ * 않음 — 실제 화면도 그룹 기준으로 쓰인 최상위 값(생산일)은 컬럼에 반복 표시하지
+ * 않는 패턴이라 이를 따름(2·3단계 그룹 키인 공정/담당자는 반대로 컬럼에도 그대로
+ * 남겨두는 게 실제 화면과 일치).
+ */
 const productionColumns: TableColumn<ProductionRow>[] = [
-  { key: "date", label: "지시일", width: 106, align: "center" },
-  { key: "shift", label: "근무조", width: 57 },
-  { key: "equipment", label: "설비", width: 125 },
-  { key: "manager", label: "담당기사", width: 65 },
+  { key: "shift", label: "근무조", width: 57, align: "center" },
+  { key: "equipment", label: "설비", width: 125, align: "left" },
+  { key: "manager", label: "담당기사", width: 65, align: "center" },
   {
     key: "item",
     label: "품목명",
     width: 148,
+    align: "left",
     render: (row) => (
       <a href="#" className="text-mes-primary-60 underline">
         {row.item}
       </a>
     ),
   },
-  { key: "itemType", label: "품목구분", width: 80 },
+  { key: "itemType", label: "품목구분", width: 80, align: "center" },
   { key: "packCount", label: "포장인원", width: 69, align: "right" },
   { key: "startTime", label: "시작시간", width: 124, align: "center" },
   { key: "endTime", label: "종료시간", width: 124, align: "center" },
@@ -194,30 +203,64 @@ const productionColumns: TableColumn<ProductionRow>[] = [
       </a>
     ),
   },
-  { key: "warehouse", label: "창고명", width: 106 },
+  { key: "warehouse", label: "창고명", width: 106, align: "center" },
 ];
+
+/**
+ * 2026-07-28 2차 피드백 "2·3차 그룹화도 가능해야 함" 반영 데모 — 기존 1차 데이터(성형기
+ * 1호/2호, r1~r8)를 재구성해서 Level 1(지시일) → Level 2(설비) 2단 중첩으로 표현.
+ * 집계값(packCount/qty/defectQty/packQty)은 하위 리프 행 실제 합으로 재계산함(1차 데모의
+ * 집계값 일부가 실제 합과 안 맞았던 것도 이번에 같이 바로잡음).
+ */
+const rowR1 = { id: "r1", data: { date: "2025-10-30", shift: "주간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } };
+const rowR2 = { id: "r2", data: { date: "2025-10-29", shift: "주간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } };
+const rowR3 = { id: "r3", data: { date: "2025-10-29", shift: "야간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } };
+const rowR4 = { id: "r4", data: { date: "2025-10-30", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } };
+const rowR5 = { id: "r5", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } };
+const rowR6 = { id: "r6", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } };
+const rowR7 = { id: "r7", data: { date: "2025-10-27", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" }, isNew: true };
+const rowR8 = { id: "r8", data: { date: "2025-10-26", shift: "야간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } };
 
 const productionGroups: TableGroup<ProductionRow>[] = [
   {
-    id: "eq1",
-    label: "설비 : 성형기 1호",
-    summary: { packCount: 15, qty: 6000, defectQty: 30, packQty: 60 },
-    rows: [
-      { id: "r1", data: { date: "2025-10-30", shift: "주간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } },
-      { id: "r2", data: { date: "2025-10-29", shift: "주간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } },
-      { id: "r3", data: { date: "2025-10-29", shift: "야간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } },
+    id: "date-1030",
+    label: "지시일: 2025-10-30",
+    summary: { packCount: 8, qty: 4000, defectQty: 10, packQty: 40 },
+    groups: [
+      { id: "eq1-1030", label: "설비: 성형기 1호", summary: { packCount: 5, qty: 2000, defectQty: 10, packQty: 20 }, rows: [rowR1] },
+      { id: "eq2-1030", label: "설비: 성형기 2호", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR4] },
     ],
   },
   {
-    id: "eq2",
-    label: "설비 : 성형기 2호",
-    summary: { packCount: 15, qty: 12000, defectQty: 0, packQty: 160 },
-    rows: [
-      { id: "r4", data: { date: "2025-10-30", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } },
-      { id: "r5", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } },
-      { id: "r6", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } },
-      { id: "r7", data: { date: "2025-10-27", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" }, isNew: true },
-      { id: "r8", data: { date: "2025-10-26", shift: "야간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } },
+    id: "date-1029",
+    label: "지시일: 2025-10-29",
+    summary: { packCount: 10, qty: 4000, defectQty: 20, packQty: 40 },
+    groups: [
+      { id: "eq1-1029", label: "설비: 성형기 1호", summary: { packCount: 10, qty: 4000, defectQty: 20, packQty: 40 }, rows: [rowR2, rowR3] },
+    ],
+  },
+  {
+    id: "date-1028",
+    label: "지시일: 2025-10-28",
+    summary: { packCount: 6, qty: 4000, defectQty: 0, packQty: 40 },
+    groups: [
+      { id: "eq2-1028", label: "설비: 성형기 2호", summary: { packCount: 6, qty: 4000, defectQty: 0, packQty: 40 }, rows: [rowR5, rowR6] },
+    ],
+  },
+  {
+    id: "date-1027",
+    label: "지시일: 2025-10-27",
+    summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
+    groups: [
+      { id: "eq2-1027", label: "설비: 성형기 2호", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR7] },
+    ],
+  },
+  {
+    id: "date-1026",
+    label: "지시일: 2025-10-26",
+    summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
+    groups: [
+      { id: "eq2-1026", label: "설비: 성형기 2호", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR8] },
     ],
   },
 ];
@@ -666,20 +709,27 @@ export default function Home() {
 
       <section className="flex w-full max-w-[1100px] flex-col gap-4 pb-8">
         <h2 className="text-[14px] font-semibold text-mes-gray-130">
-          Table (원본 node 9873:83780 + 수정본 실제화면 node 16938:42501 대조 실측)
+          Table (원본 node 9873:83780 + 수정본 실제화면 node 16938:42501 대조 실측 + 2026-07-28
+          2차 실제화면 피드백 반영)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          수정본에서 확인된 변경점 반영: 헤더 배경 Gray-10 추가, 세로 점선 구분선(기본
-          Gray-40), 그룹행(핑크 #fde9ea)에 집계값, 선택행(Primary-20 배경)·신규행(빨간 점)은
-          구분선이 한 단계 진한 Gray-30으로 바뀜. r7 행에 빨간 점(&quot;이번 세션에서 추가된
-          정보&quot;) 표시됨. disable/분할 변형은 아직 미실측(체크리스트 참고).
+          1차 반영: 헤더 배경 Gray-10, 세로 점선 구분선(기본 Gray-40), 선택행(Primary-20
+          배경)·신규행(빨간 점, r7)은 구분선이 한 단계 진한 Gray-30. 2차 반영(실제 운영 화면
+          스크린샷 기준 판단값, Figma 실측 아님): (1) 지시일→설비 2단 그룹화로 재귀 중첩 지원
+          데모(깊이 제한 없이 3단 이상도 동일 구조로 가능), depth별 배경색은 판단값(핑크→
+          파랑→옅은 파랑), (2) 그룹 합계열·(4) 총계열이 헤더 컬럼 위치와 어긋나던 버그를
+          &quot;라벨을 첫 컬럼 Cell 안에 넣기&quot; 방식으로 구조적으로 수정, (3) 그룹 헤더 행에도
+          체크박스 추가 + 신규 indeterminate(중간선택) 상태 지원(`checkbox.tsx`에 prop 추가,
+          최상단 전체선택 체크박스도 동일 적용), (5) 헤더 텍스트 정렬을 데이터 셀과 항상
+          일치하도록 수정(기존엔 헤더만 기본값이 가운데로 강제돼 있던 버그). disable/분할
+          변형은 여전히 미실측(체크리스트 참고).
         </p>
         <Table
           columns={productionColumns}
           groups={productionGroups}
           selectedIds={tableSelectedIds}
           onSelectedIdsChange={setTableSelectedIds}
-          totals={{ qty: "18,000", defectQty: 30, packQty: 360 }}
+          totals={{ qty: "16,000", defectQty: 30, packQty: 160 }}
         />
       </section>
     </div>

@@ -6,17 +6,18 @@ import { Checkbox } from "./checkbox";
 import { IconArrow } from "../icons/icon-arrow";
 
 /**
- * MES Table (표) — Figma 실측 기반, 원본+수정본 2개 노드 대조
+ * MES Table (표) — Figma 실측 기반 1차 + 실제 화면 스크린샷 기반 2차 피드백 반영
  *
  * 출처: 클라우드MES 파일(F4n5Zr04PAbiRjfIFQAo6v)
  * - 원본: node 9873:83780("Table") — Header/Body 상태별 매트릭스 정의부
  * - 수정본(실제 화면): node 16938:42501("생산계획(일) 리스트") — 담당자가 "테이블 디자인
- *   수정"으로 지목한 실제 사용 화면. 화면 인스턴스라 오버라이드 가능성이 있어, 표에서
- *   반복되는 패턴(헤더/그룹행/일반행/선택행/신규행/총계행)만 구조로 뽑고, 이 화면 고유의
- *   비즈니스 컬럼(지시일/근무조/설비 등)은 데모 페이지 쪽 데이터로 분리함 — 컴포넌트
- *   자체는 columns prop으로 어떤 표에도 재사용 가능하게 일반화.
+ *   수정"으로 지목한 실제 사용 화면.
+ * - 2026-07-28 2차: 담당자가 실제 운영 화면("생산실적" 그룹화 조회, Figma 아님 — 실제
+ *   서비스 스크린샷)을 보여주며 지적한 5건 반영. 이 스크린샷은 Figma가 아니라 실제 배포된
+ *   화면이라 정확한 hex/px를 도구로 뽑을 수 없음 — 아래 명시된 값들은 스크린샷 육안 대조
+ *   기반 판단값이며, 실측 아님을 각 항목에 표시함.
  *
- * ── 1. 담당자가 지적한 수정본과 원본의 차이(실측으로 확인) ─────────
+ * ── 1. 담당자가 지적한 수정본과 원본의 차이(1차, 실측으로 확인) ─────
  * - 헤더 배경에 색 추가: Gray-10(#F8FAFC) — 원본엔 없던 배경색(재확인 필요하나 수정본
  *   기준 확정 채택)
  * - 세로 구분선 추가: 각 셀 우측에 점선(border-dashed) 1px, 기본 Gray-40(#D7DCE5)
@@ -27,31 +28,58 @@ import { IconArrow } from "../icons/icon-arrow";
  *   바뀜을 3개 행 실측 대조로 확인: 선택행(bg Primary-20)·신규행(빨간점) 둘 다 Gray-30,
  *   일반행만 Gray-40 — 담당자가 언급 안 한 부분이지만 실측 중 발견해 반영
  *
- * ── 2. 공통 실측값 ──────────────────────────────────────────────
+ * ── 2. 담당자가 지적한 2차 피드백 5건과 반영 내용 ────────────────────
+ * (1) "2·3차 그룹화도 가능해야 함" → `TableGroup.groups`로 재귀 중첩 지원(깊이 제한 없음,
+ *     실제 화면처럼 생산일→공정→담당자 3단 구성 가능). 그룹 배경색은 깊이(depth)별로
+ *     `groupLevelColors` prop(기본값 3단계)에서 가져옴 — 실제 화면 스크린샷 육안 대조로
+ *     depth0=연한 핑크(`#fde9ea`, 기존 1차에서 이미 확정값), depth1=중간 톤 파랑
+ *     (`#dbe9ff`), depth2=아주 옅은 파랑(`#eef5ff`)으로 판단(실측 아님 — 정확한 값 필요시
+ *     devtools로 재확인 후 `groupLevelColors` prop으로 교체 가능하게 열어둠). 4단 이상은
+ *     depth2 색이 반복됨.
+ * (2) "그룹 합계열이 헤더 컬럼 위치와 안 맞음" → 원인 파악: 그룹행/총계행에서 펼침
+ *     화살표+라벨을 별도의 폭-고정 안 된 `<button>`으로 렌더링해서, 그 다음에 오는
+ *     `columns.map(Cell)`들이 전부 라벨 텍스트 길이만큼 밀렸던 게 버그였음. 수정: 화살표
+ *     +라벨을 "첫 번째 컬럼의 Cell 안"에 넣고(`overflow-visible` + `whitespace-nowrap`로
+ *     텍스트가 길면 다음 빈 셀 위로 시각적으로만 넘치게 처리) 두 번째 컬럼부터는 일반
+ *     데이터 행과 완전히 동일한 `columns.map(Cell)` 구조를 그대로 사용 → 헤더/데이터행/
+ *     그룹행/총계행이 전부 같은 Cell 폭 배열을 공유해서 구조적으로 어긋날 수 없게 만듦.
+ * (3) "그룹 영역에도 체크박스+중간선택(indeterminate) 필요" → 각 그룹 헤더 행에 체크박스
+ *     추가(해당 그룹 하위 모든 행 id를 재귀로 모아서 전체선택/부분선택/미선택 판정).
+ *     `Checkbox` 컴포넌트 자체에 `indeterminate` prop이 없어서 이번에 새로 추가함
+ *     (Figma에 없는 상태라 실측 아닌 판단 구현 — `checkbox.tsx` 주석 5번 참고). 최상단
+ *     "전체선택" 체크박스도 동일하게 indeterminate 지원하도록 같이 개선.
+ * (4) "총계행도 컬럼 위치 맞아야 함" → (2)와 같은 원인/같은 방식으로 수정("총계" 라벨을
+ *     첫 컬럼 Cell 안으로 이동).
+ * (5) "컬럼명 정렬이 제멋대로" → 원인: 헤더 셀 렌더링 시 `column.align ?? "center"`로
+ *     기본값을 항상 가운데로 강제해서, 실제 데이터 셀(정렬 지정 없으면 좌측 기본)과
+ *     따로 놀았던 게 버그였음. 수정: 헤더도 데이터 셀과 동일하게 `column.align`을 그대로
+ *     사용(지정 없으면 좌측 기본)해서 헤더 텍스트 정렬 = 그 컬럼 데이터 정렬이 항상 일치
+ *     하도록 통일. 데모 페이지의 각 컬럼 align 값도 실제 화면 기준(텍스트=좌측,
+ *     코드/시간/단위 등 짧은 값=가운데, 숫자·금액=우측)으로 재조정함.
+ *
+ * ── 3. 공통 실측값(1차, 유지) ─────────────────────────────────────
  * - 행 높이 30px(헤더/그룹행/일반행/총계행 전부 동일), 각 행 좌우 padding 20px
  * - 체크박스 칼럼: 체크박스 24px + 우측 padding 12px, 이후 첫 데이터 컬럼 시작
- * - 헤더 텍스트: Pretendard SemiBold 13px, 중앙정렬, Gray-130, border-b Gray-30
- * - 일반 셀 텍스트: Pretendard Regular 14px, Gray-130(숫자류는 우측정렬, 텍스트류는
- *   좌측/중앙 혼재 — 컬럼별로 다름, align prop으로 개별 지정)
+ * - 헤더 텍스트: Pretendard SemiBold 13px, Gray-130, border-b Gray-30(정렬은 위 2-(5) 참고)
+ * - 일반 셀 텍스트: Pretendard Regular 14px, Gray-130
  * - 링크형 셀(품목명/투입/라벨정보 등): Primary-60, 링크는 Regular 14px 밑줄, 액션형
  *   링크(투입정보/LOT조회)는 SemiBold 13px 밑줄로 서로 다름 — render prop으로 개별 처리
- * - 그룹행: 배경 `#fde9ea`(연한 핑크, 확정 팔레트 밖 — 팔레트에 편입 안 하고 원본값 유지),
- *   좌측 펼침/접힘 화살표(mes/icon-arrow 회전) + 그룹 라벨(Medium 14px), 그룹별 집계값은
- *   해당 컬럼에 SemiBold 14px 우측정렬로 표시(집계 없는 컬럼은 빈칸)
- * - 총계행: 그룹행과 동일한 값 스타일(SemiBold 우측정렬)이지만 배경은 흰색 유지
+ * - 그룹행 집계값/총계행 값: SemiBold 14px 우측정렬(집계 없는 컬럼은 빈칸)
  *
- * ── 3. 체크박스 시각 차이(사소한 불일치, 판단으로 흡수) ───────────
+ * ── 4. 체크박스 시각 차이(사소한 불일치, 판단으로 흡수) ───────────
  * Figma 원본의 표 전용 체크박스 아이콘("mes/icon-checkcyc")은 미선택 상태가 Gray-50
  * 채움 사각형인데, 기존에 실측 완성해둔 `Checkbox` 컴포넌트(checkbox.tsx)의 미선택
  * 상태는 흰 배경+Gray-40 테두리라 살짝 다름. 체크됨(검정) 상태는 완전히 일치(Gray-130
  * 채움) — 새로 컴포넌트를 안 만들고 기존 Checkbox를 그대로 재사용함(중복 구현 방지
  * 우선), 미선택 상태 불일치는 체크리스트에 등록.
  *
- * ── 4. 아직 미확인 (다음 라운드) ──────────────────────────────────
- * - 원본에 있던 "기본-disable", "분할", "분할-disable" 변형(node 9873:83780 하위, y=203/
- *   282/360 섹션)은 이번 라운드에서 미실측 — disabled prop은 opacity 처리로 임시 구현
- * - 그룹행에 보였던 몇몇 빈 칸(Danger-60 색 빈 텍스트 placeholder)이 실제로 조건부
- *   경고 표시용인지 단순 미사용 잔재인지 불명 — 이번엔 반영 안 함
+ * ── 5. 아직 미확인 (다음 라운드) ──────────────────────────────────
+ * - 원본에 있던 "기본-disable", "분할", "분할-disable" 변형(node 9873:83780 하위)은
+ *   여전히 미실측 — disabled prop은 opacity 처리로 임시 구현
+ * - 그룹행 들여쓰기(depth당 20px)는 스크린샷 육안 대조 기반 판단값, 정확한 px 미확인
+ * - 실제 화면 최상단에 보였던 "Level 1/2/3 그룹화 설정 바"(그룹 기준 컬럼 선택 UI)는
+ *   Table 컴포넌트 자체가 아니라 그 위에 얹히는 별도의 조회 설정 컴포넌트로 판단해 이번
+ *   범위에서 제외함 — 필요시 별도 컴포넌트로 요청 바람
  */
 
 export interface TableColumn<T> {
@@ -75,7 +103,10 @@ export interface TableGroup<T> {
   label: string;
   /** 컬럼 key별 집계값(합계 등). 없는 컬럼은 빈칸 */
   summary?: Record<string, React.ReactNode>;
-  rows: TableRowData<T>[];
+  /** 리프 그룹(더 이상 하위 그룹 없음)일 때 실제 데이터 행 */
+  rows?: TableRowData<T>[];
+  /** 하위 그룹(2·3차 그룹화) — 지정하면 rows 대신 이쪽이 렌더링됨 */
+  groups?: TableGroup<T>[];
   defaultExpanded?: boolean;
 }
 
@@ -86,7 +117,22 @@ export interface TableProps<T> {
   selectedIds?: string[];
   onSelectedIdsChange?: (ids: string[]) => void;
   totals?: Record<string, React.ReactNode>;
+  /** 그룹 depth(0부터)별 배경색. 기본값은 판단값 — 위 2-(1) 주석 참고 */
+  groupLevelColors?: string[];
   className?: string;
+}
+
+const DEFAULT_GROUP_LEVEL_COLORS = ["#fde9ea", "#dbe9ff", "#eef5ff"];
+
+/** 그룹(재귀) 하위의 모든 리프 행 id를 모음 — 그룹 체크박스 전체/부분 선택 판정용 */
+function collectGroupRowIds<T>(group: TableGroup<T>): string[] {
+  if (group.groups) return group.groups.flatMap(collectGroupRowIds);
+  return (group.rows ?? []).map((r) => r.id);
+}
+
+function collectAllRowIds<T>(groups?: TableGroup<T>[], rows?: TableRowData<T>[]): string[] {
+  if (groups) return groups.flatMap(collectGroupRowIds);
+  return (rows ?? []).map((r) => r.id);
 }
 
 function Cell({
@@ -114,9 +160,9 @@ function Cell({
 }
 
 /**
- * 아래 3개(DataRow/GroupHeaderRow/TotalsRow)는 원래 Table() 내부에 클로저로 선언했었으나,
- * eslint react-hooks/static-components("Cannot create components during render")에 걸려
- * 모듈 스코프로 끌어올림 — 필요한 값은 전부 명시적 prop으로 전달.
+ * 아래 컴포넌트/함수들은 Table() 내부 클로저로 선언하면 eslint
+ * react-hooks/static-components("Cannot create components during render")에 걸리기 때문에
+ * 전부 모듈 스코프로 선언하고 필요한 값은 명시적 prop/인자로 전달한다.
  */
 function DataRow<T>({
   row,
@@ -156,9 +202,7 @@ function DataRow<T>({
         <Cell
           key={col.key}
           column={col}
-          className={cn(
-            i < columns.length - 1 && `border-r border-dashed ${dividerColor}`
-          )}
+          className={cn(i < columns.length - 1 && `border-r border-dashed ${dividerColor}`)}
         >
           <span className="w-full truncate text-[14px] leading-[1.3] text-mes-gray-130">
             {col.render ? col.render(row.data) : (row.data as Record<string, React.ReactNode>)[col.key]}
@@ -172,34 +216,53 @@ function DataRow<T>({
 function GroupHeaderRow<T>({
   group,
   columns,
+  depth,
+  background,
   isCollapsed,
   onToggleCollapse,
+  checked,
+  indeterminate,
+  onToggleSelect,
 }: {
   group: TableGroup<T>;
   columns: TableColumn<T>[];
+  depth: number;
+  background: string;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
+  checked: boolean;
+  indeterminate: boolean;
+  onToggleSelect: () => void;
 }) {
   return (
-    <div className="flex h-[30px] shrink-0 items-center border-b border-solid border-[#fde9ea] bg-[#fde9ea] px-[20px]">
-      <div className="flex h-full shrink-0 items-center pr-[12px]" style={{ width: 24 }} />
-      <button
-        type="button"
-        onClick={onToggleCollapse}
-        className="flex shrink-0 items-center gap-2.5 px-[12px]"
-      >
-        <span className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-white">
-          <IconArrow
-            size={12}
-            className={cn("text-mes-gray-130 transition-transform", isCollapsed ? "rotate-0" : "rotate-90")}
-          />
-        </span>
-        <span className="whitespace-nowrap text-[14px] font-medium leading-[1.3] text-mes-gray-130">
-          {group.label}
-        </span>
-      </button>
-      {!isCollapsed &&
-        columns.map((col) => (
+    <div
+      className="flex h-[30px] shrink-0 items-center border-b border-solid px-[20px]"
+      style={{ background, borderColor: background }}
+    >
+      <div className="flex h-full shrink-0 items-center pr-[12px]">
+        <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color="black" />
+      </div>
+      {columns.map((col, i) =>
+        i === 0 ? (
+          <Cell key={col.key} column={col} className="overflow-visible">
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              className="flex shrink-0 items-center gap-2.5 whitespace-nowrap"
+              style={{ paddingLeft: depth * 20 }}
+            >
+              <span className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-white">
+                <IconArrow
+                  size={12}
+                  className={cn("text-mes-gray-130 transition-transform", isCollapsed ? "rotate-0" : "rotate-90")}
+                />
+              </span>
+              <span className="whitespace-nowrap text-[14px] font-medium leading-[1.3] text-mes-gray-130">
+                {group.label}
+              </span>
+            </button>
+          </Cell>
+        ) : (
           <Cell key={col.key} column={col}>
             {group.summary?.[col.key] !== undefined && (
               <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.3] text-mes-gray-130">
@@ -207,7 +270,8 @@ function GroupHeaderRow<T>({
               </span>
             )}
           </Cell>
-        ))}
+        )
+      )}
     </div>
   );
 }
@@ -223,19 +287,96 @@ function TotalsRow<T>({
   return (
     <div className="flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 bg-white px-[20px]">
       <div className="flex h-full shrink-0 items-center pr-[12px]" style={{ width: 24 }} />
-      <div className="flex h-full shrink-0 items-center px-[12px] text-[14px] font-semibold leading-[1.3] text-mes-gray-130">
-        총계
-      </div>
-      {columns.map((col) => (
-        <Cell key={col.key} column={col}>
-          {totals[col.key] !== undefined && (
-            <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.3] text-mes-gray-130">
-              {totals[col.key]}
+      {columns.map((col, i) =>
+        i === 0 ? (
+          <Cell key={col.key} column={col} className="overflow-visible">
+            <span className="whitespace-nowrap text-[14px] font-semibold leading-[1.3] text-mes-gray-130">
+              총계
             </span>
-          )}
-        </Cell>
-      ))}
+          </Cell>
+        ) : (
+          <Cell key={col.key} column={col}>
+            {totals[col.key] !== undefined && (
+              <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.3] text-mes-gray-130">
+                {totals[col.key]}
+              </span>
+            )}
+          </Cell>
+        )
+      )}
     </div>
+  );
+}
+
+/** 그룹 트리를 재귀적으로 렌더링(2·3차 이상 그룹화 지원). JSX 태그가 아니라 일반 함수 호출로만
+ *  쓰이므로 react-hooks/static-components 대상이 아님(모듈 스코프에 둔 것도 동일 이유는 아니고
+ *  단순히 다른 헬퍼들과 위치를 맞추기 위함). */
+function renderGroupNode<T>({
+  group,
+  depth,
+  columns,
+  collapsed,
+  onToggleCollapse,
+  selectedIds,
+  onToggleGroupSelect,
+  onToggleOne,
+  levelColors,
+}: {
+  group: TableGroup<T>;
+  depth: number;
+  columns: TableColumn<T>[];
+  collapsed: Record<string, boolean>;
+  onToggleCollapse: (groupId: string, currentlyCollapsed: boolean) => void;
+  selectedIds: string[];
+  onToggleGroupSelect: (rowIds: string[], nextChecked: boolean) => void;
+  onToggleOne: (id: string) => void;
+  levelColors: string[];
+}): React.ReactNode {
+  const isCollapsed = collapsed[group.id] ?? group.defaultExpanded === false;
+  const rowIds = collectGroupRowIds(group);
+  const checkedCount = rowIds.filter((id) => selectedIds.includes(id)).length;
+  const isAllChecked = rowIds.length > 0 && checkedCount === rowIds.length;
+  const isIndeterminate = checkedCount > 0 && !isAllChecked;
+  const background = levelColors[Math.min(depth, levelColors.length - 1)];
+
+  return (
+    <React.Fragment key={group.id}>
+      <GroupHeaderRow
+        group={group}
+        columns={columns}
+        depth={depth}
+        background={background}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={() => onToggleCollapse(group.id, isCollapsed)}
+        checked={isAllChecked}
+        indeterminate={isIndeterminate}
+        onToggleSelect={() => onToggleGroupSelect(rowIds, !isAllChecked)}
+      />
+      {!isCollapsed &&
+        (group.groups
+          ? group.groups.map((sub) =>
+              renderGroupNode({
+                group: sub,
+                depth: depth + 1,
+                columns,
+                collapsed,
+                onToggleCollapse,
+                selectedIds,
+                onToggleGroupSelect,
+                onToggleOne,
+                levelColors,
+              })
+            )
+          : (group.rows ?? []).map((row) => (
+              <DataRow
+                key={row.id}
+                row={row}
+                columns={columns}
+                isSelected={selectedIds.includes(row.id)}
+                onToggle={onToggleOne}
+              />
+            )))}
+    </React.Fragment>
   );
 }
 
@@ -246,12 +387,13 @@ function Table<T>({
   selectedIds = [],
   onSelectedIdsChange,
   totals,
+  groupLevelColors = DEFAULT_GROUP_LEVEL_COLORS,
   className,
 }: TableProps<T>) {
   const [collapsed, setCollapsed] = React.useState<Record<string, boolean>>({});
-  const flatRows = groups ? groups.flatMap((g) => g.rows) : rows ?? [];
-  const allIds = flatRows.map((r) => r.id);
+  const allIds = React.useMemo(() => collectAllRowIds(groups, rows), [groups, rows]);
   const allSelected = allIds.length > 0 && allIds.every((id) => selectedIds.includes(id));
+  const someSelected = !allSelected && allIds.some((id) => selectedIds.includes(id));
 
   const toggleAll = () => {
     if (!onSelectedIdsChange) return;
@@ -263,6 +405,17 @@ function Table<T>({
       selectedIds.includes(id) ? selectedIds.filter((v) => v !== id) : [...selectedIds, id]
     );
   };
+  const toggleGroup = (rowIds: string[], nextChecked: boolean) => {
+    if (!onSelectedIdsChange) return;
+    if (nextChecked) {
+      onSelectedIdsChange(Array.from(new Set([...selectedIds, ...rowIds])));
+    } else {
+      onSelectedIdsChange(selectedIds.filter((id) => !rowIds.includes(id)));
+    }
+  };
+  const toggleCollapse = (groupId: string, currentlyCollapsed: boolean) => {
+    setCollapsed((prev) => ({ ...prev, [groupId]: !currentlyCollapsed }));
+  };
 
   return (
     <div className={cn("w-full overflow-x-auto rounded-[4px] border border-mes-gray-30", className)}>
@@ -270,12 +423,12 @@ function Table<T>({
         {/* 헤더 */}
         <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 bg-mes-gray-10 px-[20px]">
           <div className="flex h-full shrink-0 items-center pr-[12px]">
-            <Checkbox checked={allSelected} onChange={toggleAll} color="black" />
+            <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} color="black" />
           </div>
           {columns.map((col, i) => (
             <Cell
               key={col.key}
-              column={{ ...col, align: col.align ?? "center" }}
+              column={col}
               className={cn(i < columns.length - 1 && "border-r border-dashed border-mes-gray-40")}
             >
               <span className="w-full truncate text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
@@ -285,33 +438,21 @@ function Table<T>({
           ))}
         </div>
 
-        {/* 본문: 그룹 있으면 그룹별, 없으면 플랫 */}
+        {/* 본문: 그룹(재귀 중첩 가능) 있으면 그룹별, 없으면 플랫 */}
         {groups
-          ? groups.map((group) => {
-              const isCollapsed = collapsed[group.id] ?? group.defaultExpanded === false;
-              return (
-                <React.Fragment key={group.id}>
-                  <GroupHeaderRow
-                    group={group}
-                    columns={columns}
-                    isCollapsed={isCollapsed}
-                    onToggleCollapse={() =>
-                      setCollapsed((prev) => ({ ...prev, [group.id]: !isCollapsed }))
-                    }
-                  />
-                  {!isCollapsed &&
-                    group.rows.map((row) => (
-                      <DataRow
-                        key={row.id}
-                        row={row}
-                        columns={columns}
-                        isSelected={selectedIds.includes(row.id)}
-                        onToggle={toggleOne}
-                      />
-                    ))}
-                </React.Fragment>
-              );
-            })
+          ? groups.map((group) =>
+              renderGroupNode({
+                group,
+                depth: 0,
+                columns,
+                collapsed,
+                onToggleCollapse: toggleCollapse,
+                selectedIds,
+                onToggleGroupSelect: toggleGroup,
+                onToggleOne: toggleOne,
+                levelColors: groupLevelColors,
+              })
+            )
           : (rows ?? []).map((row) => (
               <DataRow
                 key={row.id}
