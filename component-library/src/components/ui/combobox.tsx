@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { Check, ChevronDown, Search } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { selectTriggerVariants } from "./select";
 
@@ -14,32 +14,44 @@ import { selectTriggerVariants } from "./select";
  * 구분이 안 돼 있었음(체크리스트 19번 섹션 이슈). 담당자 확인(2026-07-28): "이미 개발되어
  * 있으니 지금 바로 구분해서 만들어야 한다" — 이 파일로 분리해서 구현.
  *
- * 트리거 박스 — Selectbox와 완전히 동일한 규격이라고 판단해 `select.tsx`의
- * `selectTriggerVariants`를 그대로 재사용함(같은 위계, 별도 실측 안 함 — 재발 방지 규칙상
- * "다른 컴포넌트 값을 유추해서 채우지 않는다"는 원칙이 있지만, 이건 트리거 자체가 실측
- * 대상인 Selectbox와 발생적으로 같은 UI 요소이므로 재사용이며, 유추가 아님).
+ * ── 1. 트리거 박스 ──────────────────────────────────────────────
+ * Selectbox와 완전히 동일한 규격이라고 판단해 `select.tsx`의 `selectTriggerVariants`를
+ * 그대로 재사용함(같은 위계, 별도 실측 안 함 — 트리거 자체가 실측 대상인 Selectbox와
+ * 발생적으로 같은 UI 요소이므로 재사용이며, 다른 컴포넌트를 유추한 것이 아님).
+ * - default: 배경 흰색, 테두리 gray30 / open: 테두리 gray130 / disabled: 배경·텍스트 흐림
  *
- * 검색창 — 출처: 클라우드MES 파일(F4n5Zr04PAbiRjfIFQAo6v) node 20140:101487
+ * ── 2. 검색창 ──────────────────────────────────────────────────
+ * 출처: 클라우드MES 파일(F4n5Zr04PAbiRjfIFQAo6v) node 20140:101487
  * (하위 20140:101488 배경, 20140:101489 placeholder 텍스트, 20140:101490 검색 아이콘):
  * - 배경 흰색, 테두리 1px gray30(#E4E7EE), radius 4px, 높이 26px
  * - 아이콘 16x16, 박스 왼쪽 기준 8px 인셋, 텍스트는 아이콘 뒤 약 5px 간격
- * - placeholder/입력 텍스트: Pretendard Regular 13px, 세로 중앙 정렬
- * - placeholder 색: gray60(#99A3B8) — 실측 노드에서 확인
+ * - placeholder/입력 텍스트: Pretendard Regular 13px, 세로 중앙 정렬, 색 gray60
+ * - 검색 아이콘 색: Figma 노드가 이미지 애셋이라 정확한 hex를 직접 못 뽑아 placeholder와
+ *   같은 gray60으로 맞춤(판단값, 다르면 알려주면 교체)
  *
- * 검색 아이콘 색: Figma 노드가 이미지(png/svg) 애셋이라 정확한 hex를 코드로 직접 못 뽑음 —
- * placeholder와 같은 gray60으로 맞춤(판단값, 다르면 알려주면 교체).
+ * ── 3. 펼침 목록 패널 ──────────────────────────────────────────
+ * Selectbox 패널과 동일 근거(node 20140:101474 계열) 공유:
+ * - 테두리 1px gray30, radius 8px(판단값), 패딩 8px
+ * - 그림자 `0 2px 8px rgba(0,0,0,.12)`(실제 서비스 devtools 값)
+ * - 너비: 트리거 너비와 동일하게 고정(`var(--radix-popover-trigger-width)`) — 내용 길이로
+ *   늘어나지 않음(2026-07-28 담당자 지적: "펼쳤을 때 너비는 원본 너비와 동일해야 함,
+ *   텍스트가 아주 길 때만 예외")
  *
- * 펼침 목록 패널/항목 스타일 — Selectbox(select.tsx)와 동일 근거(node 20140:101474 계열)로
- * 재사용: 테두리 1px gray30, radius 8px(판단값), 패딩 8px, 그림자
- * `0 2px 8px rgba(0,0,0,.12)`(실제 서비스 devtools 값), 항목 폰트 13px/150%, 선택 항목
- * 배경 `#E8F0FE`(담당자 확인).
+ * ── 4. 목록 항목 — 상태별 스타일 ───────────────────────────────
+ * 폰트 13px/150%, 좌우 padding 8px(담당자 확인, 2026-07-28 — 이전엔 오른쪽만 체크 아이콘
+ * 자리로 24px 비워뒀었는데, 체크 아이콘 자체를 없애면서 좌우 동일 8px로 정리):
+ * - default: 배경 없음
+ * - hover(선택 안 됨): 배경 gray20(판단값)
+ * - selected: 배경 #E8F0FE(담당자 확인). 우측 체크 아이콘은 넣지 않음(2026-07-28 담당자
+ *   지적: "체크 표시 빼라" — 실제 화면에도 없음)
+ * - selected + hover: 배경 #E8F0FE 유지 + 테두리 추가(아래 TODO)
+ * - disabled: 옵션 리스트 자체엔 현재 disabled 옵션 개념 없음(전체 Combobox disabled만 지원)
  *
- * 미확인 상태로 남은 값(TODO):
- * - 선택된 항목 hover 시 테두리 색 — 담당자가 "primary 팔레트에서 배경보다 1~2단계
- *   진한 색 아니냐"는 가설을 제시했으나, 배경 #E8F0FE 자체가 확정 Primary 팔레트
- *   11단계(10~110) 중 어느 값과도 정확히 일치하지 않음(Primary-20 #E8F5FF와 가장
- *   비슷하지만 다른 값) — 실측 없이 유추로 확정할 수 없어, 우선 Primary-40(#7BBBFF)을
- *   임시값으로 넣어둠. devtools에서 실제 값 확인되면 즉시 교체 필요.
+ * ── 5. 미확인 상태로 남은 값(TODO — 확인되는 대로 교체) ─────────
+ * - selected + hover 시 테두리 색 — 배경(#E8F0FE)이 확정 Primary 팔레트 11단계 중 어느 값과도
+ *   정확히 일치하지 않아(Primary-20 #E8F5FF와 가장 비슷하지만 다른 값) "배경보다 1~2단계
+ *   진하게"라는 담당자 가설을 실측 없이 확정할 수 없었음 — 우선 Primary-40(#7BBBFF)을
+ *   임시값으로 넣어둠(select.tsx와 동일 처리). devtools 실측값 확인되면 즉시 교체.
  *
  * 키보드 탐색(방향키 이동 등)은 1차 버전엔 미포함 — 클릭/검색만 지원. 필요하면 추후 추가.
  */
@@ -120,7 +132,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             align="start"
             sideOffset={4}
             className={cn(
-              "z-50 w-[--radix-popover-trigger-width] overflow-hidden rounded-[8px] border border-mes-gray-30 bg-white p-2 text-mes-gray-130 shadow-[0_2px_8px_rgba(0,0,0,0.12)]",
+              "z-50 w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-[8px] border border-mes-gray-30 bg-white p-2 text-mes-gray-130 shadow-[0_2px_8px_rgba(0,0,0,0.12)]",
               "data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1"
             )}
           >
@@ -152,16 +164,13 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                         setOpen(false);
                       }}
                       className={cn(
-                        "relative flex w-full cursor-default select-none items-center rounded-[4px] border border-transparent py-[5px] pr-6 text-left text-[13px] leading-[1.5] outline-none transition-colors",
+                        "relative flex w-full cursor-default select-none items-center rounded-[4px] border border-transparent px-2 py-[5px] text-left text-[13px] leading-[1.5] outline-none transition-colors",
                         isSelected
                           ? "bg-[#e8f0fe] hover:border-mes-primary-40"
                           : "hover:bg-mes-gray-20"
                       )}
                     >
                       <span className="line-clamp-1">{option.label}</span>
-                      {isSelected && (
-                        <Check className="absolute right-0 size-3.5" />
-                      )}
                     </button>
                   );
                 })
