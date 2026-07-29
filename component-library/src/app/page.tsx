@@ -23,6 +23,9 @@ import { Tag } from "@/components/ui/tag";
 import { Toast } from "@/components/ui/toast";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { NoticeBanner } from "@/components/ui/notice-banner";
+import { CenterModal } from "@/components/ui/center-modal";
+import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
+import { Sidebar, SidebarSettingsIcon, type SidebarNavItem } from "@/components/ui/sidebar";
 import { RadioChoiceDialog } from "@/components/ui/radio-choice-dialog";
 import { X } from "lucide-react";
 import {
@@ -69,6 +72,29 @@ import {
  * 미리보기 페이지 (2026-07-28 담당자 지적 반영: 단순히 나눠 배치하는 게 아니라
  * 오와 열을 맞추고, 각 예시마다 컴포넌트명과 상태값을 같이 표기할 것).
  */
+
+/** Sidebar 데모용 1-depth 항목 — MES 설정만 2-depth 실측값을 갖고 있음(주석 참고) */
+const SIDEBAR_NAV_ITEMS: SidebarNavItem[] = [
+  { key: "material", label: "자재관리", icon: <IconBox size={20} /> },
+  { key: "production", label: "생산관리", icon: <IconCompany size={20} /> },
+  { key: "quality", label: "품질관리", icon: <IconMedalCheck size={20} /> },
+  { key: "facility", label: "설비관리", icon: <IconWrench size={20} /> },
+  { key: "stats", label: "통계분석", icon: <IconChartBar size={20} /> },
+  {
+    key: "mes-setting",
+    label: "MES 설정",
+    icon: <SidebarSettingsIcon size={20} />,
+    children: [
+      { key: "vendor-register", label: "거래처 등록" },
+      { key: "user-setting", label: "사용자 설정" },
+      { key: "item-register", label: "품목 등록" },
+      { key: "warehouse-register", label: "창고 등록" },
+      { key: "production-setting", label: "생산 정보 설정" },
+      { key: "quality-setting", label: "품질 정보 설정" },
+      { key: "facility-setting", label: "설비 정보 설정" },
+    ],
+  },
+];
 
 function Sample({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -414,6 +440,13 @@ export default function Home() {
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [bannerDialogOpen, setBannerDialogOpen] = useState(false);
   const [radioDialogOpen, setRadioDialogOpen] = useState(false);
+  const [centerModalOpen, setCenterModalOpen] = useState(false);
+  const [sidebarExpandedKey, setSidebarExpandedKey] = useState<string | undefined>(
+    "mes-setting"
+  );
+  const [sidebarActiveSubKey, setSidebarActiveSubKey] = useState<string | undefined>(
+    "user-setting"
+  );
   const [tableSelectedIds, setTableSelectedIds] = useState<string[]>(["r4"]);
   // 2026-07-28 8차: "테이블이 시선강탈"이라는 지적 반영 — 합본 Table 데모(15컬럼, 화면
   // 전체 폭)는 페이지에서 눈에 가장 많이 띄는 블록이라 기본은 접어두고, 필요할 때만
@@ -858,6 +891,61 @@ export default function Home() {
         warning="선택한 내용을 되돌릴 수 없습니다."
         onConfirm={() => setRadioDialogOpen(false)}
       />
+
+      <Section title="CenterModal (화면 중앙 기본 팝업 — node 168:37994 실측, 콘텐츠 영역은 children으로 교체)">
+        <Sample label="CenterModal · 열기">
+          <Button size="basic" onClick={() => setCenterModalOpen(true)}>
+            모달 열기
+          </Button>
+        </Sample>
+      </Section>
+
+      <CenterModal
+        open={centerModalOpen}
+        onOpenChange={setCenterModalOpen}
+        title="모달 타이틀"
+        onCancel={() => setCenterModalOpen(false)}
+        onConfirm={() => setCenterModalOpen(false)}
+      >
+        <p className="text-[18px] font-medium text-mes-gray-70">콘텐츠 영역</p>
+      </CenterModal>
+
+      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+          PageTopTabItem (열린 화면 상단 탭 1개 — node 157:18052 실측, active는 판단값)
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          &quot;Default&quot; variant 1종만 실측됨(형제 variant 노드를 못 찾음) — active는
+          배경만 살짝 밝게(Gray-120) 한 판단값.
+        </p>
+        <div className="flex">
+          <PageTopTabItem label="생산계획(일) 리스트" active />
+          <PageTopTabItem label="판매관리 리스트" />
+          <PageTopTabItem label="품질검사 이력" bookmarked />
+        </div>
+      </section>
+
+      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+          Sidebar / SNB (좌측 전역 내비게이션 — node 133:1976 실측, MES 설정만 2-depth 예시 포함)
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          &quot;MES 설정&quot; 아이콘은 실제 export된 톱니바퀴 벡터가 없어 lucide-react
+          placeholder 사용 — 확인 필요.
+        </p>
+        <div className="h-[600px] w-[260px] overflow-hidden rounded-lg border border-mes-gray-30">
+          <Sidebar
+            items={SIDEBAR_NAV_ITEMS}
+            logo={
+              <span className="text-[15px] font-bold text-white">moncat factory</span>
+            }
+            expandedKey={sidebarExpandedKey}
+            onExpandedKeyChange={setSidebarExpandedKey}
+            activeSubKey={sidebarActiveSubKey}
+            onSubItemClick={(_, subKey) => setSidebarActiveSubKey(subKey)}
+          />
+        </div>
+      </section>
 
       <section className="flex w-full max-w-[960px] flex-col gap-4 pb-8">
         <h2 className="text-[14px] font-semibold text-mes-gray-130">

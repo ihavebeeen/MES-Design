@@ -163,9 +163,9 @@
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
 | Navbar / Top Nav | 상단 내비게이션 바 | 오가니즘 | 없음 | 2 | |
-| Sidebar / Side Nav | 좌측 내비게이션 | 오가니즘 | 있음 | 1 | Figma "SNB": 4종 상태 + hide 상태 |
+| Sidebar / Side Nav | 좌측 내비게이션 | 오가니즘 | 부분 | 1 | 2026-07-29 코드화: `components/ui/sidebar.tsx`(node 133:1976 "SNB-active" 실측). Figma엔 4종 상태+hide 상태가 있다고 기록돼 있었으나 이번엔 active 1종만 실측·코드화 — 나머지 상태(hover/collapsed rail/hide)는 미실측이라 "부분"으로 남김 |
 | Breadcrumb | 현재 위치 경로 표시 | 몰큘 | 없음 | 2 | |
-| Tabs | 탭 전환 | 몰큘 | 있음 | 1 | Figma "Page Top Tab" 확인됨 |
+| Tabs | 탭 전환 | 몰큘 | 부분 | 1 | 2026-07-29 코드화: `components/ui/page-top-tab-item.tsx`(node 157:18052 "Property 1=Default" 실측). Default 1종만 실측 — 형제 variant(active/hover) 노드를 못 찾아 active는 판단값 처리, "부분"으로 남김 |
 | Pagination | 페이지네이션 | 몰큘 | 없음 | 2 | |
 | Stepper / Wizard | 단계형 진행 표시 | 오가니즘 | 없음 | 3 | 작업지시 등록형 멀티스텝 폼에 유용 |
 | Dropdown Menu | 클릭 시 열리는 메뉴 | 몰큘 | 없음 | 2 | |
@@ -345,7 +345,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Center Modal | 화면 중앙 기본 팝업 | 오가니즘 | 있음 | 1 | Type01 |
+| Center Modal | 화면 중앙 기본 팝업 | 오가니즘 | 있음 | 1 | Type01. 2026-07-29 코드화: `components/ui/center-modal.tsx`(node 168:37994 "modal" 실측, 콘텐츠 영역은 children으로 교체) |
 | Side Slide Panel (Full) | 우측 전체 슬라이드 패널 | 오가니즘 | 있음 | 1 | Type02, 960px 기본 |
 | Side Slide Panel — 상하 분할 | 우측 슬라이드 내부가 상/하로 나뉜 형태 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "상하 섹션 구분"(생산계획 리스트+원부자재 리스트+하단 통계) 확인 |
 | Side Slide Panel — 좌우 분할 | 우측 슬라이드 내부가 좌/우로 나뉜 형태 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "좌우 섹션 구분"(품목검사 폼+캘린더) 및 Side Modal "타임테이블/좌우구분" 확인 |
