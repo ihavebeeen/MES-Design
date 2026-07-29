@@ -277,6 +277,21 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
 - ConfirmDialog 완성(`confirm-dialog.tsx`, Radix Dialog 기반) — node 11106:37629
   "modal-error" 정밀실측(에러 톤 + 버튼 1개 형태만). 확인/취소 2버튼형이나 다른 톤
   변형은 미실측(체크리스트 19번 섹션 등록)
+- (2026-07-29) 담당자가 준 Figma "모달" 갤러리 링크(node 18887:62605, "모달은 종류가
+  되게 많아")로 ConfirmDialog 확장 + NoticeBanner 신규 구현. 스크린샷으로 확인해보니
+  확인/취소 2버튼은 기존 `actions` 배열로 이미 가능했음(코드 변경 불필요), 에러(빨강)/
+  경고(주황)/알림(파랑) 3톤이 전부 같은 `IconExclamationCircle`을 색만 바꿔 쓰는
+  구조라 `tone` prop만 추가(warning=Yellow-50, info=Primary-60, 둘 다
+  `get_variable_defs`로 실측). "라벨 생성 불가" 모달에 붙는 노란 안내 배너(안내문+
+  "OO 바로가기 →" 링크)는 모달 전용이 아니라 독립 컴포넌트로도 쓰이는 걸 확인해
+  `notice-banner.tsx`(`NoticeBanner`)로 분리 구현, ConfirmDialog엔 `banner` prop으로
+  통합. 이 과정에서 `get_metadata`/`get_design_context`가 이 노드(모달이 많이 몰려있는
+  큰 프레임)에서 "SSE 파싱 에러"로 계속 실패하는 걸 발견 — `get_screenshot`/
+  `get_variable_defs`는 정상 동작해서 색상은 실측했지만, 배너의 정확한 padding/radius
+  px와 배너 아이콘 벡터는 스크린샷 육안 대조 판단값으로 처리(체크리스트 19번 섹션에
+  도구 실패 이력 등록). Yellow 팔레트(10/20/50만, 전 단계 아님)를 `globals.css`에
+  신규 추가 — Gray/Primary/Danger처럼 전 단계 확정된 팔레트는 아님. 모바일(배경 딤
+  처리) 변형은 담당자 확인 후 범위 밖으로 보류.
 - RadioChoiceDialog 완성(`radio-choice-dialog.tsx`, Radix Dialog 기반) — node
   18840:61182 "modal"(실측 인스턴스명 "투입품목 추가") 정밀실측. 라디오 2택+되돌릴 수
   없음 경고배너+취소/다음 버튼 구조, 기존 `Radio` 컴포넌트 재사용. radius 16px/그림자

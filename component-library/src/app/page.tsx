@@ -22,6 +22,7 @@ import { Filter } from "@/components/ui/filter";
 import { Tag } from "@/components/ui/tag";
 import { Toast } from "@/components/ui/toast";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { NoticeBanner } from "@/components/ui/notice-banner";
 import { RadioChoiceDialog } from "@/components/ui/radio-choice-dialog";
 import { X } from "lucide-react";
 import {
@@ -408,6 +409,10 @@ export default function Home() {
     group: ["normal", "admin"],
   });
   const [dialogOpen, setDialogOpen] = useState(false);
+  // 2026-07-29: ConfirmDialog 톤 확장(경고/알림) + 확인·취소 2버튼 + 안내 배너 데모용
+  const [warningDialogOpen, setWarningDialogOpen] = useState(false);
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+  const [bannerDialogOpen, setBannerDialogOpen] = useState(false);
   const [radioDialogOpen, setRadioDialogOpen] = useState(false);
   const [tableSelectedIds, setTableSelectedIds] = useState<string[]>(["r4"]);
   // 2026-07-28 8차: "테이블이 시선강탈"이라는 지적 반영 — 합본 Table 데모(15컬럼, 화면
@@ -749,10 +754,25 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="ConfirmDialog (작은 확인/안내 팝업 — 에러 톤 1버튼 형태만 실측됨)">
-        <Sample label="ConfirmDialog · 열기">
+      <Section title="ConfirmDialog (작은 확인/안내 팝업 — 2026-07-29 톤 3종/2버튼/안내배너로 확장)">
+        <Sample label="ConfirmDialog · error 톤(기본), 확인 1버튼">
           <Button size="basic" onClick={() => setDialogOpen(true)}>
             삭제 시도
+          </Button>
+        </Sample>
+        <Sample label="ConfirmDialog · warning 톤, 확인+취소 2버튼">
+          <Button size="basic" onClick={() => setWarningDialogOpen(true)}>
+            반품 시도
+          </Button>
+        </Sample>
+        <Sample label="ConfirmDialog · info 톤, 확인 1버튼">
+          <Button size="basic" onClick={() => setInfoDialogOpen(true)}>
+            삭제 완료 알림
+          </Button>
+        </Sample>
+        <Sample label="ConfirmDialog · error 톤 + 안내 배너(링크 포함)">
+          <Button size="basic" onClick={() => setBannerDialogOpen(true)}>
+            라벨 생성 시도
           </Button>
         </Sample>
       </Section>
@@ -765,6 +785,58 @@ export default function Home() {
         description="이미 사용되었거나 후속 작업(생산, 출하, 연동) 진행 이력이 있어 삭제 불가합니다."
         actions={[{ label: "확인", onClick: () => setDialogOpen(false) }]}
       />
+
+      <ConfirmDialog
+        open={warningDialogOpen}
+        onOpenChange={setWarningDialogOpen}
+        title="경고"
+        heading="선택 항목을 삭제(반품)하시겠습니까?"
+        description="선택한 발주가 리스트에서 삭제됩니다."
+        tone="warning"
+        actions={[
+          { label: "취소", variant: "fillGray", onClick: () => setWarningDialogOpen(false) },
+          { label: "확인", variant: "fillBlack", onClick: () => setWarningDialogOpen(false) },
+        ]}
+      />
+
+      <ConfirmDialog
+        open={infoDialogOpen}
+        onOpenChange={setInfoDialogOpen}
+        title="알림"
+        heading="삭제 완료"
+        description="생산목표가 삭제(등록)되었습니다."
+        tone="info"
+        actions={[{ label: "확인", onClick: () => setInfoDialogOpen(false) }]}
+      />
+
+      <ConfirmDialog
+        open={bannerDialogOpen}
+        onOpenChange={setBannerDialogOpen}
+        title="라벨 생성 불가"
+        heading="라벨 생성 불가"
+        description="품목 정보에서 입상수 기준수량을 등록해 주세요."
+        banner={{
+          message: "담당자의 조가 설정되지 않았습니다. 조를 설정하면 LOT 일련번호에 반영됩니다.",
+          linkLabel: "조설정 바로가기",
+        }}
+        actions={[{ label: "확인", onClick: () => setBannerDialogOpen(false) }]}
+      />
+
+      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+          NoticeBanner (안내 배너, 링크 포함 — 2026-07-29 신규, ConfirmDialog와 별개로도 사용 가능)
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          ConfirmDialog 안에 끼워 넣을 수도 있고(위 &quot;안내 배너&quot; 예시 참고), 이렇게 독립적으로도
+          쓸 수 있음. 배경/테두리/아이콘 색은 실측(Yellow-10/20/50), padding·아이콘 벡터는
+          판단값(체크리스트 참고).
+        </p>
+        <NoticeBanner
+          message="담당자의 조가 설정되지 않았습니다. 조를 설정하면 LOT 일련번호에 반영됩니다."
+          linkLabel="조설정 바로가기"
+          className="max-w-[420px]"
+        />
+      </section>
 
       <Section title="RadioChoiceDialog (라디오 2택 + 경고배너 팝업 — node 18840:61182 실측, 원래 문구는 &quot;투입품목 추가&quot;)">
         <Sample label="RadioChoiceDialog · 열기">

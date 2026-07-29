@@ -200,12 +200,12 @@
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Alert / Banner | 상단/인라인 경고 배너 | 몰큘 | 있음 | 1 | |
+| Alert / Banner | 상단/인라인 경고 배너 | 몰큘 | 있음 | 1 | 2026-07-29 완료 — 클라우드MES 파일 "모달" 갤러리(node 18887:62605)에서 발견한 노란 안내 배너(안내문+"OO 바로가기 →" 링크)를 `notice-banner.tsx`(`NoticeBanner`)로 코드화. 배경/테두리/아이콘 색은 `get_variable_defs`로 실측(Yellow-10/20/50, `globals.css`에 신규 Yellow 팔레트 추가), padding/radius/배너 아이콘 벡터는 `get_metadata`/`get_design_context`가 이 노드에서 계속 실패(SSE 파싱 에러)해서 판단값(19번 섹션 참고). ConfirmDialog의 `banner` prop으로 통합 가능하고 독립 컴포넌트로도 사용 가능 |
 | Toast (스낵바 없음) | 짧게 떴다 사라지는 알림 | 몰큘 | 있음 | 1 | 2026-07-28 완료. 담당자 확인: 스낵바는 없고 Toast만 있음. 클라우드MES 파일 TOAST-RED(node 11098:37167)/TOAST-BLUE(node 11028:35650) 정밀실측 후 코드화(`toast.tsx`). 두 색상이 하나의 공유 컴포넌트가 아니라 별개 프레임이라 gap(8px/16px)·닫기아이콘 크기(16px/18px)·테두리색이 서로 다름 — 실측 그대로 반영. BLUE 배경색(#156BE9)은 확정 Primary-60(#1573FB)과 미묘하게 다른 값이라 팔레트에 편입시키지 않고 원본값 유지 |
 | Modal / Dialog | 화면 중앙 팝업 | 오가니즘 | 있음 | 1 | Type01: 중앙 모달, 최대높이 80vh |
 | Drawer / Sheet | 옆에서 슬라이드로 열리는 패널 | 오가니즘 | 없음 | 2 | |
 | Popover | 특정 요소 옆에 뜨는 작은 팝업 | 몰큘 | 없음 | 2 | |
-| Confirm Dialog | 확인/취소 확인창 | 몰큘 | 있음 | 1 | 2026-07-28 완료(1형태만). 클라우드MES 파일 "modal-error"(node 11106:37629, 에러 안내 톤, 버튼 1개) 정밀실측 후 코드화(`confirm-dialog.tsx`, Radix Dialog 기반). **원래 이 항목이 참조하던 "삭제 모달 - 드롭다운/라디오버튼" 2종(Center Modal 안의 다른 변형)은 이번 실측 대상이 아니었음** — 확인/취소 2버튼 형태나 성공/정보 톤 변형이 별도로 있는지 확인 필요(19번 섹션 참고) |
+| Confirm Dialog | 확인/취소 확인창 | 몰큘 | 있음 | 1 | 2026-07-28 완료(1형태만). 클라우드MES 파일 "modal-error"(node 11106:37629, 에러 안내 톤, 버튼 1개) 정밀실측 후 코드화(`confirm-dialog.tsx`, Radix Dialog 기반). **원래 이 항목이 참조하던 "삭제 모달 - 드롭다운/라디오버튼" 2종(Center Modal 안의 다른 변형)은 이번 실측 대상이 아니었음** — 확인/취소 2버튼 형태나 성공/정보 톤 변형이 별도로 있는지 확인 필요(19번 섹션 참고). 2026-07-29 담당자가 준 Figma "모달" 갤러리(node 18887:62605)로 확인·확장: 확인/취소 2버튼은 기존 `actions` 배열로 이미 가능했음(코드 변경 없음), `tone` prop 신규 추가로 error(기존)/warning(신규, Yellow-50)/info(신규, Primary-60) 3톤 지원, `banner` prop으로 안내 배너(아래 NoticeBanner) 통합 지원 추가. `get_metadata`/`get_design_context`가 이 노드에서 SSE 파싱 에러로 계속 실패해서 배너 세부 px는 판단값(19번 섹션 참고), 모바일(배경 딤) 변형은 범위 밖으로 보류 |
 | Loading Spinner | 로딩 스피너 | 아톰 | 없음 | 2 | |
 | Empty State | 데이터 없음 화면 | 몰큘 | 없음 | 2 | |
 | Error State | 에러 화면 | 몰큘 | 없음 | 2 | |
@@ -549,3 +549,4 @@ Select와 같은 방식으로, 티어 1~2 항목을 하나씩 골라 `component.
 | **Toast RED/BLUE gap 불일치** → 8px로 통일 완료 | 4번 섹션(피드백/상태) | 실측 시 RED 8px/BLUE 16px로 서로 달랐으나 담당자가 "그냥 8px로 통일"이라고 결정 — `toast.tsx` 수정 완료. 나머지 차이(테두리색, 닫기아이콘 크기, BLUE 배경색이 Primary-60과 다른 점)는 그대로 유지 |
 | ~~ConfirmDialog 다른 변형 미확인~~ → **라디오 변형 실측 완료, 드롭다운 변형은 2026-07-29 스코프에서 제외** | 3번 섹션(입력·폼) | `confirm-dialog.tsx`(node 11106:37629 "modal-error", 에러 톤 버튼1개)에 이어 node 18840:61182 "modal"(실측 인스턴스명 "투입품목 추가")을 라디오 2택+경고배너+2버튼 구조로 실측·`radio-choice-dialog.tsx`로 구현 완료. "삭제 모달 - 드롭다운" 변형은 원래 있었는데 담당자도 지금 찾지 못하는 상태 — 2026-07-29 담당자 확인: **당분간 제외, 실측 자료 없이 판단으로 만들어도 크게 문제 없다는 판단**. 필요해지면 그때 판단 구현(추정 스펙)으로 착수하고 이 문서에 "판단값" 표기와 함께 등록할 것 |
 | **ConfirmDialog vs RadioChoiceDialog radius/shadow 불일치** | 3번 섹션(입력·폼) | 두 모달 각각 실측 결과: ConfirmDialog(11106:37629)=radius 12px/그림자 `0 4px 16px rgba(0,0,0,.2)`, RadioChoiceDialog(18840:61182)=radius 16px/그림자 `0px 0px 24px rgba(0,0,0,.2)`. 같은 "모달" 계열이라고 임의로 맞추지 않고 각 노드 실측값 그대로 반영해둠 — 두 모달이 실제로 통일된 규격이어야 하는지 담당자 확인 필요 |
+| **`get_metadata`/`get_design_context`가 node 18887:62605에서 계속 실패** | 3번 섹션(입력·폼) | 2026-07-29 ConfirmDialog 톤 확장+NoticeBanner 작업 중 발견 — 이 노드(모달 갤러리, 자식이 많음)에 대해 두 도구 모두 "Failed to parse SSE message... Invalid JSON: EOF while parsing a string" 에러로 매번 실패(재시도해도 동일). `get_screenshot`/`get_variable_defs`는 정상 동작해서 색상 실측(Yellow-10/20/50 등)은 확보했지만, 정확한 padding/radius px와 배너 아이콘 벡터는 스크린샷 육안 대조 기반 판단값으로 대체함(`notice-banner.tsx`/`confirm-dialog.tsx` 주석 참고). 다음에 이 프레임을 더 다뤄야 하면 자식 노드를 낱개로 쪼개서 `get_design_context` 호출을 시도해볼 것(전체 프레임 대신 개별 모달 노드 단위로) |

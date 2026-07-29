@@ -117,6 +117,14 @@
   --mes-danger-90: #521419;
   --mes-danger-100: #310c0f;
   --mes-danger-110: #21080a;
+
+  /* Yellow — 2026-07-29 신규. Gray/Primary/Danger 3개처럼 전 단계를 확정한 게 아니라,
+     ConfirmDialog "경고"(warning) 톤 + 안내 배너(NoticeBanner) 작업 중 node 18887:62605에서
+     get_variable_defs로 실제 사용된 3단계(10/20/50)만 확인됨. 나머지 단계(30/40/60...)는
+     미실측이라 임의로 보간해 채우지 않음 — 필요해지면 그때 실측해서 추가할 것. */
+  --mes-yellow-10: #fff3db;
+  --mes-yellow-20: #ffe0a3;
+  --mes-yellow-50: #f2a406;
 }
 
 @theme inline {
@@ -164,6 +172,10 @@
   --color-mes-danger-90: var(--mes-danger-90);
   --color-mes-danger-100: var(--mes-danger-100);
   --color-mes-danger-110: var(--mes-danger-110);
+
+  --color-mes-yellow-10: var(--mes-yellow-10);
+  --color-mes-yellow-20: var(--mes-yellow-20);
+  --color-mes-yellow-50: var(--mes-yellow-50);
 }
 
 body {
