@@ -248,7 +248,9 @@ const rowR4 = { id: "r4", data: { date: "2025-10-30", shift: "주간", equipment
 const rowR5 = { id: "r5", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "이해빈", item: "비비빅", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20 } };
 const rowR6 = { id: "r6", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "이해빈", item: "비비빅", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20 } };
 const rowR7 = { id: "r7", data: { date: "2025-10-27", shift: "주간", equipment: "성형기 2호", manager: "이해빈", item: "비비빅", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20 }, isNew: true };
-const rowR8 = { id: "r8", data: { date: "2025-10-26", shift: "야간", equipment: "성형기 2호", manager: "이해빈", item: "비비빅", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20 } };
+// 8차 후속: 담당자가 disabled 행의 정확한 색(텍스트 Gray-80/배경 Gray-10)을 줘서, 데모에서
+// 눈으로 확인할 수 있게 r8을 disabled 예시로 지정.
+const rowR8 = { id: "r8", data: { date: "2025-10-26", shift: "야간", equipment: "성형기 2호", manager: "이해빈", item: "비비빅", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20 }, disabled: true };
 
 /**
  * 2026-07-28 3차 피드백 "3단계 그룹화(지시일>설비>담당기사)도 실제로 되는지 보여줘" 반영 —

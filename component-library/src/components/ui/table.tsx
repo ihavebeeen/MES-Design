@@ -74,8 +74,10 @@ import { IconArrow } from "../icons/icon-arrow";
  * 우선), 미선택 상태 불일치는 체크리스트에 등록.
  *
  * ── 5. 아직 미확인 (다음 라운드) ──────────────────────────────────
- * - 원본에 있던 "기본-disable", "분할", "분할-disable" 변형(node 9873:83780 하위)은
- *   여전히 미실측 — disabled prop은 opacity 처리로 임시 구현
+ * - 원본에 있던 "기본-disable", "분할", "분할-disable" 변형(node 9873:83780 하위) 중
+ *   "기본-disable"은 2026-07-29 담당자가 정확한 값(텍스트 Gray-80, 배경 Gray-10)을 줘서
+ *   `DataRow`에 반영 완료(기존 opacity-50 판단값 교체, 아래 9번 참고). "분할"/"분할-disable"은
+ *   담당자도 정확히 뭘 가리키는지 특정 못 해서 여전히 보류.
  * - 그룹행 들여쓰기(depth당 20px)는 스크린샷 육안 대조 기반 판단값, 정확한 px 미확인
  *
  * ── 6. 2026-07-28 3차 피드백(같은 날, 2차 화면 재검토 후) 4건 ───────
@@ -156,6 +158,16 @@ import { IconArrow } from "../icons/icon-arrow";
  *     라는 별개의 명시적 정책 — 데이터 셀 정렬 규칙엔 변화 없음.
  * (3) "숫자에 1000단위 콤마 넣어줘" → 데모 컬럼(`packCount`/`qty`/`defectQty`/`packQty`)에
  *     `toLocaleString("ko-KR")` 기반 `render` 추가, 그룹 집계값/총계도 동일 포맷.
+ *
+ * ── 11. 2026-07-29 비활성(disabled) 행 정확한 값 확정 ──────────────────
+ * 5번 섹션에서 "기본-disable" 변형은 실측 못 해서 `opacity-50`으로 임시 처리해뒀었는데,
+ * 담당자가 실제 화면 스크린샷 기준으로 정확한 값을 줌: 텍스트 Gray-80, 배경 Gray-10.
+ * `DataRow`를 다음과 같이 수정: 행 배경을 `row.disabled ? "bg-mes-gray-10" : (선택 시
+ * Primary-20, 아니면 흰색)` 순서로 결정(disabled가 선택 상태보다 우선), 셀 텍스트 색을
+ * `row.disabled ? "text-mes-gray-80" : "text-mes-gray-130"`으로 분기. 클릭/체크 상호작용을
+ * 막는 `pointer-events-none`은 유지하되 `opacity-50`은 제거(더 이상 임시값이 아니므로
+ * 불투명도로 뭉뚱그릴 필요 없음). "분할"/"분할-disable" 변형은 담당자도 정확히 뭘
+ * 가리키는지 특정 못 해서 여전히 보류.
  */
 
 export interface TableColumn<T> {
@@ -310,8 +322,10 @@ function DataRow<T>({
     <div
       className={cn(
         "flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 px-[20px]",
-        isSelected ? "bg-mes-primary-20" : "bg-white",
-        row.disabled && "pointer-events-none opacity-50"
+        // 8차 후속: 담당자가 "비활성화는 텍스트 Gray-80, 배경 Gray-10"이라고 정확한 값을
+        // 줘서 기존 opacity-50 판단값을 교체함. 배경은 선택 여부보다 disabled가 우선.
+        row.disabled ? "bg-mes-gray-10" : isSelected ? "bg-mes-primary-20" : "bg-white",
+        row.disabled && "pointer-events-none"
       )}
     >
       {/* 7차: "신규" 빨간 점을 체크박스 우측으로 정확히 10px 띄운 위치에 고정 배치.
@@ -345,7 +359,12 @@ function DataRow<T>({
           column={col}
           className={cn(i < columns.length - 1 && `border-r border-dashed ${dividerColor}`)}
         >
-          <span className="w-full truncate text-[14px] leading-[1.3] text-mes-gray-130">
+          <span
+            className={cn(
+              "w-full truncate text-[14px] leading-[1.3]",
+              row.disabled ? "text-mes-gray-80" : "text-mes-gray-130"
+            )}
+          >
             {col.render ? col.render(row.data) : (row.data as Record<string, React.ReactNode>)[col.key]}
           </span>
         </Cell>

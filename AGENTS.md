@@ -251,6 +251,15 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   실사용에서는 원래 `color="gray"`(통칭 "checked-gray")를 기본으로 쓴다고 확인, 코드
   변경 없이 항목 종결. `docs/UI_컴포넌트_총망라_체크리스트.md`의 해당 컴포넌트 행에
   각각 반영함.
+- (2026-07-29, 곧바로 이어서) 위에서 "Table disable은 별도 스타일 없음"이라고 결론
+  내렸던 게 틀렸음 — 담당자가 같은 스크린샷을 다시 근거로 정확한 값을 지정: 비활성 행은
+  텍스트 Gray-80, 배경 Gray-10. `table.tsx`의 `DataRow`에서 기존 `opacity-50` 판단값을
+  이 값으로 교체(배경은 disabled가 선택 상태보다 우선, 텍스트 색 분기 추가,
+  `pointer-events-none`은 유지). 데모에서 `rowR8`을 `disabled: true`로 지정해 확인
+  가능하게 함. `docs/Table_수정_대기목록.md` 19번 참고. **교훈**: 스크린샷 한 장으로
+  "이런 스타일이 없다"고 성급히 결론 내리지 말고, 애매하면 먼저 확인을 구할 것 —
+  이번엔 담당자가 먼저 정정해줘서 큰 문제 없었지만 재발 방지 규칙 7번(범위 확대 전
+  확인)과 같은 맥락의 실수.
 - Progress Bar 완성(`progress.tsx`) — 트랙 Gray-40, 채움 Gray-100
 - 필터 전용 Tag(`filter-tag.tsx`, type1/type2), 범용 3색 Tag(`tag.tsx`, node 9873:83675 —
   담당자 확인상 실사용 빈도 낮음, Badge가 주력), Filter 트리거+활성태그(`filter.tsx`) 완성
