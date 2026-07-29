@@ -180,12 +180,30 @@ const productionColumns: TableColumn<ProductionRow>[] = [
     ),
   },
   { key: "itemType", label: "품목구분", width: 80, align: "center" },
-  { key: "packCount", label: "포장인원", width: 69, align: "right" },
+  {
+    key: "packCount",
+    label: "포장인원",
+    width: 69,
+    align: "right",
+    render: (row) => row.packCount.toLocaleString("ko-KR"),
+  },
   { key: "startTime", label: "시작시간", width: 124, align: "center" },
   { key: "endTime", label: "종료시간", width: 124, align: "center" },
   { key: "unit", label: "단위", width: 51, align: "center" },
-  { key: "qty", label: "생산수량", width: 104, align: "right" },
-  { key: "defectQty", label: "불량수량", width: 104, align: "right" },
+  {
+    key: "qty",
+    label: "생산수량",
+    width: 104,
+    align: "right",
+    render: (row) => row.qty.toLocaleString("ko-KR"),
+  },
+  {
+    key: "defectQty",
+    label: "불량수량",
+    width: 104,
+    align: "right",
+    render: (row) => row.defectQty.toLocaleString("ko-KR"),
+  },
   {
     key: "input",
     label: "투입",
@@ -197,7 +215,13 @@ const productionColumns: TableColumn<ProductionRow>[] = [
       </a>
     ),
   },
-  { key: "packQty", label: "포장수량", width: 100, align: "right" },
+  {
+    key: "packQty",
+    label: "포장수량",
+    width: 100,
+    align: "right",
+    render: (row) => row.packQty.toLocaleString("ko-KR"),
+  },
   {
     key: "lot",
     label: "라벨정보",
@@ -232,27 +256,34 @@ const rowR8 = { id: "r8", data: { date: "2025-10-26", shift: "야간", equipment
  * 기존 2단(지시일>설비) 구조에서 설비 그룹 바로 아래에 담당기사 그룹을 한 단 더 끼워
  * 넣음(rows를 groups로 감쌈). 컴포넌트는 이미 재귀 구조라 로직 변경 없이 데이터만 바꿔서
  * 3단이 됨.
+ *
+ * 7차: "숫자에 1000단위 콤마 넣어달라" 반영 — 집계값(summary)은 아래 `fmt()`로 문자열
+ * 미리 포맷해서 넣음(1000 미만 값도 그냥 fmt 통과시켜서 일관성 유지, 콤마는 자동으로
+ * 안 붙음). 데이터 행 자체의 수량 컬럼(포장인원/생산수량/불량수량/포장수량)은
+ * `productionColumns`의 `render`에서 `toLocaleString()`으로 포맷함.
  */
+const fmt = (n: number) => n.toLocaleString("ko-KR");
+
 const productionGroups: TableGroup<ProductionRow>[] = [
   {
     id: "date-1030",
     label: "지시일: 2025-10-30",
-    summary: { packCount: 8, qty: 4000, defectQty: 10, packQty: 40 },
+    summary: { packCount: fmt(8), qty: fmt(4000), defectQty: fmt(10), packQty: fmt(40) },
     groups: [
       {
         id: "eq1-1030",
         label: "설비: 성형기 1호",
-        summary: { packCount: 5, qty: 2000, defectQty: 10, packQty: 20 },
+        summary: { packCount: fmt(5), qty: fmt(2000), defectQty: fmt(10), packQty: fmt(20) },
         groups: [
-          { id: "mgr-eq1-1030", label: "담당기사: 김수현", summary: { packCount: 5, qty: 2000, defectQty: 10, packQty: 20 }, rows: [rowR1] },
+          { id: "mgr-eq1-1030", label: "담당기사: 김수현", summary: { packCount: fmt(5), qty: fmt(2000), defectQty: fmt(10), packQty: fmt(20) }, rows: [rowR1] },
         ],
       },
       {
         id: "eq2-1030",
         label: "설비: 성형기 2호",
-        summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
+        summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) },
         groups: [
-          { id: "mgr-eq2-1030", label: "담당기사: 김수현", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR4] },
+          { id: "mgr-eq2-1030", label: "담당기사: 김수현", summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) }, rows: [rowR4] },
         ],
       },
     ],
@@ -260,14 +291,14 @@ const productionGroups: TableGroup<ProductionRow>[] = [
   {
     id: "date-1029",
     label: "지시일: 2025-10-29",
-    summary: { packCount: 10, qty: 4000, defectQty: 20, packQty: 40 },
+    summary: { packCount: fmt(10), qty: fmt(4000), defectQty: fmt(20), packQty: fmt(40) },
     groups: [
       {
         id: "eq1-1029",
         label: "설비: 성형기 1호",
-        summary: { packCount: 10, qty: 4000, defectQty: 20, packQty: 40 },
+        summary: { packCount: fmt(10), qty: fmt(4000), defectQty: fmt(20), packQty: fmt(40) },
         groups: [
-          { id: "mgr-eq1-1029", label: "담당기사: 김수현", summary: { packCount: 10, qty: 4000, defectQty: 20, packQty: 40 }, rows: [rowR2, rowR3] },
+          { id: "mgr-eq1-1029", label: "담당기사: 김수현", summary: { packCount: fmt(10), qty: fmt(4000), defectQty: fmt(20), packQty: fmt(40) }, rows: [rowR2, rowR3] },
         ],
       },
     ],
@@ -275,14 +306,14 @@ const productionGroups: TableGroup<ProductionRow>[] = [
   {
     id: "date-1028",
     label: "지시일: 2025-10-28",
-    summary: { packCount: 6, qty: 4000, defectQty: 0, packQty: 40 },
+    summary: { packCount: fmt(6), qty: fmt(4000), defectQty: fmt(0), packQty: fmt(40) },
     groups: [
       {
         id: "eq2-1028",
         label: "설비: 성형기 2호",
-        summary: { packCount: 6, qty: 4000, defectQty: 0, packQty: 40 },
+        summary: { packCount: fmt(6), qty: fmt(4000), defectQty: fmt(0), packQty: fmt(40) },
         groups: [
-          { id: "mgr-eq2-1028", label: "담당기사: 김수현", summary: { packCount: 6, qty: 4000, defectQty: 0, packQty: 40 }, rows: [rowR5, rowR6] },
+          { id: "mgr-eq2-1028", label: "담당기사: 김수현", summary: { packCount: fmt(6), qty: fmt(4000), defectQty: fmt(0), packQty: fmt(40) }, rows: [rowR5, rowR6] },
         ],
       },
     ],
@@ -290,14 +321,14 @@ const productionGroups: TableGroup<ProductionRow>[] = [
   {
     id: "date-1027",
     label: "지시일: 2025-10-27",
-    summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
+    summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) },
     groups: [
       {
         id: "eq2-1027",
         label: "설비: 성형기 2호",
-        summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
+        summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) },
         groups: [
-          { id: "mgr-eq2-1027", label: "담당기사: 김수현", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR7] },
+          { id: "mgr-eq2-1027", label: "담당기사: 김수현", summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) }, rows: [rowR7] },
         ],
       },
     ],
@@ -305,14 +336,14 @@ const productionGroups: TableGroup<ProductionRow>[] = [
   {
     id: "date-1026",
     label: "지시일: 2025-10-26",
-    summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
+    summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) },
     groups: [
       {
         id: "eq2-1026",
         label: "설비: 성형기 2호",
-        summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 },
+        summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) },
         groups: [
-          { id: "mgr-eq2-1026", label: "담당기사: 김수현", summary: { packCount: 3, qty: 2000, defectQty: 0, packQty: 20 }, rows: [rowR8] },
+          { id: "mgr-eq2-1026", label: "담당기사: 김수현", summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) }, rows: [rowR8] },
         ],
       },
     ],
@@ -788,7 +819,7 @@ export default function Home() {
           groups={productionGroups}
           selectedIds={tableSelectedIds}
           onSelectedIdsChange={setTableSelectedIds}
-          totals={{ qty: "16,000", defectQty: 30, packQty: 160 }}
+          totals={{ qty: fmt(16000), defectQty: fmt(30), packQty: fmt(160) }}
         />
       </section>
     </div>

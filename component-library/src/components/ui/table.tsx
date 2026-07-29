@@ -128,6 +128,34 @@ import { IconArrow } from "../icons/icon-arrow";
  *     받을 수 있도록 타입 확장(하위호환 — 숫자면 기존과 100% 동일하게 동작). 어떤 컬럼을
  *     실제로 가변으로 바꿀지는 담당자 판단이 필요해서 이번엔 "기능만 추가"하고 데모 컬럼은
  *     전부 기존 고정값 그대로 둠.
+ *
+ * ── 9. 2026-07-28 6차: 5차 결과 재검토 3건 ──────────────────────────
+ * (1) 헤더 마스터 토글 3개와 그룹행 자체의 depth별 펼침 버튼이 서로 다른 좌표계(헤더는
+ *     고정폭 블록에 나란히, 그룹행은 라벨 앞 paddingLeft로 들여쓰기)를 쓰고 있어서 세로로
+ *     안 맞았음 → 헤더/그룹행 모두 "폭 `MASTER_TOGGLE_SLOT_WIDTH`(24px) 슬롯을 depth 수
+ *     만큼 나란히 두고, 자기 depth 슬롯에만 실제 버튼을 넣는" 동일 구조로 통일. 라벨의
+ *     시각적 들여쓰기는 별도로 유지(`paddingLeft: depth*12`, 이제 라벨 전용).
+ * (2) 신규행 빨간 점이 체크박스 왼쪽에 있던 것 → 체크박스 래퍼의 기존 pr-12 여백 안에
+ *     `absolute`로 넣어 오른쪽으로 이동(1차 정정, 정확한 10px 간격은 10번에서 재수정).
+ * (3) "정렬이 여전히 제멋대로" → 그룹/총계 라벨이 자기 컬럼의 align을 물려받아 라벨
+ *     길이별로 시작 위치가 달라 보였던 게 실제 원인 중 하나 → 라벨 셀은 컬럼 align과
+ *     무관하게 항상 좌측 고정. 데모 컬럼 `equipment`도 다른 짧은 값 컬럼들과 맞춰 가운데로
+ *     통일.
+ *
+ * ── 10. 2026-07-28 7차: 6차 결과 재검토 3건 ─────────────────────────
+ * (1) "빨간 점을 체크박스 우측 10px 지점에" → 체크박스 칼럼 자체의 폭을
+ *     `CHECKBOX_COLUMN_WIDTH`(40px = 체크박스 24 + 간격 10 + 점 6)로 상수화하고 헤더/
+ *     그룹행/데이터행/총계행 네 곳 전부 이 값을 쓰도록 통일. 이 과정에서 `TotalsRow`가
+ *     `pr-[12px]`와 명시적 `width:24`를 같이 써서 실제로는 24px(다른 행의 36px과 불일치)
+ *     만 차지하고 있던 잠재 정렬 버그를 같이 발견해 수정함.
+ * (2) "숫자 컬럼명(헤더)이 숫자가 아닌데 왜 우측정렬이냐, 헤더는 가운데정렬 쌔려야지" →
+ *     헤더 라벨 셀은 이제 컬럼의 `align`과 무관하게 항상 가운데 정렬로 고정(데이터 셀은
+ *     기존대로 컬럼별 align 유지 — 숫자는 계속 우측). 2차에서 "헤더 align = 데이터
+ *     align으로 통일"했던 것에서 다시 바뀐 것처럼 보이지만, 2차의 문제는 "정렬 안 지정한
+ *     컬럼만 헤더가 가운데로 강제되던 불일치"였고 지금은 "헤더는 의도적으로 항상 가운데"
+ *     라는 별개의 명시적 정책 — 데이터 셀 정렬 규칙엔 변화 없음.
+ * (3) "숫자에 1000단위 콤마 넣어줘" → 데모 컬럼(`packCount`/`qty`/`defectQty`/`packQty`)에
+ *     `toLocaleString("ko-KR")` 기반 `render` 추가, 그룹 집계값/총계도 동일 포맷.
  */
 
 export interface TableColumn<T> {
@@ -181,6 +209,18 @@ const DEFAULT_GROUP_LEVEL_COLORS = ["#fde9ea", "#dbe9ff", "#eef5ff"];
 /** 헤더 마스터 토글 버튼 1개가 차지하는 폭(22px 버튼 + 2px 간격) — 헤더/그룹행/데이터행/
  *  총계행이 전부 이 폭만큼 동일하게 예약해야 컬럼이 어긋나지 않는다(5차 정정). */
 const MASTER_TOGGLE_SLOT_WIDTH = 24;
+
+/**
+ * 체크박스 칼럼의 총 폭. 체크박스 24px + "신규" 빨간 점을 위한 여백 16px(체크박스
+ * 오른쪽으로 10px 띄우고 6px 점 자체 폭) = 40px. 7차: 담당자가 "빨간 점을 체크박스
+ * 우측 10px 지점에" 요청하면서 필요한 폭이 늘어나 상수화함 — 헤더/그룹행/데이터행/
+ * 총계행 네 곳 전부 이 값을 그대로 써야 정렬이 안 어긋난다. 이 작업 중
+ * `TotalsRow`가 기존에 이 칼럼을 24px로만 계산하고 있던(pr-12과 명시적 width:24가
+ * 충돌해 border-box 기준 실제로는 24px만 차지하던) 잠재 버그도 같이 발견해 수정함.
+ */
+const CHECKBOX_COLUMN_WIDTH = 40;
+/** 체크박스(24px) 오른쪽으로 "신규" 점까지의 간격 — 담당자 지정값 10px */
+const NEW_DOT_GAP_FROM_CHECKBOX = 10;
 
 /** 그룹(재귀) 하위의 모든 리프 행 id를 모음 — 그룹 체크박스 전체/부분 선택 판정용 */
 function collectGroupRowIds<T>(group: TableGroup<T>): string[] {
@@ -274,10 +314,13 @@ function DataRow<T>({
         row.disabled && "pointer-events-none opacity-50"
       )}
     >
-      {/* 6차: "신규" 빨간 점이 체크박스 왼쪽(행 자체의 padding 영역)에 있었는데, 담당자
-          지적으로 체크박스 오른쪽으로 이동 — 체크박스 래퍼의 기존 pr-[12px] 여백 안에
-          absolute로 넣어서 새 컬럼을 예약할 필요 없이(정렬 안 깨짐) 위치만 옮김 */}
-      <div className="relative flex h-full shrink-0 items-center pr-[12px]">
+      {/* 7차: "신규" 빨간 점을 체크박스 우측으로 정확히 10px 띄운 위치에 고정 배치.
+          체크박스 칼럼 폭을 CHECKBOX_COLUMN_WIDTH(40px)로 통일해서 점이 다음 요소와
+          안 겹치게 함 — 이 폭은 헤더/그룹행/총계행도 전부 동일하게 써야 정렬이 맞는다. */}
+      <div
+        className="relative flex h-full shrink-0 items-center"
+        style={{ width: CHECKBOX_COLUMN_WIDTH }}
+      >
         <Checkbox
           checked={isSelected}
           onChange={() => onToggle(row.id)}
@@ -287,7 +330,8 @@ function DataRow<T>({
         {row.isNew && (
           <span
             aria-hidden
-            className="absolute right-[3px] top-1/2 size-[6px] -translate-y-1/2 rounded-full bg-mes-danger-60"
+            className="absolute top-1/2 size-[6px] -translate-y-1/2 rounded-full bg-mes-danger-60"
+            style={{ left: 24 + NEW_DOT_GAP_FROM_CHECKBOX }}
           />
         )}
       </div>
@@ -338,7 +382,10 @@ function GroupHeaderRow<T>({
       className="flex h-[30px] shrink-0 items-center border-b border-solid px-[20px]"
       style={{ background, borderColor: background }}
     >
-      <div className="flex h-full shrink-0 items-center pr-[12px]">
+      <div
+        className="flex h-full shrink-0 items-center"
+        style={{ width: CHECKBOX_COLUMN_WIDTH }}
+      >
         <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color="black" />
       </div>
       {/* 6차: 헤더의 depth별 마스터 토글 버튼과 "같은 x 위치"에 오도록, 이 영역을 헤더와
@@ -421,7 +468,11 @@ function TotalsRow<T>({
   if (!totals) return null;
   return (
     <div className="flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 bg-white px-[20px]">
-      <div className="flex h-full shrink-0 items-center pr-[12px]" style={{ width: 24 }} />
+      {/* 7차: 여기서 `pr-[12px]` + 명시적 `width:24`를 같이 쓰고 있었는데, Tailwind
+          기본 box-sizing:border-box 때문에 실제로는 24px(패딩 포함)만 차지해서 다른
+          행 종류(체크박스 24+12=36px)와 이미 안 맞고 있던 잠재 버그였음 — 발견 즉시
+          CHECKBOX_COLUMN_WIDTH로 통일해서 수정 */}
+      <div className="h-full shrink-0" style={{ width: CHECKBOX_COLUMN_WIDTH }} />
       {/* 헤더의 마스터 토글 버튼 영역과 폭을 맞추는 빈 스페이서(5차 정정) */}
       {masterToggleAreaWidth > 0 && (
         <div className="h-full shrink-0" style={{ width: masterToggleAreaWidth }} />
@@ -585,8 +636,9 @@ function Table<T>({
         {/* 헤더 */}
         <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 bg-mes-gray-10 px-[20px]">
           {/* 5차 정정: 체크박스는 항상 최좌측 고정 — 마스터 토글 버튼은 체크박스보다
-              오른쪽에 온다(예전엔 반대였음). */}
-          <div className="flex h-full shrink-0 items-center pr-[12px]">
+              오른쪽에 온다(예전엔 반대였음). 7차: 폭을 CHECKBOX_COLUMN_WIDTH로 통일
+              (신규 점 배치 때문에 40px로 늘어남 — 다른 행 종류와 동일해야 함). */}
+          <div className="flex h-full shrink-0 items-center" style={{ width: CHECKBOX_COLUMN_WIDTH }}>
             <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} color="black" />
           </div>
           {/* 2026-07-28 3차 피드백(4): 그룹 depth별 "한꺼번에 접기/펼치기" 버튼. 6차: 각
@@ -628,9 +680,13 @@ function Table<T>({
             </div>
           )}
           {columns.map((col, i) => (
+            // 7차: "숫자 컬럼명이 숫자가 아닌데 왜 우측정렬이냐, 헤더는 가운데정렬 쌔려야지"
+            // → 헤더 라벨은 그 컬럼의 데이터 align(숫자=우측/텍스트=좌측 등)과 무관하게
+            // 항상 가운데 정렬로 고정. 데이터 셀 정렬은 이 규칙과 별개로 각 컬럼의
+            // align을 그대로 따른다(숫자=우측 유지).
             <Cell
               key={col.key}
-              column={col}
+              column={{ ...col, align: "center" }}
               className={cn(i < columns.length - 1 && "border-r border-dashed border-mes-gray-40")}
             >
               <span className="w-full truncate text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
