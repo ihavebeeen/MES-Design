@@ -300,6 +300,12 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   padding을 주지 않고 푸터 자체의 20px만으로 맞춤(`confirm-dialog.tsx` 수정). 또한
   담당자가 이 배너를 "배너"가 아니라 "도움말"/"툴팁"이라고 부른다는 것도 확인해 주석에
   기록(컴포넌트명 `NoticeBanner`는 유지).
+- (2026-07-29, 곧바로 이어서) 담당자가 배너 아이콘을 지적: "전구 모양이어야 하는데 왜
+  느낌표로 했냐". `notice-banner.tsx`에 애초에 "실제 벡터가 다르면(예: 전구 아이콘 등)
+  나중에 교체 필요"라고 판단값임을 명시해뒀던 부분 — 실측 자료가 없어 기존
+  `IconExclamationCircle`을 임시로 재사용했던 것을 `lucide-react`의 `Lightbulb`로
+  교체. 이것도 실측 벡터는 아니라서(담당자가 Figma에서 실제 전구 아이콘을 export해주면
+  다른 33종처럼 다시 교체 필요) 계속 "확인 필요" 목록에 남겨둠.
 - RadioChoiceDialog 완성(`radio-choice-dialog.tsx`, Radix Dialog 기반) — node
   18840:61182 "modal"(실측 인스턴스명 "투입품목 추가") 정밀실측. 라디오 2택+되돌릴 수
   없음 경고배너+취소/다음 버튼 구조, 기존 `Radio` 컴포넌트 재사용. radius 16px/그림자

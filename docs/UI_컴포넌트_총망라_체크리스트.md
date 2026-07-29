@@ -200,7 +200,7 @@
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Alert / Banner | 상단/인라인 경고 배너 | 몰큘 | 있음 | 1 | 2026-07-29 완료 — 클라우드MES 파일 "모달" 갤러리(node 18887:62605)에서 발견한 노란 안내 배너(안내문+"OO 바로가기 →" 링크)를 `notice-banner.tsx`(`NoticeBanner`)로 코드화. 배경/테두리/아이콘 색은 `get_variable_defs`로 실측(Yellow-10/20/50, `globals.css`에 신규 Yellow 팔레트 추가), padding/radius/배너 아이콘 벡터는 `get_metadata`/`get_design_context`가 이 노드에서 계속 실패(SSE 파싱 에러)해서 판단값(19번 섹션 참고). 담당자는 이 요소를 "배너"보다 "도움말"/"툴팁"이라고 부름. ConfirmDialog의 `banner` prop으로 통합 가능하고 독립 컴포넌트로도 사용 가능 — 통합 시 버튼 영역과의 간격은 담당자가 확정한 20px(처음엔 52px로 잘못 판단했다가 정정) |
+| Alert / Banner | 상단/인라인 경고 배너 | 몰큘 | 있음 | 1 | 2026-07-29 완료 — 클라우드MES 파일 "모달" 갤러리(node 18887:62605)에서 발견한 노란 안내 배너(안내문+"OO 바로가기 →" 링크)를 `notice-banner.tsx`(`NoticeBanner`)로 코드화. 배경/테두리/아이콘 색은 `get_variable_defs`로 실측(Yellow-10/20/50, `globals.css`에 신규 Yellow 팔레트 추가), padding/radius/배너 아이콘 벡터는 `get_metadata`/`get_design_context`가 이 노드에서 계속 실패(SSE 파싱 에러)해서 판단값(19번 섹션 참고). 담당자는 이 요소를 "배너"보다 "도움말"/"툴팁"이라고 부름. ConfirmDialog의 `banner` prop으로 통합 가능하고 독립 컴포넌트로도 사용 가능 — 통합 시 버튼 영역과의 간격은 담당자가 확정한 20px(처음엔 52px로 잘못 판단했다가 정정). 아이콘도 처음엔 느낌표(`IconExclamationCircle`)로 임의 처리했다가 담당자가 "전구 모양"이라고 확정해줘서 `lucide-react`의 `Lightbulb`로 교체(아직 실측 벡터 아님, 실제 SVG export 시 재교체 필요) |
 | Toast (스낵바 없음) | 짧게 떴다 사라지는 알림 | 몰큘 | 있음 | 1 | 2026-07-28 완료. 담당자 확인: 스낵바는 없고 Toast만 있음. 클라우드MES 파일 TOAST-RED(node 11098:37167)/TOAST-BLUE(node 11028:35650) 정밀실측 후 코드화(`toast.tsx`). 두 색상이 하나의 공유 컴포넌트가 아니라 별개 프레임이라 gap(8px/16px)·닫기아이콘 크기(16px/18px)·테두리색이 서로 다름 — 실측 그대로 반영. BLUE 배경색(#156BE9)은 확정 Primary-60(#1573FB)과 미묘하게 다른 값이라 팔레트에 편입시키지 않고 원본값 유지 |
 | Modal / Dialog | 화면 중앙 팝업 | 오가니즘 | 있음 | 1 | Type01: 중앙 모달, 최대높이 80vh |
 | Drawer / Sheet | 옆에서 슬라이드로 열리는 패널 | 오가니즘 | 없음 | 2 | |

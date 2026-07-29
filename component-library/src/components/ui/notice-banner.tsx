@@ -1,6 +1,6 @@
 import * as React from "react";
+import { Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { IconExclamationCircle } from "../icons/icon-exclamation-circle";
 
 /**
  * MES NoticeBanner (안내 배너, 링크 포함) — Figma 실측 기반
@@ -19,13 +19,17 @@ import { IconExclamationCircle } from "../icons/icon-exclamation-circle";
  * - `get_metadata`/`get_design_context`가 이 노드에서 응답 크기 문제로 계속 실패해서
  *   (SSE 파싱 에러) 정확한 padding/radius/폰트 px, 배너 아이콘의 정확한 벡터는 이번엔
  *   가져오지 못함 — 스크린샷 육안 대조로 레이아웃만 판단 구현(라벨/구조는 실측, 세부
- *   수치는 판단값). 아이콘은 새로 벡터를 만들지 않고 기존 `IconExclamationCircle`을
- *   작게(16px) 재사용 — 실제 벡터가 다르면(예: 전구 아이콘 등) 나중에 교체 필요.
+ *   수치는 판단값).
+ * - 아이콘: 처음엔 벡터를 못 구해서 기존 `IconExclamationCircle`(느낌표)을 임시로 재사용
+ *   했는데, 2026-07-29 담당자가 "전구 모양이어야 한다"고 확정해줘서 `lucide-react`의
+ *   `Lightbulb`로 교체함. 이것도 실측 벡터가 아니라 모양만 맞춘 임시 아이콘 — 담당자가
+ *   Figma에서 실제 전구 아이콘을 SVG로 export해서 주면(다른 33종 아이콘처럼) 그걸로
+ *   다시 교체 필요.
  * - 텍스트는 줄바꿈되고, 링크("조설정 바로가기 →" 같은 형태)는 배너 우측 하단에
  *   오른쪽 정렬로 별도 줄에 위치.
  *
  * ── 2. 확인 필요 ────────────────────────────────────────────────
- * - 배너 아이콘의 정확한 형태(전구/느낌표 등), padding/radius 정확한 px 값
+ * - 배너 아이콘의 정확한 실측 벡터(현재 lucide 임시 아이콘), padding/radius 정확한 px 값
  * - 링크에 화살표(→)가 아이콘인지 텍스트인지 — 우선 텍스트로 처리
  */
 
@@ -47,7 +51,7 @@ const NoticeBanner = React.forwardRef<HTMLDivElement, NoticeBannerProps>(
       {...props}
     >
       <div className="flex items-start gap-1.5">
-        <IconExclamationCircle size={16} className="mt-0.5 shrink-0 text-mes-yellow-50" />
+        <Lightbulb size={16} className="mt-0.5 shrink-0 text-mes-yellow-50" />
         <p className="text-[13px] leading-[1.4] text-mes-gray-110">{message}</p>
       </div>
       {linkLabel && (
