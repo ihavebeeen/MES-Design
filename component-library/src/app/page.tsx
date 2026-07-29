@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -407,6 +408,11 @@ export default function Home() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [radioDialogOpen, setRadioDialogOpen] = useState(false);
   const [tableSelectedIds, setTableSelectedIds] = useState<string[]>(["r4"]);
+  // 2026-07-28 8차: "테이블이 시선강탈"이라는 지적 반영 — 합본 Table 데모(15컬럼, 화면
+  // 전체 폭)는 페이지에서 눈에 가장 많이 띄는 블록이라 기본은 접어두고, 필요할 때만
+  // 펼쳐보도록 토글 추가. 미니 데모 4개(헤더만/그룹화만/컬럼2개+/총계행만)는 원래도
+  // 작아서 접을 필요가 없다고 판단해 그대로 둠.
+  const [productionTableOpen, setProductionTableOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-10 bg-mes-gray-10 p-16">
@@ -841,34 +847,51 @@ export default function Home() {
       </section>
 
       {/* 2026-07-28 5차: 컬럼이 많아 max-w-[1100px]로는 한눈에 안 보인다는 지적 →
-          이 섹션만 폭 제한을 풀어서 화면 전체 폭을 씀(대기목록 5번) */}
+          이 섹션만 폭 제한을 풀어서 화면 전체 폭을 씀(대기목록 5번).
+          8차: "테이블이 시선강탈"이라는 지적 → 기본 접힘 + 토글 버튼으로 필요할 때만
+          펼치도록 변경(대기목록 16번). */}
       <section className="flex w-full max-w-none flex-col gap-4 pb-8">
-        <h2 className="text-[14px] font-semibold text-mes-gray-130">
-          Table (원본 node 9873:83780 + 수정본 실제화면 node 16938:42501 대조 실측 + 2026-07-28
-          2·3차 실제화면 피드백 반영)
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          1차 반영: 헤더 배경 Gray-10, 세로 점선 구분선(기본 Gray-40), 선택행(Primary-20
-          배경)·신규행(빨간 점, r7)은 구분선이 한 단계 진한 Gray-30. 2차 반영(실제 운영 화면
-          스크린샷 기준 판단값, Figma 실측 아님): (1) 다단 그룹화 재귀 중첩 지원, depth별
-          배경색은 판단값(핑크→파랑→옅은 파랑), (2) 그룹 합계열·(4) 총계열이 헤더 컬럼
-          위치와 어긋나던 버그를 &quot;라벨을 첫 컬럼 Cell 안에 넣기&quot; 방식으로 구조적으로
-          수정, (3) 그룹 헤더 행에도 체크박스 추가 + 신규 indeterminate(중간선택) 상태
-          지원(`checkbox.tsx`에 prop 추가, 최상단 전체선택 체크박스도 동일 적용), (5) 헤더
-          텍스트 정렬을 데이터 셀과 항상 일치하도록 수정. 3차 반영(같은 날 재검토): (1) 그룹
-          펼침 버튼이 체크박스처럼 보여서 겹쳐 보인다는 지적에 테두리·배경 제거하고 아이콘만
-          남김, (2) 지시일→설비→담당기사 3단 그룹화 데모로 재구성(컴포넌트 로직 변경 없이
-          데이터만), (3) 펼침/접힘 회전을 90도(왼쪽↔위) → 180도(위↔아래)로 수정, (4) 헤더
-          맨 앞에 그룹 depth별(지금은 3개) 전체 접기/펼치기 버튼 추가. disable/분할 변형은
-          여전히 미실측(체크리스트 참고).
-        </p>
-        <Table
-          columns={productionColumns}
-          groups={productionGroups}
-          selectedIds={tableSelectedIds}
-          onSelectedIdsChange={setTableSelectedIds}
-          totals={{ qty: fmt(16000), defectQty: fmt(30), packQty: fmt(160) }}
-        />
+        <button
+          type="button"
+          onClick={() => setProductionTableOpen((prev) => !prev)}
+          className="flex items-center gap-1.5 text-left text-[14px] font-semibold text-mes-gray-130"
+        >
+          <ChevronRight
+            size={16}
+            className={cn(
+              "shrink-0 text-mes-gray-70 transition-transform",
+              productionTableOpen && "rotate-90"
+            )}
+          />
+          Table · 합본 데모 (원본 node 9873:83780 + 수정본 실제화면 node 16938:42501 대조
+          실측 + 2026-07-28 2·3차 실제화면 피드백 반영) — 클릭해서 접기/펼치기
+        </button>
+        {productionTableOpen && (
+          <>
+            <p className="text-[12px] text-mes-gray-70">
+              1차 반영: 헤더 배경 Gray-10, 세로 점선 구분선(기본 Gray-40), 선택행(Primary-20
+              배경)·신규행(빨간 점, r7)은 구분선이 한 단계 진한 Gray-30. 2차 반영(실제 운영 화면
+              스크린샷 기준 판단값, Figma 실측 아님): (1) 다단 그룹화 재귀 중첩 지원, depth별
+              배경색은 판단값(핑크→파랑→옅은 파랑), (2) 그룹 합계열·(4) 총계열이 헤더 컬럼
+              위치와 어긋나던 버그를 &quot;라벨을 첫 컬럼 Cell 안에 넣기&quot; 방식으로 구조적으로
+              수정, (3) 그룹 헤더 행에도 체크박스 추가 + 신규 indeterminate(중간선택) 상태
+              지원(`checkbox.tsx`에 prop 추가, 최상단 전체선택 체크박스도 동일 적용), (5) 헤더
+              텍스트 정렬을 데이터 셀과 항상 일치하도록 수정. 3차 반영(같은 날 재검토): (1) 그룹
+              펼침 버튼이 체크박스처럼 보여서 겹쳐 보인다는 지적에 테두리·배경 제거하고 아이콘만
+              남김, (2) 지시일→설비→담당기사 3단 그룹화 데모로 재구성(컴포넌트 로직 변경 없이
+              데이터만), (3) 펼침/접힘 회전을 90도(왼쪽↔위) → 180도(위↔아래)로 수정, (4) 헤더
+              맨 앞에 그룹 depth별(지금은 3개) 전체 접기/펼치기 버튼 추가. disable/분할 변형은
+              여전히 미실측(체크리스트 참고).
+            </p>
+            <Table
+              columns={productionColumns}
+              groups={productionGroups}
+              selectedIds={tableSelectedIds}
+              onSelectedIdsChange={setTableSelectedIds}
+              totals={{ qty: fmt(16000), defectQty: fmt(30), packQty: fmt(160) }}
+            />
+          </>
+        )}
       </section>
 
       <section className="flex w-full max-w-[960px] flex-col gap-6 pb-8">
