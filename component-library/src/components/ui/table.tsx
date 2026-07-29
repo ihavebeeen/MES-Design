@@ -269,24 +269,27 @@ function DataRow<T>({
   return (
     <div
       className={cn(
-        "relative flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 px-[20px]",
+        "flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 px-[20px]",
         isSelected ? "bg-mes-primary-20" : "bg-white",
         row.disabled && "pointer-events-none opacity-50"
       )}
     >
-      {row.isNew && (
-        <span
-          aria-hidden
-          className="absolute left-[13px] top-1/2 size-[6px] -translate-y-1/2 rounded-full bg-mes-danger-60"
-        />
-      )}
-      <div className="flex h-full shrink-0 items-center pr-[12px]">
+      {/* 6차: "신규" 빨간 점이 체크박스 왼쪽(행 자체의 padding 영역)에 있었는데, 담당자
+          지적으로 체크박스 오른쪽으로 이동 — 체크박스 래퍼의 기존 pr-[12px] 여백 안에
+          absolute로 넣어서 새 컬럼을 예약할 필요 없이(정렬 안 깨짐) 위치만 옮김 */}
+      <div className="relative flex h-full shrink-0 items-center pr-[12px]">
         <Checkbox
           checked={isSelected}
           onChange={() => onToggle(row.id)}
           color="black"
           disabled={row.disabled}
         />
+        {row.isNew && (
+          <span
+            aria-hidden
+            className="absolute right-[3px] top-1/2 size-[6px] -translate-y-1/2 rounded-full bg-mes-danger-60"
+          />
+        )}
       </div>
       {/* 헤더의 마스터 토글 버튼 영역과 폭을 맞추는 빈 스페이서(5차 정정) */}
       {masterToggleAreaWidth > 0 && (
@@ -338,36 +341,59 @@ function GroupHeaderRow<T>({
       <div className="flex h-full shrink-0 items-center pr-[12px]">
         <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color="black" />
       </div>
-      {/* 헤더의 마스터 토글 버튼 영역과 폭을 맞추는 빈 스페이서(5차 정정) */}
+      {/* 6차: 헤더의 depth별 마스터 토글 버튼과 "같은 x 위치"에 오도록, 이 영역을 헤더와
+          똑같이 depth 슬롯(폭 MASTER_TOGGLE_SLOT_WIDTH씩)으로 나누고, 이 그룹의 depth에
+          해당하는 슬롯에만 실제 펼침 버튼을 넣는다. 이전엔 라벨 앞에 paddingLeft로
+          들여쓰기만 해서 버튼이 슬롯 폭 배열과 무관한 위치에 떠 있었음(정렬 어긋남의
+          원인) — 이제 슬롯 폭이 헤더와 정확히 일치해서 항상 같은 열에 정렬됨. */}
       {masterToggleAreaWidth > 0 && (
-        <div className="h-full shrink-0" style={{ width: masterToggleAreaWidth }} />
+        <div className="flex h-full shrink-0 items-center" style={{ width: masterToggleAreaWidth }}>
+          {Array.from({ length: masterToggleAreaWidth / MASTER_TOGGLE_SLOT_WIDTH }).map(
+            (_, slotIndex) => (
+              <div
+                key={slotIndex}
+                className="flex h-full shrink-0 items-center justify-center"
+                style={{ width: MASTER_TOGGLE_SLOT_WIDTH }}
+              >
+                {slotIndex === depth && (
+                  <button
+                    type="button"
+                    onClick={onToggleCollapse}
+                    className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-mes-gray-0"
+                  >
+                    <IconArrow
+                      size={12}
+                      className={cn(
+                        "text-mes-gray-130 transition-transform",
+                        isCollapsed ? "-rotate-90" : "rotate-90"
+                      )}
+                    />
+                  </button>
+                )}
+              </div>
+            )
+          )}
+        </div>
       )}
       {columns.map((col, i) =>
         i === 0 ? (
-          <Cell key={col.key} column={col} className="overflow-visible">
-            <button
-              type="button"
+          // 6차: 라벨은 항상 좌측 고정 — 이 컬럼의 align이 center/right여도 그룹 라벨은
+          // 트리 라벨이라 데이터 값과 성격이 달라서 강제로 좌측 고정한다(안 그러면 라벨
+          // 길이에 따라 컬럼 중앙 기준으로 시작 위치가 매번 달라져 "정렬이 제멋대로"인
+          // 것처럼 보임 — 실제 이 문제가 있었음).
+          <Cell key={col.key} column={{ ...col, align: "left" }} className="overflow-visible">
+            <span
+              role="button"
+              tabIndex={0}
               onClick={onToggleCollapse}
-              className="flex shrink-0 items-center gap-2 whitespace-nowrap"
-              style={{ paddingLeft: depth * 20 }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") onToggleCollapse();
+              }}
+              className="cursor-pointer whitespace-nowrap text-[14px] font-medium leading-[1.3] text-mes-gray-130"
+              style={{ paddingLeft: depth * 12 }}
             >
-              {/* 2026-07-28 4차 정정: 3차에서 "체크박스와 겹쳐 보인다"는 지적을 스스로
-                  "박스 제거"로 해석해 테두리·배경을 없앴었는데, 이게 오히려 원본에서
-                  더 멀어진 임의 변경이었음 — 담당자가 정확한 값을 다시 지정: 22x22px,
-                  배경 Gray-0(흰색), radius 3px, 스트로크 Gray-50 inside 1px. 원상 복구 */}
-              <span className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-mes-gray-0">
-                <IconArrow
-                  size={12}
-                  className={cn(
-                    "text-mes-gray-130 transition-transform",
-                    isCollapsed ? "-rotate-90" : "rotate-90"
-                  )}
-                />
-              </span>
-              <span className="whitespace-nowrap text-[14px] font-medium leading-[1.3] text-mes-gray-130">
-                {group.label}
-              </span>
-            </button>
+              {group.label}
+            </span>
           </Cell>
         ) : (
           <Cell key={col.key} column={col}>
@@ -402,7 +428,8 @@ function TotalsRow<T>({
       )}
       {columns.map((col, i) =>
         i === 0 ? (
-          <Cell key={col.key} column={col} className="overflow-visible">
+          // 6차: 그룹 라벨과 같은 이유로 "총계" 라벨도 컬럼 align과 무관하게 좌측 고정
+          <Cell key={col.key} column={{ ...col, align: "left" }} className="overflow-visible">
             <span className="whitespace-nowrap text-[14px] font-semibold leading-[1.3] text-mes-gray-130">
               총계
             </span>
@@ -562,22 +589,26 @@ function Table<T>({
           <div className="flex h-full shrink-0 items-center pr-[12px]">
             <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} color="black" />
           </div>
-          {/* 2026-07-28 3차 피드백(4): 그룹 depth별 "한꺼번에 접기/펼치기" 버튼. 이 영역의
-              폭(`masterToggleAreaWidth`)은 그룹행/데이터행/총계행에도 동일하게 빈
-              스페이서로 예약돼 있어야 컬럼이 안 어긋난다(5차 정정, 재발 방지 규칙 6번). */}
+          {/* 2026-07-28 3차 피드백(4): 그룹 depth별 "한꺼번에 접기/펼치기" 버튼. 6차: 각
+              버튼을 폭 MASTER_TOGGLE_SLOT_WIDTH의 슬롯 안에 넣어서, 그룹행(GroupHeaderRow)
+              의 depth별 슬롯과 정확히 같은 x 위치에 오도록 통일(이전엔 gap 기반이라 슬롯
+              경계가 그룹행과 미묘하게 안 맞을 수 있었음). 이 영역의 폭(`masterToggleAreaWidth`)
+              은 그룹행/데이터행/총계행에도 동일하게 예약돼 있어야 컬럼이 안 어긋난다
+              (재발 방지 규칙 6번). */}
           {groupLevelCount > 0 && (
-            <div
-              className="flex h-full shrink-0 items-center gap-0.5"
-              style={{ width: masterToggleAreaWidth }}
-            >
+            <div className="flex h-full shrink-0 items-center" style={{ width: masterToggleAreaWidth }}>
               {Array.from({ length: groupLevelCount }).map((_, depth) => {
                 const groupsAtDepth = getGroupsAtDepth(groups, depth);
                 const anyExpanded = groupsAtDepth.some(
                   (g) => !(collapsed[g.id] ?? g.defaultExpanded === false)
                 );
                 return (
-                  <button
+                  <div
                     key={depth}
+                    className="flex h-full shrink-0 items-center justify-center"
+                    style={{ width: MASTER_TOGGLE_SLOT_WIDTH }}
+                  >
+                  <button
                     type="button"
                     onClick={() => toggleAllAtDepth(depth)}
                     title={`${depth + 1}단 전체 ${anyExpanded ? "접기" : "펼치기"}`}
@@ -591,6 +622,7 @@ function Table<T>({
                       )}
                     />
                   </button>
+                  </div>
                 );
               })}
             </div>
