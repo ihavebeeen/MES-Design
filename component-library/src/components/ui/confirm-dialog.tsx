@@ -23,10 +23,13 @@ import { IconX } from "../icons/icon-x";
  * Figma에 이름 붙어있음), 너비는 콘텐츠에 따라 최소 400px~최대 700px 사이에서 결정됨.
  * - 헤더(52px): 흰 배경, 하단 테두리 1px Gray-30, 좌측 padding 20px/우측 14px, 상하 10px.
  *   제목 Pretendard Bold 18px Gray-130(text). 우측 닫기(X) 버튼 32x32 히트영역, 아이콘 20px.
- * - 본문: padding 32px, 아이콘(44px)+텍스트 블록 gap 20px. 텍스트 블록 내부 gap 4px:
- *   heading(Pretendard SemiBold 16px, Gray-130) + description(Pretendard Medium, 색
- *   `#696F83`(Figma 토큰명 "mc/100") opacity 80% — 확정 Gray 팔레트 어느 단계와도
- *   일치하지 않는 별도 색상이라 팔레트에 편입시키지 않고 원본값 그대로 둠)
+ * - 본문: 좌/우/상 padding 32px(원래 실측값은 상하좌우 전부 32px였으나 2026-07-29
+ *   담당자가 "본문-버튼 간격이 너무 넓어 보인다"고 지적해 하단만 0으로 바꾸고 푸터의
+ *   자체 padding에 간격을 위임 — 아래 3번 섹션 참고), 아이콘(44px)+텍스트 블록 gap 20px.
+ *   텍스트 블록 내부 gap 4px: heading(Pretendard SemiBold 16px, Gray-130) +
+ *   description(Pretendard Medium, 색 `#696F83`(Figma 토큰명 "mc/100") opacity 80% —
+ *   확정 Gray 팔레트 어느 단계와도 일치하지 않는 별도 색상이라 팔레트에 편입시키지 않고
+ *   원본값 그대로 둠)
  * - 푸터: padding 20px, 버튼 높이 40px(Button 컴포넌트의 size="basic"와 동일 규격),
  *   버튼이 1개일 땐 너비 100%(flex-1)
  *
@@ -60,6 +63,12 @@ import { IconX } from "../icons/icon-x";
  *   다만 "배너가 있을 때 배너-버튼 간격"은 담당자가 정확한 값(20px)을 직접 줘서 확정
  *   반영함(위 렌더 코드의 `px-8` 부분 — 별도 하단 padding 없이 푸터 자체의 20px만으로
  *   맞춤). 모바일(배경 딤 처리) 변형은 이번 라운드 범위 밖(담당자 확인, 다음에 진행).
+ * - (곧바로 이어서) 담당자가 배너 없는 일반 형태도 "본문-버튼 간격이 40px쯤 되어 보인다,
+ *   20px로 하자"고 지적 — 애초 32px(본문 하단)+20px(푸터 상단)=52px는 원본
+ *   node 11106:37629를 그대로 실측한 값이었지만(임의 판단 아니었음), 담당자가 명시적으로
+ *   더 좁은 값(20px)으로 바꾸자고 확정 지시해서 그대로 반영. 배너 케이스와 동일하게
+ *   본문 하단 padding을 0으로 없애고 푸터 자체의 20px(pt)만으로 간격을 맞춤 — 즉 이제는
+ *   Figma 원본 실측치(52px)보다 담당자 지정값(20px)이 우선.
  */
 
 export interface ConfirmDialogAction {
@@ -124,10 +133,14 @@ function ConfirmDialog({
             </DialogPrimitive.Close>
           </div>
 
+          {/* 2026-07-29 담당자 확인: 배너가 없을 때도 본문-버튼 간격은 20px여야 함(기존
+              32+20=52px는 너무 넓어 보인다는 지적) — 배너 케이스와 동일한 방식으로,
+              본문 쪽엔 하단 padding을 주지 않고 푸터 자체의 pt(p-5=20px)만으로 맞춤.
+              배너가 있을 땐 본문→배너 간격 20px(pb-5)은 그대로 유지. */}
           <div
             className={cn(
               "flex shrink-0 items-center gap-5 px-8 pt-8",
-              banner ? "pb-5" : "pb-8"
+              banner ? "pb-5" : "pb-0"
             )}
           >
             <IconExclamationCircle size={44} className={cn("shrink-0", TONE_ICON_COLOR[tone])} />
