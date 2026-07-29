@@ -236,6 +236,21 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
 - Input Textbox / Selectbox 완성 — Figma 정밀 실측(획 두께 포함), Selectbox는 Radix Select 기반 커스텀 드롭다운으로 구현
 - Combobox(검색 내장 셀렉트) 신규 완성 — Selectbox와 별도 컴포넌트로 분리(`combobox.tsx`, Radix Popover 기반). 선택 항목 hover 테두리 색은 미실측 임시값(Primary-40) 적용 중 — devtools 확인 필요(체크리스트 19번 섹션 참고)
 - Badge/Radio/Checkbox 완성 — 클라우드MES 파일 정밀실측(`badge.tsx`/`radio.tsx`/`checkbox.tsx`). Badge는 Figma 이름-색상 불일치 2건(orange=실제 gray, yellow=실제 blue) 발견해 실측값 그대로 반영, 원본 확인 필요(체크리스트 19번 섹션). Checkbox는 이전 체크리스트에 "없음"으로 잘못 기재돼 있었으나 실제로 존재함을 확인해 정정. Radio/Checkbox 둘 다 disabled+선택됨 조합은 Figma에 없어 판단값 처리
+- (2026-07-29) 코드화된 컴포넌트들의 "미확인" 세부 항목을 담당자가 일괄 확인·정리:
+  (1) Table "기본-disable/분할" 변형 — 실제 화면(판매관리 리스트) 스크린샷으로 disable은
+  별도 행 스타일 없이 미처리 값을 "-"/"0"으로만 표시한다는 게 확인됨(코드 변경 불필요,
+  항목 종결), "분할"은 담당자도 무엇인지 특정 못 해 보류. (2) Combobox의 selected+hover
+  테두리 색(Primary-40 임시값)은 "그대로 유지"로 확정 — devtools 재확인 불필요한 최종값이
+  됨(select.tsx는 이번에 언급 안 돼 기존 임시값 상태 유지). (3) Badge 7종을 Figma 원본
+  이름 대신 실제 색 기준으로 개명(값은 그대로) — orange→`grayFill`, yellow→`blue2`,
+  variant6→`blueLight`, variant7→`blueOutline`(blue/red/gray는 이미 정확해서 유지),
+  `badge.tsx`·데모 페이지 동시 수정. (4) ConfirmDialog 다른 톤 변형은 "좀 이따 자료
+  전달" — 보류. (5) RadioChoiceDialog의 "삭제 모달 - 드롭다운" 변형은 원래 있었는데
+  담당자도 못 찾는 상태라 당분간 제외, 필요해지면 판단값으로 만들어도 무방하다고 확인.
+  (6) Checkbox "default(회색)/main(파랑)/black(검정) 실사용 상황" 확인 필요 항목 —
+  실사용에서는 원래 `color="gray"`(통칭 "checked-gray")를 기본으로 쓴다고 확인, 코드
+  변경 없이 항목 종결. `docs/UI_컴포넌트_총망라_체크리스트.md`의 해당 컴포넌트 행에
+  각각 반영함.
 - Progress Bar 완성(`progress.tsx`) — 트랙 Gray-40, 채움 Gray-100
 - 필터 전용 Tag(`filter-tag.tsx`, type1/type2), 범용 3색 Tag(`tag.tsx`, node 9873:83675 —
   담당자 확인상 실사용 빈도 낮음, Badge가 주력), Filter 트리거+활성태그(`filter.tsx`) 완성

@@ -50,11 +50,10 @@ import { selectTriggerVariants } from "./select";
  *   gray20, 선택된 항목은 hover 여부와 무관하게 항상 #E8F0FE)
  * - disabled: 옵션 리스트 자체엔 현재 disabled 옵션 개념 없음(전체 Combobox disabled만 지원)
  *
- * ── 5. 미확인 상태로 남은 값(TODO — 확인되는 대로 교체) ─────────
- * - selected + hover 시 테두리 색 — 배경(#E8F0FE)이 확정 Primary 팔레트 11단계 중 어느 값과도
- *   정확히 일치하지 않아(Primary-20 #E8F5FF와 가장 비슷하지만 다른 값) "배경보다 1~2단계
- *   진하게"라는 담당자 가설을 실측 없이 확정할 수 없었음 — 우선 Primary-40(#7BBBFF)을
- *   임시값으로 넣어둠(select.tsx와 동일 처리). devtools 실측값 확인되면 즉시 교체.
+ * ── 5. selected + hover 시 테두리 색 — 2026-07-29 담당자 확정: 현재값 유지 ─────
+ * 배경(#E8F0FE)이 확정 Primary 팔레트 11단계 중 어느 값과도 정확히 일치하지 않아 실측만으로는
+ * 확정할 수 없었던 값. 담당자가 "그대로 유지"로 확정해서 Primary-40(#7BBBFF, select.tsx와
+ * 동일 처리)을 임시값이 아닌 최종값으로 확정함 — devtools 재확인 불필요.
  *
  * 키보드 탐색(방향키 이동 등)은 1차 버전엔 미포함 — 클릭/검색만 지원. 필요하면 추후 추가.
  *

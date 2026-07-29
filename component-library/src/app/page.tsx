@@ -574,27 +574,27 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Badge (7종 — orange/yellow는 Figma 이름과 실제 색이 다름, 아래 라벨에 실제색 병기)">
+      <Section title="Badge (7종 — 2026-07-29 실제 색 기준으로 variant명 개명, 값 변경 없음)">
         <Sample label="Badge · blue">
           <Badge variant="blue">출하중</Badge>
         </Sample>
         <Sample label="Badge · red">
           <Badge variant="red">취소요청</Badge>
         </Sample>
-        <Sample label="Badge · orange(실제=gray)">
-          <Badge variant="orange">대기</Badge>
+        <Sample label="Badge · grayFill(구 이름 orange)">
+          <Badge variant="grayFill">대기</Badge>
         </Sample>
-        <Sample label="Badge · yellow(실제=blue, Figma 오류 추정)">
-          <Badge variant="yellow">승인중</Badge>
+        <Sample label="Badge · blue2(구 이름 yellow, blue와 값 동일)">
+          <Badge variant="blue2">승인중</Badge>
         </Sample>
         <Sample label="Badge · gray(배경 없음)">
           <Badge variant="gray">완료</Badge>
         </Sample>
-        <Sample label="Badge · variant6(용도 미확인)">
-          <Badge variant="variant6">완료</Badge>
+        <Sample label="Badge · blueLight(구 이름 variant6)">
+          <Badge variant="blueLight">완료</Badge>
         </Sample>
-        <Sample label="Badge · variant7(용도 미확인)">
-          <Badge variant="variant7">완료</Badge>
+        <Sample label="Badge · blueOutline(구 이름 variant7)">
+          <Badge variant="blueOutline">완료</Badge>
         </Sample>
       </Section>
 
