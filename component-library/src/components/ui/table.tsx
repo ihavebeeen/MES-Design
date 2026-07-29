@@ -106,15 +106,40 @@ import { IconArrow } from "../icons/icon-arrow";
  * Gray-0(`#FFFFFF`), radius 3px, 스트로크 Gray-50(`#B4C0D3`) inside 1px**. 요청받지
  * 않은 범위에서 "이게 더 원본에 가까울 것"이라고 스스로 판단한 게 실제로는 틀렸던
  * 사례 — 재발 방지 규칙 7번(요청 범위를 스스로 넓히지 않기)의 실제 근거. 그룹행 펼침
- * 버튼과 헤더 마스터 토글 버튼 둘 다 위 수치로 원상 복구함. (여전히 미해결: 헤더 마스터
- * 토글 버튼의 위치가 체크박스보다 왼쪽인 문제, 그로 인한 헤더-바디 컬럼 정렬 어긋남 —
- * `docs/Table_수정_대기목록.md` 1·2번 참고)
+ * 버튼과 헤더 마스터 토글 버튼 둘 다 위 수치로 원상 복구함.
+ *
+ * ── 8. 2026-07-28 5차: `docs/Table_수정_대기목록.md` 1·2번 구조 버그 수정 ─────────
+ * (1) 체크박스가 항상 최좌측·고정이어야 하는데 헤더의 depth별 마스터 토글 버튼이
+ *     체크박스보다 왼쪽에 있었던 문제 → 순서를 [체크박스] → [마스터 토글 영역]으로 교체.
+ * (2) 그 마스터 토글 버튼들의 폭(depth 수 × `MASTER_TOGGLE_SLOT_WIDTH`)만큼 그룹행/
+ *     데이터행/총계행에는 여백이 없어서 헤더 컬럼과 바디 컬럼이 어긋났던 문제 → "체크박스
+ *     → 마스터 토글 영역"을 헤더/그룹행/데이터행/총계행 전부가 공유하는 고정폭 블록으로
+ *     취급해서, 헤더는 그 안에 실제 버튼을 그리고 나머지 행 종류는 정확히 같은 폭의 빈
+ *     스페이서(`masterToggleAreaWidth`)를 렌더링하도록 통일 — 2차 때 세운 "여러 행
+ *     종류가 새 요소를 반영할 땐 전부 같은 폭을 예약해야 한다" 원칙(재발 방지 규칙 6번)을
+ *     이번엔 실제로 전체 행 종류에 다 적용함.
+ * (3) (확인) "펼침 버튼 오른쪽에 라벨 텍스트가 안 보인다"는 지적은 코드상 원인을 못
+ *     찾음 — `overflow-visible`/`whitespace-nowrap`로 라벨은 항상 렌더링되고 있고, 담당자
+ *     본인도 "화면이 좁아서 그런 걸 수도 있다"고 언급했던 만큼 뷰포트 폭에 의한 시각적
+ *     잘림으로 잠정 결론. 넓은 화면에서 다시 문제 재현되면 별도로 조사 필요.
+ * (4) 데모 페이지의 Table 섹션 `max-w-[1100px]` 제약을 풀어서 전체 폭으로 표시(가로 스크롤
+ *     여전히 필요할 수 있으나 컨테이너 제약으로 인한 불필요한 압박은 제거).
+ * (5) 컬럼 폭 유연화: `TableColumn.width`가 숫자(고정 px)뿐 아니라 `{ min, grow? }` 형태도
+ *     받을 수 있도록 타입 확장(하위호환 — 숫자면 기존과 100% 동일하게 동작). 어떤 컬럼을
+ *     실제로 가변으로 바꿀지는 담당자 판단이 필요해서 이번엔 "기능만 추가"하고 데모 컬럼은
+ *     전부 기존 고정값 그대로 둠.
  */
 
 export interface TableColumn<T> {
   key: string;
   label: string;
-  width: number;
+  /**
+   * 숫자면 고정 px 폭(기존과 동일). `{ min, grow? }` 객체를 주면 가변폭 컬럼이 됨 —
+   * `min`px 밑으로는 안 줄어들고, 남는 공간을 `grow`(기본 1) 비율로 나눠 가짐.
+   * 2026-07-28 5차에서 타입만 확장함 — 실제로 어떤 컬럼을 가변으로 바꿀지는 담당자
+   * 판단 필요, 데모는 아직 전부 고정폭 사용 중.
+   */
+  width: number | { min: number; grow?: number };
   align?: "left" | "center" | "right";
   render?: (row: T) => React.ReactNode;
 }
@@ -153,6 +178,10 @@ export interface TableProps<T> {
 
 const DEFAULT_GROUP_LEVEL_COLORS = ["#fde9ea", "#dbe9ff", "#eef5ff"];
 
+/** 헤더 마스터 토글 버튼 1개가 차지하는 폭(22px 버튼 + 2px 간격) — 헤더/그룹행/데이터행/
+ *  총계행이 전부 이 폭만큼 동일하게 예약해야 컬럼이 어긋나지 않는다(5차 정정). */
+const MASTER_TOGGLE_SLOT_WIDTH = 24;
+
 /** 그룹(재귀) 하위의 모든 리프 행 id를 모음 — 그룹 체크박스 전체/부분 선택 판정용 */
 function collectGroupRowIds<T>(group: TableGroup<T>): string[] {
   if (group.groups) return group.groups.flatMap(collectGroupRowIds);
@@ -186,15 +215,28 @@ function Cell({
   children,
   className,
 }: {
-  column: { width: number; align?: "left" | "center" | "right" };
+  column: {
+    width: number | { min: number; grow?: number };
+    align?: "left" | "center" | "right";
+  };
   children?: React.ReactNode;
   className?: string;
 }) {
+  const isFixed = typeof column.width === "number";
   return (
     <div
-      style={{ width: column.width }}
+      style={
+        isFixed
+          ? { width: column.width as number }
+          : {
+              minWidth: (column.width as { min: number; grow?: number }).min,
+              flexGrow: (column.width as { min: number; grow?: number }).grow ?? 1,
+              flexBasis: 0,
+            }
+      }
       className={cn(
-        "flex h-full shrink-0 items-center px-[6px]",
+        "flex h-full items-center px-[6px]",
+        isFixed ? "shrink-0" : "shrink",
         column.align === "center" && "justify-center text-center",
         column.align === "right" && "justify-end text-right",
         className
@@ -215,11 +257,13 @@ function DataRow<T>({
   columns,
   isSelected,
   onToggle,
+  masterToggleAreaWidth,
 }: {
   row: TableRowData<T>;
   columns: TableColumn<T>[];
   isSelected: boolean;
   onToggle: (id: string) => void;
+  masterToggleAreaWidth: number;
 }) {
   const dividerColor = isSelected || row.isNew ? "border-mes-gray-30" : "border-mes-gray-40";
   return (
@@ -244,6 +288,10 @@ function DataRow<T>({
           disabled={row.disabled}
         />
       </div>
+      {/* 헤더의 마스터 토글 버튼 영역과 폭을 맞추는 빈 스페이서(5차 정정) */}
+      {masterToggleAreaWidth > 0 && (
+        <div className="h-full shrink-0" style={{ width: masterToggleAreaWidth }} />
+      )}
       {columns.map((col, i) => (
         <Cell
           key={col.key}
@@ -269,6 +317,7 @@ function GroupHeaderRow<T>({
   checked,
   indeterminate,
   onToggleSelect,
+  masterToggleAreaWidth,
 }: {
   group: TableGroup<T>;
   columns: TableColumn<T>[];
@@ -279,6 +328,7 @@ function GroupHeaderRow<T>({
   checked: boolean;
   indeterminate: boolean;
   onToggleSelect: () => void;
+  masterToggleAreaWidth: number;
 }) {
   return (
     <div
@@ -288,6 +338,10 @@ function GroupHeaderRow<T>({
       <div className="flex h-full shrink-0 items-center pr-[12px]">
         <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color="black" />
       </div>
+      {/* 헤더의 마스터 토글 버튼 영역과 폭을 맞추는 빈 스페이서(5차 정정) */}
+      {masterToggleAreaWidth > 0 && (
+        <div className="h-full shrink-0" style={{ width: masterToggleAreaWidth }} />
+      )}
       {columns.map((col, i) =>
         i === 0 ? (
           <Cell key={col.key} column={col} className="overflow-visible">
@@ -332,14 +386,20 @@ function GroupHeaderRow<T>({
 function TotalsRow<T>({
   columns,
   totals,
+  masterToggleAreaWidth,
 }: {
   columns: TableColumn<T>[];
   totals?: Record<string, React.ReactNode>;
+  masterToggleAreaWidth: number;
 }) {
   if (!totals) return null;
   return (
     <div className="flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 bg-white px-[20px]">
       <div className="flex h-full shrink-0 items-center pr-[12px]" style={{ width: 24 }} />
+      {/* 헤더의 마스터 토글 버튼 영역과 폭을 맞추는 빈 스페이서(5차 정정) */}
+      {masterToggleAreaWidth > 0 && (
+        <div className="h-full shrink-0" style={{ width: masterToggleAreaWidth }} />
+      )}
       {columns.map((col, i) =>
         i === 0 ? (
           <Cell key={col.key} column={col} className="overflow-visible">
@@ -374,6 +434,7 @@ function renderGroupNode<T>({
   onToggleGroupSelect,
   onToggleOne,
   levelColors,
+  masterToggleAreaWidth,
 }: {
   group: TableGroup<T>;
   depth: number;
@@ -384,6 +445,7 @@ function renderGroupNode<T>({
   onToggleGroupSelect: (rowIds: string[], nextChecked: boolean) => void;
   onToggleOne: (id: string) => void;
   levelColors: string[];
+  masterToggleAreaWidth: number;
 }): React.ReactNode {
   const isCollapsed = collapsed[group.id] ?? group.defaultExpanded === false;
   const rowIds = collectGroupRowIds(group);
@@ -404,6 +466,7 @@ function renderGroupNode<T>({
         checked={isAllChecked}
         indeterminate={isIndeterminate}
         onToggleSelect={() => onToggleGroupSelect(rowIds, !isAllChecked)}
+        masterToggleAreaWidth={masterToggleAreaWidth}
       />
       {!isCollapsed &&
         (group.groups
@@ -418,6 +481,7 @@ function renderGroupNode<T>({
                 onToggleGroupSelect,
                 onToggleOne,
                 levelColors,
+                masterToggleAreaWidth,
               })
             )
           : (group.rows ?? []).map((row) => (
@@ -427,6 +491,7 @@ function renderGroupNode<T>({
                 columns={columns}
                 isSelected={selectedIds.includes(row.id)}
                 onToggle={onToggleOne}
+                masterToggleAreaWidth={masterToggleAreaWidth}
               />
             )))}
     </React.Fragment>
@@ -485,49 +550,51 @@ function Table<T>({
     });
   };
   const groupLevelCount = React.useMemo(() => getMaxGroupDepth(groups), [groups]);
+  const masterToggleAreaWidth = groupLevelCount * MASTER_TOGGLE_SLOT_WIDTH;
 
   return (
     <div className={cn("w-full overflow-x-auto rounded-[4px] border border-mes-gray-30", className)}>
       <div className="min-w-max">
         {/* 헤더 */}
         <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 bg-mes-gray-10 px-[20px]">
-          {/* 2026-07-28 3차 피드백(4): 그룹 depth별 "한꺼번에 접기/펼치기" 버튼.
-              [알려진 미해결 이슈 — docs/Table_수정_대기목록.md 1·2번] 체크박스보다
-              왼쪽에 있어 "체크박스 항상 최좌측" 규칙에 어긋나고, 이 버튼들의 폭만큼
-              바디 행에 스페이서가 없어 헤더-바디 컬럼이 밀리는 버그가 있음 — 이번엔
-              버튼 자체의 시각 디자인(22x22/Gray-0/radius3/Gray-50 테두리, 아래 4차
-              정정 사항)만 맞추고, 위치/정렬 버그는 다음 세션에서 별도로 고침. */}
-          {Array.from({ length: groupLevelCount }).map((_, depth) => {
-            const groupsAtDepth = getGroupsAtDepth(groups, depth);
-            const anyExpanded = groupsAtDepth.some(
-              (g) => !(collapsed[g.id] ?? g.defaultExpanded === false)
-            );
-            return (
-              <button
-                key={depth}
-                type="button"
-                onClick={() => toggleAllAtDepth(depth)}
-                title={`${depth + 1}단 전체 ${anyExpanded ? "접기" : "펼치기"}`}
-                className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-mes-gray-0"
-              >
-                <IconArrow
-                  size={12}
-                  className={cn(
-                    "text-mes-gray-130 transition-transform",
-                    anyExpanded ? "rotate-90" : "-rotate-90"
-                  )}
-                />
-              </button>
-            );
-          })}
-          <div
-            className={cn(
-              "flex h-full shrink-0 items-center pr-[12px]",
-              groupLevelCount > 0 && "pl-[12px]"
-            )}
-          >
+          {/* 5차 정정: 체크박스는 항상 최좌측 고정 — 마스터 토글 버튼은 체크박스보다
+              오른쪽에 온다(예전엔 반대였음). */}
+          <div className="flex h-full shrink-0 items-center pr-[12px]">
             <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} color="black" />
           </div>
+          {/* 2026-07-28 3차 피드백(4): 그룹 depth별 "한꺼번에 접기/펼치기" 버튼. 이 영역의
+              폭(`masterToggleAreaWidth`)은 그룹행/데이터행/총계행에도 동일하게 빈
+              스페이서로 예약돼 있어야 컬럼이 안 어긋난다(5차 정정, 재발 방지 규칙 6번). */}
+          {groupLevelCount > 0 && (
+            <div
+              className="flex h-full shrink-0 items-center gap-0.5"
+              style={{ width: masterToggleAreaWidth }}
+            >
+              {Array.from({ length: groupLevelCount }).map((_, depth) => {
+                const groupsAtDepth = getGroupsAtDepth(groups, depth);
+                const anyExpanded = groupsAtDepth.some(
+                  (g) => !(collapsed[g.id] ?? g.defaultExpanded === false)
+                );
+                return (
+                  <button
+                    key={depth}
+                    type="button"
+                    onClick={() => toggleAllAtDepth(depth)}
+                    title={`${depth + 1}단 전체 ${anyExpanded ? "접기" : "펼치기"}`}
+                    className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-mes-gray-0"
+                  >
+                    <IconArrow
+                      size={12}
+                      className={cn(
+                        "text-mes-gray-130 transition-transform",
+                        anyExpanded ? "rotate-90" : "-rotate-90"
+                      )}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          )}
           {columns.map((col, i) => (
             <Cell
               key={col.key}
@@ -554,6 +621,7 @@ function Table<T>({
                 onToggleGroupSelect: toggleGroup,
                 onToggleOne: toggleOne,
                 levelColors: groupLevelColors,
+                masterToggleAreaWidth,
               })
             )
           : (rows ?? []).map((row) => (
@@ -563,10 +631,11 @@ function Table<T>({
                 columns={columns}
                 isSelected={selectedIds.includes(row.id)}
                 onToggle={toggleOne}
+                masterToggleAreaWidth={masterToggleAreaWidth}
               />
             ))}
 
-        <TotalsRow columns={columns} totals={totals} />
+        <TotalsRow columns={columns} totals={totals} masterToggleAreaWidth={masterToggleAreaWidth} />
       </div>
     </div>
   );

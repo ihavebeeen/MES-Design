@@ -755,7 +755,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="flex w-full max-w-[1100px] flex-col gap-4 pb-8">
+      {/* 2026-07-28 5차: 컬럼이 많아 max-w-[1100px]로는 한눈에 안 보인다는 지적 →
+          이 섹션만 폭 제한을 풀어서 화면 전체 폭을 씀(대기목록 5번) */}
+      <section className="flex w-full max-w-none flex-col gap-4 pb-8">
         <h2 className="text-[14px] font-semibold text-mes-gray-130">
           Table (원본 node 9873:83780 + 수정본 실제화면 node 16938:42501 대조 실측 + 2026-07-28
           2·3차 실제화면 피드백 반영)
