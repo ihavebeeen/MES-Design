@@ -138,7 +138,6 @@ interface ProductionRow {
   equipment: string;
   manager: string;
   item: string;
-  itemType: string;
   packCount: number;
   startTime: string;
   endTime: string;
@@ -146,23 +145,24 @@ interface ProductionRow {
   qty: number;
   defectQty: number;
   packQty: number;
-  warehouse: string;
 }
 
 /**
  * 컬럼 정렬(align) 기준 — 2026-07-28 2차 피드백 "헤더 정렬이 제멋대로" 반영해 재조정,
  * 6차에서 규칙을 한 번 더 명확히 다듬음(여전히 "제멋대로"로 보인다는 지적 받음).
- * **규칙**: (1) 링크 없는 순수 짧은 값(근무조/설비/담당기사/품목구분/단위/시간/창고명
- * 등 — 대략 10자 이내 코드·이름·시각)은 전부 가운데 정렬로 통일, (2) 예외적으로 길게
- * 늘어질 수 있는 자유 텍스트(품목명)만 좌측 정렬, (3) 숫자·금액류(수량/불량/포장수량 등)
- * 는 우측 정렬. 이전엔 "equipment"(설비)만 왜인지 좌측으로 남아 있어서 같은 성격의
- * manager/itemType/warehouse(전부 가운데)와 안 맞았던 게 "제멋대로로 보인다"는 지적의
- * 실제 원인 중 하나 — 이번에 가운데로 통일함. 실제 화면 스크린샷 육안 대조 기반 판단이며
- * Figma 실측은 아님.
+ * **규칙**: (1) 링크 없는 순수 짧은 값(근무조/설비/담당기사/단위/시간 등 — 대략 10자
+ * 이내 코드·이름·시각)은 전부 가운데 정렬로 통일, (2) 예외적으로 길게 늘어질 수 있는
+ * 자유 텍스트(품목명)만 좌측 정렬, (3) 숫자·금액류(수량/불량/포장수량 등)는 우측 정렬.
+ * 이전엔 "equipment"(설비)만 왜인지 좌측으로 남아 있어서 같은 성격의 manager(가운데)와
+ * 안 맞았던 게 "제멋대로로 보인다"는 지적의 실제 원인 중 하나 — 이번에 가운데로 통일함.
+ * 실제 화면 스크린샷 육안 대조 기반 판단이며 Figma 실측은 아님.
  * "지시일(date)" 컬럼은 데모에서 Level 1 그룹 라벨로만 쓰고 별도 컬럼으로는 노출하지
  * 않음 — 실제 화면도 그룹 기준으로 쓰인 최상위 값(생산일)은 컬럼에 반복 표시하지
  * 않는 패턴이라 이를 따름(2·3단계 그룹 키인 공정/담당자는 반대로 컬럼에도 그대로
  * 남겨두는 게 실제 화면과 일치).
+ * 7차 후속: 담당자가 "다른 컴포넌트 데모와 안 어울릴 만큼 테이블이 넓다"며 실사용
+ * 화면에서 참고용으로만 있던 창고명(warehouse)·품목구분(itemType) 컬럼을 제거해달라고
+ * 요청 — 두 컬럼과 `ProductionRow`의 해당 필드를 전부 삭제해 폭을 줄임.
  */
 const productionColumns: TableColumn<ProductionRow>[] = [
   { key: "shift", label: "근무조", width: 57, align: "center" },
@@ -179,7 +179,6 @@ const productionColumns: TableColumn<ProductionRow>[] = [
       </a>
     ),
   },
-  { key: "itemType", label: "품목구분", width: 80, align: "center" },
   {
     key: "packCount",
     label: "포장인원",
@@ -233,7 +232,6 @@ const productionColumns: TableColumn<ProductionRow>[] = [
       </a>
     ),
   },
-  { key: "warehouse", label: "창고명", width: 106, align: "center" },
 ];
 
 /**
@@ -242,14 +240,14 @@ const productionColumns: TableColumn<ProductionRow>[] = [
  * 집계값(packCount/qty/defectQty/packQty)은 하위 리프 행 실제 합으로 재계산함(1차 데모의
  * 집계값 일부가 실제 합과 안 맞았던 것도 이번에 같이 바로잡음).
  */
-const rowR1 = { id: "r1", data: { date: "2025-10-30", shift: "주간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } };
-const rowR2 = { id: "r2", data: { date: "2025-10-29", shift: "주간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } };
-const rowR3 = { id: "r3", data: { date: "2025-10-29", shift: "야간", equipment: "성형기 1호", manager: "김수현", item: "더블비안코뚜껑", itemType: "완제품", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20, warehouse: "동진창고" } };
-const rowR4 = { id: "r4", data: { date: "2025-10-30", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } };
-const rowR5 = { id: "r5", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } };
-const rowR6 = { id: "r6", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } };
-const rowR7 = { id: "r7", data: { date: "2025-10-27", shift: "주간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" }, isNew: true };
-const rowR8 = { id: "r8", data: { date: "2025-10-26", shift: "야간", equipment: "성형기 2호", manager: "김수현", item: "비비빅", itemType: "반제품", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20, warehouse: "동진창고" } };
+const rowR1 = { id: "r1", data: { date: "2025-10-30", shift: "주간", equipment: "성형기 1호", manager: "이해빈", item: "더블비안코뚜껑", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20 } };
+const rowR2 = { id: "r2", data: { date: "2025-10-29", shift: "주간", equipment: "성형기 1호", manager: "이해빈", item: "더블비안코뚜껑", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20 } };
+const rowR3 = { id: "r3", data: { date: "2025-10-29", shift: "야간", equipment: "성형기 1호", manager: "이해빈", item: "더블비안코뚜껑", packCount: 5, startTime: "15:00", endTime: "18:00", unit: "kg", qty: 2000, defectQty: 10, packQty: 20 } };
+const rowR4 = { id: "r4", data: { date: "2025-10-30", shift: "주간", equipment: "성형기 2호", manager: "이해빈", item: "비비빅", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20 } };
+const rowR5 = { id: "r5", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "이해빈", item: "비비빅", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20 } };
+const rowR6 = { id: "r6", data: { date: "2025-10-28", shift: "주간", equipment: "성형기 2호", manager: "이해빈", item: "비비빅", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20 } };
+const rowR7 = { id: "r7", data: { date: "2025-10-27", shift: "주간", equipment: "성형기 2호", manager: "이해빈", item: "비비빅", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20 }, isNew: true };
+const rowR8 = { id: "r8", data: { date: "2025-10-26", shift: "야간", equipment: "성형기 2호", manager: "이해빈", item: "비비빅", packCount: 3, startTime: "13:00", endTime: "17:00", unit: "kg", qty: 2000, defectQty: 0, packQty: 20 } };
 
 /**
  * 2026-07-28 3차 피드백 "3단계 그룹화(지시일>설비>담당기사)도 실제로 되는지 보여줘" 반영 —
@@ -275,7 +273,7 @@ const productionGroups: TableGroup<ProductionRow>[] = [
         label: "설비: 성형기 1호",
         summary: { packCount: fmt(5), qty: fmt(2000), defectQty: fmt(10), packQty: fmt(20) },
         groups: [
-          { id: "mgr-eq1-1030", label: "담당기사: 김수현", summary: { packCount: fmt(5), qty: fmt(2000), defectQty: fmt(10), packQty: fmt(20) }, rows: [rowR1] },
+          { id: "mgr-eq1-1030", label: "담당기사: 이해빈", summary: { packCount: fmt(5), qty: fmt(2000), defectQty: fmt(10), packQty: fmt(20) }, rows: [rowR1] },
         ],
       },
       {
@@ -283,7 +281,7 @@ const productionGroups: TableGroup<ProductionRow>[] = [
         label: "설비: 성형기 2호",
         summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) },
         groups: [
-          { id: "mgr-eq2-1030", label: "담당기사: 김수현", summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) }, rows: [rowR4] },
+          { id: "mgr-eq2-1030", label: "담당기사: 이해빈", summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) }, rows: [rowR4] },
         ],
       },
     ],
@@ -298,7 +296,7 @@ const productionGroups: TableGroup<ProductionRow>[] = [
         label: "설비: 성형기 1호",
         summary: { packCount: fmt(10), qty: fmt(4000), defectQty: fmt(20), packQty: fmt(40) },
         groups: [
-          { id: "mgr-eq1-1029", label: "담당기사: 김수현", summary: { packCount: fmt(10), qty: fmt(4000), defectQty: fmt(20), packQty: fmt(40) }, rows: [rowR2, rowR3] },
+          { id: "mgr-eq1-1029", label: "담당기사: 이해빈", summary: { packCount: fmt(10), qty: fmt(4000), defectQty: fmt(20), packQty: fmt(40) }, rows: [rowR2, rowR3] },
         ],
       },
     ],
@@ -313,7 +311,7 @@ const productionGroups: TableGroup<ProductionRow>[] = [
         label: "설비: 성형기 2호",
         summary: { packCount: fmt(6), qty: fmt(4000), defectQty: fmt(0), packQty: fmt(40) },
         groups: [
-          { id: "mgr-eq2-1028", label: "담당기사: 김수현", summary: { packCount: fmt(6), qty: fmt(4000), defectQty: fmt(0), packQty: fmt(40) }, rows: [rowR5, rowR6] },
+          { id: "mgr-eq2-1028", label: "담당기사: 이해빈", summary: { packCount: fmt(6), qty: fmt(4000), defectQty: fmt(0), packQty: fmt(40) }, rows: [rowR5, rowR6] },
         ],
       },
     ],
@@ -328,7 +326,7 @@ const productionGroups: TableGroup<ProductionRow>[] = [
         label: "설비: 성형기 2호",
         summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) },
         groups: [
-          { id: "mgr-eq2-1027", label: "담당기사: 김수현", summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) }, rows: [rowR7] },
+          { id: "mgr-eq2-1027", label: "담당기사: 이해빈", summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) }, rows: [rowR7] },
         ],
       },
     ],
@@ -343,10 +341,60 @@ const productionGroups: TableGroup<ProductionRow>[] = [
         label: "설비: 성형기 2호",
         summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) },
         groups: [
-          { id: "mgr-eq2-1026", label: "담당기사: 김수현", summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) }, rows: [rowR8] },
+          { id: "mgr-eq2-1026", label: "담당기사: 이해빈", summary: { packCount: fmt(3), qty: fmt(2000), defectQty: fmt(0), packQty: fmt(20) }, rows: [rowR8] },
         ],
       },
     ],
+  },
+];
+
+/**
+ * 2026-07-28 7차 후속: "합본 데모가 마음에 들긴 하는데 한 화면에 다 몰아넣은 느낌이라
+ * 헤더는?/그룹화는?/컬럼 2개 이상인 경우는?/총계행은? 을 각각 따로 보고 싶다"는 요청
+ * 반영 — 위 합본 Table 데모는 그대로 두고, 구조 요소별로 쪼갠 미니 데모 4개를 추가함.
+ * 같은 Table 컴포넌트를 재사용하되 columns/rows/groups/totals 중 어떤 prop을 채우고
+ * 비우느냐로 요소를 하나씩 분리해서 보여줌. 합본 데모의 15개 컬럼을 그대로 쓰면 미니
+ * 데모도 다시 넓어져 버리므로, 여기서는 별도의 훨씬 단순한 3컬럼 데이터를 씀.
+ */
+interface FlatRow {
+  shift: string;
+  manager: string;
+  qty: number;
+}
+
+const flatColumns: TableColumn<FlatRow>[] = [
+  { key: "shift", label: "근무조", width: 90, align: "center" },
+  { key: "manager", label: "담당기사", width: 90, align: "center" },
+  {
+    key: "qty",
+    label: "생산수량",
+    width: 100,
+    align: "right",
+    render: (row) => row.qty.toLocaleString("ko-KR"),
+  },
+];
+
+const flatRows = [
+  { id: "f1", data: { shift: "주간", manager: "이해빈", qty: 1200 } },
+  { id: "f2", data: { shift: "야간", manager: "이해빈", qty: 980 } },
+  { id: "f3", data: { shift: "주간", manager: "이해빈", qty: 2000 } },
+];
+
+const miniGroups: TableGroup<FlatRow>[] = [
+  {
+    id: "mini-g1",
+    label: "지시일: 2025-10-30",
+    summary: { qty: (1200 + 1980).toLocaleString("ko-KR") },
+    rows: [
+      { id: "mini-g1-r1", data: { shift: "주간", manager: "이해빈", qty: 1200 } },
+      { id: "mini-g1-r2", data: { shift: "야간", manager: "이해빈", qty: 1980 } },
+    ],
+  },
+  {
+    id: "mini-g2",
+    label: "지시일: 2025-10-29",
+    summary: { qty: (2000).toLocaleString("ko-KR") },
+    rows: [{ id: "mini-g2-r1", data: { shift: "주간", manager: "이해빈", qty: 2000 } }],
   },
 ];
 
@@ -821,6 +869,51 @@ export default function Home() {
           onSelectedIdsChange={setTableSelectedIds}
           totals={{ qty: fmt(16000), defectQty: fmt(30), packQty: fmt(160) }}
         />
+      </section>
+
+      <section className="flex w-full max-w-[960px] flex-col gap-6 pb-8">
+        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+          Table — 구조 요소별 분리 데모
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          위 합본 데모는 그대로 유지하고, 담당자 요청으로 헤더/그룹화/컬럼 2개 이상(그룹
+          없는 평범한 플랫 테이블)/총계행을 각각 독립적으로 볼 수 있게 아래에 나눠서
+          배치함. 전부 같은 <code>Table</code> 컴포넌트 하나를 재사용하되, 어떤 prop을
+          채우고 비우는지로 요소를 하나씩 분리함. 위 합본과 달리 15개 컬럼짜리 실제
+          데이터 대신 3컬럼짜리 단순 데이터를 씀(다시 넓어지는 것을 피하기 위함).
+        </p>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · 헤더만 (rows/groups/totals 전부 없음)
+          </span>
+          <Table columns={flatColumns} />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · 그룹화만 (1단 그룹, 총계행 없음)
+          </span>
+          <Table columns={flatColumns} groups={miniGroups} />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · 컬럼 2개 이상 + 그룹화 없음 (평범한 플랫 테이블)
+          </span>
+          <Table columns={flatColumns} rows={flatRows} />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · 총계행만
+          </span>
+          <Table
+            columns={flatColumns}
+            rows={flatRows}
+            totals={{ qty: (1200 + 980 + 2000).toLocaleString("ko-KR") }}
+          />
+        </div>
       </section>
     </div>
   );
