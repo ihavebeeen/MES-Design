@@ -52,11 +52,14 @@ import { IconX } from "../icons/icon-x";
  * - **안내 배너**: "라벨 생성 불가" 모달 하단에 노란 배너(안내문 + "OO 바로가기 →" 링크)가
  *   붙는 패턴이 있고, 같은 배너가 모달과 별개로 독립 컴포넌트로도 존재 확인 — 별도
  *   `notice-banner.tsx`(`NoticeBanner`)로 분리 구현하고, `banner` prop으로 ConfirmDialog
- *   본문과 푸터 사이에 선택적으로 끼워 넣을 수 있게 함.
+ *   본문과 푸터 사이에 선택적으로 끼워 넣을 수 있게 함. 담당자 호칭으로는 "도움말"/
+ *   "툴팁"이라고 부름(컴포넌트명 `NoticeBanner`는 그대로 유지, 명칭만 참고).
  * - `get_metadata`/`get_design_context`가 이 노드에서 응답 크기 문제로 계속 실패해서
- *   (SSE 파싱 에러) 배너의 정확한 padding/radius px, 배너 아이콘 벡터는 못 가져왔음 —
+ *   (SSE 파싱 에러) 배너 자체의 정확한 padding/radius px, 배너 아이콘 벡터는 못 가져와서
  *   스크린샷 육안 대조 기반 판단값으로 구현(자세한 내용은 `notice-banner.tsx` 참고).
- *   모바일(배경 딤 처리) 변형은 이번 라운드 범위 밖(담당자 확인, 다음에 진행).
+ *   다만 "배너가 있을 때 배너-버튼 간격"은 담당자가 정확한 값(20px)을 직접 줘서 확정
+ *   반영함(위 렌더 코드의 `px-8` 부분 — 별도 하단 padding 없이 푸터 자체의 20px만으로
+ *   맞춤). 모바일(배경 딤 처리) 변형은 이번 라운드 범위 밖(담당자 확인, 다음에 진행).
  */
 
 export interface ConfirmDialogAction {
@@ -140,8 +143,11 @@ function ConfirmDialog({
             </div>
           </div>
 
+          {/* 담당자 확인(2026-07-29): 이 영역(담당자 호칭 "도움말"/"툴팁")이 있을 땐 그
+              아래 버튼 영역까지 간격이 20px여야 함 — 아래쪽엔 별도 padding을 주지 않고
+              푸터 자체의 pt(p-5 = 20px)만으로 정확히 20px를 맞춤. */}
           {banner && (
-            <div className="px-8 pb-8">
+            <div className="px-8">
               <NoticeBanner {...banner} />
             </div>
           )}
