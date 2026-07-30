@@ -118,13 +118,23 @@
   --mes-danger-100: #310c0f;
   --mes-danger-110: #21080a;
 
-  /* Yellow — 2026-07-29 신규. Gray/Primary/Danger 3개처럼 전 단계를 확정한 게 아니라,
-     ConfirmDialog "경고"(warning) 톤 + 안내 배너(NoticeBanner) 작업 중 node 18887:62605에서
-     get_variable_defs로 실제 사용된 3단계(10/20/50)만 확인됨. 나머지 단계(30/40/60...)는
-     미실측이라 임의로 보간해 채우지 않음 — 필요해지면 그때 실측해서 추가할 것. */
+  /* Yellow — 2026-07-29 신규(3단계만), 2026-07-30 담당자가 준 "System Color" 레퍼런스
+     프레임(fileKey F4n5Zr04PAbiRjfIFQAo6v, node 20170:67850)으로 전 단계 확정.
+     Gray/Primary/Danger와 동일하게 10~110 11단계 구조(끝단 0/140 없음) — 역할 라벨:
+     20=surface, 40=Base, 50=Text. `get_variable_defs`로 실측, `동진 Design System/동진
+     System/Yellow *` 변수와 1:1 대응. 이전엔 ConfirmDialog "경고"/NoticeBanner 작업 중
+     우연히 마주친 3단계(10/20/50)만 확정 상태였음. */
   --mes-yellow-10: #fff3db;
   --mes-yellow-20: #ffe0a3;
+  --mes-yellow-30: #ffc95c;
+  --mes-yellow-40: #ffb114;
   --mes-yellow-50: #f2a406;
+  --mes-yellow-60: #c68501;
+  --mes-yellow-70: #8a5c00;
+  --mes-yellow-80: #614100;
+  --mes-yellow-90: #422c00;
+  --mes-yellow-100: #2e1f00;
+  --mes-yellow-110: #241800;
 
   /* Alarm severity — 2026-07-30 신규. 알람 리스트(MES 알람 리스트, node 163:3039 하위) 전용
      4색 세트 — Gray/Primary/Danger/Yellow 어느 팔레트와도 값이 일치하지 않는 별도 색상군.
@@ -185,7 +195,15 @@
 
   --color-mes-yellow-10: var(--mes-yellow-10);
   --color-mes-yellow-20: var(--mes-yellow-20);
+  --color-mes-yellow-30: var(--mes-yellow-30);
+  --color-mes-yellow-40: var(--mes-yellow-40);
   --color-mes-yellow-50: var(--mes-yellow-50);
+  --color-mes-yellow-60: var(--mes-yellow-60);
+  --color-mes-yellow-70: var(--mes-yellow-70);
+  --color-mes-yellow-80: var(--mes-yellow-80);
+  --color-mes-yellow-90: var(--mes-yellow-90);
+  --color-mes-yellow-100: var(--mes-yellow-100);
+  --color-mes-yellow-110: var(--mes-yellow-110);
 
   --color-mes-alarm-blue: var(--mes-alarm-blue);
   --color-mes-alarm-red: var(--mes-alarm-red);

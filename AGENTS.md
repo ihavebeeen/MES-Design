@@ -273,6 +273,26 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   있지 않다는 걸 `get_design_context`로 재확인 — 셋 다 이번 범위에서 제외하고 컴포넌트
   주석에 확인 필요로 남김. 체크리스트 "Notification / Bell" 행 "없음"→"있음" 승격,
   `page.tsx`에 데이터 있음/빈 상태 2종 데모 추가. eslint+tsc 클린 확인 후 커밋 예정.
+- (2026-07-30, 6차) 담당자가 알림 패널 스크린샷을 주며 사이즈 재실측값 지정 — 패널 전체
+  폭 440px→400px, 헤더 타이틀 15→16px, AlarmListItem 제목 14/설명 13/날짜 12px(기존 전부
+  15px 오류), 좌측 tone 강조바 23px→42px(실측 41.78px 반올림). `notification-panel.tsx`/
+  `alarm-list-item.tsx` 수정.
+- (2026-07-30, 7차) 담당자가 "색상/폰트를 페이지 상단에 몰아놔야 하지 않냐"고 지적 —
+  `page.tsx` 최상단(h1 바로 아래)에 Foundation 섹션 신설. 색상 팔레트 스와치(Gray/Primary/
+  Danger/Yellow/Alarm)와 타이포그래피 스케일 표를 모아둠. Tailwind가 동적 클래스명
+  (`bg-mes-gray-${step}`)을 정적 스캔 못 하는 문제 때문에 스와치는 inline style로 hex
+  직접 지정.
+- (2026-07-30, 8차) 담당자가 "Yellow도 단계가 있을 텐데 확인해서 보강, 폰트도 크기·굵기·
+  자간·행간까지 표기"라고 요청. Yellow는 이전엔 우연히 마주친 3단계(10/20/50)만 확정
+  상태였는데, 담당자가 정확한 Figma 링크(fileKey F4n5Zr04PAbiRjfIFQAo6v, node
+  20170:67850, "System Color" 레퍼런스 프레임)를 줘서 `get_variable_defs`/
+  `get_design_context`로 전 단계(10~110, Gray/Primary/Danger와 동일한 11단계 구조,
+  20=surface/40=Base/50=Text 역할 라벨) 확정 — `globals.css`/`page.tsx`의
+  `YELLOW_PALETTE` 갱신. 타이포그래피 표는 "크기당 대표값 1개"에서 실제 코드에 존재하는
+  (크기·굵기·자간·행간) 조합 단위로 재정리(16행) — 자간이 컴포넌트마다 다르게 실측돼 있고,
+  2026-07-29 이전 컴포넌트 대부분은 자간이 아예 미측정 상태였다는 것도 이번에 명시적으로
+  드러남(AlarmListItem 자간 -0.1875px가 같은 크기의 Badge/Tag -0.15px와 다른 것도 예외로
+  기록). `docs/디자인_토큰_사용_규칙.md` 6절/9절 동기화.
 
 ## 현재 진행 상태 (최종 갱신: 2026-07-30)
 
