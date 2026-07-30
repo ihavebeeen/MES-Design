@@ -26,6 +26,7 @@ import { NoticeBanner } from "@/components/ui/notice-banner";
 import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
 import { Sidebar, SidebarSettingsIcon, type SidebarNavItem } from "@/components/ui/sidebar";
 import { AlarmListItem } from "@/components/ui/alarm-list-item";
+import { NotificationPanel } from "@/components/ui/notification-panel";
 import { RadioChoiceDialog } from "@/components/ui/radio-choice-dialog";
 import { X } from "lucide-react";
 import {
@@ -967,6 +968,52 @@ export default function Home() {
             description="yyyy.mm.dd/[거래처]/n건의 입고가 완료되었습니다."
             read={false}
           />
+        </div>
+      </section>
+
+      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+          NotificationPanel (알림 드롭다운 패널 — node 157:15771 / 157:15833 실측, 2026-07-30 신규)
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          AlarmListItem을 재사용해 만든 상위 organism. &quot;미확인&quot;/&quot;확인&quot; 탭으로
+          추정되는 빈 자리와 &quot;모두 확인으로 표시&quot;/&quot;알림 설정&quot; 텍스트는 이 패널의
+          실제 트리에 포함되어 있지 않아 이번 범위에서 제외(확인 필요, 컴포넌트 파일 주석 참고).
+        </p>
+        <div className="flex flex-wrap items-start gap-8">
+          <div className="flex flex-col items-start gap-2">
+            <span className="text-[12px] font-medium text-mes-gray-70">데이터 있음</span>
+            <NotificationPanel
+              items={[
+                {
+                  id: "1",
+                  tone: "blue",
+                  title: "작업 지시 생성",
+                  time: "20:25",
+                  description: "yyyy.mm.dd/[설비]/n건의 작업 지시가 생성되었습니다.",
+                },
+                {
+                  id: "2",
+                  tone: "red",
+                  title: "출하 승인 취소",
+                  time: "20:25",
+                  description: "yyyy.mm.dd/[거래처]/n건의 출하 승인이 취소되었습니다.",
+                  read: false,
+                },
+                {
+                  id: "3",
+                  tone: "green",
+                  title: "입고 완료",
+                  time: "20:25",
+                  description: "yyyy.mm.dd/[설비]/n건의 입고가 완료되었습니다.",
+                },
+              ]}
+            />
+          </div>
+          <div className="flex flex-col items-start gap-2">
+            <span className="text-[12px] font-medium text-mes-gray-70">빈 상태</span>
+            <NotificationPanel items={[]} />
+          </div>
         </div>
       </section>
 
