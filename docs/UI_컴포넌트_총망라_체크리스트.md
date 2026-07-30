@@ -345,7 +345,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Center Modal | 화면 중앙 기본 팝업 | 오가니즘 | 있음 | 1 | Type01. 2026-07-29 코드화: `components/ui/center-modal.tsx`(node 168:37994 "modal" 실측, 콘텐츠 영역은 children으로 교체) |
+| Center Modal | 화면 중앙 기본 팝업 | 오가니즘 | 보류 | 1 | Type01. 2026-07-29 한 차례 코드화했으나(node 168:37994) 담당자가 "Center Modal과 Side Slide Panel이 위계가 비슷해서 나중에 같이 자료 보내주겠다"며 보류 지시 — 코드는 `docs/보류_컴포넌트/center-modal.tsx.bak`에 백업, 두 컴포넌트를 함께 받은 뒤 재설계 예정. Center Modal도 내부에 테이블만 있는 것/상단바+테이블/폼 등 종류가 여러 가지라 세분화 필요 |
 | Side Slide Panel (Full) | 우측 전체 슬라이드 패널 | 오가니즘 | 있음 | 1 | Type02, 960px 기본 |
 | Side Slide Panel — 상하 분할 | 우측 슬라이드 내부가 상/하로 나뉜 형태 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "상하 섹션 구분"(생산계획 리스트+원부자재 리스트+하단 통계) 확인 |
 | Side Slide Panel — 좌우 분할 | 우측 슬라이드 내부가 좌/우로 나뉜 형태 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "좌우 섹션 구분"(품목검사 폼+캘린더) 및 Side Modal "타임테이블/좌우구분" 확인 |

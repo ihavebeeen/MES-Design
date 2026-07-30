@@ -23,7 +23,6 @@ import { Tag } from "@/components/ui/tag";
 import { Toast } from "@/components/ui/toast";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { NoticeBanner } from "@/components/ui/notice-banner";
-import { CenterModal } from "@/components/ui/center-modal";
 import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
 import { Sidebar, SidebarSettingsIcon, type SidebarNavItem } from "@/components/ui/sidebar";
 import { RadioChoiceDialog } from "@/components/ui/radio-choice-dialog";
@@ -440,7 +439,6 @@ export default function Home() {
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [bannerDialogOpen, setBannerDialogOpen] = useState(false);
   const [radioDialogOpen, setRadioDialogOpen] = useState(false);
-  const [centerModalOpen, setCenterModalOpen] = useState(false);
   const [sidebarExpandedKey, setSidebarExpandedKey] = useState<string | undefined>(
     "mes-setting"
   );
@@ -891,24 +889,6 @@ export default function Home() {
         warning="선택한 내용을 되돌릴 수 없습니다."
         onConfirm={() => setRadioDialogOpen(false)}
       />
-
-      <Section title="CenterModal (화면 중앙 기본 팝업 — node 168:37994 실측, 콘텐츠 영역은 children으로 교체)">
-        <Sample label="CenterModal · 열기">
-          <Button size="basic" onClick={() => setCenterModalOpen(true)}>
-            모달 열기
-          </Button>
-        </Sample>
-      </Section>
-
-      <CenterModal
-        open={centerModalOpen}
-        onOpenChange={setCenterModalOpen}
-        title="모달 타이틀"
-        onCancel={() => setCenterModalOpen(false)}
-        onConfirm={() => setCenterModalOpen(false)}
-      >
-        <p className="text-[18px] font-medium text-mes-gray-70">콘텐츠 영역</p>
-      </CenterModal>
 
       <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="text-[14px] font-semibold text-mes-gray-130">
