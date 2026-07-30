@@ -74,6 +74,39 @@ import {
  * 오와 열을 맞추고, 각 예시마다 컴포넌트명과 상태값을 같이 표기할 것).
  */
 
+/**
+ * 2026-07-30 담당자 요청 — 페이지 상단에 섹션 바로가기 링크 추가. 각 항목의 `id`는
+ * 아래 섹션들의 `id`(또는 `<Section id="...">`)와 1:1로 맞춰야 함 — 섹션 id를 바꾸면
+ * 여기도 같이 바꿀 것.
+ */
+const TOC_LINKS: { id: string; label: string }[] = [
+  { id: "color-palette", label: "색상 팔레트" },
+  { id: "typography", label: "타이포그래피" },
+  { id: "button-size", label: "Button 사이즈" },
+  { id: "button-icon", label: "Button 아이콘" },
+  { id: "button-color", label: "Button 컬러" },
+  { id: "input", label: "Input" },
+  { id: "select", label: "Select" },
+  { id: "badge", label: "Badge" },
+  { id: "radio", label: "Radio" },
+  { id: "checkbox", label: "Checkbox" },
+  { id: "progress", label: "Progress" },
+  { id: "filter", label: "Filter" },
+  { id: "tag", label: "Tag" },
+  { id: "combobox", label: "Combobox" },
+  { id: "toast", label: "Toast" },
+  { id: "confirm-dialog", label: "ConfirmDialog" },
+  { id: "notice-banner", label: "NoticeBanner" },
+  { id: "radio-choice-dialog", label: "RadioChoiceDialog" },
+  { id: "page-top-tab-item", label: "PageTopTabItem" },
+  { id: "sidebar", label: "Sidebar" },
+  { id: "alarm-list-item", label: "AlarmListItem" },
+  { id: "notification-panel", label: "NotificationPanel" },
+  { id: "icons", label: "아이콘" },
+  { id: "table-full", label: "Table 합본" },
+  { id: "table-parts", label: "Table 분리" },
+];
+
 /** Sidebar 데모용 1-depth 항목 — MES 설정만 2-depth 실측값을 갖고 있음(주석 참고) */
 const SIDEBAR_NAV_ITEMS: SidebarNavItem[] = [
   { key: "material", label: "자재관리", icon: <IconBox size={20} /> },
@@ -106,10 +139,23 @@ function Sample({ label, children }: { label: string; children: React.ReactNode 
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  id,
+  title,
+  children,
+}: {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
-      <h2 className="text-[14px] font-semibold text-mes-gray-130">{title}</h2>
+    <section
+      id={id}
+      className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8"
+    >
+      <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+        {title}
+      </h2>
       <div className="grid grid-cols-4 items-end gap-x-6 gap-y-6">{children}</div>
     </section>
   );
@@ -615,9 +661,21 @@ export default function Home() {
         MES 컴포넌트 라이브러리 — 스캐폴딩 확인용
       </h1>
 
+      <nav className="flex w-full max-w-[960px] flex-wrap gap-2">
+        {TOC_LINKS.map((link) => (
+          <a
+            key={link.id}
+            href={`#${link.id}`}
+            className="rounded-full border border-mes-gray-30 bg-white px-3 py-1 text-[12px] text-mes-gray-100 transition-colors hover:border-mes-primary-60 hover:text-mes-primary-60"
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
       <section className="flex w-full max-w-[960px] flex-col gap-6 border-b border-mes-gray-30 pb-8">
-        <div>
-          <h2 className="text-[14px] font-semibold text-mes-gray-130">색상 팔레트</h2>
+        <div id="color-palette" className="scroll-mt-6">
+          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">색상 팔레트</h2>
           <p className="mt-1 text-[12px] text-mes-gray-70">
             Gray/Primary/Danger/Yellow 전부 10~110(끝단 0/140은 Gray만) 11단계 확정
             (CONFIRMED) 값 — Yellow는 2026-07-30 담당자가 준 &quot;System Color&quot;
@@ -634,8 +692,8 @@ export default function Home() {
           <PaletteRow title="Alarm severity" note="(알람 리스트 전용, 팔레트 아님)" colors={ALARM_PALETTE} />
         </div>
 
-        <div>
-          <h2 className="text-[14px] font-semibold text-mes-gray-130">타이포그래피 스케일</h2>
+        <div id="typography" className="scroll-mt-6">
+          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">타이포그래피 스케일</h2>
           <p className="mt-1 text-[12px] text-mes-gray-70">
             폰트는 전부 Pretendard, 자간 0 / 행간 150% 고정(2026-07-30 담당자 확정 — 이전에
             일부 컴포넌트에 있던 자간 값과 행간 130%/140% 예외는 전부 제거하고 통일함).
@@ -669,7 +727,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Section title="Button — 사이즈">
+      <Section id="button-size" title="Button — 사이즈">
         <Sample label="Button · Basic · Default">
           <Button size="basic">Basic 버튼</Button>
         </Sample>
@@ -686,7 +744,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Button — 아이콘">
+      <Section id="button-icon" title="Button — 아이콘">
         <Sample label="Button · StartIcon">
           <Button size="basic" startIcon={<Plus size={16} />}>
             아이콘 왼쪽
@@ -708,7 +766,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Button — 컬러 variant (7종)">
+      <Section id="button-color" title="Button — 컬러 variant (7종)">
         <Sample label="Button · fillMain">
           <Button size="basic" variant="fillMain">
             fillMain
@@ -746,7 +804,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Input">
+      <Section id="input" title="Input">
         <Sample label="Input · Default(placeholder)">
           <Input placeholder="내용 입력" className="w-[200px]" />
         </Sample>
@@ -767,7 +825,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Select (Selectbox)">
+      <Section id="select" title="Select (Selectbox)">
         <Sample label="Select · Default(placeholder)">
           <Select>
             <SelectTrigger className="w-[200px]">
@@ -823,7 +881,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Badge (7종 — 2026-07-29 실제 색 기준으로 variant명 개명, 값 변경 없음)">
+      <Section id="badge" title="Badge (7종 — 2026-07-29 실제 색 기준으로 variant명 개명, 값 변경 없음)">
         <Sample label="Badge · blue">
           <Badge variant="blue">출하중</Badge>
         </Sample>
@@ -847,7 +905,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Radio">
+      <Section id="radio" title="Radio">
         <Sample label="Radio · Unselected">
           <Radio name="demo-radio-unsel" />
         </Sample>
@@ -862,7 +920,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Checkbox (Figma에 disabled 상태 자체가 없음 — 판단값으로 구현)">
+      <Section id="checkbox" title="Checkbox (Figma에 disabled 상태 자체가 없음 — 판단값으로 구현)">
         <Sample label="Checkbox · Unchecked">
           <Checkbox />
         </Sample>
@@ -883,7 +941,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Progress Bar">
+      <Section id="progress" title="Progress Bar">
         <Sample label="Progress · 78%">
           <Progress value={78} className="w-[160px]" />
         </Sample>
@@ -898,8 +956,8 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+      <section id="filter" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           Filter (트리거 + 플라이아웃 + 활성 태그, 통합 컴포넌트)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
@@ -917,7 +975,7 @@ export default function Home() {
         />
       </section>
 
-      <Section title="Tag (범용 3색 — 실사용 빈도 낮음, Badge를 우선 사용)">
+      <Section id="tag" title="Tag (범용 3색 — 실사용 빈도 낮음, Badge를 우선 사용)">
         <Sample label="Tag · main · start+endIcon(실측 그대로)">
           <Tag color="main" startIcon={<X className="size-3" />} endIcon={<X className="size-3" />}>
             태그 텍스트
@@ -931,7 +989,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Combobox (검색 내장 셀렉트)">
+      <Section id="combobox" title="Combobox (검색 내장 셀렉트)">
         <Sample label="Combobox · Default(제어형, 검색 가능)">
           <Combobox
             options={shiftOptions}
@@ -987,7 +1045,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="Toast (RED/BLUE — 서로 다른 개별 프레임이라 gap/아이콘크기/색 실측값이 다름)">
+      <Section id="toast" title="Toast (RED/BLUE — 서로 다른 개별 프레임이라 gap/아이콘크기/색 실측값이 다름)">
         <Sample label="Toast · red">
           <Toast variant="red" message="필수 항목을 입력해주세요." onClose={() => {}} />
         </Sample>
@@ -996,7 +1054,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section title="ConfirmDialog (작은 확인/안내 팝업 — 2026-07-29 톤 3종/2버튼/안내배너로 확장)">
+      <Section id="confirm-dialog" title="ConfirmDialog (작은 확인/안내 팝업 — 2026-07-29 톤 3종/2버튼/안내배너로 확장)">
         <Sample label="ConfirmDialog · error 톤(기본), 확인 1버튼">
           <Button size="basic" onClick={() => setDialogOpen(true)}>
             삭제 시도
@@ -1064,8 +1122,8 @@ export default function Home() {
         actions={[{ label: "확인", onClick: () => setBannerDialogOpen(false) }]}
       />
 
-      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+      <section id="notice-banner" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           NoticeBanner (안내 배너, 링크 포함 — 2026-07-29 신규, ConfirmDialog와 별개로도 사용 가능)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
@@ -1080,7 +1138,7 @@ export default function Home() {
         />
       </section>
 
-      <Section title="RadioChoiceDialog (라디오 2택 + 경고배너 팝업 — node 18840:61182 실측, 원래 문구는 &quot;투입품목 추가&quot;)">
+      <Section id="radio-choice-dialog" title="RadioChoiceDialog (라디오 2택 + 경고배너 팝업 — node 18840:61182 실측, 원래 문구는 &quot;투입품목 추가&quot;)">
         <Sample label="RadioChoiceDialog · 열기">
           <Button size="basic" onClick={() => setRadioDialogOpen(true)}>
             투입품목 추가
@@ -1101,8 +1159,8 @@ export default function Home() {
         onConfirm={() => setRadioDialogOpen(false)}
       />
 
-      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+      <section id="page-top-tab-item" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           PageTopTabItem (열린 화면 상단 탭 1개 — node 157:18051 실측, default/hover/active 3종 전부)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
@@ -1116,8 +1174,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+      <section id="sidebar" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           Sidebar / SNB (좌측 전역 내비게이션 — node 133:1976·133:2042 등 실측, hover/active 반영)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
@@ -1141,8 +1199,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+      <section id="alarm-list-item" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           AlarmListItem (알람/경보 리스트 항목 — node 163:3039 실측, 2026-07-30 신규 발견)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
@@ -1180,8 +1238,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+      <section id="notification-panel" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           NotificationPanel (알림 드롭다운 패널 — node 157:15771 / 157:15833 실측, 2026-07-30 신규)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
@@ -1226,8 +1284,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="flex w-full max-w-[960px] flex-col gap-4 pb-8">
-        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+      <section id="icons" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           아이콘 라이브러리 (담당자가 Figma에서 직접 SVG export해 전달 — 대체 아님, 실측 벡터)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
@@ -1293,11 +1351,11 @@ export default function Home() {
           다른 섹션들과 안 맞는다고 지적 → 섹션 자체는 다른 데모들과 같은
           max-w-[960px]로 맞추고, 실제 테이블(컬럼 합 1600px대)만 그 안에서 별도
           `overflow-x-auto` 박스로 가로 스크롤 처리(대기목록 17번). */}
-      <section className="flex w-full max-w-[960px] flex-col gap-4 pb-8">
+      <section id="table-full" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <button
           type="button"
           onClick={() => setProductionTableOpen((prev) => !prev)}
-          className="flex items-center gap-1.5 text-left text-[14px] font-semibold text-mes-gray-130"
+          className="flex items-center gap-1.5 text-left text-[15px] font-bold text-mes-gray-130"
         >
           <ChevronRight
             size={16}
@@ -1322,8 +1380,8 @@ export default function Home() {
         )}
       </section>
 
-      <section className="flex w-full max-w-[960px] flex-col gap-6 pb-8">
-        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+      <section id="table-parts" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-6 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           Table — 구조 요소별 분리 데모
         </h2>
         <p className="text-[12px] text-mes-gray-70">

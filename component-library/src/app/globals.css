@@ -211,6 +211,13 @@
   --color-mes-alarm-green: var(--mes-alarm-green);
 }
 
+html {
+  /* 2026-07-30 신규 — 데모 페이지 상단 TOC(섹션 바로가기 링크)에서 앵커 클릭 시
+     부드럽게 스크롤되도록. 실제 스크롤 컨테이너는 html/body(페이지 자체가 넘침)라
+     여기에 지정 — 각 섹션에는 `scroll-mt-6`으로 도착 시 위쪽 여백을 둠. */
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
