@@ -338,6 +338,18 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      빼고 핵심 사실만 남김.
   2. `Sample` 컴포넌트 라벨: `text-[11px] text-mes-gray-70` → `text-[12px] font-medium
      text-mes-gray-90`로 소폭 확대. eslint+tsc 클린 확인 후 커밋.
+- (2026-07-30, 13차) 담당자가 "색상/타이포는 페이지에 추가했는데 간격/Radius/그림자
+  규칙도 추가해달라"고 요청. `docs/디자인_토큰_사용_규칙.md` 2/4/5절 값을 그대로 Foundation
+  섹션에 시각화해서 추가:
+  1. **간격**: 1~32px 15개 값을 실제 너비의 바 + px 라벨 + 용도로 나열(4px 배수를 벗어난
+     5px/6px 등도 그대로 유지).
+  2. **Radius**: 2/3/4/8/12/16px + full(pill) 7종을 실제 `border-radius`를 적용한
+     박스로 렌더링 — full은 pill 모양이 드러나게 가로로 긴 박스 사용.
+  3. **그림자**: 4개 프리셋(낮은 부유/중간 모달/큰·집중형 모달/토스트)을 흰 배경
+     박스에 실제 `filter: drop-shadow(...)`로 적용해 렌더링(box-shadow와 drop-shadow가
+     섞여 있었지만 스프레드 없는 값이라 미리보기는 drop-shadow로 통일해도 시각적으로 동일).
+  세 섹션 다 Foundation `<section>` 안에 id 부여, TOC_LINKS에 간격/Radius/그림자 3개
+  추가. eslint+tsc 클린 확인 후 커밋.
 
 ## 현재 진행 상태 (최종 갱신: 2026-07-30)
 

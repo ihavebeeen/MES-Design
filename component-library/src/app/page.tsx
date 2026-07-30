@@ -82,6 +82,9 @@ import {
 const TOC_LINKS: { id: string; label: string }[] = [
   { id: "color-palette", label: "색상 팔레트" },
   { id: "typography", label: "타이포그래피" },
+  { id: "spacing", label: "간격" },
+  { id: "radius", label: "Radius" },
+  { id: "shadow", label: "그림자" },
   { id: "button-size", label: "Button 사이즈" },
   { id: "button-icon", label: "Button 아이콘" },
   { id: "button-color", label: "Button 컬러" },
@@ -215,6 +218,50 @@ const DANGER_PALETTE = [
   { step: "90", hex: "#521419" },
   { step: "100", hex: "#310C0F" },
   { step: "110", hex: "#21080A" },
+] as const;
+
+/** `docs/디자인_토큰_사용_규칙.md` 2절과 동일한 값. 실측값이라 4px 배수에서 벗어난
+ * 것(5px, 6px 등)도 그대로 유지 — 임의로 반올림하지 않음. */
+const SPACING_SCALE = [
+  { value: 1, usage: "테두리 두께(거의 전부), Radio 바깥 원 인셋" },
+  { value: 2, usage: "Progress 트랙-라벨 gap" },
+  { value: 3, usage: "Badge/Tag 세로 padding, FilterTag 우측 padding, Checkbox radius" },
+  { value: 4, usage: "Sidebar 1-depth 리스트 gap, Tag 요소간 gap, Button 기본 radius" },
+  { value: 5, usage: "검색창 아이콘-텍스트 gap, 활성 필터 태그 박스 padding" },
+  { value: 6, usage: "아이콘-라벨 좁은 gap(대부분의 gap-1.5)" },
+  { value: 8, usage: "카드/토스트 내부 padding, Select·Combobox 패널 내부 padding" },
+  { value: 10, usage: "표준 요소간 gap — 이 시스템에서 가장 많이 재사용됨" },
+  { value: 12, usage: "Sidebar 2-depth 항목 좌우 padding, Table 여백" },
+  { value: 14, usage: "다이얼로그 헤더 우측 padding(닫기 버튼 균형용)" },
+  { value: 16, usage: "카드 padding — Toast 전체, RadioChoiceDialog 경고배너 상하" },
+  { value: 20, usage: "다이얼로그 표준 간격 — 헤더/본문 좌측, 본문↔푸터" },
+  { value: 24, usage: "그림자 blur 값에서 주로 등장" },
+  { value: 30, usage: "Progress 전체 높이, RadioChoiceDialog 경고배너 좌우 padding" },
+  { value: 32, usage: "ConfirmDialog 본문 padding(원래 실측값)" },
+] as const;
+
+/** `docs/디자인_토큰_사용_규칙.md` 4절과 동일한 값 */
+const RADIUS_SCALE = [
+  { label: "2px", radius: "2px", usage: "Button xsmall, Badge, Tag", pill: false },
+  { label: "3px", radius: "3px", usage: "Input small, Checkbox, FilterTag", pill: false },
+  { label: "4px", radius: "4px", usage: "Button basic·small, Input default, Table", pill: false },
+  { label: "8px", radius: "8px", usage: "드롭다운·플라이아웃 패널, Sidebar 2-depth", pill: false },
+  { label: "12px", radius: "12px", usage: "ConfirmDialog", pill: false },
+  { label: "16px", radius: "16px", usage: "RadioChoiceDialog", pill: false },
+  { label: "full", radius: "9999px", usage: "Progress 트랙, Toast, Sidebar 토글", pill: true },
+] as const;
+
+/**
+ * `docs/디자인_토큰_사용_규칙.md` 5절과 동일한 값. 실제 CSS는 box-shadow와
+ * filter:drop-shadow가 섞여 있지만(4번째 값 "토스트"만 원래 drop-shadow), 미리보기는
+ * 전부 `filter: drop-shadow(...)`로 통일해서 렌더링 — 스프레드 값이 없는 그림자라
+ * box-shadow와 시각적으로 동일함.
+ */
+const SHADOW_SCALE = [
+  { label: "낮은 부유", value: "0 2px 8px rgba(0,0,0,.12)", usage: "Select·Combobox·Filter 드롭다운 패널" },
+  { label: "중간 모달", value: "0 4px 16px rgba(0,0,0,.2)", usage: "ConfirmDialog" },
+  { label: "큰/집중형 모달", value: "0 0 24px rgba(0,0,0,.2)", usage: "RadioChoiceDialog" },
+  { label: "토스트", value: "0 0 12px rgba(0,0,0,.2)", usage: "Toast" },
 ] as const;
 
 /**
@@ -718,6 +765,81 @@ export default function Home() {
                   );
                 })}
               </div>
+            </div>
+          ))}
+        </div>
+
+        <div id="spacing" className="scroll-mt-6">
+          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+            간격
+          </h2>
+          <p className="mt-1 text-[12px] text-mes-gray-70">
+            실측값 그대로 — 4px 배수를 벗어난 값(5px, 6px 등)도 있음.
+          </p>
+        </div>
+        <div className="flex flex-col gap-2">
+          {SPACING_SCALE.map((s) => (
+            <div key={s.value} className="flex items-center gap-3">
+              <span className="w-10 shrink-0 text-right font-mono text-[11px] text-mes-gray-60">
+                {s.value}px
+              </span>
+              <div className="flex h-4 w-10 shrink-0 items-center">
+                <div
+                  className="h-3 rounded-sm bg-mes-primary-40"
+                  style={{ width: s.value }}
+                />
+              </div>
+              <span className="text-[11px] text-mes-gray-70">{s.usage}</span>
+            </div>
+          ))}
+        </div>
+
+        <div id="radius" className="scroll-mt-6">
+          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+            Radius
+          </h2>
+          <p className="mt-1 text-[12px] text-mes-gray-70">
+            작은 요소 2~4px, 떠 있는 패널 8px, 모달 12~16px, 캡슐형 full.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-6">
+          {RADIUS_SCALE.map((r) => (
+            <div key={r.label} className="flex flex-col items-center gap-1.5">
+              <div
+                className={cn(
+                  "border border-mes-primary-40 bg-mes-primary-20",
+                  r.pill ? "h-8 w-16" : "size-12"
+                )}
+                style={{ borderRadius: r.radius }}
+              />
+              <span className="font-mono text-[11px] text-mes-gray-70">{r.label}</span>
+              <span className="max-w-[110px] text-center text-[10px] leading-tight text-mes-gray-60">
+                {r.usage}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div id="shadow" className="scroll-mt-6">
+          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+            그림자
+          </h2>
+          <p className="mt-1 text-[12px] text-mes-gray-70">
+            오프셋 있으면 &quot;떠 있는 패널&quot;, 오프셋 없이 사방 확산이면 &quot;중앙
+            집중형 모달&quot;.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-8">
+          {SHADOW_SCALE.map((s) => (
+            <div key={s.label} className="flex flex-col items-center gap-2">
+              <div
+                className="flex h-16 w-28 items-center justify-center rounded-lg bg-white text-[11px] text-mes-gray-70"
+                style={{ filter: `drop-shadow(${s.value})` }}
+              >
+                {s.label}
+              </div>
+              <span className="font-mono text-[10px] text-mes-gray-60">{s.value}</span>
+              <span className="text-[11px] text-mes-gray-70">{s.usage}</span>
             </div>
           ))}
         </div>
