@@ -639,7 +639,7 @@ export default function Home() {
           <p className="mt-1 text-[12px] text-mes-gray-70">
             폰트는 전부 Pretendard, 자간 0 / 행간 150% 고정(2026-07-30 담당자 확정 — 이전에
             일부 컴포넌트에 있던 자간 값과 행간 130%/140% 예외는 전부 제거하고 통일함).
-            빨간 점이 실제로 코드에서 쓰이는 (굵기·크기) 조합.
+            회색 밑줄이 실제로 코드에서 쓰이는 (굵기·크기) 조합.
           </p>
         </div>
         <div className="grid grid-cols-4 gap-8">
@@ -650,20 +650,17 @@ export default function Home() {
                 {TYPE_SIZES.map((size) => {
                   const usage = USED_TYPE_COMBOS[`${w.label}-${size}`];
                   return (
-                    <div key={size} className="flex items-center gap-1.5" title={usage}>
-                      <span
-                        className={cn(
-                          "size-[6px] shrink-0 rounded-full",
-                          usage ? "bg-[#e4392f]" : "bg-transparent"
-                        )}
-                      />
-                      <span
-                        style={{ fontSize: size, fontWeight: w.weight, letterSpacing: 0, lineHeight: 1.5 }}
-                        className="whitespace-nowrap text-mes-gray-130"
-                      >
-                        Pretendard / {w.label} / {size}px
-                      </span>
-                    </div>
+                    <span
+                      key={size}
+                      title={usage}
+                      style={{ fontSize: size, fontWeight: w.weight, letterSpacing: 0, lineHeight: 1.5 }}
+                      className={cn(
+                        "block whitespace-nowrap text-left text-mes-gray-130",
+                        usage && "underline decoration-mes-gray-40 decoration-2 underline-offset-4"
+                      )}
+                    >
+                      Pretendard / {w.label} / {size}px
+                    </span>
                   );
                 })}
               </div>
