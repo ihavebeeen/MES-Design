@@ -115,6 +115,142 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
+/**
+ * 2026-07-30 신규 — 페이지 상단 "Foundation"(색상/타이포) 섹션.
+ * 담당자 지적: 색상·폰트 값이 각 컴포넌트 섹션에 흩어져 있어 한눈에 보기 어려움 —
+ * `docs/디자인_토큰_사용_규칙.md`에 이미 정리된 값을 페이지 최상단에 시각적으로도 모아둠.
+ * Tailwind는 클래스명을 정적으로 스캔하므로(`bg-mes-gray-${step}` 같은 동적 조합은
+ * 감지 못 함) 스와치 배경은 실제 hex를 inline style로 직접 지정 — `globals.css`의
+ * `--mes-*` 값과 100% 동일해야 하며, 값이 바뀌면 여기도 같이 갱신할 것.
+ */
+const GRAY_PALETTE = [
+  { step: "0", hex: "#FFFFFF" },
+  { step: "10", hex: "#F8FAFC" },
+  { step: "20", hex: "#EFF2F8" },
+  { step: "30", hex: "#E4E7EE" },
+  { step: "40", hex: "#D7DCE5" },
+  { step: "50", hex: "#B4C0D3" },
+  { step: "60", hex: "#99A3B8" },
+  { step: "70", hex: "#8491A7" },
+  { step: "80", hex: "#67738E" },
+  { step: "90", hex: "#5C667B" },
+  { step: "100", hex: "#475067" },
+  { step: "110", hex: "#373F57" },
+  { step: "120", hex: "#292E41" },
+  { step: "130", hex: "#011327" },
+  { step: "140", hex: "#000000" },
+] as const;
+
+const PRIMARY_PALETTE = [
+  { step: "10", hex: "#EFF8FF" },
+  { step: "20", hex: "#E8F5FF" },
+  { step: "30", hex: "#C7E4FF" },
+  { step: "40", hex: "#7BBBFF" },
+  { step: "50", hex: "#4096FF" },
+  { step: "60", hex: "#1573FB" },
+  { step: "70", hex: "#0958D9" },
+  { step: "80", hex: "#003EB3" },
+  { step: "90", hex: "#002C8C" },
+  { step: "100", hex: "#001D66" },
+  { step: "110", hex: "#00113D" },
+] as const;
+
+const DANGER_PALETTE = [
+  { step: "10", hex: "#FBEFF0" },
+  { step: "20", hex: "#F5D6D9" },
+  { step: "30", hex: "#FFB7BC" },
+  { step: "40", hex: "#FB8992" },
+  { step: "50", hex: "#FD6672" },
+  { step: "60", hex: "#F04452" },
+  { step: "70", hex: "#AB2B36" },
+  { step: "80", hex: "#7A1F26" },
+  { step: "90", hex: "#521419" },
+  { step: "100", hex: "#310C0F" },
+  { step: "110", hex: "#21080A" },
+] as const;
+
+/** 3단계만 실측됨(나머지는 미실측 — 임의 보간 금지) */
+const YELLOW_PALETTE = [
+  { step: "10", hex: "#FFF3DB" },
+  { step: "20", hex: "#FFE0A3" },
+  { step: "50", hex: "#F2A406" },
+] as const;
+
+/** 알람 리스트 전용 별도 색상군 — 단계형 팔레트 아님, 색상당 1개 값만 존재 */
+const ALARM_PALETTE = [
+  { step: "blue", hex: "#4A90E2" },
+  { step: "red", hex: "#E15B5B" },
+  { step: "yellow", hex: "#E99B41" },
+  { step: "green", hex: "#4BB866" },
+] as const;
+
+function PaletteRow({
+  title,
+  note,
+  colors,
+}: {
+  title: string;
+  note?: string;
+  colors: readonly { step: string; hex: string }[];
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-[12px] font-medium text-mes-gray-70">
+        {title}
+        {note && <span className="ml-2 font-normal text-mes-gray-60">{note}</span>}
+      </span>
+      <div className="flex flex-wrap gap-3">
+        {colors.map((c) => (
+          <div key={c.step} className="flex flex-col items-center gap-1">
+            <div
+              className="size-10 rounded border border-mes-gray-20"
+              style={{ backgroundColor: c.hex }}
+              title={`${c.step} / ${c.hex}`}
+            />
+            <span className="font-mono text-[10px] text-mes-gray-70">{c.step}</span>
+            <span className="font-mono text-[10px] text-mes-gray-60">{c.hex}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** `docs/디자인_토큰_사용_규칙.md` 6절과 동일한 값 — 폰트는 전부 Pretendard */
+const TYPE_SCALE = [
+  {
+    size: 12,
+    label: "SemiBold",
+    weight: 600,
+    usage: "Badge/Tag/FilterTag 카운트, AlarmListItem 날짜",
+  },
+  {
+    size: 13,
+    label: "Regular/Medium",
+    weight: 400,
+    usage: "Select·Combobox 목록, PageTopTabItem, Sidebar 2-depth, NoticeBanner 본문, AlarmListItem 설명",
+  },
+  {
+    size: 14,
+    label: "Regular/Medium",
+    weight: 400,
+    usage: "Input·Table 기본 텍스트, RadioChoiceDialog 설명, Filter 트리거, AlarmListItem 제목",
+  },
+  {
+    size: 15,
+    label: "SemiBold/Medium",
+    weight: 600,
+    usage: "Button basic 라벨, Sidebar 1-depth, Toast",
+  },
+  {
+    size: 16,
+    label: "Medium/SemiBold",
+    weight: 600,
+    usage: "RadioChoiceDialog 질문, ConfirmDialog heading, NotificationPanel 헤더",
+  },
+  { size: 18, label: "Bold", weight: 700, usage: "다이얼로그 헤더 제목(공통)" },
+] as const;
+
 const shiftOptions = [
   { value: "day", label: "주간 근무조" },
   { value: "night", label: "야간 근무조" },
@@ -459,6 +595,54 @@ export default function Home() {
       <h1 className="text-xl font-semibold text-mes-gray-130">
         MES 컴포넌트 라이브러리 — 스캐폴딩 확인용
       </h1>
+
+      <section className="flex w-full max-w-[960px] flex-col gap-6 border-b border-mes-gray-30 pb-8">
+        <div>
+          <h2 className="text-[14px] font-semibold text-mes-gray-130">색상 팔레트</h2>
+          <p className="mt-1 text-[12px] text-mes-gray-70">
+            Gray/Primary/Danger는 서로 다른 두 Figma 파일에서 교차검증된 확정(CONFIRMED)
+            값. Yellow는 실제 사용된 3단계(10/20/50)만 실측 — 나머지 단계는 임의 보간하지
+            않음. Alarm은 알람 리스트 전용 별도 색상군(팔레트 아님). 전부 `globals.css`의
+            `--mes-*` 값과 동일.
+          </p>
+        </div>
+        <div className="flex flex-col gap-4">
+          <PaletteRow title="Gray" colors={GRAY_PALETTE} />
+          <PaletteRow title="Primary" colors={PRIMARY_PALETTE} />
+          <PaletteRow title="Danger" colors={DANGER_PALETTE} />
+          <PaletteRow title="Yellow" note="(3단계만 실측)" colors={YELLOW_PALETTE} />
+          <PaletteRow title="Alarm severity" note="(알람 리스트 전용, 팔레트 아님)" colors={ALARM_PALETTE} />
+        </div>
+
+        <div>
+          <h2 className="text-[14px] font-semibold text-mes-gray-130">타이포그래피 스케일</h2>
+          <p className="mt-1 text-[12px] text-mes-gray-70">
+            폰트는 전부 Pretendard. `docs/디자인_토큰_사용_규칙.md` 6절과 동일한 값.
+          </p>
+        </div>
+        <div className="flex flex-col gap-2">
+          {TYPE_SCALE.map((t) => (
+            <div
+              key={t.size}
+              className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-mes-gray-20 pb-2 last:border-b-0"
+            >
+              <span className="w-10 shrink-0 font-mono text-[11px] text-mes-gray-60">
+                {t.size}px
+              </span>
+              <span className="w-28 shrink-0 text-[11px] text-mes-gray-60">{t.label}</span>
+              <span
+                style={{ fontSize: `${t.size}px`, fontWeight: t.weight }}
+                className="text-mes-gray-130"
+              >
+                MES 생산관리 시스템 가나다 Abc 123
+              </span>
+              <span className="w-full text-[11px] text-mes-gray-70 sm:ml-auto sm:w-auto sm:text-right">
+                {t.usage}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <Section title="Button — 사이즈">
         <Sample label="Button · Basic · Default">
