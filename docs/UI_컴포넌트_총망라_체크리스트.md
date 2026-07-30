@@ -163,7 +163,7 @@
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
 | Navbar / Top Nav | 상단 내비게이션 바 | 오가니즘 | 없음 | 2 | |
-| Sidebar / Side Nav | 좌측 내비게이션 | 오가니즘 | 부분 | 1 | 2026-07-29 코드화: `components/ui/sidebar.tsx`(node 133:1976 "SNB-active" 실측). Figma엔 4종 상태+hide 상태가 있다고 기록돼 있었으나 이번엔 active 1종만 실측·코드화 — 나머지 상태(hover/collapsed rail/hide)는 미실측이라 "부분"으로 남김. 2026-07-30 추가: 접기버튼 hover 색(Gray-90) 확인·반영. 1-depth/2-depth 항목 hover/active는 metadata상 캡션 텍스트만 있고 실제 스타일 노드를 못 찾아 여전히 미실측 |
+| Sidebar / Side Nav | 좌측 내비게이션 | 오가니즘 | 부분 | 1 | 2026-07-29 코드화, 2026-07-30 재검증으로 대부분 완성: `components/ui/sidebar.tsx`. 접기버튼(hover), 1-depth 항목(hover=Gray-120/active=Primary-60, `activeKey` prop으로 구분), 2-depth 항목(hover/active), MES/FEMS 토글(hover) 전부 실측·반영 완료. 유일하게 남은 건 접기(collapsed rail/`SNB-hide`, node 133:2263) 상태 — 완전히 다른 레이아웃(라벨 숨김)이라 별도 작업 필요해서 "부분"으로 유지 |
 | Breadcrumb | 현재 위치 경로 표시 | 몰큘 | 없음 | 2 | |
 | Tabs | 탭 전환 | 몰큘 | 있음 | 1 | 2026-07-29 코드화, 2026-07-30 재검증: `components/ui/page-top-tab-item.tsx`(node 157:18051 컴포넌트 세트, default/hover/active 3종 전부 실측). active는 배경 Gray-110 + 제목 SemiBold로 정정(이전 판단값은 틀렸었음) |
 | Pagination | 페이지네이션 | 몰큘 | 없음 | 2 | |

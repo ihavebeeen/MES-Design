@@ -52,22 +52,33 @@ import { IconGrid } from "../icons/icon-grid";
  *   hover 상태를 캡처한 것으로 판단 — 코드에서는 하이라이트를 `hover:bg-mes-gray-120`으로
  *   구현(고정 스타일 아님).
  * - "MES 설정" 아이콘은 원본이 톱니바퀴(설정) 모양인데, 33개 아이콘 목록에 설정/톱니바퀴
- *   아이콘이 없어 `lucide-react`의 `Settings`를 임시 placeholder로 사용 — 실제 벡터 export
- *   전까지 임시 처리.
- * - 1-depth/2-depth 항목의 hover 배경, 접기(collapsed rail) 상태의 아이콘 전용 축소 레이아웃은
- *   이번 프레임에 없어 다루지 않음(collapsed 상태는 이 컴포넌트 스코프 밖 — 필요 시 별도 확인).
+ *   아이콘이 없어 `lucide-react`의 `Settings`를 임시 placeholder로 사용 — 2026-07-30 재확인:
+ *   Figma에 실제 `mes/icon-setting`(Property1=gray/black/fill-white/fill-gray) 벡터가
+ *   존재함을 확인했으나 이미지 애셋이라 코드로 못 뽑음 — 담당자가 다른 33종처럼 SVG
+ *   export 해주면 교체 예정, 그 전까진 lucide 임시 유지.
  * - 로고는 실제 회사 로고 이미지 애셋이라 코드로 재현하지 않고 `logo` prop으로 자유롭게
  *   주입하도록 함(데모 페이지에서 텍스트로 대체).
  *
- * ── 3. 2026-07-30 추가 실측 ────────────────────────────────────
- * - 접기 버튼(snb-open-btn) hover 색 확인: node 133:2050 하위 실측 결과 기본 Gray-110(#373F57)
- *   →hover Gray-90(#5C667B) — 반영함.
- * - 1-depth("상단 개별메뉴")/2-depth("소메뉴") 항목의 hover/active 상태를 가리키는 노드
- *   (133:2067/2070/2073, 133:2068/2071/2074 등)를 metadata에서 찾긴 했으나, 이 노드들은
- *   실제 스타일이 적용된 컴포넌트가 아니라 주석용 캡션 텍스트 노드였음(번호 매겨진 설명
- *   목록 형태 — "1. 대메뉴 버튼", "2. 소메뉴 버튼" 등) — 실제 색상 스와치는 이미지로만
- *   존재해 코드로 못 뽑음. 여전히 "부분" 상태 유지, 필요하면 해당 프레임 스크린샷을
- *   육안 대조하는 방식으로 재시도 필요.
+ * ── 3. 2026-07-30 추가 실측(metadata 재탐색으로 형제 컴포넌트 세트 발견) ──────
+ * 처음엔 1-depth/2-depth hover/active를 가리키는 것처럼 보인 노드(133:2067/2070/2073 등)가
+ * 실은 캡션 텍스트였다는 걸 확인했지만, 같은 metadata를 더 넓게 훑어서 실제 컴포넌트
+ * 세트를 찾아냄 — 재검증 완료:
+ * - **접기 버튼**(snb-open-btn, node 133:2050): 기본 Gray-110(#373F57) → hover
+ *   Gray-90(#5C667B) — 반영.
+ * - **1-depth 항목**(snb-item, node 133:2042 세트 하위 133:2151/2179/2207 =
+ *   main-item/main-item-hover/main-item-active): hover는 배경 Gray-120(#292E41) + 흰색
+ *   Medium 텍스트, active(현재 선택된 페이지)는 배경 **Primary-60(#1573FB)** + 흰색
+ *   Medium 텍스트 — hover와 active가 서로 다른 색이라는 걸 이번에 처음 확인(이전엔
+ *   "펼침"과 "활성"을 구분하지 않고 둘 다 Gray-120으로만 처리했었음). `activeKey` prop을
+ *   `expandedKey`와 별개로 추가해 반영.
+ * - **2-depth 항목**(snb-2depth-item, node 133:2235): open(기본)=투명 배경/Gray-60 텍스트,
+ *   hover=배경 Gray-120, active=배경 Primary-60+흰색 Medium — 기존에 판단값으로 구현해뒀던
+ *   값과 정확히 일치함을 확인(우연이 아니라 처음부터 스크린샷 육안 대조가 정확했던 것).
+ * - **MES/FEMS 토글**(snb-tab-item, node 133:2248): 기본=투명/Gray-100 텍스트, hover=배경
+ *   Gray-20(#EFF2F8), active=배경 검정+흰색 SemiBold — hover 배경 추가 반영.
+ * - 접기(collapsed rail) 상태(`SNB-hide` 컴포넌트 세트, node 133:2263 등)는 존재를
+ *   확인했지만 이번 라운드에선 범위 밖(아이콘만 남기고 라벨 숨기는 완전히 다른 레이아웃이라
+ *   별도 작업 필요) — 체크리스트에 "부분" 사유로 계속 남겨둠.
  */
 
 export interface SidebarSubItem {
@@ -87,6 +98,13 @@ export interface SidebarProps {
   /** 펼쳐진 1-depth 항목 key (없으면 전부 접힘) */
   expandedKey?: string;
   onExpandedKeyChange?: (key: string | undefined) => void;
+  /**
+   * 현재 선택된(활성) 1-depth 항목 key — 2026-07-30 실측 추가(node 133:2207
+   * "main-item-active", 배경 Primary-60/#1573FB). `expandedKey`(펼침 여부)와는
+   * 별개 개념 — 하위 메뉴 없이 바로 이동하는 1-depth 항목이 "현재 보고 있는 페이지"임을
+   * 나타낼 때 씀. 펼쳐진 상태의 시각효과(배경 Gray-120)와는 다른 색(파랑)이라 구분해서 구현.
+   */
+  activeKey?: string;
   /** 선택된 2-depth 항목 key */
   activeSubKey?: string;
   onSubItemClick?: (itemKey: string, subKey: string) => void;
@@ -107,6 +125,7 @@ function Sidebar({
   items,
   expandedKey,
   onExpandedKeyChange,
+  activeKey,
   activeSubKey,
   onSubItemClick,
   onItemClick,
@@ -169,7 +188,9 @@ function Sidebar({
                 onClick={() => onModeChange?.(m)}
                 className={cn(
                   "flex h-[26px] flex-1 items-center justify-center rounded-sm px-4 text-[13px] font-semibold tracking-[-0.1625px]",
-                  mode === m ? "bg-black text-white" : "text-mes-gray-100"
+                  mode === m
+                    ? "bg-black text-white"
+                    : "text-mes-gray-100 hover:bg-mes-gray-20"
                 )}
               >
                 {m}
@@ -180,6 +201,8 @@ function Sidebar({
           <div className="flex w-full flex-col gap-1">
             {items.map((item) => {
               const isExpanded = expandedKey === item.key;
+              const isActive = activeKey === item.key;
+              const isEmphasized = isExpanded || isActive;
               const hasChildren = !!item.children?.length;
               return (
                 <div
@@ -195,15 +218,21 @@ function Sidebar({
                       onItemClick?.(item.key);
                     }}
                     className={cn(
-                      "flex h-[42px] w-full shrink-0 items-center justify-between rounded px-[10px]",
-                      isExpanded ? "bg-mes-gray-120" : "hover:bg-mes-gray-120/60"
+                      "group flex h-[42px] w-full shrink-0 items-center justify-between rounded px-[10px]",
+                      isActive
+                        ? "bg-mes-primary-60"
+                        : isExpanded
+                          ? "bg-mes-gray-120"
+                          : "hover:bg-mes-gray-120"
                     )}
                   >
                     <span className="flex shrink-0 items-center gap-2.5">
                       <span
                         className={cn(
                           "flex shrink-0",
-                          isExpanded ? "text-white" : "text-mes-gray-70"
+                          isEmphasized
+                            ? "text-white"
+                            : "text-mes-gray-70 group-hover:text-white"
                         )}
                       >
                         {item.icon}
@@ -211,9 +240,9 @@ function Sidebar({
                       <span
                         className={cn(
                           "whitespace-nowrap text-[15px] leading-[1.5]",
-                          isExpanded
+                          isEmphasized
                             ? "font-medium text-white"
-                            : "font-normal text-mes-gray-70"
+                            : "font-normal text-mes-gray-70 group-hover:text-white"
                         )}
                       >
                         {item.label}
@@ -223,7 +252,10 @@ function Sidebar({
                       <IconArrow
                         size={16}
                         className={cn(
-                          "shrink-0 text-mes-gray-70 transition-transform",
+                          "shrink-0 transition-transform",
+                          isEmphasized
+                            ? "text-white"
+                            : "text-mes-gray-70 group-hover:text-white",
                           isExpanded ? "rotate-90" : "-rotate-90"
                         )}
                       />

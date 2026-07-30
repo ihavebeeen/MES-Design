@@ -245,7 +245,22 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      신설. `read` prop의 실제 의미(이름과 시각효과가 반대로 느껴짐)와 "두줄" placeholder의
      정확한 용도는 확인 필요로 남김. 체크리스트 "Alarm List/Table"(있음=Figma 확인만) 행에
      코드 참조 추가.
-  - 세 건 모두 `page.tsx` 데모 반영, eslint+tsc 클린 확인 후 커밋 예정.
+  - 세 건 모두 `page.tsx` 데모 반영, eslint+tsc 클린 확인 후 커밋 완료.
+- (2026-07-30, 4차) 담당자가 "그럼 내가 링크 보내줘야 하는거임?"이라고 질문 — 아직 두 파일도
+  다 안 봤다고 답하고 metadata를 계속 더 훑음. 첫 번째 파일(컴포넌트 라이브러리)의 아직 안 본
+  부분에서 Sidebar의 진짜 컴포넌트 세트를 발견(앞서 3차에서 찾은 133:2067 등은 캡션
+  텍스트였을 뿐, 진짜는 133:2042/2235/2248 세트) — 재검증 완료:
+  - 1-depth 항목: hover(Gray-120)와 active(Primary-60, "현재 선택된 페이지")가 서로 다른
+    색이라는 걸 처음 확인 — 이전엔 구분 없이 Gray-120 하나로만 처리했었음. `activeKey`
+    prop을 `expandedKey`와 별개로 신설.
+  - 2-depth 항목: 실측 결과가 기존 판단값(hover=Gray-120, active=Primary-60)과 정확히
+    일치 — 처음 스크린샷 육안 대조가 맞았던 걸로 확인.
+  - MES/FEMS 토글: hover 배경(Gray-20) 추가.
+  - 접기(collapsed rail, `SNB-hide`) 상태는 존재만 확인, 완전히 다른 레이아웃이라 이번엔
+    범위 밖 — "부분" 유지.
+  - 보너스: `mes/icon-setting`(톱니바퀴) 실제 벡터가 Figma에 있다는 것도 확인(이미지
+    애셋이라 코드로 못 뽑음 — 담당자가 export 해주면 lucide placeholder 교체 예정).
+  - eslint+tsc 클린 확인 후 커밋.
 
 ## 현재 진행 상태 (최종 갱신: 2026-07-30)
 

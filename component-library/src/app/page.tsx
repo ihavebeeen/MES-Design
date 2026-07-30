@@ -908,11 +908,13 @@ export default function Home() {
 
       <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="text-[14px] font-semibold text-mes-gray-130">
-          Sidebar / SNB (좌측 전역 내비게이션 — node 133:1976 실측, MES 설정만 2-depth 예시 포함)
+          Sidebar / SNB (좌측 전역 내비게이션 — node 133:1976·133:2042 등 실측, hover/active 반영)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          &quot;MES 설정&quot; 아이콘은 실제 export된 톱니바퀴 벡터가 없어 lucide-react
-          placeholder 사용 — 확인 필요.
+          2026-07-30 재검증: 1-depth hover(Gray-120)/active(Primary-60, &quot;통계분석&quot;
+          예시)가 서로 다른 색임을 확인해 `activeKey`를 `expandedKey`와 별개 prop으로 추가.
+          접기(collapsed rail) 상태는 아직 범위 밖. &quot;MES 설정&quot; 아이콘은 실제 벡터
+          존재 확인했지만 export 전까지 lucide placeholder 유지.
         </p>
         <div className="h-[600px] w-[260px] overflow-hidden rounded-lg border border-mes-gray-30">
           <Sidebar
@@ -922,6 +924,7 @@ export default function Home() {
             }
             expandedKey={sidebarExpandedKey}
             onExpandedKeyChange={setSidebarExpandedKey}
+            activeKey="stats"
             activeSubKey={sidebarActiveSubKey}
             onSubItemClick={(_, subKey) => setSidebarActiveSubKey(subKey)}
           />
