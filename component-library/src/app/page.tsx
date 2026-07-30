@@ -132,8 +132,10 @@ const SIDEBAR_NAV_ITEMS: SidebarNavItem[] = [
 
 function Sample({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col items-start gap-1.5">
-      <span className="font-mono text-[11px] leading-none text-mes-gray-70">{label}</span>
+    <div className="flex flex-col items-start gap-2">
+      <span className="font-mono text-[12px] font-medium leading-none text-mes-gray-90">
+        {label}
+      </span>
       <div className="flex items-center">{children}</div>
     </div>
   );
@@ -677,11 +679,7 @@ export default function Home() {
         <div id="color-palette" className="scroll-mt-6">
           <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">색상 팔레트</h2>
           <p className="mt-1 text-[12px] text-mes-gray-70">
-            Gray/Primary/Danger/Yellow 전부 10~110(끝단 0/140은 Gray만) 11단계 확정
-            (CONFIRMED) 값 — Yellow는 2026-07-30 담당자가 준 &quot;System Color&quot;
-            레퍼런스 프레임(node 20170:67850)으로 나머지 단계까지 전부 확인(20=surface,
-            40=Base, 50=Text 역할 라벨 포함). Alarm은 알람 리스트 전용 별도 색상군(팔레트
-            아님). 전부 `globals.css`의 `--mes-*` 값과 동일.
+            Gray/Primary/Danger/Yellow 각 10~110 11단계. Alarm은 알람 리스트 전용 별도 색상군.
           </p>
         </div>
         <div className="flex flex-col gap-4">
@@ -695,9 +693,7 @@ export default function Home() {
         <div id="typography" className="scroll-mt-6">
           <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">타이포그래피 스케일</h2>
           <p className="mt-1 text-[12px] text-mes-gray-70">
-            폰트는 전부 Pretendard, 자간 0 / 행간 150% 고정(2026-07-30 담당자 확정 — 이전에
-            일부 컴포넌트에 있던 자간 값과 행간 130%/140% 예외는 전부 제거하고 통일함).
-            회색 밑줄이 실제로 코드에서 쓰이는 (굵기·크기) 조합.
+            Pretendard, 자간 0 / 행간 150% 고정. 회색 밑줄 = 실사용 조합.
           </p>
         </div>
         <div className="grid grid-cols-4 gap-8">
@@ -961,10 +957,7 @@ export default function Home() {
           Filter (트리거 + 플라이아웃 + 활성 태그, 통합 컴포넌트)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          &ldquo;필터 추가&rdquo; 클릭 → 카테고리 선택 → 체크박스 선택 → 트리거 옆에
-          선택 개수가 적힌 태그가 자동 표시(예: &ldquo;그룹명 2&rdquo;) → 태그의 X로
-          선택 해제. 선택된 필터가 없으면 트리거 박스만 노출되고, 있으면 그 태그들을
-          hug하는 별도의 흰색/회색 테두리 박스가 옆에 나타남.
+          필터 추가 → 카테고리·체크박스 선택 → 태그로 표시 → X로 해제.
         </p>
         <Filter
           categories={filterCategories}
@@ -1127,9 +1120,7 @@ export default function Home() {
           NoticeBanner (안내 배너, 링크 포함 — 2026-07-29 신규, ConfirmDialog와 별개로도 사용 가능)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          ConfirmDialog 안에 끼워 넣을 수도 있고(위 &quot;안내 배너&quot; 예시 참고), 이렇게 독립적으로도
-          쓸 수 있음. 배경/테두리/아이콘 색은 실측(Yellow-10/20/50), padding·아이콘 벡터는
-          판단값(체크리스트 참고).
+          ConfirmDialog 안내 배너로도, 독립적으로도 사용 가능.
         </p>
         <NoticeBanner
           message="담당자의 조가 설정되지 않았습니다. 조를 설정하면 LOT 일련번호에 반영됩니다."
@@ -1163,10 +1154,7 @@ export default function Home() {
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           PageTopTabItem (열린 화면 상단 탭 1개 — node 157:18051 실측, default/hover/active 3종 전부)
         </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          2026-07-30 재검증: default/hover/active 3종 전부 실측 완료(이전엔 default만
-          찾아서 active를 판단값으로 뒀었음 — active는 배경 Gray-110 + 제목 SemiBold로 정정).
-        </p>
+        <p className="text-[12px] text-mes-gray-70">default/hover/active 3종.</p>
         <div className="flex">
           <PageTopTabItem label="생산계획(일) 리스트" active />
           <PageTopTabItem label="판매관리 리스트" />
@@ -1179,10 +1167,8 @@ export default function Home() {
           Sidebar / SNB (좌측 전역 내비게이션 — node 133:1976·133:2042 등 실측, hover/active 반영)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          2026-07-30 재검증: 1-depth hover(Gray-120)/active(Primary-60, &quot;통계분석&quot;
-          예시)가 서로 다른 색임을 확인해 `activeKey`를 `expandedKey`와 별개 prop으로 추가.
-          접기(collapsed rail) 상태는 아직 범위 밖. &quot;MES 설정&quot; 아이콘은 실제 벡터
-          존재 확인했지만 export 전까지 lucide placeholder 유지.
+          1-depth hover(Gray-120)/active(Primary-60) 구분. 접기(collapsed rail) 상태는
+          범위 밖.
         </p>
         <div className="h-[600px] w-[260px] overflow-hidden rounded-lg border border-mes-gray-30">
           <Sidebar
@@ -1204,9 +1190,7 @@ export default function Home() {
           AlarmListItem (알람/경보 리스트 항목 — node 163:3039 실측, 2026-07-30 신규 발견)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          담당자 새 링크 없이 기존 Figma 파일을 metadata로 훑다가 발견한 컴포넌트. tone 4색은
-          기존 팔레트와 무관한 별도 alarm 색상군. `read` prop 의미(읽음/강조 여부)와 &quot;두줄&quot;
-          용도는 확인 필요.
+          tone 4색(blue/red/yellow/green). `read` prop 의미는 확인 필요.
         </p>
         <div className="flex w-[400px] flex-col border border-mes-gray-30">
           <AlarmListItem
@@ -1243,9 +1227,7 @@ export default function Home() {
           NotificationPanel (알림 드롭다운 패널 — node 157:15771 / 157:15833 실측, 2026-07-30 신규)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          AlarmListItem을 재사용해 만든 상위 organism. &quot;미확인&quot;/&quot;확인&quot; 탭으로
-          추정되는 빈 자리와 &quot;모두 확인으로 표시&quot;/&quot;알림 설정&quot; 텍스트는 이 패널의
-          실제 트리에 포함되어 있지 않아 이번 범위에서 제외(확인 필요, 컴포넌트 파일 주석 참고).
+          AlarmListItem을 재사용한 알림 드롭다운. 미확인/확인 탭, 알림 설정은 범위 밖.
         </p>
         <div className="flex flex-wrap items-start gap-8">
           <div className="flex flex-col items-start gap-2">
@@ -1288,11 +1270,7 @@ export default function Home() {
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           아이콘 라이브러리 (담당자가 Figma에서 직접 SVG export해 전달 — 대체 아님, 실측 벡터)
         </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          출처: fileKey F4n5Zr04PAbiRjfIFQAo6v, node 20150:103713(&quot;Section 3&quot;) 하위.
-          색상 variant는 대부분 currentColor로 일반화(className으로 색 지정), flat-* 4종만
-          2톤 고정색이라 원본 hex 그대로 유지.
-        </p>
+        <p className="text-[12px] text-mes-gray-70">담당자가 export한 실측 벡터 39종.</p>
         <div className="grid grid-cols-8 gap-4 text-mes-gray-130">
           {[
             { label: "calendar", node: <IconCalendar /> },
@@ -1385,11 +1363,7 @@ export default function Home() {
           Table — 구조 요소별 분리 데모
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          위 합본 데모는 그대로 유지하고, 담당자 요청으로 헤더/그룹화/컬럼 2개 이상(그룹
-          없는 평범한 플랫 테이블)/총계행을 각각 독립적으로 볼 수 있게 아래에 나눠서
-          배치함. 전부 같은 <code>Table</code> 컴포넌트 하나를 재사용하되, 어떤 prop을
-          채우고 비우는지로 요소를 하나씩 분리함. 위 합본과 달리 15개 컬럼짜리 실제
-          데이터 대신 3컬럼짜리 단순 데이터를 씀(다시 넓어지는 것을 피하기 위함).
+          헤더/그룹화/컬럼/총계행을 <code>Table</code> 하나로 각각 따로 확인.
         </p>
 
         <div className="flex flex-col gap-2">

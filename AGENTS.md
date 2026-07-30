@@ -328,6 +328,16 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      해당 섹션으로 스크롤. `globals.css`의 `html`에 `scroll-behavior: smooth` 추가,
      각 섹션엔 `scroll-mt-6`을 걸어 스크롤 도착 시 위쪽 여백 확보. eslint+tsc 클린
      확인 후 커밋.
+- (2026-07-30, 12차) 담당자가 두 가지 추가 지적: (1) 섹션 제목 밑 설명 문단들이 "담당자가
+  ~/실측값이 ~" 식으로 너무 장황하니 핵심만 짧게 축약할 것, (2) `Sample`(예: "Button ·
+  Basic · Default") 라벨이 너무 작아 안 보이는데 컴포넌트보다 튀지 않을 정도로만 살짝
+  키울 것. 반영:
+  1. 섹션 설명 문단 10곳(색상 팔레트/타이포/Filter/NoticeBanner/PageTopTabItem/
+     Sidebar/AlarmListItem/NotificationPanel/아이콘 라이브러리/Table 분리 데모)을
+     전부 1줄 내외로 축약 — "담당자가 준 링크로", "2026-07-30 재검증" 같은 경위 서술은
+     빼고 핵심 사실만 남김.
+  2. `Sample` 컴포넌트 라벨: `text-[11px] text-mes-gray-70` → `text-[12px] font-medium
+     text-mes-gray-90`로 소폭 확대. eslint+tsc 클린 확인 후 커밋.
 
 ## 현재 진행 상태 (최종 갱신: 2026-07-30)
 
