@@ -58,6 +58,16 @@ import { IconGrid } from "../icons/icon-grid";
  *   이번 프레임에 없어 다루지 않음(collapsed 상태는 이 컴포넌트 스코프 밖 — 필요 시 별도 확인).
  * - 로고는 실제 회사 로고 이미지 애셋이라 코드로 재현하지 않고 `logo` prop으로 자유롭게
  *   주입하도록 함(데모 페이지에서 텍스트로 대체).
+ *
+ * ── 3. 2026-07-30 추가 실측 ────────────────────────────────────
+ * - 접기 버튼(snb-open-btn) hover 색 확인: node 133:2050 하위 실측 결과 기본 Gray-110(#373F57)
+ *   →hover Gray-90(#5C667B) — 반영함.
+ * - 1-depth("상단 개별메뉴")/2-depth("소메뉴") 항목의 hover/active 상태를 가리키는 노드
+ *   (133:2067/2070/2073, 133:2068/2071/2074 등)를 metadata에서 찾긴 했으나, 이 노드들은
+ *   실제 스타일이 적용된 컴포넌트가 아니라 주석용 캡션 텍스트 노드였음(번호 매겨진 설명
+ *   목록 형태 — "1. 대메뉴 버튼", "2. 소메뉴 버튼" 등) — 실제 색상 스와치는 이미지로만
+ *   존재해 코드로 못 뽑음. 여전히 "부분" 상태 유지, 필요하면 해당 프레임 스크린샷을
+ *   육안 대조하는 방식으로 재시도 필요.
  */
 
 export interface SidebarSubItem {
@@ -125,7 +135,7 @@ function Sidebar({
             type="button"
             onClick={onCollapseClick}
             aria-label="사이드바 접기"
-            className="flex size-[30px] shrink-0 items-center justify-center rounded-full bg-mes-gray-110 text-white"
+            className="flex size-[30px] shrink-0 items-center justify-center rounded-full bg-mes-gray-110 text-white hover:bg-mes-gray-90"
           >
             <IconArrowLine size={20} />
           </button>

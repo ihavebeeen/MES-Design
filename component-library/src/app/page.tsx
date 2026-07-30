@@ -25,6 +25,7 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { NoticeBanner } from "@/components/ui/notice-banner";
 import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
 import { Sidebar, SidebarSettingsIcon, type SidebarNavItem } from "@/components/ui/sidebar";
+import { AlarmListItem } from "@/components/ui/alarm-list-item";
 import { RadioChoiceDialog } from "@/components/ui/radio-choice-dialog";
 import { X } from "lucide-react";
 import {
@@ -892,11 +893,11 @@ export default function Home() {
 
       <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="text-[14px] font-semibold text-mes-gray-130">
-          PageTopTabItem (열린 화면 상단 탭 1개 — node 157:18052 실측, active는 판단값)
+          PageTopTabItem (열린 화면 상단 탭 1개 — node 157:18051 실측, default/hover/active 3종 전부)
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          &quot;Default&quot; variant 1종만 실측됨(형제 variant 노드를 못 찾음) — active는
-          배경만 살짝 밝게(Gray-120) 한 판단값.
+          2026-07-30 재검증: default/hover/active 3종 전부 실측 완료(이전엔 default만
+          찾아서 active를 판단값으로 뒀었음 — active는 배경 Gray-110 + 제목 SemiBold로 정정).
         </p>
         <div className="flex">
           <PageTopTabItem label="생산계획(일) 리스트" active />
@@ -923,6 +924,45 @@ export default function Home() {
             onExpandedKeyChange={setSidebarExpandedKey}
             activeSubKey={sidebarActiveSubKey}
             onSubItemClick={(_, subKey) => setSidebarActiveSubKey(subKey)}
+          />
+        </div>
+      </section>
+
+      <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="text-[14px] font-semibold text-mes-gray-130">
+          AlarmListItem (알람/경보 리스트 항목 — node 163:3039 실측, 2026-07-30 신규 발견)
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          담당자 새 링크 없이 기존 Figma 파일을 metadata로 훑다가 발견한 컴포넌트. tone 4색은
+          기존 팔레트와 무관한 별도 alarm 색상군. `read` prop 의미(읽음/강조 여부)와 &quot;두줄&quot;
+          용도는 확인 필요.
+        </p>
+        <div className="flex w-[400px] flex-col border border-mes-gray-30">
+          <AlarmListItem
+            tone="blue"
+            title="작업 지시 생성"
+            time="20:25"
+            description="yyyy.mm.dd/[설비]/n건의 작업 지시가 생성되었습니다."
+          />
+          <AlarmListItem
+            tone="red"
+            title="출하 승인 취소"
+            time="20:25"
+            description="yyyy.mm.dd/[거래처]/n건의 출하 승인이 취소되었습니다."
+            read={false}
+          />
+          <AlarmListItem
+            tone="yellow"
+            title="작업 지시 변경"
+            time="20:25"
+            description="yyyy.mm.dd/[설비]/n건의 작업 지시가 변경되었습니다."
+          />
+          <AlarmListItem
+            tone="green"
+            title="입고 완료"
+            time="20:25"
+            description="yyyy.mm.dd/[거래처]/n건의 입고가 완료되었습니다."
+            read={false}
           />
         </div>
       </section>

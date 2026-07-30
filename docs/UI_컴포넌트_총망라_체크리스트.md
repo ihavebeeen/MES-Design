@@ -163,9 +163,9 @@
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
 | Navbar / Top Nav | 상단 내비게이션 바 | 오가니즘 | 없음 | 2 | |
-| Sidebar / Side Nav | 좌측 내비게이션 | 오가니즘 | 부분 | 1 | 2026-07-29 코드화: `components/ui/sidebar.tsx`(node 133:1976 "SNB-active" 실측). Figma엔 4종 상태+hide 상태가 있다고 기록돼 있었으나 이번엔 active 1종만 실측·코드화 — 나머지 상태(hover/collapsed rail/hide)는 미실측이라 "부분"으로 남김 |
+| Sidebar / Side Nav | 좌측 내비게이션 | 오가니즘 | 부분 | 1 | 2026-07-29 코드화: `components/ui/sidebar.tsx`(node 133:1976 "SNB-active" 실측). Figma엔 4종 상태+hide 상태가 있다고 기록돼 있었으나 이번엔 active 1종만 실측·코드화 — 나머지 상태(hover/collapsed rail/hide)는 미실측이라 "부분"으로 남김. 2026-07-30 추가: 접기버튼 hover 색(Gray-90) 확인·반영. 1-depth/2-depth 항목 hover/active는 metadata상 캡션 텍스트만 있고 실제 스타일 노드를 못 찾아 여전히 미실측 |
 | Breadcrumb | 현재 위치 경로 표시 | 몰큘 | 없음 | 2 | |
-| Tabs | 탭 전환 | 몰큘 | 부분 | 1 | 2026-07-29 코드화: `components/ui/page-top-tab-item.tsx`(node 157:18052 "Property 1=Default" 실측). Default 1종만 실측 — 형제 variant(active/hover) 노드를 못 찾아 active는 판단값 처리, "부분"으로 남김 |
+| Tabs | 탭 전환 | 몰큘 | 있음 | 1 | 2026-07-29 코드화, 2026-07-30 재검증: `components/ui/page-top-tab-item.tsx`(node 157:18051 컴포넌트 세트, default/hover/active 3종 전부 실측). active는 배경 Gray-110 + 제목 SemiBold로 정정(이전 판단값은 틀렸었음) |
 | Pagination | 페이지네이션 | 몰큘 | 없음 | 2 | |
 | Stepper / Wizard | 단계형 진행 표시 | 오가니즘 | 없음 | 3 | 작업지시 등록형 멀티스텝 폼에 유용 |
 | Dropdown Menu | 클릭 시 열리는 메뉴 | 몰큘 | 없음 | 2 | |
@@ -376,7 +376,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Alarm List/Table | 알람 이력 리스트 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Asset/Templates의 "Alarm list" 확인 |
+| Alarm List/Table | 알람 이력 리스트 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Asset/Templates의 "Alarm list" 확인. 2026-07-30 코드화: `components/ui/alarm-list-item.tsx`(node 163:3039 "MES 알람 리스트" 실측, tone 4색×hover×read×두줄 조합 32종 중 대표 케이스 반영). `read` prop 의미와 "두줄" 용도는 확인 필요 |
 | Blinking Alarm Indicator | 알람 발생 시 점멸 표시 | 아톰 | 없음 | 3 | |
 | Severity Level Tag | 알람 심각도 태그 | 아톰 | 없음 | 3 | |
 | Alarm Acknowledge Button | 알람 확인·조치 버튼 | 아톰 | 없음 | 3 | |

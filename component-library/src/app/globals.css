@@ -125,6 +125,16 @@
   --mes-yellow-10: #fff3db;
   --mes-yellow-20: #ffe0a3;
   --mes-yellow-50: #f2a406;
+
+  /* Alarm severity — 2026-07-30 신규. 알람 리스트(MES 알람 리스트, node 163:3039 하위) 전용
+     4색 세트 — Gray/Primary/Danger/Yellow 어느 팔레트와도 값이 일치하지 않는 별도 색상군.
+     예: blue #4a90e2는 Primary-60(#1573FB)과 다르고, red #e15b5b는 Danger-60(#F04452)과
+     다름 — 임의로 기존 팔레트에 편입시키지 않고 별도 alarm 세트로 신설. 각 색당 좌측
+     4px 강조바 1곳에만 쓰임(단계형 팔레트 아님, 색 1개씩만 존재). */
+  --mes-alarm-blue: #4a90e2;
+  --mes-alarm-red: #e15b5b;
+  --mes-alarm-yellow: #e99b41;
+  --mes-alarm-green: #4bb866;
 }
 
 @theme inline {
@@ -176,6 +186,11 @@
   --color-mes-yellow-10: var(--mes-yellow-10);
   --color-mes-yellow-20: var(--mes-yellow-20);
   --color-mes-yellow-50: var(--mes-yellow-50);
+
+  --color-mes-alarm-blue: var(--mes-alarm-blue);
+  --color-mes-alarm-red: var(--mes-alarm-red);
+  --color-mes-alarm-yellow: var(--mes-alarm-yellow);
+  --color-mes-alarm-green: var(--mes-alarm-green);
 }
 
 body {
