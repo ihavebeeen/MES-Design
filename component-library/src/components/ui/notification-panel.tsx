@@ -13,13 +13,15 @@ import { AlarmListItem, type AlarmListItemProps } from "./alarm-list-item";
  * 두 파일 metadata를 직접 훑다가 AlarmListItem(node 163:3039)을 재사용하는 상위
  * organism으로 발견. 알람벨 아이콘 클릭 시 뜨는 드롭다운으로 추정(진입 트리거는 미실측).
  *
- * ── 1. 레이아웃(실측) ──────────────────────────────────────────
- * 흰 배경, radius 12px, 그림자 `0 4px 16px rgba(0,0,0,.2)`(ConfirmDialog와 동일한
- * "modal-shadow" 이펙트). 헤더: 하단 테두리 1px Gray-30, 좌우 padding 20px, "전체 알림"
- * 탭(하단 2px Gray-80 밑줄, 라벨 Gray-80 + 카운트 Gray-130, 둘 다 15px/SemiBold) + 우측
- * 닫기 아이콘. 본문: padding 20px, gap 24px — 리스트(있으면 높이 350px 고정 + 세로
- * 스크롤, AlarmListItem을 그대로 나열) 또는 빈 상태 문구, 그 아래 필터 아이콘 액션 줄
- * (padding-x 8px).
+ * ── 1. 레이아웃(실측, 2026-07-30 담당자가 실제 서비스 화면 기준으로 재수정) ──────
+ * 전체 너비 400px(처음엔 400px 리스트 아이템 + 좌우 패딩 20px씩을 더해 440px로 잘못
+ * 계산했었음 — 담당자 확인 결과 패널 자체가 400px). 흰 배경, radius 12px, 그림자
+ * `0 4px 16px rgba(0,0,0,.2)`(ConfirmDialog와 동일한 "modal-shadow" 이펙트). 헤더:
+ * 하단 테두리 1px Gray-30, 좌우 padding 20px, "전체 알림" 탭(하단 2px Gray-80 밑줄,
+ * 라벨 Gray-80 + 카운트 Gray-130, 둘 다 16px/SemiBold — AlarmListItem 내부 텍스트보다
+ * 한 단계 큼) + 우측 닫기 아이콘. 본문: padding 20px, gap 24px — 리스트(있으면 높이
+ * 350px 고정 + 세로 스크롤, AlarmListItem을 그대로 나열) 또는 빈 상태 문구, 그 아래
+ * 필터 아이콘 액션 줄(padding-x 8px).
  *
  * ── 2. 빈 상태(실측) ───────────────────────────────────────────
  * "전체 알림 0" + "알림 내역이 없습니다."(15px/SemiBold/Gray-90) 중앙 정렬 문구로 대체.
@@ -68,12 +70,12 @@ function NotificationPanel({
   return (
     <div
       className={cn(
-        "flex w-[440px] flex-col overflow-hidden rounded-[12px] bg-white shadow-[0_4px_16px_rgba(0,0,0,0.2)]",
+        "flex w-[400px] flex-col overflow-hidden rounded-[12px] bg-white shadow-[0_4px_16px_rgba(0,0,0,0.2)]",
         className
       )}
     >
       <div className="flex shrink-0 items-center justify-between border-b border-mes-gray-30 px-5">
-        <div className="flex items-center gap-2 border-b-2 border-mes-gray-80 py-5 text-[15px] leading-[1.5] tracking-[-0.1875px]">
+        <div className="flex items-center gap-2 border-b-2 border-mes-gray-80 py-5 text-[16px] leading-[1.5] tracking-[-0.1875px]">
           <span className="font-semibold text-mes-gray-80">전체 알림</span>
           <span className="font-semibold text-mes-gray-130">{count}</span>
         </div>

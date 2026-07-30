@@ -13,12 +13,12 @@ import { cn } from "@/lib/utils";
  * 기존 두 파일을 metadata로 직접 훑다가 발견 — 체크리스트의 "Notification/Bell"(없음) 및
  * MES 도메인 특화 패턴의 "16-2. 알람·경보" 항목에 해당하는 컴포넌트로 판단해 코드화함.
  *
- * ── 1. 레이아웃(실측) ──────────────────────────────────────────
- * 고정 너비 400px(리스트 패널 폭에 맞춘 값으로 추정), 하단 테두리 1px Gray-30(#E4E7EE),
- * padding 8px. 좌측 4px 폭 × 23px 높이의 tone 강조바(radius 2px) + gap 16px + 텍스트
- * 블록. 텍스트 블록: 1번째 줄(제목 SemiBold + 시각 Regular, gap 16px), 2번째 줄(설명,
- * SemiBold 접두부+Regular 나머지가 gap 1px로 거의 붙어서 한 문장처럼 보임) — 전부 15px/
- * letter-spacing -0.1875px.
+ * ── 1. 레이아웃(실측, 2026-07-30 담당자가 실제 서비스 화면 기준으로 재수정) ──────
+ * 고정 너비 400px(패널 폭에 맞춘 값), 하단 테두리 1px Gray-30(#E4E7EE), padding 8px.
+ * 좌측 4px 폭 × 42px 높이(실측 41.78px를 반올림)의 tone 강조바(radius 2px) + gap 16px +
+ * 텍스트 블록. 텍스트 블록 폰트 크기는 3단계로 분리(처음엔 전부 15px로 잘못 통일했었음):
+ * 제목(SemiBold) 14px / 날짜(Regular) 12px / 설명(본문) 13px — 전부 letter-spacing
+ * -0.1875px, line-height 1.5.
  *
  * ── 2. tone 색상(4종, 실측 — 확정 팔레트와 무관한 별도 alarm 색상군) ──
  * blue `#4A90E2` / red `#E15B5B` / yellow `#E99B41` / green `#4BB866` — `globals.css`에
@@ -94,34 +94,34 @@ function AlarmListItem({
     >
       {read && (
         <span
-          className={cn("h-[23px] w-1 shrink-0 rounded-[2px]", ALARM_TONE_BAR[tone])}
+          className={cn("h-[42px] w-1 shrink-0 rounded-[2px]", ALARM_TONE_BAR[tone])}
           aria-hidden
         />
       )}
-      <span className="flex min-w-0 flex-1 flex-col text-[15px] leading-[1.5] tracking-[-0.1875px]">
+      <span className="flex min-w-0 flex-1 flex-col leading-[1.5] tracking-[-0.1875px]">
         <span className="flex items-start gap-4">
           <span
             className={cn(
-              "font-semibold",
+              "text-[14px] font-semibold",
               read ? "text-mes-gray-130" : "text-mes-gray-60"
             )}
           >
             {title}
           </span>
-          <span className={cn(read ? "text-mes-gray-80" : "text-mes-gray-60")}>
+          <span className={cn("text-[12px]", read ? "text-mes-gray-80" : "text-mes-gray-60")}>
             {time}
           </span>
         </span>
         <span
           className={cn(
-            "flex items-center",
+            "flex items-center text-[13px]",
             read ? "text-mes-gray-130" : "text-mes-gray-60"
           )}
         >
           {description}
         </span>
         {secondaryDescription && (
-          <span className={cn(read ? "text-mes-gray-130" : "text-mes-gray-60")}>
+          <span className={cn("text-[13px]", read ? "text-mes-gray-130" : "text-mes-gray-60")}>
             {secondaryDescription}
           </span>
         )}
