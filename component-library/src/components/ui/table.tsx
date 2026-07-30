@@ -361,7 +361,7 @@ function DataRow<T>({
         >
           <span
             className={cn(
-              "w-full truncate text-[14px] leading-[1.3]",
+              "w-full truncate text-[14px] leading-[1.5]",
               row.disabled ? "text-mes-gray-80" : "text-mes-gray-130"
             )}
           >
@@ -455,7 +455,7 @@ function GroupHeaderRow<T>({
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") onToggleCollapse();
               }}
-              className="cursor-pointer whitespace-nowrap text-[14px] font-medium leading-[1.3] text-mes-gray-130"
+              className="cursor-pointer whitespace-nowrap text-[14px] font-medium leading-[1.5] text-mes-gray-130"
               style={{ paddingLeft: depth * 12 }}
             >
               {group.label}
@@ -464,7 +464,7 @@ function GroupHeaderRow<T>({
         ) : (
           <Cell key={col.key} column={col}>
             {group.summary?.[col.key] !== undefined && (
-              <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.3] text-mes-gray-130">
+              <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.5] text-mes-gray-130">
                 {group.summary[col.key]}
               </span>
             )}
@@ -500,14 +500,14 @@ function TotalsRow<T>({
         i === 0 ? (
           // 6차: 그룹 라벨과 같은 이유로 "총계" 라벨도 컬럼 align과 무관하게 좌측 고정
           <Cell key={col.key} column={{ ...col, align: "left" }} className="overflow-visible">
-            <span className="whitespace-nowrap text-[14px] font-semibold leading-[1.3] text-mes-gray-130">
+            <span className="whitespace-nowrap text-[14px] font-semibold leading-[1.5] text-mes-gray-130">
               총계
             </span>
           </Cell>
         ) : (
           <Cell key={col.key} column={col}>
             {totals[col.key] !== undefined && (
-              <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.3] text-mes-gray-130">
+              <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.5] text-mes-gray-130">
                 {totals[col.key]}
               </span>
             )}
@@ -708,7 +708,7 @@ function Table<T>({
               column={{ ...col, align: "center" }}
               className={cn(i < columns.length - 1 && "border-r border-dashed border-mes-gray-40")}
             >
-              <span className="w-full truncate text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
+              <span className="w-full truncate text-[13px] font-semibold leading-[1.5] text-mes-gray-130">
                 {col.label}
               </span>
             </Cell>

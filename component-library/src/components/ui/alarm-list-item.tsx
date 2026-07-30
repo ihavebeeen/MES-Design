@@ -17,8 +17,9 @@ import { cn } from "@/lib/utils";
  * 고정 너비 400px(패널 폭에 맞춘 값), 하단 테두리 1px Gray-30(#E4E7EE), padding 8px.
  * 좌측 4px 폭 × 42px 높이(실측 41.78px를 반올림)의 tone 강조바(radius 2px) + gap 16px +
  * 텍스트 블록. 텍스트 블록 폰트 크기는 3단계로 분리(처음엔 전부 15px로 잘못 통일했었음):
- * 제목(SemiBold) 14px / 날짜(Regular) 12px / 설명(본문) 13px — 전부 letter-spacing
- * -0.1875px, line-height 1.5.
+ * 제목(SemiBold) 14px / 날짜(Regular) 12px / 설명(본문) 13px — line-height 1.5.
+ * 자간은 실측상 -0.1875px였으나 담당자가 "자간은 0, 행간은 150%로 통일"이라고 확정해
+ * 2026-07-30에 제거함(시스템 전역 자간0/행간150% 표준 — Foundation 섹션/토큰 문서 참고).
  *
  * ── 2. tone 색상(4종, 실측 — 확정 팔레트와 무관한 별도 alarm 색상군) ──
  * blue `#4A90E2` / red `#E15B5B` / yellow `#E99B41` / green `#4BB866` — `globals.css`에
@@ -98,7 +99,7 @@ function AlarmListItem({
           aria-hidden
         />
       )}
-      <span className="flex min-w-0 flex-1 flex-col leading-[1.5] tracking-[-0.1875px]">
+      <span className="flex min-w-0 flex-1 flex-col leading-[1.5]">
         <span className="flex items-start gap-4">
           <span
             className={cn(

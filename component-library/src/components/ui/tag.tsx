@@ -47,7 +47,7 @@ const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
     <span
       ref={ref}
       className={cn(
-        "inline-flex h-[22px] items-center gap-1 rounded-[2px] px-2 py-[3px] text-[12px] font-semibold leading-[1.5] tracking-[-0.15px] text-white",
+        "inline-flex h-[22px] items-center gap-1 rounded-[2px] px-2 py-[3px] text-[12px] font-semibold leading-[1.5] text-white",
         tagColorClasses[color],
         className
       )}

@@ -52,7 +52,7 @@ const NoticeBanner = React.forwardRef<HTMLDivElement, NoticeBannerProps>(
     >
       <div className="flex items-start gap-1.5">
         <Lightbulb size={16} className="mt-0.5 shrink-0 text-mes-yellow-50" />
-        <p className="text-[13px] leading-[1.4] text-mes-gray-110">{message}</p>
+        <p className="text-[13px] leading-[1.5] text-mes-gray-110">{message}</p>
       </div>
       {linkLabel && (
         <div className="flex justify-end">

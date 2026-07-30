@@ -36,7 +36,7 @@ import { cn } from "@/lib/utils";
  */
 
 const badgeVariants = cva(
-  "inline-flex h-[22px] w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-[2px] font-semibold text-[12px] leading-[18px] tracking-[-0.15px]",
+  "inline-flex h-[22px] w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-[2px] font-semibold text-[12px] leading-[1.5]",
   {
     variants: {
       variant: {

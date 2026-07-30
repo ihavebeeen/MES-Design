@@ -52,7 +52,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
           </div>
           {showLabel && (
             <span className="flex w-[44px] shrink-0 items-center justify-center">
-              <span className="flex-1 text-right text-[14px] leading-[1.3] text-mes-gray-130">
+              <span className="flex-1 text-right text-[14px] leading-[1.5] text-mes-gray-130">
                 {clamped}%
               </span>
             </span>

@@ -149,7 +149,7 @@ function ConfirmDialog({
                 {heading}
               </p>
               {description && (
-                <p className="text-[14px] font-medium leading-normal text-[#696f83] opacity-80">
+                <p className="text-[14px] font-medium leading-[1.5] text-[#696f83] opacity-80">
                   {description}
                 </p>
               )}

@@ -229,185 +229,46 @@ function PaletteRow({
 }
 
 /**
- * 2026-07-30 담당자 지적 반영 — 기존엔 "크기당 1행 + 굵기 옵션 텍스트"로만 뭉뚱그렸는데,
- * 실제로는 같은 크기라도 컴포넌트마다 굵기·자간·행간 조합이 다르게 실측돼 있어서 크기 하나에
- * 값 하나로 대표시키면 부정확함 — 그래서 "실제로 코드에 존재하는 (크기, 굵기, 자간, 행간)
- * 조합" 단위로 한 행씩 풀어서 기록. `component-library/src/components/ui/*.tsx` 전수
- * 재확인 결과:
- * - 자간(letter-spacing)은 2026-07-29 이전 컴포넌트(Button/Table/Input/Select/
- *   ConfirmDialog/RadioChoiceDialog/Sidebar 대부분 등)엔 아예 지정돼 있지 않음(브라우저
- *   기본값 0) — 당시 실측 때 자간까지 뽑지 않았던 것으로 보임. 2026-07-29 이후 컴포넌트
- *   (Badge/Tag/Sidebar MES·FEMS 토글/AlarmListItem/NotificationPanel)부터 Figma
- *   letterSpacing 실측값을 명시적으로 반영하기 시작함 — `trackingLabel`이 "0(미측정)"인
- *   행은 실측 안 된 게 아니라 "당시엔 자간을 안 뽑았다"는 뜻이라 나중에 필요하면 재실측 필요.
- * - AlarmListItem의 12/13/14px(날짜/설명/제목)는 상위 래퍼 하나에 자간 -0.1875px를
- *   공통으로 걸어 상속받는 구조라, 같은 12px인 Badge/Tag(-0.15px)와 자간이 다름 — 실측
- *   그대로 두되 예외로 표시.
- * - 행간(line-height)은 대부분 1.5지만 Table·Progress류는 1.3, ConfirmDialog 설명은
- *   `leading-normal`(브라우저 기본)로 별도 지정돼 있어 그대로 구분해 기록.
+ * 2026-07-30 담당자가 참고 이미지(Pretendard 굵기별 크기 스케일 + 실사용 조합에 점 표시)를
+ * 주면서 "이렇게 깔끔하게 정리해달라"고 요청 — 기존의 크기별 표(자간/행간을 컴포넌트마다
+ * 예외로 나열)는 지저분하다고 판단해 폐기. 동시에 "자간은 0, 행간은 150%로 통일하자,
+ * 130% 같은 예외를 둘 이유가 없다"는 표준화 결정도 내림 — 그래서 컴포넌트 코드 자체도
+ * 같이 정리함(Tag/Badge/Sidebar MES·FEMS 토글/AlarmListItem/NotificationPanel의
+ * 개별 tracking 값 제거, Table/Progress/NoticeBanner의 leading-1.3·1.4를 1.5로,
+ * ConfirmDialog 설명의 leading-normal도 1.5로 통일). 이제 자간 0 / 행간 150%가 전
+ * 컴포넌트에 공통 적용된 상태.
+ *
+ * 굵기(Bold/SemiBold/Medium/Regular) × 크기(12~18px) 매트릭스에서 실제로 코드에 쓰이는
+ * 조합만 `USED_TYPE_COMBOS`에 표시 — `component-library/src/components/ui/*.tsx` 전수
+ * 재확인 결과.
  */
-const TYPE_SCALE = [
-  {
-    size: 12,
-    weightLabel: "SemiBold",
-    weight: 600,
-    trackingLabel: "-0.15px",
-    tracking: -0.15,
-    leadingLabel: "1.5",
-    leading: "1.5",
-    usage: "Tag 카운트",
-  },
-  {
-    size: 12,
-    weightLabel: "SemiBold",
-    weight: 600,
-    trackingLabel: "-0.15px",
-    tracking: -0.15,
-    leadingLabel: "18px(고정)",
-    leading: "18px",
-    usage: "Badge",
-  },
-  {
-    size: 12,
-    weightLabel: "Medium",
-    weight: 500,
-    trackingLabel: "0(미측정)",
-    tracking: 0,
-    leadingLabel: "미지정(기본값)",
-    leading: "normal",
-    usage: "FilterTag 카운트 뱃지, Button xsmall 라벨",
-  },
-  {
-    size: 12,
-    weightLabel: "Regular",
-    weight: 400,
-    trackingLabel: "-0.1875px (예외)",
-    tracking: -0.1875,
-    leadingLabel: "1.5(상위 래퍼 상속)",
-    leading: "1.5",
-    usage: "AlarmListItem 날짜 — 같은 12px인 Badge/Tag보다 자간이 좁게 측정됨, 확인 필요",
-  },
-  {
-    size: 13,
-    weightLabel: "Regular",
-    weight: 400,
-    trackingLabel: "0(미측정)",
-    tracking: 0,
-    leadingLabel: "1.5",
-    leading: "1.5",
-    usage: "Select·Combobox 목록, PageTopTabItem, Filter 입력·옵션, NoticeBanner 본문",
-  },
-  {
-    size: 13,
-    weightLabel: "SemiBold",
-    weight: 600,
-    trackingLabel: "-0.1625px",
-    tracking: -0.1625,
-    leadingLabel: "미지정(기본값)",
-    leading: "normal",
-    usage: "Sidebar MES/FEMS 토글",
-  },
-  {
-    size: 13,
-    weightLabel: "SemiBold",
-    weight: 600,
-    trackingLabel: "0(미측정)",
-    tracking: 0,
-    leadingLabel: "1.3",
-    leading: "1.3",
-    usage: "Table 헤더 라벨",
-  },
-  {
-    size: 13,
-    weightLabel: "Regular",
-    weight: 400,
-    trackingLabel: "-0.1875px (예외)",
-    tracking: -0.1875,
-    leadingLabel: "1.5(상위 래퍼 상속)",
-    leading: "1.5",
-    usage: "AlarmListItem 설명",
-  },
-  {
-    size: 14,
-    weightLabel: "Regular/Medium",
-    weight: 400,
-    trackingLabel: "0(미측정)",
-    tracking: 0,
-    leadingLabel: "1.5",
-    leading: "1.5",
-    usage: "Input, Filter 트리거, RadioChoiceDialog 설명, Sidebar 2-depth",
-  },
-  {
-    size: 14,
-    weightLabel: "Regular/Medium/SemiBold",
-    weight: 500,
-    trackingLabel: "0(미측정)",
-    tracking: 0,
-    leadingLabel: "1.3",
-    leading: "1.3",
-    usage: "Table 셀·그룹 라벨·총계행, Progress 퍼센트",
-  },
-  {
-    size: 14,
-    weightLabel: "SemiBold",
-    weight: 600,
-    trackingLabel: "-0.1875px (예외)",
-    tracking: -0.1875,
-    leadingLabel: "1.5(상위 래퍼 상속)",
-    leading: "1.5",
-    usage: "AlarmListItem 제목",
-  },
-  {
-    size: 15,
-    weightLabel: "SemiBold/Medium",
-    weight: 600,
-    trackingLabel: "0(미측정)",
-    tracking: 0,
-    leadingLabel: "1.5",
-    leading: "1.5",
-    usage: "Button basic 라벨, Sidebar 1-depth, Toast",
-  },
-  {
-    size: 15,
-    weightLabel: "SemiBold",
-    weight: 600,
-    trackingLabel: "-0.1875px",
-    tracking: -0.1875,
-    leadingLabel: "1.5",
-    leading: "1.5",
-    usage: "NotificationPanel 빈 상태 문구",
-  },
-  {
-    size: 16,
-    weightLabel: "Medium/SemiBold",
-    weight: 600,
-    trackingLabel: "0(미측정)",
-    tracking: 0,
-    leadingLabel: "1.5",
-    leading: "1.5",
-    usage: "RadioChoiceDialog 질문·옵션 제목, ConfirmDialog heading",
-  },
-  {
-    size: 16,
-    weightLabel: "SemiBold",
-    weight: 600,
-    trackingLabel: "-0.1875px",
-    tracking: -0.1875,
-    leadingLabel: "1.5",
-    leading: "1.5",
-    usage: "NotificationPanel 헤더",
-  },
-  {
-    size: 18,
-    weightLabel: "Bold",
-    weight: 700,
-    trackingLabel: "0(미측정)",
-    tracking: 0,
-    leadingLabel: "1.5",
-    leading: "1.5",
-    usage: "다이얼로그 헤더 제목(공통)",
-  },
+const TYPE_WEIGHTS = [
+  { label: "Bold", weight: 700 },
+  { label: "SemiBold", weight: 600 },
+  { label: "Medium", weight: 500 },
+  { label: "Regular", weight: 400 },
 ] as const;
+
+const TYPE_SIZES = [18, 16, 15, 14, 13, 12] as const;
+
+/** `${굵기}-${크기}` 키로 실사용 조합 표시. 값은 어디서 쓰이는지 메모(툴팁용). */
+const USED_TYPE_COMBOS: Record<string, string> = {
+  "Bold-18": "다이얼로그 헤더 제목(ConfirmDialog/RadioChoiceDialog)",
+  "SemiBold-16": "ConfirmDialog heading, RadioChoiceDialog 옵션 제목, NotificationPanel 헤더",
+  "Medium-16": "RadioChoiceDialog 질문",
+  "SemiBold-15": "Button basic 라벨, Toast, NotificationPanel 빈 상태 문구",
+  "Medium-15": "Sidebar 즐겨찾기·대시보드, Sidebar 1-depth(강조 상태)",
+  "Regular-15": "Sidebar 1-depth(기본 상태)",
+  "SemiBold-14": "Button small 라벨, AlarmListItem 제목, Table 총계행",
+  "Medium-14": "Filter 트리거, Table 그룹 라벨, Sidebar 2-depth(활성)·이동/로그아웃 버튼",
+  "Regular-14": "Input, RadioChoiceDialog 설명, Sidebar 2-depth(기본), Table 셀, Progress 퍼센트",
+  "SemiBold-13": "Sidebar MES/FEMS 토글, Table 헤더 라벨, NoticeBanner 링크, PageTopTabItem(활성)",
+  "Medium-13": "FilterTag 카테고리 라벨",
+  "Regular-13": "Select·Combobox 목록, PageTopTabItem(기본), Filter 입력·옵션, NoticeBanner 본문, AlarmListItem 설명, Input/Select small",
+  "SemiBold-12": "Tag 카운트, Badge, Button xsmall 라벨",
+  "Medium-12": "FilterTag 카운트 뱃지",
+  "Regular-12": "AlarmListItem 날짜",
+};
 
 const shiftOptions = [
   { value: "day", label: "주간 근무조" },
@@ -776,58 +637,38 @@ export default function Home() {
         <div>
           <h2 className="text-[14px] font-semibold text-mes-gray-130">타이포그래피 스케일</h2>
           <p className="mt-1 text-[12px] text-mes-gray-70">
-            폰트는 전부 Pretendard. 크기만이 아니라 실제 코드에 존재하는 (크기·굵기·자간·
-            행간) 조합 단위로 한 행씩 기록 — `docs/디자인_토큰_사용_규칙.md` 6절 참고.
-            자간이 &quot;0(미측정)&quot;인 행은 자간이 0이라고 실측된 게 아니라, 그
-            컴포넌트를 만들 당시 자간까지는 뽑지 않았다는 뜻(2026-07-29 이전 컴포넌트
-            대부분 해당) — 필요해지면 재실측 필요.
+            폰트는 전부 Pretendard, 자간 0 / 행간 150% 고정(2026-07-30 담당자 확정 — 이전에
+            일부 컴포넌트에 있던 자간 값과 행간 130%/140% 예외는 전부 제거하고 통일함).
+            빨간 점이 실제로 코드에서 쓰이는 (굵기·크기) 조합.
           </p>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[720px] border-collapse text-left">
-            <thead>
-              <tr className="border-b border-mes-gray-30 text-[11px] text-mes-gray-60">
-                <th className="py-2 pr-4 font-medium">크기</th>
-                <th className="py-2 pr-4 font-medium">굵기</th>
-                <th className="py-2 pr-4 font-medium">자간</th>
-                <th className="py-2 pr-4 font-medium">행간</th>
-                <th className="py-2 pr-4 font-medium">샘플</th>
-                <th className="py-2 font-medium">사용처</th>
-              </tr>
-            </thead>
-            <tbody>
-              {TYPE_SCALE.map((t, i) => (
-                <tr key={i} className="border-b border-mes-gray-20 last:border-b-0">
-                  <td className="py-2 pr-4 align-top font-mono text-[11px] whitespace-nowrap text-mes-gray-60">
-                    {t.size}px
-                  </td>
-                  <td className="py-2 pr-4 align-top text-[11px] whitespace-nowrap text-mes-gray-60">
-                    {t.weightLabel}
-                  </td>
-                  <td className="py-2 pr-4 align-top font-mono text-[11px] whitespace-nowrap text-mes-gray-60">
-                    {t.trackingLabel}
-                  </td>
-                  <td className="py-2 pr-4 align-top font-mono text-[11px] whitespace-nowrap text-mes-gray-60">
-                    {t.leadingLabel}
-                  </td>
-                  <td className="py-2 pr-4 align-top whitespace-nowrap">
-                    <span
-                      style={{
-                        fontSize: `${t.size}px`,
-                        fontWeight: t.weight,
-                        letterSpacing: `${t.tracking}px`,
-                        lineHeight: t.leading,
-                      }}
-                      className="text-mes-gray-130"
-                    >
-                      MES 가나다 Abc 123
-                    </span>
-                  </td>
-                  <td className="py-2 align-top text-[11px] text-mes-gray-70">{t.usage}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-4 gap-8">
+          {TYPE_WEIGHTS.map((w) => (
+            <div key={w.label} className="flex flex-col gap-3">
+              <span className="text-[13px] font-bold text-mes-gray-130">{w.label}</span>
+              <div className="flex flex-col gap-2.5">
+                {TYPE_SIZES.map((size) => {
+                  const usage = USED_TYPE_COMBOS[`${w.label}-${size}`];
+                  return (
+                    <div key={size} className="flex items-center gap-1.5" title={usage}>
+                      <span
+                        className={cn(
+                          "size-[6px] shrink-0 rounded-full",
+                          usage ? "bg-[#e4392f]" : "bg-transparent"
+                        )}
+                      />
+                      <span
+                        style={{ fontSize: size, fontWeight: w.weight, letterSpacing: 0, lineHeight: 1.5 }}
+                        className="whitespace-nowrap text-mes-gray-130"
+                      >
+                        Pretendard / {w.label} / {size}px
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

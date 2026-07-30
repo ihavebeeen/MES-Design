@@ -187,7 +187,7 @@ function Sidebar({
                 type="button"
                 onClick={() => onModeChange?.(m)}
                 className={cn(
-                  "flex h-[26px] flex-1 items-center justify-center rounded-sm px-4 text-[13px] font-semibold tracking-[-0.1625px]",
+                  "flex h-[26px] flex-1 items-center justify-center rounded-sm px-4 text-[13px] font-semibold leading-[1.5]",
                   mode === m
                     ? "bg-black text-white"
                     : "text-mes-gray-100 hover:bg-mes-gray-20"

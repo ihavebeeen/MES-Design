@@ -21,7 +21,9 @@ import { AlarmListItem, type AlarmListItemProps } from "./alarm-list-item";
  * 라벨 Gray-80 + 카운트 Gray-130, 둘 다 16px/SemiBold — AlarmListItem 내부 텍스트보다
  * 한 단계 큼) + 우측 닫기 아이콘. 본문: padding 20px, gap 24px — 리스트(있으면 높이
  * 350px 고정 + 세로 스크롤, AlarmListItem을 그대로 나열) 또는 빈 상태 문구, 그 아래
- * 필터 아이콘 액션 줄(padding-x 8px).
+ * 필터 아이콘 액션 줄(padding-x 8px). 자간은 실측상 -0.1875px였으나 담당자가 "자간은
+ * 0, 행간은 150%로 통일"이라고 확정해 2026-07-30에 제거함(시스템 전역 표준 — Foundation
+ * 섹션/토큰 문서 참고).
  *
  * ── 2. 빈 상태(실측) ───────────────────────────────────────────
  * "전체 알림 0" + "알림 내역이 없습니다."(15px/SemiBold/Gray-90) 중앙 정렬 문구로 대체.
@@ -75,7 +77,7 @@ function NotificationPanel({
       )}
     >
       <div className="flex shrink-0 items-center justify-between border-b border-mes-gray-30 px-5">
-        <div className="flex items-center gap-2 border-b-2 border-mes-gray-80 py-5 text-[16px] leading-[1.5] tracking-[-0.1875px]">
+        <div className="flex items-center gap-2 border-b-2 border-mes-gray-80 py-5 text-[16px] leading-[1.5]">
           <span className="font-semibold text-mes-gray-80">전체 알림</span>
           <span className="font-semibold text-mes-gray-130">{count}</span>
         </div>
@@ -91,7 +93,7 @@ function NotificationPanel({
 
       <div className="flex flex-col gap-6 p-5">
         {isEmpty ? (
-          <p className="w-full py-6 text-center text-[15px] font-semibold leading-[1.5] tracking-[-0.1875px] text-mes-gray-90">
+          <p className="w-full py-6 text-center text-[15px] font-semibold leading-[1.5] text-mes-gray-90">
             알림 내역이 없습니다.
           </p>
         ) : (
