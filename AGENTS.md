@@ -796,3 +796,22 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   데모 페이지에 Skeleton 섹션 바로 아래 5개 Section 추가(Switch/Textarea/
   Label/Link/Backdrop), `TOC_LINKS`/`COMPONENT_NODES`에 순서대로 삽입.
   체크리스트 5개 행 상태를 있음으로 갱신. tsc 클린 확인 후 커밋.
+- (2026-07-31, 28차) 27차 배치 피드백 3건:
+  1. "링크에 밑줄 넣어줘" — `link.tsx`가 NoticeBanner 값 그대로(`hover:underline`)
+     여서 평소엔 밑줄이 안 보였음. Link는 독립 아톰이니 항상 밑줄이 맞다고
+     판단해 `underline`으로 상시 표시로 변경.
+  2. "스위치 디스에이블이 진짜 비활성인지 잘 안 보여. 색상이 비슷해서" —
+     원인 확인: disabled 트랙 색(`bg-mes-bg-disabled`=Gray-30/#e4e7ee)이
+     기본 off 트랙 색(Gray-40/#d7dce5)이랑 헥스가 거의 붙어 있어서 육안 구분이
+     안 됐음. 색상 스왑 방식을 버리고 트랙/썸 둘 다 `peer-disabled:opacity-40`
+     로 전체를 흐리게 하는 방식으로 교체 — on/off 색은 그대로 유지한 채
+     흐려지므로 원래 상태 + 비활성 여부가 동시에 명확해짐.
+  3. "백드롭은 왜 넣었냐 빼라" — `backdrop.tsx`를 진짜 삭제하려 했으나 이
+     샌드박스는 파일 삭제(`rm`/cross-device `mv`) 자체가 막혀 있어서(기존
+     git lock 파일과 같은 FUSE 마운트 제약), 같은 디렉터리 내 rename은 되는 걸
+     확인하고 `backdrop.tsx.removed-per-user-feedback.<timestamp>`로 이름을
+     바꿔 빌드 대상에서 제외(이 저장소에 이미 있던
+     `filter-flyout.tsx.removed-merged-into-filter.*` 파일과 동일한 기존
+     컨벤션을 따름). 데모 Section, import, `TOC_LINKS`/`COMPONENT_NODES` 항목도
+     전부 제거, 체크리스트 Backdrop 행을 "있음"→"없음"으로 롤백. tsc 클린
+     확인 후 커밋.

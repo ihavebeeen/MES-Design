@@ -37,7 +37,6 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Link } from "@/components/ui/link";
-import { Backdrop } from "@/components/ui/backdrop";
 import { X } from "lucide-react";
 import {
   IconArrow,
@@ -108,7 +107,6 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "textarea", label: "Textarea" },
   { id: "label", label: "Label" },
   { id: "link", label: "Link" },
-  { id: "backdrop", label: "Backdrop" },
   { id: "input", label: "Input" },
   { id: "select", label: "Select" },
   { id: "badge", label: "Badge" },
@@ -186,7 +184,6 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("textarea"),
   leaf("label"),
   leaf("link"),
-  leaf("backdrop"),
   leaf("input"),
   leaf("select"),
   leaf("badge"),
@@ -1465,17 +1462,6 @@ export default function Home() {
         </Sample>
         <Sample label="Link · 화살표 포함">
           <Link href="#">자세히 보기 →</Link>
-        </Sample>
-      </Section>
-
-      <Section id="backdrop" title="Backdrop" badge="임시">
-        <Sample label="Backdrop · 미리보기(고정 오버레이 대신 박스 안에서만 시연)">
-          <div className="relative h-24 w-40 overflow-hidden rounded-mes-control border border-mes-gray-30 bg-mes-gray-10">
-            <div className="flex h-full items-center justify-center text-[12px] text-mes-gray-70">
-              뒤쪽 콘텐츠
-            </div>
-            <Backdrop className="absolute inset-0" />
-          </div>
         </Sample>
       </Section>
 

@@ -311,7 +311,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 | Copy Button | 클립보드 복사 버튼 | 아톰 | 없음 | 3 | |
 | Burger (Hamburger Menu) | 햄버거 메뉴 아이콘 버튼 | 아톰 | 없음 | 3 | |
 | Loading Overlay | 특정 영역을 덮는 로딩 오버레이 | 몰큘 | 없음 | 2 | |
-| Backdrop / Dim Overlay | 모달 등의 배경 딤 처리 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`backdrop.tsx`). ConfirmDialog/RadioChoiceDialog가 각자 반복해서 쓰던 `bg-black/40` Radix Overlay 값을 역추출 — 두 다이얼로그는 Radix 종속이라 직접 교체는 안 함, 향후 커스텀 오버레이용 |
+| Backdrop / Dim Overlay | 모달 등의 배경 딤 처리 | 아톰 | 없음 | 2 | 2026-07-31 `backdrop.tsx`로 코드화했다가 담당자가 "왜 넣었냐 빼라"고 해서 롤백. ConfirmDialog/RadioChoiceDialog는 각자 Radix Overlay로 이미 잘 처리되고 있어 별도 공용 아톰이 불필요하다고 판단 |
 | Status Indicator (Dot) | 상태 점(온라인 등) | 아톰 | 없음 | 3 | |
 | Overflow List ("+N more") | 목록 초과 시 "+N개 더" 표시 | 몰큘 | 없음 | 4 | |
 | Spoiler (더보기/접기 텍스트) | 긴 텍스트 일부만 보여주고 펼치기 | 몰큘 | 없음 | 4 | |
