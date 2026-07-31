@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronRight, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -109,6 +109,19 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "icons", label: "아이콘" },
   { id: "table-full", label: "Table 합본" },
   { id: "table-parts", label: "Table 분리" },
+];
+
+/**
+ * 2026-07-31 신규 — 당근 Seed Design System(seed-design.io) 구조 참고, "메뉴 위치"
+ * 컨셉만 차용: 상단 얇은 헤더 바 + 좌측 고정 사이드바(카테고리별 섹션 목록, 스크롤에 따라
+ * 현재 위치 강조) + 본문. Seed는 다크 테마지만 이 프로젝트는 기존 화이트 톤을 그대로
+ * 유지 — 톤은 가져오지 않고 레이아웃 구조만 가져옴. `TOC_LINKS`를 그대로 재사용해서
+ * 두 곳(사이드바/앵커 대상) 값이 어긋나지 않게 함 — Foundation 6개(색상~시맨틱 토큰)와
+ * 나머지 Components를 나눈 기준은 TOC_LINKS 배열 순서 그대로.
+ */
+const SIDEBAR_GROUPS: { title: string; items: typeof TOC_LINKS }[] = [
+  { title: "Foundations", items: TOC_LINKS.slice(0, 6) },
+  { title: "Components", items: TOC_LINKS.slice(6) },
 ];
 
 /** Sidebar 데모용 1-depth 항목 — MES 설정만 2-depth 실측값을 갖고 있음(주석 참고) */
@@ -771,25 +784,70 @@ export default function Home() {
   // 작아서 접을 필요가 없다고 판단해 그대로 둠.
   const [productionTableOpen, setProductionTableOpen] = useState(false);
 
+  // 2026-07-31 신규 — 좌측 사이드바 스크롤 스파이. 현재 뷰포트 상단에 가장 가까운 섹션의
+  // id를 activeId로 잡아서 사이드바에서 굵게 강조. IntersectionObserver 하나로 모든
+  // TOC_LINKS의 id 엘리먼트를 동시에 관찰(개수가 많지 않아 성능 문제 없음).
+  const [activeId, setActiveId] = useState<string>(TOC_LINKS[0]?.id ?? "");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length === 0) return;
+        const topMost = visible.reduce((a, b) =>
+          a.boundingClientRect.top < b.boundingClientRect.top ? a : b
+        );
+        setActiveId(topMost.target.id);
+      },
+      { rootMargin: "-64px 0px -70% 0px", threshold: 0 }
+    );
+    TOC_LINKS.forEach((link) => {
+      const el = document.getElementById(link.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="flex min-h-screen flex-col items-center gap-10 bg-mes-gray-10 p-16">
-      <h1 className="text-xl font-semibold text-mes-gray-130">
-        MES 컴포넌트 라이브러리 — 스캐폴딩 확인용
-      </h1>
+    <div className="flex min-h-screen flex-col bg-mes-gray-10">
+      <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center border-b border-mes-gray-30 bg-white px-6">
+        <span className="text-[15px] font-bold text-mes-gray-130">MES Design System</span>
+        <span className="ml-2 text-[12px] text-mes-gray-60">스캐폴딩 확인용</span>
+      </header>
 
-      <nav className="flex w-full max-w-[960px] flex-wrap gap-2">
-        {TOC_LINKS.map((link) => (
-          <a
-            key={link.id}
-            href={`#${link.id}`}
-            className="rounded-full border border-mes-gray-30 bg-white px-3 py-1 text-[12px] text-mes-gray-100 transition-colors hover:border-mes-primary-60 hover:text-mes-primary-60"
-          >
-            {link.label}
-          </a>
-        ))}
-      </nav>
+      <div className="flex w-full flex-1">
+        <aside className="sticky top-14 hidden h-[calc(100vh-56px)] w-[240px] shrink-0 overflow-y-auto border-r border-mes-gray-30 bg-white px-3 py-6 lg:block">
+          {SIDEBAR_GROUPS.map((group) => (
+            <div key={group.title} className="mb-6">
+              <div className="mb-2 px-2 text-[11px] font-bold uppercase tracking-wide text-mes-gray-60">
+                {group.title}
+              </div>
+              <nav className="flex flex-col gap-0.5">
+                {group.items.map((item) => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className={cn(
+                      "truncate rounded-md px-2 py-1.5 text-[13px] transition-colors",
+                      activeId === item.id
+                        ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
+                        : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-text-default"
+                    )}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          ))}
+        </aside>
 
-      <section className="flex w-full max-w-[960px] flex-col gap-6 border-b border-mes-gray-30 pb-8">
+        <main className="flex flex-1 flex-col items-center gap-10 p-16">
+          <h1 className="w-full max-w-[960px] text-xl font-semibold text-mes-gray-130">
+            MES 컴포넌트 라이브러리 — 스캐폴딩 확인용
+          </h1>
+
+          <section className="flex w-full max-w-[960px] flex-col gap-6 border-b border-mes-gray-30 pb-8">
         <div id="color-palette" className="scroll-mt-6">
           <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">색상 팔레트</h2>
           <p className="mt-1 text-[12px] text-mes-gray-70">
@@ -1612,6 +1670,8 @@ export default function Home() {
           />
         </div>
       </section>
+        </main>
+      </div>
     </div>
   );
 }
