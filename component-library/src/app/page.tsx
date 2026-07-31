@@ -1775,9 +1775,6 @@ export default function Home() {
         >
           <Sidebar
             items={SIDEBAR_NAV_ITEMS}
-            logo={
-              <span className="text-[15px] font-bold text-white">moncat factory</span>
-            }
             expandedKey={sidebarExpandedKey}
             onExpandedKeyChange={setSidebarExpandedKey}
             activeSubKey={sidebarActiveSubKey}
