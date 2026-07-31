@@ -27,8 +27,8 @@ import { IconGrid } from "../icons/icon-grid";
  *   각 행 높이 42px, 아이콘 20px + gap 10px + 라벨(Medium 15px 흰색). 즐겨찾기는 `IconStar`,
  *   대시보드는 `IconGrid` 재사용.
  * - 메인 내비게이션: 하단 테두리 1px Gray-120, padding 10px, gap 10px.
- *   - MES/FEMS 토글: 흰 배경 pill(radius 4, padding 2px), 버튼 2개 각 높이 26px, 활성은
- *     검정 배경 + 흰색 SemiBold 13px, 비활성은 Gray-100(#475067) 텍스트.
+ *   - MES/FEMS 토글: 원본엔 흰 배경 pill(radius 4, padding 2px) 형태로 존재하나, 아래
+ *     "4. 2026-07-31" 항목 참고 — 담당자 지시로 코드에서는 렌더링하지 않음(측정값 기록만 유지).
  *   - 1-depth 항목 리스트(gap 4px, 너비 240px): 각 항목 높이 42px, 좌우 padding 10px,
  *     아이콘 20px + gap 10px + 라벨(Regular 15px Gray-70/#8491A7), 우측에 펼침 화살표
  *     16px(`IconArrow`를 회전시켜 재사용 — 원본은 별도 "icon-24-left" 벡터였으나 동일한
@@ -79,6 +79,27 @@ import { IconGrid } from "../icons/icon-grid";
  * - 접기(collapsed rail) 상태(`SNB-hide` 컴포넌트 세트, node 133:2263 등)는 존재를
  *   확인했지만 이번 라운드에선 범위 밖(아이콘만 남기고 라벨 숨기는 완전히 다른 레이아웃이라
  *   별도 작업 필요) — 체크리스트에 "부분" 사유로 계속 남겨둠.
+ *
+ * ── 4. 2026-07-31 담당자 원본 재대조(node 9873:83338, fileKey F4n5Zr04PAbiRjfIFQAo6v) ──
+ * 담당자가 별도 링크로 다시 지정해준 원본을 `get_design_context`로 재조회해 아래 3가지를
+ * 바로잡음:
+ * - **내부 스크롤 제거**: 메인 네비게이션 컨테이너("Navigation", node 9873:83339)는
+ *   원본에서 `overflow-clip`(넘치면 잘림, 스크롤 없음)인데 기존 코드가 `overflow-y-auto`로
+ *   구현되어 있었음 — 원본에 없는 동작이라 `overflow-clip`으로 교체.
+ * - **MES/FEMS 토글 제거**: 원본에는 실제로 이 토글이 존재함(node 9873:83388
+ *   "tab-boxround-group" + 9873:83389/9873:83600 "snb-tab-item")을 이번 재조회로 재확인.
+ *   다만 담당자가 "저 탭은 빼"라고 명시 지시해서 원본과 다르게 의도적으로 제거함
+ *   (실측 오류 정정이 아니라 담당자 지정값이 원본보다 우선하는 케이스) — `mode`/
+ *   `onModeChange` prop도 함께 제거.
+ * - **아이콘 재검증**: 1-depth 6개 항목의 아이콘을 원본 JSX(`mes/icon-box`,
+ *   `mes/icon-company`, `mes/icon-medal-check`, `mes/icon-wrench`, `mes/icon-chart-bar`,
+ *   `mes/icon-setting`)와 하나씩 대조한 결과 자재관리/생산관리/품질관리/설비관리/통계분석
+ *   5개는 기존 구현(`IconBox`/`IconCompany`/`IconMedalCheck`/`IconWrench`/`IconChartBar`)이
+ *   이미 원본과 정확히 일치함을 확인 — 임의 교체 아님. "MES 설정"만 원본이 커스텀
+ *   `mes/icon-setting` 벡터인데, `download_assets`로 SVG export까지는 받았으나(node
+ *   9873:83490) 이 세션의 샌드박스 네트워크 정책상 자산 URL을 실제로 내려받지 못해
+ *   (curl/web_fetch 모두 차단·타임아웃) 여전히 `lucide-react`의 `Settings`를 임시로 씀 —
+ *   이전부터 있던 판단값 placeholder이며 이번 재검증으로 "방치된 임의 교체"는 아님을 확인.
  */
 
 export interface SidebarSubItem {
@@ -109,8 +130,6 @@ export interface SidebarProps {
   activeSubKey?: string;
   onSubItemClick?: (itemKey: string, subKey: string) => void;
   onItemClick?: (itemKey: string) => void;
-  mode?: "MES" | "FEMS";
-  onModeChange?: (mode: "MES" | "FEMS") => void;
   favorited?: boolean;
   onFavoriteClick?: () => void;
   onDashboardClick?: () => void;
@@ -129,8 +148,6 @@ function Sidebar({
   activeSubKey,
   onSubItemClick,
   onItemClick,
-  mode = "MES",
-  onModeChange,
   favorited = false,
   onFavoriteClick,
   onDashboardClick,
@@ -147,7 +164,7 @@ function Sidebar({
         className
       )}
     >
-      <div className="flex w-full flex-1 flex-col overflow-y-auto">
+      <div className="flex w-full flex-1 flex-col overflow-clip">
         <div className="flex w-full shrink-0 items-center justify-between px-5 pb-5 pt-6">
           <div className="min-w-0 shrink">{logo}</div>
           <button
@@ -180,24 +197,6 @@ function Sidebar({
         </div>
 
         <div className="flex w-full flex-1 flex-col gap-2.5 border-b border-mes-gray-120 p-[10px]">
-          <div className="flex w-full shrink-0 items-start rounded bg-white p-0.5">
-            {(["MES", "FEMS"] as const).map((m) => (
-              <button
-                key={m}
-                type="button"
-                onClick={() => onModeChange?.(m)}
-                className={cn(
-                  "flex h-[26px] flex-1 items-center justify-center rounded-sm px-4 text-[13px] font-semibold leading-[1.5]",
-                  mode === m
-                    ? "bg-black text-white"
-                    : "text-mes-gray-100 hover:bg-mes-gray-20"
-                )}
-              >
-                {m}
-              </button>
-            ))}
-          </div>
-
           <div className="flex w-full flex-col gap-1">
             {items.map((item) => {
               const isExpanded = expandedKey === item.key;

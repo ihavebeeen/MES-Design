@@ -672,3 +672,28 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   Button 섹션 바로 아래 5개 Section 추가, `UI_컴포넌트_총망라_체크리스트.md`의
   해당 6개 행(Close Button은 13번 섹션에 별도 행) 상태를 있음으로 갱신. tsc 클린
   확인 후 커밋.
+- (2026-07-31, 20차) 담당자 피드백 2건 반영:
+  1. "제목에 (신규, 판단값 — CSS 경량 구현) 이런 거 욱여넣는 게 말이 되냐, 칩으로
+     빼라" — 19차에서 추가한 5개 Tier2 Section의 `title`에 부가 설명을 붙여 쓰던
+     방식을 지적받음. `page.tsx`의 `Section` 헬퍼에 `badge?: string` prop을 추가해
+     제목은 컴포넌트명만 깔끔하게 두고, 부가 설명(예: "판단값")은 제목 옆 작은 회색
+     pill로 분리. 5개 호출부(Icon/Close Button, Divider, Tooltip, Loading Spinner,
+     Skeleton) 전부 갱신.
+  2. "사이드탭(Sidebar) 원본 이거야, 마음대로 아이콘 바꾸고 스크롤 만들지 마" +
+     Figma 링크(node 9873:83335, fileKey F4n5Zr04PAbiRjfIFQAo6v) 제공, 별도로
+     "mes/fems 탭은 빼"라고 명시 지시. `get_design_context`로 실제 SNB-active
+     심볼(node 9873:83338)을 재조회해 3가지 반영:
+     - 메인 네비 컨테이너가 원본은 `overflow-clip`(스크롤 없음)인데 기존 코드가
+       `overflow-y-auto`였던 걸 원본대로 `overflow-clip`으로 교체.
+     - MES/FEMS 토글은 원본에 실제로 존재함을 재확인했지만, 담당자 지시가 원본
+       실측값보다 우선하는 케이스로 판단해 `mode`/`onModeChange` prop과 토글 JSX를
+       통째로 제거(주석에 "정정이 아니라 의도적 제거"임을 명시).
+     - 6개 1-depth 아이콘(자재/생산/품질/설비/통계/MES설정)을 원본 JSX와 하나씩
+       대조 — 5개(자재관리~통계분석)는 이미 기존 구현이 원본과 정확히 일치함을
+       확인(임의 교체 아니었음). "MES 설정"만 원본이 커스텀 `mes/icon-setting`
+       벡터인데, `download_assets`로 SVG export URL은 받았으나 샌드박스 네트워크
+       정책상 실제 다운로드는 실패(curl 403 차단, web_fetch 타임아웃)해서 기존
+       lucide `Settings` 임시 아이콘을 유지 — 판단값 placeholder로 이미 주석에
+       명시돼 있던 항목이라 "방치된 임의 교체"는 아님을 재확인.
+     `sidebar.tsx` 상단 주석에 "4. 2026-07-31 담당자 원본 재대조" 섹션으로 근거
+     기록. tsc 클린 확인 후 커밋.

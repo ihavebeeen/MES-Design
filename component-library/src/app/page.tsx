@@ -249,10 +249,15 @@ function Sample({ label, children }: { label: string; children: React.ReactNode 
 function Section({
   id,
   title,
+  badge,
   children,
 }: {
   id: string;
   title: string;
+  /** 2026-07-31 신규 — "Tooltip (신규, 판단값 — CSS 경량 구현)"처럼 제목 문자열에
+   *  경위 설명을 욱여넣던 걸 담당자가 "제목이 이게 뭐냐"고 지적해서 분리. 제목은
+   *  컴포넌트명만 깔끔하게, 부가 설명은 옆의 작은 칩으로. */
+  badge?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -260,8 +265,13 @@ function Section({
       id={id}
       className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8"
     >
-      <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+      <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
         {title}
+        {badge && (
+          <span className="rounded-full bg-mes-bg-subtle px-2 py-0.5 text-[11px] font-medium text-mes-gray-70">
+            {badge}
+          </span>
+        )}
       </h2>
       <div className="grid grid-cols-4 items-end gap-x-6 gap-y-6">{children}</div>
     </section>
@@ -1274,7 +1284,7 @@ export default function Home() {
           체계 기반 판단값으로 구현, 각 컴포넌트 파일 주석 참고). Button 바로 아래
           배치한 이유는 IconButton/CloseButton이 Button 색상 variant 네이밍을
           그대로 이어받아서 개념적으로 가장 가까운 이웃이기 때문. */}
-      <Section id="icon-button" title="IconButton / CloseButton (신규, 판단값)">
+      <Section id="icon-button" title="IconButton / CloseButton" badge="판단값">
         <Sample label="IconButton · basic/ghost">
           <IconButton icon={<IconFilter />} aria-label="필터" size="basic" />
         </Sample>
@@ -1306,7 +1316,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="divider" title="Divider (신규, 판단값)">
+      <Section id="divider" title="Divider" badge="판단값">
         <Sample label="Divider · horizontal">
           <div className="flex w-40 flex-col gap-2">
             <span className="text-[12px] text-mes-gray-70">위</span>
@@ -1323,7 +1333,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="tooltip" title="Tooltip (신규, 판단값 — CSS 경량 구현)">
+      <Section id="tooltip" title="Tooltip" badge="판단값">
         <Sample label="Tooltip · top(기본)">
           <Tooltip content="위쪽 툴팁">
             <Button size="small" variant="lineBlacktxt">
@@ -1345,7 +1355,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="loading-spinner" title="LoadingSpinner (신규, 판단값)">
+      <Section id="loading-spinner" title="LoadingSpinner" badge="판단값">
         <Sample label="LoadingSpinner · 16px">
           <LoadingSpinner size={16} />
         </Sample>
@@ -1360,7 +1370,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="skeleton" title="Skeleton (신규, 판단값)">
+      <Section id="skeleton" title="Skeleton" badge="판단값">
         <Sample label="Skeleton · text">
           <div className="flex w-40 flex-col gap-1.5">
             <Skeleton variant="text" />
