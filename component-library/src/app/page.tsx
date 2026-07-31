@@ -124,6 +124,20 @@ const SIDEBAR_GROUPS: { title: string; items: typeof TOC_LINKS }[] = [
   { title: "Components", items: TOC_LINKS.slice(6) },
 ];
 
+/** 사이드바 그룹과 1:1 매칭되는 최상단 탭. `firstId`는 그 그룹의 첫 섹션으로 스크롤 이동. */
+const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
+  { key: "foundations", label: "Foundations", firstId: SIDEBAR_GROUPS[0].items[0]?.id },
+  { key: "components", label: "Components", firstId: SIDEBAR_GROUPS[1].items[0]?.id },
+  // 2026-07-31 신규 — AGENTS.md에 기록된 3층 구조(1층 토큰=Foundations, 2층
+  // 컴포넌트=Components, 3층 합성 패턴 카탈로그)의 3층에 해당. 아직 코드/문서 둘 다
+  // 없어서 클릭 불가 상태(비활성)로만 자리를 잡아둠 — 실제 내용이 생기면 firstId를
+  // 채우고 활성화.
+  { key: "patterns", label: "Patterns" },
+];
+
+/** Foundation 6개 섹션 id 집합 — 상단 탭 활성 표시를 스크롤 위치(activeId)와 연동할 때 씀 */
+const FOUNDATION_IDS = new Set(SIDEBAR_GROUPS[0].items.map((i) => i.id));
+
 /** Sidebar 데모용 1-depth 항목 — MES 설정만 2-depth 실측값을 갖고 있음(주석 참고) */
 const SIDEBAR_NAV_ITEMS: SidebarNavItem[] = [
   { key: "material", label: "자재관리", icon: <IconBox size={20} /> },
@@ -788,6 +802,7 @@ export default function Home() {
   // id를 activeId로 잡아서 사이드바에서 굵게 강조. IntersectionObserver 하나로 모든
   // TOC_LINKS의 id 엘리먼트를 동시에 관찰(개수가 많지 않아 성능 문제 없음).
   const [activeId, setActiveId] = useState<string>(TOC_LINKS[0]?.id ?? "");
+  const activeGroup = FOUNDATION_IDS.has(activeId) ? "foundations" : "components";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -810,9 +825,35 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col bg-mes-gray-10">
-      <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center border-b border-mes-gray-30 bg-white px-6">
-        <span className="text-[15px] font-bold text-mes-gray-130">MES Design System</span>
-        <span className="ml-2 text-[12px] text-mes-gray-60">스캐폴딩 확인용</span>
+      <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center gap-8 border-b border-mes-gray-30 bg-white px-6">
+        <span className="shrink-0 text-[15px] font-bold text-mes-gray-130">MES Design System</span>
+        <nav className="flex items-center gap-1">
+          {TOP_NAV.map((tab) =>
+            tab.firstId ? (
+              <a
+                key={tab.key}
+                href={`#${tab.firstId}`}
+                className={cn(
+                  "rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors",
+                  activeGroup === tab.key
+                    ? "bg-mes-bg-subtle text-mes-text-brand"
+                    : "text-mes-gray-70 hover:bg-mes-bg-subtle hover:text-mes-gray-130"
+                )}
+              >
+                {tab.label}
+              </a>
+            ) : (
+              <span
+                key={tab.key}
+                title="준비 중"
+                className="flex cursor-not-allowed items-center gap-1 rounded-md px-3 py-1.5 text-[13px] font-medium text-mes-gray-40"
+              >
+                {tab.label}
+                <span className="text-[10px]">예정</span>
+              </span>
+            )
+          )}
+        </nav>
       </header>
 
       <div className="flex w-full flex-1">
@@ -844,7 +885,7 @@ export default function Home() {
 
         <main className="flex flex-1 flex-col items-center gap-10 p-16">
           <h1 className="w-full max-w-[960px] text-xl font-semibold text-mes-gray-130">
-            MES 컴포넌트 라이브러리 — 스캐폴딩 확인용
+            MES 컴포넌트 라이브러리
           </h1>
 
           <section className="flex w-full max-w-[960px] flex-col gap-6 border-b border-mes-gray-30 pb-8">
