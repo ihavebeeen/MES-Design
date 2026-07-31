@@ -745,3 +745,24 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   데모 페이지에 `sidebarCollapsed` state 추가해 우상단 버튼으로 실제 토글되도록
   연결, 데모 컨테이너 폭도 260px↔62px 연동. 체크리스트 Sidebar 행을 "부분"→
   "있음"으로 갱신(마지막 남았던 접기 상태까지 구현 완료). tsc 클린 확인 후 커밋.
+- (2026-07-31, 24차) "moncat factory 텍스트도 빼고 공란으로" — Sidebar 데모
+  `logo` prop에 넣어뒀던 placeholder 텍스트 제거, prop 자체를 안 넘겨서 공란으로.
+- (2026-07-31, 25차) RadioChoiceDialog 섹션 제목("RadioChoiceDialog (라디오 2택
+  + 경고배너 팝업 — node 18840:61182 실측, 원래 문구는 "투입품목 추가")")을
+  예로 들며 "이거 걍 다 빼라 싹" — Sidebar 하나만 고치고 끝난 게 아니라 페이지
+  전체 섹션 제목에 남아있던 동일 패턴(node 인용/실측 날짜/변경이력/부연설명)을
+  전수 조사해서 제거. 대상: button-color("(7종)"), select("(Selectbox)"),
+  badge("(7종 — 2026-07-29 실제 색 기준 개명...)"), checkbox("(Figma에 disabled
+  상태 자체가 없음 — 판단값으로 구현)"), Filter("(트리거 + 플라이아웃 + 활성
+  태그, 통합 컴포넌트)"), tag("(범용 3색 — 실사용 빈도 낮음...)"),
+  combobox("(검색 내장 셀렉트)"), toast("(RED/BLUE — ...실측값이 다름)"),
+  confirm-dialog("(작은 확인/안내 팝업 — 2026-07-29 톤 3종/2버튼로 확장)"),
+  NoticeBanner("(안내 배너, 링크 포함 — 2026-07-29 신규...)"),
+  radio-choice-dialog(위 예시), PageTopTabItem("(...node 157:18051 실측...)"),
+  AlarmListItem("(...node 163:3039 실측...)"), NotificationPanel("(...node
+  157:15771 / 157:15833 실측...)"), 아이콘 라이브러리("(담당자가 Figma에서 직접
+  SVG export...)"), Table 합본 데모 토글 버튼("(원본 node 9873:83780 + 수정본
+  node 16938:42501 대조 실측)") — 총 16곳. 전부 컴포넌트명만 남기고, checkbox의
+  "판단값" 같은 개별 샘플 캐릭터는 이미 `Sample label`에 있던 걸 그대로 두고
+  제목에서만 뺌. `grep`으로 "node"/"실측" 패턴이 제목에 남아있는지 전수 재확인
+  후 tsc 클린 확인, 커밋.

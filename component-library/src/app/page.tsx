@@ -1244,7 +1244,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="button-color" title="Button — 컬러 variant (7종)">
+      <Section id="button-color" title="Button — 컬러">
         <Sample label="Button · fillMain">
           <Button size="basic" variant="fillMain">
             fillMain
@@ -1417,7 +1417,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="select" title="Select (Selectbox)">
+      <Section id="select" title="Select">
         <Sample label="Select · Default(placeholder)">
           <Select>
             <SelectTrigger className="w-[200px]">
@@ -1473,7 +1473,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="badge" title="Badge (7종 — 2026-07-29 실제 색 기준으로 variant명 개명, 값 변경 없음)">
+      <Section id="badge" title="Badge">
         <Sample label="Badge · blue">
           <Badge variant="blue">출하중</Badge>
         </Sample>
@@ -1512,7 +1512,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="checkbox" title="Checkbox (Figma에 disabled 상태 자체가 없음 — 판단값으로 구현)">
+      <Section id="checkbox" title="Checkbox">
         <Sample label="Checkbox · Unchecked">
           <Checkbox />
         </Sample>
@@ -1550,7 +1550,7 @@ export default function Home() {
 
       <section id="filter" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Filter (트리거 + 플라이아웃 + 활성 태그, 통합 컴포넌트)
+          Filter
         </h2>
         <p className="text-[12px] text-mes-gray-70">
           필터 추가 → 카테고리·체크박스 선택 → 태그로 표시 → X로 해제.
@@ -1564,7 +1564,7 @@ export default function Home() {
         />
       </section>
 
-      <Section id="tag" title="Tag (범용 3색 — 실사용 빈도 낮음, Badge를 우선 사용)">
+      <Section id="tag" title="Tag">
         <Sample label="Tag · main · start+endIcon(실측 그대로)">
           <Tag color="main" startIcon={<X className="size-3" />} endIcon={<X className="size-3" />}>
             태그 텍스트
@@ -1578,7 +1578,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="combobox" title="Combobox (검색 내장 셀렉트)">
+      <Section id="combobox" title="Combobox">
         <Sample label="Combobox · Default(제어형, 검색 가능)">
           <Combobox
             options={shiftOptions}
@@ -1634,7 +1634,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="toast" title="Toast (RED/BLUE — 서로 다른 개별 프레임이라 gap/아이콘크기/색 실측값이 다름)">
+      <Section id="toast" title="Toast">
         <Sample label="Toast · red">
           <Toast variant="red" message="필수 항목을 입력해주세요." onClose={() => {}} />
         </Sample>
@@ -1643,7 +1643,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="confirm-dialog" title="ConfirmDialog (작은 확인/안내 팝업 — 2026-07-29 톤 3종/2버튼/안내배너로 확장)">
+      <Section id="confirm-dialog" title="ConfirmDialog">
         <Sample label="ConfirmDialog · error 톤(기본), 확인 1버튼">
           <Button size="basic" onClick={() => setDialogOpen(true)}>
             삭제 시도
@@ -1713,7 +1713,7 @@ export default function Home() {
 
       <section id="notice-banner" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          NoticeBanner (안내 배너, 링크 포함 — 2026-07-29 신규, ConfirmDialog와 별개로도 사용 가능)
+          NoticeBanner
         </h2>
         <p className="text-[12px] text-mes-gray-70">
           ConfirmDialog 안내 배너로도, 독립적으로도 사용 가능.
@@ -1725,7 +1725,7 @@ export default function Home() {
         />
       </section>
 
-      <Section id="radio-choice-dialog" title="RadioChoiceDialog (라디오 2택 + 경고배너 팝업 — node 18840:61182 실측, 원래 문구는 &quot;투입품목 추가&quot;)">
+      <Section id="radio-choice-dialog" title="RadioChoiceDialog">
         <Sample label="RadioChoiceDialog · 열기">
           <Button size="basic" onClick={() => setRadioDialogOpen(true)}>
             투입품목 추가
@@ -1748,7 +1748,7 @@ export default function Home() {
 
       <section id="page-top-tab-item" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          PageTopTabItem (열린 화면 상단 탭 1개 — node 157:18051 실측, default/hover/active 3종 전부)
+          PageTopTabItem
         </h2>
         <p className="text-[12px] text-mes-gray-70">default/hover/active 3종.</p>
         <div className="flex">
@@ -1787,7 +1787,7 @@ export default function Home() {
 
       <section id="alarm-list-item" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          AlarmListItem (알람/경보 리스트 항목 — node 163:3039 실측, 2026-07-30 신규 발견)
+          AlarmListItem
         </h2>
         <p className="text-[12px] text-mes-gray-70">
           tone 4색(blue/red/yellow/green). `read` prop 의미는 확인 필요.
@@ -1824,7 +1824,7 @@ export default function Home() {
 
       <section id="notification-panel" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          NotificationPanel (알림 드롭다운 패널 — node 157:15771 / 157:15833 실측, 2026-07-30 신규)
+          NotificationPanel
         </h2>
         <p className="text-[12px] text-mes-gray-70">
           AlarmListItem을 재사용한 알림 드롭다운. 미확인/확인 탭, 알림 설정은 범위 밖.
@@ -1868,7 +1868,7 @@ export default function Home() {
 
       <section id="icons" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          아이콘 라이브러리 (담당자가 Figma에서 직접 SVG export해 전달 — 대체 아님, 실측 벡터)
+          아이콘 라이브러리
         </h2>
         <p className="text-[12px] text-mes-gray-70">담당자가 export한 실측 벡터 39종.</p>
         <div className="grid grid-cols-8 gap-4 text-mes-gray-130">
@@ -2009,8 +2009,7 @@ export default function Home() {
               productionTableOpen && "rotate-90"
             )}
           />
-          Table · 합본 데모 (원본 node 9873:83780 + 수정본 실제화면 node 16938:42501 대조
-          실측) — 클릭해서 접기/펼치기
+          Table · 합본 데모 — 클릭해서 접기/펼치기
         </button>
         {productionTableOpen && (
           <div className="w-full overflow-x-auto">
