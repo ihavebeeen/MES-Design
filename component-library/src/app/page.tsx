@@ -107,8 +107,8 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "alarm-list-item", label: "AlarmListItem" },
   { id: "notification-panel", label: "NotificationPanel" },
   { id: "icons", label: "아이콘" },
-  { id: "table-full", label: "Table 합본" },
   { id: "table-parts", label: "Table 분리" },
+  { id: "table-full", label: "Table 합본" },
 ];
 
 /**
@@ -175,7 +175,7 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("alarm-list-item"),
   leaf("notification-panel"),
   leaf("icons"),
-  branch("Table", ["table-full", "table-parts"], "Table"),
+  branch("Table", ["table-parts", "table-full"], "Table"),
 ];
 
 const SIDEBAR_GROUPS: { title: string; nodes: SidebarNode[] }[] = [
@@ -832,6 +832,51 @@ const miniGroups: TableGroup<FlatRow>[] = [
   },
 ];
 
+/**
+ * 2026-07-31 신규 — 담당자가 "테이블 예시에 그룹화 3개까지 된 것도 해줘야지"라고 요청.
+ * `TableGroup.groups`는 이미 재귀 구조라 깊이 제한이 없지만(합본 데모의 지시일→설비→
+ * 담당기사 3단이 실제 증거), 분리 데모 쪽엔 1단(`miniGroups`)짜리만 있었던 것 — 같은
+ * 3컬럼(`flatColumns`)으로 지시일 → 설비 → 담당기사 3단 그룹화 예시를 별도로 추가.
+ */
+const miniGroups3: TableGroup<FlatRow>[] = [
+  {
+    id: "mini3-date",
+    label: "지시일: 2025-10-30",
+    summary: { qty: (1200 + 980 + 2000).toLocaleString("ko-KR") },
+    groups: [
+      {
+        id: "mini3-eq1",
+        label: "설비: 성형기 1호",
+        summary: { qty: (1200 + 980).toLocaleString("ko-KR") },
+        groups: [
+          {
+            id: "mini3-mgr1",
+            label: "담당기사: 이해빈",
+            summary: { qty: (1200 + 980).toLocaleString("ko-KR") },
+            rows: [
+              { id: "mini3-r1", data: { shift: "주간", manager: "이해빈", qty: 1200 } },
+              { id: "mini3-r2", data: { shift: "야간", manager: "이해빈", qty: 980 } },
+            ],
+          },
+        ],
+      },
+      {
+        id: "mini3-eq2",
+        label: "설비: 성형기 2호",
+        summary: { qty: (2000).toLocaleString("ko-KR") },
+        groups: [
+          {
+            id: "mini3-mgr2",
+            label: "담당기사: 이해빈",
+            summary: { qty: (2000).toLocaleString("ko-KR") },
+            rows: [{ id: "mini3-r3", data: { shift: "주간", manager: "이해빈", qty: 2000 } }],
+          },
+        ],
+      },
+    ],
+  },
+];
+
 export default function Home() {
   const [comboValue, setComboValue] = useState<string>("");
   const [filterValue, setFilterValue] = useState<Record<string, string[]>>({
@@ -856,6 +901,15 @@ export default function Home() {
   // 펼쳐보도록 토글 추가. 미니 데모 4개(헤더만/그룹화만/컬럼2개+/총계행만)는 원래도
   // 작아서 접을 필요가 없다고 판단해 그대로 둠.
   const [productionTableOpen, setProductionTableOpen] = useState(false);
+  // 2026-07-31 — "테이블 예시 체크박스가 기동하지 않아" 버그 리포트: 분리 데모(table-parts)의
+  // 미니 Table들이 selectedIds/onSelectedIdsChange를 안 넘기고 있었음. Table 내부
+  // toggleOne/toggleAll/toggleGroup은 `if (!onSelectedIdsChange) return;`로 시작해서
+  // 콜백이 없으면 클릭해도 아무 반응이 없는 게 당연한 동작이었던 것 — 데모마다 각각
+  // 독립된 state를 만들어 실제로 체크되도록 연결.
+  const [miniGroupSelectedIds, setMiniGroupSelectedIds] = useState<string[]>([]);
+  const [miniGroup3SelectedIds, setMiniGroup3SelectedIds] = useState<string[]>([]);
+  const [miniColSelectedIds, setMiniColSelectedIds] = useState<string[]>([]);
+  const [miniTotalsSelectedIds, setMiniTotalsSelectedIds] = useState<string[]>([]);
 
   // 2026-07-31 신규 — 좌측 사이드바 스크롤 스파이. 현재 뷰포트 상단에 가장 가까운 섹션의
   // id를 activeId로 잡아서 사이드바에서 굵게 강조. IntersectionObserver 하나로 모든
@@ -1724,13 +1778,80 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="table-parts" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-6 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+          Table — 구조 요소별 분리 데모
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          헤더/그룹화/컬럼/총계행을 <code>Table</code> 하나로 각각 따로 확인.
+        </p>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · 헤더만 (rows/groups/totals 전부 없음)
+          </span>
+          <Table columns={flatColumns} />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · 그룹화만 (1단 그룹, 총계행 없음)
+          </span>
+          <Table
+            columns={flatColumns}
+            groups={miniGroups}
+            selectedIds={miniGroupSelectedIds}
+            onSelectedIdsChange={setMiniGroupSelectedIds}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · 그룹화 3단 (지시일 → 설비 → 담당기사)
+          </span>
+          <Table
+            columns={flatColumns}
+            groups={miniGroups3}
+            selectedIds={miniGroup3SelectedIds}
+            onSelectedIdsChange={setMiniGroup3SelectedIds}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · 컬럼 2개 이상 + 그룹화 없음 (평범한 플랫 테이블)
+          </span>
+          <Table
+            columns={flatColumns}
+            rows={flatRows}
+            selectedIds={miniColSelectedIds}
+            onSelectedIdsChange={setMiniColSelectedIds}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · 총계행만
+          </span>
+          <Table
+            columns={flatColumns}
+            rows={flatRows}
+            selectedIds={miniTotalsSelectedIds}
+            onSelectedIdsChange={setMiniTotalsSelectedIds}
+            totals={{ qty: (1200 + 980 + 2000).toLocaleString("ko-KR") }}
+          />
+        </div>
+      </section>
+
       {/* 2026-07-28 8차 후속: 담당자가 (1) 데모 페이지에 라운드별 수정 이력을 문단으로
           길게 적어둔 게 "주절주절"하다고 지적해 삭제(이력은 AGENTS.md/Table_수정_
           대기목록.md에 이미 기록돼 있으니 그쪽 참고), (2) 접기/펼치기 헤더 줄의 폭이
           다른 섹션들과 안 맞는다고 지적 → 섹션 자체는 다른 데모들과 같은
           max-w-[960px]로 맞추고, 실제 테이블(컬럼 합 1600px대)만 그 안에서 별도
-          `overflow-x-auto` 박스로 가로 스크롤 처리(대기목록 17번). */}
-      <section id="table-full" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+          `overflow-x-auto` 박스로 가로 스크롤 처리(대기목록 17번).
+          2026-07-31: 담당자가 "테이블 합본이 하단에 있도록"이라고 요청 — 분리 데모
+          (table-parts) 다음, 페이지 맨 아래로 순서 이동(내용 변경 없음). */}
+      <section id="table-full" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 pb-8">
         <button
           type="button"
           onClick={() => setProductionTableOpen((prev) => !prev)}
@@ -1757,47 +1878,6 @@ export default function Home() {
             />
           </div>
         )}
-      </section>
-
-      <section id="table-parts" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-6 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Table — 구조 요소별 분리 데모
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          헤더/그룹화/컬럼/총계행을 <code>Table</code> 하나로 각각 따로 확인.
-        </p>
-
-        <div className="flex flex-col gap-2">
-          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
-            Table · 헤더만 (rows/groups/totals 전부 없음)
-          </span>
-          <Table columns={flatColumns} />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
-            Table · 그룹화만 (1단 그룹, 총계행 없음)
-          </span>
-          <Table columns={flatColumns} groups={miniGroups} />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
-            Table · 컬럼 2개 이상 + 그룹화 없음 (평범한 플랫 테이블)
-          </span>
-          <Table columns={flatColumns} rows={flatRows} />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
-            Table · 총계행만
-          </span>
-          <Table
-            columns={flatColumns}
-            rows={flatRows}
-            totals={{ qty: (1200 + 980 + 2000).toLocaleString("ko-KR") }}
-          />
-        </div>
       </section>
         </main>
       </div>
