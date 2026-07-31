@@ -920,6 +920,8 @@ export default function Home() {
   const [sidebarActiveSubKey, setSidebarActiveSubKey] = useState<string | undefined>(
     "user-setting"
   );
+  // 2026-07-31 22차 — "사이드바 자체를 접고 펴는" 우상단 화살표 버튼 데모용 상태.
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [tableSelectedIds, setTableSelectedIds] = useState<string[]>(["r4"]);
   // 2026-07-28 8차: "테이블이 시선강탈"이라는 지적 반영 — 합본 Table 데모(15컬럼, 화면
   // 전체 폭)는 페이지에서 눈에 가장 많이 띄는 블록이라 기본은 접어두고, 필요할 때만
@@ -1761,10 +1763,16 @@ export default function Home() {
           Sidebar / SNB
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          node 9873:83338 실측. 1-depth hover(Gray-120)/active(Primary-60) 구분, 2-depth
-          트리 연결선 포함. 접기(collapsed rail) 상태는 범위 밖.
+          node 9873:83338(펼침)·9873:83651(접힘) 실측. 1-depth hover(Gray-120)/
+          active(Primary-60) 구분, 2-depth 트리 연결선 포함. 우상단 화살표로 62px
+          아이콘 레일로 접기 가능.
         </p>
-        <div className="h-[820px] w-[260px] overflow-hidden rounded-lg border border-mes-gray-30">
+        <div
+          className={cn(
+            "h-[820px] overflow-hidden rounded-lg border border-mes-gray-30 transition-[width]",
+            sidebarCollapsed ? "w-[62px]" : "w-[260px]"
+          )}
+        >
           <Sidebar
             items={SIDEBAR_NAV_ITEMS}
             logo={
@@ -1774,6 +1782,8 @@ export default function Home() {
             onExpandedKeyChange={setSidebarExpandedKey}
             activeSubKey={sidebarActiveSubKey}
             onSubItemClick={(_, subKey) => setSidebarActiveSubKey(subKey)}
+            collapsed={sidebarCollapsed}
+            onCollapseClick={() => setSidebarCollapsed((v) => !v)}
           />
         </div>
       </section>

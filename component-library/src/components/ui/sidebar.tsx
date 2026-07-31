@@ -127,6 +127,26 @@ import { IconGrid } from "../icons/icon-grid";
  *   컴포넌트의 실제 콘텐츠 높이(로고+즐겨찾기/대시보드+6개 1-depth+MES 설정 하위 7개+
  *   하단바 ≈ 800px)보다 작아서 아래쪽이 잘렸음("사이드바가 잘리잖아") — `h-[820px]`로
  *   확대.
+ *
+ * ── 6. 2026-07-31 "사이드바 자체를 접고 펴는 거"(우상단 화살표 버튼) 신규 구현 ──
+ * 담당자가 지적한 건 1-depth 항목 펼침이 아니라 사이드바 전체를 62px 아이콘 레일로
+ * 접는 기능이었음 — 원래 3.의 "접기(collapsed rail) 상태는 범위 밖"으로 미뤄뒀던
+ * 부분. 링크 재확인 후 `get_design_context`로 `SNB-hide` 심볼(node 9873:83651,
+ * width 62px)을 실측해 아래처럼 반영:
+ * - `collapsed` prop 추가(제어 컴포넌트 — `expandedKey`처럼 부모가 상태를 들고
+ *   `onCollapseClick`에서 토글). true면 폭 260px→62px, 접기 버튼 아이콘
+ *   180도 회전(펼치기 방향으로 안내).
+ * - 로고/즐겨찾기/대시보드: 라벨 텍스트 숨기고 아이콘만 중앙 정렬.
+ * - MES/FEMS 토글: 원본엔 "M"/"F" 한 글자로 축약해 계속 보여주지만, 이 프로젝트는
+ *   4.에서 이미 이 토글 자체를 담당자 지시로 제거했으므로 접힌 상태에서도 동일하게
+ *   렌더링 안 함(두 상태 간 일관성 유지).
+ * - 1-depth 항목: 라벨/화살표 숨기고 아이콘만 중앙 정렬 — 펼친 상태처럼 클릭으로
+ *   인라인 펼침 대신, 원본 "hover" 배리언트(node 9873:83620, 즉 `snb-hide-item`
+ *   hover 시 우측에 뜨는 200px 플라이아웃 패널)를 재현해 `children`이 있는 항목은
+ *   마우스 오버 시 2-depth 목록이 툴팁처럼 옆에 뜨도록 구현(Tooltip 컴포넌트와 동일한
+ *   `group`/`group-hover` CSS 패턴, 별도 의존성 추가 없음).
+ * - 하단 유틸리티 바: 원본처럼 메뉴얼/로그아웃을 좌우 2칸이 아니라 상하로 쌓고, 각 행
+ *   높이 46px로 재현.
  */
 
 export interface SidebarSubItem {
@@ -160,6 +180,12 @@ export interface SidebarProps {
   favorited?: boolean;
   onFavoriteClick?: () => void;
   onDashboardClick?: () => void;
+  /**
+   * 사이드바 전체를 62px 아이콘 레일로 접을지 여부 — 제어 prop(node 9873:83651
+   * "SNB-hide" 실측, 2026-07-31 6. 참고). `expandedKey`(1-depth 항목 펼침)와는
+   * 완전히 다른 개념이니 혼동 주의.
+   */
+  collapsed?: boolean;
   onCollapseClick?: () => void;
   onManualClick?: () => void;
   onLogoutClick?: () => void;
@@ -178,6 +204,7 @@ function Sidebar({
   favorited = false,
   onFavoriteClick,
   onDashboardClick,
+  collapsed = false,
   onCollapseClick,
   onManualClick,
   onLogoutClick,
@@ -187,39 +214,63 @@ function Sidebar({
   return (
     <div
       className={cn(
-        "flex h-full w-[260px] shrink-0 flex-col items-center border-r border-mes-gray-100 bg-black",
+        "flex h-full shrink-0 flex-col items-center border-r border-mes-gray-100 bg-black transition-[width]",
+        collapsed ? "w-[62px]" : "w-[260px]",
         className
       )}
     >
       <div className="flex w-full flex-1 flex-col overflow-clip">
-        <div className="flex w-full shrink-0 items-center justify-between px-5 pb-5 pt-6">
-          <div className="min-w-0 shrink">{logo}</div>
+        <div
+          className={cn(
+            "flex w-full shrink-0 items-center px-5 pb-5 pt-6",
+            collapsed ? "justify-center" : "justify-between"
+          )}
+        >
+          {!collapsed && <div className="min-w-0 shrink">{logo}</div>}
           <button
             type="button"
             onClick={onCollapseClick}
-            aria-label="사이드바 접기"
-            className="flex size-[30px] shrink-0 items-center justify-center rounded-full bg-mes-gray-110 text-white hover:bg-mes-gray-90"
+            aria-label={collapsed ? "사이드바 펼치기" : "사이드바 접기"}
+            className={cn(
+              "flex size-[30px] shrink-0 items-center justify-center rounded-full bg-mes-gray-110 text-white hover:bg-mes-gray-90",
+              collapsed && "rotate-180"
+            )}
           >
             <IconArrowLine size={20} />
           </button>
         </div>
 
-        <div className="flex w-full shrink-0 flex-col gap-1 border-b border-mes-gray-120 px-[10px] pb-[10px]">
+        <div
+          className={cn(
+            "flex w-full shrink-0 flex-col gap-1 border-b border-mes-gray-120 pb-[10px]",
+            collapsed ? "px-2" : "px-[10px]"
+          )}
+        >
           <button
             type="button"
             onClick={onFavoriteClick}
-            className="flex h-[42px] w-full shrink-0 items-center gap-2.5 rounded px-[10px] text-white"
+            className={cn(
+              "flex h-[42px] w-full shrink-0 items-center rounded text-white",
+              collapsed ? "justify-center" : "gap-2.5 px-[10px]"
+            )}
           >
             <IconStar size={20} variant={favorited ? "filled" : "outline"} />
-            <span className="text-[15px] font-medium leading-[1.5]">즐겨찾기</span>
+            {!collapsed && (
+              <span className="text-[15px] font-medium leading-[1.5]">즐겨찾기</span>
+            )}
           </button>
           <button
             type="button"
             onClick={onDashboardClick}
-            className="flex h-[42px] w-full shrink-0 items-center gap-2.5 rounded px-[10px] text-white"
+            className={cn(
+              "flex h-[42px] w-full shrink-0 items-center rounded text-white",
+              collapsed ? "justify-center" : "gap-2.5 px-[10px]"
+            )}
           >
             <IconGrid size={20} />
-            <span className="text-[15px] font-medium leading-[1.5]">대시보드</span>
+            {!collapsed && (
+              <span className="text-[15px] font-medium leading-[1.5]">대시보드</span>
+            )}
           </button>
         </div>
 
@@ -229,6 +280,58 @@ function Sidebar({
               const isExpanded = expandedKey === item.key;
               const isActive = activeKey === item.key;
               const isEmphasized = isExpanded || isActive;
+              const hasChildren = !!item.children?.length;
+
+              if (collapsed) {
+                // 2026-07-31 6. — 접힌 레일에선 인라인 펼침 대신 원본 "hover" 배리언트
+                // (node 9873:83620)처럼 마우스 오버 시 우측에 2-depth 목록 플라이아웃을
+                // 띄움. Tooltip 컴포넌트와 동일한 group/group-hover CSS 패턴 재사용.
+                return (
+                  <div key={item.key} className="group/hide relative flex w-full">
+                    <button
+                      type="button"
+                      onClick={() => onItemClick?.(item.key)}
+                      aria-label={item.label}
+                      className={cn(
+                        "flex h-[42px] w-full shrink-0 items-center justify-center rounded",
+                        isActive ? "bg-mes-bg-brand" : "hover:bg-mes-gray-120"
+                      )}
+                    >
+                      <span className={cn("flex shrink-0", isActive ? "text-white" : "text-mes-gray-70")}>
+                        {item.icon}
+                      </span>
+                    </button>
+                    {hasChildren && (
+                      <div className="invisible absolute left-full top-0 z-10 ml-1 w-[200px] rounded-md bg-mes-gray-120 px-2 py-3 opacity-0 transition-opacity group-hover/hide:visible group-hover/hide:opacity-100">
+                        <p className="mb-2.5 px-1 text-[13px] font-semibold leading-[1.5] text-white">
+                          {item.label}
+                        </p>
+                        <div className="flex flex-col gap-1">
+                          {item.children!.map((sub) => {
+                            const isSubActive = activeSubKey === sub.key;
+                            return (
+                              <button
+                                key={sub.key}
+                                type="button"
+                                onClick={() => onSubItemClick?.(item.key, sub.key)}
+                                className={cn(
+                                  "w-full rounded-mes-panel px-3 py-1.5 text-left text-[14px] leading-[1.5]",
+                                  isSubActive
+                                    ? "bg-mes-bg-brand font-medium text-white"
+                                    : "text-mes-gray-60 hover:bg-mes-gray-110"
+                                )}
+                              >
+                                {sub.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
               return (
                 <div
                   key={item.key}
@@ -324,18 +427,31 @@ function Sidebar({
         </div>
       </div>
 
-      <div className="flex w-full shrink-0 items-stretch">
+      <div
+        className={cn(
+          "flex w-full shrink-0",
+          collapsed ? "flex-col items-stretch" : "items-stretch"
+        )}
+      >
         <button
           type="button"
           onClick={onManualClick}
-          className="flex flex-1 items-center justify-center border-r border-mes-gray-120 py-4 text-[14px] font-medium text-white"
+          className={cn(
+            "flex flex-1 items-center justify-center text-[14px] font-medium text-white",
+            collapsed
+              ? "h-[46px] border-b border-mes-gray-120 text-[13px]"
+              : "border-r border-mes-gray-120 py-4"
+          )}
         >
           메뉴얼
         </button>
         <button
           type="button"
           onClick={onLogoutClick}
-          className="flex flex-1 items-center justify-center py-4 text-[14px] font-medium text-white"
+          className={cn(
+            "flex flex-1 items-center justify-center text-[14px] font-medium text-white",
+            collapsed ? "h-[46px] text-[13px]" : "py-4"
+          )}
         >
           로그아웃
         </button>

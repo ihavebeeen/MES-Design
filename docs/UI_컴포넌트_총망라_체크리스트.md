@@ -163,7 +163,7 @@
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
 | Navbar / Top Nav | 상단 내비게이션 바 | 오가니즘 | 없음 | 2 | |
-| Sidebar / Side Nav | 좌측 내비게이션 | 오가니즘 | 부분 | 1 | 2026-07-29 코드화, 2026-07-30 재검증으로 대부분 완성: `components/ui/sidebar.tsx`. 접기버튼(hover), 1-depth 항목(hover=Gray-120/active=Primary-60, `activeKey` prop으로 구분), 2-depth 항목(hover/active), MES/FEMS 토글(hover) 전부 실측·반영 완료. 유일하게 남은 건 접기(collapsed rail/`SNB-hide`, node 133:2263) 상태 — 완전히 다른 레이아웃(라벨 숨김)이라 별도 작업 필요해서 "부분"으로 유지 |
+| Sidebar / Side Nav | 좌측 내비게이션 | 오가니즘 | 있음 | 1 | 2026-07-29 코드화, 2026-07-30/07-31 재검증: `components/ui/sidebar.tsx`. 접기버튼(hover), 1-depth 항목(hover=Gray-120/active=Primary-60), 2-depth 항목(hover/active, 트리 연결선), MES/FEMS 토글은 담당자 지시로 의도적 미구현 실측·반영 완료. 2026-07-31 22차에 마지막 남았던 접기(collapsed rail/`SNB-hide`, node 9873:83651) 상태까지 `collapsed` prop으로 구현 — 62px 아이콘 레일, 라벨 숨김, hover 시 2-depth 플라이아웃(group-hover CSS, 판단값 구현). 이걸로 "부분"에서 "있음"으로 전환 |
 | Breadcrumb | 현재 위치 경로 표시 | 몰큘 | 없음 | 2 | |
 | Tabs | 탭 전환 | 몰큘 | 있음 | 1 | 2026-07-29 코드화, 2026-07-30 재검증: `components/ui/page-top-tab-item.tsx`(node 157:18051 컴포넌트 세트, default/hover/active 3종 전부 실측). active는 배경 Gray-110 + 제목 SemiBold로 정정(이전 판단값은 틀렸었음) |
 | Pagination | 페이지네이션 | 몰큘 | 없음 | 2 | |
