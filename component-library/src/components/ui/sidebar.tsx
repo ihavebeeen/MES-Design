@@ -100,6 +100,30 @@ import { IconGrid } from "../icons/icon-grid";
  *   9873:83490) 이 세션의 샌드박스 네트워크 정책상 자산 URL을 실제로 내려받지 못해
  *   (curl/web_fetch 모두 차단·타임아웃) 여전히 `lucide-react`의 `Settings`를 임시로 씀 —
  *   이전부터 있던 판단값 placeholder이며 이번 재검증으로 "방치된 임의 교체"는 아님을 확인.
+ *
+ * ── 5. 2026-07-31 담당자 2차 피드백("잘림/제목/접힌거 없음/선 없음/선택 2개") 반영 ──
+ * - **펼침 화살표 상시 노출**: 원본은 6개 1-depth 항목 전부(자재관리~MES 설정)에
+ *   화살표(icon-24-left)가 구조적으로 붙어 있는데, 기존 코드는 `item.children`이
+ *   실제로 있는 항목("MES 설정")에만 화살표를 그렸음(데모 데이터에 하위 메뉴가
+ *   "MES 설정"에만 채워져 있었기 때문) — 담당자가 "접힌 것도 없다"고 지적한 부분.
+ *   화살표 렌더링을 `hasChildren` 조건에서 떼어내 원본처럼 모든 항목에 항상 표시하도록
+ *   수정(단, 클릭 시 펼침 동작은 여전히 `hasChildren`일 때만 동작 — 하위 메뉴가 없는
+ *   항목은 장식용 화살표만 있고 눌러도 펼쳐지지 않음).
+ * - **2-depth 트리 연결선 추가**: 원본엔 세로 트렁크 선(node 9873:83495 "Line",
+ *   Gray-110/#373f57, 2px)과 각 2-depth 항목마다 트렁크에서 항목으로 꺾여 들어오는
+ *   L자 코너(node 9873:83598 등 "Radius", border-b-2 border-l-2)가 있는데 기존 코드엔
+ *   전혀 없었음("선도 없고" 지적) — 세로선은 항목 개수에 따라 늘어나야 하므로 고정
+ *   높이(원본 386px는 7개 항목 인스턴스 전용값) 대신 `top-[17px] bottom-[17px]`로
+ *   첫/마지막 항목의 세로 중심에 맞춰 유동적으로 구현, 각 항목엔 `absolute -left-[13px]`
+ *   L자 코너를 추가.
+ * - **데모 중복 선택 정리**: 데모 호출부가 `activeKey="stats"`(통계분석, 파랑)와
+ *   `activeSubKey`의 기본값 "user-setting"(사용자 설정, 파랑)을 동시에 켜놔서 화면에
+ *   파란 하이라이트가 2군데 동시에 보였음("선택된 게 2개") — 원본 실측 스크린샷엔
+ *   "사용자 설정" 1개만 선택 표시였으므로 `activeKey="stats"`를 제거.
+ * - **데모 컨테이너 높이**: `h-[600px] overflow-hidden` 박스가 내부 스크롤이 없어진
+ *   컴포넌트의 실제 콘텐츠 높이(로고+즐겨찾기/대시보드+6개 1-depth+MES 설정 하위 7개+
+ *   하단바 ≈ 800px)보다 작아서 아래쪽이 잘렸음("사이드바가 잘리잖아") — `h-[820px]`로
+ *   확대.
  */
 
 export interface SidebarSubItem {
@@ -247,22 +271,24 @@ function Sidebar({
                         {item.label}
                       </span>
                     </span>
-                    {hasChildren && (
-                      <IconArrow
-                        size={16}
-                        className={cn(
-                          "shrink-0 transition-transform",
-                          isEmphasized
-                            ? "text-white"
-                            : "text-mes-gray-70 group-hover:text-white",
-                          isExpanded ? "rotate-90" : "-rotate-90"
-                        )}
-                      />
-                    )}
+                    <IconArrow
+                      size={16}
+                      className={cn(
+                        "shrink-0 transition-transform",
+                        isEmphasized
+                          ? "text-white"
+                          : "text-mes-gray-70 group-hover:text-white",
+                        isExpanded ? "rotate-90" : "-rotate-90"
+                      )}
+                    />
                   </button>
 
                   {isExpanded && item.children ? (
-                    <div className="flex w-full flex-col gap-1 py-2.5 pl-8">
+                    <div className="relative flex w-full flex-col gap-1 py-2.5 pl-8">
+                      {/* 트리 연결선(세로선) — 원본 "Line"(node 9873:83495) 재현.
+                          아이템 개수가 가변이라 첫/마지막 아이템의 세로 중심에 맞춰
+                          top/bottom을 항목 높이 절반(약 17px)만큼 안쪽으로 뺌. */}
+                      <div className="absolute bottom-[17px] left-[19px] top-[17px] w-[2px] bg-mes-gray-110" />
                       {item.children.map((sub) => {
                         const isActive = activeSubKey === sub.key;
                         return (
@@ -271,12 +297,15 @@ function Sidebar({
                             type="button"
                             onClick={() => onSubItemClick?.(item.key, sub.key)}
                             className={cn(
-                              "flex w-full items-center gap-3 rounded-mes-panel px-3 py-1.5 text-left text-[14px] leading-[1.5]",
+                              "relative flex w-full items-center gap-3 rounded-mes-panel px-3 py-1.5 text-left text-[14px] leading-[1.5]",
                               isActive
                                 ? "bg-mes-bg-brand font-medium text-white"
                                 : "text-mes-gray-60 hover:bg-mes-gray-120"
                             )}
                           >
+                            {/* 트리 연결선(꺾인 코너) — 원본 "Radius" 재현, 세로선에서
+                                각 항목으로 꺾여 들어오는 L자 모양 */}
+                            <span className="absolute -left-[13px] top-1/2 h-[2px] w-[13px] -translate-y-1/2 border-b-2 border-l-2 border-mes-gray-110" />
                             {sub.label}
                           </button>
                         );

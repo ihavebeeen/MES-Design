@@ -1758,13 +1758,13 @@ export default function Home() {
 
       <section id="sidebar" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Sidebar / SNB (좌측 전역 내비게이션 — node 133:1976·133:2042 등 실측, hover/active 반영)
+          Sidebar / SNB
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          1-depth hover(Gray-120)/active(Primary-60) 구분. 접기(collapsed rail) 상태는
-          범위 밖.
+          node 9873:83338 실측. 1-depth hover(Gray-120)/active(Primary-60) 구분, 2-depth
+          트리 연결선 포함. 접기(collapsed rail) 상태는 범위 밖.
         </p>
-        <div className="h-[600px] w-[260px] overflow-hidden rounded-lg border border-mes-gray-30">
+        <div className="h-[820px] w-[260px] overflow-hidden rounded-lg border border-mes-gray-30">
           <Sidebar
             items={SIDEBAR_NAV_ITEMS}
             logo={
@@ -1772,7 +1772,6 @@ export default function Home() {
             }
             expandedKey={sidebarExpandedKey}
             onExpandedKeyChange={setSidebarExpandedKey}
-            activeKey="stats"
             activeSubKey={sidebarActiveSubKey}
             onSubItemClick={(_, subKey) => setSidebarActiveSubKey(subKey)}
           />
