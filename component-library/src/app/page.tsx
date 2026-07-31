@@ -115,19 +115,78 @@ const TOC_LINKS: { id: string; label: string }[] = [
  * 2026-07-31 신규 — 당근 Seed Design System(seed-design.io) 구조 참고, "메뉴 위치"
  * 컨셉만 차용: 상단 얇은 헤더 바 + 좌측 고정 사이드바(카테고리별 섹션 목록, 스크롤에 따라
  * 현재 위치 강조) + 본문. Seed는 다크 테마지만 이 프로젝트는 기존 화이트 톤을 그대로
- * 유지 — 톤은 가져오지 않고 레이아웃 구조만 가져옴. `TOC_LINKS`를 그대로 재사용해서
- * 두 곳(사이드바/앵커 대상) 값이 어긋나지 않게 함 — Foundation 6개(색상~시맨틱 토큰)와
- * 나머지 Components를 나눈 기준은 TOC_LINKS 배열 순서 그대로.
+ * 유지 — 톤은 가져오지 않고 레이아웃 구조만 가져옴.
+ *
+ * 2026-07-31, 곧바로 이어서 — 담당자가 "Button 사이즈/컬러/아이콘처럼 한 컴포넌트의
+ * 하위 항목끼리는 [Button]이라는 상위 메뉴 밑에 묶여야 한다"고 지적. 사이드바만 리프
+ * (leaf, 단일 섹션)와 브랜치(branch, 하위 섹션 여러 개를 가진 상위 메뉴) 2종 노드로
+ * 트리화함 — 스크롤 스파이가 관찰하는 실제 앵커 대상은 여전히 `TOC_LINKS`(평평한 목록,
+ * 안 바뀜)이고, 사이드바 트리는 그 위에 얹는 "표시용" 구조라 두 값이 어긋날 일이 없음
+ * (branch 하위 항목의 id는 전부 `leaf()` 헬퍼로 TOC_LINKS에서 그대로 가져옴).
+ * 현재 그룹화 대상: Button(사이즈/컬러/아이콘 3종), Table(합본/분리 2종) — 나머지는
+ * 전부 컴포넌트 1개당 섹션 1개라 묶을 하위 항목이 없음.
  */
-const SIDEBAR_GROUPS: { title: string; items: typeof TOC_LINKS }[] = [
-  { title: "Foundations", items: TOC_LINKS.slice(0, 6) },
-  { title: "Components", items: TOC_LINKS.slice(6) },
+type SidebarNode =
+  | { kind: "leaf"; id: string; label: string }
+  | { kind: "branch"; label: string; children: { id: string; label: string }[] };
+
+function leaf(id: string): SidebarNode {
+  const item = TOC_LINKS.find((l) => l.id === id);
+  if (!item) throw new Error(`TOC_LINKS에 없는 id: ${id}`);
+  return { kind: "leaf", id: item.id, label: item.label };
+}
+
+/** `stripPrefix + " "`를 하위 항목 라벨에서 떼어내고(예: "Button 사이즈" → "사이즈") 상위 메뉴로 묶는다 */
+function branch(label: string, ids: string[], stripPrefix: string): SidebarNode {
+  return {
+    kind: "branch",
+    label,
+    children: ids.map((id) => {
+      const item = TOC_LINKS.find((l) => l.id === id);
+      if (!item) throw new Error(`TOC_LINKS에 없는 id: ${id}`);
+      return { id: item.id, label: item.label.replace(`${stripPrefix} `, "") };
+    }),
+  };
+}
+
+function firstIdOfNode(node: SidebarNode): string {
+  return node.kind === "leaf" ? node.id : node.children[0].id;
+}
+
+const FOUNDATION_NODES: SidebarNode[] = TOC_LINKS.slice(0, 6).map((l) => leaf(l.id));
+
+const COMPONENT_NODES: SidebarNode[] = [
+  branch("Button", ["button-size", "button-icon", "button-color"], "Button"),
+  leaf("input"),
+  leaf("select"),
+  leaf("badge"),
+  leaf("radio"),
+  leaf("checkbox"),
+  leaf("progress"),
+  leaf("filter"),
+  leaf("tag"),
+  leaf("combobox"),
+  leaf("toast"),
+  leaf("confirm-dialog"),
+  leaf("notice-banner"),
+  leaf("radio-choice-dialog"),
+  leaf("page-top-tab-item"),
+  leaf("sidebar"),
+  leaf("alarm-list-item"),
+  leaf("notification-panel"),
+  leaf("icons"),
+  branch("Table", ["table-full", "table-parts"], "Table"),
+];
+
+const SIDEBAR_GROUPS: { title: string; nodes: SidebarNode[] }[] = [
+  { title: "Foundations", nodes: FOUNDATION_NODES },
+  { title: "Components", nodes: COMPONENT_NODES },
 ];
 
 /** 사이드바 그룹과 1:1 매칭되는 최상단 탭. `firstId`는 그 그룹의 첫 섹션으로 스크롤 이동. */
 const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
-  { key: "foundations", label: "Foundations", firstId: SIDEBAR_GROUPS[0].items[0]?.id },
-  { key: "components", label: "Components", firstId: SIDEBAR_GROUPS[1].items[0]?.id },
+  { key: "foundations", label: "Foundations", firstId: firstIdOfNode(FOUNDATION_NODES[0]) },
+  { key: "components", label: "Components", firstId: firstIdOfNode(COMPONENT_NODES[0]) },
   // 2026-07-31 신규 — AGENTS.md에 기록된 3층 구조(1층 토큰=Foundations, 2층
   // 컴포넌트=Components, 3층 합성 패턴 카탈로그)의 3층에 해당. 아직 코드/문서 둘 다
   // 없어서 클릭 불가 상태(비활성)로만 자리를 잡아둠 — 실제 내용이 생기면 firstId를
@@ -136,7 +195,7 @@ const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
 ];
 
 /** Foundation 6개 섹션 id 집합 — 상단 탭 활성 표시를 스크롤 위치(activeId)와 연동할 때 씀 */
-const FOUNDATION_IDS = new Set(SIDEBAR_GROUPS[0].items.map((i) => i.id));
+const FOUNDATION_IDS = new Set(TOC_LINKS.slice(0, 6).map((l) => l.id));
 
 /** Sidebar 데모용 1-depth 항목 — MES 설정만 2-depth 실측값을 갖고 있음(주석 참고) */
 const SIDEBAR_NAV_ITEMS: SidebarNavItem[] = [
@@ -864,20 +923,49 @@ export default function Home() {
                 {group.title}
               </div>
               <nav className="flex flex-col gap-0.5">
-                {group.items.map((item) => (
-                  <a
-                    key={item.id}
-                    href={`#${item.id}`}
-                    className={cn(
-                      "truncate rounded-md px-2 py-1.5 text-[13px] transition-colors",
-                      activeId === item.id
-                        ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
-                        : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-text-default"
-                    )}
-                  >
-                    {item.label}
-                  </a>
-                ))}
+                {group.nodes.map((node) =>
+                  node.kind === "leaf" ? (
+                    <a
+                      key={node.id}
+                      href={`#${node.id}`}
+                      className={cn(
+                        "truncate rounded-md px-2 py-1.5 text-[13px] transition-colors",
+                        activeId === node.id
+                          ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
+                          : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-gray-130"
+                      )}
+                    >
+                      {node.label}
+                    </a>
+                  ) : (
+                    <div key={node.label} className="flex flex-col gap-0.5">
+                      <span
+                        className={cn(
+                          "truncate px-2 py-1.5 text-[13px] font-semibold",
+                          node.children.some((c) => c.id === activeId)
+                            ? "text-mes-text-brand"
+                            : "text-mes-gray-100"
+                        )}
+                      >
+                        {node.label}
+                      </span>
+                      {node.children.map((child) => (
+                        <a
+                          key={child.id}
+                          href={`#${child.id}`}
+                          className={cn(
+                            "ml-3 truncate rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors",
+                            activeId === child.id
+                              ? "border-mes-primary-60 font-semibold text-mes-text-brand"
+                              : "text-mes-gray-70 hover:text-mes-gray-130"
+                          )}
+                        >
+                          {child.label}
+                        </a>
+                      ))}
+                    </div>
+                  )
+                )}
               </nav>
             </div>
           ))}
