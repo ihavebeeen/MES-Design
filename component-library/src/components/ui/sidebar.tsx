@@ -107,8 +107,11 @@ import { IconGrid } from "../icons/icon-grid";
  *   실제로 있는 항목("MES 설정")에만 화살표를 그렸음(데모 데이터에 하위 메뉴가
  *   "MES 설정"에만 채워져 있었기 때문) — 담당자가 "접힌 것도 없다"고 지적한 부분.
  *   화살표 렌더링을 `hasChildren` 조건에서 떼어내 원본처럼 모든 항목에 항상 표시하도록
- *   수정(단, 클릭 시 펼침 동작은 여전히 `hasChildren`일 때만 동작 — 하위 메뉴가 없는
- *   항목은 장식용 화살표만 있고 눌러도 펼쳐지지 않음).
+ *   수정. 처음엔 클릭 토글도 `hasChildren`일 때만 동작하도록 남겨뒀는데, 그 결과
+ *   화살표는 보이는데 눌러도 반응 없는 항목이 5개나 생겨 담당자가 "접고 펴는 게
+ *   안 된다"고 재차 지적 — `onExpandedKeyChange` 호출에서도 `hasChildren` 게이팅을
+ *   제거해 모든 항목이 클릭 시 배경/화살표 방향은 토글되도록 수정(실측된 하위
+ *   목록이 없는 항목은 펼쳐도 목록만 비어 있음 — `item.children`이 있을 때만 렌더).
  * - **2-depth 트리 연결선 추가**: 원본엔 세로 트렁크 선(node 9873:83495 "Line",
  *   Gray-110/#373f57, 2px)과 각 2-depth 항목마다 트렁크에서 항목으로 꺾여 들어오는
  *   L자 코너(node 9873:83598 등 "Radius", border-b-2 border-l-2)가 있는데 기존 코드엔
@@ -226,7 +229,6 @@ function Sidebar({
               const isExpanded = expandedKey === item.key;
               const isActive = activeKey === item.key;
               const isEmphasized = isExpanded || isActive;
-              const hasChildren = !!item.children?.length;
               return (
                 <div
                   key={item.key}
@@ -235,9 +237,12 @@ function Sidebar({
                   <button
                     type="button"
                     onClick={() => {
-                      if (hasChildren) {
-                        onExpandedKeyChange?.(isExpanded ? undefined : item.key);
-                      }
+                      // 2026-07-31 담당자 지적("접고 펴는게 안 되는데") 반영 — 원본은
+                      // 6개 1-depth 항목 전부가 펼침 화살표를 갖고 있어 전부 토글
+                      // 가능해야 함. 데모 데이터상 하위 메뉴 내용이 없는 항목도
+                      // 배경/화살표 방향은 토글되도록 `hasChildren` 게이팅을 제거—
+                      // 실제 하위 목록은 `item.children`이 있을 때만 그려짐.
+                      onExpandedKeyChange?.(isExpanded ? undefined : item.key);
                       onItemClick?.(item.key);
                     }}
                     className={cn(
