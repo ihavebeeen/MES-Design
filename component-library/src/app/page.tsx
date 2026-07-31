@@ -28,6 +28,11 @@ import { Sidebar, SidebarSettingsIcon, type SidebarNavItem } from "@/components/
 import { AlarmListItem } from "@/components/ui/alarm-list-item";
 import { NotificationPanel } from "@/components/ui/notification-panel";
 import { RadioChoiceDialog } from "@/components/ui/radio-choice-dialog";
+import { IconButton, CloseButton } from "@/components/ui/icon-button";
+import { Divider } from "@/components/ui/divider";
+import { Tooltip } from "@/components/ui/tooltip";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import { X } from "lucide-react";
 import {
   IconArrow,
@@ -89,6 +94,11 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "button-size", label: "Button 사이즈" },
   { id: "button-icon", label: "Button 아이콘" },
   { id: "button-color", label: "Button 컬러" },
+  { id: "icon-button", label: "IconButton" },
+  { id: "divider", label: "Divider" },
+  { id: "tooltip", label: "Tooltip" },
+  { id: "loading-spinner", label: "LoadingSpinner" },
+  { id: "skeleton", label: "Skeleton" },
   { id: "input", label: "Input" },
   { id: "select", label: "Select" },
   { id: "badge", label: "Badge" },
@@ -157,6 +167,11 @@ const FOUNDATION_NODES: SidebarNode[] = TOC_LINKS.slice(0, 6).map((l) => leaf(l.
 
 const COMPONENT_NODES: SidebarNode[] = [
   branch("Button", ["button-size", "button-icon", "button-color"], "Button"),
+  leaf("icon-button"),
+  leaf("divider"),
+  leaf("tooltip"),
+  leaf("loading-spinner"),
+  leaf("skeleton"),
   leaf("input"),
   leaf("select"),
   leaf("badge"),
@@ -1252,6 +1267,120 @@ export default function Home() {
           <Button size="basic" variant="opacityMain">
             opacityMain
           </Button>
+        </Sample>
+      </Section>
+
+      {/* 2026-07-31 신규 — 티어2 컴포넌트 1차 배치(Figma 디자인 없어서 기존 토큰
+          체계 기반 판단값으로 구현, 각 컴포넌트 파일 주석 참고). Button 바로 아래
+          배치한 이유는 IconButton/CloseButton이 Button 색상 variant 네이밍을
+          그대로 이어받아서 개념적으로 가장 가까운 이웃이기 때문. */}
+      <Section id="icon-button" title="IconButton / CloseButton (신규, 판단값)">
+        <Sample label="IconButton · basic/ghost">
+          <IconButton icon={<IconFilter />} aria-label="필터" size="basic" />
+        </Sample>
+        <Sample label="IconButton · small/fillMain">
+          <IconButton icon={<IconBell />} aria-label="알림" variant="fillMain" size="small" />
+        </Sample>
+        <Sample label="IconButton · small/fillGray">
+          <IconButton icon={<IconFilter />} aria-label="필터" variant="fillGray" size="small" />
+        </Sample>
+        <Sample label="IconButton · small/fillBlack">
+          <IconButton icon={<IconBell />} aria-label="알림" variant="fillBlack" size="small" />
+        </Sample>
+        <Sample label="IconButton · small/lineBlacktxt">
+          <IconButton
+            icon={<IconFilter />}
+            aria-label="필터"
+            variant="lineBlacktxt"
+            size="small"
+          />
+        </Sample>
+        <Sample label="IconButton · xsmall/ghost">
+          <IconButton icon={<IconBell />} aria-label="알림" size="xsmall" />
+        </Sample>
+        <Sample label="IconButton · disabled">
+          <IconButton icon={<IconFilter />} aria-label="필터" size="small" disabled />
+        </Sample>
+        <Sample label="CloseButton · 기본(small)">
+          <CloseButton />
+        </Sample>
+      </Section>
+
+      <Section id="divider" title="Divider (신규, 판단값)">
+        <Sample label="Divider · horizontal">
+          <div className="flex w-40 flex-col gap-2">
+            <span className="text-[12px] text-mes-gray-70">위</span>
+            <Divider />
+            <span className="text-[12px] text-mes-gray-70">아래</span>
+          </div>
+        </Sample>
+        <Sample label="Divider · vertical">
+          <div className="flex h-8 items-center gap-2">
+            <span className="text-[12px] text-mes-gray-70">왼쪽</span>
+            <Divider orientation="vertical" />
+            <span className="text-[12px] text-mes-gray-70">오른쪽</span>
+          </div>
+        </Sample>
+      </Section>
+
+      <Section id="tooltip" title="Tooltip (신규, 판단값 — CSS 경량 구현)">
+        <Sample label="Tooltip · top(기본)">
+          <Tooltip content="위쪽 툴팁">
+            <Button size="small" variant="lineBlacktxt">
+              hover
+            </Button>
+          </Tooltip>
+        </Sample>
+        <Sample label="Tooltip · bottom">
+          <Tooltip content="아래쪽 툴팁" side="bottom">
+            <Button size="small" variant="lineBlacktxt">
+              hover
+            </Button>
+          </Tooltip>
+        </Sample>
+        <Sample label="Tooltip · IconButton과 조합">
+          <Tooltip content="필터 열기">
+            <IconButton icon={<IconFilter />} aria-label="필터" size="small" />
+          </Tooltip>
+        </Sample>
+      </Section>
+
+      <Section id="loading-spinner" title="LoadingSpinner (신규, 판단값)">
+        <Sample label="LoadingSpinner · 16px">
+          <LoadingSpinner size={16} />
+        </Sample>
+        <Sample label="LoadingSpinner · 20px(기본)">
+          <LoadingSpinner />
+        </Sample>
+        <Sample label="LoadingSpinner · fillMain 버튼 위">
+          <Button size="basic" variant="fillMain" disabled className="gap-2">
+            <LoadingSpinner size={16} className="text-mes-text-inverse" />
+            처리 중
+          </Button>
+        </Sample>
+      </Section>
+
+      <Section id="skeleton" title="Skeleton (신규, 판단값)">
+        <Sample label="Skeleton · text">
+          <div className="flex w-40 flex-col gap-1.5">
+            <Skeleton variant="text" />
+            <Skeleton variant="text" className="w-2/3" />
+          </div>
+        </Sample>
+        <Sample label="Skeleton · rect">
+          <Skeleton variant="rect" className="w-40" />
+        </Sample>
+        <Sample label="Skeleton · circle">
+          <Skeleton variant="circle" />
+        </Sample>
+        <Sample label="Skeleton · 카드 조합 예시">
+          <div className="flex w-40 items-center gap-2">
+            <Skeleton variant="circle" />
+            <div className="flex flex-1 flex-col gap-1.5">
+              <Skeleton variant="text" />
+              <Skeleton variant="text" className="w-2/3" />
+            </div>
+          </div>
         </Sample>
       </Section>
 

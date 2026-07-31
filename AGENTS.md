@@ -630,3 +630,45 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      값 · 역할` 표 렌더링, TOC_LINKS에도 추가.
   5. `docs/디자인_토큰_사용_규칙.md` 서두에 2계층 구조 설명 추가.
   eslint+tsc 클린 확인 후 커밋 예정.
+- (2026-07-31, 15~17차, 같은 흐름) Seed 구조 조사 결과를 실제 레이아웃에 반영. 커밋
+  단위로는 3개(상단바+사이드바 도입 → 상단 탭 추가 → 사이드바 상하위 메뉴 그룹화)로
+  나눴지만 한 요청 흐름이라 묶어서 기록:
+  1. 상단 얇은 헤더 바 + 좌측 고정 사이드바(Foundations/Components 그룹, `TOC_LINKS`
+     재사용) + 본문 3단 레이아웃 신설, 기존 상단 pill 네비게이션 제거. Seed는 다크
+     테마지만 톤은 안 가져오고 구조만 차용 — 담당자가 "화이트 톤이 더 맘에 든다"고
+     확정. `IntersectionObserver`로 스크롤 위치에 따라 사이드바 활성 항목 강조.
+  2. 헤더에 Foundations/Components 탭 추가(사이드바 각 그룹 첫 섹션으로 스크롤,
+     스크롤 위치와 연동해 활성 표시) + 3층 로드맵(합성 패턴 카탈로그)에 대응하는
+     "Patterns" 탭을 비활성("예정")으로 미리 배치. "스캐폴딩 확인용" 문구 제거.
+  3. 담당자가 "Button 사이즈/컬러/아이콘처럼 하위 항목끼리는 [Button] 상위 메뉴로
+     묶여야 한다"고 지적 — 사이드바를 leaf/branch 2종 노드 트리로 재구성, Button(3개)·
+     Table(2개)을 상위 메뉴로 묶고 나머지는 그대로 단일 항목 유지. 스크롤 스파이가
+     보는 실제 앵커 목록(`TOC_LINKS`)은 그대로 두고 트리는 표시용 레이어로만 분리.
+  각 단계 tsc 클린 확인 후 커밋.
+- (2026-07-31, 18차) Table 데모 버그 3건 리포트 반영:
+  1. "그룹화 3개까지 된 것도 해줘야지" — 분리 데모(table-parts) 쪽엔 1단 그룹화
+     예시(`miniGroups`)만 있었던 것을 발견, 합본 데모의 지시일→설비→담당기사와
+     동일한 3단 재귀 그룹화 예시(`miniGroups3`)를 추가.
+  2. "체크박스가 기동하지 않아" — 원인: 분리 데모의 미니 Table 4개가 전부
+     `selectedIds`/`onSelectedIdsChange`를 안 넘기고 있었음. Table 내부
+     toggleOne/toggleAll/toggleGroup은 `if (!onSelectedIdsChange) return;`로
+     시작해서 콜백이 없으면 클릭해도 반응이 없는 게 애초에 의도된 동작이었던 것 —
+     데모마다 독립 state를 만들어 연결.
+  3. "테이블 합본이 하단에 있도록" — table-parts(분리 데모)를 위로, table-full(합본
+     데모)을 페이지 맨 아래로 순서 이동. `TOC_LINKS`/사이드바 Table 하위 메뉴 순서도
+     분리→합본으로 맞춤. 내용 변경 없음, 순서만 이동.
+  tsc 클린 확인 후 커밋.
+- (2026-07-31, 19차) "다음에 뭐 해야 됨"이라는 질문에 체크리스트/AGENTS.md/컴포넌트
+  주석을 근거로 현황 보고(3층은 담당자가 Center Modal/Side Slide Panel 자료를 줘야
+  풀리는 상태, 2층은 티어2 47개 없음/부분 남음, 그 외 "확인 필요" 11개) → 담당자가
+  "티어2부터 하자"로 방향 확정. 1차 배치로 아톰 6종(Icon Button/Close Button(X)/
+  Divider·Separator/Tooltip/Loading Spinner/Skeleton) 신규 코드화 — 전부 Figma
+  디자인이 없는("없음") 항목이라, 이미 여러 컴포넌트가 각자 인라인으로 반복해서
+  만들어 쓰던 패턴(닫기 버튼, 구분선 등)을 역으로 관찰해 공용 컴포넌트로 뽑아내거나
+  기존 스케일/시맨틱 토큰 체계를 그대로 재사용하는 "판단값" 방식으로 구현(각 파일
+  주석에 Figma 근거 없음을 명시). `icon-button.tsx`(IconButton + CloseButton 프리셋
+  같이 export), `divider.tsx`, `tooltip.tsx`(Radix 의존성 추가 없이 CSS
+  group-hover 기반 경량 구현), `loading-spinner.tsx`, `skeleton.tsx`. 데모 페이지에
+  Button 섹션 바로 아래 5개 Section 추가, `UI_컴포넌트_총망라_체크리스트.md`의
+  해당 6개 행(Close Button은 13번 섹션에 별도 행) 상태를 있음으로 갱신. tsc 클린
+  확인 후 커밋.

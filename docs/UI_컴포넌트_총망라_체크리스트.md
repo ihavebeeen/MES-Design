@@ -118,7 +118,7 @@
 |---|---|---|---|---|---|
 | Button (Primary) | 주요 액션 버튼 | 아톰 | 있음 | 1 | Figma "Button": Basic/Small/Xsmall 3사이즈 × 6컬러 × hover-press/disable |
 | Button (Secondary/Outline/Ghost) | 보조 액션 버튼 | 아톰 | 있음 | 1 | 위 매트릭스에 테두리형·연한색 버전 포함 |
-| Icon Button | 아이콘만 있는 버튼 | 아톰 | 없음 | 2 | |
+| Icon Button | 아이콘만 있는 버튼 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`icon-button.tsx`). Figma 디자인 없어서 기존 컴포넌트들이 각자 인라인으로 만들어 쓰던 아이콘 버튼 패턴(ConfirmDialog 닫기, Sidebar 접기 등)을 역으로 관찰해 공용화 — 새 디자인 아님, 기존 값 재사용(판단값) |
 | Button Group | 버튼 여러 개 묶음 | 몰큘 | 없음 | 2 | |
 | Toggle Button | 눌림 상태를 갖는 버튼 | 아톰 | 없음 | 2 | |
 | Split Button | 기본 액션 + 드롭다운 옵션 결합 버튼 | 몰큘 | 없음 | 4 | |
@@ -185,10 +185,10 @@
 | Avatar Group | 아바타 겹침 그룹 | 몰큘 | 없음 | 5 | |
 | Badge | 상태/개수 배지 | 아톰 | 있음 | 1 | 2026-07-28 클라우드MES 파일 node 13687:33504 기준 정밀실측 후 코드화 완료(`badge.tsx`, 7종). orange/yellow는 Figma 컴포넌트 이름과 실제 색상이 다름(각각 실제로는 gray/blue). 2026-07-29 담당자 확정: "원본 이름은 상관없이 색 대로 이름을 다시 매겨" — 값 변경 없이 variant 키만 실제 색 기준으로 개명(orange→grayFill, yellow→blue2, variant6→blueLight, variant7→blueOutline, blue/red/gray는 그대로). blue2가 blue와 값이 완전히 동일한 이유(둘 다 "완료" 계열 상태에 왜 다른 스타일이 필요한지 포함)는 여전히 확인 필요(19번 섹션 참고) |
 | Chip / Tag | 태그·라벨 | 아톰 | 있음 | 1 | 2026-07-28 완료. 필터 전용 태그(node 9873:83747, `filter-tag.tsx`)와 범용 3색 태그(node 9873:83675, `tag.tsx`, fill-main/gray/red) 둘 다 정밀실측해 코드화 완료. 담당자 확인: 범용 3색 태그는 "거의 안 씀", 실제로는 Badge(badge.tsx)를 훨씬 많이 사용 — 최소 구현만 해둠 |
-| Tooltip | 말풍선 설명 | 아톰 | 없음 | 2 | |
+| Tooltip | 말풍선 설명 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`tooltip.tsx`). Figma 디자인 없음 — Radix 의존성 추가 없이 CSS group-hover 기반 경량 구현(판단값), 포털/딜레이/터치 롱프레스 미지원 |
 | Progress Bar | 진행률 막대 | 아톰 | 있음 | 1 | 2026-07-28 클라우드MES 파일 node 20144:101580 기준 정밀실측 후 코드화 완료(`progress.tsx`). 트랙 Gray-40, 채움 Gray-100(담당자 확인). 같은 날 담당자 지적으로 재실측: 바-라벨 간격 자체는 2px가 맞았지만, 라벨이 44px 고정폭 박스 안에서 우측정렬되는 구조(자릿수 바뀌어도 컴포넌트 전체 폭 고정)가 처음 구현 때 빠져있던 걸 발견해 복원 |
 | Progress Circle | 진행률 원형 | 아톰 | 없음 | 4 | |
-| Skeleton | 로딩 중 placeholder | 아톰 | 없음 | 2 | |
+| Skeleton | 로딩 중 placeholder | 아톰 | 있음 | 2 | 2026-07-31 코드화(`skeleton.tsx`). Figma 디자인 없음 — text/rect/circle 3variant, `animate-pulse`(판단값) |
 | Stat / KPI Card | 숫자 지표 카드 | 몰큘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Asset/Templates의 "Dashboard Card" 확인 |
 | Timeline | 시간순 타임라인 | 오가니즘 | 없음 | 3 | 이력추적·알람 이력 |
 | Tree View | 계층형 트리 목록 | 오가니즘 | 없음 | 3 | BOM·계보 등 MES에 흔함 |
@@ -206,7 +206,7 @@
 | Drawer / Sheet | 옆에서 슬라이드로 열리는 패널 | 오가니즘 | 없음 | 2 | |
 | Popover | 특정 요소 옆에 뜨는 작은 팝업 | 몰큘 | 없음 | 2 | |
 | Confirm Dialog | 확인/취소 확인창 | 몰큘 | 있음 | 1 | 2026-07-28 완료(1형태만). 클라우드MES 파일 "modal-error"(node 11106:37629, 에러 안내 톤, 버튼 1개) 정밀실측 후 코드화(`confirm-dialog.tsx`, Radix Dialog 기반). **원래 이 항목이 참조하던 "삭제 모달 - 드롭다운/라디오버튼" 2종(Center Modal 안의 다른 변형)은 이번 실측 대상이 아니었음** — 확인/취소 2버튼 형태나 성공/정보 톤 변형이 별도로 있는지 확인 필요(19번 섹션 참고). 2026-07-29 담당자가 준 Figma "모달" 갤러리(node 18887:62605)로 확인·확장: 확인/취소 2버튼은 기존 `actions` 배열로 이미 가능했음(코드 변경 없음), `tone` prop 신규 추가로 error(기존)/warning(신규, Yellow-50)/info(신규, Primary-60) 3톤 지원, `banner` prop으로 안내 배너(아래 NoticeBanner) 통합 지원 추가. `get_metadata`/`get_design_context`가 이 노드에서 SSE 파싱 에러로 계속 실패해서 배너 세부 px는 판단값(19번 섹션 참고)이지만, "배너(담당자 호칭 도움말/툴팁)가 있을 때 배너-버튼 간격"은 담당자가 정확한 값(20px)을 직접 줘서 확정 반영함(기존엔 52px로 잘못 판단했었음). 모바일(배경 딤) 변형은 범위 밖으로 보류 |
-| Loading Spinner | 로딩 스피너 | 아톰 | 없음 | 2 | |
+| Loading Spinner | 로딩 스피너 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`loading-spinner.tsx`). Figma 디자인 없음 — lucide `LoaderCircle` + `animate-spin`(판단값) |
 | Empty State | 데이터 없음 화면 | 몰큘 | 없음 | 2 | |
 | Error State | 에러 화면 | 몰큘 | 없음 | 2 | |
 | Notification / Bell | 알림 아이콘·목록 | 오가니즘 | 있음 | 1 | 2026-07-30 코드화: `components/ui/notification-panel.tsx`(node 157:15771 "알림모달 2"/157:15833 "알림 내역 존재 X" 실측). AlarmListItem을 재사용하는 드롭다운 패널 — 헤더("전체 알림" 탭+카운트+닫기), 리스트(높이 350px 스크롤) 또는 빈 상태 문구, 필터 아이콘 액션 줄로 구성. "미확인"/"확인" 탭 추정 자리와 "모두 확인으로 표시"/"알림 설정" 텍스트는 이 패널 트리에 실제로 포함되어 있지 않아 확인 필요로 제외(컴포넌트 파일 주석 참고). 벨 아이콘 트리거 자체는 미실측 |
@@ -223,7 +223,7 @@
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Divider / Separator | 구분선 | 아톰 | 없음 | 2 | |
+| Divider / Separator | 구분선 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`divider.tsx`). Figma 디자인 없음 — 기존 구분선 색(`border-mes-border-default`) 재사용, 가로/세로 지원 |
 | Grid / Container | 레이아웃 그리드 | 레이아웃 유틸 | 없음 | 2 | |
 | Panel | 패널 영역 | 몰큘 | 없음 | 2 | |
 | Resizable Panel | 크기 조절 가능한 영역 | 오가니즘 | 없음 | 3 | 다중 창 작업에 유용 |
@@ -307,7 +307,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
 | Mask Input | 형식이 정해진 입력(자동 포맷팅) | 몰큘 | 없음 | 3 | |
-| Close Button (X) | 모달·배너 등을 닫는 X 버튼 | 아톰 | 없음 | 2 | |
+| Close Button (X) | 모달·배너 등을 닫는 X 버튼 | 아톰 | 있음 | 2 | 2026-07-31 코드화 — `icon-button.tsx`에 `IconButton` 기반 프리셋(`CloseButton`)으로 같이 구현. 기존 다이얼로그들의 인라인 닫기 버튼은 이번엔 리팩터링하지 않음(범위 밖) |
 | Copy Button | 클립보드 복사 버튼 | 아톰 | 없음 | 3 | |
 | Burger (Hamburger Menu) | 햄버거 메뉴 아이콘 버튼 | 아톰 | 없음 | 3 | |
 | Loading Overlay | 특정 영역을 덮는 로딩 오버레이 | 몰큘 | 없음 | 2 | |
