@@ -220,7 +220,7 @@ function Sidebar({
                     className={cn(
                       "group flex h-[42px] w-full shrink-0 items-center justify-between rounded px-[10px]",
                       isActive
-                        ? "bg-mes-primary-60"
+                        ? "bg-mes-bg-brand"
                         : isExpanded
                           ? "bg-mes-gray-120"
                           : "hover:bg-mes-gray-120"
@@ -272,9 +272,9 @@ function Sidebar({
                             type="button"
                             onClick={() => onSubItemClick?.(item.key, sub.key)}
                             className={cn(
-                              "flex w-full items-center gap-3 rounded-lg px-3 py-1.5 text-left text-[14px] leading-[1.5]",
+                              "flex w-full items-center gap-3 rounded-mes-panel px-3 py-1.5 text-left text-[14px] leading-[1.5]",
                               isActive
-                                ? "bg-mes-primary-60 font-medium text-white"
+                                ? "bg-mes-bg-brand font-medium text-white"
                                 : "text-mes-gray-60 hover:bg-mes-gray-120"
                             )}
                           >

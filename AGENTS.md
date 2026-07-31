@@ -351,7 +351,7 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   세 섹션 다 Foundation `<section>` 안에 id 부여, TOC_LINKS에 간격/Radius/그림자 3개
   추가. eslint+tsc 클린 확인 후 커밋.
 
-## 현재 진행 상태 (최종 갱신: 2026-07-30)
+## 현재 진행 상태 (최종 갱신: 2026-07-31)
 
 - (2026-07-30) 담당자가 Center Modal을 코드에서 빼라고 지시 — Center Modal과 Side Slide
   Panel이 위계상 비슷한 레벨이라 나중에 두 개를 한꺼번에 자료로 보내주겠다고 함. 또한
@@ -599,3 +599,34 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   `max-w-[960px]`로 맞추고 `<Table>`만 내부 `overflow-x-auto`로 감싸서 해결.
   `docs/Table_수정_대기목록.md` 17·18번 참고.
 - 나머지 몰큘/오가니즘(Center Modal/Page Top Tab Item/Sidebar)은 아직 코드 없음
+- (2026-07-31, 14차) 담당자가 당근 Seed Design System(seed-design.io) Foundations
+  전체 15개 페이지를 읽고 구조를 파악해달라고 요청 → 공통 골격(제목+요약→개요→섹션별
+  설명+다이어그램→토큰 레퍼런스 표→관련 문서/이전·다음 문서 네비→우측 On this page
+  목차)과, 가장 중요한 인사이트인 "스케일(raw) vs 시맨틱(용도) 토큰 2계층 구조"를 정리해
+  보고. 담당자가 "그러면 그렇게 다 바꿔봐"라고 지시해 실제로 우리 시스템에 시맨틱 토큰
+  레이어를 도입함:
+  1. `docs/디자인_토큰_사용_규칙.md`의 기존 "역할별 표"(1~5절, 색상/간격/radius/그림자)를
+     근거로 시맨틱 토큰 스키마 설계 — 텍스트 7종(`text-default/secondary/placeholder/
+     disabled/inverse/brand/danger`), 배경·테두리 15종(`border-default/strong/
+     warning-subtle`, `bg-subtle/subtler/disabled/brand/brand-hover/brand-subtle/
+     brand-subtle-strong/danger/warning-subtle/info/strong`, `icon-warning`),
+     radius 6종(`radius-control-xs/sm/control/panel/modal-sm/modal-lg`), spacing
+     5종(`spacing-tight/default/card/dialog-x/dialog-header-end`), 그림자 4종
+     (`shadow-panel/modal-sm/modal-lg`, `drop-shadow-toast`).
+  2. `globals.css`에 `:root`(정의, 전부 스케일 토큰 `var()` 간접 참조) +
+     `@theme inline`(Tailwind 유틸리티 노출) 두 레이어로 추가 — 예:
+     `text-mes-text-default`, `bg-mes-bg-brand`, `rounded-mes-panel`,
+     `p-mes-dialog-x`, `shadow-mes-modal-sm`, `drop-shadow-mes-toast`.
+  3. 18개 컴포넌트 전부(Button/Input/Select/Combobox/Badge/Tag/FilterTag/Filter/
+     Checkbox/Radio/ConfirmDialog/RadioChoiceDialog/NoticeBanner/NotificationPanel/
+     Toast/Table/Sidebar/PageTopTabItem/AlarmListItem)를 raw 스케일 클래스(예:
+     `bg-mes-primary-60`, `rounded-[4px]`, `shadow-[0_2px_8px_rgba(...)]`)에서
+     해당하는 시맨틱 토큰 클래스로 전환. 문서상 "예외값"(`#696f83`, `#e8f0fe`,
+     `#156be9` 등 팔레트에 억지로 편입 안 하기로 확정된 값)과, 컴포넌트마다 disabled
+     배경/테두리 범위가 30~40으로 갈리는 것처럼 시맨틱 토큰과 값이 정확히 일치하지
+     않는 애매한 지점은 의도적으로 raw 값 그대로 남김(성급한 승격 방지).
+  4. 데모 페이지(`page.tsx`) Foundation 섹션 맨 아래에 "시맨틱 토큰" 서브섹션 신설 —
+     카테고리별(텍스트/배경·테두리/Radius·Spacing/그림자)로 `토큰명 → 가리키는 스케일
+     값 · 역할` 표 렌더링, TOC_LINKS에도 추가.
+  5. `docs/디자인_토큰_사용_규칙.md` 서두에 2계층 구조 설명 추가.
+  eslint+tsc 클린 확인 후 커밋 예정.

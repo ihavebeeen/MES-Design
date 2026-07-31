@@ -85,6 +85,7 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "spacing", label: "간격" },
   { id: "radius", label: "Radius" },
   { id: "shadow", label: "그림자" },
+  { id: "semantic-tokens", label: "시맨틱 토큰" },
   { id: "button-size", label: "Button 사이즈" },
   { id: "button-icon", label: "Button 아이콘" },
   { id: "button-color", label: "Button 컬러" },
@@ -263,6 +264,72 @@ const SHADOW_SCALE = [
   { label: "큰/집중형 모달", value: "0 0 24px rgba(0,0,0,.2)", usage: "RadioChoiceDialog" },
   { label: "토스트", value: "0 0 12px rgba(0,0,0,.2)", usage: "Toast" },
 ] as const;
+
+/**
+ * 2026-07-31 신규 — 스케일 토큰(위 팔레트/스케일)을 가리키기만 하는 "용도" 이름.
+ * `globals.css`의 `--mes-*` 시맨틱 변수, `component-library/src/components/ui/*`의
+ * 실제 적용과 1:1로 동일 — 값이 바뀌면 세 곳(여기·globals.css·컴포넌트) 다 같이
+ * 갱신해야 한다. 카테고리별로 묶어서 보여준다.
+ */
+const SEMANTIC_TOKENS: { group: string; tokens: { name: string; scale: string; usage: string }[] }[] = [
+  {
+    group: "텍스트",
+    tokens: [
+      { name: "text-default", scale: "Gray-130", usage: "기본 텍스트(제목/본문 강조)" },
+      { name: "text-secondary", scale: "Gray-90", usage: "보조 텍스트(설명/부제)" },
+      { name: "text-placeholder", scale: "Gray-60", usage: "플레이스홀더/힌트" },
+      { name: "text-disabled", scale: "Gray-70", usage: "비활성 텍스트" },
+      { name: "text-inverse", scale: "white", usage: "채워진 배경 위 텍스트" },
+      { name: "text-brand", scale: "Primary-60", usage: "브랜드 강조 텍스트/링크" },
+      { name: "text-danger", scale: "Danger-60", usage: "위험/에러 텍스트" },
+    ],
+  },
+  {
+    group: "배경·테두리",
+    tokens: [
+      { name: "border-default", scale: "Gray-30", usage: "기본 테두리/구분선" },
+      { name: "border-strong", scale: "Gray-130", usage: "focus·open 강조 테두리" },
+      { name: "border-warning-subtle", scale: "Yellow-20", usage: "경고 배너 테두리" },
+      { name: "bg-subtle", scale: "Gray-20", usage: "hover 옅은 배경, 카드/배너 배경" },
+      { name: "bg-subtler", scale: "Gray-10", usage: "더 옅은 hover 배경" },
+      { name: "bg-disabled", scale: "Gray-30", usage: "비활성 배경" },
+      { name: "bg-brand", scale: "Primary-60", usage: "브랜드 기본 배경" },
+      { name: "bg-brand-hover", scale: "Primary-70", usage: "브랜드 hover" },
+      { name: "bg-brand-subtle", scale: "Primary-10", usage: "브랜드 옅은 배경" },
+      { name: "bg-brand-subtle-strong", scale: "Primary-20", usage: "브랜드 옅은 배경(진한 쪽)" },
+      { name: "bg-danger", scale: "Danger-60", usage: "위험/에러 강조 배경" },
+      { name: "bg-warning-subtle", scale: "Yellow-10", usage: "경고 배너 배경" },
+      { name: "icon-warning", scale: "Yellow-50", usage: "경고 아이콘" },
+      { name: "bg-info", scale: "Primary-60", usage: "정보 강조(브랜드색 재사용)" },
+      { name: "bg-strong", scale: "Gray-130", usage: "검정(고대비) 배경" },
+    ],
+  },
+  {
+    group: "Radius / Spacing",
+    tokens: [
+      { name: "radius-control-xs", scale: "2px", usage: "Button xsmall, Badge, Tag" },
+      { name: "radius-control-sm", scale: "3px", usage: "Input small, Checkbox, FilterTag" },
+      { name: "radius-control", scale: "4px", usage: "Button basic·small, Input default" },
+      { name: "radius-panel", scale: "8px", usage: "드롭다운·플라이아웃 패널" },
+      { name: "radius-modal-sm", scale: "12px", usage: "작은 확인 모달(ConfirmDialog)" },
+      { name: "radius-modal-lg", scale: "16px", usage: "큰 모달(RadioChoiceDialog)" },
+      { name: "spacing-tight", scale: "6px", usage: "아이콘-텍스트처럼 붙어있는 gap" },
+      { name: "spacing-default", scale: "10px", usage: "표준 요소간 gap(가장 흔함)" },
+      { name: "spacing-card", scale: "16px", usage: "카드/토스트류 padding" },
+      { name: "spacing-dialog-x", scale: "20px", usage: "다이얼로그/패널 좌우 padding, 본문↔푸터 간격" },
+      { name: "spacing-dialog-header-end", scale: "14px", usage: "다이얼로그 헤더 우측 padding" },
+    ],
+  },
+  {
+    group: "그림자",
+    tokens: [
+      { name: "shadow-panel", scale: "0 2px 8px .12", usage: "드롭다운/플라이아웃 패널" },
+      { name: "shadow-modal-sm", scale: "0 4px 16px .2", usage: "작은 확인 모달" },
+      { name: "shadow-modal-lg", scale: "0 0 24px .2", usage: "큰/집중형 모달" },
+      { name: "drop-shadow-toast", scale: "0 0 12px .2", usage: "Toast" },
+    ],
+  },
+];
 
 /**
  * 2026-07-30 담당자가 준 "System Color" 레퍼런스 프레임(node 20170:67850)으로 전 단계
@@ -840,6 +907,31 @@ export default function Home() {
               </div>
               <span className="font-mono text-[10px] text-mes-gray-60">{s.value}</span>
               <span className="text-[11px] text-mes-gray-70">{s.usage}</span>
+            </div>
+          ))}
+        </div>
+
+        <div id="semantic-tokens" className="scroll-mt-6">
+          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+            시맨틱 토큰
+          </h2>
+          <p className="mt-1 text-[12px] text-mes-gray-70">
+            위 스케일 값을 가리키기만 하는 용도 이름. 스케일 값이 바뀌면 자동으로 따라 바뀐다.
+          </p>
+        </div>
+        <div className="flex flex-col gap-5">
+          {SEMANTIC_TOKENS.map((g) => (
+            <div key={g.group} className="flex flex-col gap-1.5">
+              <span className="text-[12px] font-bold text-mes-gray-100">{g.group}</span>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                {g.tokens.map((t) => (
+                  <div key={t.name} className="flex items-baseline gap-2 text-[11px]">
+                    <span className="shrink-0 font-mono text-mes-gray-130">mes-{t.name}</span>
+                    <span className="shrink-0 font-mono text-mes-gray-60">→ {t.scale}</span>
+                    <span className="truncate text-mes-gray-70">{t.usage}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>

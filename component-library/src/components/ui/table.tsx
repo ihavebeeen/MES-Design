@@ -164,7 +164,7 @@ import { IconArrow } from "../icons/icon-arrow";
  * 담당자가 실제 화면 스크린샷 기준으로 정확한 값을 줌: 텍스트 Gray-80, 배경 Gray-10.
  * `DataRow`를 다음과 같이 수정: 행 배경을 `row.disabled ? "bg-mes-gray-10" : (선택 시
  * Primary-20, 아니면 흰색)` 순서로 결정(disabled가 선택 상태보다 우선), 셀 텍스트 색을
- * `row.disabled ? "text-mes-gray-80" : "text-mes-gray-130"`으로 분기. 클릭/체크 상호작용을
+ * `row.disabled ? "text-mes-gray-80" : "text-mes-text-default"`으로 분기. 클릭/체크 상호작용을
  * 막는 `pointer-events-none`은 유지하되 `opacity-50`은 제거(더 이상 임시값이 아니므로
  * 불투명도로 뭉뚱그릴 필요 없음). "분할"/"분할-disable" 변형은 담당자도 정확히 뭘
  * 가리키는지 특정 못 해서 여전히 보류.
@@ -317,11 +317,11 @@ function DataRow<T>({
   onToggle: (id: string) => void;
   masterToggleAreaWidth: number;
 }) {
-  const dividerColor = isSelected || row.isNew ? "border-mes-gray-30" : "border-mes-gray-40";
+  const dividerColor = isSelected || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
   return (
     <div
       className={cn(
-        "flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 px-[20px]",
+        "flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default px-[20px]",
         // 8차 후속: 담당자가 "비활성화는 텍스트 Gray-80, 배경 Gray-10"이라고 정확한 값을
         // 줘서 기존 opacity-50 판단값을 교체함. 배경은 선택 여부보다 disabled가 우선.
         row.disabled ? "bg-mes-gray-10" : isSelected ? "bg-mes-primary-20" : "bg-white",
@@ -362,7 +362,7 @@ function DataRow<T>({
           <span
             className={cn(
               "w-full truncate text-[14px] leading-[1.5]",
-              row.disabled ? "text-mes-gray-80" : "text-mes-gray-130"
+              row.disabled ? "text-mes-gray-80" : "text-mes-text-default"
             )}
           >
             {col.render ? col.render(row.data) : (row.data as Record<string, React.ReactNode>)[col.key]}
@@ -425,12 +425,12 @@ function GroupHeaderRow<T>({
                   <button
                     type="button"
                     onClick={onToggleCollapse}
-                    className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-mes-gray-0"
+                    className="flex size-[22px] shrink-0 items-center justify-center rounded-mes-control-sm border border-mes-gray-50 bg-mes-gray-0"
                   >
                     <IconArrow
                       size={12}
                       className={cn(
-                        "text-mes-gray-130 transition-transform",
+                        "text-mes-text-default transition-transform",
                         isCollapsed ? "-rotate-90" : "rotate-90"
                       )}
                     />
@@ -455,7 +455,7 @@ function GroupHeaderRow<T>({
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") onToggleCollapse();
               }}
-              className="cursor-pointer whitespace-nowrap text-[14px] font-medium leading-[1.5] text-mes-gray-130"
+              className="cursor-pointer whitespace-nowrap text-[14px] font-medium leading-[1.5] text-mes-text-default"
               style={{ paddingLeft: depth * 12 }}
             >
               {group.label}
@@ -464,7 +464,7 @@ function GroupHeaderRow<T>({
         ) : (
           <Cell key={col.key} column={col}>
             {group.summary?.[col.key] !== undefined && (
-              <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.5] text-mes-gray-130">
+              <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.5] text-mes-text-default">
                 {group.summary[col.key]}
               </span>
             )}
@@ -486,7 +486,7 @@ function TotalsRow<T>({
 }) {
   if (!totals) return null;
   return (
-    <div className="flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 bg-white px-[20px]">
+    <div className="flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default bg-white px-[20px]">
       {/* 7차: 여기서 `pr-[12px]` + 명시적 `width:24`를 같이 쓰고 있었는데, Tailwind
           기본 box-sizing:border-box 때문에 실제로는 24px(패딩 포함)만 차지해서 다른
           행 종류(체크박스 24+12=36px)와 이미 안 맞고 있던 잠재 버그였음 — 발견 즉시
@@ -500,14 +500,14 @@ function TotalsRow<T>({
         i === 0 ? (
           // 6차: 그룹 라벨과 같은 이유로 "총계" 라벨도 컬럼 align과 무관하게 좌측 고정
           <Cell key={col.key} column={{ ...col, align: "left" }} className="overflow-visible">
-            <span className="whitespace-nowrap text-[14px] font-semibold leading-[1.5] text-mes-gray-130">
+            <span className="whitespace-nowrap text-[14px] font-semibold leading-[1.5] text-mes-text-default">
               총계
             </span>
           </Cell>
         ) : (
           <Cell key={col.key} column={col}>
             {totals[col.key] !== undefined && (
-              <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.5] text-mes-gray-130">
+              <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.5] text-mes-text-default">
                 {totals[col.key]}
               </span>
             )}
@@ -650,10 +650,10 @@ function Table<T>({
   const masterToggleAreaWidth = groupLevelCount * MASTER_TOGGLE_SLOT_WIDTH;
 
   return (
-    <div className={cn("w-full overflow-x-auto rounded-[4px] border border-mes-gray-30", className)}>
+    <div className={cn("w-full overflow-x-auto rounded-mes-control border border-mes-border-default", className)}>
       <div className="min-w-max">
         {/* 헤더 */}
-        <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-gray-30 bg-mes-gray-10 px-[20px]">
+        <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default bg-mes-gray-10 px-[20px]">
           {/* 5차 정정: 체크박스는 항상 최좌측 고정 — 마스터 토글 버튼은 체크박스보다
               오른쪽에 온다(예전엔 반대였음). 7차: 폭을 CHECKBOX_COLUMN_WIDTH로 통일
               (신규 점 배치 때문에 40px로 늘어남 — 다른 행 종류와 동일해야 함). */}
@@ -683,12 +683,12 @@ function Table<T>({
                     type="button"
                     onClick={() => toggleAllAtDepth(depth)}
                     title={`${depth + 1}단 전체 ${anyExpanded ? "접기" : "펼치기"}`}
-                    className="flex size-[22px] shrink-0 items-center justify-center rounded-[3px] border border-mes-gray-50 bg-mes-gray-0"
+                    className="flex size-[22px] shrink-0 items-center justify-center rounded-mes-control-sm border border-mes-gray-50 bg-mes-gray-0"
                   >
                     <IconArrow
                       size={12}
                       className={cn(
-                        "text-mes-gray-130 transition-transform",
+                        "text-mes-text-default transition-transform",
                         anyExpanded ? "rotate-90" : "-rotate-90"
                       )}
                     />
@@ -708,7 +708,7 @@ function Table<T>({
               column={{ ...col, align: "center" }}
               className={cn(i < columns.length - 1 && "border-r border-dashed border-mes-gray-40")}
             >
-              <span className="w-full truncate text-[13px] font-semibold leading-[1.5] text-mes-gray-130">
+              <span className="w-full truncate text-[13px] font-semibold leading-[1.5] text-mes-text-default">
                 {col.label}
               </span>
             </Cell>

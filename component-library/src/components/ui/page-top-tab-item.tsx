@@ -84,7 +84,7 @@ function PageTopTabItem({
         type="button"
         onClick={onClose}
         aria-label="탭 닫기"
-        className="flex size-7 shrink-0 items-center justify-center rounded-[3px] text-mes-gray-60"
+        className="flex size-7 shrink-0 items-center justify-center rounded-mes-control-sm text-mes-gray-60"
       >
         <IconX size={16} />
       </button>

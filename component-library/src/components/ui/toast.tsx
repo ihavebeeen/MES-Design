@@ -74,7 +74,7 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       <div
         ref={ref}
         className={cn(
-          "inline-flex h-[46px] items-center justify-center gap-2 rounded-full border p-4 drop-shadow-[0_0_12px_rgba(0,0,0,0.2)]",
+          "inline-flex h-[46px] items-center justify-center gap-2 rounded-full border p-4 drop-shadow-mes-toast",
           styles.bg,
           styles.border,
           className
@@ -82,15 +82,15 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       >
         <div className="flex shrink-0 items-center gap-2">
           {variant === "red" ? (
-            <IconExclamationCircle size={22} className="shrink-0 text-white" />
+            <IconExclamationCircle size={22} className="shrink-0 text-mes-text-inverse" />
           ) : (
-            <CircleCheck className="size-[22px] shrink-0 text-white" />
+            <CircleCheck className="size-[22px] shrink-0 text-mes-text-inverse" />
           )}
-          <p className="shrink-0 whitespace-nowrap text-[15px] font-semibold leading-[1.5] text-white">
+          <p className="shrink-0 whitespace-nowrap text-[15px] font-semibold leading-[1.5] text-mes-text-inverse">
             {message}
           </p>
         </div>
-        <button type="button" onClick={onClose} aria-label="닫기" className="shrink-0 text-white">
+        <button type="button" onClick={onClose} aria-label="닫기" className="shrink-0 text-mes-text-inverse">
           <IconX size={closeIconSize} />
         </button>
       </div>

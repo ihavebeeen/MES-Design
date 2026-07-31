@@ -115,30 +115,30 @@ function RadioChoiceDialog({
         <DialogPrimitive.Content
           className={cn(
             "fixed left-1/2 top-1/2 z-50 w-[480px] -translate-x-1/2 -translate-y-1/2",
-            "flex flex-col overflow-hidden rounded-[16px] bg-white shadow-[0px_0px_24px_0px_rgba(0,0,0,0.2)]"
+            "flex flex-col overflow-hidden rounded-mes-modal-lg bg-white shadow-mes-modal-lg"
           )}
         >
-          <div className="flex h-[52px] w-full shrink-0 items-center justify-between border-b border-mes-gray-30 py-[10px] pl-5 pr-[14px]">
-            <DialogPrimitive.Title className="flex-1 text-[18px] font-bold leading-[1.5] text-mes-gray-130">
+          <div className="flex h-[52px] w-full shrink-0 items-center justify-between border-b border-mes-border-default py-[10px] pl-mes-dialog-x pr-mes-dialog-header-end">
+            <DialogPrimitive.Title className="flex-1 text-[18px] font-bold leading-[1.5] text-mes-text-default">
               {title}
             </DialogPrimitive.Title>
             <DialogPrimitive.Close asChild>
               <button
                 type="button"
                 aria-label="닫기"
-                className="flex size-8 shrink-0 items-center justify-center text-mes-gray-130"
+                className="flex size-8 shrink-0 items-center justify-center text-mes-text-default"
               >
                 <IconX size={20} />
               </button>
             </DialogPrimitive.Close>
           </div>
 
-          <div className="flex w-full shrink-0 flex-col items-center gap-5 px-5 pt-5">
-            <div className="flex w-full flex-col gap-5">
-              <p className="text-[16px] font-medium leading-[1.5] text-mes-gray-130">
+          <div className="flex w-full shrink-0 flex-col items-center gap-mes-dialog-x px-mes-dialog-x pt-mes-dialog-x">
+            <div className="flex w-full flex-col gap-mes-dialog-x">
+              <p className="text-[16px] font-medium leading-[1.5] text-mes-text-default">
                 {question}
               </p>
-              <div className="flex w-full flex-col gap-5">
+              <div className="flex w-full flex-col gap-mes-dialog-x">
                 {options.map((option, index) => (
                   <label
                     key={index}
@@ -150,10 +150,10 @@ function RadioChoiceDialog({
                       onChange={() => handleSelect(index)}
                     />
                     <span className="flex flex-col gap-1.5">
-                      <span className="text-[16px] font-semibold leading-[1.5] text-mes-gray-130">
+                      <span className="text-[16px] font-semibold leading-[1.5] text-mes-text-default">
                         {option.title}
                       </span>
-                      <span className="text-[14px] font-normal leading-[1.5] text-mes-gray-90">
+                      <span className="text-[14px] font-normal leading-[1.5] text-mes-text-secondary">
                         {option.description}
                       </span>
                     </span>
@@ -163,9 +163,9 @@ function RadioChoiceDialog({
             </div>
 
             {warning && (
-              <div className="flex w-full items-center justify-center gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-4">
+              <div className="flex w-full items-center justify-center gap-2 rounded-mes-control bg-mes-bg-subtle px-[30px] py-4">
                 <IconExclamationCircle size={16} className="shrink-0 text-mes-gray-60" />
-                <p className="text-center text-[14px] font-normal leading-[1.5] text-mes-gray-130">
+                <p className="text-center text-[14px] font-normal leading-[1.5] text-mes-text-default">
                   {warning}
                 </p>
               </div>

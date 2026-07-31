@@ -45,13 +45,13 @@ const FilterTag = React.forwardRef<HTMLDivElement, FilterTagProps>(
     <div
       ref={ref}
       className={cn(
-        "inline-flex h-[22px] items-center gap-[3px] rounded-[3px] border border-mes-primary-30 bg-mes-primary-20 py-px pl-2 pr-[3px] text-[13px] font-medium text-mes-primary-60",
+        "inline-flex h-[22px] items-center gap-[3px] rounded-mes-control-sm border border-mes-primary-30 bg-mes-bg-brand-subtle-strong py-px pl-2 pr-[3px] text-[13px] font-medium text-mes-text-brand",
         className
       )}
     >
       <span className="inline-flex items-center gap-[3px] whitespace-nowrap">
         <span>{category}</span>
-        <span className="inline-flex h-[14px] min-w-[14px] items-center justify-center rounded-full bg-mes-primary-60 px-1 text-[12px] font-medium text-white">
+        <span className="inline-flex h-[14px] min-w-[14px] items-center justify-center rounded-full bg-mes-bg-brand px-1 text-[12px] font-medium text-mes-text-inverse">
           {count}
         </span>
       </span>
@@ -59,7 +59,7 @@ const FilterTag = React.forwardRef<HTMLDivElement, FilterTagProps>(
         type="button"
         onClick={onRemove}
         aria-label="필터 제거"
-        className="inline-flex shrink-0 items-center justify-center p-[5px] text-mes-gray-130"
+        className="inline-flex shrink-0 items-center justify-center p-[5px] text-mes-text-default"
       >
         <IconX size={12} />
       </button>

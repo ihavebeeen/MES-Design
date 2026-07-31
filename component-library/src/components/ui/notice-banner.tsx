@@ -45,13 +45,13 @@ const NoticeBanner = React.forwardRef<HTMLDivElement, NoticeBannerProps>(
     <div
       ref={ref}
       className={cn(
-        "flex w-full flex-col gap-1 rounded-lg border border-mes-yellow-20 bg-mes-yellow-10 p-3",
+        "flex w-full flex-col gap-1 rounded-mes-panel border border-mes-border-warning-subtle bg-mes-bg-warning-subtle p-3",
         className
       )}
       {...props}
     >
       <div className="flex items-start gap-1.5">
-        <Lightbulb size={16} className="mt-0.5 shrink-0 text-mes-yellow-50" />
+        <Lightbulb size={16} className="mt-0.5 shrink-0 text-mes-icon-warning" />
         <p className="text-[13px] leading-[1.5] text-mes-gray-110">{message}</p>
       </div>
       {linkLabel && (
@@ -60,7 +60,7 @@ const NoticeBanner = React.forwardRef<HTMLDivElement, NoticeBannerProps>(
             <a
               href={href}
               onClick={onLinkClick}
-              className="text-[13px] font-semibold text-mes-primary-60 underline-offset-2 hover:underline"
+              className="text-[13px] font-semibold text-mes-text-brand underline-offset-2 hover:underline"
             >
               {linkLabel} →
             </a>
@@ -68,7 +68,7 @@ const NoticeBanner = React.forwardRef<HTMLDivElement, NoticeBannerProps>(
             <button
               type="button"
               onClick={onLinkClick}
-              className="text-[13px] font-semibold text-mes-primary-60 underline-offset-2 hover:underline"
+              className="text-[13px] font-semibold text-mes-text-brand underline-offset-2 hover:underline"
             >
               {linkLabel} →
             </button>

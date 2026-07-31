@@ -36,17 +36,17 @@ import { cn } from "@/lib/utils";
  */
 
 const badgeVariants = cva(
-  "inline-flex h-[22px] w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-[2px] font-semibold text-[12px] leading-[1.5]",
+  "inline-flex h-[22px] w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-mes-control-xs font-semibold text-[12px] leading-[1.5]",
   {
     variants: {
       variant: {
-        blue: "bg-mes-primary-60 px-2 py-[3px] text-white",
-        red: "bg-mes-danger-60 px-2 py-[3px] text-white",
+        blue: "bg-mes-bg-brand px-2 py-[3px] text-mes-text-inverse",
+        red: "bg-mes-bg-danger px-2 py-[3px] text-mes-text-inverse",
         grayFill: "bg-mes-gray-40 px-2 py-[3px] text-mes-gray-110",
-        blue2: "bg-mes-primary-60 px-2 py-[3px] text-white",
-        gray: "bg-transparent px-2 py-[3px] text-mes-gray-90",
-        blueLight: "bg-mes-primary-20 px-2 py-[3px] text-mes-primary-60",
-        blueOutline: "border border-mes-primary-60 bg-white px-[9px] py-px text-mes-primary-60",
+        blue2: "bg-mes-bg-brand px-2 py-[3px] text-mes-text-inverse",
+        gray: "bg-transparent px-2 py-[3px] text-mes-text-secondary",
+        blueLight: "bg-mes-bg-brand-subtle-strong px-2 py-[3px] text-mes-text-brand",
+        blueOutline: "border border-mes-primary-60 bg-white px-[9px] py-px text-mes-text-brand",
       },
     },
     defaultVariants: {

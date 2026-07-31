@@ -57,7 +57,7 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       <span
         aria-hidden
         className={cn(
-          "pointer-events-none absolute inset-[5px] scale-0 rounded-full bg-mes-primary-60 transition-transform",
+          "pointer-events-none absolute inset-[5px] scale-0 rounded-full bg-mes-bg-brand transition-transform",
           "peer-checked:scale-100",
           "peer-disabled:peer-checked:bg-mes-gray-50"
         )}

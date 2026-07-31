@@ -80,9 +80,9 @@ export interface ConfirmDialogAction {
 export type ConfirmDialogTone = "error" | "warning" | "info";
 
 const TONE_ICON_COLOR: Record<ConfirmDialogTone, string> = {
-  error: "text-mes-danger-60",
-  warning: "text-mes-yellow-50",
-  info: "text-mes-primary-60",
+  error: "text-mes-text-danger",
+  warning: "text-mes-icon-warning",
+  info: "text-mes-text-brand",
 };
 
 export interface ConfirmDialogProps {
@@ -115,18 +115,18 @@ function ConfirmDialog({
         <DialogPrimitive.Content
           className={cn(
             "fixed left-1/2 top-1/2 z-50 min-w-[400px] max-w-[700px] -translate-x-1/2 -translate-y-1/2",
-            "flex flex-col overflow-hidden rounded-[12px] bg-white shadow-[0_4px_16px_rgba(0,0,0,0.2)]"
+            "flex flex-col overflow-hidden rounded-mes-modal-sm bg-white shadow-mes-modal-sm"
           )}
         >
-          <div className="flex h-[52px] w-full shrink-0 items-center justify-between border-b border-mes-gray-30 py-[10px] pl-5 pr-[14px]">
-            <DialogPrimitive.Title className="flex-1 text-[18px] font-bold leading-[1.5] text-mes-gray-130">
+          <div className="flex h-[52px] w-full shrink-0 items-center justify-between border-b border-mes-border-default py-[10px] pl-mes-dialog-x pr-mes-dialog-header-end">
+            <DialogPrimitive.Title className="flex-1 text-[18px] font-bold leading-[1.5] text-mes-text-default">
               {title}
             </DialogPrimitive.Title>
             <DialogPrimitive.Close asChild>
               <button
                 type="button"
                 aria-label="닫기"
-                className="flex size-8 shrink-0 items-center justify-center text-mes-gray-130"
+                className="flex size-8 shrink-0 items-center justify-center text-mes-text-default"
               >
                 <IconX size={20} />
               </button>
@@ -135,17 +135,17 @@ function ConfirmDialog({
 
           {/* 2026-07-29 담당자 확인: 배너가 없을 때도 본문-버튼 간격은 20px여야 함(기존
               32+20=52px는 너무 넓어 보인다는 지적) — 배너 케이스와 동일한 방식으로,
-              본문 쪽엔 하단 padding을 주지 않고 푸터 자체의 pt(p-5=20px)만으로 맞춤.
-              배너가 있을 땐 본문→배너 간격 20px(pb-5)은 그대로 유지. */}
+              본문 쪽엔 하단 padding을 주지 않고 푸터 자체의 pt(p-mes-dialog-x=20px)만으로 맞춤.
+              배너가 있을 땐 본문→배너 간격 20px(pb-mes-dialog-x)은 그대로 유지. */}
           <div
             className={cn(
-              "flex shrink-0 items-center gap-5 px-8 pt-8",
-              banner ? "pb-5" : "pb-0"
+              "flex shrink-0 items-center gap-mes-dialog-x px-8 pt-8",
+              banner ? "pb-mes-dialog-x" : "pb-0"
             )}
           >
             <IconExclamationCircle size={44} className={cn("shrink-0", TONE_ICON_COLOR[tone])} />
             <div className="flex flex-col gap-1">
-              <p className="text-[16px] font-semibold leading-[1.5] text-mes-gray-130">
+              <p className="text-[16px] font-semibold leading-[1.5] text-mes-text-default">
                 {heading}
               </p>
               {description && (
@@ -165,7 +165,7 @@ function ConfirmDialog({
             </div>
           )}
 
-          <div className="flex w-full shrink-0 items-center gap-2 p-5">
+          <div className="flex w-full shrink-0 items-center gap-2 p-mes-dialog-x">
             {actions.map((action, i) => (
               <Button
                 key={i}

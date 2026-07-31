@@ -48,15 +48,15 @@ import { cn } from "@/lib/utils";
 export type CheckboxColor = "main" | "gray" | "black";
 
 const checkedStyles: Record<CheckboxColor, string> = {
-  main: "peer-checked:border-mes-primary-60 peer-checked:bg-mes-primary-60",
+  main: "peer-checked:border-mes-primary-60 peer-checked:bg-mes-bg-brand",
   gray: "peer-checked:border-mes-gray-50 peer-checked:bg-mes-gray-50",
-  black: "peer-checked:border-mes-gray-130 peer-checked:bg-mes-gray-130",
+  black: "peer-checked:border-mes-border-strong peer-checked:bg-mes-bg-strong",
 };
 
 const indeterminateStyles: Record<CheckboxColor, string> = {
-  main: "peer-indeterminate:border-mes-primary-60 peer-indeterminate:bg-mes-primary-60",
+  main: "peer-indeterminate:border-mes-primary-60 peer-indeterminate:bg-mes-bg-brand",
   gray: "peer-indeterminate:border-mes-gray-50 peer-indeterminate:bg-mes-gray-50",
-  black: "peer-indeterminate:border-mes-gray-130 peer-indeterminate:bg-mes-gray-130",
+  black: "peer-indeterminate:border-mes-border-strong peer-indeterminate:bg-mes-bg-strong",
 };
 
 export interface CheckboxProps
@@ -87,10 +87,10 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute inset-px rounded-[3px] border border-mes-gray-40 bg-white transition-colors",
+            "pointer-events-none absolute inset-px rounded-mes-control-sm border border-mes-gray-40 bg-white transition-colors",
             checkedStyles[color],
             indeterminateStyles[color],
-            "peer-disabled:border-mes-gray-30 peer-disabled:bg-mes-gray-30"
+            "peer-disabled:border-mes-gray-30 peer-disabled:bg-mes-bg-disabled"
           )}
         />
         {/* 체크마크(완전 선택됐을 때만 보임) */}

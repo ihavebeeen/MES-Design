@@ -88,14 +88,14 @@ function AlarmListItem({
       type="button"
       onClick={onClick}
       className={cn(
-        "flex w-full max-w-[400px] items-center gap-4 border-b border-mes-gray-30 p-2 text-left transition-colors",
+        "flex w-full max-w-[400px] items-center gap-4 border-b border-mes-border-default p-2 text-left transition-colors",
         read ? "bg-white hover:bg-mes-gray-10" : "bg-mes-gray-10 hover:bg-mes-gray-20",
         className
       )}
     >
       {read && (
         <span
-          className={cn("h-[42px] w-1 shrink-0 rounded-[2px]", ALARM_TONE_BAR[tone])}
+          className={cn("h-[42px] w-1 shrink-0 rounded-mes-control-xs", ALARM_TONE_BAR[tone])}
           aria-hidden
         />
       )}
@@ -104,7 +104,7 @@ function AlarmListItem({
           <span
             className={cn(
               "text-[14px] font-semibold",
-              read ? "text-mes-gray-130" : "text-mes-gray-60"
+              read ? "text-mes-text-default" : "text-mes-gray-60"
             )}
           >
             {title}
@@ -116,13 +116,13 @@ function AlarmListItem({
         <span
           className={cn(
             "flex items-center text-[13px]",
-            read ? "text-mes-gray-130" : "text-mes-gray-60"
+            read ? "text-mes-text-default" : "text-mes-gray-60"
           )}
         >
           {description}
         </span>
         {secondaryDescription && (
-          <span className={cn("text-[13px]", read ? "text-mes-gray-130" : "text-mes-gray-60")}>
+          <span className={cn("text-[13px]", read ? "text-mes-text-default" : "text-mes-gray-60")}>
             {secondaryDescription}
           </span>
         )}

@@ -66,13 +66,13 @@ function SearchBox({
   placeholder?: string;
 }) {
   return (
-    <div className="flex h-[26px] items-center gap-[5px] rounded-[4px] border border-mes-gray-30 bg-white px-2">
+    <div className="flex h-[26px] items-center gap-[5px] rounded-mes-control border border-mes-border-default bg-white px-2">
       <Search className="size-4 shrink-0 text-mes-gray-60" />
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-full w-full bg-transparent text-[13px] leading-[1.5] text-mes-gray-130 outline-none placeholder:text-mes-gray-60"
+        className="h-full w-full bg-transparent text-[13px] leading-[1.5] text-mes-text-default outline-none placeholder:text-mes-text-placeholder"
       />
     </div>
   );
@@ -127,8 +127,8 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
           <button
             type="button"
             className={cn(
-              "flex h-8 items-center gap-[6px] border border-mes-gray-30 bg-white px-3 text-[14px] font-medium text-mes-gray-130",
-              activeTags.length > 0 ? "rounded-l-[4px]" : "rounded-[4px]"
+              "flex h-8 items-center gap-[6px] border border-mes-border-default bg-white px-3 text-[14px] font-medium text-mes-text-default",
+              activeTags.length > 0 ? "rounded-l-mes-control" : "rounded-mes-control"
             )}
           >
             <IconFilter size={16} />
@@ -140,10 +140,10 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
           <PopoverPrimitive.Content
             align="start"
             sideOffset={4}
-            className="z-50 flex overflow-hidden rounded-[8px] border border-mes-gray-30 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.12)]"
+            className="z-50 flex overflow-hidden rounded-mes-panel border border-mes-border-default bg-white shadow-mes-panel"
           >
             {/* 1단: 카테고리 목록 */}
-            <div className="flex w-[140px] flex-col gap-1.5 border-r border-mes-gray-30 p-2">
+            <div className="flex w-[140px] flex-col gap-1.5 border-r border-mes-border-default p-2">
               <SearchBox value={categoryQuery} onChange={setCategoryQuery} placeholder="검색" />
               <div className="flex max-h-[240px] flex-col overflow-y-auto">
                 {filteredCategories.map((category) => {
@@ -155,8 +155,8 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
                       title={category.label}
                       onClick={() => setActiveCategoryId(category.id)}
                       className={cn(
-                        "flex items-center justify-between gap-1 rounded-[4px] px-1.5 py-1 text-left text-[13px] leading-[1.5] text-mes-gray-130",
-                        isActive ? "bg-mes-gray-20" : "hover:bg-mes-gray-20"
+                        "flex items-center justify-between gap-1 rounded-mes-control px-1.5 py-1 text-left text-[13px] leading-[1.5] text-mes-text-default",
+                        isActive ? "bg-mes-bg-subtle" : "hover:bg-mes-bg-subtle"
                       )}
                     >
                       <span className="truncate">{category.label}</span>
@@ -184,7 +184,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
                       <label
                         key={option.id}
                         title={option.label}
-                        className="flex cursor-pointer items-center gap-1.5 rounded-[4px] px-1.5 py-1 text-[13px] leading-[1.5] text-mes-gray-130 hover:bg-mes-gray-20"
+                        className="flex cursor-pointer items-center gap-1.5 rounded-mes-control px-1.5 py-1 text-[13px] leading-[1.5] text-mes-text-default hover:bg-mes-bg-subtle"
                       >
                         <Checkbox
                           checked={checked}
@@ -202,7 +202,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
       </PopoverPrimitive.Root>
 
       {activeTags.length > 0 && (
-        <div className="flex h-8 items-center gap-[5px] rounded-r-[4px] border border-l-0 border-mes-gray-30 bg-white px-[5px]">
+        <div className="flex h-8 items-center gap-[5px] rounded-r-mes-control border border-l-0 border-mes-border-default bg-white px-[5px]">
           {activeTags.map(({ category, selected }) => (
             <FilterTag
               key={category.id}

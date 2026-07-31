@@ -20,12 +20,12 @@ import { cn } from "@/lib/utils";
  * small 사이즈에는 Figma 자체에 focus 상태가 없음(디자인 누락으로 보임 — 임의로 만들지 않고 그대로 둠).
  */
 const inputVariants = cva(
-  "w-full bg-white border border-mes-gray-30 text-mes-gray-130 placeholder:text-mes-gray-60 outline-none transition-colors focus:border-mes-gray-130 read-only:bg-mes-gray-20 disabled:cursor-not-allowed disabled:border-mes-gray-30 disabled:bg-mes-gray-30 disabled:text-mes-gray-70",
+  "w-full bg-white border border-mes-border-default text-mes-text-default placeholder:text-mes-text-placeholder outline-none transition-colors focus:border-mes-border-strong read-only:bg-mes-bg-subtle disabled:cursor-not-allowed disabled:border-mes-border-default disabled:bg-mes-bg-disabled disabled:text-mes-text-disabled",
   {
     variants: {
       size: {
-        default: "h-8 px-[10px] rounded-[4px] text-[14px]",
-        small: "h-[22px] px-[6px] rounded-[3px] text-[13px]",
+        default: "h-8 px-[10px] rounded-mes-control text-[14px]",
+        small: "h-[22px] px-[6px] rounded-mes-control-sm text-[13px]",
       },
     },
     defaultVariants: {

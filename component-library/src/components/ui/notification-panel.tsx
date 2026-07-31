@@ -72,26 +72,26 @@ function NotificationPanel({
   return (
     <div
       className={cn(
-        "flex w-[400px] flex-col overflow-hidden rounded-[12px] bg-white shadow-[0_4px_16px_rgba(0,0,0,0.2)]",
+        "flex w-[400px] flex-col overflow-hidden rounded-mes-modal-sm bg-white shadow-mes-modal-sm",
         className
       )}
     >
-      <div className="flex shrink-0 items-center justify-between border-b border-mes-gray-30 px-5">
+      <div className="flex shrink-0 items-center justify-between border-b border-mes-border-default px-mes-dialog-x">
         <div className="flex items-center gap-2 border-b-2 border-mes-gray-80 py-5 text-[16px] leading-[1.5]">
           <span className="font-semibold text-mes-gray-80">전체 알림</span>
-          <span className="font-semibold text-mes-gray-130">{count}</span>
+          <span className="font-semibold text-mes-text-default">{count}</span>
         </div>
         <button
           type="button"
           onClick={onClose}
           aria-label="알림 패널 닫기"
-          className="flex size-6 shrink-0 items-center justify-center text-mes-gray-130"
+          className="flex size-6 shrink-0 items-center justify-center text-mes-text-default"
         >
           <IconX size={19} />
         </button>
       </div>
 
-      <div className="flex flex-col gap-6 p-5">
+      <div className="flex flex-col gap-6 p-mes-dialog-x">
         {isEmpty ? (
           <p className="w-full py-6 text-center text-[15px] font-semibold leading-[1.5] text-mes-gray-90">
             알림 내역이 없습니다.
@@ -109,7 +109,7 @@ function NotificationPanel({
             type="button"
             onClick={onFilterClick}
             aria-label="알림 필터"
-            className="flex size-4 shrink-0 items-center justify-center text-mes-gray-130"
+            className="flex size-4 shrink-0 items-center justify-center text-mes-text-default"
           >
             <IconFilter size={16} />
           </button>

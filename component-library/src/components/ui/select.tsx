@@ -73,12 +73,12 @@ const SelectGroup = SelectPrimitive.Group;
 const SelectValue = SelectPrimitive.Value;
 
 const selectTriggerVariants = cva(
-  "flex w-full items-center justify-between gap-2.5 bg-white border border-mes-gray-30 text-mes-gray-130 outline-none transition-colors data-[placeholder]:text-mes-gray-60 data-[state=open]:border-mes-gray-130 disabled:cursor-not-allowed disabled:border-mes-gray-30 disabled:bg-mes-gray-30 disabled:text-mes-gray-70 [&>span]:line-clamp-1",
+  "flex w-full items-center justify-between gap-2.5 bg-white border border-mes-border-default text-mes-text-default outline-none transition-colors data-[placeholder]:text-mes-text-placeholder data-[state=open]:border-mes-border-strong disabled:cursor-not-allowed disabled:border-mes-border-default disabled:bg-mes-bg-disabled disabled:text-mes-text-disabled [&>span]:line-clamp-1",
   {
     variants: {
       size: {
-        default: "h-8 px-[10px] rounded-[4px] text-[14px]",
-        small: "h-[22px] px-[6px] rounded-[3px] text-[13px]",
+        default: "h-8 px-[10px] rounded-mes-control text-[14px]",
+        small: "h-[22px] px-[6px] rounded-mes-control-sm text-[13px]",
       },
     },
     defaultVariants: {
@@ -120,7 +120,7 @@ const SelectContent = React.forwardRef<
       ref={ref}
       position={position}
       className={cn(
-        "relative z-50 max-h-[var(--radix-select-content-available-height)] overflow-hidden rounded-[8px] border border-mes-gray-30 bg-white p-2 text-mes-gray-130 shadow-[0_2px_8px_rgba(0,0,0,0.12)]",
+        "relative z-50 max-h-[var(--radix-select-content-available-height)] overflow-hidden rounded-mes-panel border border-mes-border-default bg-white p-2 text-mes-text-default shadow-mes-panel",
         position === "popper" &&
           "w-[var(--radix-select-trigger-width)] data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1",
         className
@@ -146,7 +146,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-[4px] border border-transparent px-2 py-[5px] text-[13px] leading-[1.5] outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[state=unchecked]:data-[highlighted]:bg-mes-gray-20 data-[state=checked]:bg-[#e8f0fe] data-[highlighted]:border-mes-primary-40",
+      "relative flex w-full cursor-default select-none items-center rounded-mes-control border border-transparent px-2 py-[5px] text-[13px] leading-[1.5] outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[state=unchecked]:data-[highlighted]:bg-mes-bg-subtle data-[state=checked]:bg-[#e8f0fe] data-[highlighted]:border-mes-primary-40",
       className
     )}
     {...props}

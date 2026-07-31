@@ -140,7 +140,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             data-state={open ? "open" : "closed"}
             className={cn(
               selectTriggerVariants({ size }),
-              !selected && "text-mes-gray-60",
+              !selected && "text-mes-text-placeholder",
               className
             )}
           >
@@ -154,24 +154,24 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             align="start"
             sideOffset={4}
             className={cn(
-              "z-50 w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-[8px] border border-mes-gray-30 bg-white p-2 text-mes-gray-130 shadow-[0_2px_8px_rgba(0,0,0,0.12)]",
+              "z-50 w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-mes-panel border border-mes-border-default bg-white p-2 text-mes-text-default shadow-mes-panel",
               "data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1"
             )}
           >
-            <div className="flex h-[26px] items-center gap-[5px] rounded-[4px] border border-mes-gray-30 bg-white px-2">
+            <div className="flex h-[26px] items-center gap-[5px] rounded-mes-control border border-mes-border-default bg-white px-2">
               <Search className="size-4 shrink-0 text-mes-gray-60" />
               <input
                 ref={searchInputRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={searchPlaceholder}
-                className="h-full w-full bg-transparent text-[13px] leading-[1.5] text-mes-gray-130 outline-none placeholder:text-mes-gray-60"
+                className="h-full w-full bg-transparent text-[13px] leading-[1.5] text-mes-text-default outline-none placeholder:text-mes-text-placeholder"
               />
             </div>
 
             <div className="mt-2 max-h-[240px] overflow-y-auto">
               {filtered.length === 0 ? (
-                <div className="px-2 py-3 text-center text-[13px] leading-[1.5] text-mes-gray-60">
+                <div className="px-2 py-3 text-center text-[13px] leading-[1.5] text-mes-text-placeholder">
                   {emptyText}
                 </div>
               ) : (
@@ -186,8 +186,8 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                         setOpen(false);
                       }}
                       className={cn(
-                        "relative flex w-full cursor-default select-none items-center rounded-[4px] border border-transparent px-2 py-[5px] text-left text-[13px] leading-[1.5] outline-none transition-colors hover:border-mes-primary-40",
-                        isSelected ? "bg-[#e8f0fe]" : "hover:bg-mes-gray-20"
+                        "relative flex w-full cursor-default select-none items-center rounded-mes-control border border-transparent px-2 py-[5px] text-left text-[13px] leading-[1.5] outline-none transition-colors hover:border-mes-primary-40",
+                        isSelected ? "bg-[#e8f0fe]" : "hover:bg-mes-bg-subtle"
                       )}
                     >
                       <span className="line-clamp-1">{option.label}</span>

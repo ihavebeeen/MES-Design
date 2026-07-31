@@ -35,20 +35,20 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        fillMain: "bg-mes-primary-60 text-white hover:bg-mes-primary-70",
+        fillMain: "bg-mes-bg-brand text-mes-text-inverse hover:bg-mes-bg-brand-hover",
         fillGray: "bg-mes-gray-40 text-mes-gray-130 hover:bg-mes-gray-50",
-        fillBlack: "bg-mes-gray-130 text-white hover:bg-mes-gray-110",
-        fillRed: "bg-mes-danger-60 text-white hover:bg-mes-danger-70",
+        fillBlack: "bg-mes-bg-strong text-mes-text-inverse hover:bg-mes-gray-110",
+        fillRed: "bg-mes-bg-danger text-mes-text-inverse hover:bg-mes-danger-70",
         lineMain:
-          "bg-white text-mes-primary-60 border border-mes-primary-60 hover:bg-mes-primary-10",
+          "bg-white text-mes-text-brand border border-mes-primary-60 hover:bg-mes-bg-brand-subtle",
         lineBlacktxt:
-          "bg-white text-mes-gray-130 border border-mes-gray-30 hover:bg-mes-gray-10",
-        opacityMain: "bg-mes-primary-20 text-mes-primary-60 hover:bg-[#d4eaff]",
+          "bg-white text-mes-text-default border border-mes-border-default hover:bg-mes-bg-subtler",
+        opacityMain: "bg-mes-bg-brand-subtle-strong text-mes-text-brand hover:bg-[#d4eaff]",
       },
       size: {
-        basic: "h-10 px-4 text-[15px] rounded-[4px]",
-        small: "h-8 px-2.5 text-[14px] rounded-[4px]",
-        xsmall: "h-[22px] px-2 text-[12px] rounded-[2px]",
+        basic: "h-10 px-4 text-[15px] rounded-mes-control",
+        small: "h-8 px-2.5 text-[14px] rounded-mes-control",
+        xsmall: "h-[22px] px-2 text-[12px] rounded-mes-control-xs",
       },
     },
     defaultVariants: {

@@ -31,9 +31,9 @@ import { cn } from "@/lib/utils";
 export type TagColor = "main" | "gray" | "red";
 
 const tagColorClasses: Record<TagColor, string> = {
-  main: "bg-mes-primary-60",
+  main: "bg-mes-bg-brand",
   gray: "bg-mes-gray-90",
-  red: "bg-mes-danger-60",
+  red: "bg-mes-bg-danger",
 };
 
 export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
@@ -47,7 +47,7 @@ const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
     <span
       ref={ref}
       className={cn(
-        "inline-flex h-[22px] items-center gap-1 rounded-[2px] px-2 py-[3px] text-[12px] font-semibold leading-[1.5] text-white",
+        "inline-flex h-[22px] items-center gap-1 rounded-mes-control-xs px-2 py-[3px] text-[12px] font-semibold leading-[1.5] text-mes-text-inverse",
         tagColorClasses[color],
         className
       )}
