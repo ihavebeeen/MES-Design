@@ -33,6 +33,11 @@ import { Divider } from "@/components/ui/divider";
 import { Tooltip } from "@/components/ui/tooltip";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Link } from "@/components/ui/link";
+import { Backdrop } from "@/components/ui/backdrop";
 import { X } from "lucide-react";
 import {
   IconArrow,
@@ -99,6 +104,11 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "tooltip", label: "Tooltip" },
   { id: "loading-spinner", label: "LoadingSpinner" },
   { id: "skeleton", label: "Skeleton" },
+  { id: "switch", label: "Switch" },
+  { id: "textarea", label: "Textarea" },
+  { id: "label", label: "Label" },
+  { id: "link", label: "Link" },
+  { id: "backdrop", label: "Backdrop" },
   { id: "input", label: "Input" },
   { id: "select", label: "Select" },
   { id: "badge", label: "Badge" },
@@ -172,6 +182,11 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("tooltip"),
   leaf("loading-spinner"),
   leaf("skeleton"),
+  leaf("switch"),
+  leaf("textarea"),
+  leaf("label"),
+  leaf("link"),
+  leaf("backdrop"),
   leaf("input"),
   leaf("select"),
   leaf("badge"),
@@ -1395,6 +1410,71 @@ export default function Home() {
               <Skeleton variant="text" />
               <Skeleton variant="text" className="w-2/3" />
             </div>
+          </div>
+        </Sample>
+      </Section>
+
+      <Section id="switch" title="Switch" badge="임시">
+        <Sample label="Switch · off">
+          <Switch />
+        </Sample>
+        <Sample label="Switch · on">
+          <Switch defaultChecked />
+        </Sample>
+        <Sample label="Switch · disabled(off)">
+          <Switch disabled />
+        </Sample>
+        <Sample label="Switch · disabled(on)">
+          <Switch disabled defaultChecked />
+        </Sample>
+      </Section>
+
+      <Section id="textarea" title="Textarea" badge="임시">
+        <Sample label="Textarea · Default(placeholder)">
+          <Textarea placeholder="내용 입력" className="h-20 w-[220px]" />
+        </Sample>
+        <Sample label="Textarea · 입력됨">
+          <Textarea defaultValue={"설비 점검 중 이상 소음 발생.\n정지 후 재확인 필요."} className="h-20 w-[220px]" />
+        </Sample>
+        <Sample label="Textarea · readonly">
+          <Textarea readOnly defaultValue="수정 불가 내용" className="h-20 w-[220px]" />
+        </Sample>
+        <Sample label="Textarea · disabled">
+          <Textarea disabled defaultValue="비활성" className="h-20 w-[220px]" />
+        </Sample>
+      </Section>
+
+      <Section id="label" title="Label" badge="임시">
+        <Sample label="Label · 기본">
+          <Label>품목명</Label>
+        </Sample>
+        <Sample label="Label · required">
+          <Label required>거래처</Label>
+        </Sample>
+        <Sample label="Label + Input 조합">
+          <div className="flex flex-col gap-1.5">
+            <Label required>수량</Label>
+            <Input placeholder="0" className="w-[160px]" />
+          </div>
+        </Sample>
+      </Section>
+
+      <Section id="link" title="Link" badge="임시">
+        <Sample label="Link · 기본">
+          <Link href="#">조설정 바로가기</Link>
+        </Sample>
+        <Sample label="Link · 화살표 포함">
+          <Link href="#">자세히 보기 →</Link>
+        </Sample>
+      </Section>
+
+      <Section id="backdrop" title="Backdrop" badge="임시">
+        <Sample label="Backdrop · 미리보기(고정 오버레이 대신 박스 안에서만 시연)">
+          <div className="relative h-24 w-40 overflow-hidden rounded-mes-control border border-mes-gray-30 bg-mes-gray-10">
+            <div className="flex h-full items-center justify-center text-[12px] text-mes-gray-70">
+              뒤쪽 콘텐츠
+            </div>
+            <Backdrop className="absolute inset-0" />
           </div>
         </Sample>
       </Section>

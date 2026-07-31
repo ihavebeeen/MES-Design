@@ -130,7 +130,7 @@
 |---|---|---|---|---|---|
 | Checkbox | 체크박스 | 아톰 | 있음 | 1 | 2026-07-28 재확인: 클라우드MES 파일(F4n5Zr04PAbiRjfIFQAo6v) node 9873:82462에 실제로 존재함(이전에 "없음"으로 기재됐던 건 이 파일을 확인 안 했던 것) — 코드화 완료(`checkbox.tsx`). 단, disabled 상태는 Figma에 없어 판단값으로 구현. 같은 날 추가: Table 그룹 체크박스용으로 `indeterminate`(중간선택) prop 신규 추가 — Figma에 없는 상태라 판단 구현(main/black 색상 지원). 2026-07-29 확인: "default(회색)/main(파랑)/black(검정) 중 실제로 어떤 상황에 쓰이는지" 확인 필요했던 항목에 담당자 답변 — 실사용에서는 원래 `color="gray"`(코드상 "default"/통칭 "checked-gray")를 기본으로 사용 중이라고 확인. 컴포넌트 코드/기본값 변경 없이 항목만 종결 |
 | Radio Button | 라디오버튼 | 아톰 | 있음 | 1 | Figma "MES Design System" Direction 섹션 확인. 2026-07-28 클라우드MES 파일 node 9873:82508 기준 정밀실측 후 코드화 완료(`radio.tsx`) |
-| Switch / Toggle | 온오프 스위치 | 아톰 | 없음 | 2 | |
+| Switch / Toggle | 온오프 스위치 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`switch.tsx`). Figma 디자인 없어서 Checkbox와 동일한 peer 오버레이 패턴 재사용, 색상은 기존 시맨틱 토큰(판단값) |
 | Segmented Control | 세그먼트형 선택 컨트롤 | 몰큘 | 없음 | 4 | |
 | Slider (Range) | 범위 슬라이더 | 아톰 | 없음 | 3 | 수치 필터 범위 지정 등에 활용 가능 |
 | Rating (별점) | 별점 등 평점 입력 | 몰큘 | 없음 | 5 | 소비자 서비스 패턴 |
@@ -141,7 +141,7 @@
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
 | Text Input | 한 줄 텍스트 입력 | 아톰 | 있음 | 1 | Figma "Input Textbox/Selectbox" 매트릭스 |
-| Textarea | 여러 줄 텍스트 입력 | 아톰 | 없음 | 2 | |
+| Textarea | 여러 줄 텍스트 입력 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`textarea.tsx`). Figma 디자인 없어서 Input과 동일한 톤(테두리/배경/포커스/radius) 재사용, min-h/py만 판단값 |
 | Number Input | 숫자 입력(증감 버튼 포함) | 몰큘 | 없음 | 2 | |
 | Search Input | 검색창 | 몰큘 | 있음 | 1 | 위 Input 매트릭스에 search 컬럼 포함 |
 | Password Input | 비밀번호 입력(보기/숨기기) | 몰큘 | 없음 | 2 | 로그인 화면 필수 |
@@ -311,7 +311,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 | Copy Button | 클립보드 복사 버튼 | 아톰 | 없음 | 3 | |
 | Burger (Hamburger Menu) | 햄버거 메뉴 아이콘 버튼 | 아톰 | 없음 | 3 | |
 | Loading Overlay | 특정 영역을 덮는 로딩 오버레이 | 몰큘 | 없음 | 2 | |
-| Backdrop / Dim Overlay | 모달 등의 배경 딤 처리 | 아톰 | 없음 | 2 | |
+| Backdrop / Dim Overlay | 모달 등의 배경 딤 처리 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`backdrop.tsx`). ConfirmDialog/RadioChoiceDialog가 각자 반복해서 쓰던 `bg-black/40` Radix Overlay 값을 역추출 — 두 다이얼로그는 Radix 종속이라 직접 교체는 안 함, 향후 커스텀 오버레이용 |
 | Status Indicator (Dot) | 상태 점(온라인 등) | 아톰 | 없음 | 3 | |
 | Overflow List ("+N more") | 목록 초과 시 "+N개 더" 표시 | 몰큘 | 없음 | 4 | |
 | Spoiler (더보기/접기 텍스트) | 긴 텍스트 일부만 보여주고 펼치기 | 몰큘 | 없음 | 4 | |
@@ -439,9 +439,9 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Link | 하이퍼링크(텍스트 링크) | 아톰 | 없음 | 2 | 테이블 셀 링크(Text Link Cell)는 있었으나 일반 텍스트 링크 자체가 누락돼 있었음 |
+| Link | 하이퍼링크(텍스트 링크) | 아톰 | 있음 | 2 | 2026-07-31 코드화(`link.tsx`). NoticeBanner에서 이미 반복되던 링크 스타일(`text-mes-text-brand` + hover underline)을 역추출 |
 | Fieldset | 관련 폼 필드를 묶는 wrapper | 몰큘 | 없음 | 2 | |
-| Label | 독립된 폼 라벨 아톰 | 아톰 | 없음 | 2 | |
+| Label | 독립된 폼 라벨 아톰 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`label.tsx`). Figma 디자인 없어서 Input/Select와 같은 텍스트 색 체계 재사용, required(*) 표시 판단값 |
 | Footer | 페이지 하단 영역 | 오가니즘 | 없음 | 3 | |
 | File | 첨부파일 표시(칩/아이콘, 업로드 입력과 별개) | 아톰 | 없음 | 3 | |
 | Hero | 큰 배너(주로 랜딩페이지용) | 오가니즘 | 없음 | 5 | MES 어드민 도구엔 낮은 우선순위 |

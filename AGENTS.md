@@ -773,3 +773,26 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   loading-spinner/skeleton)의 `badge="판단값"`을 전부 `badge="임시"`로 교체.
   Sample label 안의 "판단값" 텍스트(Radio/Checkbox disabled 등)는 칩이 아니라
   일반 라벨 문구라 이번 대상에서 제외. tsc 클린 확인 후 커밋.
+- (2026-07-31, 27차) "또 딴거 만들어" — 티어2 없음 목록에서 다음 배치로 판단해서
+  진행: Switch/Toggle, Textarea, Label, Link, Backdrop/Dim Overlay 5개. 전부
+  Figma 디자인 없는 "없음" 항목이라 19차와 같은 방식(기존 컴포넌트의 검증된
+  패턴/토큰 재사용)으로 구현:
+  - `switch.tsx`: Checkbox와 동일한 `peer` 오버레이 패턴(네이티브 input 숨기고
+    시각 레이어만 커스텀) 재사용, on=`bg-mes-bg-brand`(Checkbox main과 동일),
+    44x24px 트랙 크기는 판단값.
+  - `textarea.tsx`: `input.tsx` 주석에 이미 "Selectbox와 완전히 같은 톤 공유"
+    라고 확인돼 있던 원칙을 그대로 따라 Input의 테두리/배경/포커스/radius를
+    재사용, min-h/py만 여러 줄에 맞게 판단값 조정.
+  - `label.tsx`: Input/Select와 같은 텍스트 색 체계, required(*) 표시는
+    `text-mes-text-danger`(기존 danger 토큰 재사용, 새 값 아님).
+  - `link.tsx`: `notice-banner.tsx`가 이미 쓰고 있던 링크 스타일
+    (`text-mes-text-brand underline-offset-2 hover:underline`)을 그대로
+    역추출 — 체크리스트에 "테이블 셀 링크는 있었는데 일반 텍스트 링크가
+    누락"이라고 적혀 있던 항목.
+  - `backdrop.tsx`: ConfirmDialog/RadioChoiceDialog가 각자 반복해서 쓰던
+    Radix Overlay 값(`fixed inset-0 z-50 bg-black/40`)을 역추출 — 두
+    다이얼로그는 Radix Overlay 슬롯에 종속돼 있어 직접 교체는 안 하고, 향후
+    Radix 없이 만들 커스텀 오버레이용으로 공용 아톰만 분리.
+  데모 페이지에 Skeleton 섹션 바로 아래 5개 Section 추가(Switch/Textarea/
+  Label/Link/Backdrop), `TOC_LINKS`/`COMPONENT_NODES`에 순서대로 삽입.
+  체크리스트 5개 행 상태를 있음으로 갱신. tsc 클린 확인 후 커밋.
