@@ -256,7 +256,10 @@ function Section({
   title: string;
   /** 2026-07-31 신규 — "Tooltip (신규, 판단값 — CSS 경량 구현)"처럼 제목 문자열에
    *  경위 설명을 욱여넣던 걸 담당자가 "제목이 이게 뭐냐"고 지적해서 분리. 제목은
-   *  컴포넌트명만 깔끔하게, 부가 설명은 옆의 작은 칩으로. */
+   *  컴포넌트명만 깔끔하게, 부가 설명은 옆의 작은 칩으로.
+   *  2026-07-31 25차 — 칩 텍스트를 "판단값"→"임시"로, 색은 회색(bg-mes-bg-subtle)
+   *  →파랑(`bg-mes-bg-brand-subtle-strong` + `text-mes-text-brand`, Badge
+   *  컴포넌트의 blueLight 변형과 동일 톤)으로 변경. */
   badge?: string;
   children: React.ReactNode;
 }) {
@@ -268,7 +271,7 @@ function Section({
       <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
         {title}
         {badge && (
-          <span className="rounded-full bg-mes-bg-subtle px-2 py-0.5 text-[11px] font-medium text-mes-gray-70">
+          <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">
             {badge}
           </span>
         )}
@@ -1286,7 +1289,7 @@ export default function Home() {
           체계 기반 판단값으로 구현, 각 컴포넌트 파일 주석 참고). Button 바로 아래
           배치한 이유는 IconButton/CloseButton이 Button 색상 variant 네이밍을
           그대로 이어받아서 개념적으로 가장 가까운 이웃이기 때문. */}
-      <Section id="icon-button" title="IconButton / CloseButton" badge="판단값">
+      <Section id="icon-button" title="IconButton / CloseButton" badge="임시">
         <Sample label="IconButton · basic/ghost">
           <IconButton icon={<IconFilter />} aria-label="필터" size="basic" />
         </Sample>
@@ -1318,7 +1321,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="divider" title="Divider" badge="판단값">
+      <Section id="divider" title="Divider" badge="임시">
         <Sample label="Divider · horizontal">
           <div className="flex w-40 flex-col gap-2">
             <span className="text-[12px] text-mes-gray-70">위</span>
@@ -1335,7 +1338,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="tooltip" title="Tooltip" badge="판단값">
+      <Section id="tooltip" title="Tooltip" badge="임시">
         <Sample label="Tooltip · top(기본)">
           <Tooltip content="위쪽 툴팁">
             <Button size="small" variant="lineBlacktxt">
@@ -1357,7 +1360,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="loading-spinner" title="LoadingSpinner" badge="판단값">
+      <Section id="loading-spinner" title="LoadingSpinner" badge="임시">
         <Sample label="LoadingSpinner · 16px">
           <LoadingSpinner size={16} />
         </Sample>
@@ -1372,7 +1375,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="skeleton" title="Skeleton" badge="판단값">
+      <Section id="skeleton" title="Skeleton" badge="임시">
         <Sample label="Skeleton · text">
           <div className="flex w-40 flex-col gap-1.5">
             <Skeleton variant="text" />

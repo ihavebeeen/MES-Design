@@ -766,3 +766,10 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   "판단값" 같은 개별 샘플 캐릭터는 이미 `Sample label`에 있던 걸 그대로 두고
   제목에서만 뺌. `grep`으로 "node"/"실측" 패턴이 제목에 남아있는지 전수 재확인
   후 tsc 클린 확인, 커밋.
+- (2026-07-31, 26차) "판단값 칩을 임시로 바꾸고 파란색으로" — `Section` 헬퍼의
+  `badge` prop 렌더링을 회색(`bg-mes-bg-subtle`/`text-mes-gray-70`)에서
+  파랑(`bg-mes-bg-brand-subtle-strong`/`text-mes-text-brand`, `badge.tsx`의
+  blueLight 변형과 동일 톤)으로 변경, 5개 호출부(icon-button/divider/tooltip/
+  loading-spinner/skeleton)의 `badge="판단값"`을 전부 `badge="임시"`로 교체.
+  Sample label 안의 "판단값" 텍스트(Radio/Checkbox disabled 등)는 칩이 아니라
+  일반 라벨 문구라 이번 대상에서 제외. tsc 클린 확인 후 커밋.
