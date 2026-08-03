@@ -29,7 +29,11 @@ import { NoticeBanner } from "@/components/ui/notice-banner";
 import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
 import { Sidebar, SidebarSettingsIcon, type SidebarNavItem } from "@/components/ui/sidebar";
 import { AlarmListItem } from "@/components/ui/alarm-list-item";
-import { NotificationPanel } from "@/components/ui/notification-panel";
+import {
+  NotificationPanel,
+  type NotificationPanelItem,
+  type NotificationSettingItem,
+} from "@/components/ui/notification-panel";
 import { RadioChoiceDialog } from "@/components/ui/radio-choice-dialog";
 import { IconButton, CloseButton } from "@/components/ui/icon-button";
 import { Divider } from "@/components/ui/divider";
@@ -646,6 +650,45 @@ const initialQuickQuerySlots: QuickQuerySlot[] = [
   { id: "p3", name: null },
 ];
 
+/** NotificationPanel "클릭하면 사라짐" 데모용 초기 알림 목록 */
+const initialNotificationItems: NotificationPanelItem[] = [
+  {
+    id: "1",
+    tone: "blue",
+    title: "작업 지시 생성",
+    time: "20:25",
+    description: "yyyy.mm.dd/[설비]/n건의 작업 지시가 생성되었습니다.",
+  },
+  {
+    id: "2",
+    tone: "red",
+    title: "출하 승인 취소",
+    time: "20:25",
+    description: "yyyy.mm.dd/[거래처]/n건의 출하 승인이 취소되었습니다.",
+    read: false,
+  },
+  {
+    id: "3",
+    tone: "green",
+    title: "입고 완료",
+    time: "20:25",
+    description: "yyyy.mm.dd/[설비]/n건의 입고가 완료되었습니다.",
+  },
+];
+
+/** NotificationPanel "알림 설정" 데모용 초기 목록 — 담당자 스크린샷 문구·순서 그대로 인용,
+ *  전부 켜짐(enabled: true) 상태로 시작. */
+const initialNotificationSettings: NotificationSettingItem[] = [
+  { id: "inbound-done", label: "입고 완료", enabled: true },
+  { id: "inbound-inspect-request", label: "입고 검사 요청", enabled: true },
+  { id: "inbound-inspect-done", label: "입고 검사 완료", enabled: true },
+  { id: "work-order-created", label: "작업 지시 생성", enabled: true },
+  { id: "work-order-changed", label: "작업 지시 변경", enabled: true },
+  { id: "production-done", label: "생산 완료", enabled: true },
+  { id: "process-inspect-request", label: "공정 검사 요청", enabled: true },
+  { id: "process-inspect-done", label: "공정 검사 완료", enabled: true },
+];
+
 /**
  * Table 데모용 데이터 — node 16938:42501("생산계획(일) 리스트" 실제 화면) 값을 그대로 인용.
  * 컬럼 폭은 그 화면에서 실측한 px 그대로(합계 약 1858px, 가로 스크롤 필요).
@@ -987,6 +1030,13 @@ export default function Home() {
   // 값이 있을 때의 배경색 강조 상태를 바로 보여줌.
   const [groupQuerySearchValue, setGroupQuerySearchValue] = useState("숯불치킨 뚜껑");
   const [searchInputValue, setSearchInputValue] = useState("");
+  // 2026-08-03 — NotificationPanel "클릭하면 목록에서 사라짐" 데모용. 컴포넌트 자체는
+  // items를 그대로 렌더링만 하는 순수 컨트롤형이라, 제거 로직은 데모(호출부)에서 관리.
+  const [notificationItems, setNotificationItems] = useState(initialNotificationItems);
+  // 알림 설정 화면 데모용 — 스크린샷 문구·순서 그대로, 전부 켜짐 상태로 시작.
+  const [notificationSettings, setNotificationSettings] = useState(
+    initialNotificationSettings
+  );
   const [dialogOpen, setDialogOpen] = useState(false);
   // 2026-07-29: ConfirmDialog 톤 확장(경고/알림) + 확인·취소 2버튼 + 안내 배너 데모용
   const [warningDialogOpen, setWarningDialogOpen] = useState(false);
@@ -2120,36 +2170,26 @@ export default function Home() {
           NotificationPanel
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          AlarmListItem을 재사용한 알림 드롭다운. 미확인/확인 탭, 알림 설정은 범위 밖.
+          AlarmListItem을 재사용한 알림 드롭다운. 미확인/확인 탭은 범위 밖. 항목을 클릭하면
+          목록에서 사라짐(담당자 스크린샷 기반), 설정(톱니) 아이콘을 누르면 알림 설정
+          화면으로 전환됨(뒤로가기로 복귀).
         </p>
         <div className="flex flex-wrap items-start gap-8">
           <div className="flex flex-col items-start gap-2">
-            <span className="text-[12px] font-medium text-mes-gray-70">데이터 있음</span>
+            <span className="text-[12px] font-medium text-mes-gray-70">
+              데이터 있음(클릭해서 제거해보기 · 설정 아이콘 클릭 가능)
+            </span>
             <NotificationPanel
-              items={[
-                {
-                  id: "1",
-                  tone: "blue",
-                  title: "작업 지시 생성",
-                  time: "20:25",
-                  description: "yyyy.mm.dd/[설비]/n건의 작업 지시가 생성되었습니다.",
-                },
-                {
-                  id: "2",
-                  tone: "red",
-                  title: "출하 승인 취소",
-                  time: "20:25",
-                  description: "yyyy.mm.dd/[거래처]/n건의 출하 승인이 취소되었습니다.",
-                  read: false,
-                },
-                {
-                  id: "3",
-                  tone: "green",
-                  title: "입고 완료",
-                  time: "20:25",
-                  description: "yyyy.mm.dd/[설비]/n건의 입고가 완료되었습니다.",
-                },
-              ]}
+              items={notificationItems}
+              onItemClick={(id) =>
+                setNotificationItems((prev) => prev.filter((item) => item.id !== id))
+              }
+              settingsItems={notificationSettings}
+              onSettingsItemChange={(id, enabled) =>
+                setNotificationSettings((prev) =>
+                  prev.map((item) => (item.id === id ? { ...item, enabled } : item))
+                )
+              }
             />
           </div>
           <div className="flex flex-col items-start gap-2">

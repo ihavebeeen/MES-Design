@@ -209,7 +209,7 @@
 | Loading Spinner | 로딩 스피너 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`loading-spinner.tsx`). Figma 디자인 없음 — lucide `LoaderCircle` + `animate-spin`(판단값) |
 | Empty State | 데이터 없음 화면 | 몰큘 | 없음 | 2 | |
 | Error State | 에러 화면 | 몰큘 | 없음 | 2 | |
-| Notification / Bell | 알림 아이콘·목록 | 오가니즘 | 있음 | 1 | 2026-07-30 코드화: `components/ui/notification-panel.tsx`(node 157:15771 "알림모달 2"/157:15833 "알림 내역 존재 X" 실측). AlarmListItem을 재사용하는 드롭다운 패널 — 헤더("전체 알림" 탭+카운트+닫기), 리스트(높이 350px 스크롤) 또는 빈 상태 문구, 필터 아이콘 액션 줄로 구성. "미확인"/"확인" 탭 추정 자리와 "모두 확인으로 표시"/"알림 설정" 텍스트는 이 패널 트리에 실제로 포함되어 있지 않아 확인 필요로 제외(컴포넌트 파일 주석 참고). 벨 아이콘 트리거 자체는 미실측 |
+| Notification / Bell | 알림 아이콘·목록 | 오가니즘 | 있음 | 1 | 2026-07-30 코드화: `components/ui/notification-panel.tsx`(node 157:15771 "알림모달 2"/157:15833 "알림 내역 존재 X" 실측). AlarmListItem을 재사용하는 드롭다운 패널 — 헤더("전체 알림" 탭+카운트+닫기), 리스트(높이 350px 스크롤) 또는 빈 상태 문구, 필터 아이콘 액션 줄로 구성. "미확인"/"확인" 탭 추정 자리는 이 패널 트리에 실제로 포함되어 있지 않아 확인 필요로 제외. 벨 아이콘 트리거 자체는 미실측. 2026-08-03 담당자가 실제 서비스 스크린샷 2건으로 추가 지시(Figma 링크 없음, 판단값): (1) 항목 클릭 시 목록에서 제거 — `onItemClick(id)` 콜백 신규 추가(제거 로직 자체는 호출부 책임, 컴포넌트는 컨트롤형 유지), (2) 설정(톱니) 아이콘 클릭 시 패널 내용이 "알림 설정"(뒤로가기+제목+알림 유형별 Switch 토글 목록) 화면으로 전환 — `settingsItems`/`onSettingsItemChange` prop + 내부 `view` state로 구현. 톱니 아이콘 자체는 목적지 화면만 스크린샷에 있고 트리거 모양은 없어서 Sidebar/QuickQuery와 동일한 `lucide-react` `Settings` placeholder 사용(판단값) |
 
 ## 7. 접기·펼치기 (Disclosure)
 
