@@ -49,7 +49,7 @@
 | Radius Scale | 모서리 둥글기 값 | 토큰 | 부분 | 2 | 실측 파일럿 결과 단일 공용값이 아님 — Button은 basic/small 둘 다 4px, Input은 Default 4px/small **3px**로 사이즈별로 다름, 오버레이류(모달)는 16px. 컴포넌트별 개별 확인 필요, 자세한 내용은 [신규 컴포넌트 설계 프로세스 Step C-1](./신규_컴포넌트_설계_프로세스.md) 참고 |
 | Shadow/Elevation Scale | 그림자·고도 값 | 토큰 | 있음 | 1 | Figma "컴포넌트 라이브러리" 파일 Foundation의 "Shadow" 프레임 확인 |
 | Icon Set | 아이콘 에셋 모음 | 토큰 | 부분 | 2 | Figma "컴포넌트 라이브러리" 파일에는 "ICON - 크기별 제작필요"로 명시되어 팀에서도 미완성 인지 중. 이전 MES 파일에서 80여개 확인했던 것과의 관계는 별도 확인 필요 |
-| Z-index Scale | 겹침 순서 값 | 토큰 | 없음 | 2 | |
+| Z-index Scale | 겹침 순서 값 | 토큰 | 있음 | 2 | 2026-08-03 정리. Figma엔 없는 개념이라 기존 코드 실사용값(z-10/30/50)을 스케일로 문서화(`디자인_토큰_사용_규칙.md` 8-1절), 새 값 안 만듦 |
 | Breakpoint Scale | 반응형 화면 크기 기준값 | 토큰 | 없음 | 4 | 데스크탑 중심 사내 시스템 특성상 우선순위 낮음. 모바일 체크리스트 0번 섹션에서 모바일용 브레이크포인트 값 자체는 이미 확인됨 — 다만 모바일 전용 기준이라 데스크탑에 그대로 적용 가능한지는 별개 문제, 데스크탑에 반응형이 실제로 필요한지부터 재검토 필요(19번 섹션 참고) |
 
 ### 0-1. 실제 색상 토큰 값 (Figma "Color" 프레임 확인 완료)
@@ -149,9 +149,9 @@
 | Combobox | 검색 가능한 선택형 드롭다운 | 몰큘 | 있음 | 1 | 2026-07-28 코드화 완료(`combobox.tsx`, Radix Popover 기반) — Selectbox와 별도 컴포넌트로 분리. 상세는 19번 섹션 참고 |
 | Multi-select / Tag Input | 다중 선택·태그 입력 | 몰큘 | 있음 | 2 | 필터 등에 활용. 18-1 Select 변형 분석의 결론(MES 필터에서 실사용 가능성 높음)을 반영해 티어3→2로 상향. 2026-08-03 구현, 판단값(Tag 재사용) |
 | Filter (필터 추가 트리거 + 플라이아웃 패널 + 활성 태그, 통합) | 목록·테이블 상단 필터 진입점 | 몰큘 | 있음 | 1 | 2026-07-28 완료·통합, 이후 담당자 재검토로 2차 수정까지 완료. 트리거+태그 컨테이너(node 9873:83762)는 정밀실측, 플라이아웃 패널은 Figma에 별도 노드가 없어 조립형으로 구현. **2차 수정 3건**: (1) 태그 표시 방식을 "1개 선택=개수 뱃지/2개 이상=전체보기" 2종에서 **선택 개수만 항상 표시**로 통일(전체보기가 실제 전체선택 여부와 무관해 혼란을 줘서 담당자가 정책 변경, filter-tag.tsx), (2) 트리거 박스와 활성 태그 박스를 테두리 공유하는 통짜 구조에서 **서로 다른 두 개의 독립 박스**로 분리(태그 없으면 트리거만 노출), (3) 트리거 아이콘을 임의로 골랐던 lucide `Filter`(깔때기)에서 **`SlidersHorizontal`로 교체** — node 9873:83762의 벡터 좌표(원 3개가 위/중간/아래 가로줄에 각각 다른 위치로 배치된 구조)를 재분석해 실제로는 슬라이더형 아이콘임을 확인함(SVG 원본은 샌드박스 네트워크 제약으로 여전히 직접 다운로드 불가, 좌표 분석 기반 대체) |
-| Date Picker | 날짜 선택기 | 오가니즘 | 없음 | 2 | |
-| Date Range Picker | 기간(시작~종료) 선택기 | 오가니즘 | 없음 | 2 | |
-| Time Picker | 시간 선택기 | 오가니즘 | 없음 | 2 | |
+| Date Picker | 날짜 선택기 | 오가니즘 | 있음 | 2 | 2026-08-03 구현. Figma에 "달력"(클라우드MES) 이름은 검색됐으나 node-id 해석 불가(재시도 안 함) — 판단값, 순수 Date 계산(외부 라이브러리 없음) |
+| Date Range Picker | 기간(시작~종료) 선택기 | 오가니즘 | 있음 | 2 | 2026-08-03 구현. DatePicker와 동일 근거, 달력 계산 로직 재사용 |
+| Time Picker | 시간 선택기 | 오가니즘 | 있음 | 2 | 2026-08-03 구현, 판단값(Popover 재사용) |
 | File Upload / Dropzone | 파일 업로드 영역 | 몰큘 | 없음 | 3 | 문서·첨부 관리 |
 | Form Field | 라벨+입력+헬퍼텍스트+에러 조합 | 몰큘 | 있음 | 1 | 위 Input 매트릭스에 "라벨포함" 행 존재 |
 | OTP / PIN Input | 인증번호 입력 | 몰큘 | 없음 | 4 | |
@@ -162,7 +162,7 @@
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Navbar / Top Nav | 상단 내비게이션 바 | 오가니즘 | 없음 | 2 | |
+| Navbar / Top Nav | 상단 내비게이션 바 | 오가니즘 | 있음 | 2 | 2026-08-03 구현. 판단값, 높이 56px은 이 데모 페이지 자체 상단 바 실사용값 재사용 |
 | Sidebar / Side Nav | 좌측 내비게이션 | 오가니즘 | 있음 | 1 | 2026-07-29 코드화, 2026-07-30/07-31 재검증: `components/ui/sidebar.tsx`. 접기버튼(hover), 1-depth 항목(hover=Gray-120/active=Primary-60), 2-depth 항목(hover/active, 트리 연결선), MES/FEMS 토글은 담당자 지시로 의도적 미구현 실측·반영 완료. 2026-07-31 22차에 마지막 남았던 접기(collapsed rail/`SNB-hide`, node 9873:83651) 상태까지 `collapsed` prop으로 구현 — 62px 아이콘 레일, 라벨 숨김, hover 시 2-depth 플라이아웃(group-hover CSS, 판단값 구현). 이걸로 "부분"에서 "있음"으로 전환 |
 | Breadcrumb | 현재 위치 경로 표시 | 몰큘 | 있음 | 2 | 2026-08-03 구현. Figma에 "breadcrumb-mid/chip" 등 이름은 검색됐으나 node-id 해석 불가(재시도 안 함) — 판단값 |
 | Tabs | 탭 전환 | 몰큘 | 있음 | 1 | 2026-07-29 코드화, 2026-07-30 재검증: `components/ui/page-top-tab-item.tsx`(node 157:18051 컴포넌트 세트, default/hover/active 3종 전부 실측). active는 배경 Gray-110 + 제목 SemiBold로 정정(이전 판단값은 틀렸었음) |
@@ -224,11 +224,11 @@
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
 | Divider / Separator | 구분선 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`divider.tsx`). Figma 디자인 없음 — 기존 구분선 색(`border-mes-border-default`) 재사용, 가로/세로 지원 |
-| Grid / Container | 레이아웃 그리드 | 레이아웃 유틸 | 없음 | 2 | |
+| Grid / Container | 레이아웃 그리드 | 레이아웃 유틸 | 있음 | 2 | 2026-08-03 구현, 판단값(Container는 데모 페이지 max-w-[960px] 재사용) |
 | Panel | 패널 영역 | 몰큘 | 있음 | 2 | 2026-08-03 구현, 판단값(NotificationPanel/Combobox 패널 톤 재사용) |
 | Resizable Panel | 크기 조절 가능한 영역 | 오가니즘 | 없음 | 3 | 다중 창 작업에 유용 |
-| Scroll Area | 커스텀 스크롤 영역 | 레이아웃 유틸 | 없음 | 2 | |
-| Sticky Header/Footer | 고정 헤더·푸터 | 오가니즘 | 없음 | 2 | |
+| Scroll Area | 커스텀 스크롤 영역 | 레이아웃 유틸 | 있음 | 2 | 2026-08-03 구현, 판단값(새 스크롤바 라이브러리 없이 overflow-y-auto만) |
+| Sticky Header/Footer | 고정 헤더·푸터 | 오가니즘 | 있음 | 2 | 2026-08-03 구현, 판단값(position: sticky wrapper) |
 | Split View | 좌우/상하 분할 뷰 | 오가니즘 | 없음 | 3 | |
 
 ## 9. 타이포그래피·미디어 (Typography & Media)
@@ -239,7 +239,7 @@
 | Body Text Styles | 본문 텍스트 스타일 체계 | 토큰 | 있음 | 1 | Pretendard Medium/Regular |
 | Image / Thumbnail | 이미지·썸네일 표시 | 아톰 | 없음 | 3 | 제품·설비 사진 |
 | Video Player | 비디오 플레이어 | 오가니즘 | 없음 | 5 | |
-| Logo / Brandmark | 로고 표기 | 아톰 | 없음 | 2 | 헤더에 항상 필요 |
+| Logo / Brandmark | 로고 표기 | 아톰 | 있음 | 2 | 헤더에 항상 필요. 2026-08-03 구현, 실제 로고 애셋 없어 텍스트 워드마크로 최소 구현(정식 애셋 생기면 교체 필요) |
 | Empty Illustration | 빈 상태용 일러스트 | 아톰 | 없음 | 4 | |
 
 ## 10. AI 시대 특화 패턴
@@ -267,7 +267,7 @@
 | Row Expand / Detail Drawer | 행 클릭 시 상세 정보 확장 | 오가니즘 | 없음 | 3 | |
 | Inline Edit | 클릭해서 바로 수정하는 텍스트 | 몰큘 | 없음 | 3 | |
 | Drag Handle / Sortable List | 드래그로 순서 변경 | 몰큘 | 없음 | 4 | |
-| User / Account Menu | 우측 상단 프로필 드롭다운 | 몰큘 | 없음 | 2 | 헤더에 항상 필요 |
+| User / Account Menu | 우측 상단 프로필 드롭다운 | 몰큘 | 있음 | 2 | 헤더에 항상 필요. 2026-08-03 구현, 판단값(DropdownMenu 재사용) |
 | Global Search / Search Overlay | 전역 검색창 | 오가니즘 | 없음 | 3 | |
 | Onboarding Tooltip / Product Tour | 신규 사용자 안내 툴팁 | 오가니즘 | 없음 | 5 | |
 | Onboarding Checklist | 초기 설정 체크리스트 | 오가니즘 | 없음 | 5 | |
@@ -312,7 +312,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 | Close Button (X) | 모달·배너 등을 닫는 X 버튼 | 아톰 | 있음 | 2 | 2026-07-31 코드화 — `icon-button.tsx`에 `IconButton` 기반 프리셋(`CloseButton`)으로 같이 구현. 기존 다이얼로그들의 인라인 닫기 버튼은 이번엔 리팩터링하지 않음(범위 밖) |
 | Copy Button | 클립보드 복사 버튼 | 아톰 | 없음 | 3 | |
 | Burger (Hamburger Menu) | 햄버거 메뉴 아이콘 버튼 | 아톰 | 없음 | 3 | |
-| Loading Overlay | 특정 영역을 덮는 로딩 오버레이 | 몰큘 | 없음 | 2 | |
+| Loading Overlay | 특정 영역을 덮는 로딩 오버레이 | 몰큘 | 있음 | 2 | 2026-08-03 구현, 판단값(LoadingSpinner 재사용). Backdrop(딤 처리)과는 목적이 달라 별개로 구현 |
 | Backdrop / Dim Overlay | 모달 등의 배경 딤 처리 | 아톰 | 없음 | 2 | 2026-07-31 `backdrop.tsx`로 코드화했다가 담당자가 "왜 넣었냐 빼라"고 해서 롤백. ConfirmDialog/RadioChoiceDialog는 각자 Radix Overlay로 이미 잘 처리되고 있어 별도 공용 아톰이 불필요하다고 판단 |
 | Status Indicator (Dot) | 상태 점(온라인 등) | 아톰 | 없음 | 3 | |
 | Overflow List ("+N more") | 목록 초과 시 "+N개 더" 표시 | 몰큘 | 없음 | 4 | |

@@ -62,6 +62,16 @@ import { List, ListItem } from "@/components/ui/list";
 import { Panel } from "@/components/ui/panel";
 import { Fieldset } from "@/components/ui/fieldset";
 import { Descriptions } from "@/components/ui/descriptions";
+import { DatePicker } from "@/components/ui/date-picker";
+import { DateRangePicker, type DateRange } from "@/components/ui/date-range-picker";
+import { TimePicker } from "@/components/ui/time-picker";
+import { Navbar } from "@/components/ui/navbar";
+import { Container, Grid } from "@/components/ui/grid-container";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { StickyHeader, StickyFooter } from "@/components/ui/sticky-header-footer";
+import { Logo } from "@/components/ui/logo";
+import { UserAccountMenu } from "@/components/ui/user-account-menu";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { X } from "lucide-react";
 import {
   IconArrow,
@@ -171,6 +181,16 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "panel", label: "Panel" },
   { id: "fieldset", label: "Fieldset" },
   { id: "descriptions", label: "Descriptions" },
+  { id: "date-picker", label: "DatePicker" },
+  { id: "date-range-picker", label: "DateRangePicker" },
+  { id: "time-picker", label: "TimePicker" },
+  { id: "navbar", label: "Navbar" },
+  { id: "grid-container", label: "Grid/Container" },
+  { id: "scroll-area", label: "ScrollArea" },
+  { id: "sticky-header-footer", label: "StickyHeader/Footer" },
+  { id: "logo", label: "Logo" },
+  { id: "user-account-menu", label: "UserAccountMenu" },
+  { id: "loading-overlay", label: "LoadingOverlay" },
   { id: "icons", label: "아이콘" },
   { id: "table-parts", label: "Table 분리" },
   { id: "table-full", label: "Table 합본" },
@@ -270,6 +290,16 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("panel"),
   leaf("fieldset"),
   leaf("descriptions"),
+  leaf("date-picker"),
+  leaf("date-range-picker"),
+  leaf("time-picker"),
+  leaf("navbar"),
+  leaf("grid-container"),
+  leaf("scroll-area"),
+  leaf("sticky-header-footer"),
+  leaf("logo"),
+  leaf("user-account-menu"),
+  leaf("loading-overlay"),
   leaf("icons"),
   branch("Table", ["table-parts", "table-full"], "Table"),
 ];
@@ -312,6 +342,16 @@ const TEMP_BADGE_IDS = new Set([
   "panel",
   "fieldset",
   "descriptions",
+  "date-picker",
+  "date-range-picker",
+  "time-picker",
+  "navbar",
+  "grid-container",
+  "scroll-area",
+  "sticky-header-footer",
+  "logo",
+  "user-account-menu",
+  "loading-overlay",
 ]);
 
 /** 사이드바 그룹과 1:1 매칭되는 최상단 탭. `firstId`는 그 그룹의 첫 섹션으로 스크롤 이동. */
@@ -1152,6 +1192,12 @@ export default function Home() {
   const [toggleButtonPressed, setToggleButtonPressed] = useState(false);
   const [multiSelectValues, setMultiSelectValues] = useState(["A라인", "B라인"]);
   const [paginationPage, setPaginationPage] = useState(4);
+  const [datePickerValue, setDatePickerValue] = useState<Date | null>(new Date(2026, 7, 3));
+  const [dateRangeValue, setDateRangeValue] = useState<DateRange>({
+    start: new Date(2026, 7, 1),
+    end: new Date(2026, 7, 10),
+  });
+  const [timePickerValue, setTimePickerValue] = useState<string | undefined>("09:00");
   // 2026-07-31 — "테이블 예시 체크박스가 기동하지 않아" 버그 리포트: 분리 데모(table-parts)의
   // 미니 Table들이 selectedIds/onSelectedIdsChange를 안 넘기고 있었음. Table 내부
   // toggleOne/toggleAll/toggleGroup은 `if (!onSelectedIdsChange) return;`로 시작해서
@@ -2533,6 +2579,102 @@ export default function Home() {
               { label: "현재고", value: "1,200" },
             ]}
           />
+        </Sample>
+      </Section>
+
+      <Section id="date-picker" title="DatePicker" badge="임시">
+        <Sample label="DatePicker · 단일 날짜">
+          <DatePicker value={datePickerValue} onValueChange={setDatePickerValue} />
+        </Sample>
+      </Section>
+
+      <Section id="date-range-picker" title="DateRangePicker" badge="임시">
+        <Sample label="DateRangePicker · 기간 선택">
+          <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
+        </Sample>
+      </Section>
+
+      <Section id="time-picker" title="TimePicker" badge="임시">
+        <Sample label="TimePicker · 30분 간격">
+          <TimePicker value={timePickerValue} onValueChange={setTimePickerValue} />
+        </Sample>
+      </Section>
+
+      <Section id="navbar" title="Navbar" badge="임시">
+        <Sample label="Navbar · 3-슬롯">
+          <Navbar
+            className="w-[600px]"
+            left={<Logo size="small" />}
+            right={
+              <Button size="small" variant="lineBlacktxt">
+                로그아웃
+              </Button>
+            }
+          />
+        </Sample>
+      </Section>
+
+      <Section id="grid-container" title="Grid / Container" badge="임시">
+        <Sample label="Grid · 3열">
+          <Grid columns={3} gap={2} className="w-[300px]">
+            <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">1</div>
+            <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">2</div>
+            <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">3</div>
+          </Grid>
+        </Sample>
+      </Section>
+
+      <Section id="scroll-area" title="ScrollArea" badge="임시">
+        <Sample label="ScrollArea · 고정 높이">
+          <ScrollArea className="h-[100px] w-[200px] rounded-mes-control border border-mes-border-default p-2">
+            {Array.from({ length: 10 }, (_, i) => (
+              <div key={i} className="py-1 text-[13px] text-mes-text-default">
+                항목 {i + 1}
+              </div>
+            ))}
+          </ScrollArea>
+        </Sample>
+      </Section>
+
+      <Section id="sticky-header-footer" title="StickyHeader / StickyFooter" badge="임시">
+        <Sample label="Sticky · 컨테이너 내부 스크롤">
+          <div className="h-[140px] w-[220px] overflow-y-auto rounded-mes-control border border-mes-border-default">
+            <StickyHeader className="px-3 py-2 text-[12px] font-semibold">헤더</StickyHeader>
+            <div className="p-3 text-[12px] text-mes-gray-70">
+              스크롤해도 헤더/푸터는 고정됩니다. 스크롤해도 헤더/푸터는 고정됩니다.
+            </div>
+            <StickyFooter className="px-3 py-2 text-[12px] text-mes-gray-70">푸터</StickyFooter>
+          </div>
+        </Sample>
+      </Section>
+
+      <Section id="logo" title="Logo" badge="임시">
+        <Sample label="Logo · default/small">
+          <div className="flex items-center gap-4">
+            <Logo />
+            <Logo size="small" />
+          </div>
+        </Sample>
+      </Section>
+
+      <Section id="user-account-menu" title="UserAccountMenu" badge="임시">
+        <Sample label="UserAccountMenu · 클릭해서 열기">
+          <UserAccountMenu
+            name="이해빈"
+            items={[
+              { id: "profile", label: "프로필" },
+              { id: "settings", label: "설정" },
+              { id: "logout", label: "로그아웃", danger: true },
+            ]}
+          />
+        </Sample>
+      </Section>
+
+      <Section id="loading-overlay" title="LoadingOverlay" badge="임시">
+        <Sample label="LoadingOverlay · 영역 덮기">
+          <div className="relative h-[100px] w-[200px] rounded-mes-control border border-mes-border-default">
+            <LoadingOverlay label="불러오는 중" />
+          </div>
         </Sample>
       </Section>
 

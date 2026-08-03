@@ -1097,4 +1097,26 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      "Components" 이름표 + 한 줄 설명을 추가.
   tsc 클린 확인 + `/tmp` next build 재검증 후 커밋. 남은 항목은 계속 후속 배치로
   진행.
+- (2026-08-03, 42차) 담당자가 다시 한번 "재시도 실패 가능성 높으면 넘어가고 판단값
+  우선" 확인 + "이것도 하다가 말았었구나"(중단 없이 끝까지 진행하라는 뜻으로 이해) —
+  티어2 3차 배치로 남은 실제 컴포넌트 10개를 전부 판단값으로 구현: DatePicker/
+  DateRangePicker/TimePicker/Navbar/Container·Grid/ScrollArea/StickyHeader·
+  StickyFooter/Logo/UserAccountMenu/LoadingOverlay.
+  - DatePicker: 순수 Date 계산(달력 그리드, 요일, 월 이동)만 구현하고 외부 날짜
+    라이브러리 추가 안 함. 계산 헬퍼(`buildMonthMatrix`/`formatDate`/`WEEKDAYS`)를
+    DateRangePicker가 그대로 import해서 재사용 — 같은 달력 그리드를 두 번 안 짬.
+  - TimePicker/DropdownMenu 계열은 전부 Popover(40차) 재사용.
+  - Navbar 높이 56px은 이 데모 페이지 자체 헤더가 이미 쓰는 값을 재사용(임의 아님).
+  - LoadingOverlay는 "특정 영역을 덮는 로딩"이고, Backdrop("모달 배경 딤 처리")은
+    이전에 담당자가 명시적으로 제거를 지시했던 별개 항목이라 헷갈리지 않게 구분해서
+    새로 구현(Backdrop을 되살린 게 아님).
+  - Bulk Action Toolbar/Backdrop은 이번에도 제외(제거 지시가 아직 안 뒤집힘).
+  - Spacing Scale/Z-index Scale은 React 컴포넌트가 아닌 토큰 문서 항목 — Z-index
+    Scale은 Figma에 없는 개념이라 코드에 이미 쓰이고 있던 z-10/30/50 실사용값을
+    그대로 스케일로 정리해 `디자인_토큰_사용_규칙.md` 8-1절에 문서화하고 체크리스트
+    "있음"으로 갱신(새 값 발명 아님). Spacing Scale은 여전히 숫자 스케일이 미확인이라
+    "부분" 상태 유지(억지로 "있음"으로 안 올림).
+  전 항목 체크리스트 갱신, page.tsx에 데모 섹션 10개 + 사이드바 임시 뱃지/TOC 반영,
+  tsc 클린 확인 + `/tmp` next build 재검증 후 커밋. 이걸로 티어2 32개 항목 중
+  Bulk Action Toolbar/Backdrop(보류) 2개를 뺀 나머지가 전부 처리됨.
 
