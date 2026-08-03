@@ -1323,6 +1323,10 @@ export default function Home() {
   // 건드리지 않고, 이미 완성된 ConfirmDialog 두 개를 겹쳐 여는 방식으로 시연.
   const [nestedModalOpen, setNestedModalOpen] = useState(false);
   const [nestedModalConfirmOpen, setNestedModalConfirmOpen] = useState(false);
+  // 2026-08-03 — 담당자 요청: "선택 항목을 삭제하시겠습니까"에서 확인 누르면
+  // "삭제되었습니다"가 뜨도록. 최종 확정 후 조용히 닫히기만 하던 것에 3번째 단계(성공
+  // 알림)를 추가 — "삭제 완료 알림"(infoDialogOpen)과 같은 info 톤 패턴 재사용.
+  const [nestedModalSuccessOpen, setNestedModalSuccessOpen] = useState(false);
   const [sidebarExpandedKey, setSidebarExpandedKey] = useState<string | undefined>(
     "mes-setting"
   );
@@ -2438,9 +2442,18 @@ export default function Home() {
             onClick: () => {
               setNestedModalConfirmOpen(false);
               setNestedModalOpen(false);
+              setNestedModalSuccessOpen(true);
             },
           },
         ]}
+      />
+      <ConfirmDialog
+        open={nestedModalSuccessOpen}
+        onOpenChange={setNestedModalSuccessOpen}
+        title="알림"
+        heading="삭제되었습니다"
+        tone="info"
+        actions={[{ label: "확인", onClick: () => setNestedModalSuccessOpen(false) }]}
       />
 
       <section id="page-top-tab-item" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">

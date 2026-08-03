@@ -1176,4 +1176,12 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      실제 페이지 스크롤은 클릭해야 이동(자동 스크롤 안 함).
   tsc 클린 확인 + `/tmp` next build 재검증(빌드된 정적 HTML에서 `col-span-4`, 검색
   input, 티어 정렬 순서, TierBadge 위치까지 직접 grep으로 확인) 후 커밋.
+- (2026-08-03, 45차) 담당자 요청: "네스티드모달은... 선택 항목을 삭제하시겠습니까에서
+  확인 누르면 삭제되었습니다가 뜰 수 있도록 구성". Nested Modal 데모의 최종 "삭제
+  확정" 클릭이 지금까지 두 모달을 조용히 닫기만 했던 걸, 3번째 단계로 성공 알림
+  ConfirmDialog("알림"/"삭제되었습니다", info 톤, 확인 1버튼)를 추가로 띄우도록 확장 —
+  같은 파일에 이미 있던 "삭제 완료 알림"(infoDialogOpen) 패턴과 동일한 톤/구조 재사용.
+  `nestedModalSuccessOpen` state 추가. tsc 클린 + `/tmp` next build 재검증(닫힌 상태
+  Dialog는 Radix가 언마운트해 정적 HTML엔 안 잡히는 게 정상 — 기존 "삭제 완료" 다이얼로그도
+  동일하게 안 잡히는 것으로 재확인) 후 커밋.
 
