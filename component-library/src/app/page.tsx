@@ -585,7 +585,7 @@ function Section({
   return (
     <section
       id={id}
-      className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8"
+      className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8"
     >
       <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
         {title}
@@ -1484,8 +1484,8 @@ export default function Home() {
       <div className="flex w-full flex-1">
         <aside className="sticky top-14 hidden h-[calc(100vh-56px)] w-[240px] shrink-0 overflow-y-auto border-r border-mes-gray-30 bg-white px-3 py-6 lg:block">
           {SIDEBAR_GROUPS.map((group) => (
-            <div key={group.title} className="mb-6">
-              <div className="mb-2 px-2 text-[11px] font-bold uppercase tracking-wide text-mes-gray-60">
+            <div key={group.title} className="mb-7">
+              <div className="mb-2 border-b border-mes-gray-30 px-2 pb-2 text-[15px] font-extrabold tracking-tight text-mes-gray-130">
                 {group.title}
               </div>
               <nav className="flex flex-col gap-0.5">
@@ -1567,7 +1567,7 @@ export default function Home() {
             </p>
           </div>
 
-          <section id="color-palette" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+          <section id="color-palette" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
             <div>
               <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">색상 팔레트</h2>
               <p className="mt-1 text-[12px] text-mes-gray-70">
@@ -1583,7 +1583,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section id="typography" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+          <section id="typography" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
             <div>
               <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">타이포그래피 스케일</h2>
               <p className="mt-1 text-[12px] text-mes-gray-70">
@@ -1617,7 +1617,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section id="spacing" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+          <section id="spacing" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
             <div>
               <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
                 간격
@@ -1644,7 +1644,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section id="radius" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+          <section id="radius" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
             <div>
               <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
                 Radius
@@ -1672,7 +1672,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section id="shadow" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+          <section id="shadow" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
             <div>
               <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
                 그림자
@@ -1698,7 +1698,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section id="semantic-tokens" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+          <section id="semantic-tokens" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
             <div>
               <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
                 시맨틱 토큰
@@ -2132,7 +2132,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <section id="filter" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <section id="filter" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           Filter
         </h2>
@@ -2148,7 +2148,7 @@ export default function Home() {
         />
       </section>
 
-      <section id="group-query" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <section id="group-query" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           GroupQuery
           <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">임시</span>
@@ -2181,7 +2181,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="quick-query" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <section id="quick-query" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           QuickQuery
         </h2>
@@ -2383,7 +2383,7 @@ export default function Home() {
         actions={[{ label: "확인", onClick: () => setBannerDialogOpen(false) }]}
       />
 
-      <section id="notice-banner" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <section id="notice-banner" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           NoticeBanner
         </h2>
@@ -2418,7 +2418,7 @@ export default function Home() {
         onConfirm={() => setRadioDialogOpen(false)}
       />
 
-      <section id="nested-modal" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <section id="nested-modal" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           Nested Modal
           <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">
@@ -2485,7 +2485,7 @@ export default function Home() {
         actions={[{ label: "확인", onClick: () => setNestedModalSuccessOpen(false) }]}
       />
 
-      <section id="page-top-tab-item" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <section id="page-top-tab-item" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           PageTopTabItem
         </h2>
@@ -2497,7 +2497,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="sidebar" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <section id="sidebar" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           Sidebar / SNB
         </h2>
@@ -2524,7 +2524,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="alarm-list-item" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <section id="alarm-list-item" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           AlarmListItem
         </h2>
@@ -2557,7 +2557,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="notification-panel" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <section id="notification-panel" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           NotificationPanel
         </h2>
@@ -2907,7 +2907,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <section id="icons" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+      <section id="icons" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           아이콘 라이브러리
         </h2>
@@ -2964,7 +2964,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="table-parts" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-6 border-b border-mes-gray-30 pb-8">
+      <section id="table-parts" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-6 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           Table — 구조 요소별 분리 데모
         </h2>
@@ -3037,7 +3037,7 @@ export default function Home() {
           `overflow-x-auto` 박스로 가로 스크롤 처리(대기목록 17번).
           2026-07-31: 담당자가 "테이블 합본이 하단에 있도록"이라고 요청 — 분리 데모
           (table-parts) 다음, 페이지 맨 아래로 순서 이동(내용 변경 없음). */}
-      <section id="table-full" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 pb-8">
+      <section id="table-full" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 pb-8">
         <button
           type="button"
           onClick={() => setProductionTableOpen((prev) => !prev)}
