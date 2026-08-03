@@ -1338,4 +1338,25 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
      하나로 병합. 나머지 로그 본문은 지시대로 "살짝씩만" 손대고 원형 유지 — 재발
      방지 규칙/알려진 이슈/회고의 핵심 교훈처럼 향후 세션에 실질적으로 쓰이는
      내용은 안 건드림.
+- (2026-08-03, 57차) 담당자 지적: "Center Modal/Side Slide Panel/Nested Modal이
+  Button처럼 [Modal]이라는 상위 메뉴 밑에 묶여야 하는데 다 찢어져 있다". 실제로
+  세 섹션 모두 클라우드MES "Modal" 스펙 페이지(node 9873:82872, Type01=Center/
+  Type02=Side Slide) 기반이거나 그 둘을 조합한 2-depth 데모(Nested)라 한 컴포넌트
+  패밀리가 맞음 — Button(사이즈/아이콘/컬러)·Table(분리/합본)과 동일하게 `branch()`로
+  묶어야 했는데 그동안 각자 최상위 leaf로 흩어져 있었음. `TOC_LINKS`의 세 라벨을
+  "Center Modal"/"Side Slide Panel"/"Nested Modal" → "Modal 중앙"/"Modal 사이드"/
+  "Modal 중첩"으로 변경(Button/Table처럼 "{상위명} {구분자}" 형식이어야 `branch()`의
+  stripPrefix가 정상적으로 하위 라벨을 뽑아냄 — 기존 라벨엔 "Modal "이 접두사 자리에
+  없어서 그대로 뒀으면 stripPrefix가 무의미했음), `COMPONENT_NODES`에서 leaf 3개를
+  `branch("Modal", ["center-modal","side-slide-panel","nested-modal"], "Modal")` 하나로
+  교체(자식 순서는 알파벳이 아니라 Button 방식처럼 기본형→변형→합성 패턴 순으로 수동
+  배치: 중앙→사이드→중첩). 각 섹션의 `<h2>` 표시 텍스트("Center Modal" 등)는 Figma
+  컴포넌트 이름 그대로라 안 건드림 — 사이드바 표시만 바뀜, 요청 범위 밖 변경 안 함.
+  묶은 결과 `COMPONENT_NODES.sort()`의 정렬 키가 3개 항목("Center Modal"/"Nested
+  Modal"/"Side Slide Panel", 각각 알파벳순으로 다른 컴포넌트들 사이에 흩어짐)에서
+  1개("Modal")로 바뀌어 전체 정렬 순서가 달라짐 — 55차와 동일한 방식(TOC_LINKS/
+  TIER_BY_ID/COMPONENT_NODES를 파싱해 목표 순서 재계산 → `<Section id="...">` 마커
+  기준 64개 물리 블록을 새 목표 순서로 재배치)으로 Components 영역 물리 순서를
+  다시 동기화. 재배치 후 Sample 126개/중복 key 0건/Section id 75개 중복 0건/물리
+  순서-정렬 결과 일치를 스크립트로 재확인, tsc 클린 확인 후 커밋.
 

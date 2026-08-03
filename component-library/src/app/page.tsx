@@ -170,9 +170,9 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "confirm-dialog", label: "ConfirmDialog" },
   { id: "notice-banner", label: "NoticeBanner" },
   { id: "radio-choice-dialog", label: "RadioChoiceDialog" },
-  { id: "nested-modal", label: "Nested Modal" },
-  { id: "center-modal", label: "Center Modal" },
-  { id: "side-slide-panel", label: "Side Slide Panel" },
+  { id: "center-modal", label: "Modal 중앙" },
+  { id: "side-slide-panel", label: "Modal 사이드" },
+  { id: "nested-modal", label: "Modal 중첩" },
   { id: "page-top-tab-item", label: "PageTopTabItem" },
   { id: "sidebar", label: "Sidebar" },
   { id: "alarm-list-item", label: "AlarmListItem" },
@@ -222,8 +222,10 @@ const TOC_LINKS: { id: string; label: string }[] = [
  * 트리화함 — 스크롤 스파이가 관찰하는 실제 앵커 대상은 여전히 `TOC_LINKS`(평평한 목록,
  * 안 바뀜)이고, 사이드바 트리는 그 위에 얹는 "표시용" 구조라 두 값이 어긋날 일이 없음
  * (branch 하위 항목의 id는 전부 `leaf()` 헬퍼로 TOC_LINKS에서 그대로 가져옴).
- * 현재 그룹화 대상: Button(사이즈/컬러/아이콘 3종), Table(합본/분리 2종) — 나머지는
- * 전부 컴포넌트 1개당 섹션 1개라 묶을 하위 항목이 없음.
+ * 현재 그룹화 대상: Button(사이즈/컬러/아이콘 3종), Table(합본/분리 2종), Modal(중앙/
+ * 사이드/중첩 3종, 2026-08-03 추가 — Center Modal/Side Slide Panel/Nested Modal이
+ * 각각 별도 최상위 항목으로 흩어져 있던 걸 담당자 지적으로 통합) — 나머지는 전부
+ * 컴포넌트 1개당 섹션 1개라 묶을 하위 항목이 없음.
  */
 type SidebarNode =
   | { kind: "leaf"; id: string; label: string }
@@ -304,9 +306,7 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("confirm-dialog"),
   leaf("notice-banner"),
   leaf("radio-choice-dialog"),
-  leaf("nested-modal"),
-  leaf("center-modal"),
-  leaf("side-slide-panel"),
+  branch("Modal", ["center-modal", "side-slide-panel", "nested-modal"], "Modal"),
   leaf("page-top-tab-item"),
   leaf("sidebar"),
   leaf("alarm-list-item"),
@@ -2323,36 +2323,6 @@ export default function Home() {
           2026-08-03(55차) — 물리적 배치 순서는 더 이상 "개념적으로 가까운 이웃"
           기준이 아니라 사이드바와 동일한 티어 오름차순 → 알파벳순 정렬을 그대로
           따름(아래 참고). */}
-      <section id="center-modal" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Center Modal
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          화면 중앙에 뜨는 기본 팝업. 폭 960px 고정, 최대 높이 80vh — 헤더·푸터는 항상
-          고정, 본문 콘텐츠가 넘치면 본문만 스크롤. 2026-08-03 클라우드MES "Modal"
-          스펙 페이지(node 9873:82872 Type01)로 보류 해제 후 실측 반영.
-        </p>
-        <Button size="basic" onClick={() => setCenterModalOpen(true)}>
-          Center Modal 열기
-        </Button>
-      </section>
-
-      <CenterModal
-        open={centerModalOpen}
-        onOpenChange={setCenterModalOpen}
-        title="모달 타이틀"
-        onCancel={() => setCenterModalOpen(false)}
-        onConfirm={() => setCenterModalOpen(false)}
-      >
-        <div className="flex w-full flex-col gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-3">
-          {Array.from({ length: 14 }, (_, i) => (
-            <div key={i} className="text-[13px] text-mes-gray-70">
-              콘텐츠 영역 — 항목 {i + 1} (본문만 스크롤되는지 확인용 더미 행)
-            </div>
-          ))}
-        </div>
-      </CenterModal>
-
       <Section id="checkbox" title="Checkbox">
         <Sample
           label="Checkbox · Unchecked"
@@ -2699,6 +2669,66 @@ export default function Home() {
           <Input size="small" defaultValue="내용" className="w-[200px]" />
         </Sample>
       </Section>
+
+      <section id="center-modal" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+          Center Modal
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          화면 중앙에 뜨는 기본 팝업. 폭 960px 고정, 최대 높이 80vh — 헤더·푸터는 항상
+          고정, 본문 콘텐츠가 넘치면 본문만 스크롤. 2026-08-03 클라우드MES "Modal"
+          스펙 페이지(node 9873:82872 Type01)로 보류 해제 후 실측 반영.
+        </p>
+        <Button size="basic" onClick={() => setCenterModalOpen(true)}>
+          Center Modal 열기
+        </Button>
+      </section>
+
+      <CenterModal
+        open={centerModalOpen}
+        onOpenChange={setCenterModalOpen}
+        title="모달 타이틀"
+        onCancel={() => setCenterModalOpen(false)}
+        onConfirm={() => setCenterModalOpen(false)}
+      >
+        <div className="flex w-full flex-col gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-3">
+          {Array.from({ length: 14 }, (_, i) => (
+            <div key={i} className="text-[13px] text-mes-gray-70">
+              콘텐츠 영역 — 항목 {i + 1} (본문만 스크롤되는지 확인용 더미 행)
+            </div>
+          ))}
+        </div>
+      </CenterModal>
+
+      <section id="side-slide-panel" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+          Side Slide Panel
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          화면 우측에 붙어 세로 전체를 채우는 패널. 폭 960px 기본(콘텐츠 타입에 따라
+          변형 가능) — 헤더·푸터 고정, 본문만 스크롤은 Center Modal과 동일 규칙.
+          같은 스펙 페이지(node 9873:82872 Type02)로 신규 구현.
+        </p>
+        <Button size="basic" onClick={() => setSideSlidePanelOpen(true)}>
+          Side Slide Panel 열기
+        </Button>
+      </section>
+
+      <SideSlidePanel
+        open={sideSlidePanelOpen}
+        onOpenChange={setSideSlidePanelOpen}
+        title="모달 타이틀"
+        onCancel={() => setSideSlidePanelOpen(false)}
+        onConfirm={() => setSideSlidePanelOpen(false)}
+      >
+        <div className="flex w-full flex-col gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-3">
+          {Array.from({ length: 24 }, (_, i) => (
+            <div key={i} className="text-[13px] text-mes-gray-70">
+              콘텐츠 스크롤 영역 — 항목 {i + 1} (모달창 높이에 따라 가변)
+            </div>
+          ))}
+        </div>
+      </SideSlidePanel>
 
       <section id="nested-modal" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
@@ -3108,36 +3138,6 @@ export default function Home() {
           </Select>
         </Sample>
       </Section>
-
-      <section id="side-slide-panel" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Side Slide Panel
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          화면 우측에 붙어 세로 전체를 채우는 패널. 폭 960px 기본(콘텐츠 타입에 따라
-          변형 가능) — 헤더·푸터 고정, 본문만 스크롤은 Center Modal과 동일 규칙.
-          같은 스펙 페이지(node 9873:82872 Type02)로 신규 구현.
-        </p>
-        <Button size="basic" onClick={() => setSideSlidePanelOpen(true)}>
-          Side Slide Panel 열기
-        </Button>
-      </section>
-
-      <SideSlidePanel
-        open={sideSlidePanelOpen}
-        onOpenChange={setSideSlidePanelOpen}
-        title="모달 타이틀"
-        onCancel={() => setSideSlidePanelOpen(false)}
-        onConfirm={() => setSideSlidePanelOpen(false)}
-      >
-        <div className="flex w-full flex-col gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-3">
-          {Array.from({ length: 24 }, (_, i) => (
-            <div key={i} className="text-[13px] text-mes-gray-70">
-              콘텐츠 스크롤 영역 — 항목 {i + 1} (모달창 높이에 따라 가변)
-            </div>
-          ))}
-        </div>
-      </SideSlidePanel>
 
       <section id="sidebar" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
