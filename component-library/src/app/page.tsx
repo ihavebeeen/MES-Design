@@ -1485,7 +1485,7 @@ export default function Home() {
         <aside className="sticky top-14 hidden h-[calc(100vh-56px)] w-[240px] shrink-0 overflow-y-auto border-r border-mes-gray-30 bg-white px-3 py-6 lg:block">
           {SIDEBAR_GROUPS.map((group) => (
             <div key={group.title} className="mb-7">
-              <div className="mb-2 border-b border-mes-gray-30 px-2 pb-2 text-[15px] font-extrabold tracking-tight text-mes-gray-130">
+              <div className="mb-2 border-b-2 border-mes-gray-90 px-2 pb-2 text-[18px] font-extrabold tracking-tight text-mes-gray-130">
                 {group.title}
               </div>
               <nav className="flex flex-col gap-0.5">
@@ -1556,9 +1556,12 @@ export default function Home() {
 
           {/* 2026-08-03 신규 — 담당자 요청: 메인 화면에도 사이드바처럼 Foundation/
               Components 구분자를 두라고 함. 사이드바 그룹 제목과 짝을 맞춘 큰 이름표 +
-              한 줄 설명. */}
-          <div className="flex w-full max-w-[960px] flex-col gap-1">
-            <span className="text-[13px] font-bold uppercase tracking-widest text-mes-primary-60">
+              한 줄 설명.
+              2026-08-03 47차 — "섹션 헤더(17px)보다 더 큰 크기로 확 나눠줘" 재지적 —
+              개별 섹션 h2(17px)보다 뚜렷이 큰 28px + 두꺼운 좌측 바(border-l-8)로,
+              섹션들의 상위 카테고리임이 한눈에 보이도록 확대. */}
+          <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
+            <span className="text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
               Foundation
             </span>
             <p className="text-[13px] leading-[1.5] text-mes-gray-70">
@@ -1725,8 +1728,8 @@ export default function Home() {
             </div>
           </section>
 
-          <div className="flex w-full max-w-[960px] flex-col gap-1">
-            <span className="text-[13px] font-bold uppercase tracking-widest text-mes-primary-60">
+          <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
+            <span className="text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
               Components
             </span>
             <p className="text-[13px] leading-[1.5] text-mes-gray-70">
