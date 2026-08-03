@@ -154,7 +154,7 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "textarea", label: "Textarea" },
   { id: "label", label: "Label" },
   { id: "link", label: "Link" },
-  { id: "input", label: "Input" },
+  { id: "input", label: "Input 기본" },
   { id: "select", label: "Select" },
   { id: "badge", label: "Badge" },
   { id: "radio", label: "Radio" },
@@ -178,15 +178,15 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "alarm-list-item", label: "AlarmListItem" },
   { id: "notification-panel", label: "NotificationPanel" },
   { id: "card", label: "Card" },
-  { id: "empty-state", label: "EmptyState" },
-  { id: "error-state", label: "ErrorState" },
+  { id: "empty-state", label: "State 없음" },
+  { id: "error-state", label: "State 오류" },
   { id: "popover", label: "Popover" },
   { id: "accordion", label: "Accordion" },
   { id: "collapsible", label: "Collapsible" },
   { id: "button-group", label: "ButtonGroup" },
   { id: "toggle-button", label: "ToggleButton" },
-  { id: "number-input", label: "NumberInput" },
-  { id: "password-input", label: "PasswordInput" },
+  { id: "number-input", label: "Input 숫자" },
+  { id: "password-input", label: "Input 비밀번호" },
   { id: "multi-select-input", label: "MultiSelectInput" },
   { id: "breadcrumb", label: "Breadcrumb" },
   { id: "pagination", label: "Pagination" },
@@ -195,9 +195,9 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "panel", label: "Panel" },
   { id: "fieldset", label: "Fieldset" },
   { id: "descriptions", label: "Descriptions" },
-  { id: "date-picker", label: "DatePicker" },
-  { id: "date-range-picker", label: "DateRangePicker" },
-  { id: "time-picker", label: "TimePicker" },
+  { id: "date-picker", label: "Picker 날짜" },
+  { id: "date-range-picker", label: "Picker 기간" },
+  { id: "time-picker", label: "Picker 시간" },
   { id: "navbar", label: "Navbar" },
   { id: "grid-container", label: "Grid/Container" },
   { id: "scroll-area", label: "ScrollArea" },
@@ -223,9 +223,14 @@ const TOC_LINKS: { id: string; label: string }[] = [
  * 안 바뀜)이고, 사이드바 트리는 그 위에 얹는 "표시용" 구조라 두 값이 어긋날 일이 없음
  * (branch 하위 항목의 id는 전부 `leaf()` 헬퍼로 TOC_LINKS에서 그대로 가져옴).
  * 현재 그룹화 대상: Button(사이즈/컬러/아이콘 3종), Table(합본/분리 2종), Modal(중앙/
- * 사이드/중첩 3종, 2026-08-03 추가 — Center Modal/Side Slide Panel/Nested Modal이
- * 각각 별도 최상위 항목으로 흩어져 있던 걸 담당자 지적으로 통합) — 나머지는 전부
- * 컴포넌트 1개당 섹션 1개라 묶을 하위 항목이 없음.
+ * 사이드/중첩 3종), Input(기본/숫자/비밀번호 3종), Picker(날짜/기간/시간 3종),
+ * State(없음/오류 2종) — 전부 "이름은 다르지만 실제로 같은 컴포넌트를 그대로 재사용/
+ * 확장한 성격이 비슷한 것들"이라는 기준으로 소스 코드의 재사용 관계(doc 주석의
+ * "OO 재사용"/"OO를 그대로 감싸" 문구)를 근거로만 묶었음 — 그냥 이름이나 위치가
+ * 비슷하다고 임의로 묶지 않음(예: Select/Combobox는 소스에 "별도 컴포넌트로 분리"라고
+ * 의도적 분리 이유가 적혀 있어 제외, Filter/GroupQuery/QuickQuery는 서로 재사용
+ * 관계가 없는 독립 컴포넌트라 제외). 나머지는 전부 컴포넌트 1개당 섹션 1개라 묶을
+ * 하위 항목이 없음.
  */
 type SidebarNode =
   | { kind: "leaf"; id: string; label: string }
@@ -290,7 +295,7 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("textarea"),
   leaf("label"),
   leaf("link"),
-  leaf("input"),
+  branch("Input", ["input", "number-input", "password-input"], "Input"),
   leaf("select"),
   leaf("badge"),
   leaf("radio"),
@@ -312,15 +317,12 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("alarm-list-item"),
   leaf("notification-panel"),
   leaf("card"),
-  leaf("empty-state"),
-  leaf("error-state"),
+  branch("State", ["empty-state", "error-state"], "State"),
   leaf("popover"),
   leaf("accordion"),
   leaf("collapsible"),
   leaf("button-group"),
   leaf("toggle-button"),
-  leaf("number-input"),
-  leaf("password-input"),
   leaf("multi-select-input"),
   leaf("breadcrumb"),
   leaf("pagination"),
@@ -329,9 +331,7 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("panel"),
   leaf("fieldset"),
   leaf("descriptions"),
-  leaf("date-picker"),
-  leaf("date-range-picker"),
-  leaf("time-picker"),
+  branch("Picker", ["date-picker", "date-range-picker", "time-picker"], "Picker"),
   leaf("navbar"),
   leaf("scroll-area"),
   leaf("sticky-header-footer"),
@@ -2670,6 +2670,36 @@ export default function Home() {
         </Sample>
       </Section>
 
+      <Section id="number-input" title="NumberInput" badge="임시">
+        <Sample
+          label="NumberInput · 기본"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "텍스트박스", value: "Input 실측 스타일 재사용(inputVariants)" },
+            { label: "증감 버튼", value: "폭24px(w-6), 상하 분할, 아이콘10px" },
+            { label: "버튼 테두리", value: "1px Gray-30, 텍스트박스와 이어붙임(border-r-0)" },
+            { label: "R값", value: "4px(control, Input과 동일)" },
+          ]}
+        >
+          <NumberInput defaultValue={10} min={0} max={999} />
+        </Sample>
+      </Section>
+
+      <Section id="password-input" title="PasswordInput" badge="임시">
+        <Sample
+          label="PasswordInput · 보기/숨기기 토글"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "규격", value: "Input 실측 스타일 재사용(inputVariants)" },
+            { label: "토글 아이콘", value: "16px, 우측 인셋8px(right-2)" },
+            { label: "우측 여백", value: "아이콘 자리만큼 pr-8 추가" },
+            { label: "R값", value: "4px(control, Input과 동일)" },
+          ]}
+        >
+          <PasswordInput defaultValue="password123" className="w-[200px]" />
+        </Sample>
+      </Section>
+
       <section id="center-modal" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           Center Modal
@@ -3449,35 +3479,6 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="date-picker" title="DatePicker" badge="임시">
-        <Sample
-          label="DatePicker · 단일 날짜"
-          spec={[
-            { label: "Figma", value: "node-id 해석 불가, 실측 못함(판단값)" },
-            { label: "트리거", value: "Input 스타일 재사용(inputVariants) + IconCalendar(실측 아이콘)" },
-            { label: "패널", value: "Popover 재사용" },
-            { label: "날짜 계산", value: "외부 라이브러리 없이 순수 Date" },
-            { label: "R값", value: "4px(control, Input 트리거 재사용)" },
-          ]}
-        >
-          <DatePicker value={datePickerValue} onValueChange={setDatePickerValue} />
-        </Sample>
-      </Section>
-
-      <Section id="date-range-picker" title="DateRangePicker" badge="임시">
-        <Sample
-          label="DateRangePicker · 기간 선택"
-          spec={[
-            { label: "규격", value: "DatePicker와 동일 트리거/패널" },
-            { label: "선택 순서", value: "시작일 클릭 → 종료일 클릭" },
-            { label: "사이 날짜", value: "옅은 브랜드 배경(판단값)" },
-            { label: "R값", value: "4px(control, DatePicker와 동일)" },
-          ]}
-        >
-          <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
-        </Sample>
-      </Section>
-
       <Section id="descriptions" title="Descriptions" badge="임시">
         <Sample
           label="Descriptions · 1열"
@@ -3553,53 +3554,6 @@ export default function Home() {
               { id: "copy", label: "복사" },
               { id: "delete", label: "삭제", danger: true },
             ]}
-          />
-        </Sample>
-      </Section>
-
-      <Section id="empty-state" title="EmptyState" badge="임시">
-        <Sample
-          label="EmptyState · 아이콘+액션"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "패딩", value: "좌우24px/상하48px(px-6 py-12)" },
-            { label: "아이콘 색", value: "Gray-50" },
-            { label: "아이콘↔텍스트블록 gap", value: "12px" },
-            { label: "제목", value: "15px semibold, Gray-130" },
-            { label: "설명", value: "13px, Gray-70" },
-            { label: "텍스트블록↔액션 gap", value: "4px(mt-1)" },
-          ]}
-        >
-          <EmptyState
-            icon={<IconFileNote size={40} />}
-            title="데이터가 없습니다"
-            description="조회 조건을 변경해보세요."
-            action={
-              <Button size="small" variant="lineBlacktxt">
-                필터 초기화
-              </Button>
-            }
-          />
-        </Sample>
-      </Section>
-
-      <Section id="error-state" title="ErrorState" badge="임시">
-        <Sample
-          label="ErrorState · 재시도 액션"
-          spec={[
-            { label: "레이아웃", value: "EmptyState와 동일(판단값)" },
-            { label: "아이콘 색", value: "text-mes-text-danger(첫 실사용처)" },
-            { label: "제목 기본값", value: "\"문제가 발생했습니다\"" },
-          ]}
-        >
-          <ErrorState
-            icon={<IconExclamationCircle size={40} />}
-            description="잠시 후 다시 시도해주세요."
-            action={
-              <Button size="small" variant="lineMain">
-                다시 시도
-              </Button>
-            }
           />
         </Sample>
       </Section>
@@ -3908,21 +3862,6 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="number-input" title="NumberInput" badge="임시">
-        <Sample
-          label="NumberInput · 기본"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "텍스트박스", value: "Input 실측 스타일 재사용(inputVariants)" },
-            { label: "증감 버튼", value: "폭24px(w-6), 상하 분할, 아이콘10px" },
-            { label: "버튼 테두리", value: "1px Gray-30, 텍스트박스와 이어붙임(border-r-0)" },
-            { label: "R값", value: "4px(control, Input과 동일)" },
-          ]}
-        >
-          <NumberInput defaultValue={10} min={0} max={999} />
-        </Sample>
-      </Section>
-
       <Section id="pagination" title="Pagination" badge="임시">
         <Sample
           label="Pagination · 10페이지 중 4페이지"
@@ -3955,18 +3894,46 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="password-input" title="PasswordInput" badge="임시">
+      <Section id="date-picker" title="DatePicker" badge="임시">
         <Sample
-          label="PasswordInput · 보기/숨기기 토글"
+          label="DatePicker · 단일 날짜"
           spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "규격", value: "Input 실측 스타일 재사용(inputVariants)" },
-            { label: "토글 아이콘", value: "16px, 우측 인셋8px(right-2)" },
-            { label: "우측 여백", value: "아이콘 자리만큼 pr-8 추가" },
-            { label: "R값", value: "4px(control, Input과 동일)" },
+            { label: "Figma", value: "node-id 해석 불가, 실측 못함(판단값)" },
+            { label: "트리거", value: "Input 스타일 재사용(inputVariants) + IconCalendar(실측 아이콘)" },
+            { label: "패널", value: "Popover 재사용" },
+            { label: "날짜 계산", value: "외부 라이브러리 없이 순수 Date" },
+            { label: "R값", value: "4px(control, Input 트리거 재사용)" },
           ]}
         >
-          <PasswordInput defaultValue="password123" className="w-[200px]" />
+          <DatePicker value={datePickerValue} onValueChange={setDatePickerValue} />
+        </Sample>
+      </Section>
+
+      <Section id="date-range-picker" title="DateRangePicker" badge="임시">
+        <Sample
+          label="DateRangePicker · 기간 선택"
+          spec={[
+            { label: "규격", value: "DatePicker와 동일 트리거/패널" },
+            { label: "선택 순서", value: "시작일 클릭 → 종료일 클릭" },
+            { label: "사이 날짜", value: "옅은 브랜드 배경(판단값)" },
+            { label: "R값", value: "4px(control, DatePicker와 동일)" },
+          ]}
+        >
+          <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
+        </Sample>
+      </Section>
+
+      <Section id="time-picker" title="TimePicker" badge="임시">
+        <Sample
+          label="TimePicker · 30분 간격"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "트리거", value: "Input 스타일 재사용" },
+            { label: "목록", value: "Combobox 옵션 hover/선택 규칙 재사용, 스크롤" },
+            { label: "R값", value: "4px(control, Input 트리거 재사용)" },
+          ]}
+        >
+          <TimePicker value={timePickerValue} onValueChange={setTimePickerValue} />
         </Sample>
       </Section>
 
@@ -4067,6 +4034,53 @@ export default function Home() {
               <Skeleton variant="text" className="w-2/3" />
             </div>
           </div>
+        </Sample>
+      </Section>
+
+      <Section id="empty-state" title="EmptyState" badge="임시">
+        <Sample
+          label="EmptyState · 아이콘+액션"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "패딩", value: "좌우24px/상하48px(px-6 py-12)" },
+            { label: "아이콘 색", value: "Gray-50" },
+            { label: "아이콘↔텍스트블록 gap", value: "12px" },
+            { label: "제목", value: "15px semibold, Gray-130" },
+            { label: "설명", value: "13px, Gray-70" },
+            { label: "텍스트블록↔액션 gap", value: "4px(mt-1)" },
+          ]}
+        >
+          <EmptyState
+            icon={<IconFileNote size={40} />}
+            title="데이터가 없습니다"
+            description="조회 조건을 변경해보세요."
+            action={
+              <Button size="small" variant="lineBlacktxt">
+                필터 초기화
+              </Button>
+            }
+          />
+        </Sample>
+      </Section>
+
+      <Section id="error-state" title="ErrorState" badge="임시">
+        <Sample
+          label="ErrorState · 재시도 액션"
+          spec={[
+            { label: "레이아웃", value: "EmptyState와 동일(판단값)" },
+            { label: "아이콘 색", value: "text-mes-text-danger(첫 실사용처)" },
+            { label: "제목 기본값", value: "\"문제가 발생했습니다\"" },
+          ]}
+        >
+          <ErrorState
+            icon={<IconExclamationCircle size={40} />}
+            description="잠시 후 다시 시도해주세요."
+            action={
+              <Button size="small" variant="lineMain">
+                다시 시도
+              </Button>
+            }
+          />
         </Sample>
       </Section>
 
@@ -4176,20 +4190,6 @@ export default function Home() {
           ]}
         >
           <Textarea disabled defaultValue="비활성" className="h-20 w-[220px]" />
-        </Sample>
-      </Section>
-
-      <Section id="time-picker" title="TimePicker" badge="임시">
-        <Sample
-          label="TimePicker · 30분 간격"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "트리거", value: "Input 스타일 재사용" },
-            { label: "목록", value: "Combobox 옵션 hover/선택 규칙 재사용, 스크롤" },
-            { label: "R값", value: "4px(control, Input 트리거 재사용)" },
-          ]}
-        >
-          <TimePicker value={timePickerValue} onValueChange={setTimePickerValue} />
         </Sample>
       </Section>
 

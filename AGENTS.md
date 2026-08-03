@@ -1359,4 +1359,30 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
   기준 64개 물리 블록을 새 목표 순서로 재배치)으로 Components 영역 물리 순서를
   다시 동기화. 재배치 후 Sample 126개/중복 key 0건/Section id 75개 중복 0건/물리
   순서-정렬 결과 일치를 스크립트로 재확인, tsc 클린 확인 후 커밋.
+- (2026-08-03, 58차) 담당자 지적: "이런 식으로 이름만 달라서 찢어진 게 아니라 성격이
+  비슷한 애들도 마찬가지로 묶어야 한다". 임의로 "비슷해 보이는" 것끼리 묶지 않고,
+  각 컴포넌트 소스 파일(`ui/*.tsx`)의 doc 주석에서 "OO(파일명)의 실측 스타일을 그대로
+  재사용"/"OO를 그대로 감싸" 같은 명시적 재사용·래핑 관계가 적힌 것만 후보로 추림
+  (반대로 Select/Combobox는 소스에 "별도 컴포넌트로 분리"라는 의도적 분리 사유가
+  있어서 제외, Filter/GroupQuery/QuickQuery는 서로 재사용 관계가 없는 독립 컴포넌트라
+  제외 — 이 판단 기준은 `COMPONENT_NODES` 위 주석에도 그대로 남겨둠). 후보를
+  AskUserQuestion으로 제시해 담당자가 선택한 3개 그룹만 실행:
+  1) **Input**(input/number-input/password-input) — NumberInput·PasswordInput 소스에
+     "Input의 실측 스타일을 그대로 재사용" 명시.
+  2) **Picker**(date-picker/date-range-picker/time-picker) — DateRangePicker가
+     date-picker.tsx를 직접 import, TimePicker도 같은 트리거(Input)+패널(Popover)
+     패턴 공유.
+  3) **State**(empty-state/error-state) — "레이아웃은 동일, 아이콘 색만 다름"이 소스에
+     명시(단, 코드상 두 컴포넌트를 하나로 합치라는 뜻은 아님 — 사이드바 표시만 묶음).
+  TOC_LINKS 라벨을 Modal 때와 같은 "{상위명} {구분자}" 포맷으로 변경: Input→"Input
+  기본"/"Input 숫자"/"Input 비밀번호", DatePicker/DateRangePicker/TimePicker→"Picker
+  날짜"/"Picker 기간"/"Picker 시간", EmptyState/ErrorState→"State 없음"/"State 오류".
+  DropdownMenu/UserAccountMenu(UserAccountMenu가 DropdownMenu를 그대로 감쌈)와
+  Accordion/Collapsible(서로 명시적으로 대응 관계 언급)도 근거는 있었으나 담당자가
+  이번엔 선택 안 해 보류 — 다음에 필요하면 같은 방식으로 다시 후보 제시.
+  `COMPONENT_NODES`에서 leaf 6개(input/number-input/password-input, date-picker/
+  date-range-picker/time-picker, empty-state/error-state)를 branch 3개로 교체,
+  55차·57차와 동일한 방식으로 목표 정렬 재계산 → Components 영역 64개 물리 블록
+  재배치. 재배치 후 Sample 126개/중복 key 0건/Section id 75개 중복 0건/물리 순서-
+  정렬 결과 일치 재확인, tsc 클린 확인 후 커밋.
 
