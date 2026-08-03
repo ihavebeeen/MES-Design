@@ -1,6 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+  useContext,
+  createContext,
+  Children,
+  isValidElement,
+  cloneElement,
+} from "react";
 import { ChevronRight, Plus, Search, Palette, Blocks, Hammer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -552,31 +561,74 @@ function TierBadge({ id }: { id: string }) {
 }
 
 /**
- * 2026-08-03 — 앞서 넣었던 `overflow-x-auto`("최악의 경우 스크롤바로 끝나게") 안전망을
- * 담당자가 되돌리라고 지적: "컴포넌트 안에 스크롤 만드는 건 극도로 지양", "줄바꿈도 좀
- * 그래". 스크롤/줄바꿈 둘 다 눈속임이지 진짜 해결이 아니라는 지적이 맞아서, 실제 해결로
- * 교체함 — Section의 `grid-cols-4` 컬럼(약 222px)보다 넓은 콘텐츠는 애초에 좁은 칸에
- *욱여넣지 않고 `wide` prop으로 4칸을 전부 차지하는 한 줄을 통째로 내줌(Toast, Card,
- * MultiSelectInput 등 실측 결과 컬럼보다 넓은 컴포넌트에 전부 적용, 아래 데모 목록 참고).
- * `min-w-0`은 grid item이 콘텐츠 크기 때문에 트랙 자체를 밀어 늘리는 "grid blowout"만
- * 막는 용도로 유지(스크롤/클립과는 무관, 부작용 없음).
+ * 2026-08-03 — 담당자 지시로 Section 내부 레이아웃을 전면 재구성.
+ * "지금 컴포넌트들이 다 가로로 정렬되어있잖아? 세로 정렬로 바꾸기 / 세로로 바뀌면서
+ * 남는 공간에 사이즈(패딩·마진 등) 적기 / 우측 빈 공간에 그 섹션의 하위 컴포넌트
+ * 리스트를 두고 클릭하면 그 위치로 이동".
+ *
+ * - 기존 `grid grid-cols-4`(한 칸 ~222px) 구조를 세로 스택으로 교체 — 이전에 있던
+ *   `wide` prop(컬럼보다 넓은 콘텐츠를 4칸 전체로 펼치던 안전장치)은 모든 행이 이제
+ *   항상 전체 폭을 쓰므로 자연히 필요 없어져 제거.
+ * - "사이즈 적기"는 컴포넌트마다 padding/margin 값을 일일이 손으로 재서 써넣는 대신
+ *   `ResizeObserver`로 실제 렌더링된 W×H를 라이브로 측정해 라벨 옆에 표시 — 항상
+ *   정확하고 컴포넌트가 바뀌어도 자동으로 맞음(판단값: padding/margin 자체는 컴포넌트
+ *   내부 구조라 바깥에서 일반적으로 측정할 방법이 없어 제외, 필요하면 각 컴포넌트
+ *   파일의 실측 주석 참고).
+ * - "우측 하위 컴포넌트 리스트"는 페이지 우측의 비어있던 공간(왼쪽 사이드바+가운데
+ *   960px 콘텐츠 바깥 여백)에 두 번째 사이드바(`RightRail`)로 구현 — 현재 스크롤 중인
+ *   섹션의 Sample 라벨 목록을 보여주고 클릭하면 해당 Sample로 스크롤 이동. Section이
+ *   렌더링될 때마다 자기 Sample 목록을 `SectionRegistryContext`에 등록해두면
+ *   `RightRail`이 같은 렌더 패스 안에서 바로 읽어 씀(자세한 배선은 RightRail 정의 참고).
  */
+const SectionRegistryContext = createContext<
+  React.RefObject<Map<string, { id: string; label: string }[]>> | null
+>(null);
+
+/** Sample 내부 콘텐츠의 렌더링된 실제 크기를 라이브로 측정(사이즈 표기용). */
+function useMeasuredSize<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => {
+      const rect = el.getBoundingClientRect();
+      setSize({ w: Math.round(rect.width), h: Math.round(rect.height) });
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return [ref, size] as const;
+}
+
 function Sample({
+  id,
   label,
-  wide,
   children,
 }: {
+  /** Section이 자식을 순회하며 주입(호출부에서 직접 넘길 필요 없음) — 우측 리스트의 앵커 타겟. */
+  id?: string;
   label: string;
-  /** 컴포넌트 실측 폭이 grid-cols-4 한 칸(~222px)보다 넓을 때 4칸 전체를 차지하도록 */
-  wide?: boolean;
   children: React.ReactNode;
 }) {
+  const [measureRef, size] = useMeasuredSize<HTMLDivElement>();
   return (
-    <div className={cn("flex min-w-0 flex-col items-start gap-2", wide && "col-span-4")}>
-      <span className="font-mono text-[12px] font-medium leading-none text-mes-gray-90">
-        {label}
-      </span>
-      <div className="flex items-center">{children}</div>
+    <div id={id} className="flex w-full scroll-mt-24 flex-col items-start gap-2 py-4">
+      <div className="flex items-baseline gap-2">
+        <span className="font-mono text-[12px] font-medium leading-none text-mes-gray-90">
+          {label}
+        </span>
+        {size && (
+          <span className="font-mono text-[10px] leading-none text-mes-gray-50">
+            {size.w} × {size.h}px
+          </span>
+        )}
+      </div>
+      <div ref={measureRef} className="flex w-fit min-w-0 items-center">
+        {children}
+      </div>
     </div>
   );
 }
@@ -598,6 +650,21 @@ function Section({
   badge?: string;
   children: React.ReactNode;
 }) {
+  const registryRef = useContext(SectionRegistryContext);
+  const samplesWithIds: { id: string; label: string }[] = [];
+  let sampleIndex = 0;
+  const laidOutChildren = Children.map(children, (child) => {
+    if (isValidElement(child) && child.type === Sample) {
+      const sampleId = `${id}--s${sampleIndex}`;
+      sampleIndex += 1;
+      const label = (child.props as { label: string }).label;
+      samplesWithIds.push({ id: sampleId, label });
+      return cloneElement(child as React.ReactElement<{ id?: string }>, { id: sampleId });
+    }
+    return child;
+  });
+  registryRef?.current.set(id, samplesWithIds);
+
   return (
     <section
       id={id}
@@ -611,8 +678,48 @@ function Section({
           </span>
         )}
       </h2>
-      <div className="grid grid-cols-4 items-end gap-x-6 gap-y-6">{children}</div>
+      <div className="flex w-full flex-col divide-y divide-mes-gray-20">{laidOutChildren}</div>
     </section>
+  );
+}
+
+/**
+ * 2026-08-03 신규 — 세로 정렬 전환으로 남은 페이지 우측 공간에 두 번째(보조) 사이드바.
+ * 현재 스크롤 중인 섹션(좌측 사이드바와 같은 `activeId` 재사용)의 Sample 라벨 목록을
+ * 보여주고, 클릭하면 그 Sample로 스크롤 이동(앵커 링크, `Sample`의 `id`와 매칭).
+ * Foundation 톤 섹션(색상 팔레트/타이포 등)·Table·아이콘처럼 `Section` 헬퍼가 아니라
+ * 순수 `<section>`을 직접 쓰는 곳은 레지스트리에 등록되지 않아 목록이 비는데, 그때는
+ * 폭만 유지한 채 빈 채로 둬서 레이아웃이 덜컹거리지 않게 함.
+ */
+function RightRail({
+  activeId,
+  registryRef,
+}: {
+  activeId: string;
+  registryRef: React.RefObject<Map<string, { id: string; label: string }[]>>;
+}) {
+  const items = registryRef.current.get(activeId) ?? [];
+  return (
+    <aside className="sticky top-14 hidden h-[calc(100vh-56px)] w-[200px] shrink-0 overflow-y-auto px-4 py-6 xl:block">
+      {items.length > 0 && (
+        <>
+          <div className="mb-2 px-2 text-[11px] font-bold uppercase tracking-wide text-mes-gray-60">
+            이 섹션 안에서
+          </div>
+          <nav className="flex flex-col gap-0.5">
+            {items.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className="truncate rounded-md px-2 py-1 text-[12px] leading-[1.5] text-mes-gray-70 transition-colors hover:bg-mes-bg-subtle hover:text-mes-gray-130"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </>
+      )}
+    </aside>
   );
 }
 
@@ -1403,6 +1510,10 @@ export default function Home() {
   // TOC_LINKS의 id 엘리먼트를 동시에 관찰(개수가 많지 않아 성능 문제 없음).
   const [activeId, setActiveId] = useState<string>(TOC_LINKS[0]?.id ?? "");
   const activeGroup = FOUNDATION_IDS.has(activeId) ? "foundations" : "components";
+  // 2026-08-03 — 우측 서브 내비(RightRail)용 Section→Sample 목록 레지스트리. Section이
+  // 렌더링될 때마다 자기 목록을 여기 채워넣고, RightRail이 같은 렌더 패스에서 바로 읽음
+  // (자세한 배선 이유는 Section/RightRail 정의 쪽 주석 참고).
+  const sectionRegistryRef = useRef<Map<string, { id: string; label: string }[]>>(new Map());
 
   // 2026-08-03 — 검색창 밑 콤보박스형 드롭다운에 쓸 결과 목록. 사이드바 자체는 안 건드림.
   const normalizedSidebarSearch = sidebarSearch.trim().toLowerCase();
@@ -1432,6 +1543,7 @@ export default function Home() {
   }, []);
 
   return (
+    <SectionRegistryContext.Provider value={sectionRegistryRef}>
     <div className="flex min-h-screen flex-col bg-mes-gray-10">
       <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center gap-8 border-b border-mes-gray-30 bg-white px-6">
         <span className="shrink-0 text-[15px] font-bold text-mes-gray-130">MES Design System</span>
@@ -2342,10 +2454,10 @@ export default function Home() {
       </Section>
 
       <Section id="toast" title="Toast">
-        <Sample label="Toast · red" wide>
+        <Sample label="Toast · red">
           <Toast variant="red" message="필수 항목을 입력해주세요." onClose={() => {}} />
         </Sample>
-        <Sample label="Toast · blue" wide>
+        <Sample label="Toast · blue">
           <Toast variant="blue" message="선택한 n건이 합격 처리되었습니다." onClose={() => {}} />
         </Sample>
       </Section>
@@ -2686,7 +2798,7 @@ export default function Home() {
       </section>
 
       <Section id="card" title="Card" badge="임시">
-        <Sample label="Card · 기본" wide>
+        <Sample label="Card · 기본">
           <Card className="w-[260px]">
             <CardHeader>
               <CardTitle>작업 지시 #1024</CardTitle>
@@ -2756,7 +2868,7 @@ export default function Home() {
       </Section>
 
       <Section id="accordion" title="Accordion" badge="임시">
-        <Sample label="Accordion · multiple(기본)" wide>
+        <Sample label="Accordion · multiple(기본)">
           <Accordion
             className="w-[280px]"
             items={[
@@ -2770,7 +2882,7 @@ export default function Home() {
       </Section>
 
       <Section id="collapsible" title="Collapsible" badge="임시">
-        <Sample label="Collapsible · 단일 트리거" wide>
+        <Sample label="Collapsible · 단일 트리거">
           <Collapsible trigger="상세 옵션" className="w-[240px]">
             <span className="text-[13px] leading-[1.5] text-mes-gray-80">
               여기에 추가 필드가 들어갑니다.
@@ -2820,7 +2932,7 @@ export default function Home() {
       </Section>
 
       <Section id="multi-select-input" title="MultiSelectInput" badge="임시">
-        <Sample label="MultiSelectInput · 태그 추가/제거" wide>
+        <Sample label="MultiSelectInput · 태그 추가/제거">
           <MultiSelectInput
             values={multiSelectValues}
             onValuesChange={setMultiSelectValues}
@@ -2830,7 +2942,7 @@ export default function Home() {
       </Section>
 
       <Section id="breadcrumb" title="Breadcrumb" badge="임시">
-        <Sample label="Breadcrumb · 3단계" wide>
+        <Sample label="Breadcrumb · 3단계">
           <Breadcrumb
             items={[
               { label: "자재관리", onClick: () => {} },
@@ -2842,7 +2954,7 @@ export default function Home() {
       </Section>
 
       <Section id="pagination" title="Pagination" badge="임시">
-        <Sample label="Pagination · 10페이지 중 4페이지" wide>
+        <Sample label="Pagination · 10페이지 중 4페이지">
           <Pagination page={paginationPage} totalPages={10} onPageChange={setPaginationPage} />
         </Sample>
       </Section>
@@ -2885,7 +2997,7 @@ export default function Home() {
       </Section>
 
       <Section id="fieldset" title="Fieldset" badge="임시">
-        <Sample label="Fieldset · 필드 묶음" wide>
+        <Sample label="Fieldset · 필드 묶음">
           <Fieldset legend="거래처 정보" className="w-[260px]">
             <Input placeholder="거래처명" size="small" />
             <Input placeholder="담당자" size="small" />
@@ -2894,7 +3006,7 @@ export default function Home() {
       </Section>
 
       <Section id="descriptions" title="Descriptions" badge="임시">
-        <Sample label="Descriptions · 1열" wide>
+        <Sample label="Descriptions · 1열">
           <Descriptions
             className="w-[280px]"
             items={[
@@ -2913,7 +3025,7 @@ export default function Home() {
       </Section>
 
       <Section id="date-range-picker" title="DateRangePicker" badge="임시">
-        <Sample label="DateRangePicker · 기간 선택" wide>
+        <Sample label="DateRangePicker · 기간 선택">
           <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
         </Sample>
       </Section>
@@ -2925,7 +3037,7 @@ export default function Home() {
       </Section>
 
       <Section id="navbar" title="Navbar" badge="임시">
-        <Sample label="Navbar · 3-슬롯" wide>
+        <Sample label="Navbar · 3-슬롯">
           <Navbar
             className="w-[600px]"
             left={<Logo size="small" />}
@@ -2939,7 +3051,7 @@ export default function Home() {
       </Section>
 
       <Section id="grid-container" title="Grid / Container" badge="임시">
-        <Sample label="Grid · 3열" wide>
+        <Sample label="Grid · 3열">
           <Grid columns={3} gap={2} className="w-[300px]">
             <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">1</div>
             <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">2</div>
@@ -3189,7 +3301,9 @@ export default function Home() {
         />
       </section>
         </main>
+        <RightRail activeId={activeId} registryRef={sectionRegistryRef} />
       </div>
     </div>
+    </SectionRegistryContext.Provider>
   );
 }

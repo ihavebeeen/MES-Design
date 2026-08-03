@@ -1244,4 +1244,44 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
        Nested Modal 섹션 설명문에서 "Center Modal 보류 중" 문구 제거, 체크리스트
        Center Modal 보류→있음/Side Slide Panel 코드화 완료로 갱신.
   tsc 클린 확인 후 커밋.
+- (2026-08-03, 50차) 담당자 지시로 데모 페이지 `Section`/`Sample` 레이아웃 전면
+  재구성. "지금 컴포넌트들이 다 가로로 정렬되어있잖아? 세로 정렬로 바꾸기 / 세로로
+  바뀌면서 남는 공간에 사이즈(패딩·마진 등) 적기 / 우측 빈 공간에 그 섹션 하위
+  컴포넌트 리스트 두고 클릭하면 이동" — 적용 범위를 물어봤더니(AskUserQuestion)
+  "전체 섹션 한번에 적용"으로 확답받고 52개 `<Section>`(126개 `<Sample>`) 전체를
+  한 번에 재구성.
+  - `Section`: 내부 컨테이너를 `grid grid-cols-4`(한 칸 ~222px)에서
+    `flex flex-col divide-y`(세로 스택, 구분선)로 교체. 이전 라운드(44차)에서 만든
+    `wide` prop(좁은 칸보다 넓은 콘텐츠를 4칸 전체로 펼치던 안전장치)은 이제 모든
+    행이 항상 전체 폭을 쓰게 되면서 존재 이유가 사라져 13개 사용처(Toast/Card/
+    Accordion/Collapsible/MultiSelectInput/Breadcrumb/Pagination/Fieldset/
+    Descriptions/DateRangePicker/Navbar/Grid) 전부에서 제거.
+  - "사이즈 적기"는 컴포넌트마다 padding/margin을 손으로 재서 써넣는 대신
+    `useMeasuredSize`(ResizeObserver 기반 커스텀 훅) 신규 작성 — Sample이 감싼
+    콘텐츠의 실제 렌더링 W×H를 라이브로 측정해 라벨 옆에 "248 × 40px" 식으로 표시.
+    padding/margin 자체는 컴포넌트 내부 구조라 바깥에서 일반적으로 측정할 방법이
+    없어 판단값으로 제외(각 컴포넌트 파일 실측 주석에 이미 기록돼 있음).
+  - "우측 하위 컴포넌트 리스트"는 페이지 우측의 비어있던 여백(왼쪽 사이드바 240px +
+    가운데 960px 콘텐츠 바깥)에 두 번째 사이드바 `RightRail` 신규 추가 —
+    좌측 사이드바와 같은 `activeId`(스크롤스파이)를 재사용해 현재 보고 있는 섹션의
+    Sample 라벨 목록을 보여주고, 클릭하면 앵커(`href="#섹션id--s번호"`)로 해당
+    Sample까지 스크롤 이동. `xl:` 이상에서만 노출(중간 화면폭에서 3단 컬럼이
+    비좁아지는 것 방지).
+  - 배선: `Section`이 렌더링될 때마다 자기 자식 중 `Sample` 엘리먼트만 걸러
+    `Children.map`+`cloneElement`로 고유 id(`${섹션id}--s${순번}`)를 주입하고,
+    동시에 `{id,label}` 목록을 `SectionRegistryContext`(신규, `createContext`)로
+    전달받은 `Map` ref에 등록. `RightRail`은 페이지 최상단에서 만든 같은 ref를
+    받아 `activeId`에 해당하는 목록을 읽음 — Section 호출부 52곳에 prop을 일일이
+    추가하지 않고도 배선되도록 Context로 우회(직접 데이터 배열을 넘기는 방식은
+    JSX children에 로컬 상태/핸들러가 섞인 기존 Sample 콘텐츠를 전부 데이터
+    구조로 다시 써야 해서 비현실적이라 판단). "렌더 중 ref 뮤테이션"이라는 약간
+    비순수한 패턴이지만, JSX가 문서 순서대로(왼쪽 사이드바→메인→RightRail)
+    렌더링되는 걸 이용해 RightRail이 같은 렌더 패스에서 이미 채워진 값을 읽게 됨 —
+    멱등 연산(`Map.set`)이라 React 19 Strict Mode의 이중 호출에도 문제 없음.
+  - Foundation 계열(색상 팔레트/타이포 등)·Table·아이콘 섹션은 `Section` 헬퍼가
+    아니라 순수 `<section>`을 직접 쓰는 곳이라 레지스트리에 안 잡힘 — RightRail이
+    그 구간에서는 폭만 유지한 채 빈 채로 표시(레이아웃 덜컹거림 방지).
+  - 검증: tsc 클린, `npx eslint src/app/page.tsx` 클린(React Hooks 규칙 위반 없음
+    확인) — `next build`는 이 샌드박스에서 계속 "Bus error"로 죽어(코드와 무관한
+    환경 문제로 판단, 메모리는 2.4GB 여유 있었음) 실행 못 함, tsc+eslint로 대체.
 
