@@ -596,6 +596,15 @@ function TierBadge({ id }: { id: string }) {
  *   정확하고 컴포넌트가 바뀌어도 자동으로 맞음(판단값: padding/margin 자체는 컴포넌트
  *   내부 구조라 바깥에서 일반적으로 측정할 방법이 없어 제외, 필요하면 각 컴포넌트
  *   파일의 실측 주석 참고).
+ *   2026-08-03 정정 — 담당자 지적: "실측값(ResizeObserver로 잰 렌더링 W×H)은 내부
+ *   텍스트/콘텐츠에 따라 달라지는 값이라, 그 숫자만 보고 다른 컴포넌트와 같이 배치한
+ *   실제 화면을 그리면 문제가 생길 수 있다". 맞는 지적 — 예를 들어 Button은 높이는
+ *   고정(basic=40px)이지만 너비는 hug(내용 텍스트 길이에 따라 가변)라, 데모에 적힌
+ *   "fillMain"이라는 우연한 라벨 텍스트로 잰 픽셀값을 마치 컴포넌트의 실제 스펙인 것
+ *   처럼 보여주는 건 오히려 오해를 유발함. 그래서 자동 측정(`useMeasuredSize`/
+ *   ResizeObserver)을 완전히 제거하고, 아래 `spec`(사람이 직접 적는, 내용과 무관하게
+ *   고정인 값만) 하나로 통일 — 고정폭이 아닌 컴포넌트는 스펙에 "너비: hug(가변)"처럼
+ *   명시적으로 적어서 가변이라는 사실 자체를 정보로 전달.
  * - "우측 하위 컴포넌트 리스트"는 페이지 우측의 비어있던 공간(왼쪽 사이드바+가운데
  *   960px 콘텐츠 바깥 여백)에 두 번째 사이드바(`RightRail`)로 구현 — 현재 스크롤 중인
  *   섹션의 Sample 라벨 목록을 보여주고 클릭하면 해당 Sample로 스크롤 이동. Section이
@@ -605,25 +614,6 @@ function TierBadge({ id }: { id: string }) {
 const SectionRegistryContext = createContext<
   React.RefObject<Map<string, { id: string; label: string }[]>> | null
 >(null);
-
-/** Sample 내부 콘텐츠의 렌더링된 실제 크기를 라이브로 측정(사이즈 표기용). */
-function useMeasuredSize<T extends HTMLElement>() {
-  const ref = useRef<T | null>(null);
-  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const update = () => {
-      const rect = el.getBoundingClientRect();
-      setSize({ w: Math.round(rect.width), h: Math.round(rect.height) });
-    };
-    update();
-    const observer = new ResizeObserver(update);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-  return [ref, size] as const;
-}
 
 function Sample({
   id,
@@ -635,17 +625,17 @@ function Sample({
   id?: string;
   label: string;
   /**
-   * 2026-08-03 신규 — "단순 사이즈만 적지 말고, 패딩 때문에 그 크기가 나온 거면 그
-   * 패딩값을, 아이콘 크기·패딩, 색상 토큰명(main60 등)까지 적으라" 요청 반영. 아래
-   * 실측 W×H는 어차피 자동으로 뜨니, `spec`엔 자동으로 알 수 없는 것들(패딩/아이콘
-   * 크기/색상 토큰 등 해당 컴포넌트 파일의 실측 주석에 있는 값)을 사람이 직접 적음.
-   * 126개 Sample 전부를 이번에 다 채우진 못했고, 우선 담당자가 예시로 든 IconButton/
-   * Button 컬러 등 대표적인 곳부터 채움 — 나머지는 후속 작업(AGENTS.md 참고).
+   * 2026-08-03 — "단순 사이즈만 적지 말고, 패딩 때문에 그 크기가 나온 거면 그 패딩값을,
+   * 아이콘 크기·패딩, 색상 토큰명(main60 등)까지 적으라" 요청 반영. 여기 적는 값은
+   * 반드시 내용(children)과 무관하게 항상 참인 값만 — 높이 고정값, 패딩, radius,
+   * 아이콘 px, 색상 토큰명처럼 해당 컴포넌트 파일의 실측 주석에 있는 값. 너비가
+   * hug(내용에 따라 가변)라 고정값이 없으면 그 사실 자체를 적음(가짜 숫자로 채우지
+   * 않음). 126개 Sample 전부를 이번에 다 채우진 못했고, 우선 담당자가 예시로 든
+   * IconButton/Button 컬러 등 대표적인 곳부터 채움 — 나머지는 후속 작업(AGENTS.md 참고).
    */
   spec?: React.ReactNode;
   children: React.ReactNode;
 }) {
-  const [measureRef, size] = useMeasuredSize<HTMLDivElement>();
   return (
     <div id={id} className="flex w-full scroll-mt-24 flex-col items-start gap-3 py-7">
       <div className="flex flex-col gap-1">
@@ -655,13 +645,8 @@ function Sample({
         {spec && (
           <span className="text-[12px] leading-[1.5] text-mes-gray-70">{spec}</span>
         )}
-        {size && (
-          <span className="font-mono text-[11px] leading-none text-mes-gray-50">
-            실측 {size.w} × {size.h}px
-          </span>
-        )}
       </div>
-      <div ref={measureRef} className="flex w-fit min-w-0 items-center">
+      <div className="flex w-fit min-w-0 items-center">
         {children}
       </div>
     </div>
