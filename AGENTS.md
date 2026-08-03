@@ -1195,4 +1195,14 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   항목 클릭 또는 바깥 클릭/Esc(`onOpenChange`) 시 검색어를 비워 자동으로 닫힘 — 콤보박스
   선택 동작과 동일하게. tsc 클린 + `/tmp` next build 재검증(사이드바가 다시 전체
   70개 항목을 보여주는지 직접 확인) 후 커밋.
+- (2026-08-03, 47차) 담당자 지적 2건: (1) 사이드바 "Foundations"/"Components" 구분
+  텍스트가 너무 작아서 헤더처럼 안 보임 — `text-[11px] font-bold uppercase
+  tracking-wide text-mes-gray-60`에서 `text-[15px] font-extrabold tracking-tight
+  text-mes-gray-130` + 하단 구분선(`border-b`)으로 확대, 그룹 간 여백도 mb-6→mb-7.
+  (2) 사이드바 항목 클릭 시 앵커 스크롤이 sticky 상단바(header `h-14`=56px, `sticky
+  top-0 z-30`)에 가려서 스크롤을 더 올려야 제목이 보이는 문제 — 전 섹션(`Section`
+  헬퍼 + 개별 `<section>` 19곳)의 `scroll-mt-6`(24px, 상단바 높이 미고려)을
+  `scroll-mt-20`(80px = 56px 상단바 + 여유분)으로 일괄 변경. tsc 클린 확인(전체
+  next build은 샌드박스에서 백그라운드 프로세스가 호출 간 유지되지 않아 이번 라운드는
+  생략 — 순수 className 문자열 변경이라 타입 영향 없음) 후 커밋.
 
