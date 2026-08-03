@@ -19,6 +19,8 @@ import { Radio } from "@/components/ui/radio";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Filter } from "@/components/ui/filter";
+import { GroupQuery } from "@/components/ui/group-query";
+import { QuickQuery, QuickQueryPresetDialog, type QuickQuerySlot } from "@/components/ui/quick-query";
 import { Tag } from "@/components/ui/tag";
 import { Toast } from "@/components/ui/toast";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
@@ -114,6 +116,8 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "checkbox", label: "Checkbox" },
   { id: "progress", label: "Progress" },
   { id: "filter", label: "Filter" },
+  { id: "group-query", label: "GroupQuery" },
+  { id: "quick-query", label: "QuickQuery" },
   { id: "tag", label: "Tag" },
   { id: "combobox", label: "Combobox" },
   { id: "toast", label: "Toast" },
@@ -192,6 +196,8 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("checkbox"),
   leaf("progress"),
   leaf("filter"),
+  leaf("group-query"),
+  leaf("quick-query"),
   leaf("tag"),
   leaf("combobox"),
   leaf("toast"),
@@ -603,6 +609,41 @@ const filterCategories = [
 ];
 
 /**
+ * GroupQuery 데모용 옵션 — 담당자 스크린샷("생산지시" 화면)의 드롭다운 목록 문구를 그대로
+ * 인용(전체/지시일/근무조/설비/공정/담당기사/품목코드/품목명/품목구분).
+ */
+const groupQueryOptions = [
+  { id: "all", label: "전체" },
+  { id: "date", label: "지시일" },
+  { id: "shift", label: "근무조" },
+  { id: "facility", label: "설비" },
+  { id: "process", label: "공정" },
+  { id: "manager", label: "담당기사" },
+  { id: "itemCode", label: "품목코드" },
+  { id: "itemName", label: "품목명" },
+  { id: "itemType", label: "품목구분" },
+];
+
+/** QuickQuery 데모용 초기 프리셋 — node 17963:81433 실측 예시("설정 1" 인스턴스) 그대로 인용 */
+const initialQuickQuerySlots: QuickQuerySlot[] = [
+  {
+    id: "p1",
+    name: "주간 성형기 확인용",
+    detail: {
+      grouping: "품목명>담당자명>일자",
+      filters: [
+        { label: "품목명", count: 7 },
+        { label: "품목구분", count: 10 },
+        { label: "발주일", count: 7 },
+      ],
+      view: { hidden: 2, total: 2, reordered: 2 },
+    },
+  },
+  { id: "p2", name: null },
+  { id: "p3", name: null },
+];
+
+/**
  * Table 데모용 데이터 — node 16938:42501("생산계획(일) 리스트" 실제 화면) 값을 그대로 인용.
  * 컬럼 폭은 그 화면에서 실측한 px 그대로(합계 약 1858px, 가로 스크롤 필요).
  */
@@ -925,6 +966,20 @@ export default function Home() {
     perm: ["normal"],
     group: ["normal", "admin"],
   });
+  // 2026-08-03 — GroupQuery(그룹화 조회) 데모용. Level 1=지시일, Level 2=설비, Level 3=전체(미지정)로
+  // 시작 — 담당자 스크린샷의 초기 상태와 동일하게 맞춤.
+  const [groupQueryLevels, setGroupQueryLevels] = useState<(string | null)[]>([
+    "date",
+    "facility",
+    null,
+  ]);
+  // 2026-08-03 — QuickQuery(빠른 조회) 데모용. slots는 관리 모달과 트리거 바가 공유하는 단일
+  // 소스; activeId는 트리거 바에서 현재 "적용 중"인 프리셋(모달의 저장 여부와는 별개 상태).
+  const [quickQuerySlots, setQuickQuerySlots] = useState<QuickQuerySlot[]>(
+    initialQuickQuerySlots
+  );
+  const [quickQueryActiveId, setQuickQueryActiveId] = useState<string | null>("p1");
+  const [quickQueryDialogOpen, setQuickQueryDialogOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   // 2026-07-29: ConfirmDialog 톤 확장(경고/알림) + 확인·취소 2버튼 + 안내 배너 데모용
   const [warningDialogOpen, setWarningDialogOpen] = useState(false);
@@ -1646,6 +1701,77 @@ export default function Home() {
           onChange={(categoryId, optionIds) =>
             setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
           }
+        />
+      </section>
+
+      <section id="group-query" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+          GroupQuery
+          <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">임시</span>
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          담당자가 첨부한 생산지시 화면 스크린샷 기반 판단값. Level 1~3 각각 드롭다운으로
+          그룹화 기준을 지정하고, 값이 있으면 칩+X로, 없으면 &quot;전체&quot;로 표시됨. 옆의 필터
+          추가 박스는 기존 Filter 컴포넌트(node data-name &quot;fillter-group&quot;)를 그대로 재사용.
+        </p>
+        <div className="flex items-center gap-2.5">
+          <GroupQuery
+            options={groupQueryOptions}
+            levels={groupQueryLevels}
+            onLevelChange={(index, value) =>
+              setGroupQueryLevels((prev) => prev.map((v, i) => (i === index ? value : v)))
+            }
+          />
+          <Filter
+            categories={filterCategories}
+            value={filterValue}
+            onChange={(categoryId, optionIds) =>
+              setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
+            }
+          />
+        </div>
+      </section>
+
+      <section id="quick-query" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+          QuickQuery
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          조회 조건(그룹화/필터/조회 설정)을 즐겨찾기로 저장·적용. 톱니 아이콘 클릭 → &quot;조회
+          조건 프리셋&quot; 관리 모달(최대 3개 슬롯: 미설정/저장됨/저장 중 3가지 상태).
+        </p>
+        <QuickQuery
+          presets={quickQuerySlots
+            .filter((s): s is QuickQuerySlot & { name: string } => s.name !== null)
+            .map((s) => ({ id: s.id, label: s.name }))}
+          activeId={quickQueryActiveId}
+          onApply={setQuickQueryActiveId}
+          onClearActive={() => setQuickQueryActiveId(null)}
+          onSettingsClick={() => setQuickQueryDialogOpen(true)}
+        />
+        <QuickQueryPresetDialog
+          open={quickQueryDialogOpen}
+          onOpenChange={setQuickQueryDialogOpen}
+          slots={quickQuerySlots}
+          onDelete={(id) =>
+            setQuickQuerySlots((prev) =>
+              prev.map((s) => (s.id === id ? { ...s, name: null, detail: undefined } : s))
+            )
+          }
+          onSaveSlot={(id, name) =>
+            setQuickQuerySlots((prev) =>
+              prev.map((s) =>
+                s.id === id
+                  ? {
+                      ...s,
+                      name,
+                      detail: { grouping: "품목명>담당자명>일자" },
+                    }
+                  : s
+              )
+            )
+          }
+          currentPreview={{ grouping: "품목명>담당자명>일자" }}
         />
       </section>
 

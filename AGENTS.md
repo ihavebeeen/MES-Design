@@ -896,4 +896,37 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   Foundations도 Components와 동일하게 `gap-20`이 적용됨. id/스크롤스파이
   로직은 안 바뀜(`getElementById`가 이제 section 자체를 찾음, 이전엔 내부
   div였음 — 동작상 차이 없음). tsc 클린 확인 후 커밋.
+- (2026-08-03, 33차) 담당자가 "생산지시" 실제 화면 스크린샷 + Figma 링크
+  (node 17360:46222, fileKey F4n5Zr04PAbiRjfIFQAo6v)로 새 컴포넌트 2개 요청:
+  1. **GroupQuery(그룹화 조회)** — "필터 왼쪽에 있는 그룹화 조회, 컴포넌트가
+     없더라, 이거 사진 기반으로 만들어줘"(Figma 링크 없이 스크린샷 기반
+     판단값으로 지정). 아이콘(`mes/icon-group-down`)+"그룹화 조회" 라벨 +
+     Level 1~3 셀(각각 드롭다운: 값 있으면 filter-tag-item 스타일 칩+X,
+     없으면 "전체" 평문). `group-query.tsx` 신규.
+     ⚠ 조사 과정에서 우연히 발견: "빠른 조회" 참고용으로 준 Figma 섹션
+     노드(17360:46222)를 `get_design_context`로 열어보니, 그 안에 그룹화
+     조회 UI 자체도 실측 노드(17360:46223 하위 17360:46226~46247)로 포함돼
+     있었음 — 스크린샷과 레이아웃/색이 정확히 일치해 실측값을 채택함(단,
+     담당자가 이 컴포넌트 전용으로 지정해준 링크는 아니라서 문서상 "스크린샷
+     기반 판단값" 딱지는 유지). 우측에 붙는 "+필터 추가" 박스(Figma
+     data-name "fillter-group")는 기존 `Filter` 컴포넌트와 완전히 동일해
+     새로 안 만들고 데모에서 나란히 배치.
+  2. **QuickQuery(빠른 조회)** — "조회 기준을 즐겨찾기로 설정할 수 있는 거,
+     링크로 줄게" — node 17360:46359(트리거 바: 북마크 아이콘+"빠른 조회"
+     라벨+프리셋 칩 최대 3개+톱니 아이콘)와 node 17963:81433("조회 조건
+     프리셋" 관리 모달, "라디오버튼버전")을 각각 재조회해 실측. 모달
+     radius/shadow가 기존 `RadioChoiceDialog`의 `rounded-mes-modal-lg`/
+     `shadow-mes-modal-lg` 토큰과 정확히 일치해 그대로 재사용. 톱니 아이콘은
+     실제 SVG를 못 받아와서 Sidebar의 `SidebarSettingsIcon`과 동일하게
+     `lucide-react`의 `Settings`를 임시 placeholder로 사용(판단값). 모달의
+     프리셋 행 3가지 상태(미설정/저장됨/저장 중)는 실측이지만, 클릭
+     흐름(빈 슬롯 클릭→이름 입력→저장, 저장된 슬롯 삭제 등)은 정적 실측에
+     없어 다른 관리형 팝업 관례에 맞춰 판단으로 구현(행 내부 액션은 즉시
+     반영, 하단 취소/저장 버튼은 닫기 전용) — 파일 상단 주석에 명시.
+     `quick-query.tsx` 신규.
+  둘 다 `page.tsx`에 데모 섹션 추가(`group-query`/`quick-query`, GroupQuery는
+  "임시" 배지 유지, QuickQuery는 실측 비중이 높아 배지 없이), `TOC_LINKS`/
+  `COMPONENT_NODES`에 Filter 다음 순서로 삽입. 체크리스트("11. SaaS 제품에서
+  자주 쓰이는 복합 패턴")에 두 행 신규 추가(둘 다 티어1·있음). tsc 클린
+  확인 후 커밋.
 
