@@ -1030,4 +1030,18 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      아무 액션도 없으면 빈 줄을 보여줄 이유가 없어짐).
   체크리스트("Notification / Bell", "Alarm List/Table" 행) 갱신, tsc/eslint
   클린 확인 + `/tmp` next build 재검증 후 커밋.
+- (2026-08-03, 38차) 37차의 1번(비활성화 내역 삭제) 해석이 틀렸다고 담당자가
+  바로 정정: "알람리스트아이템 말고 노티피케이션페널 내 비활성화 처리된
+  내역을 삭제해야지. 걍 클릭하면 리스트에서 지워지는 형식임." — 즉 "비활성화
+  처리된 내역 삭제"는 `read=false`라는 별도 상태와 무관하게, 36차에서 이미
+  만든 `NotificationPanel`의 `onItemClick` 클릭→제거 동작 그 자체를 가리키는
+  말이었음. 37차에서 `read=false`(흐림) 배경이 `table.tsx`의 "비활성화=배경
+  Gray-10" 규칙과 일치한다는 정황만으로 세운 이론은 틀렸던 것으로 확인 —
+  AlarmListItem 데모(작업 지시 생성/출하 승인 취소·read=false/작업 지시
+  변경/입고 완료·read=false 4종)와 NotificationPanel 데모(id "2" 출하 승인
+  취소에 `read: false` 복원)를 원래대로 되돌림. `alarm-list-item.tsx`
+  doc comment의 "정황" 문단도 "정정" 문단으로 교체해 이 왕복을 기록. 필터
+  아이콘 제거(37차 2번)는 이번 정정과 무관해 그대로 유지. 체크리스트
+  "Alarm List/Table"/"Notification / Bell" 행에 정정 내용 반영. tsc/eslint
+  클린 확인 후 커밋.
 

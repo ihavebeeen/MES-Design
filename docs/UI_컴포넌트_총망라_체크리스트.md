@@ -209,7 +209,7 @@
 | Loading Spinner | 로딩 스피너 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`loading-spinner.tsx`). Figma 디자인 없음 — lucide `LoaderCircle` + `animate-spin`(판단값) |
 | Empty State | 데이터 없음 화면 | 몰큘 | 없음 | 2 | |
 | Error State | 에러 화면 | 몰큘 | 없음 | 2 | |
-| Notification / Bell | 알림 아이콘·목록 | 오가니즘 | 있음 | 1 | 2026-07-30 코드화: `components/ui/notification-panel.tsx`(node 157:15771 "알림모달 2"/157:15833 "알림 내역 존재 X" 실측). AlarmListItem을 재사용하는 드롭다운 패널 — 헤더("전체 알림" 탭+카운트+닫기), 리스트(높이 350px 스크롤) 또는 빈 상태 문구로 구성. "미확인"/"확인" 탭 추정 자리는 이 패널 트리에 실제로 포함되어 있지 않아 확인 필요로 제외. 벨 아이콘 트리거 자체는 미실측. 2026-08-03 담당자가 실제 서비스 스크린샷 2건으로 추가 지시(Figma 링크 없음, 판단값): (1) 항목 클릭 시 목록에서 제거 — `onItemClick(id)` 콜백 신규 추가(제거 로직 자체는 호출부 책임, 컴포넌트는 컨트롤형 유지), (2) 설정(톱니) 아이콘 클릭 시 패널 내용이 "알림 설정"(뒤로가기+제목+알림 유형별 Switch 토글 목록) 화면으로 전환 — `settingsItems`/`onSettingsItemChange` prop + 내부 `view` state로 구현. 톱니 아이콘 자체는 목적지 화면만 스크린샷에 있고 트리거 모양은 없어서 Sidebar/QuickQuery와 동일한 `lucide-react` `Settings` placeholder 사용(판단값). 곧바로 이어서 담당자가 "하단에 설정 아이콘이 두 개인데 작동 안 하는 작대기형(필터)은 빼고 톱니만 남겨라"고 지적 — 원래부터 동작 미실측이던 필터 아이콘(`IconFilter`)과 `onFilterClick` prop을 컴포넌트에서 완전히 제거함 |
+| Notification / Bell | 알림 아이콘·목록 | 오가니즘 | 있음 | 1 | 2026-07-30 코드화: `components/ui/notification-panel.tsx`(node 157:15771 "알림모달 2"/157:15833 "알림 내역 존재 X" 실측). AlarmListItem을 재사용하는 드롭다운 패널 — 헤더("전체 알림" 탭+카운트+닫기), 리스트(높이 350px 스크롤) 또는 빈 상태 문구로 구성. "미확인"/"확인" 탭 추정 자리는 이 패널 트리에 실제로 포함되어 있지 않아 확인 필요로 제외. 벨 아이콘 트리거 자체는 미실측. 2026-08-03 담당자가 실제 서비스 스크린샷 2건으로 추가 지시(Figma 링크 없음, 판단값): (1) 항목 클릭 시 목록에서 제거 — `onItemClick(id)` 콜백 신규 추가(제거 로직 자체는 호출부 책임, 컴포넌트는 컨트롤형 유지), (2) 설정(톱니) 아이콘 클릭 시 패널 내용이 "알림 설정"(뒤로가기+제목+알림 유형별 Switch 토글 목록) 화면으로 전환 — `settingsItems`/`onSettingsItemChange` prop + 내부 `view` state로 구현. 톱니 아이콘 자체는 목적지 화면만 스크린샷에 있고 트리거 모양은 없어서 Sidebar/QuickQuery와 동일한 `lucide-react` `Settings` placeholder 사용(판단값). 곧바로 이어서 담당자가 "하단에 설정 아이콘이 두 개인데 작동 안 하는 작대기형(필터)은 빼고 톱니만 남겨라"고 지적 — 원래부터 동작 미실측이던 필터 아이콘(`IconFilter`)과 `onFilterClick` prop을 컴포넌트에서 완전히 제거함. 그다음 담당자가 "알람리스트아이템 말고 노티피케이션페널 내 비활성화 처리된 내역을 삭제해야지. 걍 클릭하면 리스트에서 지워지는 형식임"이라고 재확인 — 즉 "비활성화 처리된 내역 삭제"는 이미 구현된 (1)번 `onItemClick` 클릭-삭제 그 자체를 가리키는 말이었고, `read` prop과는 무관함이 확정됨(한때 read=false를 "비활성화"로 잘못 추정해 AlarmListItem/NotificationPanel 데모에서 뺐던 예시는 전부 원복) |
 
 ## 7. 접기·펼치기 (Disclosure)
 
@@ -378,7 +378,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Alarm List/Table | 알람 이력 리스트 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Asset/Templates의 "Alarm list" 확인. 2026-07-30 코드화: `components/ui/alarm-list-item.tsx`(node 163:3039 "MES 알람 리스트" 실측, tone 4색×hover×read×두줄 조합 32종 중 대표 케이스 반영). `read` prop 의미와 "두줄" 용도는 확인 필요. 2026-08-03 담당자가 "알람에서 '비활성화' 처리된 내역은 삭제해줘"라고 지시 — `read=false`(흐림) 상태의 배경색(Gray-10)이 `table.tsx`의 "비활성화(disabled) = 배경 Gray-10" 규칙과 일치해 `read=false`가 "비활성화"를 가리키는 것으로 추정, `NotificationPanel`/`AlarmListItem` 데모에서 해당 예시를 제거함(컴포넌트 자체 지원은 유지 — prop 이름 변경은 범위 밖). `read`→`disabled` 개명이 맞는지는 여전히 확인 필요 |
+| Alarm List/Table | 알람 이력 리스트 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Asset/Templates의 "Alarm list" 확인. 2026-07-30 코드화: `components/ui/alarm-list-item.tsx`(node 163:3039 "MES 알람 리스트" 실측, tone 4색×hover×read×두줄 조합 32종 중 대표 케이스 반영). `read` prop 의미와 "두줄" 용도는 확인 필요(2026-08-03 한때 `read=false`를 "비활성화"로 추정해 데모에서 뺐었으나, 담당자가 "AlarmListItem 말고 NotificationPanel 쪽 얘기였고 그냥 클릭하면 지워지는 형식"이라고 정정 — read=false 예시 원복, `read` prop 의미는 여전히 미확인 상태 그대로) |
 | Blinking Alarm Indicator | 알람 발생 시 점멸 표시 | 아톰 | 없음 | 3 | |
 | Severity Level Tag | 알람 심각도 태그 | 아톰 | 없음 | 3 | |
 | Alarm Acknowledge Button | 알람 확인·조치 버튼 | 아톰 | 없음 | 3 | |
