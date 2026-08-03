@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChevronRight, Plus, Search } from "lucide-react";
+import { ChevronRight, Plus, Search, Palette, Blocks, Hammer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,8 @@ import { Tag } from "@/components/ui/tag";
 import { Toast } from "@/components/ui/toast";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { NoticeBanner } from "@/components/ui/notice-banner";
+import { CenterModal } from "@/components/ui/center-modal";
+import { SideSlidePanel } from "@/components/ui/side-slide-panel";
 import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
 import { Sidebar, SidebarSettingsIcon, type SidebarNavItem } from "@/components/ui/sidebar";
 import { AlarmListItem } from "@/components/ui/alarm-list-item";
@@ -159,6 +161,8 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "notice-banner", label: "NoticeBanner" },
   { id: "radio-choice-dialog", label: "RadioChoiceDialog" },
   { id: "nested-modal", label: "Nested Modal" },
+  { id: "center-modal", label: "Center Modal" },
+  { id: "side-slide-panel", label: "Side Slide Panel" },
   { id: "page-top-tab-item", label: "PageTopTabItem" },
   { id: "sidebar", label: "Sidebar" },
   { id: "alarm-list-item", label: "AlarmListItem" },
@@ -268,6 +272,8 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("notice-banner"),
   leaf("radio-choice-dialog"),
   leaf("nested-modal"),
+  leaf("center-modal"),
+  leaf("side-slide-panel"),
   leaf("page-top-tab-item"),
   leaf("sidebar"),
   leaf("alarm-list-item"),
@@ -304,9 +310,17 @@ const COMPONENT_NODES: SidebarNode[] = [
   branch("Table", ["table-parts", "table-full"], "Table"),
 ];
 
+/**
+ * 2026-08-03 신규 — 담당자 요청: "더 작업이 필요한 것들의 구역을 미리 생성해 둬".
+ * 체크리스트 기준 티어3(59개, 필수)/티어4(41개, 포함권장 19+보류 22) 미착수 항목을
+ * 위한 자리만 미리 만들어둠 — 실제 항목 이름을 다 채우진 않고(125개를 지금 다 나열하는
+ * 건 과함), "여기에 나중에 채워진다"는 구조만 사이드바+메인 양쪽에 둠. 티어5(28개)는
+ * 체크리스트에서 이미 "제외" 확정이라 이 자리에 포함하지 않음.
+ */
 const SIDEBAR_GROUPS: { title: string; nodes: SidebarNode[] }[] = [
   { title: "Foundations", nodes: FOUNDATION_NODES },
   { title: "Components", nodes: COMPONENT_NODES },
+  { title: "예정", nodes: [] },
 ];
 
 /**
@@ -396,6 +410,8 @@ const TIER_BY_ID: Record<string, number> = {
   "notice-banner": 1,
   "radio-choice-dialog": 1,
   "nested-modal": 1,
+  "center-modal": 1,
+  "side-slide-panel": 1,
   "page-top-tab-item": 1,
   sidebar: 1,
   "alarm-list-item": 1,
@@ -1342,6 +1358,10 @@ export default function Home() {
   // "삭제되었습니다"가 뜨도록. 최종 확정 후 조용히 닫히기만 하던 것에 3번째 단계(성공
   // 알림)를 추가 — "삭제 완료 알림"(infoDialogOpen)과 같은 info 톤 패턴 재사용.
   const [nestedModalSuccessOpen, setNestedModalSuccessOpen] = useState(false);
+  // 2026-08-03 — 담당자가 클라우드MES "Modal" 스펙 페이지(node 9873:82872, Type01/02)를
+  // 전달해 보류 해제. Center Modal(화면 중앙)/Side Slide Panel(우측 고정) 둘 다 신규 구현.
+  const [centerModalOpen, setCenterModalOpen] = useState(false);
+  const [sideSlidePanelOpen, setSideSlidePanelOpen] = useState(false);
   const [sidebarExpandedKey, setSidebarExpandedKey] = useState<string | undefined>(
     "mes-setting"
   );
@@ -1483,11 +1503,20 @@ export default function Home() {
 
       <div className="flex w-full flex-1">
         <aside className="sticky top-14 hidden h-[calc(100vh-56px)] w-[240px] shrink-0 overflow-y-auto border-r border-mes-gray-30 bg-white px-3 py-6 lg:block">
-          {SIDEBAR_GROUPS.map((group) => (
+          {SIDEBAR_GROUPS.map((group) => {
+            const GroupIcon =
+              group.title === "Foundations" ? Palette : group.title === "Components" ? Blocks : Hammer;
+            return (
             <div key={group.title} className="mb-7">
-              <div className="mb-2 border-b-2 border-mes-gray-90 px-2 pb-2 text-[18px] font-extrabold tracking-tight text-mes-gray-130">
+              <div className="mb-2 flex items-center gap-2 border-b-2 border-mes-gray-90 px-2 pb-2 text-[18px] font-extrabold tracking-tight text-mes-gray-130">
+                <GroupIcon className="size-[18px] shrink-0 text-mes-primary-60" />
                 {group.title}
               </div>
+              {group.nodes.length === 0 && (
+                <p className="px-2 text-[12px] leading-[1.5] text-mes-gray-60">
+                  티어3(59)·티어4(41) 미착수 — 자리만 미리 만들어둠
+                </p>
+              )}
               <nav className="flex flex-col gap-0.5">
                 {group.nodes.map((node) =>
                   node.kind === "leaf" ? (
@@ -1546,7 +1575,8 @@ export default function Home() {
                 )}
               </nav>
             </div>
-          ))}
+            );
+          })}
         </aside>
 
         <main className="flex flex-1 flex-col items-center gap-20 p-16">
@@ -1561,7 +1591,8 @@ export default function Home() {
               개별 섹션 h2(17px)보다 뚜렷이 큰 28px + 두꺼운 좌측 바(border-l-8)로,
               섹션들의 상위 카테고리임이 한눈에 보이도록 확대. */}
           <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
-            <span className="text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+            <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+              <Palette className="size-7 shrink-0 text-mes-primary-60" />
               Foundation
             </span>
             <p className="text-[13px] leading-[1.5] text-mes-gray-70">
@@ -1729,7 +1760,8 @@ export default function Home() {
           </section>
 
           <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
-            <span className="text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+            <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+              <Blocks className="size-7 shrink-0 text-mes-primary-60" />
               Components
             </span>
             <p className="text-[13px] leading-[1.5] text-mes-gray-70">
@@ -2429,9 +2461,9 @@ export default function Home() {
           </span>
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          팝업 위에 또 다른 팝업이 뜨는 2-depth 패턴. Figma상 Center Modal에서 겹친
-          형태로 추정되는 원본은 담당자 지시로 아직 보류 중이라(자료 전달 대기),
-          정확한 구조를 새로 짓는 대신 이미 완성된 ConfirmDialog 두 개를 겹쳐 여는
+          팝업 위에 또 다른 팝업이 뜨는 2-depth 패턴. Center Modal 자체는 아래 섹션에서
+          신규 구현했지만, 그 안에 또 다른 모달이 겹쳐 뜨는 정확한 원본 구조는 이번
+          자료에 없어 여전히 미확인 — 이미 완성된 ConfirmDialog 두 개를 겹쳐 여는
           방식으로 시연.
         </p>
         <Button size="basic" onClick={() => setNestedModalOpen(true)}>
@@ -2487,6 +2519,66 @@ export default function Home() {
         tone="info"
         actions={[{ label: "확인", onClick: () => setNestedModalSuccessOpen(false) }]}
       />
+
+      <section id="center-modal" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+          Center Modal
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          화면 중앙에 뜨는 기본 팝업. 폭 960px 고정, 최대 높이 80vh — 헤더·푸터는 항상
+          고정, 본문 콘텐츠가 넘치면 본문만 스크롤. 2026-08-03 클라우드MES "Modal"
+          스펙 페이지(node 9873:82872 Type01)로 보류 해제 후 실측 반영.
+        </p>
+        <Button size="basic" onClick={() => setCenterModalOpen(true)}>
+          Center Modal 열기
+        </Button>
+      </section>
+
+      <CenterModal
+        open={centerModalOpen}
+        onOpenChange={setCenterModalOpen}
+        title="모달 타이틀"
+        onCancel={() => setCenterModalOpen(false)}
+        onConfirm={() => setCenterModalOpen(false)}
+      >
+        <div className="flex w-full flex-col gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-3">
+          {Array.from({ length: 14 }, (_, i) => (
+            <div key={i} className="text-[13px] text-mes-gray-70">
+              콘텐츠 영역 — 항목 {i + 1} (본문만 스크롤되는지 확인용 더미 행)
+            </div>
+          ))}
+        </div>
+      </CenterModal>
+
+      <section id="side-slide-panel" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+          Side Slide Panel
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          화면 우측에 붙어 세로 전체를 채우는 패널. 폭 960px 기본(콘텐츠 타입에 따라
+          변형 가능) — 헤더·푸터 고정, 본문만 스크롤은 Center Modal과 동일 규칙.
+          같은 스펙 페이지(node 9873:82872 Type02)로 신규 구현.
+        </p>
+        <Button size="basic" onClick={() => setSideSlidePanelOpen(true)}>
+          Side Slide Panel 열기
+        </Button>
+      </section>
+
+      <SideSlidePanel
+        open={sideSlidePanelOpen}
+        onOpenChange={setSideSlidePanelOpen}
+        title="모달 타이틀"
+        onCancel={() => setSideSlidePanelOpen(false)}
+        onConfirm={() => setSideSlidePanelOpen(false)}
+      >
+        <div className="flex w-full flex-col gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-3">
+          {Array.from({ length: 24 }, (_, i) => (
+            <div key={i} className="text-[13px] text-mes-gray-70">
+              콘텐츠 스크롤 영역 — 항목 {i + 1} (모달창 높이에 따라 가변)
+            </div>
+          ))}
+        </div>
+      </SideSlidePanel>
 
       <section id="page-top-tab-item" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
@@ -3040,7 +3132,7 @@ export default function Home() {
           `overflow-x-auto` 박스로 가로 스크롤 처리(대기목록 17번).
           2026-07-31: 담당자가 "테이블 합본이 하단에 있도록"이라고 요청 — 분리 데모
           (table-parts) 다음, 페이지 맨 아래로 순서 이동(내용 변경 없음). */}
-      <section id="table-full" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 pb-8">
+      <section id="table-full" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <button
           type="button"
           onClick={() => setProductionTableOpen((prev) => !prev)}
@@ -3066,6 +3158,35 @@ export default function Home() {
             />
           </div>
         )}
+      </section>
+
+      {/* 2026-08-03 신규 — 담당자 요청: "더 작업이 필요한 것들의 구역을 미리 생성해 둬".
+          아직 착수 안 한 티어3/4를 위한 자리만 미리 만들어둠(SIDEBAR_GROUPS의 "예정"
+          그룹과 짝) — 실제 항목 125개를 지금 다 채우진 않음. 티어5(28개)는 체크리스트
+          기준 이미 "제외" 확정이라 여기 포함하지 않음. */}
+      <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-gray-60 pl-5">
+        <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+          <Hammer className="size-7 shrink-0 text-mes-gray-60" />
+          예정
+        </span>
+        <p className="text-[13px] leading-[1.5] text-mes-gray-70">
+          체크리스트 기준 티어3(59개, 필수)·티어4(41개, 포함권장 19 + 보류 22) 미착수
+          항목이 여기 채워질 예정입니다. 티어5(28개)는 이미 범위 제외로 확정.
+        </p>
+      </div>
+      <section id="upcoming-tier3" className="flex w-full max-w-[960px] scroll-mt-20 flex-col border-b border-mes-gray-30 pb-8">
+        <EmptyState
+          icon={<Hammer size={32} />}
+          title="티어3 — 아직 착수 전"
+          description="화면 패턴 카탈로그 59개(필수 범위). 담당자 우선순위 확정 후 순차 진행 예정."
+        />
+      </section>
+      <section id="upcoming-tier4" className="flex w-full max-w-[960px] scroll-mt-20 flex-col pb-8">
+        <EmptyState
+          icon={<Hammer size={32} />}
+          title="티어4 — 아직 착수 전"
+          description="포함권장 41개(19개 권장 + 22개 보류). 티어1~3 완료 후 진행 예정."
+        />
       </section>
         </main>
       </div>

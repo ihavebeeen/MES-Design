@@ -347,14 +347,14 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Center Modal | 화면 중앙 기본 팝업 | 오가니즘 | 보류 | 1 | Type01. 2026-07-29 한 차례 코드화했으나(node 168:37994) 담당자가 "Center Modal과 Side Slide Panel이 위계가 비슷해서 나중에 같이 자료 보내주겠다"며 보류 지시 — 코드는 `docs/보류_컴포넌트/center-modal.tsx.bak`에 백업, 두 컴포넌트를 함께 받은 뒤 재설계 예정. Center Modal도 내부에 테이블만 있는 것/상단바+테이블/폼 등 종류가 여러 가지라 세분화 필요 |
-| Side Slide Panel (Full) | 우측 전체 슬라이드 패널 | 오가니즘 | 있음 | 1 | Type02, 960px 기본 |
+| Center Modal | 화면 중앙 기본 팝업 | 오가니즘 | 있음 | 1 | Type01. 2026-07-29 한 차례 코드화했으나(node 168:37994) 담당자가 "Center Modal과 Side Slide Panel이 위계가 비슷해서 나중에 같이 자료 보내주겠다"며 보류 지시 — 코드는 `docs/보류_컴포넌트/center-modal.tsx.bak`에 백업. 2026-08-03 담당자가 클라우드MES "Modal" 스펙 페이지(node 9873:82872, Type01/02 둘 다 포함)를 전달 — 약속했던 자료라 보류 해제, `center-modal.tsx`로 복원+갱신(폭 960px 확정, 최대높이 80vh + 헤더/푸터 고정·본문만 스크롤 규칙 반영). 내부 콘텐츠 세분화(테이블만/상단바+테이블/폼 등)는 여전히 `children`으로 위임, 별도 변형 컴포넌트화는 보류 |
+| Side Slide Panel (Full) | 우측 전체 슬라이드 패널 | 오가니즘 | 있음 | 1 | Type02, 960px 기본(예시 프레임은 900px, 텍스트 스펙 960px을 채택). 2026-08-03 같은 스펙 페이지로 `side-slide-panel.tsx` 신규 코드화 완료(Center Modal과 헤더/푸터 구조 공유, 화면 우측 고정+세로 풀높이) |
 | Side Slide Panel — 상하 분할 | 우측 슬라이드 내부가 상/하로 나뉜 형태 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "상하 섹션 구분"(생산계획 리스트+원부자재 리스트+하단 통계) 확인 |
 | Side Slide Panel — 좌우 분할 | 우측 슬라이드 내부가 좌/우로 나뉜 형태 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "좌우 섹션 구분"(품목검사 폼+캘린더) 및 Side Modal "타임테이블/좌우구분" 확인 |
 | Modal with Embedded Table | 팝업 안에 표·그리드 포함 | 오가니즘 | 있음 | 1 | "생산계획/작업진행 실적입력" 모달 |
 | Modal with Tabs | 팝업 안이 탭으로 구획 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "탭 구분 모달"(좌측 Type01~06 리스트+우측 테이블) 확인 |
 | Full-screen Modal | 화면 전체를 덮는 팝업 | 오가니즘 | 없음 | 4 | |
-| Nested Modal (2-depth) | 팝업 위에 또 다른 팝업 | 오가니즘 | 부분 | 1 | 2026-07-31 ConfirmDialog 두 개를 겹쳐 여는 방식으로 "팝업 위에 팝업" 패턴 자체는 데모/코드화 완료(page.tsx `nested-modal` 섹션). 다만 원래 추정 근거였던 Figma Side Modal "검사/커스텀 정보 등록"의 실제 겹친 모달 구조는 Center Modal이 담당자 지시로 보류 중이라 여전히 미확인 — 그래서 "있음"이 아니라 "부분" 유지 |
+| Nested Modal (2-depth) | 팝업 위에 또 다른 팝업 | 오가니즘 | 부분 | 1 | 2026-07-31 ConfirmDialog 두 개를 겹쳐 여는 방식으로 "팝업 위에 팝업" 패턴 자체는 데모/코드화 완료(page.tsx `nested-modal` 섹션). 2026-08-03 Center Modal 보류는 해제됐지만, 원래 추정 근거였던 Figma Side Modal "검사/커스텀 정보 등록"의 실제 겹친 모달 구조 자체는 이번 자료에 없어 여전히 미확인 — 그래서 "있음"이 아니라 "부분" 유지 |
 | Resizable / Draggable Popup | 크기 조절·이동 가능한 팝업 | 오가니즘 | 없음 | 3 | |
 
 ## 16. MES 도메인 특화 패턴
