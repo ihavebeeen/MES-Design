@@ -1409,4 +1409,22 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      정렬 규칙을 설명하는 내용으로 교체, Components 헤더 바로 위에도 앞으로
      컴포넌트를 추가할 때 이 순서를 어떻게 유지해야 하는지 신규 주석 추가.
      tsc 클린 확인 후 커밋.
+- (2026-08-03, 55차 직후 긴급 수정) 배포 직후 브라우저에서 React 경고 발생:
+  "Encountered two children with the same key, `R값`". 원인: 55차의 R값
+  일괄 삽입 스크립트가 `spec={[...]}` 배열의 닫는 괄호를 `\n          ]}`
+  (줄바꿈+들여쓰기) 패턴으로 찾았는데, 일부 Sample은 항목이 1개뿐이라 배열이
+  `spec={[{ label: "...", value: "..." }]}` 한 줄로 적혀 있었음 — 이 경우
+  해당 Sample 자신의 닫는 괄호를 못 찾고 텍스트상 다음에 나오는 (전혀 다른)
+  Sample의 닫는 괄호에 잘못 삽입됨. 그 결과 Checkbox·Checked·gray/black,
+  Switch·disabled(off)/disabled(on) 4개는 의도한 R값이 아예 안 들어갔고,
+  그 자리에 들어갔어야 할 값들이 각각 엉뚱하게 뒤쪽의 Checkbox·Disabled(판단값)
+  Sample과 Textarea·Default(placeholder) Sample에 중복으로 쌓여 `label:"R값"`
+  키가 3번씩 겹치는 사고가 남. 정규식으로 "각 Sample 블록 안에 label이 두 번
+  이상 등장하는 키가 있는가"를 전수 검사해 정확히 이 2곳(Checkbox Disabled,
+  Textarea Default)을 찾아내고, 이번엔 "의도한 값이 실제로 그 라벨의 Sample
+  블록 안에 들어있는가"까지 교차검증해서 놓친 4곳도 함께 찾아 정확한 자리에
+  옮겨 넣음. 교훈: 스크립트로 JSX 배열에 항목을 삽입할 때 배열 포맷(한 줄 vs
+  여러 줄)이 섞여 있으면 텍스트 패턴 매칭만으로는 위험 — 다음에 비슷한 일괄
+  삽입을 할 땐 항상 "삽입 후 의도한 자리에 실제로 들어갔는지" 재검증 스크립트를
+  같이 돌릴 것. tsc 클린 확인 후 커밋.
 

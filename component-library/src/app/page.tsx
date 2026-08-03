@@ -2376,13 +2376,19 @@ export default function Home() {
         </Sample>
         <Sample
           label="Checkbox · Checked · gray"
-          spec={[{ label: "배경", value: "Gray-50" }]}
+          spec={[
+            { label: "배경", value: "Gray-50" },
+            { label: "R값", value: "3px(control-sm)" },
+          ]}
         >
           <Checkbox defaultChecked color="gray" />
         </Sample>
         <Sample
           label="Checkbox · Checked · black"
-          spec={[{ label: "배경", value: "Gray-130(bg-strong)" }]}
+          spec={[
+            { label: "배경", value: "Gray-130(bg-strong)" },
+            { label: "R값", value: "3px(control-sm)" },
+          ]}
         >
           <Checkbox defaultChecked color="black" />
         </Sample>
@@ -2390,8 +2396,6 @@ export default function Home() {
           label="Checkbox · Disabled(판단값)"
           spec={[
             { label: "테두리/배경", value: "Gray-30(판단값, Figma에 disabled 자체 없음)" },
-            { label: "R값", value: "3px(control-sm)" },
-            { label: "R값", value: "3px(control-sm)" },
             { label: "R값", value: "3px(control-sm)" },
           ]}
         >
@@ -4110,13 +4114,19 @@ export default function Home() {
         </Sample>
         <Sample
           label="Switch · disabled(off)"
-          spec={[{ label: "처리 방식", value: "색 유지 + opacity-40(색 스왑 대신 흐리게)" }]}
+          spec={[
+            { label: "처리 방식", value: "색 유지 + opacity-40(색 스왑 대신 흐리게)" },
+            { label: "R값", value: "완전 원형(rounded-full)" },
+          ]}
         >
           <Switch disabled />
         </Sample>
         <Sample
           label="Switch · disabled(on)"
-          spec={[{ label: "처리 방식", value: "on 색(Primary-60) 유지 + opacity-40" }]}
+          spec={[
+            { label: "처리 방식", value: "on 색(Primary-60) 유지 + opacity-40" },
+            { label: "R값", value: "완전 원형(rounded-full)" },
+          ]}
         >
           <Switch disabled defaultChecked />
         </Sample>
@@ -4133,8 +4143,6 @@ export default function Home() {
             { label: "최소 높이", value: "80px(min-h-20) — 내용 늘면 늘어남" },
             { label: "너비", value: "100% hug(부모 기준) — 데모는 220px로 제한" },
             { label: "폰트", value: "14px" },
-            { label: "R값", value: "완전 원형(rounded-full)" },
-            { label: "R값", value: "완전 원형(rounded-full)" },
           ]}
         >
           <Textarea placeholder="내용 입력" className="h-20 w-[220px]" />
