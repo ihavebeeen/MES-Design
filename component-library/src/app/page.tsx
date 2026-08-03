@@ -52,6 +52,16 @@ import { Accordion } from "@/components/ui/accordion";
 import { Collapsible } from "@/components/ui/collapsible";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { ToggleButton } from "@/components/ui/toggle-button";
+import { NumberInput } from "@/components/ui/number-input";
+import { PasswordInput } from "@/components/ui/password-input";
+import { MultiSelectInput } from "@/components/ui/multi-select-input";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { Pagination } from "@/components/ui/pagination";
+import { DropdownMenu } from "@/components/ui/dropdown-menu";
+import { List, ListItem } from "@/components/ui/list";
+import { Panel } from "@/components/ui/panel";
+import { Fieldset } from "@/components/ui/fieldset";
+import { Descriptions } from "@/components/ui/descriptions";
 import { X } from "lucide-react";
 import {
   IconArrow,
@@ -151,6 +161,16 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "collapsible", label: "Collapsible" },
   { id: "button-group", label: "ButtonGroup" },
   { id: "toggle-button", label: "ToggleButton" },
+  { id: "number-input", label: "NumberInput" },
+  { id: "password-input", label: "PasswordInput" },
+  { id: "multi-select-input", label: "MultiSelectInput" },
+  { id: "breadcrumb", label: "Breadcrumb" },
+  { id: "pagination", label: "Pagination" },
+  { id: "dropdown-menu", label: "DropdownMenu" },
+  { id: "list", label: "List" },
+  { id: "panel", label: "Panel" },
+  { id: "fieldset", label: "Fieldset" },
+  { id: "descriptions", label: "Descriptions" },
   { id: "icons", label: "아이콘" },
   { id: "table-parts", label: "Table 분리" },
   { id: "table-full", label: "Table 합본" },
@@ -240,6 +260,16 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("collapsible"),
   leaf("button-group"),
   leaf("toggle-button"),
+  leaf("number-input"),
+  leaf("password-input"),
+  leaf("multi-select-input"),
+  leaf("breadcrumb"),
+  leaf("pagination"),
+  leaf("dropdown-menu"),
+  leaf("list"),
+  leaf("panel"),
+  leaf("fieldset"),
+  leaf("descriptions"),
   leaf("icons"),
   branch("Table", ["table-parts", "table-full"], "Table"),
 ];
@@ -248,6 +278,41 @@ const SIDEBAR_GROUPS: { title: string; nodes: SidebarNode[] }[] = [
   { title: "Foundations", nodes: FOUNDATION_NODES },
   { title: "Components", nodes: COMPONENT_NODES },
 ];
+
+/**
+ * 2026-08-03 신규 — 담당자 요청: "'임시'인 건 좌측 메뉴 리스트에도 '임시' 태그를 달아줘".
+ * 각 섹션의 `<Section badge="임시">`와 1:1로 맞춰 수동 관리하는 id 목록(FOUNDATION_IDS와
+ * 같은 방식) — 새 섹션에 `badge="임시"`를 달거나 뗄 때 여기도 같이 바꿀 것.
+ */
+const TEMP_BADGE_IDS = new Set([
+  "icon-button",
+  "divider",
+  "tooltip",
+  "loading-spinner",
+  "skeleton",
+  "switch",
+  "textarea",
+  "label",
+  "link",
+  "card",
+  "empty-state",
+  "error-state",
+  "popover",
+  "accordion",
+  "collapsible",
+  "button-group",
+  "toggle-button",
+  "number-input",
+  "password-input",
+  "multi-select-input",
+  "breadcrumb",
+  "pagination",
+  "dropdown-menu",
+  "list",
+  "panel",
+  "fieldset",
+  "descriptions",
+]);
 
 /** 사이드바 그룹과 1:1 매칭되는 최상단 탭. `firstId`는 그 그룹의 첫 섹션으로 스크롤 이동. */
 const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
@@ -1085,6 +1150,8 @@ export default function Home() {
   // 작아서 접을 필요가 없다고 판단해 그대로 둠.
   const [productionTableOpen, setProductionTableOpen] = useState(false);
   const [toggleButtonPressed, setToggleButtonPressed] = useState(false);
+  const [multiSelectValues, setMultiSelectValues] = useState(["A라인", "B라인"]);
+  const [paginationPage, setPaginationPage] = useState(4);
   // 2026-07-31 — "테이블 예시 체크박스가 기동하지 않아" 버그 리포트: 분리 데모(table-parts)의
   // 미니 Table들이 selectedIds/onSelectedIdsChange를 안 넘기고 있었음. Table 내부
   // toggleOne/toggleAll/toggleGroup은 `if (!onSelectedIdsChange) return;`로 시작해서
@@ -1167,13 +1234,18 @@ export default function Home() {
                       key={node.id}
                       href={`#${node.id}`}
                       className={cn(
-                        "truncate rounded-md px-2 py-1.5 text-[13px] transition-colors",
+                        "flex items-center gap-1.5 truncate rounded-md px-2 py-1.5 text-[13px] transition-colors",
                         activeId === node.id
                           ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
                           : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-gray-130"
                       )}
                     >
-                      {node.label}
+                      <span className="truncate">{node.label}</span>
+                      {TEMP_BADGE_IDS.has(node.id) && (
+                        <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
+                          임시
+                        </span>
+                      )}
                     </a>
                   ) : (
                     <div key={node.label} className="flex flex-col gap-0.5">
@@ -1192,13 +1264,18 @@ export default function Home() {
                           key={child.id}
                           href={`#${child.id}`}
                           className={cn(
-                            "ml-3 truncate rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors",
+                            "ml-3 flex items-center gap-1.5 truncate rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors",
                             activeId === child.id
                               ? "border-mes-primary-60 font-semibold text-mes-text-brand"
                               : "text-mes-gray-70 hover:text-mes-gray-130"
                           )}
                         >
-                          {child.label}
+                          <span className="truncate">{child.label}</span>
+                          {TEMP_BADGE_IDS.has(child.id) && (
+                            <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
+                              임시
+                            </span>
+                          )}
                         </a>
                       ))}
                     </div>
@@ -1213,6 +1290,19 @@ export default function Home() {
           <h1 className="w-full max-w-[960px] text-xl font-semibold text-mes-gray-130">
             MES 컴포넌트 라이브러리
           </h1>
+
+          {/* 2026-08-03 신규 — 담당자 요청: 메인 화면에도 사이드바처럼 Foundation/
+              Components 구분자를 두라고 함. 사이드바 그룹 제목과 짝을 맞춘 큰 이름표 +
+              한 줄 설명. */}
+          <div className="flex w-full max-w-[960px] flex-col gap-1">
+            <span className="text-[13px] font-bold uppercase tracking-widest text-mes-primary-60">
+              Foundation
+            </span>
+            <p className="text-[13px] leading-[1.5] text-mes-gray-70">
+              화면을 구성하는 가장 기초적인 값들입니다 — 색상, 타이포그래피, 간격, radius,
+              그림자, 시맨틱 토큰. 아래 모든 컴포넌트는 이 값들을 조합해서 만들어집니다.
+            </p>
+          </div>
 
           <section id="color-palette" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
             <div>
@@ -1371,6 +1461,16 @@ export default function Home() {
               ))}
             </div>
           </section>
+
+          <div className="flex w-full max-w-[960px] flex-col gap-1">
+            <span className="text-[13px] font-bold uppercase tracking-widest text-mes-primary-60">
+              Components
+            </span>
+            <p className="text-[13px] leading-[1.5] text-mes-gray-70">
+              Foundation 값들을 조합해 만든 실제 UI 조각들입니다 — 버튼 같은 기본 단위부터
+              테이블·알림 패널 같은 복합 컴포넌트까지.
+            </p>
+          </div>
 
       <Section id="button-size" title="Button — 사이즈">
         <Sample label="Button · Basic · Default">
@@ -2334,6 +2434,105 @@ export default function Home() {
           >
             즐겨찾기
           </ToggleButton>
+        </Sample>
+      </Section>
+
+      <Section id="number-input" title="NumberInput" badge="임시">
+        <Sample label="NumberInput · 기본">
+          <NumberInput defaultValue={10} min={0} max={999} />
+        </Sample>
+      </Section>
+
+      <Section id="password-input" title="PasswordInput" badge="임시">
+        <Sample label="PasswordInput · 보기/숨기기 토글">
+          <PasswordInput defaultValue="password123" className="w-[200px]" />
+        </Sample>
+      </Section>
+
+      <Section id="multi-select-input" title="MultiSelectInput" badge="임시">
+        <Sample label="MultiSelectInput · 태그 추가/제거">
+          <MultiSelectInput
+            values={multiSelectValues}
+            onValuesChange={setMultiSelectValues}
+            className="w-[260px]"
+          />
+        </Sample>
+      </Section>
+
+      <Section id="breadcrumb" title="Breadcrumb" badge="임시">
+        <Sample label="Breadcrumb · 3단계">
+          <Breadcrumb
+            items={[
+              { label: "자재관리", onClick: () => {} },
+              { label: "입고 관리", onClick: () => {} },
+              { label: "입고 상세" },
+            ]}
+          />
+        </Sample>
+      </Section>
+
+      <Section id="pagination" title="Pagination" badge="임시">
+        <Sample label="Pagination · 10페이지 중 4페이지">
+          <Pagination page={paginationPage} totalPages={10} onPageChange={setPaginationPage} />
+        </Sample>
+      </Section>
+
+      <Section id="dropdown-menu" title="DropdownMenu" badge="임시">
+        <Sample label="DropdownMenu · 클릭해서 열기">
+          <DropdownMenu
+            trigger={
+              <Button size="small" variant="lineBlacktxt">
+                작업 ▾
+              </Button>
+            }
+            items={[
+              { id: "edit", label: "수정" },
+              { id: "copy", label: "복사" },
+              { id: "delete", label: "삭제", danger: true },
+            ]}
+          />
+        </Sample>
+      </Section>
+
+      <Section id="list" title="List" badge="임시">
+        <Sample label="List · 클릭 가능 항목">
+          <List className="w-[220px]">
+            <ListItem onClick={() => {}}>자재 A</ListItem>
+            <ListItem onClick={() => {}}>자재 B</ListItem>
+            <ListItem onClick={() => {}}>자재 C</ListItem>
+          </List>
+        </Sample>
+      </Section>
+
+      <Section id="panel" title="Panel" badge="임시">
+        <Sample label="Panel · 기본">
+          <Panel className="w-[220px] p-4">
+            <span className="text-[13px] leading-[1.5] text-mes-text-default">
+              그림자가 있는 떠 있는 영역
+            </span>
+          </Panel>
+        </Sample>
+      </Section>
+
+      <Section id="fieldset" title="Fieldset" badge="임시">
+        <Sample label="Fieldset · 필드 묶음">
+          <Fieldset legend="거래처 정보" className="w-[260px]">
+            <Input placeholder="거래처명" size="small" />
+            <Input placeholder="담당자" size="small" />
+          </Fieldset>
+        </Sample>
+      </Section>
+
+      <Section id="descriptions" title="Descriptions" badge="임시">
+        <Sample label="Descriptions · 1열">
+          <Descriptions
+            className="w-[280px]"
+            items={[
+              { label: "품목명", value: "볼트 M8" },
+              { label: "규격", value: "M8 x 20mm" },
+              { label: "현재고", value: "1,200" },
+            ]}
+          />
         </Sample>
       </Section>
 

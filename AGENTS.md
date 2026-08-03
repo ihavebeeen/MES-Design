@@ -1074,4 +1074,27 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   ChevronRight/rotate-90 규칙 재사용). 체크리스트 8개 행 갱신, page.tsx에
   데모 섹션 8개 추가, tsc 클린 확인 + `/tmp` next build 재검증 후 커밋.
   남은 24개는 후속 배치로 계속 진행 예정.
+- (2026-08-03, 41차) 담당자 지시: "다시시도해도 실패할 가능성이 더 높으면 시도하지
+  말고 다음거. 판단값 우선." — 40차에서 보류했던 Breadcrumb/Pagination/Date Picker
+  Figma 재탐색을 포기하고 전부 판단값으로 전환, 나머지 항목도 Figma 재탐색 없이
+  바로 판단값으로 진행. 2차 배치 10개 신규 구현: NumberInput/PasswordInput/
+  MultiSelectInput/Breadcrumb/Pagination/DropdownMenu/List·ListItem/Panel/
+  Fieldset/Descriptions. 전부 기존 컴포넌트 재사용 원칙 유지(NumberInput·
+  PasswordInput은 Input의 `inputVariants` 재사용, MultiSelectInput은 Tag 재사용,
+  DropdownMenu는 40차에서 만든 Popover 재사용, Panel은 NotificationPanel/Combobox
+  패널 톤 재사용). Bulk Action Toolbar와 Backdrop/Dim Overlay는 이전에 담당자가
+  "빼라"고 명시적으로 제거했던 항목이라 이번 배치에서 제외(새 지시 없이 부활 안
+  시킴). Spacing Scale/Z-index Scale은 React 컴포넌트가 아니라 문서 항목이라 이번
+  배치에서 제외.
+  이어서 담당자가 두 가지를 추가 요청:
+  1. "'임시'인 건 좌측 메뉴 리스트에도 '임시' 태그를 달아줘" — 지금까지
+     `<Section badge="임시">`로 표시해온 27개 섹션 id를 `TEMP_BADGE_IDS`(Set,
+     FOUNDATION_IDS와 같은 수동 동기화 방식)로 모아, 좌측 사이드바 트리의 leaf/
+     branch-child 링크 옆에도 동일한 파란 "임시" 뱃지를 작게 표시하도록 함.
+  2. "파운데이션과 컴포넌트가 메인 화면에도 이케 구분자로 있어야 할거같아" — 사이드바의
+     Foundations/Components 그룹 제목과 짝을 맞춰, 메인 콘텐츠 영역에도 각 그룹
+     시작 지점(색상 팔레트 섹션 앞 / Button 사이즈 섹션 앞)에 "Foundation"/
+     "Components" 이름표 + 한 줄 설명을 추가.
+  tsc 클린 확인 + `/tmp` next build 재검증 후 커밋. 남은 항목은 계속 후속 배치로
+  진행.
 
