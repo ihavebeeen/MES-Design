@@ -37,6 +37,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Link } from "@/components/ui/link";
+import { BulkActionToolbar } from "@/components/ui/bulk-action-toolbar";
 import { X } from "lucide-react";
 import {
   IconArrow,
@@ -120,11 +121,13 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "confirm-dialog", label: "ConfirmDialog" },
   { id: "notice-banner", label: "NoticeBanner" },
   { id: "radio-choice-dialog", label: "RadioChoiceDialog" },
+  { id: "nested-modal", label: "Nested Modal" },
   { id: "page-top-tab-item", label: "PageTopTabItem" },
   { id: "sidebar", label: "Sidebar" },
   { id: "alarm-list-item", label: "AlarmListItem" },
   { id: "notification-panel", label: "NotificationPanel" },
   { id: "icons", label: "아이콘" },
+  { id: "bulk-action-toolbar", label: "BulkActionToolbar" },
   { id: "table-parts", label: "Table 분리" },
   { id: "table-full", label: "Table 합본" },
 ];
@@ -197,11 +200,13 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("confirm-dialog"),
   leaf("notice-banner"),
   leaf("radio-choice-dialog"),
+  leaf("nested-modal"),
   leaf("page-top-tab-item"),
   leaf("sidebar"),
   leaf("alarm-list-item"),
   leaf("notification-panel"),
   leaf("icons"),
+  leaf("bulk-action-toolbar"),
   branch("Table", ["table-parts", "table-full"], "Table"),
 ];
 
@@ -929,6 +934,10 @@ export default function Home() {
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [bannerDialogOpen, setBannerDialogOpen] = useState(false);
   const [radioDialogOpen, setRadioDialogOpen] = useState(false);
+  // 2026-07-31 — Nested Modal(2-depth) 데모용. Center Modal은 담당자 지시로 보류 중이라
+  // 건드리지 않고, 이미 완성된 ConfirmDialog 두 개를 겹쳐 여는 방식으로 시연.
+  const [nestedModalOpen, setNestedModalOpen] = useState(false);
+  const [nestedModalConfirmOpen, setNestedModalConfirmOpen] = useState(false);
   const [sidebarExpandedKey, setSidebarExpandedKey] = useState<string | undefined>(
     "mes-setting"
   );
@@ -1815,6 +1824,64 @@ export default function Home() {
         onConfirm={() => setRadioDialogOpen(false)}
       />
 
+      <section id="nested-modal" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+          Nested Modal
+          <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">
+            임시
+          </span>
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          팝업 위에 또 다른 팝업이 뜨는 2-depth 패턴. Figma상 Center Modal에서 겹친
+          형태로 추정되는 원본은 담당자 지시로 아직 보류 중이라(자료 전달 대기),
+          정확한 구조를 새로 짓는 대신 이미 완성된 ConfirmDialog 두 개를 겹쳐 여는
+          방식으로 시연.
+        </p>
+        <Button size="basic" onClick={() => setNestedModalOpen(true)}>
+          품목 삭제
+        </Button>
+      </section>
+
+      <ConfirmDialog
+        open={nestedModalOpen}
+        onOpenChange={setNestedModalOpen}
+        title="품목 삭제"
+        heading="이 품목을 삭제하시겠습니까?"
+        description="연결된 BOM/재고 정보가 있으면 함께 영향을 받을 수 있습니다."
+        tone="warning"
+        actions={[
+          { label: "취소", variant: "fillGray", onClick: () => setNestedModalOpen(false) },
+          {
+            label: "삭제",
+            variant: "fillRed",
+            onClick: () => setNestedModalConfirmOpen(true),
+          },
+        ]}
+      />
+      <ConfirmDialog
+        open={nestedModalConfirmOpen}
+        onOpenChange={setNestedModalConfirmOpen}
+        title="최종 확인"
+        heading="정말 삭제하시겠습니까?"
+        description="이 작업은 되돌릴 수 없습니다."
+        tone="error"
+        actions={[
+          {
+            label: "취소",
+            variant: "fillGray",
+            onClick: () => setNestedModalConfirmOpen(false),
+          },
+          {
+            label: "삭제 확정",
+            variant: "fillRed",
+            onClick: () => {
+              setNestedModalConfirmOpen(false);
+              setNestedModalOpen(false);
+            },
+          },
+        ]}
+      />
+
       <section id="page-top-tab-item" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           PageTopTabItem
@@ -1992,6 +2059,44 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="bulk-action-toolbar" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+          BulkActionToolbar
+          <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">
+            임시
+          </span>
+        </h2>
+        <p className="text-[12px] text-mes-gray-70">
+          Figma 디자인 없음 — 기존 색 토큰만으로 판단 구현. 아래 table-parts 데모의
+          "그룹화만" 섹션에서 실제 Table 선택과 연동된 형태도 볼 수 있음.
+        </p>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+              BulkActionToolbar · 액션 2개
+            </span>
+            <BulkActionToolbar
+              count={3}
+              onClear={() => {}}
+              actions={[
+                { label: "내보내기", onClick: () => {} },
+                { label: "삭제", onClick: () => {} },
+              ]}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+              BulkActionToolbar · 액션 1개
+            </span>
+            <BulkActionToolbar
+              count={12}
+              onClear={() => {}}
+              actions={[{ label: "일괄 승인", onClick: () => {} }]}
+            />
+          </div>
+        </div>
+      </section>
+
       <section id="table-parts" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-6 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           Table — 구조 요소별 분리 데모
@@ -2009,8 +2114,18 @@ export default function Home() {
 
         <div className="flex flex-col gap-2">
           <span className="font-mono text-[11px] leading-none text-mes-gray-70">
-            Table · 그룹화만 (1단 그룹, 총계행 없음)
+            Table · 그룹화만 (1단 그룹, 총계행 없음) + BulkActionToolbar 연동
           </span>
+          {miniGroupSelectedIds.length > 0 && (
+            <BulkActionToolbar
+              count={miniGroupSelectedIds.length}
+              onClear={() => setMiniGroupSelectedIds([])}
+              actions={[
+                { label: "내보내기", onClick: () => {} },
+                { label: "삭제", onClick: () => {} },
+              ]}
+            />
+          )}
           <Table
             columns={flatColumns}
             groups={miniGroups}

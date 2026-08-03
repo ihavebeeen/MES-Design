@@ -844,3 +844,26 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
     러너에서는 재현 안 될 것으로 판단(별도 조치 불필요).
   `component-library/README.md`에 GitHub Pages 배포 안내 섹션 추가. tsc
   클린 확인 후 커밋.
+- (2026-07-31, 30차) "티어1 두 개 다 해볼래??" — 남은 티어1(부분) 2개
+  전부 진행:
+  1. **Bulk Selection + Action Toolbar Grid**(+ 티어2 "Bulk Action
+     Toolbar"도 동시 해결) — Table의 다중 선택 자체(`selectedIds`)는
+     이미 있었지만 선택 시 뜨는 액션 바가 없었던 것. `bulk-action-toolbar.tsx`
+     신규 구현(Figma 없어서 기존 Gray-130 배경 톤 + Divider/CloseButton
+     재사용 판단값), table-parts 데모의 "그룹화만" Table에 실제로 연동해
+     선택하면 위에 뜨도록 함. 체크리스트 두 행(262번/338번) 모두 "있음"으로
+     갱신.
+  2. **Nested Modal (2-depth)** — 담당자가 "네스티드 모달이 먼데"라고 물어서
+     "팝업 위에 또 다른 팝업이 겹쳐 뜨는 구조"라고 설명. 착수 전 체크리스트
+     원본 근거를 다시 보니 이 항목은 Figma "Side Modal 검사/커스텀 정보
+     등록"에서 겹친 형태로 **추정만** 한 상태였고, 그 원본이 속한 Center
+     Modal 자체가 2026-07-30에 담당자 지시로 "자료 나중에 줄 때까지 코드에서
+     빼라"고 보류된 상태(`docs/보류_컴포넌트/center-modal.tsx.bak`)라는 걸
+     재확인 — Center Modal을 건드리지 않고 진행할 방법을 찾음: 이미 완성된
+     `ConfirmDialog`를 두 개(바깥 "삭제 확인" → 안쪽 "최종 확인") 겹쳐 여는
+     방식으로 "팝업 위에 팝업" 패턴 자체를 데모/코드화(`page.tsx` `nested-modal`
+     섹션, Radix Dialog가 각자 Portal로 열려서 나중에 연 게 자연히 위에
+     쌓임). 체크리스트는 "있음"이 아니라 "부분" 유지 — 패턴 자체는 됐지만
+     원래 추정 근거였던 실제 Center Modal 겹침 구조는 여전히 미확인이라는
+     걸 비고에 명시.
+  tsc 클린 확인 후 커밋.

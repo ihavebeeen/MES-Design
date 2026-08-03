@@ -259,7 +259,7 @@
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
 | Filter Bar / Filter Panel | 목록·테이블 상단 필터 영역 | 오가니즘 | 있음 | 1 | Figma "Filter" 확인됨 |
-| Bulk Action Toolbar | 다중 선택 시 나타나는 액션 바 | 몰큘 | 없음 | 2 | MES 테이블 작업에 흔함 |
+| Bulk Action Toolbar | 다중 선택 시 나타나는 액션 바 | 몰큘 | 있음 | 2 | 2026-07-31 코드화(`bulk-action-toolbar.tsx`). Figma 디자인 없어서 기존 색 토큰(Gray-130 배경 등)만으로 판단 구현, Divider/CloseButton 재사용 |
 | Table Bulk Selection | 테이블 행 다중 선택 | 몰큘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal "탭 구분 모달"/"필터·검색"에서 전체선택 체크박스 확인 |
 | Column Visibility Toggle | 테이블 컬럼 표시/숨김 설정 | 몰큘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "컬럼 설정" 확인 |
 | Row Expand / Detail Drawer | 행 클릭 시 상세 정보 확장 | 오가니즘 | 없음 | 3 | |
@@ -335,7 +335,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 | Cell Status Color Grid | 값에 따라 셀 색이 달라지는 그리드 | 오가니즘 | 없음 | 3 | |
 | Text Link Cell | 클릭 시 상세로 이동하는 텍스트 셀 | 몰큘 | 없음 | 3 | |
 | Icon Cell | 상태·액션 아이콘이 들어간 셀 | 몰큘 | 없음 | 3 | |
-| Bulk Selection + Action Toolbar Grid | 다중 선택 후 일괄 처리 버튼이 뜨는 그리드 | 오가니즘 | 부분 | 1 | 모달 내 테이블에서 체크박스 다중선택 확인됨 |
+| Bulk Selection + Action Toolbar Grid | 다중 선택 후 일괄 처리 버튼이 뜨는 그리드 | 오가니즘 | 있음 | 1 | 2026-07-31 `bulk-action-toolbar.tsx`를 table-parts 데모의 "그룹화만" Table에 실제로 연동 완료(선택 시 위에 표시). 액션 바 자체는 실측 아닌 판단값 |
 | Column Resize / Reorder / Show-Hide | 컬럼 너비·순서·표시 설정 | 몰큘 | 없음 | 3 | |
 | Grid Export / Print | 엑셀 내보내기·인쇄 버튼 | 아톰 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "일자/조회/다운로드" 확인 |
 | Virtual Scroll Grid | 대용량 데이터 가상 스크롤 | 오가니즘 | 없음 | 3 | |
@@ -352,7 +352,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 | Modal with Embedded Table | 팝업 안에 표·그리드 포함 | 오가니즘 | 있음 | 1 | "생산계획/작업진행 실적입력" 모달 |
 | Modal with Tabs | 팝업 안이 탭으로 구획 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "탭 구분 모달"(좌측 Type01~06 리스트+우측 테이블) 확인 |
 | Full-screen Modal | 화면 전체를 덮는 팝업 | 오가니즘 | 없음 | 4 | |
-| Nested Modal (2-depth) | 팝업 위에 또 다른 팝업 | 오가니즘 | 부분 | 1 | Figma "컴포넌트 라이브러리" Side Modal "검사/커스텀 정보 등록"에서 겹친 모달 형태로 추정, 정확한 구조는 추가 확인 필요 |
+| Nested Modal (2-depth) | 팝업 위에 또 다른 팝업 | 오가니즘 | 부분 | 1 | 2026-07-31 ConfirmDialog 두 개를 겹쳐 여는 방식으로 "팝업 위에 팝업" 패턴 자체는 데모/코드화 완료(page.tsx `nested-modal` 섹션). 다만 원래 추정 근거였던 Figma Side Modal "검사/커스텀 정보 등록"의 실제 겹친 모달 구조는 Center Modal이 담당자 지시로 보류 중이라 여전히 미확인 — 그래서 "있음"이 아니라 "부분" 유지 |
 | Resizable / Draggable Popup | 크기 조절·이동 가능한 팝업 | 오가니즘 | 없음 | 3 | |
 
 ## 16. MES 도메인 특화 패턴
