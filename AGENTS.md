@@ -883,4 +883,17 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      전부 제거. 체크리스트 두 행(Bulk Action Toolbar → 없음, Bulk Selection +
      Action Toolbar Grid → 부분으로 롤백, 다만 Table 다중 선택 자체는 여전히
      되니 "없음"이 아니라 "부분" 유지) 갱신. tsc 클린 확인 후 커밋.
+- (2026-07-31, 32차) "파운데이션 영역도 간격 넓혀줘, 왜 컴포넌트만 넓힌거야" —
+  31차에서 `<main>`의 `gap-20`을 늘렸는데 Foundations(색상 팔레트~시맨틱 토큰
+  6개)는 안 넓어져 보인다는 지적. 원인 확인: Components 쪽은 각 컴포넌트가
+  `<Section>`/`<section>`으로 각각 독립된 `<main>`의 직계 자식(형제)이라 `gap-20`이
+  그 사이사이에 그대로 적용되는데, Foundations 6개는 전부 `<div id="...">`
+  형태로 **단일 `<section>` 하나** 안에 얹혀 있었음(그 section의 내부
+  `gap-6`만 적용되고 `<main>`의 gap과는 무관) — 구조 자체가 달랐던 게 원인
+  (담당자가 "구조가 달라?"라고 정확히 짚음). 6개 `<div id="...">`를 각각
+  Components와 똑같은 형태의 독립 `<section id="..." className="...border-b
+  border-mes-gray-30 pb-8">`로 분리해서 `<main>`의 직계 자식으로 만듦 — 이제
+  Foundations도 Components와 동일하게 `gap-20`이 적용됨. id/스크롤스파이
+  로직은 안 바뀜(`getElementById`가 이제 section 자체를 찾음, 이전엔 내부
+  div였음 — 동작상 차이 없음). tsc 클린 확인 후 커밋.
 

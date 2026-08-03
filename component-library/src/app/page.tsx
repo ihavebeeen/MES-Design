@@ -1078,153 +1078,163 @@ export default function Home() {
             MES 컴포넌트 라이브러리
           </h1>
 
-          <section className="flex w-full max-w-[960px] flex-col gap-6 border-b border-mes-gray-30 pb-8">
-        <div id="color-palette" className="scroll-mt-6">
-          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">색상 팔레트</h2>
-          <p className="mt-1 text-[12px] text-mes-gray-70">
-            Gray/Primary/Danger/Yellow 각 10~110 11단계. Alarm은 알람 리스트 전용 별도 색상군.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4">
-          <PaletteRow title="Gray" colors={GRAY_PALETTE} />
-          <PaletteRow title="Primary" colors={PRIMARY_PALETTE} />
-          <PaletteRow title="Danger" colors={DANGER_PALETTE} />
-          <PaletteRow title="Yellow" colors={YELLOW_PALETTE} />
-          <PaletteRow title="Alarm severity" note="(알람 리스트 전용, 팔레트 아님)" colors={ALARM_PALETTE} />
-        </div>
-
-        <div id="typography" className="scroll-mt-6">
-          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">타이포그래피 스케일</h2>
-          <p className="mt-1 text-[12px] text-mes-gray-70">
-            Pretendard, 자간 0 / 행간 150% 고정. 회색 밑줄 = 실사용 조합.
-          </p>
-        </div>
-        <div className="grid grid-cols-4 gap-8">
-          {TYPE_WEIGHTS.map((w) => (
-            <div key={w.label} className="flex flex-col gap-3">
-              <span className="text-[13px] font-bold text-mes-gray-130">{w.label}</span>
-              <div className="flex flex-col gap-2.5">
-                {TYPE_SIZES.map((size) => {
-                  const usage = USED_TYPE_COMBOS[`${w.label}-${size}`];
-                  return (
-                    <span
-                      key={size}
-                      title={usage}
-                      style={{ fontSize: size, fontWeight: w.weight, letterSpacing: 0, lineHeight: 1.5 }}
-                      className={cn(
-                        "block whitespace-nowrap text-left text-mes-gray-130",
-                        usage && "underline decoration-mes-gray-40 decoration-2 underline-offset-4"
-                      )}
-                    >
-                      Pretendard / {w.label} / {size}px
-                    </span>
-                  );
-                })}
-              </div>
+          <section id="color-palette" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+            <div>
+              <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">색상 팔레트</h2>
+              <p className="mt-1 text-[12px] text-mes-gray-70">
+                Gray/Primary/Danger/Yellow 각 10~110 11단계. Alarm은 알람 리스트 전용 별도 색상군.
+              </p>
             </div>
-          ))}
-        </div>
-
-        <div id="spacing" className="scroll-mt-6">
-          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-            간격
-          </h2>
-          <p className="mt-1 text-[12px] text-mes-gray-70">
-            실측값 그대로 — 4px 배수를 벗어난 값(5px, 6px 등)도 있음.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2">
-          {SPACING_SCALE.map((s) => (
-            <div key={s.value} className="flex items-center gap-3">
-              <span className="w-10 shrink-0 text-right font-mono text-[11px] text-mes-gray-60">
-                {s.value}px
-              </span>
-              <div className="flex h-4 w-10 shrink-0 items-center">
-                <div
-                  className="h-3 rounded-sm bg-mes-primary-40"
-                  style={{ width: s.value }}
-                />
-              </div>
-              <span className="text-[11px] text-mes-gray-70">{s.usage}</span>
+            <div className="flex flex-col gap-4">
+              <PaletteRow title="Gray" colors={GRAY_PALETTE} />
+              <PaletteRow title="Primary" colors={PRIMARY_PALETTE} />
+              <PaletteRow title="Danger" colors={DANGER_PALETTE} />
+              <PaletteRow title="Yellow" colors={YELLOW_PALETTE} />
+              <PaletteRow title="Alarm severity" note="(알람 리스트 전용, 팔레트 아님)" colors={ALARM_PALETTE} />
             </div>
-          ))}
-        </div>
+          </section>
 
-        <div id="radius" className="scroll-mt-6">
-          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-            Radius
-          </h2>
-          <p className="mt-1 text-[12px] text-mes-gray-70">
-            작은 요소 2~4px, 떠 있는 패널 8px, 모달 12~16px, 캡슐형 full.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-6">
-          {RADIUS_SCALE.map((r) => (
-            <div key={r.label} className="flex flex-col items-center gap-1.5">
-              <div
-                className={cn(
-                  "border border-mes-primary-40 bg-mes-primary-20",
-                  r.pill ? "h-8 w-16" : "size-12"
-                )}
-                style={{ borderRadius: r.radius }}
-              />
-              <span className="font-mono text-[11px] text-mes-gray-70">{r.label}</span>
-              <span className="max-w-[110px] text-center text-[10px] leading-tight text-mes-gray-60">
-                {r.usage}
-              </span>
+          <section id="typography" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+            <div>
+              <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">타이포그래피 스케일</h2>
+              <p className="mt-1 text-[12px] text-mes-gray-70">
+                Pretendard, 자간 0 / 행간 150% 고정. 회색 밑줄 = 실사용 조합.
+              </p>
             </div>
-          ))}
-        </div>
-
-        <div id="shadow" className="scroll-mt-6">
-          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-            그림자
-          </h2>
-          <p className="mt-1 text-[12px] text-mes-gray-70">
-            오프셋 있으면 &quot;떠 있는 패널&quot;, 오프셋 없이 사방 확산이면 &quot;중앙
-            집중형 모달&quot;.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-8">
-          {SHADOW_SCALE.map((s) => (
-            <div key={s.label} className="flex flex-col items-center gap-2">
-              <div
-                className="flex h-16 w-28 items-center justify-center rounded-lg bg-white text-[11px] text-mes-gray-70"
-                style={{ filter: `drop-shadow(${s.value})` }}
-              >
-                {s.label}
-              </div>
-              <span className="font-mono text-[10px] text-mes-gray-60">{s.value}</span>
-              <span className="text-[11px] text-mes-gray-70">{s.usage}</span>
-            </div>
-          ))}
-        </div>
-
-        <div id="semantic-tokens" className="scroll-mt-6">
-          <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-            시맨틱 토큰
-          </h2>
-          <p className="mt-1 text-[12px] text-mes-gray-70">
-            위 스케일 값을 가리키기만 하는 용도 이름. 스케일 값이 바뀌면 자동으로 따라 바뀐다.
-          </p>
-        </div>
-        <div className="flex flex-col gap-5">
-          {SEMANTIC_TOKENS.map((g) => (
-            <div key={g.group} className="flex flex-col gap-1.5">
-              <span className="text-[12px] font-bold text-mes-gray-100">{g.group}</span>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-1">
-                {g.tokens.map((t) => (
-                  <div key={t.name} className="flex items-baseline gap-2 text-[11px]">
-                    <span className="shrink-0 font-mono text-mes-gray-130">mes-{t.name}</span>
-                    <span className="shrink-0 font-mono text-mes-gray-60">→ {t.scale}</span>
-                    <span className="truncate text-mes-gray-70">{t.usage}</span>
+            <div className="grid grid-cols-4 gap-8">
+              {TYPE_WEIGHTS.map((w) => (
+                <div key={w.label} className="flex flex-col gap-3">
+                  <span className="text-[13px] font-bold text-mes-gray-130">{w.label}</span>
+                  <div className="flex flex-col gap-2.5">
+                    {TYPE_SIZES.map((size) => {
+                      const usage = USED_TYPE_COMBOS[`${w.label}-${size}`];
+                      return (
+                        <span
+                          key={size}
+                          title={usage}
+                          style={{ fontSize: size, fontWeight: w.weight, letterSpacing: 0, lineHeight: 1.5 }}
+                          className={cn(
+                            "block whitespace-nowrap text-left text-mes-gray-130",
+                            usage && "underline decoration-mes-gray-40 decoration-2 underline-offset-4"
+                          )}
+                        >
+                          Pretendard / {w.label} / {size}px
+                        </span>
+                      );
+                    })}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
+
+          <section id="spacing" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+            <div>
+              <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+                간격
+              </h2>
+              <p className="mt-1 text-[12px] text-mes-gray-70">
+                실측값 그대로 — 4px 배수를 벗어난 값(5px, 6px 등)도 있음.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
+              {SPACING_SCALE.map((s) => (
+                <div key={s.value} className="flex items-center gap-3">
+                  <span className="w-10 shrink-0 text-right font-mono text-[11px] text-mes-gray-60">
+                    {s.value}px
+                  </span>
+                  <div className="flex h-4 w-10 shrink-0 items-center">
+                    <div
+                      className="h-3 rounded-sm bg-mes-primary-40"
+                      style={{ width: s.value }}
+                    />
+                  </div>
+                  <span className="text-[11px] text-mes-gray-70">{s.usage}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id="radius" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+            <div>
+              <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+                Radius
+              </h2>
+              <p className="mt-1 text-[12px] text-mes-gray-70">
+                작은 요소 2~4px, 떠 있는 패널 8px, 모달 12~16px, 캡슐형 full.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-6">
+              {RADIUS_SCALE.map((r) => (
+                <div key={r.label} className="flex flex-col items-center gap-1.5">
+                  <div
+                    className={cn(
+                      "border border-mes-primary-40 bg-mes-primary-20",
+                      r.pill ? "h-8 w-16" : "size-12"
+                    )}
+                    style={{ borderRadius: r.radius }}
+                  />
+                  <span className="font-mono text-[11px] text-mes-gray-70">{r.label}</span>
+                  <span className="max-w-[110px] text-center text-[10px] leading-tight text-mes-gray-60">
+                    {r.usage}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id="shadow" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+            <div>
+              <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+                그림자
+              </h2>
+              <p className="mt-1 text-[12px] text-mes-gray-70">
+                오프셋 있으면 &quot;떠 있는 패널&quot;, 오프셋 없이 사방 확산이면 &quot;중앙
+                집중형 모달&quot;.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-8">
+              {SHADOW_SCALE.map((s) => (
+                <div key={s.label} className="flex flex-col items-center gap-2">
+                  <div
+                    className="flex h-16 w-28 items-center justify-center rounded-lg bg-white text-[11px] text-mes-gray-70"
+                    style={{ filter: `drop-shadow(${s.value})` }}
+                  >
+                    {s.label}
+                  </div>
+                  <span className="font-mono text-[10px] text-mes-gray-60">{s.value}</span>
+                  <span className="text-[11px] text-mes-gray-70">{s.usage}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id="semantic-tokens" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+            <div>
+              <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+                시맨틱 토큰
+              </h2>
+              <p className="mt-1 text-[12px] text-mes-gray-70">
+                위 스케일 값을 가리키기만 하는 용도 이름. 스케일 값이 바뀌면 자동으로 따라 바뀐다.
+              </p>
+            </div>
+            <div className="flex flex-col gap-5">
+              {SEMANTIC_TOKENS.map((g) => (
+                <div key={g.group} className="flex flex-col gap-1.5">
+                  <span className="text-[12px] font-bold text-mes-gray-100">{g.group}</span>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                    {g.tokens.map((t) => (
+                      <div key={t.name} className="flex items-baseline gap-2 text-[11px]">
+                        <span className="shrink-0 font-mono text-mes-gray-130">mes-{t.name}</span>
+                        <span className="shrink-0 font-mono text-mes-gray-60">→ {t.scale}</span>
+                        <span className="truncate text-mes-gray-70">{t.usage}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
 
       <Section id="button-size" title="Button — 사이즈">
         <Sample label="Button · Basic · Default">
