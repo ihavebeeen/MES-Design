@@ -470,6 +470,21 @@ const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
 /** Foundation 6개 섹션 id 집합 — 상단 탭 활성 표시를 스크롤 위치(activeId)와 연동할 때 씀 */
 const FOUNDATION_IDS = new Set(TOC_LINKS.slice(0, 6).map((l) => l.id));
 
+/**
+ * 2026-08-03 신규 — 담당자 정정: "검색어 입력하면 좌측이 필터링되는 게 아니라, 좌측
+ * 리스트는 그대로 있고 검색창 아래에 컴포넌트 리스트가 콤보박스처럼 떠야지". 처음엔
+ * 사이드바 자체를 필터링했는데, 그게 아니라 검색창 밑에 결과 드롭다운을 띄우는
+ * 방식으로 정정 — 사이드바는 항상 전체 목록 그대로 두고 안 건드림. 검색 대상은
+ * leaf 항목 + branch의 하위 항목(예: "Button 사이즈")을 전부 평탄화한 목록.
+ */
+function flattenSidebarNodes(nodes: SidebarNode[]): { id: string; label: string }[] {
+  return nodes.flatMap((n) => (n.kind === "leaf" ? [{ id: n.id, label: n.label }] : n.children));
+}
+const ALL_SEARCHABLE_ITEMS = [
+  ...flattenSidebarNodes(FOUNDATION_NODES),
+  ...flattenSidebarNodes(COMPONENT_NODES),
+];
+
 /** Sidebar 데모용 1-depth 항목 — MES 설정만 2-depth 실측값을 갖고 있음(주석 참고) */
 const SIDEBAR_NAV_ITEMS: SidebarNavItem[] = [
   { key: "material", label: "자재관리", icon: <IconBox size={20} /> },
@@ -1369,6 +1384,14 @@ export default function Home() {
   const [activeId, setActiveId] = useState<string>(TOC_LINKS[0]?.id ?? "");
   const activeGroup = FOUNDATION_IDS.has(activeId) ? "foundations" : "components";
 
+  // 2026-08-03 — 검색창 밑 콤보박스형 드롭다운에 쓸 결과 목록. 사이드바 자체는 안 건드림.
+  const normalizedSidebarSearch = sidebarSearch.trim().toLowerCase();
+  const searchResults = normalizedSidebarSearch
+    ? ALL_SEARCHABLE_ITEMS.filter((item) =>
+        item.label.toLowerCase().includes(normalizedSidebarSearch)
+      )
+    : [];
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -1419,105 +1442,111 @@ export default function Home() {
             )
           )}
         </nav>
-        {/* 2026-08-03 신규 — 담당자 요청: "우측 상단에 검색창 넣어서 이름별로 검색
-            가능하게". 사이드바 항목(leaf/branch label) 이름 부분일치 검색 — 검색 결과는
-            사이드바 목록만 필터링하고, 페이지 스크롤 위치는 항목을 클릭해야 이동. */}
-        <div className="relative ml-auto flex items-center">
-          <Search className="pointer-events-none absolute left-2.5 size-3.5 text-mes-gray-50" />
-          <input
-            value={sidebarSearch}
-            onChange={(e) => setSidebarSearch(e.target.value)}
-            placeholder="컴포넌트 이름 검색"
-            className="h-8 w-[200px] rounded-mes-control border border-mes-border-default bg-white py-1.5 pl-8 pr-2 text-[13px] text-mes-text-default outline-none placeholder:text-mes-text-placeholder focus:border-mes-border-strong"
-          />
-        </div>
+        {/* 2026-08-03 — 담당자 정정: 사이드바 자체를 필터링하지 말고, 검색창 밑에
+            콤보박스처럼 결과 드롭다운을 띄울 것. 사이드바는 항상 전체 목록 그대로. */}
+        <Popover
+          open={searchResults.length > 0}
+          onOpenChange={(next) => {
+            if (!next) setSidebarSearch("");
+          }}
+        >
+          <PopoverTrigger asChild>
+            <div className="relative ml-auto flex items-center">
+              <Search className="pointer-events-none absolute left-2.5 size-3.5 text-mes-gray-50" />
+              <input
+                value={sidebarSearch}
+                onChange={(e) => setSidebarSearch(e.target.value)}
+                placeholder="컴포넌트 이름 검색"
+                className="h-8 w-[200px] rounded-mes-control border border-mes-border-default bg-white py-1.5 pl-8 pr-2 text-[13px] text-mes-text-default outline-none placeholder:text-mes-text-placeholder focus:border-mes-border-strong"
+              />
+            </div>
+          </PopoverTrigger>
+          <PopoverContent
+            align="end"
+            onOpenAutoFocus={(e) => e.preventDefault()}
+            className="max-h-[280px] w-[220px] overflow-y-auto p-1.5"
+          >
+            {searchResults.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={() => setSidebarSearch("")}
+                className="flex items-center gap-1.5 rounded-mes-control px-2 py-[5px] text-left text-[13px] leading-[1.5] text-mes-text-default outline-none transition-colors hover:bg-mes-bg-subtle"
+              >
+                <TierBadge id={item.id} />
+                <span className="truncate">{item.label}</span>
+              </a>
+            ))}
+          </PopoverContent>
+        </Popover>
       </header>
 
       <div className="flex w-full flex-1">
         <aside className="sticky top-14 hidden h-[calc(100vh-56px)] w-[240px] shrink-0 overflow-y-auto border-r border-mes-gray-30 bg-white px-3 py-6 lg:block">
-          {SIDEBAR_GROUPS.map((group) => {
-            // 2026-08-03 신규 — 검색어와 leaf/branch(및 그 children) 라벨을 부분일치
-            // 비교. branch는 자기 라벨이 맞거나 children 중 하나라도 맞으면 노출하고,
-            // children은 검색어에 맞는 것만 남긴다(검색어 없으면 전부 그대로).
-            const q = sidebarSearch.trim().toLowerCase();
-            const matches = (label: string) => !q || label.toLowerCase().includes(q);
-            const visibleNodes = group.nodes
-              .map((node) => {
-                if (node.kind === "leaf") return matches(node.label) ? node : null;
-                const visibleChildren = node.children.filter(
-                  (c) => matches(node.label) || matches(c.label)
-                );
-                return visibleChildren.length > 0 ? { ...node, children: visibleChildren } : null;
-              })
-              .filter((n): n is SidebarNode => n !== null);
-
-            if (visibleNodes.length === 0) return null;
-
-            return (
-              <div key={group.title} className="mb-6">
-                <div className="mb-2 px-2 text-[11px] font-bold uppercase tracking-wide text-mes-gray-60">
-                  {group.title}
-                </div>
-                <nav className="flex flex-col gap-0.5">
-                  {visibleNodes.map((node) =>
-                    node.kind === "leaf" ? (
-                      <a
-                        key={node.id}
-                        href={`#${node.id}`}
+          {SIDEBAR_GROUPS.map((group) => (
+            <div key={group.title} className="mb-6">
+              <div className="mb-2 px-2 text-[11px] font-bold uppercase tracking-wide text-mes-gray-60">
+                {group.title}
+              </div>
+              <nav className="flex flex-col gap-0.5">
+                {group.nodes.map((node) =>
+                  node.kind === "leaf" ? (
+                    <a
+                      key={node.id}
+                      href={`#${node.id}`}
+                      className={cn(
+                        "flex items-center gap-1.5 truncate rounded-md px-2 py-1.5 text-[13px] transition-colors",
+                        activeId === node.id
+                          ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
+                          : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-gray-130"
+                      )}
+                    >
+                      <TierBadge id={node.id} />
+                      <span className="truncate">{node.label}</span>
+                      {TEMP_BADGE_IDS.has(node.id) && (
+                        <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
+                          임시
+                        </span>
+                      )}
+                    </a>
+                  ) : (
+                    <div key={node.label} className="flex flex-col gap-0.5">
+                      <span
                         className={cn(
-                          "flex items-center gap-1.5 truncate rounded-md px-2 py-1.5 text-[13px] transition-colors",
-                          activeId === node.id
-                            ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
-                            : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-gray-130"
+                          "truncate px-2 py-1.5 text-[13px] font-semibold",
+                          node.children.some((c) => c.id === activeId)
+                            ? "text-mes-text-brand"
+                            : "text-mes-gray-100"
                         )}
                       >
-                        <TierBadge id={node.id} />
-                        <span className="truncate">{node.label}</span>
-                        {TEMP_BADGE_IDS.has(node.id) && (
-                          <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
-                            임시
-                          </span>
-                        )}
-                      </a>
-                    ) : (
-                      <div key={node.label} className="flex flex-col gap-0.5">
-                        <span
+                        {node.label}
+                      </span>
+                      {node.children.map((child) => (
+                        <a
+                          key={child.id}
+                          href={`#${child.id}`}
                           className={cn(
-                            "truncate px-2 py-1.5 text-[13px] font-semibold",
-                            node.children.some((c) => c.id === activeId)
-                              ? "text-mes-text-brand"
-                              : "text-mes-gray-100"
+                            "ml-3 flex items-center gap-1.5 truncate rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors",
+                            activeId === child.id
+                              ? "border-mes-primary-60 font-semibold text-mes-text-brand"
+                              : "text-mes-gray-70 hover:text-mes-gray-130"
                           )}
                         >
-                          {node.label}
-                        </span>
-                        {node.children.map((child) => (
-                          <a
-                            key={child.id}
-                            href={`#${child.id}`}
-                            className={cn(
-                              "ml-3 flex items-center gap-1.5 truncate rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors",
-                              activeId === child.id
-                                ? "border-mes-primary-60 font-semibold text-mes-text-brand"
-                                : "text-mes-gray-70 hover:text-mes-gray-130"
-                            )}
-                          >
-                            <TierBadge id={child.id} />
-                            <span className="truncate">{child.label}</span>
-                            {TEMP_BADGE_IDS.has(child.id) && (
-                              <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
-                                임시
-                              </span>
-                            )}
-                          </a>
-                        ))}
-                      </div>
-                    )
-                  )}
-                </nav>
-              </div>
-            );
-          })}
+                          <TierBadge id={child.id} />
+                          <span className="truncate">{child.label}</span>
+                          {TEMP_BADGE_IDS.has(child.id) && (
+                            <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
+                              임시
+                            </span>
+                          )}
+                        </a>
+                      ))}
+                    </div>
+                  )
+                )}
+              </nav>
+            </div>
+          ))}
         </aside>
 
         <main className="flex flex-1 flex-col items-center gap-20 p-16">

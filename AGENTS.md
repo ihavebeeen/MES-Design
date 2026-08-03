@@ -1184,4 +1184,15 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   `nestedModalSuccessOpen` state 추가. tsc 클린 + `/tmp` next build 재검증(닫힌 상태
   Dialog는 Radix가 언마운트해 정적 HTML엔 안 잡히는 게 정상 — 기존 "삭제 완료" 다이얼로그도
   동일하게 안 잡히는 것으로 재확인) 후 커밋.
+- (2026-08-03, 46차) 담당자 정정: "검색어를 입력하면 좌측에서 필터링되는 게 아니라
+  좌측 리스트는 그대로 있고 검색창 아래에 컴포넌트들이 리스트로 떠야지 마치 콤보박스
+  처럼." 44차에서 만든 "사이드바 자체를 필터링" 방식을 되돌리고, 검색창을
+  Popover(40차에서 만든 것 재사용)의 트리거로 감싸 그 아래에 결과 드롭다운을 띄우는
+  방식으로 교체 — 사이드바(`SIDEBAR_GROUPS` 렌더링)는 43차 이전 형태로 완전히 원복
+  (필터링 로직 삭제, 전체 목록 항상 그대로). 검색 대상은 `FOUNDATION_NODES`/
+  `COMPONENT_NODES`를 평탄화한 `ALL_SEARCHABLE_ITEMS`(leaf + branch의 children 전부).
+  드롭다운은 `open={searchResults.length > 0}`으로 제어(입력 있고 매치 있을 때만 열림),
+  항목 클릭 또는 바깥 클릭/Esc(`onOpenChange`) 시 검색어를 비워 자동으로 닫힘 — 콤보박스
+  선택 동작과 동일하게. tsc 클린 + `/tmp` next build 재검증(사이드바가 다시 전체
+  70개 항목을 보여주는지 직접 확인) 후 커밋.
 
