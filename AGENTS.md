@@ -1119,4 +1119,35 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   전 항목 체크리스트 갱신, page.tsx에 데모 섹션 10개 + 사이드바 임시 뱃지/TOC 반영,
   tsc 클린 확인 + `/tmp` next build 재검증 후 커밋. 이걸로 티어2 32개 항목 중
   Bulk Action Toolbar/Backdrop(보류) 2개를 뺀 나머지가 전부 처리됨.
+- (2026-08-03, 43차) 담당자가 GroupQuery 데모 스크린샷을 보내며 지적: "필터 추가" 글자가
+  한 글자씩 세로로 쪼개지며 GroupQuery 섹션 제목/설명 위로 겹쳐 보이는 렌더링 버그.
+  "이런 문제가 앞으로도 발생할 수 있는 구조라면 근본적으로 바꾸고, 티어 1~5도 좌측
+  리스트에 표기해달라"는 두 가지 요청.
+  1. **원인 규명**: `group-query` 데모 줄(GroupQuery+Filter+SearchInput을 한 flex row에
+     배치)에서, 형제 컴포넌트인 GroupQuery/SearchInput은 35차 너비 버그 수정 때 이미
+     루트에 `shrink-0`을 넣어 "나는 안 줄어든다"고 선언해뒀는데 `Filter`만 그 방어가
+     없었음 — flexbox가 부족한 너비를 전부 Filter 하나에 떠넘기면서 트리거 버튼이
+     찌그러지고(한글은 글자 단위 줄바꿈이 가능해 세로로 쌓임), `overflow: visible`
+     기본값 때문에 그 결과가 이웃 섹션 위로 겹쳐 보인 것.
+  2. **직접 원인 수정**: `filter.tsx` 루트/트리거 버튼/태그 박스에 `shrink-0` +
+     `whitespace-nowrap` 추가. `group-query` 데모 줄에도 방어적으로 `flex-wrap` 추가(폭이
+     정말 부족하면 이제는 SearchInput이 다음 줄로 내려감 — 찌그러지지 않음).
+  3. **구조적 재발 방지(담당자가 요청한 "근본적으로 바꿔" 부분)**:
+     - 같은 문제가 있을 만한 다른 hug-width 트리거/칩 컴포넌트를 감사해 동일하게
+       `shrink-0`(+필요시 `whitespace-nowrap`) 추가: Tag, ButtonGroup, ToggleButton,
+       Breadcrumb, Pagination, Logo, UserAccountMenu 트리거.
+     - `Section`이 쓰는 `grid-cols-4`는 컬럼 폭을 넘는 콘텐츠가 있어도 grid item 기본값
+       (`min-width: auto`)이 줄어드는 걸 막아서, 넘친 부분이 이웃 셀 위로 겹쳐 보일 수
+       있는 구조였음 — `Sample`(모든 데모 예시가 공통으로 쓰는 wrapper)에 `min-w-0` +
+       내부 콘텐츠에 `overflow-x-auto`를 추가해, 개별 컴포넌트가 `shrink-0` 방어를
+       빠뜨리더라도 최악의 경우가 "가로 스크롤"로 끝나도록 안전망을 깔아둠(겹침/깨짐 방지).
+     - 새 hug-width 컴포넌트를 만들 때 루트에 `shrink-0` 기본 적용을 컨벤션으로 확정
+       (`filter.tsx` 5번 주석에 기록).
+  4. **티어 표기(TierBadge)**: `docs/UI_컴포넌트_총망라_체크리스트.md`의 티어 값을
+     `TIER_BY_ID`(TEMP_BADGE_IDS와 같은 수동 동기화 방식)로 옮겨, 사이드바 각 항목
+     라벨 옆에 T1~T5 작은 뱃지로 표시(`TierBadge` 컴포넌트, 티어별 색 구분).
+  tsc 클린 확인 + `/tmp` next build 재검증(빌드된 정적 HTML에서 `shrink-0`/`flex-wrap`/
+  `T1`·`T2` 뱃지가 실제로 반영됐는지 직접 확인) 후 커밋. 참고: 이 샌드박스엔 네트워크
+  allowlist 때문에 헤드리스 브라우저(playwright chromium)를 설치할 수 없어 픽셀 단위
+  스크린샷 재현은 못 했고, 빌드된 HTML의 클래스명 검증 + 코드 레벨 CSS 추론으로 검증함.
 

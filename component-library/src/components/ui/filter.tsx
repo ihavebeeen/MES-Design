@@ -36,6 +36,19 @@ import { IconFilter } from "../icons/icon-filter";
  * ── 4. 플라이아웃 패널 크기(조립형, Figma에 실측 노드 없음) ────────
  * 카테고리 열 140px, 옵션 열 180px, 그림자/테두리/radius는 Select·Combobox 패널 관례
  * 재사용. 긴 라벨은 truncate + title 속성 네이티브 툴팁으로 처리.
+ *
+ * ── 5. 2026-08-03 발견: 좁은 flex row에서 텍스트가 세로로 깨지는 버그 ─────
+ * GroupQuery 데모(GroupQuery+Filter+SearchInput을 한 줄에 배치)에서 전체 너비가 부족해질 때
+ * "필터 추가" 글자가 한 글자씩 세로로 쪼개지며 다른 섹션 위로 겹쳐 보이는 버그 발생.
+ * 원인: 같은 줄의 형제 컴포넌트(GroupQuery/QuickQuery/SearchInput)는 이미 35차 버그 수정
+ * 때 루트에 `shrink-0`을 넣어 "나는 절대 안 줄어든다"고 선언해뒀는데, Filter 루트는
+ * `shrink-0`이 없어서 줄어들 수 있는 상태였음 — flexbox가 부족한 너비를 전부 Filter
+ * 하나에만 떠넘기면서 트리거 버튼이 텍스트도 못 담을 만큼 짜부라진 것(한글은 글자 단위로
+ * 줄바꿈이 가능해서 이런 경우 세로로 쌓임). 루트에 `shrink-0` + 트리거 텍스트에
+ * `whitespace-nowrap`을 추가해 GroupQuery/QuickQuery/SearchInput과 동일하게 "내용 폭
+ * 고정, 안 줄어듦"으로 맞춤 — 폭이 정말 부족하면 이제는 컴포넌트가 찌그러지는 대신
+ * 부모 요소가 가로 스크롤되거나 줄바꿈된다(Sample 래퍼의 `overflow-x-auto`가 방어).
+ * 앞으로 새로 만드는 hug-width 트리거 컴포넌트는 전부 루트에 `shrink-0`을 기본으로 넣을 것.
  */
 
 export interface FilterOption {
@@ -111,7 +124,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
     .filter((c) => c.selected.length > 0);
 
   return (
-    <div className={cn("inline-flex items-center", className)}>
+    <div className={cn("inline-flex shrink-0 items-center", className)}>
       <PopoverPrimitive.Root
         open={open}
         onOpenChange={(next) => {
@@ -127,11 +140,11 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
           <button
             type="button"
             className={cn(
-              "flex h-8 items-center gap-[6px] border border-mes-border-default bg-white px-3 text-[14px] font-medium text-mes-text-default",
+              "flex h-8 shrink-0 items-center gap-[6px] whitespace-nowrap border border-mes-border-default bg-white px-3 text-[14px] font-medium text-mes-text-default",
               activeTags.length > 0 ? "rounded-l-mes-control" : "rounded-mes-control"
             )}
           >
-            <IconFilter size={16} />
+            <IconFilter size={16} className="shrink-0" />
             필터 추가
           </button>
         </PopoverPrimitive.Trigger>
@@ -202,7 +215,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
       </PopoverPrimitive.Root>
 
       {activeTags.length > 0 && (
-        <div className="flex h-8 items-center gap-[5px] rounded-r-mes-control border border-l-0 border-mes-border-default bg-white px-[5px]">
+        <div className="flex h-8 shrink-0 items-center gap-[5px] rounded-r-mes-control border border-l-0 border-mes-border-default bg-white px-[5px]">
           {activeTags.map(({ category, selected }) => (
             <FilterTag
               key={category.id}

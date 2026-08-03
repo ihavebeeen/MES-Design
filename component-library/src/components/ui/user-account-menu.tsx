@@ -24,7 +24,7 @@ function UserAccountMenu({ name, items, className }: UserAccountMenuProps) {
         <button
           type="button"
           className={cn(
-            "flex items-center gap-1.5 rounded-mes-control px-2 py-1.5 text-[13px] font-medium text-mes-text-default hover:bg-mes-bg-subtler",
+            "flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-mes-control px-2 py-1.5 text-[13px] font-medium text-mes-text-default hover:bg-mes-bg-subtler",
             className
           )}
         >

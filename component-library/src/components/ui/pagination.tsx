@@ -46,7 +46,7 @@ function Pagination({
   const pages = getPageList(page, totalPages, siblingCount);
 
   return (
-    <nav className={cn("flex items-center gap-1", className)}>
+    <nav className={cn("flex shrink-0 items-center gap-1", className)}>
       <button
         type="button"
         disabled={page <= 1}

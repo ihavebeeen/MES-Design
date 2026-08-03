@@ -26,6 +26,9 @@ import { cn } from "@/lib/utils";
  * 즉 Tag도 Button처럼 `startIcon`/`endIcon`을 각각 독립적으로 받는 범용 아이콘 슬롯
  * 구조. 실측 인스턴스는 두 슬롯 모두에 X 아이콘을 넣어 쓴 예시였을 뿐, 닫기 전용이
  * 아님 — button.tsx의 startIcon/endIcon 패턴과 동일하게 구현함.
+ *
+ * 2026-08-03: 좁은 flex row에서 찌그러지는 걸 막기 위해 루트에 `shrink-0` +
+ * `whitespace-nowrap` 추가(원인/배경은 `filter.tsx` 5번 항목 참고).
  */
 
 export type TagColor = "main" | "gray" | "red";
@@ -47,7 +50,7 @@ const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
     <span
       ref={ref}
       className={cn(
-        "inline-flex h-[22px] items-center gap-1 rounded-mes-control-xs px-2 py-[3px] text-[12px] font-semibold leading-[1.5] text-mes-text-inverse",
+        "inline-flex h-[22px] shrink-0 items-center gap-1 whitespace-nowrap rounded-mes-control-xs px-2 py-[3px] text-[12px] font-semibold leading-[1.5] text-mes-text-inverse",
         tagColorClasses[color],
         className
       )}

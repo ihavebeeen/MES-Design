@@ -30,7 +30,7 @@ const ToggleButton = React.forwardRef<HTMLButtonElement, ToggleButtonProps>(
         onPressedChange?.(!pressed);
       }}
       className={cn(
-        "inline-flex items-center justify-center gap-1.5 whitespace-nowrap border font-semibold leading-[150%] transition-colors",
+        "inline-flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap border font-semibold leading-[150%] transition-colors",
         SIZE_CLASS[size],
         pressed
           ? "border-transparent bg-mes-bg-brand-subtle-strong text-mes-text-brand"

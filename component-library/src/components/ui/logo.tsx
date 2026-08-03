@@ -15,7 +15,7 @@ function Logo({ size = "default", className }: LogoProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 font-bold leading-none text-mes-gray-130",
+        "inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap font-bold leading-none text-mes-gray-130",
         size === "small" ? "text-[14px]" : "text-[18px]",
         className
       )}

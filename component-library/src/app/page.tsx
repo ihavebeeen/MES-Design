@@ -354,6 +354,93 @@ const TEMP_BADGE_IDS = new Set([
   "loading-overlay",
 ]);
 
+/**
+ * 2026-08-03 신규 — 담당자 요청: "티어 1 2 3 4 5도 좌측 리스트에 표기를 둬봐". 각 id를
+ * `docs/UI_컴포넌트_총망라_체크리스트.md`의 티어 값과 1:1로 맞춰 수동 관리(TEMP_BADGE_IDS와
+ * 같은 방식 — 체크리스트에서 컴포넌트를 새로 완료하거나 티어를 바꾸면 여기도 같이 바꿀 것).
+ * Foundation 6개는 각각 대응하는 토큰 체크리스트 행(Color/Typography/Spacing/Radius/
+ * Shadow Scale)의 티어, "semantic-tokens"는 체크리스트에 별도 행이 없어 배지 없음.
+ */
+const TIER_BY_ID: Record<string, number> = {
+  "color-palette": 1,
+  typography: 1,
+  spacing: 2,
+  radius: 2,
+  shadow: 1,
+  "button-size": 1,
+  "button-icon": 1,
+  "button-color": 1,
+  "icon-button": 2,
+  divider: 2,
+  tooltip: 2,
+  "loading-spinner": 2,
+  skeleton: 2,
+  switch: 2,
+  textarea: 2,
+  label: 2,
+  link: 2,
+  input: 1,
+  select: 1,
+  badge: 1,
+  radio: 1,
+  checkbox: 1,
+  progress: 1,
+  filter: 1,
+  "group-query": 1,
+  "quick-query": 1,
+  "search-input": 1,
+  tag: 1,
+  combobox: 1,
+  toast: 1,
+  "confirm-dialog": 1,
+  "notice-banner": 1,
+  "radio-choice-dialog": 1,
+  "nested-modal": 1,
+  "page-top-tab-item": 1,
+  sidebar: 1,
+  "alarm-list-item": 1,
+  "notification-panel": 1,
+  card: 2,
+  "empty-state": 2,
+  "error-state": 2,
+  popover: 2,
+  accordion: 2,
+  collapsible: 2,
+  "button-group": 2,
+  "toggle-button": 2,
+  "number-input": 2,
+  "password-input": 2,
+  "multi-select-input": 2,
+  breadcrumb: 2,
+  pagination: 2,
+  "dropdown-menu": 2,
+  list: 2,
+  panel: 2,
+  fieldset: 2,
+  descriptions: 2,
+  "date-picker": 2,
+  "date-range-picker": 2,
+  "time-picker": 2,
+  navbar: 2,
+  "grid-container": 2,
+  "scroll-area": 2,
+  "sticky-header-footer": 2,
+  logo: 2,
+  "user-account-menu": 2,
+  "loading-overlay": 2,
+  icons: 2,
+  "table-parts": 1,
+  "table-full": 1,
+};
+
+const TIER_COLOR: Record<number, string> = {
+  1: "bg-mes-bg-danger/10 text-mes-danger-70",
+  2: "bg-mes-bg-brand-subtle-strong text-mes-text-brand",
+  3: "bg-mes-bg-subtle text-mes-gray-90",
+  4: "bg-mes-bg-subtle text-mes-gray-70",
+  5: "bg-mes-bg-subtle text-mes-gray-50",
+};
+
 /** 사이드바 그룹과 1:1 매칭되는 최상단 탭. `firstId`는 그 그룹의 첫 섹션으로 스크롤 이동. */
 const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
   { key: "foundations", label: "Foundations", firstId: firstIdOfNode(FOUNDATION_NODES[0]) },
@@ -391,13 +478,40 @@ const SIDEBAR_NAV_ITEMS: SidebarNavItem[] = [
   },
 ];
 
+/**
+ * 2026-08-03 신규 — GroupQuery 데모에서 발견된 "컴포넌트가 세로로 찌그러져 다른 섹션 위로
+ * 겹쳐 보이는" 버그(원인: Filter의 shrink-0 누락, `filter.tsx` 주석 참고)의 재발 방지용
+ * 구조적 방어막. Section이 `grid-cols-4`라 각 Sample은 컬럼 폭(약 200px대)을 넘는 콘텐츠를
+ * 담을 수 있는데, 기본값(`min-width: auto`)에서는 grid item이 콘텐츠의 min-content 폭
+ * 아래로 줄어들지 못해 넘친 부분이 이웃 셀 위로 시각적으로 겹쳐 보임. `min-w-0`으로 grid
+ * item 자체는 줄어들 수 있게 풀어주고, 내부 콘텐츠 래퍼에 `overflow-x-auto`를 둬서 실제로
+ * 폭이 부족하면 컴포넌트가 찌그러지거나 겹치는 대신 그 Sample 안에서만 가로 스크롤되도록
+ * 함 — 개별 컴포넌트가 shrink-0 방어를 빠뜨리더라도 최악의 경우가 "스크롤바"로 끝나게
+ * 하는 마지막 안전망.
+ */
+/** 사이드바 항목 옆에 티어 숫자를 작게 표기하는 뱃지 — `TIER_BY_ID`에 없는 id는 렌더링 안 함 */
+function TierBadge({ id }: { id: string }) {
+  const tier = TIER_BY_ID[id];
+  if (!tier) return null;
+  return (
+    <span
+      className={cn(
+        "shrink-0 rounded px-1 py-0 text-[10px] font-semibold leading-[1.6]",
+        TIER_COLOR[tier]
+      )}
+    >
+      T{tier}
+    </span>
+  );
+}
+
 function Sample({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col items-start gap-2">
+    <div className="flex min-w-0 flex-col items-start gap-2">
       <span className="font-mono text-[12px] font-medium leading-none text-mes-gray-90">
         {label}
       </span>
-      <div className="flex items-center">{children}</div>
+      <div className="flex max-w-full items-center overflow-x-auto">{children}</div>
     </div>
   );
 }
@@ -1287,6 +1401,7 @@ export default function Home() {
                       )}
                     >
                       <span className="truncate">{node.label}</span>
+                      <TierBadge id={node.id} />
                       {TEMP_BADGE_IDS.has(node.id) && (
                         <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
                           임시
@@ -1317,6 +1432,7 @@ export default function Home() {
                           )}
                         >
                           <span className="truncate">{child.label}</span>
+                          <TierBadge id={child.id} />
                           {TEMP_BADGE_IDS.has(child.id) && (
                             <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
                               임시
@@ -1940,8 +2056,11 @@ export default function Home() {
           Level 1~3 드롭다운으로 그룹화 기준 지정, 값 있으면 칩+X로 표시. 옆은 Filter,
           오른쪽 끝은 SearchInput 재사용.
         </p>
-        <div className="flex w-full items-center justify-between gap-2.5">
-          <div className="flex items-center gap-2.5">
+        {/* 2026-08-03 — Filter의 shrink-0 누락 버그(주석 참고)를 고치면서, 이 줄 자체도
+            방어적으로 `flex-wrap` 추가: 폭이 정말 부족해지면(예: 좁은 화면) 컴포넌트가
+            찌그러지는 대신 SearchInput이 다음 줄로 자연스럽게 내려가도록 함. */}
+        <div className="flex w-full flex-wrap items-center justify-between gap-x-2.5 gap-y-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <GroupQuery
               options={groupQueryOptions}
               levels={groupQueryLevels}
