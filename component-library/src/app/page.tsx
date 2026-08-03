@@ -1964,7 +1964,14 @@ export default function Home() {
           </section>
 
           <Section id="grid-container" title="Grid / Container" badge="임시">
-            <Sample label="Grid · 3열">
+            <Sample
+              label="Grid · 3열"
+              spec={[
+                { label: "컬럼", value: "3열(columns prop, 2/3/4/6/12 중 선택)" },
+                { label: "간격", value: "gap-2 = 8px(2/4/6/8 중 선택 가능)" },
+                { label: "Container 폭", value: "max-w-[960px](데모 페이지 콘텐츠 폭 재사용)" },
+              ]}
+            >
               <Grid columns={3} gap={2} className="w-[300px]">
                 <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">1</div>
                 <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">2</div>
@@ -1985,16 +1992,44 @@ export default function Home() {
           </div>
 
       <Section id="button-size" title="Button — 사이즈">
-        <Sample label="Button · Basic · Default">
+        <Sample
+          label="Button · Basic · Default"
+          spec={[
+            { label: "높이", value: "40px(hug), R값4px(control)" },
+            { label: "좌우 패딩", value: "16px" },
+            { label: "폰트", value: "15px semibold" },
+            { label: "너비", value: "hug(가변)" },
+          ]}
+        >
           <Button size="basic">Basic 버튼</Button>
         </Sample>
-        <Sample label="Button · Small · Default">
+        <Sample
+          label="Button · Small · Default"
+          spec={[
+            { label: "높이", value: "32px(hug), R값4px(control)" },
+            { label: "좌우 패딩", value: "10px" },
+            { label: "폰트", value: "14px semibold" },
+          ]}
+        >
           <Button size="small">Small 버튼</Button>
         </Sample>
-        <Sample label="Button · Xsmall · Default">
+        <Sample
+          label="Button · Xsmall · Default"
+          spec={[
+            { label: "높이", value: "22px(hug), R값2px(control-xs)" },
+            { label: "좌우 패딩", value: "8px" },
+            { label: "폰트", value: "12px semibold" },
+          ]}
+        >
           <Button size="xsmall">Xsmall 버튼</Button>
         </Sample>
-        <Sample label="Button · Basic · Disabled">
+        <Sample
+          label="Button · Basic · Disabled"
+          spec={[
+            { label: "배경/텍스트", value: "Gray-40 / Gray-60" },
+            { label: "처리", value: "opacity 아님, variant 무관 항상 동일 외형(Figma 그대로)" },
+          ]}
+        >
           <Button size="basic" disabled>
             비활성
           </Button>
@@ -2271,14 +2306,28 @@ export default function Home() {
       </Section>
 
       <Section id="divider" title="Divider" badge="임시">
-        <Sample label="Divider · horizontal">
+        <Sample
+          label="Divider · horizontal"
+          spec={[
+            { label: "두께", value: "1px 고정(h-px)" },
+            { label: "색상", value: "Gray-30(border-default)" },
+            { label: "너비", value: "100% hug(부모 기준)" },
+          ]}
+        >
           <div className="flex w-40 flex-col gap-2">
             <span className="text-[12px] text-mes-gray-70">위</span>
             <Divider />
             <span className="text-[12px] text-mes-gray-70">아래</span>
           </div>
         </Sample>
-        <Sample label="Divider · vertical">
+        <Sample
+          label="Divider · vertical"
+          spec={[
+            { label: "두께", value: "1px 고정(w-px)" },
+            { label: "색상", value: "Gray-30(border-default)" },
+            { label: "높이", value: "100% hug(부모 기준)" },
+          ]}
+        >
           <div className="flex h-8 items-center gap-2">
             <span className="text-[12px] text-mes-gray-70">왼쪽</span>
             <Divider orientation="vertical" />
@@ -2288,21 +2337,36 @@ export default function Home() {
       </Section>
 
       <Section id="tooltip" title="Tooltip" badge="임시">
-        <Sample label="Tooltip · top(기본)">
+        <Sample
+          label="Tooltip · top(기본)"
+          spec={[
+            { label: "배경", value: "Gray-130(bg-strong)" },
+            { label: "텍스트", value: "흰색 · 12px" },
+            { label: "패딩", value: "좌우 8px(px-2) · 상하 4px(py-1)" },
+            { label: "R값", value: "2px(control-xs)" },
+            { label: "트리거와 간격", value: "6px(mb-1.5)" },
+          ]}
+        >
           <Tooltip content="위쪽 툴팁">
             <Button size="small" variant="lineBlacktxt">
               hover
             </Button>
           </Tooltip>
         </Sample>
-        <Sample label="Tooltip · bottom">
+        <Sample
+          label="Tooltip · bottom"
+          spec={[{ label: "패딩/색상/R값", value: "top과 동일" }, { label: "트리거와 간격", value: "6px(mt-1.5)" }]}
+        >
           <Tooltip content="아래쪽 툴팁" side="bottom">
             <Button size="small" variant="lineBlacktxt">
               hover
             </Button>
           </Tooltip>
         </Sample>
-        <Sample label="Tooltip · IconButton과 조합">
+        <Sample
+          label="Tooltip · IconButton과 조합"
+          spec={[{ label: "패딩/색상/R값", value: "top과 동일" }]}
+        >
           <Tooltip content="필터 열기">
             <IconButton icon={<IconFilter />} aria-label="필터" size="small" />
           </Tooltip>
@@ -2310,13 +2374,32 @@ export default function Home() {
       </Section>
 
       <Section id="loading-spinner" title="LoadingSpinner" badge="임시">
-        <Sample label="LoadingSpinner · 16px">
+        <Sample
+          label="LoadingSpinner · 16px"
+          spec={[
+            { label: "크기", value: "16px(size prop으로 지정)" },
+            { label: "색상", value: "Primary-60(text-brand) 기본" },
+          ]}
+        >
           <LoadingSpinner size={16} />
         </Sample>
-        <Sample label="LoadingSpinner · 20px(기본)">
+        <Sample
+          label="LoadingSpinner · 20px(기본)"
+          spec={[
+            { label: "크기", value: "20px(기본값)" },
+            { label: "색상", value: "Primary-60(text-brand)" },
+          ]}
+        >
           <LoadingSpinner />
         </Sample>
-        <Sample label="LoadingSpinner · fillMain 버튼 위">
+        <Sample
+          label="LoadingSpinner · fillMain 버튼 위"
+          spec={[
+            { label: "크기", value: "16px" },
+            { label: "색상", value: "흰색(text-inverse, className으로 덮어씀)" },
+            { label: "텍스트와 간격", value: "8px(버튼 gap-2로 덮어씀, 기본은 6px)" },
+          ]}
+        >
           <Button size="basic" variant="fillMain" disabled className="gap-2">
             <LoadingSpinner size={16} className="text-mes-text-inverse" />
             처리 중
@@ -2325,19 +2408,49 @@ export default function Home() {
       </Section>
 
       <Section id="skeleton" title="Skeleton" badge="임시">
-        <Sample label="Skeleton · text">
+        <Sample
+          label="Skeleton · text"
+          spec={[
+            { label: "높이", value: "16px(h-4) 고정" },
+            { label: "너비", value: "100% hug(className으로 조정 가능)" },
+            { label: "R값", value: "2px(control-xs)" },
+            { label: "배경", value: "Gray-20(bg-subtle) + animate-pulse" },
+            { label: "줄 간격", value: "6px(gap-1.5)" },
+          ]}
+        >
           <div className="flex w-40 flex-col gap-1.5">
             <Skeleton variant="text" />
             <Skeleton variant="text" className="w-2/3" />
           </div>
         </Sample>
-        <Sample label="Skeleton · rect">
+        <Sample
+          label="Skeleton · rect"
+          spec={[
+            { label: "높이", value: "96px(h-24) 고정" },
+            { label: "너비", value: "100% hug(데모는 w-40)" },
+            { label: "R값", value: "4px(control)" },
+            { label: "배경", value: "Gray-20(bg-subtle) + animate-pulse" },
+          ]}
+        >
           <Skeleton variant="rect" className="w-40" />
         </Sample>
-        <Sample label="Skeleton · circle">
+        <Sample
+          label="Skeleton · circle"
+          spec={[
+            { label: "크기", value: "40×40px(size-10) 고정" },
+            { label: "R값", value: "완전 원형(rounded-full)" },
+            { label: "배경", value: "Gray-20(bg-subtle) + animate-pulse" },
+          ]}
+        >
           <Skeleton variant="circle" />
         </Sample>
-        <Sample label="Skeleton · 카드 조합 예시">
+        <Sample
+          label="Skeleton · 카드 조합 예시"
+          spec={[
+            { label: "circle↔text 간격", value: "8px(gap-2)" },
+            { label: "text 줄 간격", value: "6px(gap-1.5)" },
+          ]}
+        >
           <div className="flex w-40 items-center gap-2">
             <Skeleton variant="circle" />
             <div className="flex flex-1 flex-col gap-1.5">
@@ -2349,16 +2462,36 @@ export default function Home() {
       </Section>
 
       <Section id="switch" title="Switch" badge="임시">
-        <Sample label="Switch · off">
+        <Sample
+          label="Switch · off"
+          spec={[
+            { label: "트랙 크기", value: "44×24px(w-11 h-6) 고정, 판단값" },
+            { label: "썸 크기", value: "20px(size-5) 원형" },
+            { label: "트랙색(off)", value: "Gray-40" },
+            { label: "R값", value: "완전 원형(rounded-full)" },
+          ]}
+        >
           <Switch />
         </Sample>
-        <Sample label="Switch · on">
+        <Sample
+          label="Switch · on"
+          spec={[
+            { label: "트랙색(on)", value: "Primary-60(bg-brand)" },
+            { label: "썸 이동", value: "오른쪽으로 20px(translate-x-5)" },
+          ]}
+        >
           <Switch defaultChecked />
         </Sample>
-        <Sample label="Switch · disabled(off)">
+        <Sample
+          label="Switch · disabled(off)"
+          spec={[{ label: "처리 방식", value: "색 유지 + opacity-40(색 스왑 대신 흐리게)" }]}
+        >
           <Switch disabled />
         </Sample>
-        <Sample label="Switch · disabled(on)">
+        <Sample
+          label="Switch · disabled(on)"
+          spec={[{ label: "처리 방식", value: "on 색(Primary-60) 유지 + opacity-40" }]}
+        >
           <Switch disabled defaultChecked />
         </Sample>
       </Section>
@@ -2411,13 +2544,29 @@ export default function Home() {
       </Section>
 
       <Section id="label" title="Label" badge="임시">
-        <Sample label="Label · 기본">
+        <Sample
+          label="Label · 기본"
+          spec={[
+            { label: "폰트", value: "13px medium" },
+            { label: "텍스트색", value: "Gray-130(text-default)" },
+          ]}
+        >
           <Label>품목명</Label>
         </Sample>
-        <Sample label="Label · required">
+        <Sample
+          label="Label · required"
+          spec={[
+            { label: "폰트/색", value: "기본과 동일" },
+            { label: "* 간격", value: "2px(ml-0.5)" },
+            { label: "* 색상", value: "Danger(text-danger)" },
+          ]}
+        >
           <Label required>거래처</Label>
         </Sample>
-        <Sample label="Label + Input 조합">
+        <Sample
+          label="Label + Input 조합"
+          spec={[{ label: "Label↔Input 간격", value: "6px(gap-1.5)" }]}
+        >
           <div className="flex flex-col gap-1.5">
             <Label required>수량</Label>
             <Input placeholder="0" className="w-[160px]" />
@@ -2426,37 +2575,96 @@ export default function Home() {
       </Section>
 
       <Section id="link" title="Link" badge="임시">
-        <Sample label="Link · 기본">
+        <Sample
+          label="Link · 기본"
+          spec={[
+            { label: "폰트", value: "14px medium" },
+            { label: "텍스트색", value: "Primary-60(text-brand)" },
+            { label: "밑줄", value: "상시 표시(underline, offset 2px)" },
+          ]}
+        >
           <Link href="#">조설정 바로가기</Link>
         </Sample>
-        <Sample label="Link · 화살표 포함">
+        <Sample label="Link · 화살표 포함" spec={[{ label: "폰트/색/밑줄", value: "기본과 동일 — 화살표는 텍스트에 직접 포함" }]}>
           <Link href="#">자세히 보기 →</Link>
         </Sample>
       </Section>
 
       <Section id="input" title="Input">
-        <Sample label="Input · Default(placeholder)">
+        <Sample
+          label="Input · Default(placeholder)"
+          spec={[
+            { label: "높이", value: "32px(h-8) 고정" },
+            { label: "좌우 패딩", value: "10px(px-[10px])" },
+            { label: "테두리", value: "1px Gray-30(border-default)" },
+            { label: "R값", value: "4px(control)" },
+            { label: "폰트", value: "14px" },
+            { label: "너비", value: "100% hug(데모는 200px로 제한)" },
+          ]}
+        >
           <Input placeholder="내용 입력" className="w-[200px]" />
         </Sample>
-        <Sample label="Input · Default(filled)">
+        <Sample
+          label="Input · Default(filled)"
+          spec={[{ label: "패딩/테두리/R값", value: "placeholder와 동일" }, { label: "입력값 색", value: "Gray-130(text-default)" }]}
+        >
           <Input defaultValue="내용" className="w-[200px]" />
         </Sample>
-        <Sample label="Input · Readonly">
+        <Sample
+          label="Input · Readonly"
+          spec={[
+            { label: "패딩/테두리/R값", value: "동일" },
+            { label: "배경만 변경", value: "Gray-20(bg-subtle)" },
+          ]}
+        >
           <Input placeholder="내용 입력" readOnly defaultValue="내용" className="w-[200px]" />
         </Sample>
-        <Sample label="Input · Disabled">
+        <Sample
+          label="Input · Disabled"
+          spec={[
+            { label: "배경", value: "Gray-30(bg-disabled, 테두리색과 같아 경계가 안 보임)" },
+            { label: "텍스트", value: "Gray-70(text-disabled)" },
+            { label: "커서", value: "not-allowed" },
+          ]}
+        >
           <Input placeholder="내용 입력" disabled className="w-[200px]" />
         </Sample>
-        <Sample label="Input · Small(placeholder)">
+        <Sample
+          label="Input · Small(placeholder)"
+          spec={[
+            { label: "높이", value: "22px(h-[22px]) 고정" },
+            { label: "좌우 패딩", value: "6px(px-[6px])" },
+            { label: "R값", value: "control-sm(default의 4px보다 작음)" },
+            { label: "폰트", value: "13px" },
+            { label: "참고", value: "Figma 원본에 small용 focus 상태 자체가 없음(디자인 누락, 임의 추가 안 함)" },
+          ]}
+        >
           <Input size="small" placeholder="내용 입력" className="w-[200px]" />
         </Sample>
-        <Sample label="Input · Small(filled)">
+        <Sample
+          label="Input · Small(filled)"
+          spec={[{ label: "패딩/R값/폰트", value: "small placeholder와 동일" }]}
+        >
           <Input size="small" defaultValue="내용" className="w-[200px]" />
         </Sample>
       </Section>
 
       <Section id="select" title="Select">
-        <Sample label="Select · Default(placeholder)">
+        <Sample
+          label="Select · Default(placeholder)"
+          spec={[
+            { label: "트리거 높이", value: "32px(h-8)" },
+            { label: "좌우 패딩", value: "10px" },
+            { label: "테두리", value: "1px Gray-30" },
+            { label: "R값", value: "4px(control)" },
+            { label: "폰트", value: "14px" },
+            { label: "placeholder 텍스트", value: "Gray-60" },
+            { label: "패널 테두리", value: "1px Gray-30" },
+            { label: "패널 내부 패딩", value: "8px" },
+            { label: "패널 R값", value: "8px(판단값)" },
+            { label: "항목 pitch", value: "30px, 좌우패딩 8px" },
+          ]}
+        >
           <Select>
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="내용 입력" />
@@ -2467,7 +2675,14 @@ export default function Home() {
             </SelectContent>
           </Select>
         </Sample>
-        <Sample label="Select · Default(selected)">
+        <Sample
+          label="Select · Default(selected)"
+          spec={[
+            { label: "트리거 규격", value: "Default와 동일(32px/10px/4px)" },
+            { label: "선택 텍스트", value: "Gray-130" },
+            { label: "open 시 테두리", value: "Gray-130" },
+          ]}
+        >
           <Select defaultValue="1">
             <SelectTrigger className="w-[200px]">
               <SelectValue />
@@ -2478,7 +2693,15 @@ export default function Home() {
             </SelectContent>
           </Select>
         </Sample>
-        <Sample label="Select · Small">
+        <Sample
+          label="Select · Small"
+          spec={[
+            { label: "트리거 높이", value: "22px" },
+            { label: "좌우 패딩", value: "6px" },
+            { label: "R값", value: "3px(control-sm)" },
+            { label: "폰트", value: "13px" },
+          ]}
+        >
           <Select>
             <SelectTrigger size="small" className="w-[200px]">
               <SelectValue placeholder="내용 입력" />
@@ -2488,7 +2711,14 @@ export default function Home() {
             </SelectContent>
           </Select>
         </Sample>
-        <Sample label="Select · Disabled">
+        <Sample
+          label="Select · Disabled"
+          spec={[
+            { label: "테두리", value: "Gray-30" },
+            { label: "배경", value: "Gray-30(테두리와 동일)" },
+            { label: "텍스트", value: "Gray-70" },
+          ]}
+        >
           <Select disabled>
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="내용 입력" />
@@ -2498,7 +2728,14 @@ export default function Home() {
             </SelectContent>
           </Select>
         </Sample>
-        <Sample label="Select · 커스텀 아이콘(꺾쇠 대신)">
+        <Sample
+          label="Select · 커스텀 아이콘(꺾쇠 대신)"
+          spec={[
+            { label: "트리거 규격", value: "Default와 동일(32px/10px/4px)" },
+            { label: "아이콘 크기", value: "14px(판단값)" },
+            { label: "아이콘 투명도", value: "80%(opacity-80)" },
+          ]}
+        >
           <Select>
             <SelectTrigger className="w-[200px]" icon={<IconFilter size={14} className="shrink-0 opacity-80" />}>
               <SelectValue placeholder="정렬 기준" />
@@ -2512,76 +2749,198 @@ export default function Home() {
       </Section>
 
       <Section id="badge" title="Badge">
-        <Sample label="Badge · blue">
+        <Sample
+          label="Badge · blue"
+          spec={[
+            { label: "높이", value: "22px" },
+            { label: "패딩", value: "좌우8px/상하3px" },
+            { label: "R값", value: "2px(control-xs)" },
+            { label: "폰트", value: "12px semibold" },
+            { label: "배경/텍스트", value: "Primary-60 / 흰색" },
+            { label: "너비", value: "hug(가변)" },
+          ]}
+        >
           <Badge variant="blue">출하중</Badge>
         </Sample>
-        <Sample label="Badge · red">
+        <Sample
+          label="Badge · red"
+          spec={[
+            { label: "규격", value: "blue와 동일(22px/8px·3px/2px)" },
+            { label: "배경/텍스트", value: "Danger-60 / 흰색" },
+          ]}
+        >
           <Badge variant="red">취소요청</Badge>
         </Sample>
-        <Sample label="Badge · grayFill(구 이름 orange)">
+        <Sample
+          label="Badge · grayFill(구 이름 orange)"
+          spec={[
+            { label: "규격", value: "blue와 동일" },
+            { label: "배경/텍스트", value: "Gray-40 / Gray-110" },
+          ]}
+        >
           <Badge variant="grayFill">대기</Badge>
         </Sample>
-        <Sample label="Badge · blue2(구 이름 yellow, blue와 값 동일)">
+        <Sample
+          label="Badge · blue2(구 이름 yellow, blue와 값 동일)"
+          spec={[
+            { label: "규격", value: "blue와 동일" },
+            { label: "배경/텍스트", value: "Primary-60 / 흰색(blue와 동일값)" },
+          ]}
+        >
           <Badge variant="blue2">승인중</Badge>
         </Sample>
-        <Sample label="Badge · gray(배경 없음)">
+        <Sample
+          label="Badge · gray(배경 없음)"
+          spec={[
+            { label: "규격", value: "blue와 동일" },
+            { label: "배경", value: "없음(투명)" },
+            { label: "텍스트", value: "Gray-90(secondary)" },
+          ]}
+        >
           <Badge variant="gray">완료</Badge>
         </Sample>
-        <Sample label="Badge · blueLight(구 이름 variant6)">
+        <Sample
+          label="Badge · blueLight(구 이름 variant6)"
+          spec={[
+            { label: "규격", value: "blue와 동일" },
+            { label: "배경/텍스트", value: "Primary-20 / Primary-60" },
+          ]}
+        >
           <Badge variant="blueLight">완료</Badge>
         </Sample>
-        <Sample label="Badge · blueOutline(구 이름 variant7)">
+        <Sample
+          label="Badge · blueOutline(구 이름 variant7)"
+          spec={[
+            { label: "높이/R값", value: "22px / 2px(control-xs)" },
+            { label: "패딩", value: "좌우9px/상하1px(테두리 두께 보정)" },
+            { label: "배경/테두리", value: "흰색 / 1px Primary-60" },
+            { label: "텍스트", value: "Primary-60" },
+          ]}
+        >
           <Badge variant="blueOutline">완료</Badge>
         </Sample>
       </Section>
 
       <Section id="radio" title="Radio">
-        <Sample label="Radio · Unselected">
+        <Sample
+          label="Radio · Unselected"
+          spec={[
+            { label: "전체 크기", value: "24×24px" },
+            { label: "바깥 원", value: "지름22px(인셋1px), 테두리1.5px(판단값)" },
+            { label: "바깥 원 색", value: "Gray-50" },
+            { label: "내부 점", value: "없음" },
+          ]}
+        >
           <Radio name="demo-radio-unsel" />
         </Sample>
-        <Sample label="Radio · Selected">
+        <Sample
+          label="Radio · Selected"
+          spec={[
+            { label: "바깥 원/내부 점", value: "Primary-60 단색" },
+            { label: "내부 점 크기", value: "지름14px(인셋5px)" },
+          ]}
+        >
           <Radio name="demo-radio-sel" defaultChecked />
         </Sample>
-        <Sample label="Radio · Disabled(선택 안 됨)">
+        <Sample
+          label="Radio · Disabled(선택 안 됨)"
+          spec={[
+            { label: "바깥 원", value: "Gray-30" },
+            { label: "채움", value: "Gray-20" },
+          ]}
+        >
           <Radio name="demo-radio-disabled-off" disabled />
         </Sample>
-        <Sample label="Radio · Disabled(선택됨, Figma에 없어 판단값)">
+        <Sample
+          label="Radio · Disabled(선택됨, Figma에 없어 판단값)"
+          spec={[
+            { label: "내부 점", value: "Gray-50(판단값, Figma 근거 없음)" },
+          ]}
+        >
           <Radio name="demo-radio-disabled-on" disabled defaultChecked />
         </Sample>
       </Section>
 
       <Section id="checkbox" title="Checkbox">
-        <Sample label="Checkbox · Unchecked">
+        <Sample
+          label="Checkbox · Unchecked"
+          spec={[
+            { label: "전체 크기", value: "24×24px" },
+            { label: "박스", value: "22×22px(인셋1px), R값3px(control-sm)" },
+            { label: "배경/테두리", value: "흰색 / 1px Gray-40" },
+          ]}
+        >
           <Checkbox />
         </Sample>
-        <Sample label="Checkbox · Checked · main">
+        <Sample
+          label="Checkbox · Checked · main"
+          spec={[
+            { label: "배경", value: "Primary-60" },
+            { label: "체크마크", value: "흰색, 14px(size-3.5, 판단값)" },
+          ]}
+        >
           <Checkbox defaultChecked color="main" />
         </Sample>
-        <Sample label="Checkbox · Checked · gray">
+        <Sample
+          label="Checkbox · Checked · gray"
+          spec={[{ label: "배경", value: "Gray-50" }]}
+        >
           <Checkbox defaultChecked color="gray" />
         </Sample>
-        <Sample label="Checkbox · Checked · black">
+        <Sample
+          label="Checkbox · Checked · black"
+          spec={[{ label: "배경", value: "Gray-130(bg-strong)" }]}
+        >
           <Checkbox defaultChecked color="black" />
         </Sample>
-        <Sample label="Checkbox · Disabled(판단값)">
+        <Sample
+          label="Checkbox · Disabled(판단값)"
+          spec={[
+            { label: "테두리/배경", value: "Gray-30(판단값, Figma에 disabled 자체 없음)" },
+          ]}
+        >
           <Checkbox disabled />
         </Sample>
-        <Sample label="Checkbox · Disabled+Checked(판단값)">
+        <Sample
+          label="Checkbox · Disabled+Checked(판단값)"
+          spec={[
+            { label: "처리", value: "위 Disabled와 동일 판단값" },
+            { label: "체크마크", value: "Gray-60(판단값)" },
+          ]}
+        >
           <Checkbox disabled defaultChecked />
         </Sample>
       </Section>
 
       <Section id="progress" title="Progress Bar">
-        <Sample label="Progress · 78%">
+        <Sample
+          label="Progress · 78%"
+          spec={[
+            { label: "전체 높이", value: "30px, 좌우패딩6px" },
+            { label: "트랙", value: "높이6px, 배경Gray-40, full-round" },
+            { label: "채움색", value: "Gray-100" },
+            { label: "트랙↔라벨 gap", value: "2px" },
+            { label: "라벨", value: "고정폭44px, 14px, Gray-130" },
+          ]}
+        >
           <Progress value={78} className="w-[160px]" />
         </Sample>
-        <Sample label="Progress · 0%">
+        <Sample
+          label="Progress · 0%"
+          spec={[{ label: "규격", value: "78%와 동일, 채움 너비만 0%" }]}
+        >
           <Progress value={0} className="w-[160px]" />
         </Sample>
-        <Sample label="Progress · 50%">
+        <Sample
+          label="Progress · 50%"
+          spec={[{ label: "규격", value: "78%와 동일, 채움 너비만 50%" }]}
+        >
           <Progress value={50} className="w-[160px]" />
         </Sample>
-        <Sample label="Progress · 100%">
+        <Sample
+          label="Progress · 100%"
+          spec={[{ label: "규격", value: "78%와 동일, 채움이 트랙 전체" }]}
+        >
           <Progress value={100} className="w-[160px]" />
         </Sample>
       </Section>
@@ -2679,33 +3038,83 @@ export default function Home() {
       </section>
 
       <Section id="search-input" title="SearchInput">
-        <Sample label="값 없음(기본)">
+        <Sample
+          label="값 없음(기본)"
+          spec={[
+            { label: "크기", value: "고정 200×32px(hug 아님)" },
+            { label: "R값", value: "3px(control-sm)" },
+            { label: "배경/테두리", value: "흰색 / 1px Gray-30(판단값)" },
+            { label: "검색 아이콘", value: "16px, 좌padding 12px" },
+            { label: "아이콘↔텍스트", value: "gap 8px" },
+          ]}
+        >
           <SearchInput value="" onChange={() => {}} />
         </Sample>
-        <Sample label="값 있음(실측 — 배경색 강조)">
+        <Sample
+          label="값 있음(실측 — 배경색 강조)"
+          spec={[
+            { label: "배경/테두리", value: "Primary-20 / 1px Primary-30(실측)" },
+            { label: "텍스트", value: "16px medium, Gray-130" },
+            { label: "닫기(X) 버튼", value: "32×32 히트영역, 아이콘16px, 값 있을 때만 노출" },
+          ]}
+        >
           <SearchInput value="숯불치킨 뚜껑" onChange={() => {}} />
         </Sample>
-        <Sample label="제어형(직접 입력해보기)">
+        <Sample
+          label="제어형(직접 입력해보기)"
+          spec={[{ label: "동작", value: "값 유무에 따라 배경 자동 전환" }]}
+        >
           <SearchInput value={searchInputValue} onChange={setSearchInputValue} />
         </Sample>
       </Section>
 
       <Section id="tag" title="Tag">
-        <Sample label="Tag · main · start+endIcon(실측 그대로)">
+        <Sample
+          label="Tag · main · start+endIcon(실측 그대로)"
+          spec={[
+            { label: "높이", value: "22px, R값2px(control-xs)" },
+            { label: "패딩", value: "좌우8px/상하3px" },
+            { label: "요소 간 gap", value: "4px" },
+            { label: "폰트", value: "12px semibold, 흰색 고정" },
+            { label: "배경", value: "Primary-60(fill-main)" },
+          ]}
+        >
           <Tag color="main" startIcon={<X className="size-3" />} endIcon={<X className="size-3" />}>
             태그 텍스트
           </Tag>
         </Sample>
-        <Sample label="Tag · gray · endIcon만(실사용 예시)">
+        <Sample
+          label="Tag · gray · endIcon만(실사용 예시)"
+          spec={[
+            { label: "규격", value: "main과 동일" },
+            { label: "배경", value: "Gray-90(fill-gray)" },
+          ]}
+        >
           <Tag color="gray" endIcon={<X className="size-3" />}>태그 텍스트</Tag>
         </Sample>
-        <Sample label="Tag · red · 아이콘 없음">
+        <Sample
+          label="Tag · red · 아이콘 없음"
+          spec={[
+            { label: "규격", value: "main과 동일" },
+            { label: "배경", value: "Danger-60(fill-red)" },
+          ]}
+        >
           <Tag color="red">태그 텍스트</Tag>
         </Sample>
       </Section>
 
       <Section id="combobox" title="Combobox">
-        <Sample label="Combobox · Default(제어형, 검색 가능)">
+        <Sample
+          label="Combobox · Default(제어형, 검색 가능)"
+          spec={[
+            { label: "트리거 규격", value: "Select와 동일(재사용, 32px/10px/4px)" },
+            { label: "검색창", value: "높이26px, R값4px, 테두리1px Gray-30" },
+            { label: "검색 아이콘", value: "16px, 좌인셋8px" },
+            { label: "패널", value: "테두리1px Gray-30, R값8px(판단값), 그림자 0 2px 8px rgba(0,0,0,.12)" },
+            { label: "항목", value: "13px/150%, 좌우패딩8px" },
+            { label: "selected 배경", value: "#E8F0FE(실측)" },
+          ]}
+        >
           <Combobox
             options={shiftOptions}
             value={comboValue}
@@ -2715,7 +3124,10 @@ export default function Home() {
             className="w-[200px]"
           />
         </Sample>
-        <Sample label="Combobox · Default(비제어, 초기값 있음)">
+        <Sample
+          label="Combobox · Default(비제어, 초기값 있음)"
+          spec={[{ label: "규격", value: "위 Default와 동일" }]}
+        >
           <Combobox
             options={shiftOptions}
             defaultValue="night"
@@ -2723,7 +3135,12 @@ export default function Home() {
             className="w-[200px]"
           />
         </Sample>
-        <Sample label="Combobox · Small(비제어, 초기값 있음)">
+        <Sample
+          label="Combobox · Small(비제어, 초기값 있음)"
+          spec={[
+            { label: "트리거", value: "Select Small과 동일(22px/6px/3px)" },
+          ]}
+        >
           <Combobox
             options={shiftOptions}
             defaultValue="bom1"
@@ -2732,7 +3149,10 @@ export default function Home() {
             className="w-[200px]"
           />
         </Sample>
-        <Sample label="Combobox · Small · Disabled">
+        <Sample
+          label="Combobox · Small · Disabled"
+          spec={[{ label: "처리", value: "Select Disabled와 동일 패턴" }]}
+        >
           <Combobox
             options={shiftOptions}
             defaultValue="bom1"
@@ -2741,7 +3161,10 @@ export default function Home() {
             className="w-[200px]"
           />
         </Sample>
-        <Sample label="Combobox · Default · Disabled">
+        <Sample
+          label="Combobox · Default · Disabled"
+          spec={[{ label: "처리", value: "Select Disabled와 동일 패턴" }]}
+        >
           <Combobox
             options={shiftOptions}
             placeholder="내용 입력"
@@ -2749,7 +3172,10 @@ export default function Home() {
             className="w-[200px]"
           />
         </Sample>
-        <Sample label="Combobox · 커스텀 아이콘(꺾쇠 대신)">
+        <Sample
+          label="Combobox · 커스텀 아이콘(꺾쇠 대신)"
+          spec={[{ label: "아이콘", value: "14px(판단값), opacity 80%" }]}
+        >
           <Combobox
             options={shiftOptions}
             placeholder="정렬 기준"
@@ -2761,31 +3187,76 @@ export default function Home() {
       </Section>
 
       <Section id="toast" title="Toast">
-        <Sample label="Toast · red">
+        <Sample
+          label="Toast · red"
+          spec={[
+            { label: "높이", value: "46px, 내부패딩16px" },
+            { label: "배경/테두리", value: "#F04452(Danger-60) / rgba(255,108,108,.2)" },
+            { label: "아이콘↔텍스트", value: "gap 8px" },
+            { label: "아이콘", value: "22px, 흰색" },
+            { label: "닫기 아이콘", value: "16px" },
+            { label: "R값", value: "rounded-full(캡슐)" },
+          ]}
+        >
           <Toast variant="red" message="필수 항목을 입력해주세요." onClose={() => {}} />
         </Sample>
-        <Sample label="Toast · blue">
+        <Sample
+          label="Toast · blue"
+          spec={[
+            { label: "규격", value: "red와 동일(46px/16px패딩/8px gap)" },
+            { label: "배경/테두리", value: "#156BE9(원본값) / rgba(26,61,112,.6)" },
+            { label: "닫기 아이콘", value: "18px(red와 다름, 실측 그대로)" },
+          ]}
+        >
           <Toast variant="blue" message="선택한 n건이 합격 처리되었습니다." onClose={() => {}} />
         </Sample>
       </Section>
 
       <Section id="confirm-dialog" title="ConfirmDialog">
-        <Sample label="ConfirmDialog · error 톤(기본), 확인 1버튼">
+        <Sample
+          label="ConfirmDialog · error 톤(기본), 확인 1버튼"
+          spec={[
+            { label: "전체", value: "흰배경, R값12px, 그림자 0 4px 16px rgba(0,0,0,.2)" },
+            { label: "헤더", value: "높이52px, 하단테두리1px Gray-30, 제목18px Bold" },
+            { label: "본문 아이콘", value: "44px, Danger-60(error 톤)" },
+            { label: "본문↔아이콘 gap", value: "20px" },
+            { label: "푸터", value: "패딩20px, 버튼높이40px, 1버튼일 땐 flex-1" },
+          ]}
+        >
           <Button size="basic" onClick={() => setDialogOpen(true)}>
             삭제 시도
           </Button>
         </Sample>
-        <Sample label="ConfirmDialog · warning 톤, 확인+취소 2버튼">
+        <Sample
+          label="ConfirmDialog · warning 톤, 확인+취소 2버튼"
+          spec={[
+            { label: "규격", value: "error 톤과 동일 레이아웃" },
+            { label: "본문 아이콘 색", value: "Yellow-50(#F2A406)" },
+            { label: "버튼", value: "취소=fillGray, 확인=fillBlack" },
+          ]}
+        >
           <Button size="basic" onClick={() => setWarningDialogOpen(true)}>
             반품 시도
           </Button>
         </Sample>
-        <Sample label="ConfirmDialog · info 톤, 확인 1버튼">
+        <Sample
+          label="ConfirmDialog · info 톤, 확인 1버튼"
+          spec={[
+            { label: "규격", value: "error 톤과 동일 레이아웃" },
+            { label: "본문 아이콘 색", value: "Primary-60" },
+          ]}
+        >
           <Button size="basic" onClick={() => setInfoDialogOpen(true)}>
             삭제 완료 알림
           </Button>
         </Sample>
-        <Sample label="ConfirmDialog · error 톤 + 안내 배너(링크 포함)">
+        <Sample
+          label="ConfirmDialog · error 톤 + 안내 배너(링크 포함)"
+          spec={[
+            { label: "배너↔푸터 gap", value: "20px(담당자 확정값)" },
+            { label: "배너 스타일", value: "판단값(devtools 응답 실패로 육안 대조)" },
+          ]}
+        >
           <Button size="basic" onClick={() => setBannerDialogOpen(true)}>
             라벨 생성 시도
           </Button>
@@ -2852,7 +3323,16 @@ export default function Home() {
       </section>
 
       <Section id="radio-choice-dialog" title="RadioChoiceDialog">
-        <Sample label="RadioChoiceDialog · 열기">
+        <Sample
+          label="RadioChoiceDialog · 열기"
+          spec={[
+            { label: "전체", value: "고정폭480px, R값16px, 그림자 0 0 24px rgba(0,0,0,.2)" },
+            { label: "헤더", value: "높이52px(ConfirmDialog와 동일 패턴)" },
+            { label: "옵션 gap", value: "세로20px, 라디오↔텍스트 gap 6px" },
+            { label: "경고 배너", value: "배경Gray-20, R값4px, 패딩좌우30px/상하16px" },
+            { label: "푸터 버튼", value: "고정폭160px/높이40px, gap 10px" },
+          ]}
+        >
           <Button size="basic" onClick={() => setRadioDialogOpen(true)}>
             투입품목 추가
           </Button>
@@ -3105,7 +3585,18 @@ export default function Home() {
       </section>
 
       <Section id="card" title="Card" badge="임시">
-        <Sample label="Card · 기본">
+        <Sample
+          label="Card · 기본"
+          spec={[
+            { label: "Figma", value: "전용 노드 없음(판단값)" },
+            { label: "배경/테두리", value: "흰색 / 1px Gray-30" },
+            { label: "R값", value: "4px(control)" },
+            { label: "그림자", value: "없음(Card는 평면 UI)" },
+            { label: "Header/Content/Footer", value: "각 padding 16px(p-4)" },
+            { label: "Header 하단테두리", value: "1px Gray-30" },
+            { label: "Footer 상단테두리", value: "1px Gray-30, gap 8px" },
+          ]}
+        >
           <Card className="w-[260px]">
             <CardHeader>
               <CardTitle>작업 지시 #1024</CardTitle>
@@ -3129,7 +3620,18 @@ export default function Home() {
       </Section>
 
       <Section id="empty-state" title="EmptyState" badge="임시">
-        <Sample label="EmptyState · 아이콘+액션">
+        <Sample
+          label="EmptyState · 아이콘+액션"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "패딩", value: "좌우24px/상하48px(px-6 py-12)" },
+            { label: "아이콘 색", value: "Gray-50" },
+            { label: "아이콘↔텍스트블록 gap", value: "12px" },
+            { label: "제목", value: "15px semibold, Gray-130" },
+            { label: "설명", value: "13px, Gray-70" },
+            { label: "텍스트블록↔액션 gap", value: "4px(mt-1)" },
+          ]}
+        >
           <EmptyState
             icon={<IconFileNote size={40} />}
             title="데이터가 없습니다"
@@ -3144,7 +3646,14 @@ export default function Home() {
       </Section>
 
       <Section id="error-state" title="ErrorState" badge="임시">
-        <Sample label="ErrorState · 재시도 액션">
+        <Sample
+          label="ErrorState · 재시도 액션"
+          spec={[
+            { label: "레이아웃", value: "EmptyState와 동일(판단값)" },
+            { label: "아이콘 색", value: "text-mes-text-danger(첫 실사용처)" },
+            { label: "제목 기본값", value: "\"문제가 발생했습니다\"" },
+          ]}
+        >
           <ErrorState
             icon={<IconExclamationCircle size={40} />}
             description="잠시 후 다시 시도해주세요."
@@ -3158,7 +3667,16 @@ export default function Home() {
       </Section>
 
       <Section id="popover" title="Popover" badge="임시">
-        <Sample label="Popover · 클릭해서 열기">
+        <Sample
+          label="Popover · 클릭해서 열기"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(Radix 재사용)" },
+            { label: "패딩", value: "16px(p-4)" },
+            { label: "테두리/배경", value: "1px Gray-30 / 흰색" },
+            { label: "R값/그림자", value: "Combobox 패널과 동일값 재사용" },
+            { label: "트리거 간격", value: "4px(sideOffset)" },
+          ]}
+        >
           <Popover>
             <PopoverTrigger asChild>
               <Button size="small" variant="lineBlacktxt">
@@ -3175,7 +3693,17 @@ export default function Home() {
       </Section>
 
       <Section id="accordion" title="Accordion" badge="임시">
-        <Sample label="Accordion · multiple(기본)">
+        <Sample
+          label="Accordion · multiple(기본)"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(순수 React state)" },
+            { label: "테두리", value: "1px Gray-30, R값4px(control)" },
+            { label: "항목 구분선", value: "1px Gray-30(첫 항목 제외)" },
+            { label: "트리거", value: "패딩좌우16px/상하12px, 14px medium" },
+            { label: "화살표", value: "16px, 펼침 시 rotate-90" },
+            { label: "본문", value: "패딩좌우16px/하단12px, 13px, Gray-80" },
+          ]}
+        >
           <Accordion
             className="w-[280px]"
             items={[
@@ -3189,7 +3717,15 @@ export default function Home() {
       </Section>
 
       <Section id="collapsible" title="Collapsible" badge="임시">
-        <Sample label="Collapsible · 단일 트리거">
+        <Sample
+          label="Collapsible · 단일 트리거"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(Accordion과 화살표 규칙 공유)" },
+            { label: "트리거", value: "14px medium, 화살표↔텍스트 gap 6px" },
+            { label: "화살표", value: "16px, 펼침 시 rotate-90" },
+            { label: "본문 들여쓰기", value: "22px(화살표 폭에 맞춤), 상단 gap 8px(mt-2)" },
+          ]}
+        >
           <Collapsible trigger="상세 옵션" className="w-[240px]">
             <span className="text-[13px] leading-[1.5] text-mes-gray-80">
               여기에 추가 필드가 들어갑니다.
@@ -3199,7 +3735,14 @@ export default function Home() {
       </Section>
 
       <Section id="button-group" title="ButtonGroup" badge="임시">
-        <Sample label="ButtonGroup · 3개 연결">
+        <Sample
+          label="ButtonGroup · 3개 연결"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(Button 감싸는 레이아웃)" },
+            { label: "처리", value: "양끝만 라운드, 가운데는 -ml-px로 테두리 겹침" },
+            { label: "버튼 자체 규격", value: "Button size별 값 그대로 재사용" },
+          ]}
+        >
           <ButtonGroup>
             <Button size="small" variant="lineBlacktxt">
               일간
@@ -3215,7 +3758,15 @@ export default function Home() {
       </Section>
 
       <Section id="toggle-button" title="ToggleButton" badge="임시">
-        <Sample label="ToggleButton · 눌림 상태 토글">
+        <Sample
+          label="ToggleButton · 눌림 상태 토글"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(Button variant 재사용)" },
+            { label: "규격(size별)", value: "Button과 동일 height/padding/font" },
+            { label: "눌리지 않음", value: "흰배경 / 1px Gray-30 테두리(lineBlacktxt)" },
+            { label: "눌림", value: "Primary-20 배경 / Primary-60 텍스트(opacityMain)" },
+          ]}
+        >
           <ToggleButton
             size="small"
             pressed={toggleButtonPressed}
@@ -3227,19 +3778,44 @@ export default function Home() {
       </Section>
 
       <Section id="number-input" title="NumberInput" badge="임시">
-        <Sample label="NumberInput · 기본">
+        <Sample
+          label="NumberInput · 기본"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "텍스트박스", value: "Input 실측 스타일 재사용(inputVariants)" },
+            { label: "증감 버튼", value: "폭24px(w-6), 상하 분할, 아이콘10px" },
+            { label: "버튼 테두리", value: "1px Gray-30, 텍스트박스와 이어붙임(border-r-0)" },
+          ]}
+        >
           <NumberInput defaultValue={10} min={0} max={999} />
         </Sample>
       </Section>
 
       <Section id="password-input" title="PasswordInput" badge="임시">
-        <Sample label="PasswordInput · 보기/숨기기 토글">
+        <Sample
+          label="PasswordInput · 보기/숨기기 토글"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "규격", value: "Input 실측 스타일 재사용(inputVariants)" },
+            { label: "토글 아이콘", value: "16px, 우측 인셋8px(right-2)" },
+            { label: "우측 여백", value: "아이콘 자리만큼 pr-8 추가" },
+          ]}
+        >
           <PasswordInput defaultValue="password123" className="w-[200px]" />
         </Sample>
       </Section>
 
       <Section id="multi-select-input" title="MultiSelectInput" badge="임시">
-        <Sample label="MultiSelectInput · 태그 추가/제거">
+        <Sample
+          label="MultiSelectInput · 태그 추가/제거"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "바깥 박스", value: "Input과 동일 테두리/R값, 높이는 hug(min-h-8)" },
+            { label: "패딩", value: "좌우8px/상하6px(px-2 py-1.5)" },
+            { label: "태그", value: "Tag(gray) 재사용, gap 6px(gap-1.5)" },
+            { label: "제거 아이콘", value: "10px(IconX)" },
+          ]}
+        >
           <MultiSelectInput
             values={multiSelectValues}
             onValuesChange={setMultiSelectValues}
@@ -3249,7 +3825,16 @@ export default function Home() {
       </Section>
 
       <Section id="breadcrumb" title="Breadcrumb" badge="임시">
-        <Sample label="Breadcrumb · 3단계">
+        <Sample
+          label="Breadcrumb · 3단계"
+          spec={[
+            { label: "Figma", value: "componentKey→node-id 변환 불가, 실측 못함(판단값)" },
+            { label: "폰트", value: "13px" },
+            { label: "구분자", value: "ChevronRight 14px, Gray-50" },
+            { label: "요소 간 gap", value: "6px(gap-1.5)" },
+            { label: "현재 위치(마지막)", value: "medium, Gray-130 / 그 외 Gray-70" },
+          ]}
+        >
           <Breadcrumb
             items={[
               { label: "자재관리", onClick: () => {} },
@@ -3261,13 +3846,30 @@ export default function Home() {
       </Section>
 
       <Section id="pagination" title="Pagination" badge="임시">
-        <Sample label="Pagination · 10페이지 중 4페이지">
+        <Sample
+          label="Pagination · 10페이지 중 4페이지"
+          spec={[
+            { label: "Figma", value: "componentKey→node-id 변환 불가, 실측 못함(판단값)" },
+            { label: "버튼", value: "정사각24px(IconButton small 규격 재사용), R값2px(control-xs)" },
+            { label: "현재 페이지", value: "배경Primary-60, 텍스트흰색(Button fillMain 재사용)" },
+            { label: "요소 간 gap", value: "4px" },
+          ]}
+        >
           <Pagination page={paginationPage} totalPages={10} onPageChange={setPaginationPage} />
         </Sample>
       </Section>
 
       <Section id="dropdown-menu" title="DropdownMenu" badge="임시">
-        <Sample label="DropdownMenu · 클릭해서 열기">
+        <Sample
+          label="DropdownMenu · 클릭해서 열기"
+          spec={[
+            { label: "Figma", value: "명확한 전용 노드 못 찾음(판단값)" },
+            { label: "패널", value: "폭180px, 패딩6px(Popover 재사용)" },
+            { label: "항목", value: "패딩좌우8px/상하5px, 13px, R값4px" },
+            { label: "hover 배경", value: "Gray-10(bg-subtle, Combobox 규칙 재사용)" },
+            { label: "danger 항목", value: "텍스트 Danger색" },
+          ]}
+        >
           <DropdownMenu
             trigger={
               <Button size="small" variant="lineBlacktxt">
@@ -3284,7 +3886,15 @@ export default function Home() {
       </Section>
 
       <Section id="list" title="List" badge="임시">
-        <Sample label="List · 클릭 가능 항목">
+        <Sample
+          label="List · 클릭 가능 항목"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(Table 행 스타일 재사용, 판단값)" },
+            { label: "테두리", value: "1px Gray-30, R값4px(control)" },
+            { label: "항목", value: "패딩좌우12px/상하8px, 13px, 구분선1px Gray-30" },
+            { label: "hover 배경", value: "Gray-20(bg-subtler, 클릭 가능할 때만)" },
+          ]}
+        >
           <List className="w-[220px]">
             <ListItem onClick={() => {}}>자재 A</ListItem>
             <ListItem onClick={() => {}}>자재 B</ListItem>
@@ -3294,7 +3904,15 @@ export default function Home() {
       </Section>
 
       <Section id="panel" title="Panel" badge="임시">
-        <Sample label="Panel · 기본">
+        <Sample
+          label="Panel · 기본"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "R값", value: "rounded-mes-panel" },
+            { label: "테두리/배경", value: "1px Gray-30 / 흰색" },
+            { label: "그림자", value: "shadow-mes-panel(Combobox/NotificationPanel과 동일)" },
+          ]}
+        >
           <Panel className="w-[220px] p-4">
             <span className="text-[13px] leading-[1.5] text-mes-text-default">
               그림자가 있는 떠 있는 영역
@@ -3304,7 +3922,16 @@ export default function Home() {
       </Section>
 
       <Section id="fieldset" title="Fieldset" badge="임시">
-        <Sample label="Fieldset · 필드 묶음">
+        <Sample
+          label="Fieldset · 필드 묶음"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "테두리/R값", value: "1px Gray-30 / 4px(control)" },
+            { label: "패딩", value: "16px(p-4)" },
+            { label: "필드 간 gap", value: "12px(gap-3)" },
+            { label: "legend", value: "13px medium, Gray-130(Label과 동일 톤)" },
+          ]}
+        >
           <Fieldset legend="거래처 정보" className="w-[260px]">
             <Input placeholder="거래처명" size="small" />
             <Input placeholder="담당자" size="small" />
@@ -3313,7 +3940,16 @@ export default function Home() {
       </Section>
 
       <Section id="descriptions" title="Descriptions" badge="임시">
-        <Sample label="Descriptions · 1열">
+        <Sample
+          label="Descriptions · 1열"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "테두리/R값", value: "1px Gray-30 / 4px(control)" },
+            { label: "행", value: "패딩좌우16px/상하10px, 구분선1px Gray-30" },
+            { label: "라벨", value: "고정폭100px, 13px, Gray-70" },
+            { label: "값", value: "13px medium, Gray-130" },
+          ]}
+        >
           <Descriptions
             className="w-[280px]"
             items={[
@@ -3326,25 +3962,56 @@ export default function Home() {
       </Section>
 
       <Section id="date-picker" title="DatePicker" badge="임시">
-        <Sample label="DatePicker · 단일 날짜">
+        <Sample
+          label="DatePicker · 단일 날짜"
+          spec={[
+            { label: "Figma", value: "node-id 해석 불가, 실측 못함(판단값)" },
+            { label: "트리거", value: "Input 스타일 재사용(inputVariants) + IconCalendar(실측 아이콘)" },
+            { label: "패널", value: "Popover 재사용" },
+            { label: "날짜 계산", value: "외부 라이브러리 없이 순수 Date" },
+          ]}
+        >
           <DatePicker value={datePickerValue} onValueChange={setDatePickerValue} />
         </Sample>
       </Section>
 
       <Section id="date-range-picker" title="DateRangePicker" badge="임시">
-        <Sample label="DateRangePicker · 기간 선택">
+        <Sample
+          label="DateRangePicker · 기간 선택"
+          spec={[
+            { label: "규격", value: "DatePicker와 동일 트리거/패널" },
+            { label: "선택 순서", value: "시작일 클릭 → 종료일 클릭" },
+            { label: "사이 날짜", value: "옅은 브랜드 배경(판단값)" },
+          ]}
+        >
           <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
         </Sample>
       </Section>
 
       <Section id="time-picker" title="TimePicker" badge="임시">
-        <Sample label="TimePicker · 30분 간격">
+        <Sample
+          label="TimePicker · 30분 간격"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "트리거", value: "Input 스타일 재사용" },
+            { label: "목록", value: "Combobox 옵션 hover/선택 규칙 재사용, 스크롤" },
+          ]}
+        >
           <TimePicker value={timePickerValue} onValueChange={setTimePickerValue} />
         </Sample>
       </Section>
 
       <Section id="navbar" title="Navbar" badge="임시">
-        <Sample label="Navbar · 3-슬롯">
+        <Sample
+          label="Navbar · 3-슬롯"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "높이", value: "56px(h-14, 데모 페이지 상단바와 동일값 재사용)" },
+            { label: "패딩", value: "좌우16px(px-4)" },
+            { label: "하단 테두리", value: "1px Gray-30" },
+            { label: "슬롯 내부 gap", value: "12px(gap-3)" },
+          ]}
+        >
           <Navbar
             className="w-[600px]"
             left={<Logo size="small" />}
@@ -3358,7 +4025,14 @@ export default function Home() {
       </Section>
 
       <Section id="scroll-area" title="ScrollArea" badge="임시">
-        <Sample label="ScrollArea · 고정 높이">
+        <Sample
+          label="ScrollArea · 고정 높이"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "처리", value: "브라우저 기본 스크롤 + scrollbarWidth: thin" },
+            { label: "새 의존성", value: "없음(별도 스크롤바 라이브러리 미사용)" },
+          ]}
+        >
           <ScrollArea className="h-[100px] w-[200px] rounded-mes-control border border-mes-border-default p-2">
             {Array.from({ length: 10 }, (_, i) => (
               <div key={i} className="py-1 text-[13px] text-mes-text-default">
@@ -3370,7 +4044,15 @@ export default function Home() {
       </Section>
 
       <Section id="sticky-header-footer" title="StickyHeader / StickyFooter" badge="임시">
-        <Sample label="Sticky · 컨테이너 내부 스크롤">
+        <Sample
+          label="Sticky · 컨테이너 내부 스크롤"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "처리", value: "position: sticky, 헤더 top-0/푸터 bottom-0" },
+            { label: "테두리", value: "헤더 하단1px / 푸터 상단1px, 둘 다 Gray-30" },
+            { label: "배경", value: "흰색(스크롤 콘텐츠 위에 항상 불투명하게 덮임)" },
+          ]}
+        >
           <div className="h-[140px] w-[220px] overflow-y-auto rounded-mes-control border border-mes-border-default">
             <StickyHeader className="px-3 py-2 text-[12px] font-semibold">헤더</StickyHeader>
             <div className="p-3 text-[12px] text-mes-gray-70">
@@ -3382,7 +4064,16 @@ export default function Home() {
       </Section>
 
       <Section id="logo" title="Logo" badge="임시">
-        <Sample label="Logo · default/small">
+        <Sample
+          label="Logo · default/small"
+          spec={[
+            { label: "Figma", value: "실제 로고 애셋 없음, 텍스트 워드마크(판단값)" },
+            { label: "default", value: "18px bold" },
+            { label: "small", value: "14px bold" },
+            { label: "심볼", value: "\"M\" 배지 — 배경Primary-60, 흰텍스트, R값2px" },
+            { label: "심볼↔텍스트 gap", value: "6px(gap-1.5)" },
+          ]}
+        >
           <div className="flex items-center gap-4">
             <Logo />
             <Logo size="small" />
@@ -3391,7 +4082,16 @@ export default function Home() {
       </Section>
 
       <Section id="user-account-menu" title="UserAccountMenu" badge="임시">
-        <Sample label="UserAccountMenu · 클릭해서 열기">
+        <Sample
+          label="UserAccountMenu · 클릭해서 열기"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(DropdownMenu 재사용, 판단값)" },
+            { label: "트리거", value: "패딩좌우8px/상하6px, 13px medium" },
+            { label: "아바타 아이콘", value: "20px(IconUserMono, 실측 아이콘), Gray-70" },
+            { label: "아이콘↔이름 gap", value: "6px(gap-1.5)" },
+            { label: "패널", value: "DropdownMenu와 동일(align=end)" },
+          ]}
+        >
           <UserAccountMenu
             name="이해빈"
             items={[
@@ -3404,7 +4104,16 @@ export default function Home() {
       </Section>
 
       <Section id="loading-overlay" title="LoadingOverlay" badge="임시">
-        <Sample label="LoadingOverlay · 영역 덮기">
+        <Sample
+          label="LoadingOverlay · 영역 덮기"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값, Backdrop과는 별개 목적)" },
+            { label: "처리", value: "absolute inset-0, 반투명 흰배경(bg-white/70)" },
+            { label: "스피너", value: "28px(LoadingSpinner 재사용)" },
+            { label: "스피너↔라벨 gap", value: "8px(gap-2)" },
+            { label: "라벨", value: "13px, Gray-70" },
+          ]}
+        >
           <div className="relative h-[100px] w-[200px] rounded-mes-control border border-mes-border-default">
             <LoadingOverlay label="불러오는 중" />
           </div>
