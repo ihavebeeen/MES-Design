@@ -867,3 +867,20 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      원래 추정 근거였던 실제 Center Modal 겹침 구조는 여전히 미확인이라는
      걸 비고에 명시.
   tsc 클린 확인 후 커밋.
+- (2026-07-31, 31차) 담당자 피드백 2건:
+  1. "섹션별로 간격을 좀 줘봐, 지금 너무 다닥다닥 붙어있는듯" — `<main>`의
+     `gap-10`(40px)이 각 섹션 자체 `pb-8`(32px)과 합쳐져도 좁아 보인다는
+     지적. `gap-20`(80px)으로 확대(섹션 자체 padding은 안 건드림 — 늘어난
+     간격은 섹션 사이에만 생기게 유지).
+  2. "벌크액션툴바같은건 있으면 좋을거같긴 한데 일단 빼야될듯? 우리가
+     지금 안쓰고있는거고 사실 그게 없는 상황이라가지고" — 30차에서 만든
+     `bulk-action-toolbar.tsx`를 롤백. Table의 다중 선택 기능 자체(`selectedIds`)는
+     그대로 남겨두고(이건 실제로 쓰이고 있음), 그 위에 얹었던 액션 바만
+     제거. Backdrop 때와 동일하게 샌드박스가 파일 삭제를 막아서
+     `bulk-action-toolbar.tsx.removed-per-user-feedback.<timestamp>`로
+     rename. 데모 Section(`bulk-action-toolbar`)과 table-parts "그룹화만"
+     Table에 연동해뒀던 부분, import, `TOC_LINKS`/`COMPONENT_NODES` 항목
+     전부 제거. 체크리스트 두 행(Bulk Action Toolbar → 없음, Bulk Selection +
+     Action Toolbar Grid → 부분으로 롤백, 다만 Table 다중 선택 자체는 여전히
+     되니 "없음"이 아니라 "부분" 유지) 갱신. tsc 클린 확인 후 커밋.
+

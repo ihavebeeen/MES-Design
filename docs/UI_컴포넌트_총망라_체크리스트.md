@@ -259,7 +259,7 @@
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
 | Filter Bar / Filter Panel | 목록·테이블 상단 필터 영역 | 오가니즘 | 있음 | 1 | Figma "Filter" 확인됨 |
-| Bulk Action Toolbar | 다중 선택 시 나타나는 액션 바 | 몰큘 | 있음 | 2 | 2026-07-31 코드화(`bulk-action-toolbar.tsx`). Figma 디자인 없어서 기존 색 토큰(Gray-130 배경 등)만으로 판단 구현, Divider/CloseButton 재사용 |
+| Bulk Action Toolbar | 다중 선택 시 나타나는 액션 바 | 몰큘 | 없음 | 2 | 2026-07-31 `bulk-action-toolbar.tsx`로 코드화했다가 담당자가 "있으면 좋을 것 같긴 한데 지금 안 쓰고 있고 그게 필요한 상황도 아니다"라고 해서 롤백 |
 | Table Bulk Selection | 테이블 행 다중 선택 | 몰큘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal "탭 구분 모달"/"필터·검색"에서 전체선택 체크박스 확인 |
 | Column Visibility Toggle | 테이블 컬럼 표시/숨김 설정 | 몰큘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "컬럼 설정" 확인 |
 | Row Expand / Detail Drawer | 행 클릭 시 상세 정보 확장 | 오가니즘 | 없음 | 3 | |
@@ -335,7 +335,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 | Cell Status Color Grid | 값에 따라 셀 색이 달라지는 그리드 | 오가니즘 | 없음 | 3 | |
 | Text Link Cell | 클릭 시 상세로 이동하는 텍스트 셀 | 몰큘 | 없음 | 3 | |
 | Icon Cell | 상태·액션 아이콘이 들어간 셀 | 몰큘 | 없음 | 3 | |
-| Bulk Selection + Action Toolbar Grid | 다중 선택 후 일괄 처리 버튼이 뜨는 그리드 | 오가니즘 | 있음 | 1 | 2026-07-31 `bulk-action-toolbar.tsx`를 table-parts 데모의 "그룹화만" Table에 실제로 연동 완료(선택 시 위에 표시). 액션 바 자체는 실측 아닌 판단값 |
+| Bulk Selection + Action Toolbar Grid | 다중 선택 후 일괄 처리 버튼이 뜨는 그리드 | 오가니즘 | 부분 | 1 | 2026-07-31 Table 연동까지 했다가 액션 바(`bulk-action-toolbar.tsx`) 자체를 담당자 요청으로 롤백 — 테이블 다중 선택 자체는 여전히 됨(부분 유지), 액션 바는 필요해지면 다시 구현 |
 | Column Resize / Reorder / Show-Hide | 컬럼 너비·순서·표시 설정 | 몰큘 | 없음 | 3 | |
 | Grid Export / Print | 엑셀 내보내기·인쇄 버튼 | 아톰 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "일자/조회/다운로드" 확인 |
 | Virtual Scroll Grid | 대용량 데이터 가상 스크롤 | 오가니즘 | 없음 | 3 | |
