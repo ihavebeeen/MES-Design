@@ -47,6 +47,14 @@ import { IconX } from "../icons/icon-x";
  * 기존에 이미 구현된 `Filter`(filter.tsx, Figma data-name "fillter-group"와 일치)와
  * 완전히 동일한 컴포넌트라 새로 만들지 않음 — 데모에서 `<GroupQuery>` 옆에 `<Filter>`를
  * 나란히 배치해 재현함.
+ *
+ * ── 4. 2026-08-03 너비 버그 수정(QuickQuery에서 먼저 발견, 방어적으로 여기도 적용) ──
+ * `flex-col` 부모(데모 페이지의 각 섹션)의 직계 자식으로 배치되면, flexbox
+ * `align-items: stretch` 기본값 때문에 이 컴포넌트의 루트 div(테두리 있음)가 실제 내용
+ * 폭과 무관하게 부모 폭(섹션 최대 960px)까지 늘어나 보이는 문제가 있었음 — `inline-flex`는
+ * "내부 자식 배치"만 영향을 주지 "이 요소 자체가 flex item으로서 부모에게 늘어나 보이는지"는
+ * 별개 문제라 `inline-flex`만으로는 안 막힘. `self-start`(+`shrink-0`)를 루트에 추가해
+ * 항상 내용 폭만큼만 차지하도록 고정.
  */
 
 export interface GroupQueryOption {
@@ -161,7 +169,7 @@ function GroupQuery({ options, levels, onLevelChange, className }: GroupQueryPro
   return (
     <div
       className={cn(
-        "inline-flex h-8 items-center overflow-clip rounded-mes-control border border-mes-border-default",
+        "inline-flex h-8 shrink-0 items-center self-start overflow-clip rounded-mes-control border border-mes-border-default",
         className
       )}
     >

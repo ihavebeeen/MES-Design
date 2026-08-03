@@ -71,6 +71,15 @@ import { IconX } from "../icons/icon-x";
  *   호출부에서 ConfirmDialog로 감싸 쓰면 됨).
  * - 푸터 취소/저장 버튼은 진행 중이던 이름 입력을 버리고 모달을 닫기만 함(행 내부 액션들은
  *   이미 즉시 반영됐으므로 별도 커밋 로직 불필요).
+ *
+ * ── 4. 2026-08-03 담당자 지적: "빠른조회 너비가 왜그럼" ────────────────
+ * 데모 페이지에서 트리거 바(`QuickQuery`)가 실제 내용 폭보다 훨씬 넓게(섹션 전체 폭까지)
+ * 늘어나 보이는 버그였음. 원인: 데모에서 이 컴포넌트를 `flex-col` 섹션의 직계 자식으로
+ * 바로 배치했는데, flexbox `align-items: stretch` 기본값 때문에 flex item인 이 컴포넌트의
+ * 루트 div(테두리 있음)가 부모 폭(섹션 최대 960px)까지 늘어남 — `inline-flex`는 "이
+ * 요소가 자기 자식들을 어떻게 배치하는지"만 결정할 뿐, "이 요소 자체가 부모의 flex item으로
+ * 취급될 때 늘어나는지"는 별개 문제라 막아주지 못함. 루트에 `self-start`(+`shrink-0`) 추가로
+ * 항상 내용 폭만큼만 차지하도록 고정.
  */
 
 export interface QuickQueryPreset {
@@ -100,7 +109,7 @@ function QuickQuery({
   return (
     <div
       className={cn(
-        "inline-flex h-8 items-center overflow-clip rounded-mes-control border border-mes-border-default",
+        "inline-flex h-8 shrink-0 items-center self-start overflow-clip rounded-mes-control border border-mes-border-default",
         className
       )}
     >

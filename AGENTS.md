@@ -929,4 +929,30 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   `COMPONENT_NODES`에 Filter 다음 순서로 삽입. 체크리스트("11. SaaS 제품에서
   자주 쓰이는 복합 패턴")에 두 행 신규 추가(둘 다 티어1·있음). tsc 클린
   확인 후 커밋.
+- (2026-08-03, 34차) 담당자 피드백 2건:
+  1. "나는 분명 노란 별로 했다" — QuickQuery 북마크 아이콘을 outline(검정 계열
+     기본값)으로 구현했던 게 잘못. Figma 실측 코드가 `mes/icon-star`를 이미지
+     애셋(`<img>`)으로 내보내서 정확한 채움색을 코드로 못 읽어와 `IconStar`
+     기본값을 그대로 뒀던 게 원인. `variant="filled"` + `text-mes-icon-warning`
+     (Yellow-50/#F2A406, ConfirmDialog 경고 아이콘과 동일 토큰)으로 교정.
+  2. "빠른조회 너비가 왜그럼" — 데모에서 트리거 바(`QuickQuery`)가 실제 내용
+     폭보다 훨씬 넓게(섹션 폭 960px까지) 늘어나 보이는 버그. 원인: 이
+     컴포넌트를 `flex-col` 섹션의 직계 자식으로 바로 배치했는데, flexbox
+     `align-items: stretch` 기본값 때문에 flex item인 루트 div(테두리 있음)가
+     부모 폭까지 늘어남 — `inline-flex`는 "자기 자식 배치"만 결정할 뿐 "자신이
+     부모의 flex item으로서 늘어나는지"는 못 막아줌. `QuickQuery`(직접 원인)와
+     `GroupQuery`(같은 구조라 방어적으로 동일 적용) 루트에 `self-start`+
+     `shrink-0` 추가해 항상 내용 폭만큼만 차지하도록 고정.
+  이어서 담당자가 Figma 링크(node 20186:68084)로 "이게 검색창"이라며 표 상단
+  검색창(값을 입력하면 배경색이 깔려 "검색어가 명확히 입력됨"을 보여주는
+  컴포넌트)을 전달 — 조사해보니 그룹화 조회/빠른 조회 조사 중 같은 상단바에서
+  이미 봤던 "Input Textbox"(node 17360:46256)와 완전히 동일한 컴포넌트(200×32px
+  고정폭, 값 있을 때 배경 Primary-20/테두리 Primary-30)라 새로 발견한 게 아니라
+  같은 걸 담당자가 재확인차 다시 짚어준 것으로 판단. `search-input.tsx` 신규
+  구현: 값 없음(판단값 — Input 컴포넌트 기본 상태 재사용)/값 있음(실측) 2상태,
+  값 있을 때만 X 지우기 버튼 노출(판단값). `page.tsx`에 독립 Section(`search-input`)
+  추가 + GroupQuery 데모 줄에도 실제 화면처럼 `justify-between`으로 같이 배치.
+  `TOC_LINKS`/`COMPONENT_NODES` 갱신, 체크리스트 "Search Input" 행 비고 갱신
+  (기존 "있음" 상태 유지, 신규 전용 컴포넌트 추가 사실만 명시). tsc 클린 확인
+  후 커밋.
 

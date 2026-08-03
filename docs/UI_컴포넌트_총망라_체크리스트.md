@@ -143,7 +143,7 @@
 | Text Input | 한 줄 텍스트 입력 | 아톰 | 있음 | 1 | Figma "Input Textbox/Selectbox" 매트릭스 |
 | Textarea | 여러 줄 텍스트 입력 | 아톰 | 있음 | 2 | 2026-07-31 코드화(`textarea.tsx`). Figma 디자인 없어서 Input과 동일한 톤(테두리/배경/포커스/radius) 재사용, min-h/py만 판단값 |
 | Number Input | 숫자 입력(증감 버튼 포함) | 몰큘 | 없음 | 2 | |
-| Search Input | 검색창 | 몰큘 | 있음 | 1 | 위 Input 매트릭스에 search 컬럼 포함 |
+| Search Input | 검색창 | 몰큘 | 있음 | 1 | 위 Input 매트릭스에 search 컬럼 포함. 2026-08-03 별도 컴포넌트로 코드화(`search-input.tsx`, node 17360:46256/20186:68084 실측, 200×32px 고정폭) — 담당자 지정 동작: 검색어를 입력하면 배경색(Primary-20)이 깔려 "검색어가 명확히 입력됨"을 표시 |
 | Password Input | 비밀번호 입력(보기/숨기기) | 몰큘 | 없음 | 2 | 로그인 화면 필수 |
 | Select (Dropdown) | 단일 선택 드롭다운 | 몰큘 | 있음 | 1 | Figma "Selectbox" 확인됨 |
 | Combobox | 검색 가능한 선택형 드롭다운 | 몰큘 | 있음 | 1 | 2026-07-28 코드화 완료(`combobox.tsx`, Radix Popover 기반) — Selectbox와 별도 컴포넌트로 분리. 상세는 19번 섹션 참고 |

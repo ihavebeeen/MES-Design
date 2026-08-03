@@ -21,6 +21,7 @@ import { Progress } from "@/components/ui/progress";
 import { Filter } from "@/components/ui/filter";
 import { GroupQuery } from "@/components/ui/group-query";
 import { QuickQuery, QuickQueryPresetDialog, type QuickQuerySlot } from "@/components/ui/quick-query";
+import { SearchInput } from "@/components/ui/search-input";
 import { Tag } from "@/components/ui/tag";
 import { Toast } from "@/components/ui/toast";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
@@ -118,6 +119,7 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "filter", label: "Filter" },
   { id: "group-query", label: "GroupQuery" },
   { id: "quick-query", label: "QuickQuery" },
+  { id: "search-input", label: "SearchInput" },
   { id: "tag", label: "Tag" },
   { id: "combobox", label: "Combobox" },
   { id: "toast", label: "Toast" },
@@ -198,6 +200,7 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("filter"),
   leaf("group-query"),
   leaf("quick-query"),
+  leaf("search-input"),
   leaf("tag"),
   leaf("combobox"),
   leaf("toast"),
@@ -980,6 +983,10 @@ export default function Home() {
   );
   const [quickQueryActiveId, setQuickQueryActiveId] = useState<string | null>("p1");
   const [quickQueryDialogOpen, setQuickQueryDialogOpen] = useState(false);
+  // 2026-08-03 — SearchInput 데모용. 실측 인스턴스와 동일하게 "숯불치킨 뚜껑"으로 시작해서
+  // 값이 있을 때의 배경색 강조 상태를 바로 보여줌.
+  const [groupQuerySearchValue, setGroupQuerySearchValue] = useState("숯불치킨 뚜껑");
+  const [searchInputValue, setSearchInputValue] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   // 2026-07-29: ConfirmDialog 톤 확장(경고/알림) + 확인·취소 2버튼 + 안내 배너 데모용
   const [warningDialogOpen, setWarningDialogOpen] = useState(false);
@@ -1713,22 +1720,27 @@ export default function Home() {
           담당자가 첨부한 생산지시 화면 스크린샷 기반 판단값. Level 1~3 각각 드롭다운으로
           그룹화 기준을 지정하고, 값이 있으면 칩+X로, 없으면 &quot;전체&quot;로 표시됨. 옆의 필터
           추가 박스는 기존 Filter 컴포넌트(node data-name &quot;fillter-group&quot;)를 그대로 재사용.
+          우측 검색창은 실제 화면과 동일하게 같은 줄 끝(justify-between)에 배치(SearchInput,
+          아래 별도 섹션 참고).
         </p>
-        <div className="flex items-center gap-2.5">
-          <GroupQuery
-            options={groupQueryOptions}
-            levels={groupQueryLevels}
-            onLevelChange={(index, value) =>
-              setGroupQueryLevels((prev) => prev.map((v, i) => (i === index ? value : v)))
-            }
-          />
-          <Filter
-            categories={filterCategories}
-            value={filterValue}
-            onChange={(categoryId, optionIds) =>
-              setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
-            }
-          />
+        <div className="flex w-full items-center justify-between gap-2.5">
+          <div className="flex items-center gap-2.5">
+            <GroupQuery
+              options={groupQueryOptions}
+              levels={groupQueryLevels}
+              onLevelChange={(index, value) =>
+                setGroupQueryLevels((prev) => prev.map((v, i) => (i === index ? value : v)))
+              }
+            />
+            <Filter
+              categories={filterCategories}
+              value={filterValue}
+              onChange={(categoryId, optionIds) =>
+                setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
+              }
+            />
+          </div>
+          <SearchInput value={groupQuerySearchValue} onChange={setGroupQuerySearchValue} />
         </div>
       </section>
 
@@ -1774,6 +1786,18 @@ export default function Home() {
           currentPreview={{ grouping: "품목명>담당자명>일자" }}
         />
       </section>
+
+      <Section id="search-input" title="SearchInput">
+        <Sample label="값 없음(기본)">
+          <SearchInput value="" onChange={() => {}} />
+        </Sample>
+        <Sample label="값 있음(실측 — 배경색 강조)">
+          <SearchInput value="숯불치킨 뚜껑" onChange={() => {}} />
+        </Sample>
+        <Sample label="제어형(직접 입력해보기)">
+          <SearchInput value={searchInputValue} onChange={setSearchInputValue} />
+        </Sample>
+      </Section>
 
       <Section id="tag" title="Tag">
         <Sample label="Tag · main · start+endIcon(실측 그대로)">
