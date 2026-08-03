@@ -4,59 +4,21 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * MES AlarmListItem (알람/경보 리스트 항목) — Figma 실측 기반, 2026-07-30 신규
+ * MES AlarmListItem (알람/경보 리스트 항목) — Figma 실측 기반
  *
- * 출처: 클라우드MES 파일이 아니라 컴포넌트 라이브러리 파일(qEAQNTqXf76bYydyupti2V) node
- * 163:3039("MES 알람 리스트") 하위 "알람 리스트 컴포넌트 - 원본" — tone(blue/red/yellow/green)
- * × hover(on/off) × read(on/off) × 두줄(on/off) 조합으로 총 32개 variant가 실제로 존재하는
- * 컴포넌트 세트. 이번 배치는 "컴포넌트부터 모으자"는 지시로 담당자의 새 Figma 링크 없이
- * 기존 두 파일을 metadata로 직접 훑다가 발견 — 체크리스트의 "Notification/Bell"(없음) 및
- * MES 도메인 특화 패턴의 "16-2. 알람·경보" 항목에 해당하는 컴포넌트로 판단해 코드화함.
+ * 출처: 컴포넌트 라이브러리 파일(qEAQNTqXf76bYydyupti2V) node 163:3039("MES 알람 리스트").
+ * 고정 너비 400px, 하단 테두리 1px Gray-30, padding 8px. 좌측 tone 강조바(4px×42px,
+ * radius 2px) + gap 16px + 텍스트 블록(제목 14px SemiBold / 시각 12px / 설명 13px,
+ * line-height 1.5, 자간 0 — 시스템 전역 표준). tone 4색 blue `#4A90E2` / red `#E15B5B` /
+ * yellow `#E99B41` / green `#4BB866`(`globals.css` `--mes-alarm-*`, 확정 팔레트와 별도).
+ * hover 시 배경 한 단계 진하게. 전체가 `<button>`으로 클릭 가능.
+ * "두줄"(원본 Figma의 설명 아래 2번째 줄) → `secondaryDescription`(선택) prop.
  *
- * ── 1. 레이아웃(실측, 2026-07-30 담당자가 실제 서비스 화면 기준으로 재수정) ──────
- * 고정 너비 400px(패널 폭에 맞춘 값), 하단 테두리 1px Gray-30(#E4E7EE), padding 8px.
- * 좌측 4px 폭 × 42px 높이(실측 41.78px를 반올림)의 tone 강조바(radius 2px) + gap 16px +
- * 텍스트 블록. 텍스트 블록 폰트 크기는 3단계로 분리(처음엔 전부 15px로 잘못 통일했었음):
- * 제목(SemiBold) 14px / 날짜(Regular) 12px / 설명(본문) 13px — line-height 1.5.
- * 자간은 실측상 -0.1875px였으나 담당자가 "자간은 0, 행간은 150%로 통일"이라고 확정해
- * 2026-07-30에 제거함(시스템 전역 자간0/행간150% 표준 — Foundation 섹션/토큰 문서 참고).
- *
- * ── 2. tone 색상(4종, 실측 — 확정 팔레트와 무관한 별도 alarm 색상군) ──
- * blue `#4A90E2` / red `#E15B5B` / yellow `#E99B41` / green `#4BB866` — `globals.css`에
- * `--mes-alarm-*`로 신설(Primary-60/Danger-60 등과 값이 달라 기존 팔레트에 편입하지 않음).
- *
- * ── 3. read 상태(2종) — 명칭과 실제 시각 효과가 반대로 느껴져 확인 필요 ──
- * Figma 프로퍼티명은 `read`지만, 실측 결과:
- * - `read=true`(진하게 강조): 배경 흰색 + 좌측 tone 강조바 있음 + 제목 Gray-130(진하게) +
- *   시각 Gray-80
- * - `read=false`(흐리게): 배경 Gray-10(#F8FAFC) + 강조바 없음(4개 tone 전부 시각적으로
- *   동일하게 무채색 처리) + 전체 텍스트 Gray-60(#99A3B8, 흐림)
- * → 상식적으로는 "읽음(read)"일 때 흐려지는 게 자연스러운데 실측은 반대라 `read` prop을
- *   문자 그대로 두되, 진짜 의미(예: "강조 표시 여부"의 오기 명명일 가능성)는 담당자 확인
- *   필요 — 체크리스트에 "확인 필요"로 등록.
- * → (2026-08-03 정정) 한때 이 흐림 배경(Gray-10)이 `table.tsx`의 "비활성화(disabled)=배경
- *   Gray-10" 규칙과 일치한다는 정황만으로 `read=false`를 "비활성화" 상태로 추정하고
- *   AlarmListItem/NotificationPanel 데모에서 read=false 예시를 뺐던 적이 있는데, 담당자가
- *   "알람리스트아이템 말고 노티피케이션페널 내 비활성화 처리된 내역을 삭제해야지. 걍
- *   클릭하면 리스트에서 지워지는 형식임"이라고 바로 정정함 — "비활성화 처리"는 `read`
- *   prop과 무관하고, 그냥 `NotificationPanel`에서 항목을 클릭하면(`onItemClick`) 목록에서
- *   제거되는 그 동작 자체를 가리키는 말이었음. 이 컴포넌트(AlarmListItem)의 데모는 원래
- *   read=false 예시를 그대로 유지하는 게 맞고, `read` prop의 진짜 의미는 여전히 확인 필요.
- *
- * ── 4. hover 상태 ──────────────────────────────────────────────
- * 배경이 한 단계 더 진해짐(그 외 스타일은 hover 직전 read 상태를 그대로 유지) — 토큰
- * 규칙표의 "hover는 배경만 한 단계 진하게" 레시피와 일치. 전체 항목이 `<button>`으로
- * 클릭 가능한 걸로 실측됨(리스트 항목 클릭 시 상세 이동 등으로 추정).
- *
- * ── 5. 두줄(twoLine) — 정확한 용도 확인 필요 ────────────────────
- * 원본엔 설명 아래에 "두줄"이라는 플레이스홀더 텍스트가 그대로 있어(디자이너의 메모로
- * 추정), 실제 프로덕션 문구가 아님 — 설명이 2줄까지 필요한 경우를 위한 슬롯으로 판단해
- * `secondaryDescription`(선택) prop으로 구현. 실제 용도가 다르면 교체 필요.
- *
- * ── 6. 확인 필요 ────────────────────────────────────────────────
- * - `read` prop의 실제 의미(읽음/안읽음 중 무엇인지)
- * - "두줄"의 정확한 용도
- * - 알람 아이콘(벨 등)이 별도로 붙는지 — 이번 실측 범위엔 아이콘 없이 강조바만 존재
+ * 2026-08-03: Figma엔 흐림 처리된 `read=false` variant(배경 Gray-10, 텍스트/강조바 흐림)도
+ * 있었지만, 실제 서비스엔 그 상태가 구현되어 있지 않음(담당자 확인: "디자인으로는 있는데
+ * 실제 구현은 그렇게 안 됐다") — 실제 알람 항목엔 상태가 두 가지뿐: 기본(강조바 있는 원래
+ * 상태) / 클릭하면 목록에서 사라짐(`NotificationPanel`의 `onItemClick`). 그래서 `read`
+ * prop과 흐림 스타일을 컴포넌트에서 제거.
  */
 
 export type AlarmTone = "blue" | "red" | "yellow" | "green";
@@ -73,10 +35,8 @@ export interface AlarmListItemProps {
   title: string;
   time: string;
   description: React.ReactNode;
-  /** 정확한 용도 확인 필요 — 설명 아래 2번째 줄(원본엔 "두줄" placeholder만 있었음) */
+  /** 설명 아래 2번째 줄(원본 Figma "두줄") */
   secondaryDescription?: React.ReactNode;
-  /** Figma 프로퍼티명 그대로 유지 — 실제 의미(읽음/강조 여부)는 확인 필요, 기본 true(강조) */
-  read?: boolean;
   onClick?: () => void;
   className?: string;
 }
@@ -87,7 +47,6 @@ function AlarmListItem({
   time,
   description,
   secondaryDescription,
-  read = true,
   onClick,
   className,
 }: AlarmListItemProps) {
@@ -96,43 +55,24 @@ function AlarmListItem({
       type="button"
       onClick={onClick}
       className={cn(
-        "flex w-full max-w-[400px] items-center gap-4 border-b border-mes-border-default p-2 text-left transition-colors",
-        read ? "bg-white hover:bg-mes-gray-10" : "bg-mes-gray-10 hover:bg-mes-gray-20",
+        "flex w-full max-w-[400px] items-center gap-4 border-b border-mes-border-default bg-white p-2 text-left transition-colors hover:bg-mes-gray-10",
         className
       )}
     >
-      {read && (
-        <span
-          className={cn("h-[42px] w-1 shrink-0 rounded-mes-control-xs", ALARM_TONE_BAR[tone])}
-          aria-hidden
-        />
-      )}
+      <span
+        className={cn("h-[42px] w-1 shrink-0 rounded-mes-control-xs", ALARM_TONE_BAR[tone])}
+        aria-hidden
+      />
       <span className="flex min-w-0 flex-1 flex-col leading-[1.5]">
         <span className="flex items-start gap-4">
-          <span
-            className={cn(
-              "text-[14px] font-semibold",
-              read ? "text-mes-text-default" : "text-mes-gray-60"
-            )}
-          >
-            {title}
-          </span>
-          <span className={cn("text-[12px]", read ? "text-mes-gray-80" : "text-mes-gray-60")}>
-            {time}
-          </span>
+          <span className="text-[14px] font-semibold text-mes-text-default">{title}</span>
+          <span className="text-[12px] text-mes-gray-80">{time}</span>
         </span>
-        <span
-          className={cn(
-            "flex items-center text-[13px]",
-            read ? "text-mes-text-default" : "text-mes-gray-60"
-          )}
-        >
+        <span className="flex items-center text-[13px] text-mes-text-default">
           {description}
         </span>
         {secondaryDescription && (
-          <span className={cn("text-[13px]", read ? "text-mes-text-default" : "text-mes-gray-60")}>
-            {secondaryDescription}
-          </span>
+          <span className="text-[13px] text-mes-text-default">{secondaryDescription}</span>
         )}
       </span>
     </button>

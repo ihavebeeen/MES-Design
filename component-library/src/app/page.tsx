@@ -665,7 +665,6 @@ const initialNotificationItems: NotificationPanelItem[] = [
     title: "출하 승인 취소",
     time: "20:25",
     description: "yyyy.mm.dd/[거래처]/n건의 출하 승인이 취소되었습니다.",
-    read: false,
   },
   {
     id: "3",
@@ -1767,11 +1766,8 @@ export default function Home() {
           <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">임시</span>
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          담당자가 첨부한 생산지시 화면 스크린샷 기반 판단값. Level 1~3 각각 드롭다운으로
-          그룹화 기준을 지정하고, 값이 있으면 칩+X로, 없으면 &quot;전체&quot;로 표시됨. 옆의 필터
-          추가 박스는 기존 Filter 컴포넌트(node data-name &quot;fillter-group&quot;)를 그대로 재사용.
-          우측 검색창은 실제 화면과 동일하게 같은 줄 끝(justify-between)에 배치(SearchInput,
-          아래 별도 섹션 참고).
+          Level 1~3 드롭다운으로 그룹화 기준 지정, 값 있으면 칩+X로 표시. 옆은 Filter,
+          오른쪽 끝은 SearchInput 재사용.
         </p>
         <div className="flex w-full items-center justify-between gap-2.5">
           <div className="flex items-center gap-2.5">
@@ -2132,9 +2128,7 @@ export default function Home() {
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
           AlarmListItem
         </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          tone 4색(blue/red/yellow/green). `read` prop 의미는 확인 필요.
-        </p>
+        <p className="text-[12px] text-mes-gray-70">tone 4색(blue/red/yellow/green).</p>
         <div className="flex w-[400px] flex-col border border-mes-gray-30">
           <AlarmListItem
             tone="blue"
@@ -2147,7 +2141,6 @@ export default function Home() {
             title="출하 승인 취소"
             time="20:25"
             description="yyyy.mm.dd/[거래처]/n건의 출하 승인이 취소되었습니다."
-            read={false}
           />
           <AlarmListItem
             tone="yellow"
@@ -2160,7 +2153,6 @@ export default function Home() {
             title="입고 완료"
             time="20:25"
             description="yyyy.mm.dd/[거래처]/n건의 입고가 완료되었습니다."
-            read={false}
           />
         </div>
       </section>
@@ -2170,9 +2162,8 @@ export default function Home() {
           NotificationPanel
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          AlarmListItem을 재사용한 알림 드롭다운. 미확인/확인 탭은 범위 밖. 항목을 클릭하면
-          목록에서 사라짐(담당자 스크린샷 기반), 설정(톱니) 아이콘을 누르면 알림 설정
-          화면으로 전환됨(뒤로가기로 복귀).
+          AlarmListItem을 재사용한 알림 드롭다운. 항목 클릭 시 목록에서 제거, 설정 아이콘
+          클릭 시 알림 설정 화면으로 전환.
         </p>
         <div className="flex flex-wrap items-start gap-8">
           <div className="flex flex-col items-start gap-2">

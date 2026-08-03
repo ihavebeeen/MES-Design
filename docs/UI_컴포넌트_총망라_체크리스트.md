@@ -378,7 +378,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 
 | 컴포넌트 | 설명 | 레이어 | 상태 | 티어 | 비고 |
 |---|---|---|---|---|---|
-| Alarm List/Table | 알람 이력 리스트 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Asset/Templates의 "Alarm list" 확인. 2026-07-30 코드화: `components/ui/alarm-list-item.tsx`(node 163:3039 "MES 알람 리스트" 실측, tone 4색×hover×read×두줄 조합 32종 중 대표 케이스 반영). `read` prop 의미와 "두줄" 용도는 확인 필요(2026-08-03 한때 `read=false`를 "비활성화"로 추정해 데모에서 뺐었으나, 담당자가 "AlarmListItem 말고 NotificationPanel 쪽 얘기였고 그냥 클릭하면 지워지는 형식"이라고 정정 — read=false 예시 원복, `read` prop 의미는 여전히 미확인 상태 그대로) |
+| Alarm List/Table | 알람 이력 리스트 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Asset/Templates의 "Alarm list" 확인. 2026-07-30 코드화: `components/ui/alarm-list-item.tsx`(node 163:3039 "MES 알람 리스트" 실측). "두줄" 용도는 확인 필요. 2026-08-03 `read`(흐림) variant 삭제 — 담당자 확인: Figma엔 있지만 실제 서비스엔 미구현. 실제 상태는 기본(강조바)/클릭 시 제거 두 가지뿐 |
 | Blinking Alarm Indicator | 알람 발생 시 점멸 표시 | 아톰 | 없음 | 3 | |
 | Severity Level Tag | 알람 심각도 태그 | 아톰 | 없음 | 3 | |
 | Alarm Acknowledge Button | 알람 확인·조치 버튼 | 아톰 | 없음 | 3 | |

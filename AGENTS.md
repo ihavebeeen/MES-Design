@@ -1044,4 +1044,13 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   아이콘 제거(37차 2번)는 이번 정정과 무관해 그대로 유지. 체크리스트
   "Alarm List/Table"/"Notification / Bell" 행에 정정 내용 반영. tsc/eslint
   클린 확인 후 커밋.
+- (2026-08-03, 39차) 담당자 재정정: "AlarmListItem 데모에서도 흐림 처리 아예
+  삭제해 — Figma엔 있지만 실제 구현엔 없다. 실제 알림 패널에도 없다. 상태는
+  기본(강조바 있는 원래상태)/클릭해서 없어진 상태 두 개뿐." → `read` prop과
+  흐림 스타일을 `alarm-list-item.tsx`에서 완전히 제거(옵션이 아니라 아예
+  없는 상태로). 데모(AlarmListItem 단독 섹션 + NotificationPanel 초기
+  데이터)에서도 `read` 전달 부분 제거. 추가로 "새로 추가하는 데모 설명에
+  '범위 밖' 같은 군더더기를 왜 자꾸 쓰냐"는 지적 — NotificationPanel/
+  GroupQuery 데모 `<p>` 설명을 핵심만 남기고 정리. 체크리스트 갱신,
+  tsc/eslint 클린 확인 + `/tmp` next build 재검증 후 커밋.
 
