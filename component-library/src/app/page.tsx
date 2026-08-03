@@ -9,6 +9,7 @@ import {
   Children,
   isValidElement,
   cloneElement,
+  Fragment,
 } from "react";
 import { ChevronRight, Plus, Search, Palette, Blocks, Hammer } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -625,30 +626,39 @@ function Sample({
   id?: string;
   label: string;
   /**
-   * 2026-08-03 — "단순 사이즈만 적지 말고, 패딩 때문에 그 크기가 나온 거면 그 패딩값을,
-   * 아이콘 크기·패딩, 색상 토큰명(main60 등)까지 적으라" 요청 반영. 여기 적는 값은
-   * 반드시 내용(children)과 무관하게 항상 참인 값만 — 높이 고정값, 패딩, radius,
-   * 아이콘 px, 색상 토큰명처럼 해당 컴포넌트 파일의 실측 주석에 있는 값. 너비가
-   * hug(내용에 따라 가변)라 고정값이 없으면 그 사실 자체를 적음(가짜 숫자로 채우지
-   * 않음). 126개 Sample 전부를 이번에 다 채우진 못했고, 우선 담당자가 예시로 든
-   * IconButton/Button 컬러 등 대표적인 곳부터 채움 — 나머지는 후속 작업(AGENTS.md 참고).
+   * 2026-08-03 — "왜 텍스트로 주절주절 적냐, 색상:크기:R값:테두리 이렇게 우측에
+   * 구조화해서 적어라" 지적 반영. 산문 문자열(`React.ReactNode`)이던 걸 항목별
+   * key-value 배열로 바꾸고, 컴포넌트 우측에 별도 박스로 렌더링(위에 얹던 방식에서
+   * 옆으로 변경). 값은 반드시 내용(children)과 무관하게 항상 참인 값만 — 높이 고정값,
+   * 패딩(상/하/좌/우 각각), 아이콘 px, 아이콘↔텍스트 간격, radius, 색상 토큰명처럼
+   * 해당 컴포넌트 파일의 실측 주석/Tailwind 클래스에 있는 값 그대로. 너비가 hug(내용에
+   * 따라 가변)라 고정값이 없으면 "hug(가변)"라고 적어 가변이라는 사실 자체를 전달.
+   * 126개 Sample 전부를 이번에 다 채우진 못했고, 담당자가 예로 든 곳부터 채움 —
+   * 나머지는 후속 작업(AGENTS.md 참고).
    */
-  spec?: React.ReactNode;
+  spec?: { label: string; value: string }[];
   children: React.ReactNode;
 }) {
   return (
-    <div id={id} className="flex w-full scroll-mt-24 flex-col items-start gap-3 py-7">
-      <div className="flex flex-col gap-1">
+    <div id={id} className="flex w-full scroll-mt-24 items-start justify-between gap-6 py-7">
+      <div className="flex min-w-0 flex-1 flex-col items-start gap-3">
         <span className="font-mono text-[13px] font-semibold leading-none text-mes-gray-100">
           {label}
         </span>
-        {spec && (
-          <span className="text-[12px] leading-[1.5] text-mes-gray-70">{spec}</span>
-        )}
+        <div className="flex w-fit min-w-0 items-center">{children}</div>
       </div>
-      <div className="flex w-fit min-w-0 items-center">
-        {children}
-      </div>
+      {spec && spec.length > 0 && (
+        <div className="flex w-[280px] shrink-0 flex-col gap-1.5 rounded-mes-control border border-mes-border-default bg-mes-bg-subtle px-3 py-2.5">
+          {spec.map((row) => (
+            <Fragment key={row.label}>
+              <div className="flex items-baseline justify-between gap-3 text-[12px] leading-[1.5]">
+                <span className="shrink-0 text-mes-gray-60">{row.label}</span>
+                <span className="text-right font-mono text-mes-gray-100">{row.value}</span>
+              </div>
+            </Fragment>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -1992,17 +2002,43 @@ export default function Home() {
       </Section>
 
       <Section id="button-icon" title="Button — 아이콘">
-        <Sample label="Button · StartIcon">
+        <Sample
+          label="Button · StartIcon"
+          spec={[
+            { label: "아이콘 크기", value: "16px(데모 지정값, 고정 아님)" },
+            { label: "아이콘↔텍스트", value: "6px(gap-1.5, flex gap)" },
+            { label: "좌측(테두리→아이콘)", value: "16px(basic px-4)" },
+            { label: "우측(텍스트→테두리)", value: "16px(basic px-4)" },
+            { label: "상하", value: "고정높이 40px 안에서 수직 중앙(별도 padding값 없음)" },
+          ]}
+        >
           <Button size="basic" startIcon={<Plus size={16} />}>
             아이콘 왼쪽
           </Button>
         </Sample>
-        <Sample label="Button · EndIcon">
+        <Sample
+          label="Button · EndIcon"
+          spec={[
+            { label: "아이콘 크기", value: "16px(데모 지정값, 고정 아님)" },
+            { label: "텍스트↔아이콘", value: "6px(gap-1.5, flex gap)" },
+            { label: "좌측(텍스트→테두리)", value: "16px(basic px-4)" },
+            { label: "우측(테두리→아이콘)", value: "16px(basic px-4)" },
+            { label: "상하", value: "고정높이 40px 안에서 수직 중앙(별도 padding값 없음)" },
+          ]}
+        >
           <Button size="basic" endIcon={<Plus size={16} />}>
             아이콘 오른쪽
           </Button>
         </Sample>
-        <Sample label="Button · Start+EndIcon">
+        <Sample
+          label="Button · Start+EndIcon"
+          spec={[
+            { label: "아이콘 크기", value: "16px(양쪽 동일, 데모 지정값)" },
+            { label: "아이콘↔텍스트", value: "각 6px(gap-1.5, 아이콘·텍스트·아이콘 사이 동일)" },
+            { label: "좌우(테두리→아이콘)", value: "16px(basic px-4)" },
+            { label: "상하", value: "고정높이 40px 안에서 수직 중앙(별도 padding값 없음)" },
+          ]}
+        >
           <Button
             size="basic"
             startIcon={<Plus size={16} />}
@@ -2016,7 +2052,14 @@ export default function Home() {
       <Section id="button-color" title="Button — 컬러">
         <Sample
           label="Button · fillMain"
-          spec="배경 Primary-60 → hover Primary-70 · 텍스트 흰색 · basic 기준 높이 40px, 좌우 패딩 16px"
+          spec={[
+            { label: "배경", value: "Primary-60" },
+            { label: "hover", value: "Primary-70" },
+            { label: "텍스트", value: "흰색" },
+            { label: "테두리", value: "없음" },
+            { label: "크기", value: "높이 40px · 좌우패딩 16px · 너비 hug(가변)" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <Button size="basic" variant="fillMain">
             fillMain
@@ -2024,7 +2067,14 @@ export default function Home() {
         </Sample>
         <Sample
           label="Button · fillGray"
-          spec="배경 Gray-40 → hover Gray-50 · 텍스트 Gray-130"
+          spec={[
+            { label: "배경", value: "Gray-40" },
+            { label: "hover", value: "Gray-50" },
+            { label: "텍스트", value: "Gray-130" },
+            { label: "테두리", value: "없음" },
+            { label: "크기", value: "높이 40px · 좌우패딩 16px · 너비 hug(가변)" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <Button size="basic" variant="fillGray">
             fillGray
@@ -2032,7 +2082,14 @@ export default function Home() {
         </Sample>
         <Sample
           label="Button · fillBlack"
-          spec="배경 Gray-130 → hover Gray-110 · 텍스트 흰색"
+          spec={[
+            { label: "배경", value: "Gray-130" },
+            { label: "hover", value: "Gray-110" },
+            { label: "텍스트", value: "흰색" },
+            { label: "테두리", value: "없음" },
+            { label: "크기", value: "높이 40px · 좌우패딩 16px · 너비 hug(가변)" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <Button size="basic" variant="fillBlack">
             fillBlack
@@ -2040,7 +2097,14 @@ export default function Home() {
         </Sample>
         <Sample
           label="Button · fillRed"
-          spec="배경 Danger-60 → hover Danger-70 · 텍스트 흰색"
+          spec={[
+            { label: "배경", value: "Danger-60" },
+            { label: "hover", value: "Danger-70" },
+            { label: "텍스트", value: "흰색" },
+            { label: "테두리", value: "없음" },
+            { label: "크기", value: "높이 40px · 좌우패딩 16px · 너비 hug(가변)" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <Button size="basic" variant="fillRed">
             fillRed
@@ -2048,7 +2112,14 @@ export default function Home() {
         </Sample>
         <Sample
           label="Button · lineMain"
-          spec="배경 흰색 → hover Primary-10 · 테두리 1px Primary-60 · 텍스트 Primary-60"
+          spec={[
+            { label: "배경", value: "흰색" },
+            { label: "hover", value: "Primary-10" },
+            { label: "텍스트", value: "Primary-60" },
+            { label: "테두리", value: "1px Primary-60" },
+            { label: "크기", value: "높이 40px · 좌우패딩 16px · 너비 hug(가변)" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <Button size="basic" variant="lineMain">
             lineMain
@@ -2056,7 +2127,14 @@ export default function Home() {
         </Sample>
         <Sample
           label="Button · lineBlacktxt"
-          spec="배경 흰색 → hover Gray-10 · 테두리 1px Gray-30 · 텍스트 Gray-130"
+          spec={[
+            { label: "배경", value: "흰색" },
+            { label: "hover", value: "Gray-10" },
+            { label: "텍스트", value: "Gray-130" },
+            { label: "테두리", value: "1px Gray-30" },
+            { label: "크기", value: "높이 40px · 좌우패딩 16px · 너비 hug(가변)" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <Button size="basic" variant="lineBlacktxt">
             lineBlacktxt
@@ -2064,7 +2142,14 @@ export default function Home() {
         </Sample>
         <Sample
           label="Button · opacityMain"
-          spec="배경 Primary-20(옅은 브랜드) → hover 임의값(팔레트 스텝 밖) · 텍스트 Primary-60"
+          spec={[
+            { label: "배경", value: "Primary-20(옅은 브랜드)" },
+            { label: "hover", value: "임의값(팔레트 스텝 밖)" },
+            { label: "텍스트", value: "Primary-60" },
+            { label: "테두리", value: "없음" },
+            { label: "크기", value: "높이 40px · 좌우패딩 16px · 너비 hug(가변)" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <Button size="basic" variant="opacityMain">
             opacityMain
@@ -2079,31 +2164,66 @@ export default function Home() {
       <Section id="icon-button" title="IconButton / CloseButton" badge="임시">
         <Sample
           label="IconButton · basic/ghost"
-          spec="버튼 40×40px 고정 · 아이콘 20px · ghost = 투명 배경 + 아이콘 Gray-70(hover 시 배경 bg-subtle)"
+          spec={[
+            { label: "크기", value: "40×40px 고정" },
+            { label: "아이콘", value: "20px" },
+            { label: "배경", value: "투명 → hover Gray-bg-subtle" },
+            { label: "아이콘색", value: "Gray-70" },
+            { label: "테두리", value: "없음" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <IconButton icon={<IconFilter />} aria-label="필터" size="basic" />
         </Sample>
         <Sample
           label="IconButton · small/fillMain"
-          spec="버튼 32×32px 고정 · 아이콘 16px · fillMain = 배경 Primary-60 + 흰 아이콘"
+          spec={[
+            { label: "크기", value: "32×32px 고정" },
+            { label: "아이콘", value: "16px" },
+            { label: "배경", value: "Primary-60" },
+            { label: "아이콘색", value: "흰색" },
+            { label: "테두리", value: "없음" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <IconButton icon={<IconBell />} aria-label="알림" variant="fillMain" size="small" />
         </Sample>
         <Sample
           label="IconButton · small/fillGray"
-          spec="버튼 32×32px 고정 · 아이콘 16px · fillGray = 배경 Gray-40 + 아이콘 Gray-130"
+          spec={[
+            { label: "크기", value: "32×32px 고정" },
+            { label: "아이콘", value: "16px" },
+            { label: "배경", value: "Gray-40" },
+            { label: "아이콘색", value: "Gray-130" },
+            { label: "테두리", value: "없음" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <IconButton icon={<IconFilter />} aria-label="필터" variant="fillGray" size="small" />
         </Sample>
         <Sample
           label="IconButton · small/fillBlack"
-          spec="버튼 32×32px 고정 · 아이콘 16px · fillBlack = 배경 Gray-130 + 흰 아이콘"
+          spec={[
+            { label: "크기", value: "32×32px 고정" },
+            { label: "아이콘", value: "16px" },
+            { label: "배경", value: "Gray-130" },
+            { label: "아이콘색", value: "흰색" },
+            { label: "테두리", value: "없음" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <IconButton icon={<IconBell />} aria-label="알림" variant="fillBlack" size="small" />
         </Sample>
         <Sample
           label="IconButton · small/lineBlacktxt"
-          spec="버튼 32×32px 고정 · 아이콘 16px · lineBlacktxt = 흰 배경 + 테두리 Gray-30 + 아이콘 Gray-130"
+          spec={[
+            { label: "크기", value: "32×32px 고정" },
+            { label: "아이콘", value: "16px" },
+            { label: "배경", value: "흰색" },
+            { label: "아이콘색", value: "Gray-130" },
+            { label: "테두리", value: "1px Gray-30" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <IconButton
             icon={<IconFilter />}
@@ -2114,19 +2234,37 @@ export default function Home() {
         </Sample>
         <Sample
           label="IconButton · xsmall/ghost"
-          spec="버튼 22×22px 고정 · 아이콘 14px · radius는 control-xs(basic/small의 control과 다름)"
+          spec={[
+            { label: "크기", value: "22×22px 고정" },
+            { label: "아이콘", value: "14px" },
+            { label: "배경", value: "투명 → hover bg-subtle" },
+            { label: "아이콘색", value: "Gray-70" },
+            { label: "테두리", value: "없음" },
+            { label: "R값", value: "2px(control-xs, basic/small의 4px과 다름)" },
+          ]}
         >
           <IconButton icon={<IconBell />} aria-label="알림" size="xsmall" />
         </Sample>
         <Sample
           label="IconButton · disabled"
-          spec="버튼 32×32px 고정 · 아이콘 16px · 배경 Gray-40 + 아이콘 Gray-60(variant 무관 공통)"
+          spec={[
+            { label: "크기", value: "32×32px 고정" },
+            { label: "아이콘", value: "16px" },
+            { label: "배경", value: "Gray-40(variant 무관 공통)" },
+            { label: "아이콘색", value: "Gray-60" },
+            { label: "테두리", value: "없음" },
+            { label: "R값", value: "4px(control)" },
+          ]}
         >
           <IconButton icon={<IconFilter />} aria-label="필터" size="small" disabled />
         </Sample>
         <Sample
           label="CloseButton · 기본(small)"
-          spec="IconButton + IconX 고정 프리셋 · 버튼 32×32px · 아이콘 16px"
+          spec={[
+            { label: "구성", value: "IconButton + IconX 고정 프리셋" },
+            { label: "크기", value: "32×32px 고정" },
+            { label: "아이콘", value: "16px(IconX)" },
+          ]}
         >
           <CloseButton />
         </Sample>
@@ -2226,16 +2364,48 @@ export default function Home() {
       </Section>
 
       <Section id="textarea" title="Textarea" badge="임시">
-        <Sample label="Textarea · Default(placeholder)">
+        <Sample
+          label="Textarea · Default(placeholder)"
+          spec={[
+            { label: "텍스트↔좌우 테두리", value: "10px(px-[10px])" },
+            { label: "텍스트↔상하 테두리", value: "8px(py-2)" },
+            { label: "테두리", value: "1px Gray-30(border-default)" },
+            { label: "R값", value: "4px(control)" },
+            { label: "최소 높이", value: "80px(min-h-20) — 내용 늘면 늘어남" },
+            { label: "너비", value: "100% hug(부모 기준) — 데모는 220px로 제한" },
+            { label: "폰트", value: "14px" },
+          ]}
+        >
           <Textarea placeholder="내용 입력" className="h-20 w-[220px]" />
         </Sample>
-        <Sample label="Textarea · 입력됨">
+        <Sample
+          label="Textarea · 입력됨"
+          spec={[
+            { label: "패딩/테두리/R값", value: "Default와 동일(내용 유무와 무관)" },
+            { label: "텍스트 색", value: "Gray-130(mes-text-default)" },
+          ]}
+        >
           <Textarea defaultValue={"설비 점검 중 이상 소음 발생.\n정지 후 재확인 필요."} className="h-20 w-[220px]" />
         </Sample>
-        <Sample label="Textarea · readonly">
+        <Sample
+          label="Textarea · readonly"
+          spec={[
+            { label: "패딩/테두리/R값", value: "Default와 동일" },
+            { label: "배경만 변경", value: "Gray-10(bg-subtle) — 다른 상태와 유일한 차이" },
+          ]}
+        >
           <Textarea readOnly defaultValue="수정 불가 내용" className="h-20 w-[220px]" />
         </Sample>
-        <Sample label="Textarea · disabled">
+        <Sample
+          label="Textarea · disabled"
+          spec={[
+            { label: "패딩/R값", value: "Default와 동일" },
+            { label: "배경", value: "Gray-bg-disabled" },
+            { label: "텍스트", value: "Gray-text-disabled" },
+            { label: "테두리", value: "border-default 유지(색만 있고 굵기 변화 없음)" },
+            { label: "커서", value: "not-allowed" },
+          ]}
+        >
           <Textarea disabled defaultValue="비활성" className="h-20 w-[220px]" />
         </Sample>
       </Section>
