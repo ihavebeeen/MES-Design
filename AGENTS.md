@@ -1371,4 +1371,42 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   1회성 스크립트로 검증(0개 누락 확인). 작업 도중 button-size 섹션(Basic/Small/
   Xsmall/Disabled 4개)이 실수로 이전 라운드에서 빠져있던 것도 이번에 같이 발견해
   채움. tsc 클린 확인 후 커밋.
+- (2026-08-03, 55차) 담당자가 54차 결과물에 두 가지를 지적.
+  1) "똑같이 R값이 보이는데 왜 어디는 R값 얘기가 없고 어디는 있냐" — 정확한
+     지적. 같은 Section 안에서 첫 Sample(예: Badge blue, Checkbox Unchecked,
+     Switch off)에만 R값을 적고 나머지 variant/state Sample은 "배경만 다름"
+     식으로 생략했었는데, 실제로 화면에는 둘 다 똑같이 둥근 모서리가 보이니
+     소비자 입장에서는 왜 한쪽만 적혀있는지 알 수 없는 게 당연함. 각 컴포넌트의
+     실제 소스 파일에서 `rounded-mes-*`/`rounded-full` 클래스 유무를 전수
+     재조사(`grep rounded-mes ui/*.tsx`)해서, 반지름이 있는 컴포넌트는 같은
+     Section의 모든 Sample에 "R값"(원형인 Radio/Switch on 등은 "형태") 항목을
+     예외 없이 추가 — Badge 5개/Checkbox 5개/Switch 3개/Radio 4개/Select 3개/
+     Toast 1개/Button아이콘 3개/IconButton CloseButton 1개/UserAccountMenu/
+     ToggleButton/NumberInput/PasswordInput/DatePicker/DateRangePicker/
+     TimePicker 각 1개, 총 29곳. 이 조사 과정에서 두 가지 실수도 발견해 같이
+     고침: Panel의 R값이 토큰 이름("rounded-mes-panel")만 적혀 있어 실제 px가
+     안 보였던 것(→ 8px로 수정), Popover가 R값을 아예 안 적고 "Combobox 패널과
+     동일값 재사용"이라고만 적어놨던 것(→ 8px 명시 + 그림자 항목 분리).
+     "별도 padding값 없음"처럼 없는 개념을 굳이 설명하는 문장도 지적받아
+     Button아이콘 3개 Sample에서 "높이 40px, 수직 중앙 정렬"로 단순화.
+  2) "좌측만 알파벳순 정렬하고 메인은 안 하면 안 되지 않냐, 그래서 스크롤해도
+     사이드바가 안 따라오는 것처럼 보인다" — 원인 파악: 사이드바(`COMPONENT_NODES`)는
+     이미 `.sort()`로 티어 오름차순→라벨 알파벳순 정렬돼 있었는데(52차 이전에
+     이미 반영됨), 그 아래 실제 `<Section>`/`<section>` JSX는 지금까지 작업한
+     연대순 그대로 남아있었음 — 스크롤 스파이(IntersectionObserver, id 기반)
+     자체는 정상 동작하지만, 화면을 순서대로 내려가며 activeId가 바뀔 때마다
+     사이드바에서는 그 id가 리스트 위아래로 널뛰어 보였던 것(버그가 아니라
+     두 순서의 불일치가 원인). 파이썬 스크립트로 TOC_LINKS/TIER_BY_ID/
+     COMPONENT_NODES를 파싱해 실제 `.sort()`와 동일한 로직으로 목표 순서를
+     계산하고, `<Section id="...">`/`<section id="...">` 마커 기준으로 64개
+     물리 블록(Section 자체 + 뒤에 딸린 ConfirmDialog/CenterModal 등 부속
+     컴포넌트까지 한 덩어리로 포함)을 잘라내 목표 순서대로 재배치— Foundation
+     구간(color-palette~grid-container)은 이미 사이드바 순서와 일치해서 안 건드림.
+     Button/Table처럼 브랜치로 묶인 항목은 내부 순서(사이즈→아이콘→컬러 등)를
+     유지한 채 그룹째로 정렬 위치에 배치. 재배치 후 126개 Sample spec 전수 재확인
+     (0개 누락) + tsc 클린 확인. "Button 바로 아래 IconButton을 배치한 이유는
+     개념적으로 가장 가까운 이웃이라서"라던 기존 주석은 이제 사실과 달라져서
+     정렬 규칙을 설명하는 내용으로 교체, Components 헤더 바로 위에도 앞으로
+     컴포넌트를 추가할 때 이 순서를 어떻게 유지해야 하는지 신규 주석 추가.
+     tsc 클린 확인 후 커밋.
 
