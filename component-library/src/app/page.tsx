@@ -44,6 +44,14 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Link } from "@/components/ui/link";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { ErrorState } from "@/components/ui/error-state";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { Accordion } from "@/components/ui/accordion";
+import { Collapsible } from "@/components/ui/collapsible";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { ToggleButton } from "@/components/ui/toggle-button";
 import { X } from "lucide-react";
 import {
   IconArrow,
@@ -135,6 +143,14 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "sidebar", label: "Sidebar" },
   { id: "alarm-list-item", label: "AlarmListItem" },
   { id: "notification-panel", label: "NotificationPanel" },
+  { id: "card", label: "Card" },
+  { id: "empty-state", label: "EmptyState" },
+  { id: "error-state", label: "ErrorState" },
+  { id: "popover", label: "Popover" },
+  { id: "accordion", label: "Accordion" },
+  { id: "collapsible", label: "Collapsible" },
+  { id: "button-group", label: "ButtonGroup" },
+  { id: "toggle-button", label: "ToggleButton" },
   { id: "icons", label: "아이콘" },
   { id: "table-parts", label: "Table 분리" },
   { id: "table-full", label: "Table 합본" },
@@ -216,6 +232,14 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("sidebar"),
   leaf("alarm-list-item"),
   leaf("notification-panel"),
+  leaf("card"),
+  leaf("empty-state"),
+  leaf("error-state"),
+  leaf("popover"),
+  leaf("accordion"),
+  leaf("collapsible"),
+  leaf("button-group"),
+  leaf("toggle-button"),
   leaf("icons"),
   branch("Table", ["table-parts", "table-full"], "Table"),
 ];
@@ -1060,6 +1084,7 @@ export default function Home() {
   // 펼쳐보도록 토글 추가. 미니 데모 4개(헤더만/그룹화만/컬럼2개+/총계행만)는 원래도
   // 작아서 접을 필요가 없다고 판단해 그대로 둠.
   const [productionTableOpen, setProductionTableOpen] = useState(false);
+  const [toggleButtonPressed, setToggleButtonPressed] = useState(false);
   // 2026-07-31 — "테이블 예시 체크박스가 기동하지 않아" 버그 리포트: 분리 데모(table-parts)의
   // 미니 Table들이 selectedIds/onSelectedIdsChange를 안 넘기고 있었음. Table 내부
   // toggleOne/toggleAll/toggleGroup은 `if (!onSelectedIdsChange) return;`로 시작해서
@@ -2189,6 +2214,128 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <Section id="card" title="Card" badge="임시">
+        <Sample label="Card · 기본">
+          <Card className="w-[260px]">
+            <CardHeader>
+              <CardTitle>작업 지시 #1024</CardTitle>
+              <CardDescription>2026.08.03 생성</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <span className="text-[13px] leading-[1.5] text-mes-text-default">
+                설비 A라인 · 수량 500
+              </span>
+            </CardContent>
+            <CardFooter>
+              <Button size="small" variant="lineBlacktxt">
+                상세
+              </Button>
+              <Button size="small" variant="fillMain">
+                승인
+              </Button>
+            </CardFooter>
+          </Card>
+        </Sample>
+      </Section>
+
+      <Section id="empty-state" title="EmptyState" badge="임시">
+        <Sample label="EmptyState · 아이콘+액션">
+          <EmptyState
+            icon={<IconFileNote size={40} />}
+            title="데이터가 없습니다"
+            description="조회 조건을 변경해보세요."
+            action={
+              <Button size="small" variant="lineBlacktxt">
+                필터 초기화
+              </Button>
+            }
+          />
+        </Sample>
+      </Section>
+
+      <Section id="error-state" title="ErrorState" badge="임시">
+        <Sample label="ErrorState · 재시도 액션">
+          <ErrorState
+            icon={<IconExclamationCircle size={40} />}
+            description="잠시 후 다시 시도해주세요."
+            action={
+              <Button size="small" variant="lineMain">
+                다시 시도
+              </Button>
+            }
+          />
+        </Sample>
+      </Section>
+
+      <Section id="popover" title="Popover" badge="임시">
+        <Sample label="Popover · 클릭해서 열기">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button size="small" variant="lineBlacktxt">
+                열기
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[220px]">
+              <span className="text-[13px] leading-[1.5] text-mes-text-default">
+                특정 요소 옆에 뜨는 팝업 콘텐츠입니다.
+              </span>
+            </PopoverContent>
+          </Popover>
+        </Sample>
+      </Section>
+
+      <Section id="accordion" title="Accordion" badge="임시">
+        <Sample label="Accordion · multiple(기본)">
+          <Accordion
+            className="w-[280px]"
+            items={[
+              { id: "a1", title: "기본 정보", content: "품목명, 규격, 단위 등" },
+              { id: "a2", title: "재고 정보", content: "현재고, 안전재고, 위치" },
+              { id: "a3", title: "이력", content: "입출고 이력 목록" },
+            ]}
+            defaultOpenIds={["a1"]}
+          />
+        </Sample>
+      </Section>
+
+      <Section id="collapsible" title="Collapsible" badge="임시">
+        <Sample label="Collapsible · 단일 트리거">
+          <Collapsible trigger="상세 옵션" className="w-[240px]">
+            <span className="text-[13px] leading-[1.5] text-mes-gray-80">
+              여기에 추가 필드가 들어갑니다.
+            </span>
+          </Collapsible>
+        </Sample>
+      </Section>
+
+      <Section id="button-group" title="ButtonGroup" badge="임시">
+        <Sample label="ButtonGroup · 3개 연결">
+          <ButtonGroup>
+            <Button size="small" variant="lineBlacktxt">
+              일간
+            </Button>
+            <Button size="small" variant="lineBlacktxt">
+              주간
+            </Button>
+            <Button size="small" variant="lineBlacktxt">
+              월간
+            </Button>
+          </ButtonGroup>
+        </Sample>
+      </Section>
+
+      <Section id="toggle-button" title="ToggleButton" badge="임시">
+        <Sample label="ToggleButton · 눌림 상태 토글">
+          <ToggleButton
+            size="small"
+            pressed={toggleButtonPressed}
+            onPressedChange={setToggleButtonPressed}
+          >
+            즐겨찾기
+          </ToggleButton>
+        </Sample>
+      </Section>
 
       <section id="icons" className="flex w-full max-w-[960px] scroll-mt-6 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">

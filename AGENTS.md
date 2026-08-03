@@ -1053,4 +1053,25 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   '범위 밖' 같은 군더더기를 왜 자꾸 쓰냐"는 지적 — NotificationPanel/
   GroupQuery 데모 `<p>` 설명을 핵심만 남기고 정리. 체크리스트 갱신,
   tsc/eslint 클린 확인 + `/tmp` next build 재검증 후 커밋.
+- (2026-08-03, 40차) 담당자 지시: "너가 직접 피그마 읽어가면서 하면 안되나?
+  있는건 있는거대로 명확하게, 없으면 너가 임시로 만들어서" — 티어2 남은
+  32개 컴포넌트를 직접 판단해서 진행하라는 포괄 승인. `search_design_system`
+  으로 Breadcrumb("breadcrumb-mid/chip" 등, 컴포넌트 라이브러리 파일)/
+  Pagination("NEW Pagination"/"NEW numbering")/Date Picker("달력", 클라우드
+  MES 파일) 후보를 찾았으나, 이 MCP는 componentKey(라이브러리 전역 퍼블리시
+  키)만 반환하고 실제 파일 내 node-id로 해석하는 수단이 없음 — `get_metadata`
+  로 페이지 전체를 훑어 node-id를 찾으려 했지만 결과가 73만자를 넘어 도구
+  한도 초과, 텍스트 검색도 빈 결과라 실측 경로를 포기. Card/Popover 등은
+  검색해도 무관한 라이브러리("디자인 시스템" — 범용 머티리얼 아이콘셋) 노이즈
+  뿐이라 애초에 실측 불가.
+  → 1차 배치로 8개를 판단값으로 구현: Card/EmptyState/ErrorState/Popover/
+  Accordion/Collapsible/ButtonGroup/ToggleButton. 전부 기존 토큰·기존
+  variant·기존 의존성(Radix Popover)만 재사용해 새로 지어낸 값을 최소화
+  (Card radius는 `--mes-radius-control` 주석에 이미 "카드형 배경"으로 지정된
+  값, ToggleButton은 Button의 lineBlacktxt/opacityMain 배색 재사용, Popover는
+  Combobox가 이미 쓰는 `@radix-ui/react-popover` 재사용, Accordion/Collapsible
+  은 Tooltip처럼 새 Radix 의존성 없이 순수 state + 기존 table-full의
+  ChevronRight/rotate-90 규칙 재사용). 체크리스트 8개 행 갱신, page.tsx에
+  데모 섹션 8개 추가, tsc 클린 확인 + `/tmp` next build 재검증 후 커밋.
+  남은 24개는 후속 배치로 계속 진행 예정.
 
