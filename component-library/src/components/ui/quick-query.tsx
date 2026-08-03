@@ -24,6 +24,11 @@ import { IconX } from "../icons/icon-x";
  * 전체 박스: 테두리 1px Gray-30, radius 4px, 높이 32px, overflow-clip.
  * - 1번 셀: 우측 구분선(Gray-30), 좌우 padding 12px, gap 6px: 북마크 아이콘(`mes/icon-star`,
  *   16px) + "빠른 조회" 라벨(14px Medium Gray-130).
+ *   ⚠ 2026-08-03 수정: Figma 실측 코드가 `mes/icon-star`를 이미지 애셋(`<img>`)으로 내보내서
+ *   실제 채움 색을 코드만으로 못 읽어와 최초엔 `IconStar` 기본값(outline, 컨테이너 텍스트색
+ *   상속=검정 계열)으로 구현했었음 — 담당자가 "나는 분명 노란 별로 했다"고 지적해서 확인,
+ *   실제로는 채움(filled) + 노란색이 맞음. `variant="filled"` + `text-mes-icon-warning`
+ *   (Yellow-50/#F2A406, ConfirmDialog 경고 아이콘과 동일 토큰)으로 교정.
  * - 2번 셀: 좌우 padding 10px, gap 8px: 저장된 프리셋 칩 최대 3개 + 설정(톱니) 아이콘(20px).
  *   칩 2가지 상태(실측): **적용중**(bg Primary-60 채움, 텍스트 흰색, 우측에 해제(X) 버튼) /
  *   **미적용**(bg Gray-10, 테두리 Gray-30, 텍스트 Gray-70, 클릭하면 그 프리셋을 적용).
@@ -100,7 +105,7 @@ function QuickQuery({
       )}
     >
       <div className="flex h-full items-center gap-[6px] border-r border-mes-border-default px-3">
-        <IconStar size={16} className="shrink-0 text-mes-text-default" />
+        <IconStar size={16} variant="filled" className="shrink-0 text-mes-icon-warning" />
         <span className="whitespace-nowrap text-[14px] font-medium text-mes-text-default">
           빠른 조회
         </span>
