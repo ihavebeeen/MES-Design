@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChevronRight, Plus } from "lucide-react";
+import { ChevronRight, Plus, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -441,6 +441,21 @@ const TIER_COLOR: Record<number, string> = {
   5: "bg-mes-bg-subtle text-mes-gray-50",
 };
 
+/**
+ * 2026-08-03 신규 — 담당자 요청: "티어별로 순서 배치하고 같은 티어 안에서는 알파벳
+ * 순서대로 정렬". `COMPONENT_NODES`는 지금까지 작업한 순서(연대순)로 쌓여 있었는데,
+ * 이제 티어 오름차순 → 같은 티어면 라벨 알파벳(로케일 비교)순으로 재정렬. `.sort()`는
+ * 배열을 제자리에서 바꾸므로 `SIDEBAR_GROUPS`(아래에서 이 배열을 참조)에도 그대로
+ * 반영됨 — 별도 복사본을 안 만듦. 티어 정보가 없는 항목(TIER_BY_ID에 없는 id)은
+ * 맨 뒤로 보냄(`?? 99`).
+ */
+COMPONENT_NODES.sort((a, b) => {
+  const tierA = TIER_BY_ID[firstIdOfNode(a)] ?? 99;
+  const tierB = TIER_BY_ID[firstIdOfNode(b)] ?? 99;
+  if (tierA !== tierB) return tierA - tierB;
+  return a.label.localeCompare(b.label, "en");
+});
+
 /** 사이드바 그룹과 1:1 매칭되는 최상단 탭. `firstId`는 그 그룹의 첫 섹션으로 스크롤 이동. */
 const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
   { key: "foundations", label: "Foundations", firstId: firstIdOfNode(FOUNDATION_NODES[0]) },
@@ -505,13 +520,32 @@ function TierBadge({ id }: { id: string }) {
   );
 }
 
-function Sample({ label, children }: { label: string; children: React.ReactNode }) {
+/**
+ * 2026-08-03 — 앞서 넣었던 `overflow-x-auto`("최악의 경우 스크롤바로 끝나게") 안전망을
+ * 담당자가 되돌리라고 지적: "컴포넌트 안에 스크롤 만드는 건 극도로 지양", "줄바꿈도 좀
+ * 그래". 스크롤/줄바꿈 둘 다 눈속임이지 진짜 해결이 아니라는 지적이 맞아서, 실제 해결로
+ * 교체함 — Section의 `grid-cols-4` 컬럼(약 222px)보다 넓은 콘텐츠는 애초에 좁은 칸에
+ *욱여넣지 않고 `wide` prop으로 4칸을 전부 차지하는 한 줄을 통째로 내줌(Toast, Card,
+ * MultiSelectInput 등 실측 결과 컬럼보다 넓은 컴포넌트에 전부 적용, 아래 데모 목록 참고).
+ * `min-w-0`은 grid item이 콘텐츠 크기 때문에 트랙 자체를 밀어 늘리는 "grid blowout"만
+ * 막는 용도로 유지(스크롤/클립과는 무관, 부작용 없음).
+ */
+function Sample({
+  label,
+  wide,
+  children,
+}: {
+  label: string;
+  /** 컴포넌트 실측 폭이 grid-cols-4 한 칸(~222px)보다 넓을 때 4칸 전체를 차지하도록 */
+  wide?: boolean;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="flex min-w-0 flex-col items-start gap-2">
+    <div className={cn("flex min-w-0 flex-col items-start gap-2", wide && "col-span-4")}>
       <span className="font-mono text-[12px] font-medium leading-none text-mes-gray-90">
         {label}
       </span>
-      <div className="flex max-w-full items-center overflow-x-auto">{children}</div>
+      <div className="flex items-center">{children}</div>
     </div>
   );
 }
@@ -1312,6 +1346,9 @@ export default function Home() {
     end: new Date(2026, 7, 10),
   });
   const [timePickerValue, setTimePickerValue] = useState<string | undefined>("09:00");
+  // 2026-08-03 — 담당자 요청: "우측 상단에 검색창 넣어서 이름별로 검색 가능하게".
+  // 사이드바 리스트 항목(leaf/branch 둘 다) 이름에 대한 대소문자 무시 부분일치 검색.
+  const [sidebarSearch, setSidebarSearch] = useState("");
   // 2026-07-31 — "테이블 예시 체크박스가 기동하지 않아" 버그 리포트: 분리 데모(table-parts)의
   // 미니 Table들이 selectedIds/onSelectedIdsChange를 안 넘기고 있었음. Table 내부
   // toggleOne/toggleAll/toggleGroup은 `if (!onSelectedIdsChange) return;`로 시작해서
@@ -1378,74 +1415,105 @@ export default function Home() {
             )
           )}
         </nav>
+        {/* 2026-08-03 신규 — 담당자 요청: "우측 상단에 검색창 넣어서 이름별로 검색
+            가능하게". 사이드바 항목(leaf/branch label) 이름 부분일치 검색 — 검색 결과는
+            사이드바 목록만 필터링하고, 페이지 스크롤 위치는 항목을 클릭해야 이동. */}
+        <div className="relative ml-auto flex items-center">
+          <Search className="pointer-events-none absolute left-2.5 size-3.5 text-mes-gray-50" />
+          <input
+            value={sidebarSearch}
+            onChange={(e) => setSidebarSearch(e.target.value)}
+            placeholder="컴포넌트 이름 검색"
+            className="h-8 w-[200px] rounded-mes-control border border-mes-border-default bg-white py-1.5 pl-8 pr-2 text-[13px] text-mes-text-default outline-none placeholder:text-mes-text-placeholder focus:border-mes-border-strong"
+          />
+        </div>
       </header>
 
       <div className="flex w-full flex-1">
         <aside className="sticky top-14 hidden h-[calc(100vh-56px)] w-[240px] shrink-0 overflow-y-auto border-r border-mes-gray-30 bg-white px-3 py-6 lg:block">
-          {SIDEBAR_GROUPS.map((group) => (
-            <div key={group.title} className="mb-6">
-              <div className="mb-2 px-2 text-[11px] font-bold uppercase tracking-wide text-mes-gray-60">
-                {group.title}
-              </div>
-              <nav className="flex flex-col gap-0.5">
-                {group.nodes.map((node) =>
-                  node.kind === "leaf" ? (
-                    <a
-                      key={node.id}
-                      href={`#${node.id}`}
-                      className={cn(
-                        "flex items-center gap-1.5 truncate rounded-md px-2 py-1.5 text-[13px] transition-colors",
-                        activeId === node.id
-                          ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
-                          : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-gray-130"
-                      )}
-                    >
-                      <span className="truncate">{node.label}</span>
-                      <TierBadge id={node.id} />
-                      {TEMP_BADGE_IDS.has(node.id) && (
-                        <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
-                          임시
-                        </span>
-                      )}
-                    </a>
-                  ) : (
-                    <div key={node.label} className="flex flex-col gap-0.5">
-                      <span
+          {SIDEBAR_GROUPS.map((group) => {
+            // 2026-08-03 신규 — 검색어와 leaf/branch(및 그 children) 라벨을 부분일치
+            // 비교. branch는 자기 라벨이 맞거나 children 중 하나라도 맞으면 노출하고,
+            // children은 검색어에 맞는 것만 남긴다(검색어 없으면 전부 그대로).
+            const q = sidebarSearch.trim().toLowerCase();
+            const matches = (label: string) => !q || label.toLowerCase().includes(q);
+            const visibleNodes = group.nodes
+              .map((node) => {
+                if (node.kind === "leaf") return matches(node.label) ? node : null;
+                const visibleChildren = node.children.filter(
+                  (c) => matches(node.label) || matches(c.label)
+                );
+                return visibleChildren.length > 0 ? { ...node, children: visibleChildren } : null;
+              })
+              .filter((n): n is SidebarNode => n !== null);
+
+            if (visibleNodes.length === 0) return null;
+
+            return (
+              <div key={group.title} className="mb-6">
+                <div className="mb-2 px-2 text-[11px] font-bold uppercase tracking-wide text-mes-gray-60">
+                  {group.title}
+                </div>
+                <nav className="flex flex-col gap-0.5">
+                  {visibleNodes.map((node) =>
+                    node.kind === "leaf" ? (
+                      <a
+                        key={node.id}
+                        href={`#${node.id}`}
                         className={cn(
-                          "truncate px-2 py-1.5 text-[13px] font-semibold",
-                          node.children.some((c) => c.id === activeId)
-                            ? "text-mes-text-brand"
-                            : "text-mes-gray-100"
+                          "flex items-center gap-1.5 truncate rounded-md px-2 py-1.5 text-[13px] transition-colors",
+                          activeId === node.id
+                            ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
+                            : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-gray-130"
                         )}
                       >
-                        {node.label}
-                      </span>
-                      {node.children.map((child) => (
-                        <a
-                          key={child.id}
-                          href={`#${child.id}`}
+                        <TierBadge id={node.id} />
+                        <span className="truncate">{node.label}</span>
+                        {TEMP_BADGE_IDS.has(node.id) && (
+                          <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
+                            임시
+                          </span>
+                        )}
+                      </a>
+                    ) : (
+                      <div key={node.label} className="flex flex-col gap-0.5">
+                        <span
                           className={cn(
-                            "ml-3 flex items-center gap-1.5 truncate rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors",
-                            activeId === child.id
-                              ? "border-mes-primary-60 font-semibold text-mes-text-brand"
-                              : "text-mes-gray-70 hover:text-mes-gray-130"
+                            "truncate px-2 py-1.5 text-[13px] font-semibold",
+                            node.children.some((c) => c.id === activeId)
+                              ? "text-mes-text-brand"
+                              : "text-mes-gray-100"
                           )}
                         >
-                          <span className="truncate">{child.label}</span>
-                          <TierBadge id={child.id} />
-                          {TEMP_BADGE_IDS.has(child.id) && (
-                            <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
-                              임시
-                            </span>
-                          )}
-                        </a>
-                      ))}
-                    </div>
-                  )
-                )}
-              </nav>
-            </div>
-          ))}
+                          {node.label}
+                        </span>
+                        {node.children.map((child) => (
+                          <a
+                            key={child.id}
+                            href={`#${child.id}`}
+                            className={cn(
+                              "ml-3 flex items-center gap-1.5 truncate rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors",
+                              activeId === child.id
+                                ? "border-mes-primary-60 font-semibold text-mes-text-brand"
+                                : "text-mes-gray-70 hover:text-mes-gray-130"
+                            )}
+                          >
+                            <TierBadge id={child.id} />
+                            <span className="truncate">{child.label}</span>
+                            {TEMP_BADGE_IDS.has(child.id) && (
+                              <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
+                                임시
+                              </span>
+                            )}
+                          </a>
+                        ))}
+                      </div>
+                    )
+                  )}
+                </nav>
+              </div>
+            );
+          })}
         </aside>
 
         <main className="flex flex-1 flex-col items-center gap-20 p-16">
@@ -2206,10 +2274,10 @@ export default function Home() {
       </Section>
 
       <Section id="toast" title="Toast">
-        <Sample label="Toast · red">
+        <Sample label="Toast · red" wide>
           <Toast variant="red" message="필수 항목을 입력해주세요." onClose={() => {}} />
         </Sample>
-        <Sample label="Toast · blue">
+        <Sample label="Toast · blue" wide>
           <Toast variant="blue" message="선택한 n건이 합격 처리되었습니다." onClose={() => {}} />
         </Sample>
       </Section>
@@ -2481,7 +2549,7 @@ export default function Home() {
       </section>
 
       <Section id="card" title="Card" badge="임시">
-        <Sample label="Card · 기본">
+        <Sample label="Card · 기본" wide>
           <Card className="w-[260px]">
             <CardHeader>
               <CardTitle>작업 지시 #1024</CardTitle>
@@ -2551,7 +2619,7 @@ export default function Home() {
       </Section>
 
       <Section id="accordion" title="Accordion" badge="임시">
-        <Sample label="Accordion · multiple(기본)">
+        <Sample label="Accordion · multiple(기본)" wide>
           <Accordion
             className="w-[280px]"
             items={[
@@ -2565,7 +2633,7 @@ export default function Home() {
       </Section>
 
       <Section id="collapsible" title="Collapsible" badge="임시">
-        <Sample label="Collapsible · 단일 트리거">
+        <Sample label="Collapsible · 단일 트리거" wide>
           <Collapsible trigger="상세 옵션" className="w-[240px]">
             <span className="text-[13px] leading-[1.5] text-mes-gray-80">
               여기에 추가 필드가 들어갑니다.
@@ -2615,7 +2683,7 @@ export default function Home() {
       </Section>
 
       <Section id="multi-select-input" title="MultiSelectInput" badge="임시">
-        <Sample label="MultiSelectInput · 태그 추가/제거">
+        <Sample label="MultiSelectInput · 태그 추가/제거" wide>
           <MultiSelectInput
             values={multiSelectValues}
             onValuesChange={setMultiSelectValues}
@@ -2625,7 +2693,7 @@ export default function Home() {
       </Section>
 
       <Section id="breadcrumb" title="Breadcrumb" badge="임시">
-        <Sample label="Breadcrumb · 3단계">
+        <Sample label="Breadcrumb · 3단계" wide>
           <Breadcrumb
             items={[
               { label: "자재관리", onClick: () => {} },
@@ -2637,7 +2705,7 @@ export default function Home() {
       </Section>
 
       <Section id="pagination" title="Pagination" badge="임시">
-        <Sample label="Pagination · 10페이지 중 4페이지">
+        <Sample label="Pagination · 10페이지 중 4페이지" wide>
           <Pagination page={paginationPage} totalPages={10} onPageChange={setPaginationPage} />
         </Sample>
       </Section>
@@ -2680,7 +2748,7 @@ export default function Home() {
       </Section>
 
       <Section id="fieldset" title="Fieldset" badge="임시">
-        <Sample label="Fieldset · 필드 묶음">
+        <Sample label="Fieldset · 필드 묶음" wide>
           <Fieldset legend="거래처 정보" className="w-[260px]">
             <Input placeholder="거래처명" size="small" />
             <Input placeholder="담당자" size="small" />
@@ -2689,7 +2757,7 @@ export default function Home() {
       </Section>
 
       <Section id="descriptions" title="Descriptions" badge="임시">
-        <Sample label="Descriptions · 1열">
+        <Sample label="Descriptions · 1열" wide>
           <Descriptions
             className="w-[280px]"
             items={[
@@ -2708,7 +2776,7 @@ export default function Home() {
       </Section>
 
       <Section id="date-range-picker" title="DateRangePicker" badge="임시">
-        <Sample label="DateRangePicker · 기간 선택">
+        <Sample label="DateRangePicker · 기간 선택" wide>
           <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
         </Sample>
       </Section>
@@ -2720,7 +2788,7 @@ export default function Home() {
       </Section>
 
       <Section id="navbar" title="Navbar" badge="임시">
-        <Sample label="Navbar · 3-슬롯">
+        <Sample label="Navbar · 3-슬롯" wide>
           <Navbar
             className="w-[600px]"
             left={<Logo size="small" />}
@@ -2734,7 +2802,7 @@ export default function Home() {
       </Section>
 
       <Section id="grid-container" title="Grid / Container" badge="임시">
-        <Sample label="Grid · 3열">
+        <Sample label="Grid · 3열" wide>
           <Grid columns={3} gap={2} className="w-[300px]">
             <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">1</div>
             <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">2</div>

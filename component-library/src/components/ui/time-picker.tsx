@@ -54,7 +54,7 @@ function TimePicker({
             className
           )}
         >
-          {value ?? placeholder}
+          <span className="truncate whitespace-nowrap">{value ?? placeholder}</span>
           <Clock size={16} className="shrink-0 text-mes-gray-60" />
         </button>
       </PopoverTrigger>

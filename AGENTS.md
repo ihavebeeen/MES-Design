@@ -1150,4 +1150,30 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   `T1`·`T2` 뱃지가 실제로 반영됐는지 직접 확인) 후 커밋. 참고: 이 샌드박스엔 네트워크
   allowlist 때문에 헤드리스 브라우저(playwright chromium)를 설치할 수 없어 픽셀 단위
   스크린샷 재현은 못 했고, 빌드된 HTML의 클래스명 검증 + 코드 레벨 CSS 추론으로 검증함.
+- (2026-08-03, 44차) 담당자가 Toast 데모 스크린샷을 보내며 43차에서 넣은
+  `overflow-x-auto` "안전망"이 Toast 아래에 불필요한 가로 스크롤바를 만든 걸 지적:
+  "컴포넌트 안에 스크롤 만드는 건 극도로 지양", "줄바꿈도 좀 그래 솔직히". 추가로
+  사이드바 관련 3가지 요청: (1) 티어 아이콘을 라벨 왼쪽으로, (2) 티어별로 순서 배치 +
+  같은 티어 안에서는 알파벳순 정렬, (3) 우측 상단에 이름 검색창.
+  1. **스크롤/줄바꿈 안전망 → 진짜 해결로 교체**: `overflow-x-auto`가 가리기만 하고
+     실제 원인(콘텐츠가 grid-cols-4 한 칸(~222px)보다 넓음)은 안 고친다는 지적이 맞음.
+     `Sample`에 `wide` prop 추가(4칸 전체 차지, `col-span-4`) — 실측 결과 컬럼보다 넓은
+     기존 샘플 전부에 적용: Toast(red/blue), Card, Accordion, Collapsible,
+     MultiSelectInput, Breadcrumb, Pagination, Fieldset, Descriptions, Navbar,
+     Grid, DateRangePicker. `overflow-x-auto`는 제거, `min-w-0`은 grid item이
+     콘텐츠 때문에 트랙을 밀어 늘리는 "grid blowout"만 막는 용도로 유지(스크롤 유발
+     안 함, 부작용 없음). Date/DateRange/TimePicker 트리거 라벨엔 방어적으로
+     `whitespace-nowrap`도 추가.
+  2. **사이드바 티어 위치**: `TierBadge`를 라벨 `<span>`보다 앞에 렌더링하도록 순서
+     변경(leaf/branch child 둘 다).
+  3. **티어별 정렬**: `COMPONENT_NODES.sort()`로 티어 오름차순 → 동일 티어면
+     `label.localeCompare(..., "en")`로 알파벳순 재정렬(제자리 정렬이라
+     `SIDEBAR_GROUPS`에도 그대로 반영됨). Foundations(6개, 순서 자체가 이미 논리적)는
+     건드리지 않음.
+  4. **검색창**: 헤더 우측(`ml-auto`)에 검색 input 추가, `sidebarSearch` state로
+     leaf/branch label 부분일치(대소문자 무시) 필터링 — branch는 자기 라벨이나 자식
+     중 하나라도 맞으면 노출, 자식은 맞는 것만 남김. 검색은 사이드바 목록만 필터링하고
+     실제 페이지 스크롤은 클릭해야 이동(자동 스크롤 안 함).
+  tsc 클린 확인 + `/tmp` next build 재검증(빌드된 정적 HTML에서 `col-span-4`, 검색
+  input, 티어 정렬 순서, TierBadge 위치까지 직접 grep으로 확인) 후 커밋.
 

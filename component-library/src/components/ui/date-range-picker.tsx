@@ -74,7 +74,7 @@ function DateRangePicker({
             className
           )}
         >
-          {label}
+          <span className="truncate whitespace-nowrap">{label}</span>
           <IconCalendar size={16} className="shrink-0 text-mes-gray-60" />
         </button>
       </PopoverTrigger>
