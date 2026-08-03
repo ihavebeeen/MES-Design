@@ -251,7 +251,30 @@ function firstIdOfNode(node: SidebarNode): string {
   return node.kind === "leaf" ? node.id : node.children[0].id;
 }
 
-const FOUNDATION_NODES: SidebarNode[] = TOC_LINKS.slice(0, 6).map((l) => leaf(l.id));
+/**
+ * 2026-08-03 — 담당자 정정: "foundation에 icon이 들어가있다는 게 헤더에 아이콘을
+ * 넣으라는 게 아니라, 섹션들을 다 검토해서 파운데이션에 들어가야 하는 것들은
+ * 파운데이션에 넣으라는 거였다". 체크리스트(`UI_컴포넌트_총망라_체크리스트.md`)의
+ * 레이어 구분 기준 "토큰"(아이콘 에셋 등 원시값) 항목인 "아이콘"(Icon Set)과
+ * "레이아웃 유틸" 항목인 "Grid / Container"를 Components에서 Foundation으로
+ * 재분류 — 색상/타이포/간격/radius/그림자/시맨틱 토큰과 같은 층위. 실제 페이지에서도
+ * 사이드바 그룹과 스크롤 순서가 어긋나지 않도록 두 섹션의 JSX 자체를 Components
+ * 구분자보다 위(semantic-tokens 바로 다음)로 물리적으로 이동시킴.
+ * 기존엔 `TOC_LINKS.slice(0, 6)`처럼 "앞의 몇 개"라는 위치 기반이라 항목을 추가할
+ * 때마다 순서에 의존해야 했음 — 앞으로 이런 재분류가 또 있을 수 있어 명시적 id
+ * 목록으로 바꿔 위치와 무관하게 관리.
+ */
+const FOUNDATION_ID_LIST = [
+  "color-palette",
+  "typography",
+  "spacing",
+  "radius",
+  "shadow",
+  "semantic-tokens",
+  "icons",
+  "grid-container",
+];
+const FOUNDATION_NODES: SidebarNode[] = FOUNDATION_ID_LIST.map((id) => leaf(id));
 
 const COMPONENT_NODES: SidebarNode[] = [
   branch("Button", ["button-size", "button-icon", "button-color"], "Button"),
@@ -309,13 +332,11 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("date-range-picker"),
   leaf("time-picker"),
   leaf("navbar"),
-  leaf("grid-container"),
   leaf("scroll-area"),
   leaf("sticky-header-footer"),
   leaf("logo"),
   leaf("user-account-menu"),
   leaf("loading-overlay"),
-  leaf("icons"),
   branch("Table", ["table-parts", "table-full"], "Table"),
 ];
 
@@ -492,8 +513,9 @@ const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
   { key: "patterns", label: "Patterns" },
 ];
 
-/** Foundation 6개 섹션 id 집합 — 상단 탭 활성 표시를 스크롤 위치(activeId)와 연동할 때 씀 */
-const FOUNDATION_IDS = new Set(TOC_LINKS.slice(0, 6).map((l) => l.id));
+/** Foundation 섹션 id 집합(8개, 2026-08-03 아이콘·Grid/Container 재분류로 6→8) — 상단
+ *  탭 활성 표시를 스크롤 위치(activeId)와 연동할 때 씀. `FOUNDATION_ID_LIST`와 동일 소스. */
+const FOUNDATION_IDS = new Set(FOUNDATION_ID_LIST);
 
 /**
  * 2026-08-03 신규 — 담당자 정정: "검색어 입력하면 좌측이 필터링되는 게 아니라, 좌측
@@ -606,23 +628,36 @@ function useMeasuredSize<T extends HTMLElement>() {
 function Sample({
   id,
   label,
+  spec,
   children,
 }: {
   /** Section이 자식을 순회하며 주입(호출부에서 직접 넘길 필요 없음) — 우측 리스트의 앵커 타겟. */
   id?: string;
   label: string;
+  /**
+   * 2026-08-03 신규 — "단순 사이즈만 적지 말고, 패딩 때문에 그 크기가 나온 거면 그
+   * 패딩값을, 아이콘 크기·패딩, 색상 토큰명(main60 등)까지 적으라" 요청 반영. 아래
+   * 실측 W×H는 어차피 자동으로 뜨니, `spec`엔 자동으로 알 수 없는 것들(패딩/아이콘
+   * 크기/색상 토큰 등 해당 컴포넌트 파일의 실측 주석에 있는 값)을 사람이 직접 적음.
+   * 126개 Sample 전부를 이번에 다 채우진 못했고, 우선 담당자가 예시로 든 IconButton/
+   * Button 컬러 등 대표적인 곳부터 채움 — 나머지는 후속 작업(AGENTS.md 참고).
+   */
+  spec?: React.ReactNode;
   children: React.ReactNode;
 }) {
   const [measureRef, size] = useMeasuredSize<HTMLDivElement>();
   return (
-    <div id={id} className="flex w-full scroll-mt-24 flex-col items-start gap-2 py-4">
-      <div className="flex items-baseline gap-2">
-        <span className="font-mono text-[12px] font-medium leading-none text-mes-gray-90">
+    <div id={id} className="flex w-full scroll-mt-24 flex-col items-start gap-3 py-7">
+      <div className="flex flex-col gap-1">
+        <span className="font-mono text-[13px] font-semibold leading-none text-mes-gray-100">
           {label}
         </span>
+        {spec && (
+          <span className="text-[12px] leading-[1.5] text-mes-gray-70">{spec}</span>
+        )}
         {size && (
-          <span className="font-mono text-[10px] leading-none text-mes-gray-50">
-            {size.w} × {size.h}px
+          <span className="font-mono text-[11px] leading-none text-mes-gray-50">
+            실측 {size.w} × {size.h}px
           </span>
         )}
       </div>
@@ -678,7 +713,7 @@ function Section({
           </span>
         )}
       </h2>
-      <div className="flex w-full flex-col divide-y divide-mes-gray-20">{laidOutChildren}</div>
+      <div className="flex w-full flex-col divide-y divide-mes-gray-30">{laidOutChildren}</div>
     </section>
   );
 }
@@ -1871,6 +1906,78 @@ export default function Home() {
             </div>
           </section>
 
+          {/* 2026-08-03 — 담당자 정정: "foundation에 icon이 들어가있다"는 헤더 아이콘
+              얘기가 아니라 "아이콘/Grid 섹션 자체를 Foundation으로 옮겨라"는 뜻이었음.
+              체크리스트 레이어 기준 "토큰"(아이콘 에셋)·"레이아웃 유틸"(그리드) 항목이라
+              색상/타이포 등 다른 토큰 섹션들과 같은 층위로 물리적으로 이동(원래 위치는
+              Components 끝, Table 섹션 바로 앞이었음). */}
+          <section id="icons" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+            <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
+              아이콘 라이브러리
+            </h2>
+            <p className="text-[12px] text-mes-gray-70">담당자가 export한 실측 벡터 39종.</p>
+            <div className="grid grid-cols-8 gap-4 text-mes-gray-130">
+              {[
+                { label: "calendar", node: <IconCalendar /> },
+                { label: "filter", node: <IconFilter /> },
+                { label: "plus", node: <IconPlus /> },
+                { label: "search", node: <IconSearch /> },
+                { label: "x", node: <IconX /> },
+                { label: "arrow", node: <IconArrow /> },
+                { label: "star·outline", node: <IconStar /> },
+                { label: "star·filled", node: <IconStar variant="filled" /> },
+                { label: "arrow-line", node: <IconArrowLine /> },
+                { label: "bell·outline", node: <IconBell /> },
+                { label: "bell·filled", node: <IconBell variant="filled" /> },
+                { label: "user·line", node: <IconUserMono /> },
+                { label: "user·solid", node: <IconUserMono variant="solid" /> },
+                { label: "group-down", node: <IconGroupDown /> },
+                { label: "grid", node: <IconGrid /> },
+                { label: "chart-bar", node: <IconChartBar /> },
+                { label: "wrench", node: <IconWrench /> },
+                { label: "box", node: <IconBox /> },
+                { label: "medal-check", node: <IconMedalCheck /> },
+                { label: "company", node: <IconCompany /> },
+                { label: "download", node: <IconDownload /> },
+                { label: "copy", node: <IconCopy /> },
+                { label: "trash", node: <IconTrash /> },
+                { label: "exclamation-circle", node: <IconExclamationCircle /> },
+                { label: "x-circle", node: <IconXCircle /> },
+                { label: "arrow-down-right", node: <IconArrowDownRight /> },
+                { label: "flat-in", node: <IconFlatIn /> },
+                { label: "flat-out", node: <IconFlatOut /> },
+                { label: "flat-box-check", node: <IconFlatBoxCheck /> },
+                { label: "trending-down", node: <IconTrendingDown /> },
+                { label: "trending-up", node: <IconTrendingUp /> },
+                { label: "flat-file-check", node: <IconFlatFileCheck /> },
+                { label: "scan", node: <IconScan /> },
+                { label: "share", node: <IconShare /> },
+                { label: "qa-x", node: <IconQaX /> },
+                { label: "qa-triangle", node: <IconQaTriangle /> },
+                { label: "qa-o", node: <IconQaO /> },
+                { label: "reload", node: <IconReload /> },
+                { label: "file-note", node: <IconFileNote /> },
+              ].map(({ label, node }) => (
+                <div key={label} className="flex flex-col items-center gap-1.5">
+                  <div className="flex size-10 items-center justify-center rounded border border-mes-gray-30 bg-white">
+                    {node}
+                  </div>
+                  <span className="font-mono text-[10px] leading-none text-mes-gray-70">{label}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <Section id="grid-container" title="Grid / Container" badge="임시">
+            <Sample label="Grid · 3열">
+              <Grid columns={3} gap={2} className="w-[300px]">
+                <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">1</div>
+                <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">2</div>
+                <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">3</div>
+              </Grid>
+            </Sample>
+          </Section>
+
           <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
             <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
               <Blocks className="size-7 shrink-0 text-mes-primary-60" />
@@ -1922,37 +2029,58 @@ export default function Home() {
       </Section>
 
       <Section id="button-color" title="Button — 컬러">
-        <Sample label="Button · fillMain">
+        <Sample
+          label="Button · fillMain"
+          spec="배경 Primary-60 → hover Primary-70 · 텍스트 흰색 · basic 기준 높이 40px, 좌우 패딩 16px"
+        >
           <Button size="basic" variant="fillMain">
             fillMain
           </Button>
         </Sample>
-        <Sample label="Button · fillGray">
+        <Sample
+          label="Button · fillGray"
+          spec="배경 Gray-40 → hover Gray-50 · 텍스트 Gray-130"
+        >
           <Button size="basic" variant="fillGray">
             fillGray
           </Button>
         </Sample>
-        <Sample label="Button · fillBlack">
+        <Sample
+          label="Button · fillBlack"
+          spec="배경 Gray-130 → hover Gray-110 · 텍스트 흰색"
+        >
           <Button size="basic" variant="fillBlack">
             fillBlack
           </Button>
         </Sample>
-        <Sample label="Button · fillRed">
+        <Sample
+          label="Button · fillRed"
+          spec="배경 Danger-60 → hover Danger-70 · 텍스트 흰색"
+        >
           <Button size="basic" variant="fillRed">
             fillRed
           </Button>
         </Sample>
-        <Sample label="Button · lineMain">
+        <Sample
+          label="Button · lineMain"
+          spec="배경 흰색 → hover Primary-10 · 테두리 1px Primary-60 · 텍스트 Primary-60"
+        >
           <Button size="basic" variant="lineMain">
             lineMain
           </Button>
         </Sample>
-        <Sample label="Button · lineBlacktxt">
+        <Sample
+          label="Button · lineBlacktxt"
+          spec="배경 흰색 → hover Gray-10 · 테두리 1px Gray-30 · 텍스트 Gray-130"
+        >
           <Button size="basic" variant="lineBlacktxt">
             lineBlacktxt
           </Button>
         </Sample>
-        <Sample label="Button · opacityMain">
+        <Sample
+          label="Button · opacityMain"
+          spec="배경 Primary-20(옅은 브랜드) → hover 임의값(팔레트 스텝 밖) · 텍스트 Primary-60"
+        >
           <Button size="basic" variant="opacityMain">
             opacityMain
           </Button>
@@ -1964,19 +2092,34 @@ export default function Home() {
           배치한 이유는 IconButton/CloseButton이 Button 색상 variant 네이밍을
           그대로 이어받아서 개념적으로 가장 가까운 이웃이기 때문. */}
       <Section id="icon-button" title="IconButton / CloseButton" badge="임시">
-        <Sample label="IconButton · basic/ghost">
+        <Sample
+          label="IconButton · basic/ghost"
+          spec="버튼 40×40px 고정 · 아이콘 20px · ghost = 투명 배경 + 아이콘 Gray-70(hover 시 배경 bg-subtle)"
+        >
           <IconButton icon={<IconFilter />} aria-label="필터" size="basic" />
         </Sample>
-        <Sample label="IconButton · small/fillMain">
+        <Sample
+          label="IconButton · small/fillMain"
+          spec="버튼 32×32px 고정 · 아이콘 16px · fillMain = 배경 Primary-60 + 흰 아이콘"
+        >
           <IconButton icon={<IconBell />} aria-label="알림" variant="fillMain" size="small" />
         </Sample>
-        <Sample label="IconButton · small/fillGray">
+        <Sample
+          label="IconButton · small/fillGray"
+          spec="버튼 32×32px 고정 · 아이콘 16px · fillGray = 배경 Gray-40 + 아이콘 Gray-130"
+        >
           <IconButton icon={<IconFilter />} aria-label="필터" variant="fillGray" size="small" />
         </Sample>
-        <Sample label="IconButton · small/fillBlack">
+        <Sample
+          label="IconButton · small/fillBlack"
+          spec="버튼 32×32px 고정 · 아이콘 16px · fillBlack = 배경 Gray-130 + 흰 아이콘"
+        >
           <IconButton icon={<IconBell />} aria-label="알림" variant="fillBlack" size="small" />
         </Sample>
-        <Sample label="IconButton · small/lineBlacktxt">
+        <Sample
+          label="IconButton · small/lineBlacktxt"
+          spec="버튼 32×32px 고정 · 아이콘 16px · lineBlacktxt = 흰 배경 + 테두리 Gray-30 + 아이콘 Gray-130"
+        >
           <IconButton
             icon={<IconFilter />}
             aria-label="필터"
@@ -1984,13 +2127,22 @@ export default function Home() {
             size="small"
           />
         </Sample>
-        <Sample label="IconButton · xsmall/ghost">
+        <Sample
+          label="IconButton · xsmall/ghost"
+          spec="버튼 22×22px 고정 · 아이콘 14px · radius는 control-xs(basic/small의 control과 다름)"
+        >
           <IconButton icon={<IconBell />} aria-label="알림" size="xsmall" />
         </Sample>
-        <Sample label="IconButton · disabled">
+        <Sample
+          label="IconButton · disabled"
+          spec="버튼 32×32px 고정 · 아이콘 16px · 배경 Gray-40 + 아이콘 Gray-60(variant 무관 공통)"
+        >
           <IconButton icon={<IconFilter />} aria-label="필터" size="small" disabled />
         </Sample>
-        <Sample label="CloseButton · 기본(small)">
+        <Sample
+          label="CloseButton · 기본(small)"
+          spec="IconButton + IconX 고정 프리셋 · 버튼 32×32px · 아이콘 16px"
+        >
           <CloseButton />
         </Sample>
       </Section>
@@ -3050,16 +3202,6 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="grid-container" title="Grid / Container" badge="임시">
-        <Sample label="Grid · 3열">
-          <Grid columns={3} gap={2} className="w-[300px]">
-            <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">1</div>
-            <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">2</div>
-            <div className="rounded-mes-control bg-mes-bg-subtle p-3 text-center text-[12px]">3</div>
-          </Grid>
-        </Sample>
-      </Section>
-
       <Section id="scroll-area" title="ScrollArea" badge="임시">
         <Sample label="ScrollArea · 고정 높이">
           <ScrollArea className="h-[100px] w-[200px] rounded-mes-control border border-mes-border-default p-2">
@@ -3113,63 +3255,6 @@ export default function Home() {
           </div>
         </Sample>
       </Section>
-
-      <section id="icons" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          아이콘 라이브러리
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">담당자가 export한 실측 벡터 39종.</p>
-        <div className="grid grid-cols-8 gap-4 text-mes-gray-130">
-          {[
-            { label: "calendar", node: <IconCalendar /> },
-            { label: "filter", node: <IconFilter /> },
-            { label: "plus", node: <IconPlus /> },
-            { label: "search", node: <IconSearch /> },
-            { label: "x", node: <IconX /> },
-            { label: "arrow", node: <IconArrow /> },
-            { label: "star·outline", node: <IconStar /> },
-            { label: "star·filled", node: <IconStar variant="filled" /> },
-            { label: "arrow-line", node: <IconArrowLine /> },
-            { label: "bell·outline", node: <IconBell /> },
-            { label: "bell·filled", node: <IconBell variant="filled" /> },
-            { label: "user·line", node: <IconUserMono /> },
-            { label: "user·solid", node: <IconUserMono variant="solid" /> },
-            { label: "group-down", node: <IconGroupDown /> },
-            { label: "grid", node: <IconGrid /> },
-            { label: "chart-bar", node: <IconChartBar /> },
-            { label: "wrench", node: <IconWrench /> },
-            { label: "box", node: <IconBox /> },
-            { label: "medal-check", node: <IconMedalCheck /> },
-            { label: "company", node: <IconCompany /> },
-            { label: "download", node: <IconDownload /> },
-            { label: "copy", node: <IconCopy /> },
-            { label: "trash", node: <IconTrash /> },
-            { label: "exclamation-circle", node: <IconExclamationCircle /> },
-            { label: "x-circle", node: <IconXCircle /> },
-            { label: "arrow-down-right", node: <IconArrowDownRight /> },
-            { label: "flat-in", node: <IconFlatIn /> },
-            { label: "flat-out", node: <IconFlatOut /> },
-            { label: "flat-box-check", node: <IconFlatBoxCheck /> },
-            { label: "trending-down", node: <IconTrendingDown /> },
-            { label: "trending-up", node: <IconTrendingUp /> },
-            { label: "flat-file-check", node: <IconFlatFileCheck /> },
-            { label: "scan", node: <IconScan /> },
-            { label: "share", node: <IconShare /> },
-            { label: "qa-x", node: <IconQaX /> },
-            { label: "qa-triangle", node: <IconQaTriangle /> },
-            { label: "qa-o", node: <IconQaO /> },
-            { label: "reload", node: <IconReload /> },
-            { label: "file-note", node: <IconFileNote /> },
-          ].map(({ label, node }) => (
-            <div key={label} className="flex flex-col items-center gap-1.5">
-              <div className="flex size-10 items-center justify-center rounded border border-mes-gray-30 bg-white">
-                {node}
-              </div>
-              <span className="font-mono text-[10px] leading-none text-mes-gray-70">{label}</span>
-            </div>
-          ))}
-        </div>
-      </section>
 
       <section id="table-parts" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-6 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">

@@ -1284,4 +1284,38 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   - 검증: tsc 클린, `npx eslint src/app/page.tsx` 클린(React Hooks 규칙 위반 없음
     확인) — `next build`는 이 샌드박스에서 계속 "Bus error"로 죽어(코드와 무관한
     환경 문제로 판단, 메모리는 2.4GB 여유 있었음) 실행 못 함, tsc+eslint로 대체.
+- (2026-08-03, 51차) 담당자가 당근 Seed(seed-design.io) Snackbar 문서 페이지
+  스크린샷을 보여주며 여러 건 지적/정정.
+  1) **정정**: "foundation에 icon이 들어가있다"는 49차 때 헤더 옆에 아이콘을 넣으라는
+     뜻으로 오해했는데, 실제로는 "섹션들을 다 검토해서 파운데이션에 들어가야 하는
+     것들을 파운데이션으로 옮겨라"는 뜻이었음. 체크리스트 레이어 기준으로 재검토해
+     "아이콘"(Icon Set, 레이어=토큰)과 "Grid/Container"(레이어=레이아웃 유틸) 둘을
+     Components→Foundation으로 재분류. `FOUNDATION_IDS`/`FOUNDATION_NODES`가
+     기존엔 `TOC_LINKS.slice(0, 6)`처럼 위치 기반이라 취약했던 걸 `FOUNDATION_ID_LIST`
+     명시적 배열로 리팩터링(6→8개). 사이드바 그룹과 스크롤 순서가 어긋나지 않도록
+     두 섹션의 JSX 자체를 Components 구분자보다 위(semantic-tokens 바로 다음)로
+     물리적으로 이동. ScrollArea는 같은 "레이아웃 유틸" 레이어지만 실제로는 다른
+     컴포넌트 안에 끼워 쓰는 상호작용 유틸에 가까워 Components에 남김(판단값).
+  2) "가로에서 세로로 바뀌었으니 Sample 간 간격도 있어야" — `Sample` 루트의
+     `py-4`→`py-7`로 확대, `Section` 컨테이너의 `divide-mes-gray-20`→
+     `divide-mes-gray-30`으로 구분선도 살짝 더 보이게.
+  3) "텍스트가 너무 작고 연하다" — 라벨을 12px→13px+font-semibold+Gray-90→Gray-100,
+     실측 사이즈 표기를 10px+Gray-50(거의 안 보이던 수준)→11px+Gray-50 유지하되
+     "실측" 접두사를 붙여 자동측정값임을 명시(사람이 적은 스펙과 구분되도록).
+  4) "단순 사이즈만 적지 말고 패딩 때문에 그 크기다, 아이콘 크기·패딩, 색상
+     토큰명(main60 등)까지 적어야" — `Sample`에 `spec?: ReactNode` prop 신규 추가.
+     자동 측정 W×H는 그대로 두고, 그 아래에 사람이 적은 스펙 문장을 얹는 구조.
+     126개 Sample 전부를 이번에 채우진 못했고, 담당자가 직접 예로 든 IconButton
+     8개(각 variant/size의 버튼 고정 크기+아이콘 px+색상)와 Button 컬러 7개(각
+     variant의 배경/hover/텍스트 색상 토큰명, `button.tsx`/`icon-button.tsx` 파일
+     자체의 실측 주석 값 그대로 인용)에만 우선 적용 — **나머지 세션 전체에 spec
+     채워넣기는 후속 작업으로 남음**.
+  5) 우측 서브내비(RightRail)를 당근 Seed의 "On this page"처럼 Anatomy/Properties/
+     Variant/Guidelines처럼 중첩된 구조로 만드는 건 어떤지 물어봤다가 "이건 페이지
+     단위로 달라지는 거라 이렇게까지 길게 하진 않을지도... 일단 기억만 해둬"라고
+     스스로 정리 — **구현하지 않음, 지시 대기**. 나중에 필요해지면: 컴포넌트별로
+     Anatomy 다이어그램(파츠에 화살표+라벨) / Properties 표 / Variant 목록 /
+     Guidelines 산문 설명 / Specification 상세값을 갖춘 개별 문서형 섹션으로 키우고,
+     RightRail도 그 하위 목차(중첩 리스트)를 보여주는 형태로 확장하는 방향.
+  tsc 클린 확인(next build는 여전히 샌드박스 Bus error) 후 커밋.
 
