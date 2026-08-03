@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { IconArrow, IconFilter, IconX } from "@/components/icons";
+import { IconArrow, IconX } from "@/components/icons";
 import { AlarmListItem, type AlarmListItemProps } from "./alarm-list-item";
 import { Switch } from "./switch";
 
@@ -43,7 +43,7 @@ import { Switch } from "./switch";
  *   속한 것으로 추정) — 처음엔 "알림 설정"을 범위에서 제외했었음. "모두 확인으로
  *   표시"도 위치·스타일이 아직 실측되지 않아 이번에도 구현하지 않음. 필요 시 별도 실측 후
  *   액션 줄에 텍스트 버튼으로 추가.
- * - 필터 아이콘 클릭 시 어떤 UI가 뜨는지 미실측(단순 버튼 슬롯만 제공).
+ * - (2026-08-03 필터 아이콘 자체를 완전히 제거 — 아래 5번 참고, 이 항목은 더 이상 해당 없음)
  *
  * ── 4. 2026-08-03 담당자 추가 지시 — 클릭 시 제거 + 알림 설정 화면 ──────────
  * 담당자가 실제 서비스 스크린샷 2건을 근거로 두 가지를 지시함(Figma 링크 없음 —
@@ -68,6 +68,15 @@ import { Switch } from "./switch";
  *    `IconArrow`를 회전 없이 그대로 씀(기본이 이미 왼쪽 화살표 모양). 각 행의 Switch는
  *    기존 `Switch` 컴포넌트 재사용, 값/변경은 `settingsItems`/`onSettingsItemChange`로
  *    완전 제어형.
+ *
+ * ── 5. 2026-08-03 후속 피드백 — 필터 아이콘 제거 ──────────────────────
+ * "알람 하단에 환경설정 아이콘이 두개 있는데, 작동하지 않는 작대기형 설정 아이콘은
+ * 빼고 톱니바퀴형 아이콘만 남겨줘" — 4번에서 새로 추가한 톱니(Settings) 아이콘 옆에
+ * 원래 있던 필터 아이콘(`IconFilter`, "작대기형" — 슬라이더처럼 생긴 아이콘)을 가리킨
+ * 것으로 판단. 애초에 3번에서 "필터 아이콘 클릭 시 어떤 UI가 뜨는지 미실측"이라고
+ * 적어뒀던 대로 실제 동작이 없는 슬롯이었던 게 확인됨 — `onFilterClick` prop과 버튼
+ * JSX를 전부 제거. 액션 줄 자체도 이제 `settingsItems`가 있을 때만 렌더링(필터 없이
+ * 톱니만 남으면서, 아무 액션도 없을 땐 빈 줄을 보여줄 이유가 없어짐).
  */
 
 export interface NotificationPanelItem extends Omit<AlarmListItemProps, "className"> {
@@ -86,8 +95,6 @@ export interface NotificationPanelProps {
   totalCount?: number;
   items: NotificationPanelItem[];
   onClose?: () => void;
-  /** 실제 동작 미실측 — 슬롯만 제공 */
-  onFilterClick?: () => void;
   /** 항목 클릭 시 그 항목의 id를 전달(항목 자체 onClick이 있으면 그것도 같이 호출됨) —
    *  보통 "클릭하면 목록에서 제거" 같은 처리에 씀(2026-08-03 추가) */
   onItemClick?: (id: string) => void;
@@ -102,7 +109,6 @@ function NotificationPanel({
   items,
   totalCount,
   onClose,
-  onFilterClick,
   onItemClick,
   settingsItems,
   onSettingsItemChange,
@@ -188,16 +194,8 @@ function NotificationPanel({
               </div>
             )}
 
-            <div className="flex w-full items-center gap-3 px-2">
-              <button
-                type="button"
-                onClick={onFilterClick}
-                aria-label="알림 필터"
-                className="flex size-4 shrink-0 items-center justify-center text-mes-text-default"
-              >
-                <IconFilter size={16} />
-              </button>
-              {settingsItems && (
+            {settingsItems && (
+              <div className="flex w-full items-center gap-3 px-2">
                 <button
                   type="button"
                   onClick={() => setView("settings")}
@@ -206,8 +204,8 @@ function NotificationPanel({
                 >
                   <Settings size={16} />
                 </button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </>
       )}

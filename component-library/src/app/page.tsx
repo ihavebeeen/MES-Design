@@ -665,7 +665,6 @@ const initialNotificationItems: NotificationPanelItem[] = [
     title: "출하 승인 취소",
     time: "20:25",
     description: "yyyy.mm.dd/[거래처]/n건의 출하 승인이 취소되었습니다.",
-    read: false,
   },
   {
     id: "3",
@@ -2133,7 +2132,10 @@ export default function Home() {
           AlarmListItem
         </h2>
         <p className="text-[12px] text-mes-gray-70">
-          tone 4색(blue/red/yellow/green). `read` prop 의미는 확인 필요.
+          tone 4색(blue/red/yellow/green). `read` prop 의미는 확인 필요 — 다만
+          `read=false`(흐림) 예시는 2026-08-03 담당자 지시("비활성화 처리된 내역은
+          삭제해줘")로 데모에서 제외함(컴포넌트 자체엔 여전히 지원, alarm-list-item.tsx
+          주석 참고).
         </p>
         <div className="flex w-[400px] flex-col border border-mes-gray-30">
           <AlarmListItem
@@ -2141,13 +2143,6 @@ export default function Home() {
             title="작업 지시 생성"
             time="20:25"
             description="yyyy.mm.dd/[설비]/n건의 작업 지시가 생성되었습니다."
-          />
-          <AlarmListItem
-            tone="red"
-            title="출하 승인 취소"
-            time="20:25"
-            description="yyyy.mm.dd/[거래처]/n건의 출하 승인이 취소되었습니다."
-            read={false}
           />
           <AlarmListItem
             tone="yellow"
@@ -2160,7 +2155,6 @@ export default function Home() {
             title="입고 완료"
             time="20:25"
             description="yyyy.mm.dd/[거래처]/n건의 입고가 완료되었습니다."
-            read={false}
           />
         </div>
       </section>

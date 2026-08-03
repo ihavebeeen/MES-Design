@@ -1011,4 +1011,23 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   `page.tsx` 데모 갱신(알림 목록 상태화 + 설정 목록 상태화), 체크리스트
   "Notification / Bell" 행 비고 갱신. tsc/eslint 클린 확인 + `/tmp` next
   build 재검증 후 커밋.
+- (2026-08-03, 37차) 담당자 후속 피드백 2건, 둘 다 알림 관련:
+  1. "알람에서 '비활성화' 처리된 내역은 삭제해줘" — `AlarmListItem`의
+     `read=false`(흐림) 상태 배경(Gray-10)이 `table.tsx`에서 담당자가 확정한
+     "비활성화(disabled) = 배경 Gray-10" 규칙과 정확히 일치 — `read=false`가
+     실제로는 "비활성화"를 가리키는 것으로 추정하고, `notification-panel`/
+     `alarm-list-item` 데모에서 read=false 예시 항목을 제거함(컴포넌트 자체의
+     `read` prop/두 상태 지원은 그대로 유지 — 이번 지시는 "내역(데모 데이터)
+     삭제"이지 API 변경이 아니라고 판단해 prop 이름은 안 건드림, 이 판단
+     근거를 `alarm-list-item.tsx`에 명시).
+  2. "알람 하단에 환경설정 아이콘이 두개 있는데, 작동하지 않는 작대기형 설정
+     아이콘은 빼고 톱니바퀴형 아이콘만 남겨줘" — 36차에서 새로 추가한 톱니
+     (Settings) 아이콘 옆에 원래부터 있던 필터 아이콘(`IconFilter`, "작대기형"
+     — 슬라이더 모양)을 가리킨 것으로 판단, 실제로 처음부터 "클릭 시 어떤
+     UI가 뜨는지 미실측"이라고 문서화돼 있던(=동작 없는) 슬롯이었음이 확인됨
+     — `onFilterClick` prop과 버튼 JSX를 컴포넌트에서 완전히 제거. 액션
+     줄도 이제 `settingsItems`가 있을 때만 렌더링(필터 없이 톱니만 남아
+     아무 액션도 없으면 빈 줄을 보여줄 이유가 없어짐).
+  체크리스트("Notification / Bell", "Alarm List/Table" 행) 갱신, tsc/eslint
+  클린 확인 + `/tmp` next build 재검증 후 커밋.
 
