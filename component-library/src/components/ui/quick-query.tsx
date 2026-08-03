@@ -69,8 +69,10 @@ import { IconX } from "../icons/icon-x";
  *   호출부 책임).
  * - 저장됨 행의 "삭제" 클릭 → `onDelete(id)` 즉시 호출(별도 확인 다이얼로그 없음 — 필요하면
  *   호출부에서 ConfirmDialog로 감싸 쓰면 됨).
- * - 푸터 취소/저장 버튼은 진행 중이던 이름 입력을 버리고 모달을 닫기만 함(행 내부 액션들은
- *   이미 즉시 반영됐으므로 별도 커밋 로직 불필요).
+ * - 푸터 "취소"는 진행 중이던 이름 입력을 버리고 모달을 닫음. 푸터 "저장"은 진행 중이던
+ *   편집이 있으면 그것까지 커밋한 뒤 닫음(2026-08-03 검증 중 수정 — 예전엔 이 버튼도
+ *   "취소"와 완전히 동일하게 그냥 버리고 닫기만 해서, 행 내부 "저장" 버튼을 누르지 않고
+ *   바로 푸터 "저장"을 누르면 입력한 이름이 조용히 사라지는 버그였음).
  *
  * ── 4. 2026-08-03 담당자 지적: "빠른조회 너비가 왜그럼" ────────────────
  * 데모 페이지에서 트리거 바(`QuickQuery`)가 실제 내용 폭보다 훨씬 넓게(섹션 전체 폭까지)
@@ -211,14 +213,28 @@ function QuickQueryPresetDialog({
     setEditName("");
   };
 
-  const close = () => {
+  /** 취소 — 편집 중이던 내용을 버리고 닫기 (오버레이 클릭/Esc도 동일 취급) */
+  const cancel = () => {
+    setEditingId(null);
+    setEditName("");
+    onOpenChange(false);
+  };
+
+  /** 저장(푸터) — 행 내부 "저장" 버튼을 누르지 않고 바로 푸터부터 누른 경우를 대비해,
+   *  편집 중이던 슬롯이 있으면 여기서 커밋한 뒤 닫음. 2026-08-03 검증 중 발견: 예전엔
+   *  이 버튼도 `close`(=취소와 완전히 동일한 함수)를 호출해서, "저장"이라고 써놓고 실제로는
+   *  입력 중이던 이름을 그냥 버리고 닫아버리는 버그였음. */
+  const saveAndClose = () => {
+    if (editingId && editName.trim()) {
+      onSaveSlot(editingId, editName.trim());
+    }
     setEditingId(null);
     setEditName("");
     onOpenChange(false);
   };
 
   return (
-    <DialogPrimitive.Root open={open} onOpenChange={(next) => (next ? onOpenChange(next) : close())}>
+    <DialogPrimitive.Root open={open} onOpenChange={(next) => (next ? onOpenChange(next) : cancel())}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40" />
         <DialogPrimitive.Content
@@ -378,10 +394,10 @@ function QuickQueryPresetDialog({
           </div>
 
           <div className="flex w-full shrink-0 items-center justify-center gap-2.5 py-4">
-            <Button variant="fillGray" size="basic" className="w-40" onClick={close}>
+            <Button variant="fillGray" size="basic" className="w-40" onClick={cancel}>
               취소
             </Button>
-            <Button variant="fillBlack" size="basic" className="w-40" onClick={close}>
+            <Button variant="fillBlack" size="basic" className="w-40" onClick={saveAndClose}>
               저장
             </Button>
           </div>

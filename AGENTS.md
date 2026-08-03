@@ -955,4 +955,34 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
   `TOC_LINKS`/`COMPONENT_NODES` 갱신, 체크리스트 "Search Input" 행 비고 갱신
   (기존 "있음" 상태 유지, 신규 전용 컴포넌트 추가 사실만 명시). tsc 클린 확인
   후 커밋.
+- (2026-08-03, 35차) 담당자가 "지금까지 했던거 다 검증 — 코드가 꼬이진
+  않았는지, 재사용이 용이하게 되었는지" 요청 — 이번 세션에 새로 만든
+  GroupQuery/QuickQuery/SearchInput 3개 위주로 종합 검증 진행:
+  1. tsc --noEmit / eslint 클린 확인, git log·status 정합성 확인, 삭제된
+     파일(backdrop/bulk-action-toolbar) 잔존 참조 없음 확인.
+  2. `TOC_LINKS`(42개)/`COMPONENT_NODES`(leaf/branch)/실제 렌더된 `<section id>`
+     3개 목록을 스크립트로 상호 대조 — 중복·누락·불일치 전부 없음 확인.
+  3. `/tmp`에 복사해 실제 `next build`(정적 export) 끝까지 성공, `out/index.html`에
+     신규 3개 컴포넌트 텍스트 전부 포함 확인(런타임 크래시 없음).
+  4. 새 파일 3개를 직접 재검토하다가 `group-query.tsx`에서 진짜 버그 발견:
+     Popover 트리거 `<button>` 안에 칩의 X(선택 해제)를 `<span role="button">`으로
+     중첩해뒀던 것 — 버튼 안에 클릭 가능한 엘리먼트를 또 넣는 건 HTML 스펙 위반
+     (키보드 포커스/스크린리더 꼬임). X를 트리거 버튼 밖으로 빼서 형제
+     `<button>`으로 분리(드롭다운 열기=화살표 버튼, 선택 해제=X 버튼으로 역할 분리).
+  5. `general-purpose` 서브에이전트로 독립 2차 리뷰(사전 컨텍스트 없이 코드만
+     보고 판단하도록) — 실제 버그 1건 + 재사용성 문제 1건 추가로 발견:
+     - **버그**: `QuickQueryPresetDialog` 푸터의 "저장" 버튼이 "취소"와 완전히
+       똑같은 함수(`close`)를 호출해서, 행 내부 "저장"을 안 누르고 바로 푸터
+       "저장"을 누르면 입력하던 이름이 조용히 버려짐(라벨은 "저장"인데 동작은
+       "취소"). 편집 중인 슬롯이 있으면 커밋 후 닫는 `saveAndClose`로 분리해 수정.
+     - **재사용성**: `GroupQuery`가 "전체"를 고르려면 호출부의 `options` 배열에
+       반드시 `id: "all"`인 항목을 넣어야 하는 숨은 문자열 결합이 있었음(안 넣으면
+       드롭다운에서 전체를 선택할 방법이 없어짐). "전체"를 컴포넌트가 항상 목록
+       맨 위에 자체 렌더링(`onChange(null)`)하도록 바꿔 `options`는 순수하게
+       실제 선택지만 넘기면 되게 API 단순화(`page.tsx`의 `groupQueryOptions`에서
+       `{id:"all"}` 항목 제거).
+  결과: 새 진짜 버그 2건 + 재사용성 결함 1건 발견해 전부 수정. 그 외엔(raw hex
+  색상 하나가 select.tsx/combobox.tsx와 동일하게 기존 관례를 따른 것, `.indexOf`
+  기반 라벨 계산 등) 기존 코드베이스와 일관되거나 영향 없는 수준이라 그대로 둠.
+  수정 후 tsc/eslint 재검증 + `/tmp` next build 재검증 클린 확인 후 커밋.
 

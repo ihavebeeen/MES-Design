@@ -613,10 +613,10 @@ const filterCategories = [
 
 /**
  * GroupQuery 데모용 옵션 — 담당자 스크린샷("생산지시" 화면)의 드롭다운 목록 문구를 그대로
- * 인용(전체/지시일/근무조/설비/공정/담당기사/품목코드/품목명/품목구분).
+ * 인용(전체/지시일/근무조/설비/공정/담당기사/품목코드/품목명/품목구분). "전체"는 GroupQuery가
+ * 자체적으로 목록 맨 위에 렌더링하므로(2026-08-03 재설계) 여기 옵션 목록엔 안 넣음.
  */
 const groupQueryOptions = [
-  { id: "all", label: "전체" },
   { id: "date", label: "지시일" },
   { id: "shift", label: "근무조" },
   { id: "facility", label: "설비" },

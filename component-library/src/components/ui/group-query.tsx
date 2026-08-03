@@ -22,6 +22,12 @@ import { IconX } from "../icons/icon-x";
  * 전용으로 링크를 지정해준 건 아니라서(빠른 조회 조사 중 부수적으로 발견) 문서상으로는
  * "스크린샷 기반 판단값" 딱지를 유지하되, 색상/치수는 실측값을 씀.
  *
+ * ⚠ 2026-08-03 검증 중 재설계: 원래는 `options`에 "전체"를 sentinel id(`"all"`)로 직접
+ * 넣어달라고 요구하던 구조였음 — 호출부가 그 id를 안 넣으면 드롭다운에서 "전체"를 선택할
+ * 방법이 아예 없어지는 숨은 결합(implicit string coupling)이라 재사용성이 떨어짐 지적받음.
+ * "전체"는 이제 컴포넌트가 항상 목록 맨 위에 자체 렌더링(클릭 시 그냥 `onChange(null)`)하고,
+ * `options`는 순수하게 "전체를 제외한 실제 선택지"만 넘기면 되도록 API를 단순화함.
+ *
  * ── 1. 레이아웃(실측: node 17360:46226) ───────────────────────────
  * 전체 박스: 테두리 1px Gray-30, radius 4px, 높이 32px(고정), overflow-clip.
  * - 맨 앞 셀: 아이콘(`mes/icon-group-down`, 16px) + gap 6px + "그룹화 조회" 라벨(14px Medium
@@ -55,6 +61,13 @@ import { IconX } from "../icons/icon-x";
  * "내부 자식 배치"만 영향을 주지 "이 요소 자체가 flex item으로서 부모에게 늘어나 보이는지"는
  * 별개 문제라 `inline-flex`만으로는 안 막힘. `self-start`(+`shrink-0`)를 루트에 추가해
  * 항상 내용 폭만큼만 차지하도록 고정.
+ *
+ * ── 5. 2026-08-03 검증 중 발견: 중첩 인터랙티브 엘리먼트 수정 ────────────
+ * 처음엔 칩의 X(선택 해제)를 Popover 트리거 `<button>` 안에 `<span role="button">`으로
+ * 넣어뒀었음 — 버튼 안에 또 클릭 가능한 엘리먼트가 중첩되는 건 HTML 스펙 위반(키보드
+ * 포커스/스크린리더 동작이 꼬임). X 칩을 트리거 버튼 밖으로 빼서 형제 엘리먼트로 만들고
+ * 실제 `<button>`으로 교체 — 드롭다운을 여는 건 화살표 쪽 버튼만, 선택 해제는 X 버튼만
+ * 담당하도록 역할을 분리함(클릭 가능 영역이 살짝 줄었지만 접근성이 더 중요하다고 판단).
  */
 
 export interface GroupQueryOption {
@@ -100,25 +113,27 @@ function GroupQueryLevelCell({
         </span>
       </div>
       <div className="flex h-full items-center gap-2 pr-3">
+        {selected && (
+          <span className="inline-flex h-[22px] items-center gap-[3px] rounded-mes-control-sm border border-mes-primary-30 bg-mes-bg-brand-subtle-strong py-px pl-2 pr-[3px] text-[13px] font-medium text-mes-text-brand">
+            {selected.label}
+            <button
+              type="button"
+              aria-label="선택 해제"
+              onClick={() => onChange(null)}
+              className="inline-flex shrink-0 items-center justify-center p-[5px] text-mes-text-brand"
+            >
+              <IconX size={12} />
+            </button>
+          </span>
+        )}
         <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
           <PopoverPrimitive.Trigger asChild>
-            <button type="button" className="flex items-center gap-2">
-              {selected ? (
-                <span className="inline-flex h-[22px] items-center gap-[3px] rounded-mes-control-sm border border-mes-primary-30 bg-mes-bg-brand-subtle-strong py-px pl-2 pr-[3px] text-[13px] font-medium text-mes-text-brand">
-                  {selected.label}
-                  <span
-                    role="button"
-                    aria-label="선택 해제"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onChange(null);
-                    }}
-                    className="inline-flex shrink-0 items-center justify-center p-[5px] text-mes-text-brand"
-                  >
-                    <IconX size={12} />
-                  </span>
-                </span>
-              ) : (
+            <button
+              type="button"
+              aria-label={`Level ${index + 1} 그룹화 기준 선택`}
+              className="flex items-center gap-2"
+            >
+              {!selected && (
                 <span className="whitespace-nowrap text-[14px] font-normal text-mes-text-default">
                   전체
                 </span>
@@ -138,25 +153,35 @@ function GroupQueryLevelCell({
               sideOffset={4}
               className="z-50 flex max-h-[280px] w-[160px] flex-col gap-0.5 overflow-y-auto rounded-mes-panel border border-mes-border-default bg-white p-2 shadow-mes-panel"
             >
-              {options.map((option) => {
-                const isSelected = option.id === value || (option.id === "all" && value === null);
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    onClick={() => {
-                      onChange(option.id === "all" ? null : option.id);
-                      setOpen(false);
-                    }}
-                    className={cn(
-                      "rounded-mes-control px-2 py-[5px] text-left text-[13px] leading-[1.5] text-mes-text-default",
-                      isSelected ? "bg-[#e8f0fe]" : "hover:bg-mes-bg-subtle"
-                    )}
-                  >
-                    {option.label}
-                  </button>
-                );
-              })}
+              <button
+                type="button"
+                onClick={() => {
+                  onChange(null);
+                  setOpen(false);
+                }}
+                className={cn(
+                  "rounded-mes-control px-2 py-[5px] text-left text-[13px] leading-[1.5] text-mes-text-default",
+                  value === null ? "bg-[#e8f0fe]" : "hover:bg-mes-bg-subtle"
+                )}
+              >
+                전체
+              </button>
+              {options.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => {
+                    onChange(option.id);
+                    setOpen(false);
+                  }}
+                  className={cn(
+                    "rounded-mes-control px-2 py-[5px] text-left text-[13px] leading-[1.5] text-mes-text-default",
+                    option.id === value ? "bg-[#e8f0fe]" : "hover:bg-mes-bg-subtle"
+                  )}
+                >
+                  {option.label}
+                </button>
+              ))}
             </PopoverPrimitive.Content>
           </PopoverPrimitive.Portal>
         </PopoverPrimitive.Root>
