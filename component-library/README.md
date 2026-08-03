@@ -34,3 +34,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## GitHub Pages 배포
+
+이 저장소는 `main` 브랜치에 push되면 `.github/workflows/deploy-pages.yml`이 자동으로
+`component-library`를 정적 export(`output: "export"`)로 빌드해서 GitHub Pages에
+배포한다. 처음 한 번은 GitHub 저장소 Settings → Pages → Build and deployment →
+Source를 **GitHub Actions**로 지정해야 동작한다(기본값인 "Deploy from a branch"로는
+안 됨). 로컬에서 export 결과물을 직접 확인하려면:
+
+```bash
+cd component-library
+GITHUB_PAGES=true npm run build
+npx serve out
+```

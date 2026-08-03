@@ -815,3 +815,32 @@ indeterminate prop 신규 추가, 헤더 셀의 정렬 기본값 강제(`?? "cen
      컨벤션을 따름). 데모 Section, import, `TOC_LINKS`/`COMPONENT_NODES` 항목도
      전부 제거, 체크리스트 Backdrop 행을 "있음"→"없음"으로 롤백. tsc 클린
      확인 후 커밋.
+- (2026-07-31, 29차) "깃허브를 private으로 바꿔도 작업 가능하냐" — 이 세션은
+  GitHub에 push/pull한 적이 없고(로컬 git commit만 15개 이상 쌓여있고
+  `origin/main`엔 전혀 반영 안 됨) 마운트된 로컬 폴더만 다뤄서 public/private
+  여부와 무관하다고 답변. 이어서 "GitHub Pages로 퍼블리싱했더니 md파일만
+  나온다"는 질문 — 원인은 `next.config.ts`에 정적 export 설정이 아예 없어서
+  GitHub Pages가 빌드 결과물을 못 찾고 저장소 루트 README.md를 Jekyll로
+  렌더링해서 보여주고 있었던 것. 해결:
+  - `component-library/next.config.ts`에 `output: "export"` 추가.
+    GitHub Pages 프로젝트 사이트는 `<user>.github.io/<repo>/` 서브패스에서
+    서빙되므로 `basePath`/`assetPrefix`를 저장소 이름("MES-Design")으로 설정
+    — 단, 로컬 dev/build는 서브패스가 없어야 하니 `GITHUB_PAGES` 환경변수가
+    있을 때만 적용(GitHub Actions에서만 세팅). `images.unoptimized: true`도
+    추가(이 프로젝트는 `next/image` 미사용이라 실질 영향 없지만 향후 대비).
+  - `.github/workflows/deploy-pages.yml` 신규 작성 — `main` push 시
+    `component-library`에서 `npm ci && npm run build`(정적 export) 후
+    `actions/upload-pages-artifact` + `actions/deploy-pages`로 자동 배포.
+    담당자가 GitHub 저장소 Settings → Pages → Source를 "GitHub Actions"로
+    바꿔줘야 최초 1회 활성화됨(이건 코드로 못 하는 부분이라 README에 안내
+    추가).
+  - 로컬 빌드 검증 중 마운트된 폴더(`node_modules` 포함)에서 `next build`가
+    `Bus error (core dumped)`로 죽는 걸 발견 — 이 세션의 FUSE 마운트가
+    Next.js/SWC 네이티브 바이너리의 mmap과 안 맞는 것으로 추정(기존 git
+    lock 파일 이슈와 같은 계열의 마운트 제약). `/tmp`에 소스만 복사하고
+    `npm install`로 로컬 filesystem에 새로 `node_modules`를 깐 뒤 빌드하니
+    정상 완료, `out/index.html`에 `/MES-Design/...` 경로가 제대로 박히는 것도
+    확인. 이 크래시는 이 세션 샌드박스 특유의 문제이고 GitHub Actions
+    러너에서는 재현 안 될 것으로 판단(별도 조치 불필요).
+  `component-library/README.md`에 GitHub Pages 배포 안내 섹션 추가. tsc
+  클린 확인 후 커밋.
