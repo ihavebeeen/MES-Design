@@ -172,7 +172,6 @@ const TOC_LINKS: { id: string; label: string }[] = [
   { id: "radio-choice-dialog", label: "RadioChoiceDialog" },
   { id: "center-modal", label: "Modal 중앙" },
   { id: "side-slide-panel", label: "Modal 사이드" },
-  { id: "nested-modal", label: "Modal 중첩" },
   { id: "page-top-tab-item", label: "PageTopTabItem" },
   { id: "sidebar", label: "Sidebar" },
   { id: "alarm-list-item", label: "AlarmListItem" },
@@ -223,7 +222,9 @@ const TOC_LINKS: { id: string; label: string }[] = [
  * 안 바뀜)이고, 사이드바 트리는 그 위에 얹는 "표시용" 구조라 두 값이 어긋날 일이 없음
  * (branch 하위 항목의 id는 전부 `leaf()` 헬퍼로 TOC_LINKS에서 그대로 가져옴).
  * 현재 그룹화 대상: Button(사이즈/컬러/아이콘 3종), Table(합본/분리 2종), Modal(중앙/
- * 사이드/중첩 3종), Input(기본/숫자/비밀번호 3종), Picker(날짜/기간/시간 3종),
+ * 사이드 2종 — 2026-08-04까지는 중첩 포함 3종이었으나, "Nested Modal은 별도 컴포넌트가
+ * 아니라 기존 모달들을 그냥 동시에 열면 되는 것"이라는 담당자 판단으로 그 항목 자체를
+ * 삭제해 2종으로 축소), Input(기본/숫자/비밀번호 3종), Picker(날짜/기간/시간 3종),
  * State(없음/오류 2종) — 전부 "이름은 다르지만 실제로 같은 컴포넌트를 그대로 재사용/
  * 확장한 성격이 비슷한 것들"이라는 기준으로 소스 코드의 재사용 관계(doc 주석의
  * "OO 재사용"/"OO를 그대로 감싸" 문구)를 근거로만 묶었음 — 그냥 이름이나 위치가
@@ -311,7 +312,7 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("confirm-dialog"),
   leaf("notice-banner"),
   leaf("radio-choice-dialog"),
-  branch("Modal", ["center-modal", "side-slide-panel", "nested-modal"], "Modal"),
+  branch("Modal", ["center-modal", "side-slide-panel"], "Modal"),
   leaf("page-top-tab-item"),
   leaf("sidebar"),
   leaf("alarm-list-item"),
@@ -440,7 +441,6 @@ const TIER_BY_ID: Record<string, number> = {
   "confirm-dialog": 1,
   "notice-banner": 1,
   "radio-choice-dialog": 1,
-  "nested-modal": 1,
   "center-modal": 1,
   "side-slide-panel": 1,
   "page-top-tab-item": 1,
@@ -1506,14 +1506,6 @@ export default function Home() {
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [bannerDialogOpen, setBannerDialogOpen] = useState(false);
   const [radioDialogOpen, setRadioDialogOpen] = useState(false);
-  // 2026-07-31 — Nested Modal(2-depth) 데모용. Center Modal은 담당자 지시로 보류 중이라
-  // 건드리지 않고, 이미 완성된 ConfirmDialog 두 개를 겹쳐 여는 방식으로 시연.
-  const [nestedModalOpen, setNestedModalOpen] = useState(false);
-  const [nestedModalConfirmOpen, setNestedModalConfirmOpen] = useState(false);
-  // 2026-08-03 — 담당자 요청: "선택 항목을 삭제하시겠습니까"에서 확인 누르면
-  // "삭제되었습니다"가 뜨도록. 최종 확정 후 조용히 닫히기만 하던 것에 3번째 단계(성공
-  // 알림)를 추가 — "삭제 완료 알림"(infoDialogOpen)과 같은 info 톤 패턴 재사용.
-  const [nestedModalSuccessOpen, setNestedModalSuccessOpen] = useState(false);
   // 2026-08-03 — 담당자가 클라우드MES "Modal" 스펙 페이지(node 9873:82872, Type01/02)를
   // 전달해 보류 해제. Center Modal(화면 중앙)/Side Slide Panel(우측 고정) 둘 다 신규 구현.
   const [centerModalOpen, setCenterModalOpen] = useState(false);
@@ -2783,73 +2775,6 @@ export default function Home() {
           ))}
         </div>
       </SideSlidePanel>
-
-      <section id="nested-modal" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Nested Modal
-          <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">
-            임시
-          </span>
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          팝업 위에 또 다른 팝업이 뜨는 2-depth 패턴. Center Modal 자체는 아래 섹션에서
-          신규 구현했지만, 그 안에 또 다른 모달이 겹쳐 뜨는 정확한 원본 구조는 이번
-          자료에 없어 여전히 미확인 — 이미 완성된 ConfirmDialog 두 개를 겹쳐 여는
-          방식으로 시연.
-        </p>
-        <Button size="basic" onClick={() => setNestedModalOpen(true)}>
-          품목 삭제
-        </Button>
-      </section>
-
-      <ConfirmDialog
-        open={nestedModalOpen}
-        onOpenChange={setNestedModalOpen}
-        title="품목 삭제"
-        heading="이 품목을 삭제하시겠습니까?"
-        description="연결된 BOM/재고 정보가 있으면 함께 영향을 받을 수 있습니다."
-        tone="warning"
-        actions={[
-          { label: "취소", variant: "fillGray", onClick: () => setNestedModalOpen(false) },
-          {
-            label: "삭제",
-            variant: "fillRed",
-            onClick: () => setNestedModalConfirmOpen(true),
-          },
-        ]}
-      />
-      <ConfirmDialog
-        open={nestedModalConfirmOpen}
-        onOpenChange={setNestedModalConfirmOpen}
-        title="최종 확인"
-        heading="정말 삭제하시겠습니까?"
-        description="이 작업은 되돌릴 수 없습니다."
-        tone="error"
-        actions={[
-          {
-            label: "취소",
-            variant: "fillGray",
-            onClick: () => setNestedModalConfirmOpen(false),
-          },
-          {
-            label: "삭제 확정",
-            variant: "fillRed",
-            onClick: () => {
-              setNestedModalConfirmOpen(false);
-              setNestedModalOpen(false);
-              setNestedModalSuccessOpen(true);
-            },
-          },
-        ]}
-      />
-      <ConfirmDialog
-        open={nestedModalSuccessOpen}
-        onOpenChange={setNestedModalSuccessOpen}
-        title="알림"
-        heading="삭제되었습니다"
-        tone="info"
-        actions={[{ label: "확인", onClick: () => setNestedModalSuccessOpen(false) }]}
-      />
 
       <section id="notice-banner" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
         <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">

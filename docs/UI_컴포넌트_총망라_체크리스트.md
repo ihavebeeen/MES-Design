@@ -390,7 +390,7 @@ shadcn/ui, Ant Design 공식 문서와 대조해 발견된 항목.
 | Modal with Embedded Table | 팝업 안에 표·그리드 포함 | 오가니즘 | 있음 | 1 | "생산계획/작업진행 실적입력" 모달 |
 | Modal with Tabs | 팝업 안이 탭으로 구획 | 오가니즘 | 있음 | 1 | Figma "컴포넌트 라이브러리" Center Modal의 "탭 구분 모달"(좌측 Type01~06 리스트+우측 테이블) 확인 |
 | Full-screen Modal | 화면 전체를 덮는 팝업 | 오가니즘 | 없음 | 4 | |
-| Nested Modal (2-depth) | 팝업 위에 또 다른 팝업 | 오가니즘 | 부분 | 1 | 2026-07-31 ConfirmDialog 두 개를 겹쳐 여는 방식으로 "팝업 위에 팝업" 패턴 자체는 데모/코드화 완료(page.tsx `nested-modal` 섹션). 2026-08-03 Center Modal 보류는 해제됐지만, 원래 추정 근거였던 Figma Side Modal "검사/커스텀 정보 등록"의 실제 겹친 모달 구조 자체는 이번 자료에 없어 여전히 미확인 — 그래서 "있음"이 아니라 "부분" 유지 |
+| ~~Nested Modal (2-depth)~~ → **별도 항목 아님, 목록에서 제거** | 팝업 위에 또 다른 팝업 | 오가니즘 | 있음(암묵) | 1 | 2026-08-04 담당자 지적: "이게 따로 컴포넌트화가 필요한가? 모달 뜨면 뒤에 배경 딤 깔린다는 것만 정의돼 있으면 몇 개를 겹쳐 열든 문제없는 거 아니냐"는 지적이 맞음 — 실제로 `confirm-dialog.tsx`/`center-modal.tsx`/`side-slide-panel.tsx`/`radio-choice-dialog.tsx` 전부 동일하게 Radix Dialog + 동일 z-50 오버레이 구조라, 여러 개를 동시에 열면 Portal이 DOM에 추가된 순서대로 자동으로 쌓인다 — "Nested Modal"이라는 별도 코드/컴포넌트는 애초에 존재한 적이 없었고, 데모 섹션도 기존 ConfirmDialog 2개를 그냥 겹쳐 연 것뿐이었음. 별도 체크리스트 항목/사이드바 항목으로 남겨두는 게 오히려 "따로 만들어야 할 것"처럼 오해를 줄 수 있어 항목 자체를 삭제(`page.tsx`의 `nested-modal` 섹션·사이드바 항목 제거). Figma Side Modal "검사/커스텀 정보 등록"의 실제 겹친 구조 확인이 필요했던 것도 이제 무의미 — 별도 구조가 아니라 기존 모달을 그냥 여러 개 여는 것이므로 |
 | Resizable / Draggable Popup | 크기 조절·이동 가능한 팝업 | 오가니즘 | 없음 | 3 | |
 
 ## 16. MES 도메인 특화 패턴
@@ -573,7 +573,7 @@ Select와 같은 방식으로, 티어 1~2 항목을 하나씩 골라 `component.
 |---|---|---|
 | ~~Icon Set~~ → **실제 SVG 33종 확보 및 컴포넌트화 완료** | 0번 섹션 | 이 환경에서 Figma 애셋 CDN 직접 다운로드는 끝까지 불가(HTTP 403 재확인)했으나, 담당자가 Figma에서 직접 SVG export해 `component-library/icon/mes/`에 넣어줘서 해결됨. 33개 파일 전부 분석해 `component-library/src/components/icons/`에 실측 벡터 기반 React 컴포넌트로 구현 완료(색상 variant는 currentColor로 일반화, 형태가 실제로 다른 것은 variant prop으로 분리, flat-* 4종은 2톤 고정색 유지) → 상세 내용 [아이콘_매핑표.md](./아이콘_매핑표.md) "2026-07-28 실측 SVG 반영 결과" 참고. 기존 lucide 대체 아이콘 사용처(filter.tsx/toast.tsx/confirm-dialog.tsx/radio-choice-dialog.tsx)도 실제 벡터로 교체 완료. 아직 미확보: mes/icon-setting, Toast BLUE의 CHECK 아이콘 |
 | ~~System Color (Warning/Success) 데스크탑 신설 필요~~ → **해소 완료** | 0-1번 섹션 | Warning은 2026-07-30에 이미 데스크탑 전용 레퍼런스 프레임(node 20170:67850)으로 확정돼 `globals.css`에 반영돼 있었음(체크리스트만 갱신 안 돼 있었음). Success는 데스크탑 Figma에 끝내 없어서 2026-08-04 담당자 확인 하에 모바일 확정값을 그대로 재사용하기로 결정, `globals.css`/데모 페이지 반영 완료 |
-| Nested Modal | 15번 섹션 | 2-depth 모달의 정확한 구조 (Side Modal "검사/커스텀 정보 등록"에서 겹친 형태로 추정만 한 상태) |
+| ~~Nested Modal~~ → **질문 자체가 무의미해짐(항목 삭제)** | 15번 섹션 | 2026-08-04: 별도 컴포넌트가 아니라 기존 모달을 그냥 여러 개 동시에 여는 것뿐이라는 결론(위 15번 섹션 참고) — 정확한 구조를 더 확인할 필요 자체가 없어짐 |
 | 검사 판정 버튼 "-"(대시) | 16-4번 섹션 | 정확한 의미 — 사용자 측 내부 확인 대기 중. [컴포넌트 기능 변형 심층분석](./컴포넌트_기능_변형_심층분석.md) 참고 |
 | Breakpoint Scale | 0번 섹션 | 2026-08-04 담당자 확인: 반응형 기준값은 개별 아톰/컴포넌트가 아니라 그것들을 모아 배치한 화면(템플릿) 단위에서 의미가 생기는 값 — 지금은 컴포넌트 라이브러리(아톰~오가니즘) 단계라 시기상조. **템플릿·화면 단위 작업 시작 시점에 재검토**로 보류 확정(모바일 파일엔 이미 3단계 값이 확인돼 있음 — 0-1번 섹션 참고, 필요해지면 그대로 참조 가능) |
 | ~~Radius/Spacing 로컬 변수 vs FMS Make Metrics~~ → **무관한 컬렉션으로 확인 완료** | 0번 섹션 | 2026-08-04 `search_design_system`으로 재확인: "FMS Make Metrics"/"FMS Make Typography"/"FMS Make Colors" 등은 전부 "기본 디자인시스템"/"기본 디자인시스템 (복사)"라는 **별도 라이브러리**(변수 설명에 "Target FMS UI font family for Figma Make and frontend CSS"라고 명시 — Figma Make로 다른 제품용으로 생성된 것으로 추정) 소속. 실제 컴포넌트(Badge/Button 등)가 속한 "컴포넌트 라이브러리"/"클라우드MES" 라이브러리와는 무관 — 이 프로젝트에서 참조할 필요 없는 보일러플레이트 확정, 기존 로컬 변수(`radius/small1`, `padding/1`, `padding/3`) 사용 방식 그대로 유지 |
