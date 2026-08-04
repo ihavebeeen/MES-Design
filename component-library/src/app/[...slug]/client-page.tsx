@@ -1243,11 +1243,21 @@ export default function Home() {
   // (예: /components)에서는 예전처럼 첫 항목을 바로 보여주는 대신, 그 그룹 전체를
   // 카드 그리드로 보여줌(`OverviewGrid`, 아래 참고). 그래서 activeId는 이제 "선택된
   // 항목이 없을 수도 있음"을 그대로 반영해 `string | undefined`.
+  // 2026-08-04 — 담당자 지적 3가지 반영:
+  // 1) "홈 가면 foundation 카드만 뜨고 컴포넌트는 안 뜬다" — 지금까지 "/"은 그냥
+  //    "/foundations"로 리다이렉트했었음(Foundations만 보임). "/"(슬러그 없음)을
+  //    별도 "home" 상태로 분리해 Foundation+Components 그리드를 같이 보여줌
+  //    (`app/page.tsx`도 이 컴포넌트를 그대로 렌더링하도록 변경 — 리다이렉트 제거).
+  // 2) 좌상단 "MES Design System" 타이틀 클릭 시 홈으로.
+  // 3) "radius 보는 중인데 하단에 Components/예정이 같이 뜬다" — Foundation/Components
+  //    "구분자" 배너(28px 큰 타이틀)가 activeGroup과 무관하게 항상 렌더링되고 있었던
+  //    버그. activeGroup에 "home"을 추가하고, 각 배너·오버뷰 그리드·티어3/4 안내를
+  //    자기 그룹(또는 home)일 때만 보이도록 조건 추가.
   const routeParams = useParams<{ slug?: string[] }>();
   const router = useRouter();
   const slug = routeParams.slug ?? [];
-  const hasExplicitId = Boolean(slug[1]);
-  const activeGroup: "foundations" | "components" = slug[0] === "components" ? "components" : "foundations";
+  const activeGroup: "home" | "foundations" | "components" =
+    slug.length === 0 ? "home" : slug[0] === "components" ? "components" : "foundations";
   const activeId: string | undefined = slug[1];
   // 2026-08-03 — 우측 서브 내비(RightRail)용 Section→Sample 목록 레지스트리. Section이
   // 렌더링될 때마다 자기 목록을 여기 채워넣고, RightRail이 같은 렌더 패스에서 바로 읽음
@@ -1271,7 +1281,9 @@ export default function Home() {
     <ActiveIdContext.Provider value={activeId ?? ""}>
     <div className="flex min-h-screen flex-col bg-mes-gray-10">
       <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center gap-8 border-b border-mes-gray-30 bg-white px-6">
-        <span className="shrink-0 text-[15px] font-bold text-mes-gray-130">MES Design System</span>
+        <NextLink href="/" className="shrink-0 text-[15px] font-bold text-mes-gray-130 hover:text-mes-text-brand">
+          MES Design System
+        </NextLink>
         <nav className="flex items-center gap-1">
           {TOP_NAV.map((tab) =>
             tab.firstId ? (
@@ -1457,7 +1469,11 @@ export default function Home() {
           <Breadcrumb
             className="w-full max-w-[960px]"
             items={
-              activeId
+              activeGroup === "home"
+                ? // 2026-08-04 — "/"(홈)은 Foundations/Components 그리드를 같이 보여주는
+                  // 자체 랜딩이라 그룹 하나로 못 좁혀서 "Home" 단독 표시.
+                  [{ label: "Home" }]
+                : activeId
                 ? [
                     { label: "Home", onClick: () => router.push("/") },
                     {
@@ -1482,19 +1498,26 @@ export default function Home() {
               한 줄 설명.
               2026-08-03 47차 — "섹션 헤더(17px)보다 더 큰 크기로 확 나눠줘" 재지적 —
               개별 섹션 h2(17px)보다 뚜렷이 큰 28px + 두꺼운 좌측 바(border-l-8)로,
-              섹션들의 상위 카테고리임이 한눈에 보이도록 확대. */}
-          <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
-            <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
-              <Palette className="size-7 shrink-0 text-mes-primary-60" />
-              Foundation
-            </span>
-            <p className="text-[13px] leading-[1.5] text-mes-gray-70">
-              화면을 구성하는 가장 기초적인 값들입니다 — 색상, 타이포그래피, 간격, radius,
-              그림자, 시맨틱 토큰. 아래 모든 컴포넌트는 이 값들을 조합해서 만들어집니다.
-            </p>
-          </div>
-
-          {activeGroup === "foundations" && !activeId && <OverviewGrid nodes={FOUNDATION_NODES} />}
+              섹션들의 상위 카테고리임이 한눈에 보이도록 확대.
+              2026-08-04 — 버그 수정: 이 배너가 activeGroup과 무관하게 항상 렌더링되고
+              있었음(Components를 보든 특정 항목을 보든 "Foundation" 배너가 항상 같이
+              뜸) — "radius 보는 중인데 하단에 Components/예정이 같이 뜬다"는 담당자
+              리포트의 원인. Foundations 페이지이거나 홈("/")일 때만 보이도록 조건 추가. */}
+          {(activeGroup === "foundations" || activeGroup === "home") && (
+            <>
+              <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
+                <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+                  <Palette className="size-7 shrink-0 text-mes-primary-60" />
+                  Foundation
+                </span>
+                <p className="text-[13px] leading-[1.5] text-mes-gray-70">
+                  화면을 구성하는 가장 기초적인 값들입니다 — 색상, 타이포그래피, 간격, radius,
+                  그림자, 시맨틱 토큰. 아래 모든 컴포넌트는 이 값들을 조합해서 만들어집니다.
+                </p>
+              </div>
+              {!activeId && <OverviewGrid nodes={FOUNDATION_NODES} />}
+            </>
+          )}
 
           <section id="color-palette" className={cn("flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8", activeId !== "color-palette" && "hidden")}>
             <div>
@@ -1750,18 +1773,23 @@ export default function Home() {
               순서 유지, 그룹 전체가 정렬된 위치에 놓임) — 앞으로 컴포넌트를 추가할
               때도 이 순서를 깨지 않도록 `COMPONENT_NODES`에 추가한 다음 정렬 결과
               위치에 맞게 물리적으로 배치할 것. */}
-          <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
-            <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
-              <Blocks className="size-7 shrink-0 text-mes-primary-60" />
-              Components
-            </span>
-            <p className="text-[13px] leading-[1.5] text-mes-gray-70">
-              Foundation 값들을 조합해 만든 실제 UI 조각들입니다 — 버튼 같은 기본 단위부터
-              테이블·알림 패널 같은 복합 컴포넌트까지.
-            </p>
-          </div>
-
-          {activeGroup === "components" && !activeId && <OverviewGrid nodes={COMPONENT_NODES} />}
+          {/* 2026-08-04 — 위 Foundation 배너와 같은 이유로 조건 추가(버그 수정): Components
+              페이지이거나 홈("/")일 때만 보이도록. */}
+          {(activeGroup === "components" || activeGroup === "home") && (
+            <>
+              <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
+                <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+                  <Blocks className="size-7 shrink-0 text-mes-primary-60" />
+                  Components
+                </span>
+                <p className="text-[13px] leading-[1.5] text-mes-gray-70">
+                  Foundation 값들을 조합해 만든 실제 UI 조각들입니다 — 버튼 같은 기본 단위부터
+                  테이블·알림 패널 같은 복합 컴포넌트까지.
+                </p>
+              </div>
+              {!activeId && <OverviewGrid nodes={COMPONENT_NODES} />}
+            </>
+          )}
 
       <Section id="search-input" title="검색창" titleEn="SearchInput">
         <Sample
@@ -3995,13 +4023,16 @@ export default function Home() {
         </Sample>
       </Section>
       {/* 2026-08-04 — 페이지 분할 도입 후: 이 두 안내 블록은 특정 id에 매인 게 아니라
-          "/components 루트(구체적 항목 미지정 시 기본으로 첫 항목을 보여줌)"에서만
-          같이 노출 — 특정 컴포넌트 페이지(/components/xxx)로 들어오면 숨김. */}
+          "/components 루트(카드 그리드 개요 화면)"에서만 같이 노출 — 특정 항목 페이지
+          (/foundations/xxx, /components/xxx)나 홈("/")에서는 숨김. 담당자 리포트("radius
+          보는 중인데 이게 같이 뜬다")는 사실 이 블록이 아니라 바로 위 Foundation/Components
+          배너가 activeGroup 무관하게 항상 렌더링되던 버그였음(위에서 수정) — 이 블록
+          조건은 원래도 맞았지만, 헷갈리지 않도록 이중부정 대신 긍정문으로 다시 씀. */}
       <section
         id="upcoming-tier3"
         className={cn(
           "flex w-full max-w-[960px] scroll-mt-20 flex-col border-b border-mes-gray-30 pb-8",
-          !(activeGroup === "components" && !hasExplicitId) && "hidden"
+          (activeGroup !== "components" || Boolean(activeId)) && "hidden"
         )}
       >
         <EmptyState
@@ -4014,7 +4045,7 @@ export default function Home() {
         id="upcoming-tier4"
         className={cn(
           "flex w-full max-w-[960px] scroll-mt-20 flex-col pb-8",
-          !(activeGroup === "components" && !hasExplicitId) && "hidden"
+          (activeGroup !== "components" || Boolean(activeId)) && "hidden"
         )}
       >
         <EmptyState

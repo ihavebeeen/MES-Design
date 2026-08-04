@@ -1532,4 +1532,29 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
   검증: `npx tsc --noEmit` 클린. `npm run dev`로 로컬 서버 기동을 시도했으나 샌드박스
   리소스 제약으로 12초 내 응답 없음(기존에도 `npm run build`가 Bus error로 안 되던
   것과 같은 계열 한계로 판단 — 새 문제 아님) — tsc 클린으로 대체 검증.
+- (2026-08-04, 64차) 63차 배포 직후 담당자가 실제로 로컬에서 켜보고 버그 3개 리포트:
+  1) "홈 가면 foundation 카드만 뜨고 컴포넌트는 안 떠" — 원인: `app/page.tsx`("/")가
+     그냥 `redirect("/foundations")`였음(62차 때 만듦). 리다이렉트를 없애고 같은
+     `ClientPage`(= `[...slug]/client-page.tsx`)를 "/"에서 직접 렌더링하도록 변경.
+     `activeGroup` 타입에 `"home"`을 추가(`slug.length === 0`일 때) — 홈에서는
+     Foundation 카드 그리드 + Components 카드 그리드를 둘 다 보여줌.
+  2) "좌상단 'MES Design System' 누르면 홈으로" — 그냥 `<span>`이었던 걸 `NextLink
+     href="/"`로 교체.
+  3) "파운데이션에 radius 보고 있는데 하단에 컴포넌트들이랑 예정이 같이 뜨는거야" —
+     실제 원인을 찾아보니 진짜 버그였음: Foundation/Components "구분자" 배너(28px
+     큰 타이틀 + 설명문, 62차 이전부터 있던 요소)가 애초에 `activeGroup`과 무관하게
+     항상 렌더링되고 있었음 — 62차에서 실제 컴포넌트 섹션들은 다 `activeId` 기준
+     `hidden` 처리했는데, 이 두 배너 자체는 그 대상에서 빠뜨렸던 것. 그래서 Foundation
+     항목을 보든 Components 항목을 보든 "Foundation" 배너 + "Components" 배너가
+     둘 다 항상 보이고 있었음(radius를 볼 때 "Components" 배너 아래로 보였던 게 바로
+     이것 — 실제 컴포넌트 데모 콘텐츠 자체는 정상적으로 숨어 있었음). 두 배너 각각에
+     `(activeGroup === "foundations" || activeGroup === "home")` /
+     `(activeGroup === "components" || activeGroup === "home")` 조건을 추가해 자기
+     그룹(또는 홈)일 때만 보이도록 수정 — 카드 그리드(`OverviewGrid`)도 같은 조건
+     안으로 옮겨서 일관되게 관리. 티어3/4 "예정" 안내 블록의 조건식도 이중부정
+     (`!(A && !B)`)이라 헷갈리기 쉬워서 긍정문(`A !== "components" || Boolean(id)`
+     → hidden)으로 다시 씀(로직 자체는 원래도 맞았음 — 담당자가 본 "예정"은 사실
+     이 블록이 아니라 바로 위 Components 배너였을 가능성이 높음).
+  검증: `npx tsc --noEmit` 클린. 이번에도 로컬 dev 서버로 직접 화면 확인은 샌드박스
+  제약상 못 함 — 담당자가 로컬에서 재확인 필요.
 
