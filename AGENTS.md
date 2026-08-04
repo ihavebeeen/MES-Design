@@ -1385,4 +1385,19 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
   55차·57차와 동일한 방식으로 목표 정렬 재계산 → Components 영역 64개 물리 블록
   재배치. 재배치 후 Sample 126개/중복 key 0건/Section id 75개 중복 0건/물리 순서-
   정렬 결과 일치 재확인, tsc 클린 확인 후 커밋.
+- (2026-08-04, 59차) 담당자가 "다음에 뭐 하면 되냐" 질문 — 체크리스트 19번 열려있는
+  질문들을 먼저 해소하는 쪽으로 진행(티어3 59개 신규 착수보다 우선). 이 세션에서
+  Figma live MCP(`get_metadata`/`get_design_context`/`search_design_system`)가 정상
+  연결된 걸 확인해서 재시도: "FMS Make Metrics" 컬렉션이 실사용 컴포넌트(컴포넌트
+  라이브러리/클라우드MES 라이브러리)와 무관한 별도 라이브러리("기본 디자인시스템",
+  변수 설명에 "Target FMS UI... for Figma Make" 명시) 소속임을 `search_design_system`으로
+  확인해 미사용 보일러플레이트로 확정(체크리스트/신규_컴포넌트_설계_프로세스.md 갱신).
+  node 18887:62605(모달 갤러리)의 `get_metadata` SSE 파싱 에러는 이번에도 동일하게
+  재현(재시도로 해결 안 됨 — 다음에 필요하면 담당자가 개별 자식 노드 URL을 직접
+  지정해줘야 진행 가능). Checkbox/Radio disabled+checked 조합, Nested Modal 정확한
+  구조는 `search_design_system`이 컴포넌트/변수 이름 검색이라 화면 인스턴스 탐색에는
+  안 맞아 이번엔 해소 못 함. 나머지(Badge orange/yellow 이름, Badge blueLight/
+  blueOutline 용도, Warning/Success 데스크탑 색 신설 여부, Breakpoint Scale 필요
+  여부, ConfirmDialog/RadioChoiceDialog radius·shadow 통일 여부)는 담당자만 판단
+  가능한 디자인 결정이라 AskUserQuestion으로 확인 요청.
 
