@@ -135,78 +135,85 @@ import {
  * 아래 섹션들의 `id`(또는 `<Section id="...">`)와 1:1로 맞춰야 함 — 섹션 id를 바꾸면
  * 여기도 같이 바꿀 것.
  */
-const TOC_LINKS: { id: string; label: string }[] = [
+/**
+ * 2026-08-04 신규 — 담당자 지적: "ConfirmDialog/RadioChoiceDialog처럼 영어 코드 이름을
+ * 그대로 사이드바·제목에 쓰면 개발자 아닌 사람은 알아보기 어렵다". `label`을 한국어
+ * 메인 이름으로, `labelEn`을 실제 코드 컴포넌트 이름(파일명과 1:1 대응, 참고용 보조
+ * 표기)으로 분리. Foundation 항목(color-palette~grid-container, icons)은 코드
+ * 컴포넌트 파일과 1:1 대응하는 게 아니라 손대지 않음(기존 한국어 라벨 그대로 유지).
+ */
+const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   { id: "color-palette", label: "색상 팔레트" },
   { id: "typography", label: "타이포그래피" },
   { id: "spacing", label: "간격" },
   { id: "radius", label: "Radius" },
   { id: "shadow", label: "그림자" },
   { id: "semantic-tokens", label: "시맨틱 토큰" },
-  { id: "button-size", label: "Button 사이즈" },
-  { id: "button-icon", label: "Button 아이콘" },
-  { id: "button-color", label: "Button 컬러" },
-  { id: "icon-button", label: "IconButton" },
-  { id: "divider", label: "Divider" },
-  { id: "tooltip", label: "Tooltip" },
-  { id: "loading-spinner", label: "LoadingSpinner" },
-  { id: "skeleton", label: "Skeleton" },
-  { id: "switch", label: "Switch" },
-  { id: "textarea", label: "Textarea" },
-  { id: "label", label: "Label" },
-  { id: "link", label: "Link" },
-  { id: "input", label: "Input 기본" },
-  { id: "select", label: "Select" },
-  { id: "badge", label: "Badge" },
-  { id: "radio", label: "Radio" },
-  { id: "checkbox", label: "Checkbox" },
-  { id: "progress", label: "Progress" },
-  { id: "filter", label: "Filter" },
-  { id: "group-query", label: "GroupQuery" },
-  { id: "quick-query", label: "QuickQuery" },
-  { id: "search-input", label: "SearchInput" },
-  { id: "tag", label: "Tag" },
-  { id: "combobox", label: "Combobox" },
-  { id: "toast", label: "Toast" },
-  { id: "confirm-dialog", label: "ConfirmDialog" },
-  { id: "notice-banner", label: "NoticeBanner" },
-  { id: "radio-choice-dialog", label: "RadioChoiceDialog" },
-  { id: "center-modal", label: "Modal 중앙" },
-  { id: "side-slide-panel", label: "Modal 사이드" },
-  { id: "page-top-tab-item", label: "PageTopTabItem" },
-  { id: "sidebar", label: "Sidebar" },
-  { id: "alarm-list-item", label: "AlarmListItem" },
-  { id: "notification-panel", label: "NotificationPanel" },
-  { id: "card", label: "Card" },
-  { id: "empty-state", label: "State 없음" },
-  { id: "error-state", label: "State 오류" },
-  { id: "popover", label: "Popover" },
-  { id: "accordion", label: "Accordion" },
-  { id: "collapsible", label: "Collapsible" },
-  { id: "button-group", label: "ButtonGroup" },
-  { id: "toggle-button", label: "ToggleButton" },
-  { id: "number-input", label: "Input 숫자" },
-  { id: "password-input", label: "Input 비밀번호" },
-  { id: "multi-select-input", label: "MultiSelectInput" },
-  { id: "breadcrumb", label: "Breadcrumb" },
-  { id: "pagination", label: "Pagination" },
-  { id: "dropdown-menu", label: "DropdownMenu" },
-  { id: "list", label: "List" },
-  { id: "panel", label: "Panel" },
-  { id: "fieldset", label: "Fieldset" },
-  { id: "descriptions", label: "Descriptions" },
-  { id: "date-picker", label: "Picker 날짜" },
-  { id: "date-range-picker", label: "Picker 기간" },
-  { id: "time-picker", label: "Picker 시간" },
-  { id: "navbar", label: "Navbar" },
+  { id: "button-size", label: "사이즈", labelEn: "Size" },
+  { id: "button-icon", label: "아이콘", labelEn: "Icon" },
+  { id: "button-color", label: "컬러", labelEn: "Color" },
+  { id: "icon-button", label: "아이콘 버튼 / 닫기 버튼", labelEn: "IconButton / CloseButton" },
+  { id: "divider", label: "구분선", labelEn: "Divider" },
+  { id: "tooltip", label: "툴팁", labelEn: "Tooltip" },
+  { id: "loading-spinner", label: "로딩 스피너", labelEn: "LoadingSpinner" },
+  { id: "skeleton", label: "스켈레톤", labelEn: "Skeleton" },
+  { id: "switch", label: "스위치", labelEn: "Switch" },
+  { id: "textarea", label: "텍스트 영역", labelEn: "Textarea" },
+  { id: "label", label: "라벨", labelEn: "Label" },
+  { id: "link", label: "링크", labelEn: "Link" },
+  { id: "input", label: "기본", labelEn: "Default" },
+  { id: "select", label: "셀렉트", labelEn: "Select" },
+  { id: "badge", label: "뱃지", labelEn: "Badge" },
+  { id: "radio", label: "라디오 버튼", labelEn: "Radio" },
+  { id: "checkbox", label: "체크박스", labelEn: "Checkbox" },
+  { id: "progress", label: "진행률", labelEn: "Progress Bar" },
+  { id: "filter", label: "필터", labelEn: "Filter" },
+  { id: "group-query", label: "그룹 조회", labelEn: "GroupQuery" },
+  { id: "quick-query", label: "빠른 조회", labelEn: "QuickQuery" },
+  { id: "search-input", label: "검색창", labelEn: "SearchInput" },
+  { id: "tag", label: "태그", labelEn: "Tag" },
+  { id: "combobox", label: "콤보박스", labelEn: "Combobox" },
+  { id: "toast", label: "토스트", labelEn: "Toast" },
+  { id: "confirm-dialog", label: "확인 모달", labelEn: "ConfirmDialog" },
+  { id: "notice-banner", label: "안내 배너", labelEn: "NoticeBanner" },
+  { id: "radio-choice-dialog", label: "선택형 확인 모달", labelEn: "RadioChoiceDialog" },
+  { id: "center-modal", label: "중앙", labelEn: "Center" },
+  { id: "side-slide-panel", label: "사이드", labelEn: "Side" },
+  { id: "page-top-tab-item", label: "상단 탭", labelEn: "PageTopTabItem" },
+  { id: "sidebar", label: "사이드바", labelEn: "Sidebar" },
+  { id: "alarm-list-item", label: "알람 리스트 항목", labelEn: "AlarmListItem" },
+  { id: "notification-panel", label: "알림 패널", labelEn: "NotificationPanel" },
+  { id: "card", label: "카드", labelEn: "Card" },
+  { id: "empty-state", label: "없음", labelEn: "Empty" },
+  { id: "error-state", label: "오류", labelEn: "Error" },
+  { id: "popover", label: "팝오버", labelEn: "Popover" },
+  { id: "accordion", label: "아코디언", labelEn: "Accordion" },
+  { id: "collapsible", label: "접기·펼치기", labelEn: "Collapsible" },
+  { id: "button-group", label: "버튼 그룹", labelEn: "ButtonGroup" },
+  { id: "toggle-button", label: "토글 버튼", labelEn: "ToggleButton" },
+  { id: "number-input", label: "숫자", labelEn: "Number" },
+  { id: "password-input", label: "비밀번호", labelEn: "Password" },
+  { id: "multi-select-input", label: "다중 선택 입력", labelEn: "MultiSelectInput" },
+  { id: "breadcrumb", label: "브레드크럼", labelEn: "Breadcrumb" },
+  { id: "pagination", label: "페이지네이션", labelEn: "Pagination" },
+  { id: "dropdown-menu", label: "드롭다운 메뉴", labelEn: "DropdownMenu" },
+  { id: "list", label: "리스트", labelEn: "List" },
+  { id: "panel", label: "패널", labelEn: "Panel" },
+  { id: "fieldset", label: "필드셋", labelEn: "Fieldset" },
+  { id: "descriptions", label: "설명 목록", labelEn: "Descriptions" },
+  { id: "date-picker", label: "날짜", labelEn: "Date" },
+  { id: "date-range-picker", label: "기간", labelEn: "Range" },
+  { id: "time-picker", label: "시간", labelEn: "Time" },
+  { id: "navbar", label: "내비게이션 바", labelEn: "Navbar" },
   { id: "grid-container", label: "Grid/Container" },
-  { id: "scroll-area", label: "ScrollArea" },
-  { id: "sticky-header-footer", label: "StickyHeader/Footer" },
-  { id: "logo", label: "Logo" },
-  { id: "user-account-menu", label: "UserAccountMenu" },
-  { id: "loading-overlay", label: "LoadingOverlay" },
+  { id: "scroll-area", label: "스크롤 영역", labelEn: "ScrollArea" },
+  { id: "sticky-header-footer", label: "고정 헤더 / 고정 푸터", labelEn: "StickyHeader/Footer" },
+  { id: "logo", label: "로고", labelEn: "Logo" },
+  { id: "user-account-menu", label: "계정 메뉴", labelEn: "UserAccountMenu" },
+  { id: "loading-overlay", label: "로딩 오버레이", labelEn: "LoadingOverlay" },
   { id: "icons", label: "아이콘" },
-  { id: "table-parts", label: "Table 분리" },
-  { id: "table-full", label: "Table 합본" },
+  { id: "table-parts", label: "분리", labelEn: "Parts" },
+  { id: "table-full", label: "합본", labelEn: "Full" },
 ];
 
 /**
@@ -234,24 +241,35 @@ const TOC_LINKS: { id: string; label: string }[] = [
  * 하위 항목이 없음.
  */
 type SidebarNode =
-  | { kind: "leaf"; id: string; label: string }
-  | { kind: "branch"; label: string; children: { id: string; label: string }[] };
+  | { kind: "leaf"; id: string; label: string; labelEn?: string }
+  | {
+      kind: "branch";
+      label: string;
+      labelEn?: string;
+      children: { id: string; label: string; labelEn?: string }[];
+    };
 
 function leaf(id: string): SidebarNode {
   const item = TOC_LINKS.find((l) => l.id === id);
   if (!item) throw new Error(`TOC_LINKS에 없는 id: ${id}`);
-  return { kind: "leaf", id: item.id, label: item.label };
+  return { kind: "leaf", id: item.id, label: item.label, labelEn: item.labelEn };
 }
 
-/** `stripPrefix + " "`를 하위 항목 라벨에서 떼어내고(예: "Button 사이즈" → "사이즈") 상위 메뉴로 묶는다 */
-function branch(label: string, ids: string[], stripPrefix: string): SidebarNode {
+/**
+ * 2026-08-04 — 이전엔 `stripPrefix + " "`를 하위 항목 라벨에서 떼어내는 방식(예: "Button
+ * 사이즈" → "사이즈")이었는데, TOC_LINKS 라벨 자체가 이제 한국어 짧은 이름(예: "사이즈")을
+ * 직접 담고 있어서 문자열 자르기가 필요 없어짐 — 상위 메뉴 이름(한국어/영문)을 그대로
+ * 인자로 받는다.
+ */
+function branch(label: string, labelEn: string, ids: string[]): SidebarNode {
   return {
     kind: "branch",
     label,
+    labelEn,
     children: ids.map((id) => {
       const item = TOC_LINKS.find((l) => l.id === id);
       if (!item) throw new Error(`TOC_LINKS에 없는 id: ${id}`);
-      return { id: item.id, label: item.label.replace(`${stripPrefix} `, "") };
+      return { id: item.id, label: item.label, labelEn: item.labelEn };
     }),
   };
 }
@@ -286,7 +304,7 @@ const FOUNDATION_ID_LIST = [
 const FOUNDATION_NODES: SidebarNode[] = FOUNDATION_ID_LIST.map((id) => leaf(id));
 
 const COMPONENT_NODES: SidebarNode[] = [
-  branch("Button", ["button-size", "button-icon", "button-color"], "Button"),
+  branch("버튼", "Button", ["button-size", "button-icon", "button-color"]),
   leaf("icon-button"),
   leaf("divider"),
   leaf("tooltip"),
@@ -296,7 +314,7 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("textarea"),
   leaf("label"),
   leaf("link"),
-  branch("Input", ["input", "number-input", "password-input"], "Input"),
+  branch("인풋", "Input", ["input", "number-input", "password-input"]),
   leaf("select"),
   leaf("badge"),
   leaf("radio"),
@@ -312,13 +330,13 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("confirm-dialog"),
   leaf("notice-banner"),
   leaf("radio-choice-dialog"),
-  branch("Modal", ["center-modal", "side-slide-panel"], "Modal"),
+  branch("모달", "Modal", ["center-modal", "side-slide-panel"]),
   leaf("page-top-tab-item"),
   leaf("sidebar"),
   leaf("alarm-list-item"),
   leaf("notification-panel"),
   leaf("card"),
-  branch("State", ["empty-state", "error-state"], "State"),
+  branch("상태", "State", ["empty-state", "error-state"]),
   leaf("popover"),
   leaf("accordion"),
   leaf("collapsible"),
@@ -332,14 +350,14 @@ const COMPONENT_NODES: SidebarNode[] = [
   leaf("panel"),
   leaf("fieldset"),
   leaf("descriptions"),
-  branch("Picker", ["date-picker", "date-range-picker", "time-picker"], "Picker"),
+  branch("피커", "Picker", ["date-picker", "date-range-picker", "time-picker"]),
   leaf("navbar"),
   leaf("scroll-area"),
   leaf("sticky-header-footer"),
   leaf("logo"),
   leaf("user-account-menu"),
   leaf("loading-overlay"),
-  branch("Table", ["table-parts", "table-full"], "Table"),
+  branch("테이블", "Table", ["table-parts", "table-full"]),
 ];
 
 /**
@@ -495,12 +513,15 @@ const TIER_COLOR: Record<number, string> = {
  * 배열을 제자리에서 바꾸므로 `SIDEBAR_GROUPS`(아래에서 이 배열을 참조)에도 그대로
  * 반영됨 — 별도 복사본을 안 만듦. 티어 정보가 없는 항목(TIER_BY_ID에 없는 id)은
  * 맨 뒤로 보냄(`?? 99`).
+ * 2026-08-04 — `label`이 전부 한국어로 바뀌면서(담당자 요청, 아래 TOC_LINKS 주석 참고)
+ * 비교 로케일도 "en"에서 "ko"로 변경(가나다순 비교가 정확해짐). 라벨이 바뀌었으니
+ * 정렬 결과 순서도 달라져서, Components 물리 섹션 순서도 다시 스크립트로 재동기화함.
  */
 COMPONENT_NODES.sort((a, b) => {
   const tierA = TIER_BY_ID[firstIdOfNode(a)] ?? 99;
   const tierB = TIER_BY_ID[firstIdOfNode(b)] ?? 99;
   if (tierA !== tierB) return tierA - tierB;
-  return a.label.localeCompare(b.label, "en");
+  return a.label.localeCompare(b.label, "ko");
 });
 
 /** 사이드바 그룹과 1:1 매칭되는 최상단 탭. `firstId`는 그 그룹의 첫 섹션으로 스크롤 이동. */
@@ -525,8 +546,12 @@ const FOUNDATION_IDS = new Set(FOUNDATION_ID_LIST);
  * 방식으로 정정 — 사이드바는 항상 전체 목록 그대로 두고 안 건드림. 검색 대상은
  * leaf 항목 + branch의 하위 항목(예: "Button 사이즈")을 전부 평탄화한 목록.
  */
-function flattenSidebarNodes(nodes: SidebarNode[]): { id: string; label: string }[] {
-  return nodes.flatMap((n) => (n.kind === "leaf" ? [{ id: n.id, label: n.label }] : n.children));
+function flattenSidebarNodes(
+  nodes: SidebarNode[]
+): { id: string; label: string; labelEn?: string }[] {
+  return nodes.flatMap((n) =>
+    n.kind === "leaf" ? [{ id: n.id, label: n.label, labelEn: n.labelEn }] : n.children
+  );
 }
 const ALL_SEARCHABLE_ITEMS = [
   ...flattenSidebarNodes(FOUNDATION_NODES),
@@ -666,11 +691,18 @@ function Sample({
 function Section({
   id,
   title,
+  titleEn,
   badge,
   children,
 }: {
   id: string;
   title: string;
+  /** 2026-08-04 신규 — 담당자 지적: "ConfirmDialog/RadioChoiceDialog처럼 영어 코드
+   *  이름을 그대로 화면 제목으로 쓰면, 이 페이지를 보는 담당자(디자이너, 비개발자)
+   *  입장에서 알아보기 어렵다". 제목은 한국어를 메인으로 쓰고, 실제 코드 컴포넌트
+   *  이름(파일명과 1:1 대응)은 그 아래 작은 회색 글씨로 병기 — 코드 참조가 필요할 때만
+   *  보조적으로 쓰라는 의도. 선택 사항(없으면 영문 줄 자체를 안 그림). */
+  titleEn?: string;
   /** 2026-07-31 신규 — "Tooltip (신규, 판단값 — CSS 경량 구현)"처럼 제목 문자열에
    *  경위 설명을 욱여넣던 걸 담당자가 "제목이 이게 뭐냐"고 지적해서 분리. 제목은
    *  컴포넌트명만 깔끔하게, 부가 설명은 옆의 작은 칩으로.
@@ -700,14 +732,17 @@ function Section({
       id={id}
       className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8"
     >
-      <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-        {title}
-        {badge && (
-          <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">
-            {badge}
-          </span>
-        )}
-      </h2>
+      <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+        <h2 className="flex items-center gap-2 text-[17px] font-bold leading-tight text-mes-gray-130">
+          {title}
+          {badge && (
+            <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">
+              {badge}
+            </span>
+          )}
+        </h2>
+        {titleEn && <span className="text-[12px] leading-tight text-mes-gray-60">{titleEn}</span>}
+      </div>
       <div className="flex w-full flex-col divide-y divide-mes-gray-30">{laidOutChildren}</div>
     </section>
   );
@@ -1559,8 +1594,10 @@ export default function Home() {
   // 2026-08-03 — 검색창 밑 콤보박스형 드롭다운에 쓸 결과 목록. 사이드바 자체는 안 건드림.
   const normalizedSidebarSearch = sidebarSearch.trim().toLowerCase();
   const searchResults = normalizedSidebarSearch
-    ? ALL_SEARCHABLE_ITEMS.filter((item) =>
-        item.label.toLowerCase().includes(normalizedSidebarSearch)
+    ? ALL_SEARCHABLE_ITEMS.filter(
+        (item) =>
+          item.label.toLowerCase().includes(normalizedSidebarSearch) ||
+          item.labelEn?.toLowerCase().includes(normalizedSidebarSearch)
       )
     : [];
 
@@ -1647,7 +1684,14 @@ export default function Home() {
                 className="flex items-center gap-1.5 rounded-mes-control px-2 py-[5px] text-left text-[13px] leading-[1.5] text-mes-text-default outline-none transition-colors hover:bg-mes-bg-subtle"
               >
                 <TierBadge id={item.id} />
-                <span className="truncate">{item.label}</span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="truncate">{item.label}</span>
+                  {item.labelEn && (
+                    <span className="truncate text-[11px] leading-tight text-mes-gray-60">
+                      {item.labelEn}
+                    </span>
+                  )}
+                </span>
               </a>
             ))}
           </PopoverContent>
@@ -1677,14 +1721,21 @@ export default function Home() {
                       key={node.id}
                       href={`#${node.id}`}
                       className={cn(
-                        "flex items-center gap-1.5 truncate rounded-md px-2 py-1.5 text-[13px] transition-colors",
+                        "flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[13px] transition-colors",
                         activeId === node.id
                           ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
                           : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-gray-130"
                       )}
                     >
                       <TierBadge id={node.id} />
-                      <span className="truncate">{node.label}</span>
+                      <span className="flex min-w-0 flex-1 flex-col">
+                        <span className="truncate">{node.label}</span>
+                        {node.labelEn && (
+                          <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">
+                            {node.labelEn}
+                          </span>
+                        )}
+                      </span>
                       {TEMP_BADGE_IDS.has(node.id) && (
                         <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
                           임시
@@ -1693,29 +1744,43 @@ export default function Home() {
                     </a>
                   ) : (
                     <div key={node.label} className="flex flex-col gap-0.5">
-                      <span
-                        className={cn(
-                          "truncate px-2 py-1.5 text-[13px] font-semibold",
-                          node.children.some((c) => c.id === activeId)
-                            ? "text-mes-text-brand"
-                            : "text-mes-gray-100"
+                      <div className="flex flex-col px-2 py-1.5">
+                        <span
+                          className={cn(
+                            "truncate text-[13px] font-semibold",
+                            node.children.some((c) => c.id === activeId)
+                              ? "text-mes-text-brand"
+                              : "text-mes-gray-100"
+                          )}
+                        >
+                          {node.label}
+                        </span>
+                        {node.labelEn && (
+                          <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">
+                            {node.labelEn}
+                          </span>
                         )}
-                      >
-                        {node.label}
-                      </span>
+                      </div>
                       {node.children.map((child) => (
                         <a
                           key={child.id}
                           href={`#${child.id}`}
                           className={cn(
-                            "ml-3 flex items-center gap-1.5 truncate rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors",
+                            "ml-3 flex items-center gap-1.5 rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors",
                             activeId === child.id
                               ? "border-mes-primary-60 font-semibold text-mes-text-brand"
                               : "text-mes-gray-70 hover:text-mes-gray-130"
                           )}
                         >
                           <TierBadge id={child.id} />
-                          <span className="truncate">{child.label}</span>
+                          <span className="flex min-w-0 flex-1 flex-col">
+                            <span className="truncate">{child.label}</span>
+                            {child.labelEn && (
+                              <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">
+                                {child.labelEn}
+                              </span>
+                            )}
+                          </span>
                           {TEMP_BADGE_IDS.has(child.id) && (
                             <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
                               임시
@@ -2019,40 +2084,180 @@ export default function Home() {
             </p>
           </div>
 
-      <section id="alarm-list-item" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          AlarmListItem
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">tone 4색(blue/red/yellow/green).</p>
-        <div className="flex w-[400px] flex-col border border-mes-gray-30">
-          <AlarmListItem
-            tone="blue"
-            title="작업 지시 생성"
-            time="20:25"
-            description="yyyy.mm.dd/[설비]/n건의 작업 지시가 생성되었습니다."
-          />
-          <AlarmListItem
-            tone="red"
-            title="출하 승인 취소"
-            time="20:25"
-            description="yyyy.mm.dd/[거래처]/n건의 출하 승인이 취소되었습니다."
-          />
-          <AlarmListItem
-            tone="yellow"
-            title="작업 지시 변경"
-            time="20:25"
-            description="yyyy.mm.dd/[설비]/n건의 작업 지시가 변경되었습니다."
-          />
-          <AlarmListItem
-            tone="green"
-            title="입고 완료"
-            time="20:25"
-            description="yyyy.mm.dd/[거래처]/n건의 입고가 완료되었습니다."
-          />
+      <Section id="search-input" title="검색창" titleEn="SearchInput">
+        <Sample
+          label="값 없음(기본)"
+          spec={[
+            { label: "크기", value: "고정 200×32px(hug 아님)" },
+            { label: "R값", value: "3px(control-sm)" },
+            { label: "배경/테두리", value: "흰색 / 1px Gray-30(판단값)" },
+            { label: "검색 아이콘", value: "16px, 좌padding 12px" },
+            { label: "아이콘↔텍스트", value: "gap 8px" },
+          ]}
+        >
+          <SearchInput value="" onChange={() => {}} />
+        </Sample>
+        <Sample
+          label="값 있음(실측 — 배경색 강조)"
+          spec={[
+            { label: "배경/테두리", value: "Primary-20 / 1px Primary-30(실측)" },
+            { label: "텍스트", value: "16px medium, Gray-130" },
+            { label: "닫기(X) 버튼", value: "32×32 히트영역, 아이콘16px, 값 있을 때만 노출" },
+          ]}
+        >
+          <SearchInput value="숯불치킨 뚜껑" onChange={() => {}} />
+        </Sample>
+        <Sample
+          label="제어형(직접 입력해보기)"
+          spec={[{ label: "동작", value: "값 유무에 따라 배경 자동 전환" }]}
+        >
+          <SearchInput value={searchInputValue} onChange={setSearchInputValue} />
+        </Sample>
+      </Section>
+
+      <section id="group-query" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="flex items-center gap-2 text-[17px] font-bold leading-tight text-mes-gray-130">
+            그룹 조회
+            <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">임시</span>
+          </h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">GroupQuery</span>
+        </div>
+        <p className="text-[12px] text-mes-gray-70">
+          Level 1~3 드롭다운으로 그룹화 기준 지정, 값 있으면 칩+X로 표시. 옆은 Filter,
+          오른쪽 끝은 SearchInput 재사용.
+        </p>
+        {/* 2026-08-03 — Filter의 shrink-0 누락 버그(주석 참고)를 고치면서, 이 줄 자체도
+            방어적으로 `flex-wrap` 추가: 폭이 정말 부족해지면(예: 좁은 화면) 컴포넌트가
+            찌그러지는 대신 SearchInput이 다음 줄로 자연스럽게 내려가도록 함. */}
+        <div className="flex w-full flex-wrap items-center justify-between gap-x-2.5 gap-y-2">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <GroupQuery
+              options={groupQueryOptions}
+              levels={groupQueryLevels}
+              onLevelChange={(index, value) =>
+                setGroupQueryLevels((prev) => prev.map((v, i) => (i === index ? value : v)))
+              }
+            />
+            <Filter
+              categories={filterCategories}
+              value={filterValue}
+              onChange={(categoryId, optionIds) =>
+                setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
+              }
+            />
+          </div>
+          <SearchInput value={groupQuerySearchValue} onChange={setGroupQuerySearchValue} />
         </div>
       </section>
 
-      <Section id="badge" title="Badge">
+      <Section id="radio" title="라디오 버튼" titleEn="Radio">
+        <Sample
+          label="Radio · Unselected"
+          spec={[
+            { label: "전체 크기", value: "24×24px" },
+            { label: "바깥 원", value: "지름22px(인셋1px), 테두리1.5px(판단값)" },
+            { label: "바깥 원 색", value: "Gray-50" },
+            { label: "내부 점", value: "없음" },
+            { label: "형태", value: "완전 원형(rounded-full)" },
+          ]}
+        >
+          <Radio name="demo-radio-unsel" />
+        </Sample>
+        <Sample
+          label="Radio · Selected"
+          spec={[
+            { label: "바깥 원/내부 점", value: "Primary-60 단색" },
+            { label: "내부 점 크기", value: "지름14px(인셋5px)" },
+            { label: "형태", value: "완전 원형(rounded-full)" },
+          ]}
+        >
+          <Radio name="demo-radio-sel" defaultChecked />
+        </Sample>
+        <Sample
+          label="Radio · Disabled(선택 안 됨)"
+          spec={[
+            { label: "바깥 원", value: "Gray-30" },
+            { label: "채움", value: "Gray-20" },
+            { label: "형태", value: "완전 원형(rounded-full)" },
+          ]}
+        >
+          <Radio name="demo-radio-disabled-off" disabled />
+        </Sample>
+        <Sample
+          label="Radio · Disabled(선택됨, Figma에 없어 판단값)"
+          spec={[
+            { label: "내부 점", value: "Gray-50(판단값, Figma 근거 없음)" },
+            { label: "형태", value: "완전 원형(rounded-full)" },
+          ]}
+        >
+          <Radio name="demo-radio-disabled-on" disabled defaultChecked />
+        </Sample>
+      </Section>
+
+      <section id="center-modal" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">모달 — 중앙</h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">Center Modal</span>
+        </div>
+        <p className="text-[12px] text-mes-gray-70">
+          화면 중앙에 뜨는 기본 팝업. 폭 960px 고정, 최대 높이 80vh — 헤더·푸터는 항상
+          고정, 본문 콘텐츠가 넘치면 본문만 스크롤. 2026-08-03 클라우드MES "Modal"
+          스펙 페이지(node 9873:82872 Type01)로 보류 해제 후 실측 반영.
+        </p>
+        <Button size="basic" onClick={() => setCenterModalOpen(true)}>
+          Center Modal 열기
+        </Button>
+      </section>
+
+      <CenterModal
+        open={centerModalOpen}
+        onOpenChange={setCenterModalOpen}
+        title="모달 타이틀"
+        onCancel={() => setCenterModalOpen(false)}
+        onConfirm={() => setCenterModalOpen(false)}
+      >
+        <div className="flex w-full flex-col gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-3">
+          {Array.from({ length: 14 }, (_, i) => (
+            <div key={i} className="text-[13px] text-mes-gray-70">
+              콘텐츠 영역 — 항목 {i + 1} (본문만 스크롤되는지 확인용 더미 행)
+            </div>
+          ))}
+        </div>
+      </CenterModal>
+
+      <section id="side-slide-panel" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">모달 — 사이드</h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">Side Slide Panel</span>
+        </div>
+        <p className="text-[12px] text-mes-gray-70">
+          화면 우측에 붙어 세로 전체를 채우는 패널. 폭 960px 기본(콘텐츠 타입에 따라
+          변형 가능) — 헤더·푸터 고정, 본문만 스크롤은 Center Modal과 동일 규칙.
+          같은 스펙 페이지(node 9873:82872 Type02)로 신규 구현.
+        </p>
+        <Button size="basic" onClick={() => setSideSlidePanelOpen(true)}>
+          Side Slide Panel 열기
+        </Button>
+      </section>
+
+      <SideSlidePanel
+        open={sideSlidePanelOpen}
+        onOpenChange={setSideSlidePanelOpen}
+        title="모달 타이틀"
+        onCancel={() => setSideSlidePanelOpen(false)}
+        onConfirm={() => setSideSlidePanelOpen(false)}
+      >
+        <div className="flex w-full flex-col gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-3">
+          {Array.from({ length: 24 }, (_, i) => (
+            <div key={i} className="text-[13px] text-mes-gray-70">
+              콘텐츠 스크롤 영역 — 항목 {i + 1} (모달창 높이에 따라 가변)
+            </div>
+          ))}
+        </div>
+      </SideSlidePanel>
+
+      <Section id="badge" title="뱃지" titleEn="Badge">
         <Sample
           label="Badge · blue"
           spec={[
@@ -2130,7 +2335,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="button-size" title="Button — 사이즈">
+      <Section id="button-size" title="버튼 — 사이즈" titleEn="Button — Size">
         <Sample
           label="Button · Basic · Default"
           spec={[
@@ -2175,7 +2380,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="button-icon" title="Button — 아이콘">
+      <Section id="button-icon" title="버튼 — 아이콘" titleEn="Button — Icon">
         <Sample
           label="Button · StartIcon"
           spec={[
@@ -2226,7 +2431,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="button-color" title="Button — 컬러">
+      <Section id="button-color" title="버튼 — 컬러" titleEn="Button — Color">
         <Sample
           label="Button · fillMain"
           spec={[
@@ -2339,539 +2544,11 @@ export default function Home() {
           2026-08-03(55차) — 물리적 배치 순서는 더 이상 "개념적으로 가까운 이웃"
           기준이 아니라 사이드바와 동일한 티어 오름차순 → 알파벳순 정렬을 그대로
           따름(아래 참고). */}
-      <Section id="checkbox" title="Checkbox">
-        <Sample
-          label="Checkbox · Unchecked"
-          spec={[
-            { label: "전체 크기", value: "24×24px" },
-            { label: "박스", value: "22×22px(인셋1px), R값3px(control-sm)" },
-            { label: "배경/테두리", value: "흰색 / 1px Gray-40" },
-          ]}
-        >
-          <Checkbox />
-        </Sample>
-        <Sample
-          label="Checkbox · Checked · main"
-          spec={[
-            { label: "배경", value: "Primary-60" },
-            { label: "체크마크", value: "흰색, 14px(size-3.5, 판단값)" },
-            { label: "R값", value: "3px(control-sm)" },
-          ]}
-        >
-          <Checkbox defaultChecked color="main" />
-        </Sample>
-        <Sample
-          label="Checkbox · Checked · gray"
-          spec={[
-            { label: "배경", value: "Gray-50" },
-            { label: "R값", value: "3px(control-sm)" },
-          ]}
-        >
-          <Checkbox defaultChecked color="gray" />
-        </Sample>
-        <Sample
-          label="Checkbox · Checked · black"
-          spec={[
-            { label: "배경", value: "Gray-130(bg-strong)" },
-            { label: "R값", value: "3px(control-sm)" },
-          ]}
-        >
-          <Checkbox defaultChecked color="black" />
-        </Sample>
-        <Sample
-          label="Checkbox · Disabled(판단값)"
-          spec={[
-            { label: "테두리/배경", value: "Gray-30(판단값, Figma에 disabled 자체 없음)" },
-            { label: "R값", value: "3px(control-sm)" },
-          ]}
-        >
-          <Checkbox disabled />
-        </Sample>
-        <Sample
-          label="Checkbox · Disabled+Checked(판단값)"
-          spec={[
-            { label: "처리", value: "위 Disabled와 동일 판단값" },
-            { label: "체크마크", value: "Gray-60(판단값)" },
-            { label: "R값", value: "3px(control-sm)" },
-          ]}
-        >
-          <Checkbox disabled defaultChecked />
-        </Sample>
-      </Section>
-
-      <Section id="combobox" title="Combobox">
-        <Sample
-          label="Combobox · Default(제어형, 검색 가능)"
-          spec={[
-            { label: "트리거 규격", value: "Select와 동일(재사용, 32px/10px/4px)" },
-            { label: "검색창", value: "높이26px, R값4px, 테두리1px Gray-30" },
-            { label: "검색 아이콘", value: "16px, 좌인셋8px" },
-            { label: "패널", value: "테두리1px Gray-30, R값8px(판단값), 그림자 0 2px 8px rgba(0,0,0,.12)" },
-            { label: "항목", value: "13px/150%, 좌우패딩8px" },
-            { label: "selected 배경", value: "#E8F0FE(실측)" },
-          ]}
-        >
-          <Combobox
-            options={shiftOptions}
-            value={comboValue}
-            onValueChange={setComboValue}
-            placeholder="근무조 선택"
-            searchPlaceholder="근무조 검색"
-            className="w-[200px]"
-          />
-        </Sample>
-        <Sample
-          label="Combobox · Default(비제어, 초기값 있음)"
-          spec={[{ label: "규격", value: "위 Default와 동일" }]}
-        >
-          <Combobox
-            options={shiftOptions}
-            defaultValue="night"
-            searchPlaceholder="근무조 검색"
-            className="w-[200px]"
-          />
-        </Sample>
-        <Sample
-          label="Combobox · Small(비제어, 초기값 있음)"
-          spec={[
-            { label: "트리거", value: "Select Small과 동일(22px/6px/3px)" },
-          ]}
-        >
-          <Combobox
-            options={shiftOptions}
-            defaultValue="bom1"
-            searchPlaceholder="BOM 검색"
-            size="small"
-            className="w-[200px]"
-          />
-        </Sample>
-        <Sample
-          label="Combobox · Small · Disabled"
-          spec={[{ label: "처리", value: "Select Disabled와 동일 패턴" }]}
-        >
-          <Combobox
-            options={shiftOptions}
-            defaultValue="bom1"
-            size="small"
-            disabled
-            className="w-[200px]"
-          />
-        </Sample>
-        <Sample
-          label="Combobox · Default · Disabled"
-          spec={[{ label: "처리", value: "Select Disabled와 동일 패턴" }]}
-        >
-          <Combobox
-            options={shiftOptions}
-            placeholder="내용 입력"
-            disabled
-            className="w-[200px]"
-          />
-        </Sample>
-        <Sample
-          label="Combobox · 커스텀 아이콘(꺾쇠 대신)"
-          spec={[{ label: "아이콘", value: "14px(판단값), opacity 80%" }]}
-        >
-          <Combobox
-            options={shiftOptions}
-            placeholder="정렬 기준"
-            searchPlaceholder="검색"
-            icon={<IconFilter size={14} className="shrink-0 opacity-80" />}
-            className="w-[200px]"
-          />
-        </Sample>
-      </Section>
-
-      <Section id="confirm-dialog" title="ConfirmDialog">
-        <Sample
-          label="ConfirmDialog · error 톤(기본), 확인 1버튼"
-          spec={[
-            { label: "전체", value: "흰배경, R값12px, 그림자 0 4px 16px rgba(0,0,0,.2)" },
-            { label: "헤더", value: "높이52px, 하단테두리1px Gray-30, 제목18px Bold" },
-            { label: "본문 아이콘", value: "44px, Danger-60(error 톤)" },
-            { label: "본문↔아이콘 gap", value: "20px" },
-            { label: "푸터", value: "패딩20px, 버튼높이40px, 1버튼일 땐 flex-1" },
-          ]}
-        >
-          <Button size="basic" onClick={() => setDialogOpen(true)}>
-            삭제 시도
-          </Button>
-        </Sample>
-        <Sample
-          label="ConfirmDialog · warning 톤, 확인+취소 2버튼"
-          spec={[
-            { label: "규격", value: "error 톤과 동일 레이아웃" },
-            { label: "본문 아이콘 색", value: "Yellow-50(#F2A406)" },
-            { label: "버튼", value: "취소=fillGray, 확인=fillBlack" },
-          ]}
-        >
-          <Button size="basic" onClick={() => setWarningDialogOpen(true)}>
-            반품 시도
-          </Button>
-        </Sample>
-        <Sample
-          label="ConfirmDialog · info 톤, 확인 1버튼"
-          spec={[
-            { label: "규격", value: "error 톤과 동일 레이아웃" },
-            { label: "본문 아이콘 색", value: "Primary-60" },
-          ]}
-        >
-          <Button size="basic" onClick={() => setInfoDialogOpen(true)}>
-            삭제 완료 알림
-          </Button>
-        </Sample>
-        <Sample
-          label="ConfirmDialog · error 톤 + 안내 배너(링크 포함)"
-          spec={[
-            { label: "배너↔푸터 gap", value: "20px(담당자 확정값)" },
-            { label: "배너 스타일", value: "판단값(devtools 응답 실패로 육안 대조)" },
-          ]}
-        >
-          <Button size="basic" onClick={() => setBannerDialogOpen(true)}>
-            라벨 생성 시도
-          </Button>
-        </Sample>
-      </Section>
-
-      <ConfirmDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        title="삭제 불가"
-        heading="삭제 불가합니다."
-        description="이미 사용되었거나 후속 작업(생산, 출하, 연동) 진행 이력이 있어 삭제 불가합니다."
-        actions={[{ label: "확인", onClick: () => setDialogOpen(false) }]}
-      />
-
-      <ConfirmDialog
-        open={warningDialogOpen}
-        onOpenChange={setWarningDialogOpen}
-        title="경고"
-        heading="선택 항목을 삭제(반품)하시겠습니까?"
-        description="선택한 발주가 리스트에서 삭제됩니다."
-        tone="warning"
-        actions={[
-          { label: "취소", variant: "fillGray", onClick: () => setWarningDialogOpen(false) },
-          { label: "확인", variant: "fillBlack", onClick: () => setWarningDialogOpen(false) },
-        ]}
-      />
-
-      <ConfirmDialog
-        open={infoDialogOpen}
-        onOpenChange={setInfoDialogOpen}
-        title="알림"
-        heading="삭제 완료"
-        description="생산목표가 삭제(등록)되었습니다."
-        tone="info"
-        actions={[{ label: "확인", onClick: () => setInfoDialogOpen(false) }]}
-      />
-
-      <ConfirmDialog
-        open={bannerDialogOpen}
-        onOpenChange={setBannerDialogOpen}
-        title="라벨 생성 불가"
-        heading="라벨 생성 불가"
-        description="품목 정보에서 입상수 기준수량을 등록해 주세요."
-        banner={{
-          message: "담당자의 조가 설정되지 않았습니다. 조를 설정하면 LOT 일련번호에 반영됩니다.",
-          linkLabel: "조설정 바로가기",
-        }}
-        actions={[{ label: "확인", onClick: () => setBannerDialogOpen(false) }]}
-      />
-
-      <section id="filter" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Filter
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          필터 추가 → 카테고리·체크박스 선택 → 태그로 표시 → X로 해제.
-        </p>
-        <Filter
-          categories={filterCategories}
-          value={filterValue}
-          onChange={(categoryId, optionIds) =>
-            setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
-          }
-        />
-      </section>
-
-      <section id="group-query" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="flex items-center gap-2 border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          GroupQuery
-          <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">임시</span>
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          Level 1~3 드롭다운으로 그룹화 기준 지정, 값 있으면 칩+X로 표시. 옆은 Filter,
-          오른쪽 끝은 SearchInput 재사용.
-        </p>
-        {/* 2026-08-03 — Filter의 shrink-0 누락 버그(주석 참고)를 고치면서, 이 줄 자체도
-            방어적으로 `flex-wrap` 추가: 폭이 정말 부족해지면(예: 좁은 화면) 컴포넌트가
-            찌그러지는 대신 SearchInput이 다음 줄로 자연스럽게 내려가도록 함. */}
-        <div className="flex w-full flex-wrap items-center justify-between gap-x-2.5 gap-y-2">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <GroupQuery
-              options={groupQueryOptions}
-              levels={groupQueryLevels}
-              onLevelChange={(index, value) =>
-                setGroupQueryLevels((prev) => prev.map((v, i) => (i === index ? value : v)))
-              }
-            />
-            <Filter
-              categories={filterCategories}
-              value={filterValue}
-              onChange={(categoryId, optionIds) =>
-                setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
-              }
-            />
-          </div>
-          <SearchInput value={groupQuerySearchValue} onChange={setGroupQuerySearchValue} />
-        </div>
-      </section>
-
-      <Section id="input" title="Input">
-        <Sample
-          label="Input · Default(placeholder)"
-          spec={[
-            { label: "높이", value: "32px(h-8) 고정" },
-            { label: "좌우 패딩", value: "10px(px-[10px])" },
-            { label: "테두리", value: "1px Gray-30(border-default)" },
-            { label: "R값", value: "4px(control)" },
-            { label: "폰트", value: "14px" },
-            { label: "너비", value: "100% hug(데모는 200px로 제한)" },
-          ]}
-        >
-          <Input placeholder="내용 입력" className="w-[200px]" />
-        </Sample>
-        <Sample
-          label="Input · Default(filled)"
-          spec={[{ label: "패딩/테두리/R값", value: "placeholder와 동일" }, { label: "입력값 색", value: "Gray-130(text-default)" }]}
-        >
-          <Input defaultValue="내용" className="w-[200px]" />
-        </Sample>
-        <Sample
-          label="Input · Readonly"
-          spec={[
-            { label: "패딩/테두리/R값", value: "동일" },
-            { label: "배경만 변경", value: "Gray-20(bg-subtle)" },
-          ]}
-        >
-          <Input placeholder="내용 입력" readOnly defaultValue="내용" className="w-[200px]" />
-        </Sample>
-        <Sample
-          label="Input · Disabled"
-          spec={[
-            { label: "배경", value: "Gray-30(bg-disabled, 테두리색과 같아 경계가 안 보임)" },
-            { label: "텍스트", value: "Gray-70(text-disabled)" },
-            { label: "커서", value: "not-allowed" },
-          ]}
-        >
-          <Input placeholder="내용 입력" disabled className="w-[200px]" />
-        </Sample>
-        <Sample
-          label="Input · Small(placeholder)"
-          spec={[
-            { label: "높이", value: "22px(h-[22px]) 고정" },
-            { label: "좌우 패딩", value: "6px(px-[6px])" },
-            { label: "R값", value: "control-sm(default의 4px보다 작음)" },
-            { label: "폰트", value: "13px" },
-            { label: "참고", value: "Figma 원본에 small용 focus 상태 자체가 없음(디자인 누락, 임의 추가 안 함)" },
-          ]}
-        >
-          <Input size="small" placeholder="내용 입력" className="w-[200px]" />
-        </Sample>
-        <Sample
-          label="Input · Small(filled)"
-          spec={[{ label: "패딩/R값/폰트", value: "small placeholder와 동일" }]}
-        >
-          <Input size="small" defaultValue="내용" className="w-[200px]" />
-        </Sample>
-      </Section>
-
-      <Section id="number-input" title="NumberInput" badge="임시">
-        <Sample
-          label="NumberInput · 기본"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "텍스트박스", value: "Input 실측 스타일 재사용(inputVariants)" },
-            { label: "증감 버튼", value: "폭24px(w-6), 상하 분할, 아이콘10px" },
-            { label: "버튼 테두리", value: "1px Gray-30, 텍스트박스와 이어붙임(border-r-0)" },
-            { label: "R값", value: "4px(control, Input과 동일)" },
-          ]}
-        >
-          <NumberInput defaultValue={10} min={0} max={999} />
-        </Sample>
-      </Section>
-
-      <Section id="password-input" title="PasswordInput" badge="임시">
-        <Sample
-          label="PasswordInput · 보기/숨기기 토글"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "규격", value: "Input 실측 스타일 재사용(inputVariants)" },
-            { label: "토글 아이콘", value: "16px, 우측 인셋8px(right-2)" },
-            { label: "우측 여백", value: "아이콘 자리만큼 pr-8 추가" },
-            { label: "R값", value: "4px(control, Input과 동일)" },
-          ]}
-        >
-          <PasswordInput defaultValue="password123" className="w-[200px]" />
-        </Sample>
-      </Section>
-
-      <section id="center-modal" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Center Modal
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          화면 중앙에 뜨는 기본 팝업. 폭 960px 고정, 최대 높이 80vh — 헤더·푸터는 항상
-          고정, 본문 콘텐츠가 넘치면 본문만 스크롤. 2026-08-03 클라우드MES "Modal"
-          스펙 페이지(node 9873:82872 Type01)로 보류 해제 후 실측 반영.
-        </p>
-        <Button size="basic" onClick={() => setCenterModalOpen(true)}>
-          Center Modal 열기
-        </Button>
-      </section>
-
-      <CenterModal
-        open={centerModalOpen}
-        onOpenChange={setCenterModalOpen}
-        title="모달 타이틀"
-        onCancel={() => setCenterModalOpen(false)}
-        onConfirm={() => setCenterModalOpen(false)}
-      >
-        <div className="flex w-full flex-col gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-3">
-          {Array.from({ length: 14 }, (_, i) => (
-            <div key={i} className="text-[13px] text-mes-gray-70">
-              콘텐츠 영역 — 항목 {i + 1} (본문만 스크롤되는지 확인용 더미 행)
-            </div>
-          ))}
-        </div>
-      </CenterModal>
-
-      <section id="side-slide-panel" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Side Slide Panel
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          화면 우측에 붙어 세로 전체를 채우는 패널. 폭 960px 기본(콘텐츠 타입에 따라
-          변형 가능) — 헤더·푸터 고정, 본문만 스크롤은 Center Modal과 동일 규칙.
-          같은 스펙 페이지(node 9873:82872 Type02)로 신규 구현.
-        </p>
-        <Button size="basic" onClick={() => setSideSlidePanelOpen(true)}>
-          Side Slide Panel 열기
-        </Button>
-      </section>
-
-      <SideSlidePanel
-        open={sideSlidePanelOpen}
-        onOpenChange={setSideSlidePanelOpen}
-        title="모달 타이틀"
-        onCancel={() => setSideSlidePanelOpen(false)}
-        onConfirm={() => setSideSlidePanelOpen(false)}
-      >
-        <div className="flex w-full flex-col gap-2 rounded-[4px] bg-mes-gray-20 px-[30px] py-3">
-          {Array.from({ length: 24 }, (_, i) => (
-            <div key={i} className="text-[13px] text-mes-gray-70">
-              콘텐츠 스크롤 영역 — 항목 {i + 1} (모달창 높이에 따라 가변)
-            </div>
-          ))}
-        </div>
-      </SideSlidePanel>
-
-      <section id="notice-banner" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          NoticeBanner
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          ConfirmDialog 안내 배너로도, 독립적으로도 사용 가능.
-        </p>
-        <NoticeBanner
-          message="담당자의 조가 설정되지 않았습니다. 조를 설정하면 LOT 일련번호에 반영됩니다."
-          linkLabel="조설정 바로가기"
-          className="max-w-[420px]"
-        />
-      </section>
-
-      <section id="notification-panel" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          NotificationPanel
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">
-          AlarmListItem을 재사용한 알림 드롭다운. 항목 클릭 시 목록에서 제거, 설정 아이콘
-          클릭 시 알림 설정 화면으로 전환.
-        </p>
-        <div className="flex flex-wrap items-start gap-8">
-          <div className="flex flex-col items-start gap-2">
-            <span className="text-[12px] font-medium text-mes-gray-70">
-              데이터 있음(클릭해서 제거해보기 · 설정 아이콘 클릭 가능)
-            </span>
-            <NotificationPanel
-              items={notificationItems}
-              onItemClick={(id) =>
-                setNotificationItems((prev) => prev.filter((item) => item.id !== id))
-              }
-              settingsItems={notificationSettings}
-              onSettingsItemChange={(id, enabled) =>
-                setNotificationSettings((prev) =>
-                  prev.map((item) => (item.id === id ? { ...item, enabled } : item))
-                )
-              }
-            />
-          </div>
-          <div className="flex flex-col items-start gap-2">
-            <span className="text-[12px] font-medium text-mes-gray-70">빈 상태</span>
-            <NotificationPanel items={[]} />
-          </div>
-        </div>
-      </section>
-
-      <section id="page-top-tab-item" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          PageTopTabItem
-        </h2>
-        <p className="text-[12px] text-mes-gray-70">default/hover/active 3종.</p>
-        <div className="flex">
-          <PageTopTabItem label="생산계획(일) 리스트" active />
-          <PageTopTabItem label="판매관리 리스트" />
-          <PageTopTabItem label="품질검사 이력" bookmarked />
-        </div>
-      </section>
-
-      <Section id="progress" title="Progress Bar">
-        <Sample
-          label="Progress · 78%"
-          spec={[
-            { label: "전체 높이", value: "30px, 좌우패딩6px" },
-            { label: "트랙", value: "높이6px, 배경Gray-40, full-round" },
-            { label: "채움색", value: "Gray-100" },
-            { label: "트랙↔라벨 gap", value: "2px" },
-            { label: "라벨", value: "고정폭44px, 14px, Gray-130" },
-          ]}
-        >
-          <Progress value={78} className="w-[160px]" />
-        </Sample>
-        <Sample
-          label="Progress · 0%"
-          spec={[{ label: "규격", value: "78%와 동일, 채움 너비만 0%" }]}
-        >
-          <Progress value={0} className="w-[160px]" />
-        </Sample>
-        <Sample
-          label="Progress · 50%"
-          spec={[{ label: "규격", value: "78%와 동일, 채움 너비만 50%" }]}
-        >
-          <Progress value={50} className="w-[160px]" />
-        </Sample>
-        <Sample
-          label="Progress · 100%"
-          spec={[{ label: "규격", value: "78%와 동일, 채움이 트랙 전체" }]}
-        >
-          <Progress value={100} className="w-[160px]" />
-        </Sample>
-      </Section>
-
       <section id="quick-query" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          QuickQuery
-        </h2>
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">빠른 조회</h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">QuickQuery</span>
+        </div>
         <p className="text-[12px] text-mes-gray-70">
           조회 조건(그룹화/필터/조회 설정)을 즐겨찾기로 저장·적용. 톱니 아이콘 클릭 → &quot;조회
           조건 프리셋&quot; 관리 모달(최대 3개 슬롯: 미설정/저장됨/저장 중 3가지 상태).
@@ -2911,51 +2588,48 @@ export default function Home() {
         />
       </section>
 
-      <Section id="radio" title="Radio">
-        <Sample
-          label="Radio · Unselected"
-          spec={[
-            { label: "전체 크기", value: "24×24px" },
-            { label: "바깥 원", value: "지름22px(인셋1px), 테두리1.5px(판단값)" },
-            { label: "바깥 원 색", value: "Gray-50" },
-            { label: "내부 점", value: "없음" },
-            { label: "형태", value: "완전 원형(rounded-full)" },
-          ]}
+      <section id="sidebar" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">사이드바</h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">Sidebar / SNB</span>
+        </div>
+        <p className="text-[12px] text-mes-gray-70">
+          node 9873:83338(펼침)·9873:83651(접힘) 실측. 1-depth hover(Gray-120)/
+          active(Primary-60) 구분, 2-depth 트리 연결선 포함. 우상단 화살표로 62px
+          아이콘 레일로 접기 가능.
+        </p>
+        <div
+          className={cn(
+            "h-[820px] overflow-hidden rounded-lg border border-mes-gray-30 transition-[width]",
+            sidebarCollapsed ? "w-[62px]" : "w-[260px]"
+          )}
         >
-          <Radio name="demo-radio-unsel" />
-        </Sample>
-        <Sample
-          label="Radio · Selected"
-          spec={[
-            { label: "바깥 원/내부 점", value: "Primary-60 단색" },
-            { label: "내부 점 크기", value: "지름14px(인셋5px)" },
-            { label: "형태", value: "완전 원형(rounded-full)" },
-          ]}
-        >
-          <Radio name="demo-radio-sel" defaultChecked />
-        </Sample>
-        <Sample
-          label="Radio · Disabled(선택 안 됨)"
-          spec={[
-            { label: "바깥 원", value: "Gray-30" },
-            { label: "채움", value: "Gray-20" },
-            { label: "형태", value: "완전 원형(rounded-full)" },
-          ]}
-        >
-          <Radio name="demo-radio-disabled-off" disabled />
-        </Sample>
-        <Sample
-          label="Radio · Disabled(선택됨, Figma에 없어 판단값)"
-          spec={[
-            { label: "내부 점", value: "Gray-50(판단값, Figma 근거 없음)" },
-            { label: "형태", value: "완전 원형(rounded-full)" },
-          ]}
-        >
-          <Radio name="demo-radio-disabled-on" disabled defaultChecked />
-        </Sample>
-      </Section>
+          <Sidebar
+            items={SIDEBAR_NAV_ITEMS}
+            expandedKey={sidebarExpandedKey}
+            onExpandedKeyChange={setSidebarExpandedKey}
+            activeSubKey={sidebarActiveSubKey}
+            onSubItemClick={(_, subKey) => setSidebarActiveSubKey(subKey)}
+            collapsed={sidebarCollapsed}
+            onCollapseClick={() => setSidebarCollapsed((v) => !v)}
+          />
+        </div>
+      </section>
 
-      <Section id="radio-choice-dialog" title="RadioChoiceDialog">
+      <section id="page-top-tab-item" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">상단 탭</h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">PageTopTabItem</span>
+        </div>
+        <p className="text-[12px] text-mes-gray-70">default/hover/active 3종.</p>
+        <div className="flex">
+          <PageTopTabItem label="생산계획(일) 리스트" active />
+          <PageTopTabItem label="판매관리 리스트" />
+          <PageTopTabItem label="품질검사 이력" bookmarked />
+        </div>
+      </section>
+
+      <Section id="radio-choice-dialog" title="선택형 확인 모달" titleEn="RadioChoiceDialog">
         <Sample
           label="RadioChoiceDialog · 열기"
           spec={[
@@ -2985,38 +2659,7 @@ export default function Home() {
         onConfirm={() => setRadioDialogOpen(false)}
       />
 
-      <Section id="search-input" title="SearchInput">
-        <Sample
-          label="값 없음(기본)"
-          spec={[
-            { label: "크기", value: "고정 200×32px(hug 아님)" },
-            { label: "R값", value: "3px(control-sm)" },
-            { label: "배경/테두리", value: "흰색 / 1px Gray-30(판단값)" },
-            { label: "검색 아이콘", value: "16px, 좌padding 12px" },
-            { label: "아이콘↔텍스트", value: "gap 8px" },
-          ]}
-        >
-          <SearchInput value="" onChange={() => {}} />
-        </Sample>
-        <Sample
-          label="값 있음(실측 — 배경색 강조)"
-          spec={[
-            { label: "배경/테두리", value: "Primary-20 / 1px Primary-30(실측)" },
-            { label: "텍스트", value: "16px medium, Gray-130" },
-            { label: "닫기(X) 버튼", value: "32×32 히트영역, 아이콘16px, 값 있을 때만 노출" },
-          ]}
-        >
-          <SearchInput value="숯불치킨 뚜껑" onChange={() => {}} />
-        </Sample>
-        <Sample
-          label="제어형(직접 입력해보기)"
-          spec={[{ label: "동작", value: "값 유무에 따라 배경 자동 전환" }]}
-        >
-          <SearchInput value={searchInputValue} onChange={setSearchInputValue} />
-        </Sample>
-      </Section>
-
-      <Section id="select" title="Select">
+      <Section id="select" title="셀렉트" titleEn="Select">
         <Sample
           label="Select · Default(placeholder)"
           spec={[
@@ -3118,37 +2761,394 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <section id="sidebar" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Sidebar / SNB
-        </h2>
+      <section id="notice-banner" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">안내 배너</h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">NoticeBanner</span>
+        </div>
         <p className="text-[12px] text-mes-gray-70">
-          node 9873:83338(펼침)·9873:83651(접힘) 실측. 1-depth hover(Gray-120)/
-          active(Primary-60) 구분, 2-depth 트리 연결선 포함. 우상단 화살표로 62px
-          아이콘 레일로 접기 가능.
+          ConfirmDialog 안내 배너로도, 독립적으로도 사용 가능.
         </p>
-        <div
-          className={cn(
-            "h-[820px] overflow-hidden rounded-lg border border-mes-gray-30 transition-[width]",
-            sidebarCollapsed ? "w-[62px]" : "w-[260px]"
-          )}
-        >
-          <Sidebar
-            items={SIDEBAR_NAV_ITEMS}
-            expandedKey={sidebarExpandedKey}
-            onExpandedKeyChange={setSidebarExpandedKey}
-            activeSubKey={sidebarActiveSubKey}
-            onSubItemClick={(_, subKey) => setSidebarActiveSubKey(subKey)}
-            collapsed={sidebarCollapsed}
-            onCollapseClick={() => setSidebarCollapsed((v) => !v)}
+        <NoticeBanner
+          message="담당자의 조가 설정되지 않았습니다. 조를 설정하면 LOT 일련번호에 반영됩니다."
+          linkLabel="조설정 바로가기"
+          className="max-w-[420px]"
+        />
+      </section>
+
+      <section id="alarm-list-item" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">알람 리스트 항목</h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">AlarmListItem</span>
+        </div>
+        <p className="text-[12px] text-mes-gray-70">tone 4색(blue/red/yellow/green).</p>
+        <div className="flex w-[400px] flex-col border border-mes-gray-30">
+          <AlarmListItem
+            tone="blue"
+            title="작업 지시 생성"
+            time="20:25"
+            description="yyyy.mm.dd/[설비]/n건의 작업 지시가 생성되었습니다."
+          />
+          <AlarmListItem
+            tone="red"
+            title="출하 승인 취소"
+            time="20:25"
+            description="yyyy.mm.dd/[거래처]/n건의 출하 승인이 취소되었습니다."
+          />
+          <AlarmListItem
+            tone="yellow"
+            title="작업 지시 변경"
+            time="20:25"
+            description="yyyy.mm.dd/[설비]/n건의 작업 지시가 변경되었습니다."
+          />
+          <AlarmListItem
+            tone="green"
+            title="입고 완료"
+            time="20:25"
+            description="yyyy.mm.dd/[거래처]/n건의 입고가 완료되었습니다."
           />
         </div>
       </section>
 
+      <section id="notification-panel" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">알림 패널</h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">NotificationPanel</span>
+        </div>
+        <p className="text-[12px] text-mes-gray-70">
+          AlarmListItem을 재사용한 알림 드롭다운. 항목 클릭 시 목록에서 제거, 설정 아이콘
+          클릭 시 알림 설정 화면으로 전환.
+        </p>
+        <div className="flex flex-wrap items-start gap-8">
+          <div className="flex flex-col items-start gap-2">
+            <span className="text-[12px] font-medium text-mes-gray-70">
+              데이터 있음(클릭해서 제거해보기 · 설정 아이콘 클릭 가능)
+            </span>
+            <NotificationPanel
+              items={notificationItems}
+              onItemClick={(id) =>
+                setNotificationItems((prev) => prev.filter((item) => item.id !== id))
+              }
+              settingsItems={notificationSettings}
+              onSettingsItemChange={(id, enabled) =>
+                setNotificationSettings((prev) =>
+                  prev.map((item) => (item.id === id ? { ...item, enabled } : item))
+                )
+              }
+            />
+          </div>
+          <div className="flex flex-col items-start gap-2">
+            <span className="text-[12px] font-medium text-mes-gray-70">빈 상태</span>
+            <NotificationPanel items={[]} />
+          </div>
+        </div>
+      </section>
+
+      <Section id="input" title="인풋 — 기본" titleEn="Input — Default">
+        <Sample
+          label="Input · Default(placeholder)"
+          spec={[
+            { label: "높이", value: "32px(h-8) 고정" },
+            { label: "좌우 패딩", value: "10px(px-[10px])" },
+            { label: "테두리", value: "1px Gray-30(border-default)" },
+            { label: "R값", value: "4px(control)" },
+            { label: "폰트", value: "14px" },
+            { label: "너비", value: "100% hug(데모는 200px로 제한)" },
+          ]}
+        >
+          <Input placeholder="내용 입력" className="w-[200px]" />
+        </Sample>
+        <Sample
+          label="Input · Default(filled)"
+          spec={[{ label: "패딩/테두리/R값", value: "placeholder와 동일" }, { label: "입력값 색", value: "Gray-130(text-default)" }]}
+        >
+          <Input defaultValue="내용" className="w-[200px]" />
+        </Sample>
+        <Sample
+          label="Input · Readonly"
+          spec={[
+            { label: "패딩/테두리/R값", value: "동일" },
+            { label: "배경만 변경", value: "Gray-20(bg-subtle)" },
+          ]}
+        >
+          <Input placeholder="내용 입력" readOnly defaultValue="내용" className="w-[200px]" />
+        </Sample>
+        <Sample
+          label="Input · Disabled"
+          spec={[
+            { label: "배경", value: "Gray-30(bg-disabled, 테두리색과 같아 경계가 안 보임)" },
+            { label: "텍스트", value: "Gray-70(text-disabled)" },
+            { label: "커서", value: "not-allowed" },
+          ]}
+        >
+          <Input placeholder="내용 입력" disabled className="w-[200px]" />
+        </Sample>
+        <Sample
+          label="Input · Small(placeholder)"
+          spec={[
+            { label: "높이", value: "22px(h-[22px]) 고정" },
+            { label: "좌우 패딩", value: "6px(px-[6px])" },
+            { label: "R값", value: "control-sm(default의 4px보다 작음)" },
+            { label: "폰트", value: "13px" },
+            { label: "참고", value: "Figma 원본에 small용 focus 상태 자체가 없음(디자인 누락, 임의 추가 안 함)" },
+          ]}
+        >
+          <Input size="small" placeholder="내용 입력" className="w-[200px]" />
+        </Sample>
+        <Sample
+          label="Input · Small(filled)"
+          spec={[{ label: "패딩/R값/폰트", value: "small placeholder와 동일" }]}
+        >
+          <Input size="small" defaultValue="내용" className="w-[200px]" />
+        </Sample>
+      </Section>
+
+      <Section id="number-input" title="인풋 — 숫자" titleEn="Input — Number" badge="임시">
+        <Sample
+          label="NumberInput · 기본"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "텍스트박스", value: "Input 실측 스타일 재사용(inputVariants)" },
+            { label: "증감 버튼", value: "폭24px(w-6), 상하 분할, 아이콘10px" },
+            { label: "버튼 테두리", value: "1px Gray-30, 텍스트박스와 이어붙임(border-r-0)" },
+            { label: "R값", value: "4px(control, Input과 동일)" },
+          ]}
+        >
+          <NumberInput defaultValue={10} min={0} max={999} />
+        </Sample>
+      </Section>
+
+      <Section id="password-input" title="인풋 — 비밀번호" titleEn="Input — Password" badge="임시">
+        <Sample
+          label="PasswordInput · 보기/숨기기 토글"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "규격", value: "Input 실측 스타일 재사용(inputVariants)" },
+            { label: "토글 아이콘", value: "16px, 우측 인셋8px(right-2)" },
+            { label: "우측 여백", value: "아이콘 자리만큼 pr-8 추가" },
+            { label: "R값", value: "4px(control, Input과 동일)" },
+          ]}
+        >
+          <PasswordInput defaultValue="password123" className="w-[200px]" />
+        </Sample>
+      </Section>
+
+      <Section id="progress" title="진행률" titleEn="Progress Bar">
+        <Sample
+          label="Progress · 78%"
+          spec={[
+            { label: "전체 높이", value: "30px, 좌우패딩6px" },
+            { label: "트랙", value: "높이6px, 배경Gray-40, full-round" },
+            { label: "채움색", value: "Gray-100" },
+            { label: "트랙↔라벨 gap", value: "2px" },
+            { label: "라벨", value: "고정폭44px, 14px, Gray-130" },
+          ]}
+        >
+          <Progress value={78} className="w-[160px]" />
+        </Sample>
+        <Sample
+          label="Progress · 0%"
+          spec={[{ label: "규격", value: "78%와 동일, 채움 너비만 0%" }]}
+        >
+          <Progress value={0} className="w-[160px]" />
+        </Sample>
+        <Sample
+          label="Progress · 50%"
+          spec={[{ label: "규격", value: "78%와 동일, 채움 너비만 50%" }]}
+        >
+          <Progress value={50} className="w-[160px]" />
+        </Sample>
+        <Sample
+          label="Progress · 100%"
+          spec={[{ label: "규격", value: "78%와 동일, 채움이 트랙 전체" }]}
+        >
+          <Progress value={100} className="w-[160px]" />
+        </Sample>
+      </Section>
+
+      <Section id="checkbox" title="체크박스" titleEn="Checkbox">
+        <Sample
+          label="Checkbox · Unchecked"
+          spec={[
+            { label: "전체 크기", value: "24×24px" },
+            { label: "박스", value: "22×22px(인셋1px), R값3px(control-sm)" },
+            { label: "배경/테두리", value: "흰색 / 1px Gray-40" },
+          ]}
+        >
+          <Checkbox />
+        </Sample>
+        <Sample
+          label="Checkbox · Checked · main"
+          spec={[
+            { label: "배경", value: "Primary-60" },
+            { label: "체크마크", value: "흰색, 14px(size-3.5, 판단값)" },
+            { label: "R값", value: "3px(control-sm)" },
+          ]}
+        >
+          <Checkbox defaultChecked color="main" />
+        </Sample>
+        <Sample
+          label="Checkbox · Checked · gray"
+          spec={[
+            { label: "배경", value: "Gray-50" },
+            { label: "R값", value: "3px(control-sm)" },
+          ]}
+        >
+          <Checkbox defaultChecked color="gray" />
+        </Sample>
+        <Sample
+          label="Checkbox · Checked · black"
+          spec={[
+            { label: "배경", value: "Gray-130(bg-strong)" },
+            { label: "R값", value: "3px(control-sm)" },
+          ]}
+        >
+          <Checkbox defaultChecked color="black" />
+        </Sample>
+        <Sample
+          label="Checkbox · Disabled(판단값)"
+          spec={[
+            { label: "테두리/배경", value: "Gray-30(판단값, Figma에 disabled 자체 없음)" },
+            { label: "R값", value: "3px(control-sm)" },
+          ]}
+        >
+          <Checkbox disabled />
+        </Sample>
+        <Sample
+          label="Checkbox · Disabled+Checked(판단값)"
+          spec={[
+            { label: "처리", value: "위 Disabled와 동일 판단값" },
+            { label: "체크마크", value: "Gray-60(판단값)" },
+            { label: "R값", value: "3px(control-sm)" },
+          ]}
+        >
+          <Checkbox disabled defaultChecked />
+        </Sample>
+      </Section>
+
+      <Section id="combobox" title="콤보박스" titleEn="Combobox">
+        <Sample
+          label="Combobox · Default(제어형, 검색 가능)"
+          spec={[
+            { label: "트리거 규격", value: "Select와 동일(재사용, 32px/10px/4px)" },
+            { label: "검색창", value: "높이26px, R값4px, 테두리1px Gray-30" },
+            { label: "검색 아이콘", value: "16px, 좌인셋8px" },
+            { label: "패널", value: "테두리1px Gray-30, R값8px(판단값), 그림자 0 2px 8px rgba(0,0,0,.12)" },
+            { label: "항목", value: "13px/150%, 좌우패딩8px" },
+            { label: "selected 배경", value: "#E8F0FE(실측)" },
+          ]}
+        >
+          <Combobox
+            options={shiftOptions}
+            value={comboValue}
+            onValueChange={setComboValue}
+            placeholder="근무조 선택"
+            searchPlaceholder="근무조 검색"
+            className="w-[200px]"
+          />
+        </Sample>
+        <Sample
+          label="Combobox · Default(비제어, 초기값 있음)"
+          spec={[{ label: "규격", value: "위 Default와 동일" }]}
+        >
+          <Combobox
+            options={shiftOptions}
+            defaultValue="night"
+            searchPlaceholder="근무조 검색"
+            className="w-[200px]"
+          />
+        </Sample>
+        <Sample
+          label="Combobox · Small(비제어, 초기값 있음)"
+          spec={[
+            { label: "트리거", value: "Select Small과 동일(22px/6px/3px)" },
+          ]}
+        >
+          <Combobox
+            options={shiftOptions}
+            defaultValue="bom1"
+            searchPlaceholder="BOM 검색"
+            size="small"
+            className="w-[200px]"
+          />
+        </Sample>
+        <Sample
+          label="Combobox · Small · Disabled"
+          spec={[{ label: "처리", value: "Select Disabled와 동일 패턴" }]}
+        >
+          <Combobox
+            options={shiftOptions}
+            defaultValue="bom1"
+            size="small"
+            disabled
+            className="w-[200px]"
+          />
+        </Sample>
+        <Sample
+          label="Combobox · Default · Disabled"
+          spec={[{ label: "처리", value: "Select Disabled와 동일 패턴" }]}
+        >
+          <Combobox
+            options={shiftOptions}
+            placeholder="내용 입력"
+            disabled
+            className="w-[200px]"
+          />
+        </Sample>
+        <Sample
+          label="Combobox · 커스텀 아이콘(꺾쇠 대신)"
+          spec={[{ label: "아이콘", value: "14px(판단값), opacity 80%" }]}
+        >
+          <Combobox
+            options={shiftOptions}
+            placeholder="정렬 기준"
+            searchPlaceholder="검색"
+            icon={<IconFilter size={14} className="shrink-0 opacity-80" />}
+            className="w-[200px]"
+          />
+        </Sample>
+      </Section>
+
+      <Section id="tag" title="태그" titleEn="Tag">
+        <Sample
+          label="Tag · main · start+endIcon(실측 그대로)"
+          spec={[
+            { label: "높이", value: "22px, R값2px(control-xs)" },
+            { label: "패딩", value: "좌우8px/상하3px" },
+            { label: "요소 간 gap", value: "4px" },
+            { label: "폰트", value: "12px semibold, 흰색 고정" },
+            { label: "배경", value: "Primary-60(fill-main)" },
+          ]}
+        >
+          <Tag color="main" startIcon={<X className="size-3" />} endIcon={<X className="size-3" />}>
+            태그 텍스트
+          </Tag>
+        </Sample>
+        <Sample
+          label="Tag · gray · endIcon만(실사용 예시)"
+          spec={[
+            { label: "규격", value: "main과 동일" },
+            { label: "배경", value: "Gray-90(fill-gray)" },
+          ]}
+        >
+          <Tag color="gray" endIcon={<X className="size-3" />}>태그 텍스트</Tag>
+        </Sample>
+        <Sample
+          label="Tag · red · 아이콘 없음"
+          spec={[
+            { label: "규격", value: "main과 동일" },
+            { label: "배경", value: "Danger-60(fill-red)" },
+          ]}
+        >
+          <Tag color="red">태그 텍스트</Tag>
+        </Sample>
+      </Section>
+
       <section id="table-parts" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-6 border-b border-mes-gray-30 pb-8">
-        <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">
-          Table — 구조 요소별 분리 데모
-        </h2>
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">테이블 — 분리 데모</h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">Table — Parts</span>
+        </div>
         <p className="text-[12px] text-mes-gray-70">
           헤더/그룹화/컬럼/총계행을 <code>Table</code> 하나로 각각 따로 확인.
         </p>
@@ -3231,7 +3231,7 @@ export default function Home() {
               productionTableOpen && "rotate-90"
             )}
           />
-          Table · 합본 데모 — 클릭해서 접기/펼치기
+          테이블 · 합본 데모(Table — Full) — 클릭해서 접기/펼치기
         </button>
         {productionTableOpen && (
           <div className="w-full overflow-x-auto">
@@ -3245,42 +3245,7 @@ export default function Home() {
           </div>
         )}
       </section>
-      <Section id="tag" title="Tag">
-        <Sample
-          label="Tag · main · start+endIcon(실측 그대로)"
-          spec={[
-            { label: "높이", value: "22px, R값2px(control-xs)" },
-            { label: "패딩", value: "좌우8px/상하3px" },
-            { label: "요소 간 gap", value: "4px" },
-            { label: "폰트", value: "12px semibold, 흰색 고정" },
-            { label: "배경", value: "Primary-60(fill-main)" },
-          ]}
-        >
-          <Tag color="main" startIcon={<X className="size-3" />} endIcon={<X className="size-3" />}>
-            태그 텍스트
-          </Tag>
-        </Sample>
-        <Sample
-          label="Tag · gray · endIcon만(실사용 예시)"
-          spec={[
-            { label: "규격", value: "main과 동일" },
-            { label: "배경", value: "Gray-90(fill-gray)" },
-          ]}
-        >
-          <Tag color="gray" endIcon={<X className="size-3" />}>태그 텍스트</Tag>
-        </Sample>
-        <Sample
-          label="Tag · red · 아이콘 없음"
-          spec={[
-            { label: "규격", value: "main과 동일" },
-            { label: "배경", value: "Danger-60(fill-red)" },
-          ]}
-        >
-          <Tag color="red">태그 텍스트</Tag>
-        </Sample>
-      </Section>
-
-      <Section id="toast" title="Toast">
+      <Section id="toast" title="토스트" titleEn="Toast">
         <Sample
           label="Toast · red"
           spec={[
@@ -3307,150 +3272,178 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="accordion" title="Accordion" badge="임시">
+      <section id="filter" className="flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8">
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">필터</h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">Filter</span>
+        </div>
+        <p className="text-[12px] text-mes-gray-70">
+          필터 추가 → 카테고리·체크박스 선택 → 태그로 표시 → X로 해제.
+        </p>
+        <Filter
+          categories={filterCategories}
+          value={filterValue}
+          onChange={(categoryId, optionIds) =>
+            setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
+          }
+        />
+      </section>
+
+      <Section id="confirm-dialog" title="확인 모달" titleEn="ConfirmDialog">
         <Sample
-          label="Accordion · multiple(기본)"
+          label="ConfirmDialog · error 톤(기본), 확인 1버튼"
           spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(순수 React state)" },
-            { label: "테두리", value: "1px Gray-30, R값4px(control)" },
-            { label: "항목 구분선", value: "1px Gray-30(첫 항목 제외)" },
-            { label: "트리거", value: "패딩좌우16px/상하12px, 14px medium" },
-            { label: "화살표", value: "16px, 펼침 시 rotate-90" },
-            { label: "본문", value: "패딩좌우16px/하단12px, 13px, Gray-80" },
+            { label: "전체", value: "흰배경, R값12px, 그림자 0 4px 16px rgba(0,0,0,.2)" },
+            { label: "헤더", value: "높이52px, 하단테두리1px Gray-30, 제목18px Bold" },
+            { label: "본문 아이콘", value: "44px, Danger-60(error 톤)" },
+            { label: "본문↔아이콘 gap", value: "20px" },
+            { label: "푸터", value: "패딩20px, 버튼높이40px, 1버튼일 땐 flex-1" },
           ]}
         >
-          <Accordion
-            className="w-[280px]"
-            items={[
-              { id: "a1", title: "기본 정보", content: "품목명, 규격, 단위 등" },
-              { id: "a2", title: "재고 정보", content: "현재고, 안전재고, 위치" },
-              { id: "a3", title: "이력", content: "입출고 이력 목록" },
-            ]}
-            defaultOpenIds={["a1"]}
-          />
+          <Button size="basic" onClick={() => setDialogOpen(true)}>
+            삭제 시도
+          </Button>
+        </Sample>
+        <Sample
+          label="ConfirmDialog · warning 톤, 확인+취소 2버튼"
+          spec={[
+            { label: "규격", value: "error 톤과 동일 레이아웃" },
+            { label: "본문 아이콘 색", value: "Yellow-50(#F2A406)" },
+            { label: "버튼", value: "취소=fillGray, 확인=fillBlack" },
+          ]}
+        >
+          <Button size="basic" onClick={() => setWarningDialogOpen(true)}>
+            반품 시도
+          </Button>
+        </Sample>
+        <Sample
+          label="ConfirmDialog · info 톤, 확인 1버튼"
+          spec={[
+            { label: "규격", value: "error 톤과 동일 레이아웃" },
+            { label: "본문 아이콘 색", value: "Primary-60" },
+          ]}
+        >
+          <Button size="basic" onClick={() => setInfoDialogOpen(true)}>
+            삭제 완료 알림
+          </Button>
+        </Sample>
+        <Sample
+          label="ConfirmDialog · error 톤 + 안내 배너(링크 포함)"
+          spec={[
+            { label: "배너↔푸터 gap", value: "20px(담당자 확정값)" },
+            { label: "배너 스타일", value: "판단값(devtools 응답 실패로 육안 대조)" },
+          ]}
+        >
+          <Button size="basic" onClick={() => setBannerDialogOpen(true)}>
+            라벨 생성 시도
+          </Button>
         </Sample>
       </Section>
 
-      <Section id="breadcrumb" title="Breadcrumb" badge="임시">
-        <Sample
-          label="Breadcrumb · 3단계"
-          spec={[
-            { label: "Figma", value: "componentKey→node-id 변환 불가, 실측 못함(판단값)" },
-            { label: "폰트", value: "13px" },
-            { label: "구분자", value: "ChevronRight 14px, Gray-50" },
-            { label: "요소 간 gap", value: "6px(gap-1.5)" },
-            { label: "현재 위치(마지막)", value: "medium, Gray-130 / 그 외 Gray-70" },
-          ]}
-        >
-          <Breadcrumb
-            items={[
-              { label: "자재관리", onClick: () => {} },
-              { label: "입고 관리", onClick: () => {} },
-              { label: "입고 상세" },
-            ]}
-          />
-        </Sample>
-      </Section>
+      <ConfirmDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        title="삭제 불가"
+        heading="삭제 불가합니다."
+        description="이미 사용되었거나 후속 작업(생산, 출하, 연동) 진행 이력이 있어 삭제 불가합니다."
+        actions={[{ label: "확인", onClick: () => setDialogOpen(false) }]}
+      />
 
-      <Section id="button-group" title="ButtonGroup" badge="임시">
-        <Sample
-          label="ButtonGroup · 3개 연결"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(Button 감싸는 레이아웃)" },
-            { label: "처리", value: "양끝만 라운드, 가운데는 -ml-px로 테두리 겹침" },
-            { label: "버튼 자체 규격", value: "Button size별 값 그대로 재사용" },
-          ]}
-        >
-          <ButtonGroup>
-            <Button size="small" variant="lineBlacktxt">
-              일간
-            </Button>
-            <Button size="small" variant="lineBlacktxt">
-              주간
-            </Button>
-            <Button size="small" variant="lineBlacktxt">
-              월간
-            </Button>
-          </ButtonGroup>
-        </Sample>
-      </Section>
+      <ConfirmDialog
+        open={warningDialogOpen}
+        onOpenChange={setWarningDialogOpen}
+        title="경고"
+        heading="선택 항목을 삭제(반품)하시겠습니까?"
+        description="선택한 발주가 리스트에서 삭제됩니다."
+        tone="warning"
+        actions={[
+          { label: "취소", variant: "fillGray", onClick: () => setWarningDialogOpen(false) },
+          { label: "확인", variant: "fillBlack", onClick: () => setWarningDialogOpen(false) },
+        ]}
+      />
 
-      <Section id="card" title="Card" badge="임시">
+      <ConfirmDialog
+        open={infoDialogOpen}
+        onOpenChange={setInfoDialogOpen}
+        title="알림"
+        heading="삭제 완료"
+        description="생산목표가 삭제(등록)되었습니다."
+        tone="info"
+        actions={[{ label: "확인", onClick: () => setInfoDialogOpen(false) }]}
+      />
+
+      <ConfirmDialog
+        open={bannerDialogOpen}
+        onOpenChange={setBannerDialogOpen}
+        title="라벨 생성 불가"
+        heading="라벨 생성 불가"
+        description="품목 정보에서 입상수 기준수량을 등록해 주세요."
+        banner={{
+          message: "담당자의 조가 설정되지 않았습니다. 조를 설정하면 LOT 일련번호에 반영됩니다.",
+          linkLabel: "조설정 바로가기",
+        }}
+        actions={[{ label: "확인", onClick: () => setBannerDialogOpen(false) }]}
+      />
+
+      <Section id="user-account-menu" title="계정 메뉴" titleEn="UserAccountMenu" badge="임시">
         <Sample
-          label="Card · 기본"
+          label="UserAccountMenu · 클릭해서 열기"
           spec={[
-            { label: "Figma", value: "전용 노드 없음(판단값)" },
-            { label: "배경/테두리", value: "흰색 / 1px Gray-30" },
+            { label: "Figma", value: "전용 컴포넌트 없음(DropdownMenu 재사용, 판단값)" },
+            { label: "트리거", value: "패딩좌우8px/상하6px, 13px medium" },
+            { label: "아바타 아이콘", value: "20px(IconUserMono, 실측 아이콘), Gray-70" },
+            { label: "아이콘↔이름 gap", value: "6px(gap-1.5)" },
+            { label: "패널", value: "DropdownMenu와 동일(align=end)" },
             { label: "R값", value: "4px(control)" },
-            { label: "그림자", value: "없음(Card는 평면 UI)" },
-            { label: "Header/Content/Footer", value: "각 padding 16px(p-4)" },
-            { label: "Header 하단테두리", value: "1px Gray-30" },
-            { label: "Footer 상단테두리", value: "1px Gray-30, gap 8px" },
           ]}
         >
-          <Card className="w-[260px]">
-            <CardHeader>
-              <CardTitle>작업 지시 #1024</CardTitle>
-              <CardDescription>2026.08.03 생성</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <span className="text-[13px] leading-[1.5] text-mes-text-default">
-                설비 A라인 · 수량 500
-              </span>
-            </CardContent>
-            <CardFooter>
-              <Button size="small" variant="lineBlacktxt">
-                상세
-              </Button>
-              <Button size="small" variant="fillMain">
-                승인
-              </Button>
-            </CardFooter>
-          </Card>
+          <UserAccountMenu
+            name="이해빈"
+            items={[
+              { id: "profile", label: "프로필" },
+              { id: "settings", label: "설정" },
+              { id: "logout", label: "로그아웃", danger: true },
+            ]}
+          />
         </Sample>
       </Section>
 
-      <Section id="collapsible" title="Collapsible" badge="임시">
-        <Sample
-          label="Collapsible · 단일 트리거"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(Accordion과 화살표 규칙 공유)" },
-            { label: "트리거", value: "14px medium, 화살표↔텍스트 gap 6px" },
-            { label: "화살표", value: "16px, 펼침 시 rotate-90" },
-            { label: "본문 들여쓰기", value: "22px(화살표 폭에 맞춤), 상단 gap 8px(mt-2)" },
-          ]}
-        >
-          <Collapsible trigger="상세 옵션" className="w-[240px]">
-            <span className="text-[13px] leading-[1.5] text-mes-gray-80">
-              여기에 추가 필드가 들어갑니다.
-            </span>
-          </Collapsible>
-        </Sample>
-      </Section>
 
-      <Section id="descriptions" title="Descriptions" badge="임시">
+      {/* 2026-08-03 신규 — 담당자 요청: "더 작업이 필요한 것들의 구역을 미리 생성해 둬".
+          아직 착수 안 한 티어3/4를 위한 자리만 미리 만들어둠(SIDEBAR_GROUPS의 "예정"
+          그룹과 짝) — 실제 항목 125개를 지금 다 채우진 않음. 티어5(28개)는 체크리스트
+          기준 이미 "제외" 확정이라 여기 포함하지 않음. */}
+      <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-gray-60 pl-5">
+        <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+          <Hammer className="size-7 shrink-0 text-mes-gray-60" />
+          예정
+        </span>
+        <p className="text-[13px] leading-[1.5] text-mes-gray-70">
+          체크리스트 기준 티어3(59개, 필수)·티어4(41개, 포함권장 19 + 보류 22) 미착수
+          항목이 여기 채워질 예정입니다. 티어5(28개)는 이미 범위 제외로 확정.
+        </p>
+      </div>
+      <Section id="sticky-header-footer" title="고정 헤더 / 고정 푸터" titleEn="StickyHeader / StickyFooter" badge="임시">
         <Sample
-          label="Descriptions · 1열"
+          label="Sticky · 컨테이너 내부 스크롤"
           spec={[
             { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "테두리/R값", value: "1px Gray-30 / 4px(control)" },
-            { label: "행", value: "패딩좌우16px/상하10px, 구분선1px Gray-30" },
-            { label: "라벨", value: "고정폭100px, 13px, Gray-70" },
-            { label: "값", value: "13px medium, Gray-130" },
+            { label: "처리", value: "position: sticky, 헤더 top-0/푸터 bottom-0" },
+            { label: "테두리", value: "헤더 하단1px / 푸터 상단1px, 둘 다 Gray-30" },
+            { label: "배경", value: "흰색(스크롤 콘텐츠 위에 항상 불투명하게 덮임)" },
           ]}
         >
-          <Descriptions
-            className="w-[280px]"
-            items={[
-              { label: "품목명", value: "볼트 M8" },
-              { label: "규격", value: "M8 x 20mm" },
-              { label: "현재고", value: "1,200" },
-            ]}
-          />
+          <div className="h-[140px] w-[220px] overflow-y-auto rounded-mes-control border border-mes-border-default">
+            <StickyHeader className="px-3 py-2 text-[12px] font-semibold">헤더</StickyHeader>
+            <div className="p-3 text-[12px] text-mes-gray-70">
+              스크롤해도 헤더/푸터는 고정됩니다. 스크롤해도 헤더/푸터는 고정됩니다.
+            </div>
+            <StickyFooter className="px-3 py-2 text-[12px] text-mes-gray-70">푸터</StickyFooter>
+          </div>
         </Sample>
       </Section>
 
-      <Section id="divider" title="Divider" badge="임시">
+      <Section id="divider" title="구분선" titleEn="Divider" badge="임시">
         <Sample
           label="Divider · horizontal"
           spec={[
@@ -3481,7 +3474,49 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="dropdown-menu" title="DropdownMenu" badge="임시">
+      <Section id="navbar" title="내비게이션 바" titleEn="Navbar" badge="임시">
+        <Sample
+          label="Navbar · 3-슬롯"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "높이", value: "56px(h-14, 데모 페이지 상단바와 동일값 재사용)" },
+            { label: "패딩", value: "좌우16px(px-4)" },
+            { label: "하단 테두리", value: "1px Gray-30" },
+            { label: "슬롯 내부 gap", value: "12px(gap-3)" },
+          ]}
+        >
+          <Navbar
+            className="w-[600px]"
+            left={<Logo size="small" />}
+            right={
+              <Button size="small" variant="lineBlacktxt">
+                로그아웃
+              </Button>
+            }
+          />
+        </Sample>
+      </Section>
+
+      <Section id="multi-select-input" title="다중 선택 입력" titleEn="MultiSelectInput" badge="임시">
+        <Sample
+          label="MultiSelectInput · 태그 추가/제거"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "바깥 박스", value: "Input과 동일 테두리/R값, 높이는 hug(min-h-8)" },
+            { label: "패딩", value: "좌우8px/상하6px(px-2 py-1.5)" },
+            { label: "태그", value: "Tag(gray) 재사용, gap 6px(gap-1.5)" },
+            { label: "제거 아이콘", value: "10px(IconX)" },
+          ]}
+        >
+          <MultiSelectInput
+            values={multiSelectValues}
+            onValuesChange={setMultiSelectValues}
+            className="w-[260px]"
+          />
+        </Sample>
+      </Section>
+
+      <Section id="dropdown-menu" title="드롭다운 메뉴" titleEn="DropdownMenu" badge="임시">
         <Sample
           label="DropdownMenu · 클릭해서 열기"
           spec={[
@@ -3507,25 +3542,369 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="fieldset" title="Fieldset" badge="임시">
+      <Section id="label" title="라벨" titleEn="Label" badge="임시">
         <Sample
-          label="Fieldset · 필드 묶음"
+          label="Label · 기본"
           spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "테두리/R값", value: "1px Gray-30 / 4px(control)" },
-            { label: "패딩", value: "16px(p-4)" },
-            { label: "필드 간 gap", value: "12px(gap-3)" },
-            { label: "legend", value: "13px medium, Gray-130(Label과 동일 톤)" },
+            { label: "폰트", value: "13px medium" },
+            { label: "텍스트색", value: "Gray-130(text-default)" },
           ]}
         >
-          <Fieldset legend="거래처 정보" className="w-[260px]">
-            <Input placeholder="거래처명" size="small" />
-            <Input placeholder="담당자" size="small" />
-          </Fieldset>
+          <Label>품목명</Label>
+        </Sample>
+        <Sample
+          label="Label · required"
+          spec={[
+            { label: "폰트/색", value: "기본과 동일" },
+            { label: "* 간격", value: "2px(ml-0.5)" },
+            { label: "* 색상", value: "Danger(text-danger)" },
+          ]}
+        >
+          <Label required>거래처</Label>
+        </Sample>
+        <Sample
+          label="Label + Input 조합"
+          spec={[{ label: "Label↔Input 간격", value: "6px(gap-1.5)" }]}
+        >
+          <div className="flex flex-col gap-1.5">
+            <Label required>수량</Label>
+            <Input placeholder="0" className="w-[160px]" />
+          </div>
         </Sample>
       </Section>
 
-      <Section id="icon-button" title="IconButton / CloseButton" badge="임시">
+      <Section id="logo" title="로고" titleEn="Logo" badge="임시">
+        <Sample
+          label="Logo · default/small"
+          spec={[
+            { label: "Figma", value: "실제 로고 애셋 없음, 텍스트 워드마크(판단값)" },
+            { label: "default", value: "18px bold" },
+            { label: "small", value: "14px bold" },
+            { label: "심볼", value: "\"M\" 배지 — 배경Primary-60, 흰텍스트, R값2px" },
+            { label: "심볼↔텍스트 gap", value: "6px(gap-1.5)" },
+          ]}
+        >
+          <div className="flex items-center gap-4">
+            <Logo />
+            <Logo size="small" />
+          </div>
+        </Sample>
+      </Section>
+
+      <Section id="loading-spinner" title="로딩 스피너" titleEn="LoadingSpinner" badge="임시">
+        <Sample
+          label="LoadingSpinner · 16px"
+          spec={[
+            { label: "크기", value: "16px(size prop으로 지정)" },
+            { label: "색상", value: "Primary-60(text-brand) 기본" },
+          ]}
+        >
+          <LoadingSpinner size={16} />
+        </Sample>
+        <Sample
+          label="LoadingSpinner · 20px(기본)"
+          spec={[
+            { label: "크기", value: "20px(기본값)" },
+            { label: "색상", value: "Primary-60(text-brand)" },
+          ]}
+        >
+          <LoadingSpinner />
+        </Sample>
+        <Sample
+          label="LoadingSpinner · fillMain 버튼 위"
+          spec={[
+            { label: "크기", value: "16px" },
+            { label: "색상", value: "흰색(text-inverse, className으로 덮어씀)" },
+            { label: "텍스트와 간격", value: "8px(버튼 gap-2로 덮어씀, 기본은 6px)" },
+          ]}
+        >
+          <Button size="basic" variant="fillMain" disabled className="gap-2">
+            <LoadingSpinner size={16} className="text-mes-text-inverse" />
+            처리 중
+          </Button>
+        </Sample>
+      </Section>
+
+      <Section id="loading-overlay" title="로딩 오버레이" titleEn="LoadingOverlay" badge="임시">
+        <Sample
+          label="LoadingOverlay · 영역 덮기"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값, Backdrop과는 별개 목적)" },
+            { label: "처리", value: "absolute inset-0, 반투명 흰배경(bg-white/70)" },
+            { label: "스피너", value: "28px(LoadingSpinner 재사용)" },
+            { label: "스피너↔라벨 gap", value: "8px(gap-2)" },
+            { label: "라벨", value: "13px, Gray-70" },
+          ]}
+        >
+          <div className="relative h-[100px] w-[200px] rounded-mes-control border border-mes-border-default">
+            <LoadingOverlay label="불러오는 중" />
+          </div>
+        </Sample>
+      </Section>
+
+      <Section id="list" title="리스트" titleEn="List" badge="임시">
+        <Sample
+          label="List · 클릭 가능 항목"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(Table 행 스타일 재사용, 판단값)" },
+            { label: "테두리", value: "1px Gray-30, R값4px(control)" },
+            { label: "항목", value: "패딩좌우12px/상하8px, 13px, 구분선1px Gray-30" },
+            { label: "hover 배경", value: "Gray-20(bg-subtler, 클릭 가능할 때만)" },
+          ]}
+        >
+          <List className="w-[220px]">
+            <ListItem onClick={() => {}}>자재 A</ListItem>
+            <ListItem onClick={() => {}}>자재 B</ListItem>
+            <ListItem onClick={() => {}}>자재 C</ListItem>
+          </List>
+        </Sample>
+      </Section>
+
+      <Section id="link" title="링크" titleEn="Link" badge="임시">
+        <Sample
+          label="Link · 기본"
+          spec={[
+            { label: "폰트", value: "14px medium" },
+            { label: "텍스트색", value: "Primary-60(text-brand)" },
+            { label: "밑줄", value: "상시 표시(underline, offset 2px)" },
+          ]}
+        >
+          <Link href="#">조설정 바로가기</Link>
+        </Sample>
+        <Sample label="Link · 화살표 포함" spec={[{ label: "폰트/색/밑줄", value: "기본과 동일 — 화살표는 텍스트에 직접 포함" }]}>
+          <Link href="#">자세히 보기 →</Link>
+        </Sample>
+      </Section>
+
+      <Section id="button-group" title="버튼 그룹" titleEn="ButtonGroup" badge="임시">
+        <Sample
+          label="ButtonGroup · 3개 연결"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(Button 감싸는 레이아웃)" },
+            { label: "처리", value: "양끝만 라운드, 가운데는 -ml-px로 테두리 겹침" },
+            { label: "버튼 자체 규격", value: "Button size별 값 그대로 재사용" },
+          ]}
+        >
+          <ButtonGroup>
+            <Button size="small" variant="lineBlacktxt">
+              일간
+            </Button>
+            <Button size="small" variant="lineBlacktxt">
+              주간
+            </Button>
+            <Button size="small" variant="lineBlacktxt">
+              월간
+            </Button>
+          </ButtonGroup>
+        </Sample>
+      </Section>
+
+      <Section id="breadcrumb" title="브레드크럼" titleEn="Breadcrumb" badge="임시">
+        <Sample
+          label="Breadcrumb · 3단계"
+          spec={[
+            { label: "Figma", value: "componentKey→node-id 변환 불가, 실측 못함(판단값)" },
+            { label: "폰트", value: "13px" },
+            { label: "구분자", value: "ChevronRight 14px, Gray-50" },
+            { label: "요소 간 gap", value: "6px(gap-1.5)" },
+            { label: "현재 위치(마지막)", value: "medium, Gray-130 / 그 외 Gray-70" },
+          ]}
+        >
+          <Breadcrumb
+            items={[
+              { label: "자재관리", onClick: () => {} },
+              { label: "입고 관리", onClick: () => {} },
+              { label: "입고 상세" },
+            ]}
+          />
+        </Sample>
+      </Section>
+
+      <Section id="empty-state" title="상태 — 없음" titleEn="State — Empty" badge="임시">
+        <Sample
+          label="EmptyState · 아이콘+액션"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "패딩", value: "좌우24px/상하48px(px-6 py-12)" },
+            { label: "아이콘 색", value: "Gray-50" },
+            { label: "아이콘↔텍스트블록 gap", value: "12px" },
+            { label: "제목", value: "15px semibold, Gray-130" },
+            { label: "설명", value: "13px, Gray-70" },
+            { label: "텍스트블록↔액션 gap", value: "4px(mt-1)" },
+          ]}
+        >
+          <EmptyState
+            icon={<IconFileNote size={40} />}
+            title="데이터가 없습니다"
+            description="조회 조건을 변경해보세요."
+            action={
+              <Button size="small" variant="lineBlacktxt">
+                필터 초기화
+              </Button>
+            }
+          />
+        </Sample>
+      </Section>
+
+      <Section id="error-state" title="상태 — 오류" titleEn="State — Error" badge="임시">
+        <Sample
+          label="ErrorState · 재시도 액션"
+          spec={[
+            { label: "레이아웃", value: "EmptyState와 동일(판단값)" },
+            { label: "아이콘 색", value: "text-mes-text-danger(첫 실사용처)" },
+            { label: "제목 기본값", value: "\"문제가 발생했습니다\"" },
+          ]}
+        >
+          <ErrorState
+            icon={<IconExclamationCircle size={40} />}
+            description="잠시 후 다시 시도해주세요."
+            action={
+              <Button size="small" variant="lineMain">
+                다시 시도
+              </Button>
+            }
+          />
+        </Sample>
+      </Section>
+
+      <Section id="descriptions" title="설명 목록" titleEn="Descriptions" badge="임시">
+        <Sample
+          label="Descriptions · 1열"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "테두리/R값", value: "1px Gray-30 / 4px(control)" },
+            { label: "행", value: "패딩좌우16px/상하10px, 구분선1px Gray-30" },
+            { label: "라벨", value: "고정폭100px, 13px, Gray-70" },
+            { label: "값", value: "13px medium, Gray-130" },
+          ]}
+        >
+          <Descriptions
+            className="w-[280px]"
+            items={[
+              { label: "품목명", value: "볼트 M8" },
+              { label: "규격", value: "M8 x 20mm" },
+              { label: "현재고", value: "1,200" },
+            ]}
+          />
+        </Sample>
+      </Section>
+
+      <Section id="switch" title="스위치" titleEn="Switch" badge="임시">
+        <Sample
+          label="Switch · off"
+          spec={[
+            { label: "트랙 크기", value: "44×24px(w-11 h-6) 고정, 판단값" },
+            { label: "썸 크기", value: "20px(size-5) 원형" },
+            { label: "트랙색(off)", value: "Gray-40" },
+            { label: "R값", value: "완전 원형(rounded-full)" },
+          ]}
+        >
+          <Switch />
+        </Sample>
+        <Sample
+          label="Switch · on"
+          spec={[
+            { label: "트랙색(on)", value: "Primary-60(bg-brand)" },
+            { label: "썸 이동", value: "오른쪽으로 20px(translate-x-5)" },
+            { label: "R값", value: "완전 원형(rounded-full)" },
+          ]}
+        >
+          <Switch defaultChecked />
+        </Sample>
+        <Sample
+          label="Switch · disabled(off)"
+          spec={[
+            { label: "처리 방식", value: "색 유지 + opacity-40(색 스왑 대신 흐리게)" },
+            { label: "R값", value: "완전 원형(rounded-full)" },
+          ]}
+        >
+          <Switch disabled />
+        </Sample>
+        <Sample
+          label="Switch · disabled(on)"
+          spec={[
+            { label: "처리 방식", value: "on 색(Primary-60) 유지 + opacity-40" },
+            { label: "R값", value: "완전 원형(rounded-full)" },
+          ]}
+        >
+          <Switch disabled defaultChecked />
+        </Sample>
+      </Section>
+
+      <Section id="skeleton" title="스켈레톤" titleEn="Skeleton" badge="임시">
+        <Sample
+          label="Skeleton · text"
+          spec={[
+            { label: "높이", value: "16px(h-4) 고정" },
+            { label: "너비", value: "100% hug(className으로 조정 가능)" },
+            { label: "R값", value: "2px(control-xs)" },
+            { label: "배경", value: "Gray-20(bg-subtle) + animate-pulse" },
+            { label: "줄 간격", value: "6px(gap-1.5)" },
+          ]}
+        >
+          <div className="flex w-40 flex-col gap-1.5">
+            <Skeleton variant="text" />
+            <Skeleton variant="text" className="w-2/3" />
+          </div>
+        </Sample>
+        <Sample
+          label="Skeleton · rect"
+          spec={[
+            { label: "높이", value: "96px(h-24) 고정" },
+            { label: "너비", value: "100% hug(데모는 w-40)" },
+            { label: "R값", value: "4px(control)" },
+            { label: "배경", value: "Gray-20(bg-subtle) + animate-pulse" },
+          ]}
+        >
+          <Skeleton variant="rect" className="w-40" />
+        </Sample>
+        <Sample
+          label="Skeleton · circle"
+          spec={[
+            { label: "크기", value: "40×40px(size-10) 고정" },
+            { label: "R값", value: "완전 원형(rounded-full)" },
+            { label: "배경", value: "Gray-20(bg-subtle) + animate-pulse" },
+          ]}
+        >
+          <Skeleton variant="circle" />
+        </Sample>
+        <Sample
+          label="Skeleton · 카드 조합 예시"
+          spec={[
+            { label: "circle↔text 간격", value: "8px(gap-2)" },
+            { label: "text 줄 간격", value: "6px(gap-1.5)" },
+          ]}
+        >
+          <div className="flex w-40 items-center gap-2">
+            <Skeleton variant="circle" />
+            <div className="flex flex-1 flex-col gap-1.5">
+              <Skeleton variant="text" />
+              <Skeleton variant="text" className="w-2/3" />
+            </div>
+          </div>
+        </Sample>
+      </Section>
+
+      <Section id="scroll-area" title="스크롤 영역" titleEn="ScrollArea" badge="임시">
+        <Sample
+          label="ScrollArea · 고정 높이"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "처리", value: "브라우저 기본 스크롤 + scrollbarWidth: thin" },
+            { label: "새 의존성", value: "없음(별도 스크롤바 라이브러리 미사용)" },
+          ]}
+        >
+          <ScrollArea className="h-[100px] w-[200px] rounded-mes-control border border-mes-border-default p-2">
+            {Array.from({ length: 10 }, (_, i) => (
+              <div key={i} className="py-1 text-[13px] text-mes-text-default">
+                항목 {i + 1}
+              </div>
+            ))}
+          </ScrollArea>
+        </Sample>
+      </Section>
+
+      <Section id="icon-button" title="아이콘 버튼 / 닫기 버튼" titleEn="IconButton / CloseButton" badge="임시">
         <Sample
           label="IconButton · basic/ghost"
           spec={[
@@ -3635,467 +4014,84 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="label" title="Label" badge="임시">
+      <Section id="accordion" title="아코디언" titleEn="Accordion" badge="임시">
         <Sample
-          label="Label · 기본"
+          label="Accordion · multiple(기본)"
           spec={[
-            { label: "폰트", value: "13px medium" },
-            { label: "텍스트색", value: "Gray-130(text-default)" },
-          ]}
-        >
-          <Label>품목명</Label>
-        </Sample>
-        <Sample
-          label="Label · required"
-          spec={[
-            { label: "폰트/색", value: "기본과 동일" },
-            { label: "* 간격", value: "2px(ml-0.5)" },
-            { label: "* 색상", value: "Danger(text-danger)" },
-          ]}
-        >
-          <Label required>거래처</Label>
-        </Sample>
-        <Sample
-          label="Label + Input 조합"
-          spec={[{ label: "Label↔Input 간격", value: "6px(gap-1.5)" }]}
-        >
-          <div className="flex flex-col gap-1.5">
-            <Label required>수량</Label>
-            <Input placeholder="0" className="w-[160px]" />
-          </div>
-        </Sample>
-      </Section>
-
-      <Section id="link" title="Link" badge="임시">
-        <Sample
-          label="Link · 기본"
-          spec={[
-            { label: "폰트", value: "14px medium" },
-            { label: "텍스트색", value: "Primary-60(text-brand)" },
-            { label: "밑줄", value: "상시 표시(underline, offset 2px)" },
-          ]}
-        >
-          <Link href="#">조설정 바로가기</Link>
-        </Sample>
-        <Sample label="Link · 화살표 포함" spec={[{ label: "폰트/색/밑줄", value: "기본과 동일 — 화살표는 텍스트에 직접 포함" }]}>
-          <Link href="#">자세히 보기 →</Link>
-        </Sample>
-      </Section>
-
-      <Section id="list" title="List" badge="임시">
-        <Sample
-          label="List · 클릭 가능 항목"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(Table 행 스타일 재사용, 판단값)" },
+            { label: "Figma", value: "전용 컴포넌트 없음(순수 React state)" },
             { label: "테두리", value: "1px Gray-30, R값4px(control)" },
-            { label: "항목", value: "패딩좌우12px/상하8px, 13px, 구분선1px Gray-30" },
-            { label: "hover 배경", value: "Gray-20(bg-subtler, 클릭 가능할 때만)" },
+            { label: "항목 구분선", value: "1px Gray-30(첫 항목 제외)" },
+            { label: "트리거", value: "패딩좌우16px/상하12px, 14px medium" },
+            { label: "화살표", value: "16px, 펼침 시 rotate-90" },
+            { label: "본문", value: "패딩좌우16px/하단12px, 13px, Gray-80" },
           ]}
         >
-          <List className="w-[220px]">
-            <ListItem onClick={() => {}}>자재 A</ListItem>
-            <ListItem onClick={() => {}}>자재 B</ListItem>
-            <ListItem onClick={() => {}}>자재 C</ListItem>
-          </List>
-        </Sample>
-      </Section>
-
-      <Section id="loading-overlay" title="LoadingOverlay" badge="임시">
-        <Sample
-          label="LoadingOverlay · 영역 덮기"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값, Backdrop과는 별개 목적)" },
-            { label: "처리", value: "absolute inset-0, 반투명 흰배경(bg-white/70)" },
-            { label: "스피너", value: "28px(LoadingSpinner 재사용)" },
-            { label: "스피너↔라벨 gap", value: "8px(gap-2)" },
-            { label: "라벨", value: "13px, Gray-70" },
-          ]}
-        >
-          <div className="relative h-[100px] w-[200px] rounded-mes-control border border-mes-border-default">
-            <LoadingOverlay label="불러오는 중" />
-          </div>
-        </Sample>
-      </Section>
-
-      <Section id="loading-spinner" title="LoadingSpinner" badge="임시">
-        <Sample
-          label="LoadingSpinner · 16px"
-          spec={[
-            { label: "크기", value: "16px(size prop으로 지정)" },
-            { label: "색상", value: "Primary-60(text-brand) 기본" },
-          ]}
-        >
-          <LoadingSpinner size={16} />
-        </Sample>
-        <Sample
-          label="LoadingSpinner · 20px(기본)"
-          spec={[
-            { label: "크기", value: "20px(기본값)" },
-            { label: "색상", value: "Primary-60(text-brand)" },
-          ]}
-        >
-          <LoadingSpinner />
-        </Sample>
-        <Sample
-          label="LoadingSpinner · fillMain 버튼 위"
-          spec={[
-            { label: "크기", value: "16px" },
-            { label: "색상", value: "흰색(text-inverse, className으로 덮어씀)" },
-            { label: "텍스트와 간격", value: "8px(버튼 gap-2로 덮어씀, 기본은 6px)" },
-          ]}
-        >
-          <Button size="basic" variant="fillMain" disabled className="gap-2">
-            <LoadingSpinner size={16} className="text-mes-text-inverse" />
-            처리 중
-          </Button>
-        </Sample>
-      </Section>
-
-      <Section id="logo" title="Logo" badge="임시">
-        <Sample
-          label="Logo · default/small"
-          spec={[
-            { label: "Figma", value: "실제 로고 애셋 없음, 텍스트 워드마크(판단값)" },
-            { label: "default", value: "18px bold" },
-            { label: "small", value: "14px bold" },
-            { label: "심볼", value: "\"M\" 배지 — 배경Primary-60, 흰텍스트, R값2px" },
-            { label: "심볼↔텍스트 gap", value: "6px(gap-1.5)" },
-          ]}
-        >
-          <div className="flex items-center gap-4">
-            <Logo />
-            <Logo size="small" />
-          </div>
-        </Sample>
-      </Section>
-
-      <Section id="multi-select-input" title="MultiSelectInput" badge="임시">
-        <Sample
-          label="MultiSelectInput · 태그 추가/제거"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "바깥 박스", value: "Input과 동일 테두리/R값, 높이는 hug(min-h-8)" },
-            { label: "패딩", value: "좌우8px/상하6px(px-2 py-1.5)" },
-            { label: "태그", value: "Tag(gray) 재사용, gap 6px(gap-1.5)" },
-            { label: "제거 아이콘", value: "10px(IconX)" },
-          ]}
-        >
-          <MultiSelectInput
-            values={multiSelectValues}
-            onValuesChange={setMultiSelectValues}
-            className="w-[260px]"
+          <Accordion
+            className="w-[280px]"
+            items={[
+              { id: "a1", title: "기본 정보", content: "품목명, 규격, 단위 등" },
+              { id: "a2", title: "재고 정보", content: "현재고, 안전재고, 위치" },
+              { id: "a3", title: "이력", content: "입출고 이력 목록" },
+            ]}
+            defaultOpenIds={["a1"]}
           />
         </Sample>
       </Section>
 
-      <Section id="navbar" title="Navbar" badge="임시">
+      <Section id="collapsible" title="접기·펼치기" titleEn="Collapsible" badge="임시">
         <Sample
-          label="Navbar · 3-슬롯"
+          label="Collapsible · 단일 트리거"
           spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "높이", value: "56px(h-14, 데모 페이지 상단바와 동일값 재사용)" },
-            { label: "패딩", value: "좌우16px(px-4)" },
-            { label: "하단 테두리", value: "1px Gray-30" },
-            { label: "슬롯 내부 gap", value: "12px(gap-3)" },
+            { label: "Figma", value: "전용 컴포넌트 없음(Accordion과 화살표 규칙 공유)" },
+            { label: "트리거", value: "14px medium, 화살표↔텍스트 gap 6px" },
+            { label: "화살표", value: "16px, 펼침 시 rotate-90" },
+            { label: "본문 들여쓰기", value: "22px(화살표 폭에 맞춤), 상단 gap 8px(mt-2)" },
           ]}
         >
-          <Navbar
-            className="w-[600px]"
-            left={<Logo size="small" />}
-            right={
-              <Button size="small" variant="lineBlacktxt">
-                로그아웃
-              </Button>
-            }
-          />
-        </Sample>
-      </Section>
-
-      <Section id="pagination" title="Pagination" badge="임시">
-        <Sample
-          label="Pagination · 10페이지 중 4페이지"
-          spec={[
-            { label: "Figma", value: "componentKey→node-id 변환 불가, 실측 못함(판단값)" },
-            { label: "버튼", value: "정사각24px(IconButton small 규격 재사용), R값2px(control-xs)" },
-            { label: "현재 페이지", value: "배경Primary-60, 텍스트흰색(Button fillMain 재사용)" },
-            { label: "요소 간 gap", value: "4px" },
-          ]}
-        >
-          <Pagination page={paginationPage} totalPages={10} onPageChange={setPaginationPage} />
-        </Sample>
-      </Section>
-
-      <Section id="panel" title="Panel" badge="임시">
-        <Sample
-          label="Panel · 기본"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "R값", value: "8px(panel)" },
-            { label: "테두리/배경", value: "1px Gray-30 / 흰색" },
-            { label: "그림자", value: "shadow-mes-panel(Combobox/NotificationPanel과 동일)" },
-          ]}
-        >
-          <Panel className="w-[220px] p-4">
-            <span className="text-[13px] leading-[1.5] text-mes-text-default">
-              그림자가 있는 떠 있는 영역
+          <Collapsible trigger="상세 옵션" className="w-[240px]">
+            <span className="text-[13px] leading-[1.5] text-mes-gray-80">
+              여기에 추가 필드가 들어갑니다.
             </span>
-          </Panel>
+          </Collapsible>
         </Sample>
       </Section>
 
-      <Section id="date-picker" title="DatePicker" badge="임시">
+      <Section id="card" title="카드" titleEn="Card" badge="임시">
         <Sample
-          label="DatePicker · 단일 날짜"
+          label="Card · 기본"
           spec={[
-            { label: "Figma", value: "node-id 해석 불가, 실측 못함(판단값)" },
-            { label: "트리거", value: "Input 스타일 재사용(inputVariants) + IconCalendar(실측 아이콘)" },
-            { label: "패널", value: "Popover 재사용" },
-            { label: "날짜 계산", value: "외부 라이브러리 없이 순수 Date" },
-            { label: "R값", value: "4px(control, Input 트리거 재사용)" },
-          ]}
-        >
-          <DatePicker value={datePickerValue} onValueChange={setDatePickerValue} />
-        </Sample>
-      </Section>
-
-      <Section id="date-range-picker" title="DateRangePicker" badge="임시">
-        <Sample
-          label="DateRangePicker · 기간 선택"
-          spec={[
-            { label: "규격", value: "DatePicker와 동일 트리거/패널" },
-            { label: "선택 순서", value: "시작일 클릭 → 종료일 클릭" },
-            { label: "사이 날짜", value: "옅은 브랜드 배경(판단값)" },
-            { label: "R값", value: "4px(control, DatePicker와 동일)" },
-          ]}
-        >
-          <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
-        </Sample>
-      </Section>
-
-      <Section id="time-picker" title="TimePicker" badge="임시">
-        <Sample
-          label="TimePicker · 30분 간격"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "트리거", value: "Input 스타일 재사용" },
-            { label: "목록", value: "Combobox 옵션 hover/선택 규칙 재사용, 스크롤" },
-            { label: "R값", value: "4px(control, Input 트리거 재사용)" },
-          ]}
-        >
-          <TimePicker value={timePickerValue} onValueChange={setTimePickerValue} />
-        </Sample>
-      </Section>
-
-      <Section id="popover" title="Popover" badge="임시">
-        <Sample
-          label="Popover · 클릭해서 열기"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(Radix 재사용)" },
-            { label: "패딩", value: "16px(p-4)" },
-            { label: "테두리/배경", value: "1px Gray-30 / 흰색" },
-            { label: "R값", value: "8px(panel)" },
-            { label: "그림자", value: "shadow-mes-panel(Combobox 패널과 동일값 재사용)" },
-            { label: "트리거 간격", value: "4px(sideOffset)" },
-          ]}
-        >
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button size="small" variant="lineBlacktxt">
-                열기
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-[220px]">
-              <span className="text-[13px] leading-[1.5] text-mes-text-default">
-                특정 요소 옆에 뜨는 팝업 콘텐츠입니다.
-              </span>
-            </PopoverContent>
-          </Popover>
-        </Sample>
-      </Section>
-
-      <Section id="scroll-area" title="ScrollArea" badge="임시">
-        <Sample
-          label="ScrollArea · 고정 높이"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "처리", value: "브라우저 기본 스크롤 + scrollbarWidth: thin" },
-            { label: "새 의존성", value: "없음(별도 스크롤바 라이브러리 미사용)" },
-          ]}
-        >
-          <ScrollArea className="h-[100px] w-[200px] rounded-mes-control border border-mes-border-default p-2">
-            {Array.from({ length: 10 }, (_, i) => (
-              <div key={i} className="py-1 text-[13px] text-mes-text-default">
-                항목 {i + 1}
-              </div>
-            ))}
-          </ScrollArea>
-        </Sample>
-      </Section>
-
-      <Section id="skeleton" title="Skeleton" badge="임시">
-        <Sample
-          label="Skeleton · text"
-          spec={[
-            { label: "높이", value: "16px(h-4) 고정" },
-            { label: "너비", value: "100% hug(className으로 조정 가능)" },
-            { label: "R값", value: "2px(control-xs)" },
-            { label: "배경", value: "Gray-20(bg-subtle) + animate-pulse" },
-            { label: "줄 간격", value: "6px(gap-1.5)" },
-          ]}
-        >
-          <div className="flex w-40 flex-col gap-1.5">
-            <Skeleton variant="text" />
-            <Skeleton variant="text" className="w-2/3" />
-          </div>
-        </Sample>
-        <Sample
-          label="Skeleton · rect"
-          spec={[
-            { label: "높이", value: "96px(h-24) 고정" },
-            { label: "너비", value: "100% hug(데모는 w-40)" },
+            { label: "Figma", value: "전용 노드 없음(판단값)" },
+            { label: "배경/테두리", value: "흰색 / 1px Gray-30" },
             { label: "R값", value: "4px(control)" },
-            { label: "배경", value: "Gray-20(bg-subtle) + animate-pulse" },
+            { label: "그림자", value: "없음(Card는 평면 UI)" },
+            { label: "Header/Content/Footer", value: "각 padding 16px(p-4)" },
+            { label: "Header 하단테두리", value: "1px Gray-30" },
+            { label: "Footer 상단테두리", value: "1px Gray-30, gap 8px" },
           ]}
         >
-          <Skeleton variant="rect" className="w-40" />
-        </Sample>
-        <Sample
-          label="Skeleton · circle"
-          spec={[
-            { label: "크기", value: "40×40px(size-10) 고정" },
-            { label: "R값", value: "완전 원형(rounded-full)" },
-            { label: "배경", value: "Gray-20(bg-subtle) + animate-pulse" },
-          ]}
-        >
-          <Skeleton variant="circle" />
-        </Sample>
-        <Sample
-          label="Skeleton · 카드 조합 예시"
-          spec={[
-            { label: "circle↔text 간격", value: "8px(gap-2)" },
-            { label: "text 줄 간격", value: "6px(gap-1.5)" },
-          ]}
-        >
-          <div className="flex w-40 items-center gap-2">
-            <Skeleton variant="circle" />
-            <div className="flex flex-1 flex-col gap-1.5">
-              <Skeleton variant="text" />
-              <Skeleton variant="text" className="w-2/3" />
-            </div>
-          </div>
-        </Sample>
-      </Section>
-
-      <Section id="empty-state" title="EmptyState" badge="임시">
-        <Sample
-          label="EmptyState · 아이콘+액션"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "패딩", value: "좌우24px/상하48px(px-6 py-12)" },
-            { label: "아이콘 색", value: "Gray-50" },
-            { label: "아이콘↔텍스트블록 gap", value: "12px" },
-            { label: "제목", value: "15px semibold, Gray-130" },
-            { label: "설명", value: "13px, Gray-70" },
-            { label: "텍스트블록↔액션 gap", value: "4px(mt-1)" },
-          ]}
-        >
-          <EmptyState
-            icon={<IconFileNote size={40} />}
-            title="데이터가 없습니다"
-            description="조회 조건을 변경해보세요."
-            action={
+          <Card className="w-[260px]">
+            <CardHeader>
+              <CardTitle>작업 지시 #1024</CardTitle>
+              <CardDescription>2026.08.03 생성</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <span className="text-[13px] leading-[1.5] text-mes-text-default">
+                설비 A라인 · 수량 500
+              </span>
+            </CardContent>
+            <CardFooter>
               <Button size="small" variant="lineBlacktxt">
-                필터 초기화
+                상세
               </Button>
-            }
-          />
-        </Sample>
-      </Section>
-
-      <Section id="error-state" title="ErrorState" badge="임시">
-        <Sample
-          label="ErrorState · 재시도 액션"
-          spec={[
-            { label: "레이아웃", value: "EmptyState와 동일(판단값)" },
-            { label: "아이콘 색", value: "text-mes-text-danger(첫 실사용처)" },
-            { label: "제목 기본값", value: "\"문제가 발생했습니다\"" },
-          ]}
-        >
-          <ErrorState
-            icon={<IconExclamationCircle size={40} />}
-            description="잠시 후 다시 시도해주세요."
-            action={
-              <Button size="small" variant="lineMain">
-                다시 시도
+              <Button size="small" variant="fillMain">
+                승인
               </Button>
-            }
-          />
+            </CardFooter>
+          </Card>
         </Sample>
       </Section>
 
-      <Section id="sticky-header-footer" title="StickyHeader / StickyFooter" badge="임시">
-        <Sample
-          label="Sticky · 컨테이너 내부 스크롤"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "처리", value: "position: sticky, 헤더 top-0/푸터 bottom-0" },
-            { label: "테두리", value: "헤더 하단1px / 푸터 상단1px, 둘 다 Gray-30" },
-            { label: "배경", value: "흰색(스크롤 콘텐츠 위에 항상 불투명하게 덮임)" },
-          ]}
-        >
-          <div className="h-[140px] w-[220px] overflow-y-auto rounded-mes-control border border-mes-border-default">
-            <StickyHeader className="px-3 py-2 text-[12px] font-semibold">헤더</StickyHeader>
-            <div className="p-3 text-[12px] text-mes-gray-70">
-              스크롤해도 헤더/푸터는 고정됩니다. 스크롤해도 헤더/푸터는 고정됩니다.
-            </div>
-            <StickyFooter className="px-3 py-2 text-[12px] text-mes-gray-70">푸터</StickyFooter>
-          </div>
-        </Sample>
-      </Section>
-
-      <Section id="switch" title="Switch" badge="임시">
-        <Sample
-          label="Switch · off"
-          spec={[
-            { label: "트랙 크기", value: "44×24px(w-11 h-6) 고정, 판단값" },
-            { label: "썸 크기", value: "20px(size-5) 원형" },
-            { label: "트랙색(off)", value: "Gray-40" },
-            { label: "R값", value: "완전 원형(rounded-full)" },
-          ]}
-        >
-          <Switch />
-        </Sample>
-        <Sample
-          label="Switch · on"
-          spec={[
-            { label: "트랙색(on)", value: "Primary-60(bg-brand)" },
-            { label: "썸 이동", value: "오른쪽으로 20px(translate-x-5)" },
-            { label: "R값", value: "완전 원형(rounded-full)" },
-          ]}
-        >
-          <Switch defaultChecked />
-        </Sample>
-        <Sample
-          label="Switch · disabled(off)"
-          spec={[
-            { label: "처리 방식", value: "색 유지 + opacity-40(색 스왑 대신 흐리게)" },
-            { label: "R값", value: "완전 원형(rounded-full)" },
-          ]}
-        >
-          <Switch disabled />
-        </Sample>
-        <Sample
-          label="Switch · disabled(on)"
-          spec={[
-            { label: "처리 방식", value: "on 색(Primary-60) 유지 + opacity-40" },
-            { label: "R값", value: "완전 원형(rounded-full)" },
-          ]}
-        >
-          <Switch disabled defaultChecked />
-        </Sample>
-      </Section>
-
-      <Section id="textarea" title="Textarea" badge="임시">
+      <Section id="textarea" title="텍스트 영역" titleEn="Textarea" badge="임시">
         <Sample
           label="Textarea · Default(placeholder)"
           spec={[
@@ -4142,7 +4138,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="toggle-button" title="ToggleButton" badge="임시">
+      <Section id="toggle-button" title="토글 버튼" titleEn="ToggleButton" badge="임시">
         <Sample
           label="ToggleButton · 눌림 상태 토글"
           spec={[
@@ -4163,7 +4159,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="tooltip" title="Tooltip" badge="임시">
+      <Section id="tooltip" title="툴팁" titleEn="Tooltip" badge="임시">
         <Sample
           label="Tooltip · top(기본)"
           spec={[
@@ -4200,44 +4196,125 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <Section id="user-account-menu" title="UserAccountMenu" badge="임시">
+      <Section id="popover" title="팝오버" titleEn="Popover" badge="임시">
         <Sample
-          label="UserAccountMenu · 클릭해서 열기"
+          label="Popover · 클릭해서 열기"
           spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(DropdownMenu 재사용, 판단값)" },
-            { label: "트리거", value: "패딩좌우8px/상하6px, 13px medium" },
-            { label: "아바타 아이콘", value: "20px(IconUserMono, 실측 아이콘), Gray-70" },
-            { label: "아이콘↔이름 gap", value: "6px(gap-1.5)" },
-            { label: "패널", value: "DropdownMenu와 동일(align=end)" },
-            { label: "R값", value: "4px(control)" },
+            { label: "Figma", value: "전용 컴포넌트 없음(Radix 재사용)" },
+            { label: "패딩", value: "16px(p-4)" },
+            { label: "테두리/배경", value: "1px Gray-30 / 흰색" },
+            { label: "R값", value: "8px(panel)" },
+            { label: "그림자", value: "shadow-mes-panel(Combobox 패널과 동일값 재사용)" },
+            { label: "트리거 간격", value: "4px(sideOffset)" },
           ]}
         >
-          <UserAccountMenu
-            name="이해빈"
-            items={[
-              { id: "profile", label: "프로필" },
-              { id: "settings", label: "설정" },
-              { id: "logout", label: "로그아웃", danger: true },
-            ]}
-          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button size="small" variant="lineBlacktxt">
+                열기
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[220px]">
+              <span className="text-[13px] leading-[1.5] text-mes-text-default">
+                특정 요소 옆에 뜨는 팝업 콘텐츠입니다.
+              </span>
+            </PopoverContent>
+          </Popover>
         </Sample>
       </Section>
 
+      <Section id="panel" title="패널" titleEn="Panel" badge="임시">
+        <Sample
+          label="Panel · 기본"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "R값", value: "8px(panel)" },
+            { label: "테두리/배경", value: "1px Gray-30 / 흰색" },
+            { label: "그림자", value: "shadow-mes-panel(Combobox/NotificationPanel과 동일)" },
+          ]}
+        >
+          <Panel className="w-[220px] p-4">
+            <span className="text-[13px] leading-[1.5] text-mes-text-default">
+              그림자가 있는 떠 있는 영역
+            </span>
+          </Panel>
+        </Sample>
+      </Section>
 
-      {/* 2026-08-03 신규 — 담당자 요청: "더 작업이 필요한 것들의 구역을 미리 생성해 둬".
-          아직 착수 안 한 티어3/4를 위한 자리만 미리 만들어둠(SIDEBAR_GROUPS의 "예정"
-          그룹과 짝) — 실제 항목 125개를 지금 다 채우진 않음. 티어5(28개)는 체크리스트
-          기준 이미 "제외" 확정이라 여기 포함하지 않음. */}
-      <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-gray-60 pl-5">
-        <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
-          <Hammer className="size-7 shrink-0 text-mes-gray-60" />
-          예정
-        </span>
-        <p className="text-[13px] leading-[1.5] text-mes-gray-70">
-          체크리스트 기준 티어3(59개, 필수)·티어4(41개, 포함권장 19 + 보류 22) 미착수
-          항목이 여기 채워질 예정입니다. 티어5(28개)는 이미 범위 제외로 확정.
-        </p>
-      </div>
+      <Section id="pagination" title="페이지네이션" titleEn="Pagination" badge="임시">
+        <Sample
+          label="Pagination · 10페이지 중 4페이지"
+          spec={[
+            { label: "Figma", value: "componentKey→node-id 변환 불가, 실측 못함(판단값)" },
+            { label: "버튼", value: "정사각24px(IconButton small 규격 재사용), R값2px(control-xs)" },
+            { label: "현재 페이지", value: "배경Primary-60, 텍스트흰색(Button fillMain 재사용)" },
+            { label: "요소 간 gap", value: "4px" },
+          ]}
+        >
+          <Pagination page={paginationPage} totalPages={10} onPageChange={setPaginationPage} />
+        </Sample>
+      </Section>
+
+      <Section id="date-picker" title="피커 — 날짜" titleEn="Picker — Date" badge="임시">
+        <Sample
+          label="DatePicker · 단일 날짜"
+          spec={[
+            { label: "Figma", value: "node-id 해석 불가, 실측 못함(판단값)" },
+            { label: "트리거", value: "Input 스타일 재사용(inputVariants) + IconCalendar(실측 아이콘)" },
+            { label: "패널", value: "Popover 재사용" },
+            { label: "날짜 계산", value: "외부 라이브러리 없이 순수 Date" },
+            { label: "R값", value: "4px(control, Input 트리거 재사용)" },
+          ]}
+        >
+          <DatePicker value={datePickerValue} onValueChange={setDatePickerValue} />
+        </Sample>
+      </Section>
+
+      <Section id="date-range-picker" title="피커 — 기간" titleEn="Picker — Range" badge="임시">
+        <Sample
+          label="DateRangePicker · 기간 선택"
+          spec={[
+            { label: "규격", value: "DatePicker와 동일 트리거/패널" },
+            { label: "선택 순서", value: "시작일 클릭 → 종료일 클릭" },
+            { label: "사이 날짜", value: "옅은 브랜드 배경(판단값)" },
+            { label: "R값", value: "4px(control, DatePicker와 동일)" },
+          ]}
+        >
+          <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
+        </Sample>
+      </Section>
+
+      <Section id="time-picker" title="피커 — 시간" titleEn="Picker — Time" badge="임시">
+        <Sample
+          label="TimePicker · 30분 간격"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "트리거", value: "Input 스타일 재사용" },
+            { label: "목록", value: "Combobox 옵션 hover/선택 규칙 재사용, 스크롤" },
+            { label: "R값", value: "4px(control, Input 트리거 재사용)" },
+          ]}
+        >
+          <TimePicker value={timePickerValue} onValueChange={setTimePickerValue} />
+        </Sample>
+      </Section>
+
+      <Section id="fieldset" title="필드셋" titleEn="Fieldset" badge="임시">
+        <Sample
+          label="Fieldset · 필드 묶음"
+          spec={[
+            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
+            { label: "테두리/R값", value: "1px Gray-30 / 4px(control)" },
+            { label: "패딩", value: "16px(p-4)" },
+            { label: "필드 간 gap", value: "12px(gap-3)" },
+            { label: "legend", value: "13px medium, Gray-130(Label과 동일 톤)" },
+          ]}
+        >
+          <Fieldset legend="거래처 정보" className="w-[260px]">
+            <Input placeholder="거래처명" size="small" />
+            <Input placeholder="담당자" size="small" />
+          </Fieldset>
+        </Sample>
+      </Section>
       <section id="upcoming-tier3" className="flex w-full max-w-[960px] scroll-mt-20 flex-col border-b border-mes-gray-30 pb-8">
         <EmptyState
           icon={<Hammer size={32} />}
