@@ -1474,4 +1474,41 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
      재배치 후 Sample 126개/중복 key 0건/Section id 74개 중복 0건/물리 순서-정렬 결과
      일치 재확인, tsc 클린 확인 후 커밋. 코드 파일명(`confirm-dialog.tsx` 등)은 안 건드림
      — 개발자 참조용이라 화면에 안 보이고, 바꾸면 오히려 git 이력 추적에 방해.
+- (2026-08-04, 62차) 담당자 요청 3가지: "우상단 검색을 좌측 리스트 최상단으로 두고,
+  한 페이지에 스크롤 개길게 하지 말고 약간 분할을 하자, 브레드크럼으로".
+  1) 검색창 이동: 헤더 우측 상단 Popover 검색을 `<aside>` 사이드바 리스트 맨 위로
+     그대로 옮김(기능 동일 — 사이드바 자체는 필터링 안 하고 검색창 밑에 콤보박스형
+     결과 드롭다운).
+  2) 페이지 분할: 지금까지 Foundations 8개 + Components 63개(71개 항목)를 전부 한
+     페이지에 렌더링하고 앵커(`#id`)로 스크롤 이동하던 구조를, 항목당 실제 라우트
+     (`/foundations/{id}`, `/components/{id}`)로 전환. 이 프로젝트가 GitHub Pages
+     정적 export(`output: "export"`, next.config.ts, 24차)라 서버가 없다는 게 핵심
+     제약 — 동적 라우트([...slug])는 빌드 시점에 `generateStaticParams()`로 만들
+     경로를 전부 알려줘야 하는데, 이 함수는 서버 컴포넌트에서만 쓸 수 있고 기존
+     페이지는 "use client" + 훅 범벅이라 같은 파일에 못 둠. 그래서 3개 파일로 분리:
+     - `src/lib/sidebar-data.ts`(신규): TOC_LINKS/COMPONENT_NODES/TOP_NAV 등 JSX 없는
+       순수 데이터·함수만 페이지 파일에서 뽑아냄 — 서버·클라이언트 양쪽이 씀(중복 방지).
+     - `app/[...slug]/page.tsx`(신규, 서버): `generateStaticParams()`로 경로 73개(그룹
+       루트 2 + 항목 71) 나열, `client-page.tsx`를 렌더링만 함.
+     - `app/[...slug]/client-page.tsx`(기존 `app/page.tsx` 전체를 옮김): 실제 화면.
+       `useParams()`로 현재 slug를 읽어 `activeId`/`activeGroup` 파생(스크롤 위치
+       기반 IntersectionObserver 추적은 제거 — 더 이상 필요 없음). `/components`처럼
+       구체적 id가 없는 그룹 루트는 그 그룹 첫 항목을 기본으로 보여줌.
+     - `app/page.tsx`(신규, 얇은 서버 컴포넌트): "/"는 캐치올이 못 받아서 별도로
+       `/foundations`로 즉시 리다이렉트.
+     - 렌더링은 "현재 activeId가 아니면 언마운트"가 아니라 **CSS `hidden` 처리**로
+       구현(51곳은 `Section` 컴포넌트 하나에 새 `ActiveIdContext`를 배선해서 자동
+       적용, 19곳 raw `<section>`은 각각 className에 조건부 `hidden` 추가) — 다른
+       항목으로 이동해도 각 데모의 내부 상태(useState)가 유지되고, Sample 레지스트리
+       (`RightRail`용)도 계속 채워짐.
+     - 사이드바 leaf/branch, 상단탭(TOP_NAV), 검색결과의 `href="#id"` 앵커를 전부
+       `next/link` `Link` + 실제 경로로 교체.
+  3) 브레드크럼: 메인 상단에 새로 추가 — 디자인 시스템 자체 컴포넌트인 `Breadcrumb`
+     (id="breadcrumb" 데모와 동일 컴포넌트, 코드 재사용)를 그대로 갖다 써서 "Home >
+     Foundations/Components > (브랜치가 있으면 그 이름) > 현재 항목" 표시, 클릭하면
+     `router.push`로 실제 이동.
+  검증: `npx tsc --noEmit` 클린(4개 변경 파일 전부 프로그램에 포함되는 것까지
+  `--listFiles`로 확인). `npm run build`는 기존과 동일하게 샌드박스 Bus error로
+  로컬에서 끝까지 못 돌림(코드와 무관 — 24차 이후 계속 문서화된 한계, tsc로 대체
+  검증). 로컬 커밋(`ea79d6d`)까지 완료, push는 담당자가 GitHub Desktop으로.
 
