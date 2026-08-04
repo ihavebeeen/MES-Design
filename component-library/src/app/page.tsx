@@ -868,6 +868,7 @@ const SEMANTIC_TOKENS: { group: string; tokens: { name: string; scale: string; u
       { name: "text-inverse", scale: "white", usage: "채워진 배경 위 텍스트" },
       { name: "text-brand", scale: "Primary-60", usage: "브랜드 강조 텍스트/링크" },
       { name: "text-danger", scale: "Danger-60", usage: "위험/에러 텍스트" },
+      { name: "text-success", scale: "Success-60", usage: "성공 텍스트 (2026-08-04 신규, 실사용 사례 없음)" },
     ],
   },
   {
@@ -886,6 +887,9 @@ const SEMANTIC_TOKENS: { group: string; tokens: { name: string; scale: string; u
       { name: "bg-danger", scale: "Danger-60", usage: "위험/에러 강조 배경" },
       { name: "bg-warning-subtle", scale: "Yellow-10", usage: "경고 배너 배경" },
       { name: "icon-warning", scale: "Yellow-50", usage: "경고 아이콘" },
+      { name: "border-success-subtle", scale: "Success-20", usage: "성공 배너 테두리 (2026-08-04 신규, 실사용 사례 없음)" },
+      { name: "bg-success-subtle", scale: "Success-10", usage: "성공 배너 배경 (2026-08-04 신규, 실사용 사례 없음)" },
+      { name: "icon-success", scale: "Success-50", usage: "성공 아이콘 (2026-08-04 신규, 실사용 사례 없음)" },
       { name: "bg-info", scale: "Primary-60", usage: "정보 강조(브랜드색 재사용)" },
       { name: "bg-strong", scale: "Gray-130", usage: "검정(고대비) 배경" },
     ],
@@ -934,6 +938,21 @@ const YELLOW_PALETTE = [
   { step: "90", hex: "#422C00" },
   { step: "100", hex: "#2E1F00" },
   { step: "110", hex: "#241800" },
+] as const;
+
+/** 2026-08-04 신규 — 데스크탑 Figma엔 없어 모바일에서 확정된 값을 그대로 가져옴(담당자 확인) */
+const SUCCESS_PALETTE = [
+  { step: "10", hex: "#EAF6EC" },
+  { step: "20", hex: "#D8EEDD" },
+  { step: "30", hex: "#A9DAB4" },
+  { step: "40", hex: "#7EC88E" },
+  { step: "50", hex: "#3FA654" },
+  { step: "60", hex: "#228738" },
+  { step: "70", hex: "#267337" },
+  { step: "80", hex: "#285D33" },
+  { step: "90", hex: "#1F4727" },
+  { step: "100", hex: "#122B18" },
+  { step: "110", hex: "#0E2012" },
 ] as const;
 
 /** 알람 리스트 전용 별도 색상군 — 단계형 팔레트 아님, 색상당 1개 값만 존재 */
@@ -1747,7 +1766,7 @@ export default function Home() {
             <div>
               <h2 className="border-l-4 border-mes-primary-60 pl-3 text-[17px] font-bold leading-tight text-mes-gray-130">색상 팔레트</h2>
               <p className="mt-1 text-[12px] text-mes-gray-70">
-                Gray/Primary/Danger/Yellow 각 10~110 11단계. Alarm은 알람 리스트 전용 별도 색상군.
+                Gray/Primary/Danger/Yellow/Success 각 10~110 11단계. Alarm은 알람 리스트 전용 별도 색상군.
               </p>
             </div>
             <div className="flex flex-col gap-4">
@@ -1755,6 +1774,11 @@ export default function Home() {
               <PaletteRow title="Primary" colors={PRIMARY_PALETTE} />
               <PaletteRow title="Danger" colors={DANGER_PALETTE} />
               <PaletteRow title="Yellow" colors={YELLOW_PALETTE} />
+              <PaletteRow
+                title="Success"
+                note="(2026-08-04 신규 — 데스크탑 Figma엔 없어 모바일 확정값 재사용, 담당자 확인)"
+                colors={SUCCESS_PALETTE}
+              />
               <PaletteRow title="Alarm severity" note="(알람 리스트 전용, 팔레트 아님)" colors={ALARM_PALETTE} />
             </div>
           </section>

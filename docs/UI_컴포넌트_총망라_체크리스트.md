@@ -106,7 +106,43 @@
 | 100 | #310C0F | |
 | 110 | #21080A | |
 
-> **재확인 완료(2026-07-16, `get_variable_defs`로 팔레트 전체 대조)**: Gray/Primary/Danger 팔레트의 각 단계 hex값을 Figma 라이브 변수로 교차 검증한 결과, Gray 60(`#96A0B5`→`#99A3B8`, 위 표에 반영됨) 1건만 오기재였고 나머지는 전부 일치했다. Danger 외 System Color(Warning/Success)는 데스크탑 Foundation의 "System Color" 구역에 Danger 그룹만 존재하고 Warning/Success 그룹 자체가 없음을 확인 — 모바일 체크리스트엔 있는 값이므로, 데스크탑에도 만들지 여부와 값(모바일과 동일하게 갈지)은 디자인 결정이 필요하다(19번 섹션에 등록).
+> **재확인 완료(2026-07-16, `get_variable_defs`로 팔레트 전체 대조)**: Gray/Primary/Danger 팔레트의 각 단계 hex값을 Figma 라이브 변수로 교차 검증한 결과, Gray 60(`#96A0B5`→`#99A3B8`, 위 표에 반영됨) 1건만 오기재였고 나머지는 전부 일치했다. 이 시점 기준 데스크탑 Foundation의 "System Color" 구역엔 Danger 그룹만 있었음(Warning/Success 없음).
+
+**System Color — 주의(Warning, 코드상 팔레트명은 "Yellow")**
+
+| 단계 | Hex | 비고 |
+|---|---|---|
+| 10 | #FFF3DB | |
+| 20 | #FFE0A3 | surface |
+| 30 | #FFC95C | |
+| 40 | #FFB114 | Base |
+| 50 | #F2A406 | Text |
+| 60 | #C68501 | |
+| 70 | #8A5C00 | |
+| 80 | #614100 | |
+| 90 | #422C00 | |
+| 100 | #2E1F00 | |
+| 110 | #241800 | |
+
+> 2026-07-30 담당자가 별도로 준 "System Color" 레퍼런스 프레임(node 20170:67850)에서 확인 — 위 0-1번 최초 스캔 때는 없었지만, 이 특정 프레임엔 존재했음(`동진 Design System/동진 System/Yellow *` 변수, `get_variable_defs` 실측). `globals.css`에 `--mes-yellow-*`로 반영, NoticeBanner/ConfirmDialog `tone="warning"`에서 실사용 중.
+
+**System Color — 성공(Success)**
+
+| 단계 | Hex | 비고 |
+|---|---|---|
+| 10 | #EAF6EC | |
+| 20 | #D8EEDD | surface |
+| 30 | #A9DAB4 | |
+| 40 | #7EC88E | |
+| 50 | #3FA654 | Text |
+| 60 | #228738 | Base |
+| 70 | #267337 | |
+| 80 | #285D33 | |
+| 90 | #1F4727 | |
+| 100 | #122B18 | |
+| 110 | #0E2012 | |
+
+> 2026-08-04 확정: 데스크탑 Figma엔 Success 그룹이 끝내 없어서(위 Warning처럼 별도 레퍼런스 프레임도 없음), 담당자 확인 하에 모바일 체크리스트에서 이미 확정된 값을 그대로 가져옴(19번 섹션 항목 해소). `globals.css`에 `--mes-success-*`/시맨틱 토큰(`text-success`, `bg-success-subtle` 등) 추가, 데모 페이지 색상 팔레트 섹션에도 반영 — 아직 실사용 컴포넌트는 없음(선제 정의, 필요해지면 ConfirmDialog `tone="success"` 등으로 확장 가능).
 >
 > **2차 재검증 완료(2026-07-28, 다른 파일에서 교차 대조) → 팔레트 확정(CONFIRMED)**: 컴포넌트 라이브러리 파일이 아닌 별도 파일인 클라우드MES(fileKey `F4n5Zr04PAbiRjfIFQAo6v`) node `9873:81596`의 `get_variable_defs`로 같은 팔레트를 다시 대조한 결과 위 표와 100% 일치, 추가 오차 없음. 서로 다른 두 파일에서 각각 실측해 일치를 확인했으므로 이 팔레트는 더 이상 열린 질문이 아니라 확정값으로 취급한다(코드 쪽 반영: `component-library/src/app/globals.css`). 단, 팔레트 밖의 개별 hover 임시색(예: Button `opacityMain` hover의 `#D4EAFF` — 담당자 확인 결과 팔레트 색이 아니라 hover용으로 별도로 넣은 값) 같은 예외는 팔레트에 편입시키지 않고 해당 컴포넌트 코드에 출처와 함께 개별 기록한다.
 
@@ -536,7 +572,7 @@ Select와 같은 방식으로, 티어 1~2 항목을 하나씩 골라 `component.
 | 항목 | 위치 | 확인할 내용 |
 |---|---|---|
 | ~~Icon Set~~ → **실제 SVG 33종 확보 및 컴포넌트화 완료** | 0번 섹션 | 이 환경에서 Figma 애셋 CDN 직접 다운로드는 끝까지 불가(HTTP 403 재확인)했으나, 담당자가 Figma에서 직접 SVG export해 `component-library/icon/mes/`에 넣어줘서 해결됨. 33개 파일 전부 분석해 `component-library/src/components/icons/`에 실측 벡터 기반 React 컴포넌트로 구현 완료(색상 variant는 currentColor로 일반화, 형태가 실제로 다른 것은 variant prop으로 분리, flat-* 4종은 2톤 고정색 유지) → 상세 내용 [아이콘_매핑표.md](./아이콘_매핑표.md) "2026-07-28 실측 SVG 반영 결과" 참고. 기존 lucide 대체 아이콘 사용처(filter.tsx/toast.tsx/confirm-dialog.tsx/radio-choice-dialog.tsx)도 실제 벡터로 교체 완료. 아직 미확보: mes/icon-setting, Toast BLUE의 CHECK 아이콘 |
-| **System Color (Warning/Success) 데스크탑 신설 필요** | 0-1번 섹션 | 재확인 완료 — 데스크탑 Figma엔 Danger만 있고 Warning/Success 그룹 자체가 없음(모바일엔 있음). 데스크탑에도 만들지, 모바일과 같은 값을 쓸지는 디자인 결정 필요 |
+| ~~System Color (Warning/Success) 데스크탑 신설 필요~~ → **해소 완료** | 0-1번 섹션 | Warning은 2026-07-30에 이미 데스크탑 전용 레퍼런스 프레임(node 20170:67850)으로 확정돼 `globals.css`에 반영돼 있었음(체크리스트만 갱신 안 돼 있었음). Success는 데스크탑 Figma에 끝내 없어서 2026-08-04 담당자 확인 하에 모바일 확정값을 그대로 재사용하기로 결정, `globals.css`/데모 페이지 반영 완료 |
 | Nested Modal | 15번 섹션 | 2-depth 모달의 정확한 구조 (Side Modal "검사/커스텀 정보 등록"에서 겹친 형태로 추정만 한 상태) |
 | 검사 판정 버튼 "-"(대시) | 16-4번 섹션 | 정확한 의미 — 사용자 측 내부 확인 대기 중. [컴포넌트 기능 변형 심층분석](./컴포넌트_기능_변형_심층분석.md) 참고 |
 | Breakpoint Scale | 0번 섹션 | 2026-08-04 담당자 확인: 반응형 기준값은 개별 아톰/컴포넌트가 아니라 그것들을 모아 배치한 화면(템플릿) 단위에서 의미가 생기는 값 — 지금은 컴포넌트 라이브러리(아톰~오가니즘) 단계라 시기상조. **템플릿·화면 단위 작업 시작 시점에 재검토**로 보류 확정(모바일 파일엔 이미 3단계 값이 확인돼 있음 — 0-1번 섹션 참고, 필요해지면 그대로 참조 가능) |

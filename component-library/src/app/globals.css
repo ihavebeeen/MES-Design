@@ -136,6 +136,24 @@
   --mes-yellow-100: #2e1f00;
   --mes-yellow-110: #241800;
 
+  /* Success — 2026-08-04 신규. 데스크탑 Figma엔 이 System Color 그룹 자체가 없어서
+     (Danger만 확인됨) 모바일 파일에서 이미 확정된 "성공(Success)" 팔레트 값을 담당자
+     확인 하에 그대로 가져옴(모바일_컴포넌트_체크리스트.md 0-1절 출처, get_variable_defs
+     실측). Yellow(주의/Warning)와 동일한 10~110 11단계 구조 — 역할 라벨: 20=surface,
+     60=Base, 50=Text. 아직 이 색을 쓰는 컴포넌트는 없음(선제 정의) — 필요해지면
+     ConfirmDialog tone="success" 등으로 확장. */
+  --mes-success-10: #eaf6ec;
+  --mes-success-20: #d8eedd;
+  --mes-success-30: #a9dab4;
+  --mes-success-40: #7ec88e;
+  --mes-success-50: #3fa654;
+  --mes-success-60: #228738;
+  --mes-success-70: #267337;
+  --mes-success-80: #285d33;
+  --mes-success-90: #1f4727;
+  --mes-success-100: #122b18;
+  --mes-success-110: #0e2012;
+
   /* Alarm severity — 2026-07-30 신규. 알람 리스트(MES 알람 리스트, node 163:3039 하위) 전용
      4색 세트 — Gray/Primary/Danger/Yellow 어느 팔레트와도 값이 일치하지 않는 별도 색상군.
      예: blue #4a90e2는 Primary-60(#1573FB)과 다르고, red #e15b5b는 Danger-60(#F04452)과
@@ -161,6 +179,7 @@
   --mes-text-inverse: #ffffff; /* 채워진(fill) 배경 위 흰색 텍스트 */
   --mes-text-brand: var(--mes-primary-60); /* 브랜드 강조 텍스트/링크 */
   --mes-text-danger: var(--mes-danger-60); /* 위험/에러 텍스트 — 아직 실사용 사례 없음(문서 9번), 선제 정의 */
+  --mes-text-success: var(--mes-success-60); /* 성공 텍스트 — 2026-08-04 신규, 아직 실사용 사례 없음(선제 정의) */
 
   /* 배경/테두리 (문서 1-2) */
   --mes-border-default: var(--mes-gray-30); /* 기본 입력 테두리, 헤더 하단 구분선 */
@@ -176,6 +195,9 @@
   --mes-bg-danger: var(--mes-danger-60); /* 위험/에러 강조 배경 */
   --mes-bg-warning-subtle: var(--mes-yellow-10); /* 경고 배너 배경 */
   --mes-icon-warning: var(--mes-yellow-50); /* 경고 아이콘 */
+  --mes-border-success-subtle: var(--mes-success-20); /* 성공 배너 테두리 — 2026-08-04 신규, 아직 실사용 사례 없음 */
+  --mes-bg-success-subtle: var(--mes-success-10); /* 성공 배너 배경 — 2026-08-04 신규, 아직 실사용 사례 없음 */
+  --mes-icon-success: var(--mes-success-50); /* 성공 아이콘 — 2026-08-04 신규, 아직 실사용 사례 없음 */
   --mes-bg-info: var(--mes-primary-60); /* 정보 강조(브랜드색 재사용, 문서상 별도 색 없음) */
   --mes-bg-strong: var(--mes-gray-130); /* 검정(고대비) 배경 */
 
@@ -259,6 +281,18 @@
   --color-mes-yellow-100: var(--mes-yellow-100);
   --color-mes-yellow-110: var(--mes-yellow-110);
 
+  --color-mes-success-10: var(--mes-success-10);
+  --color-mes-success-20: var(--mes-success-20);
+  --color-mes-success-30: var(--mes-success-30);
+  --color-mes-success-40: var(--mes-success-40);
+  --color-mes-success-50: var(--mes-success-50);
+  --color-mes-success-60: var(--mes-success-60);
+  --color-mes-success-70: var(--mes-success-70);
+  --color-mes-success-80: var(--mes-success-80);
+  --color-mes-success-90: var(--mes-success-90);
+  --color-mes-success-100: var(--mes-success-100);
+  --color-mes-success-110: var(--mes-success-110);
+
   --color-mes-alarm-blue: var(--mes-alarm-blue);
   --color-mes-alarm-red: var(--mes-alarm-red);
   --color-mes-alarm-yellow: var(--mes-alarm-yellow);
@@ -277,6 +311,7 @@
   --color-mes-text-inverse: var(--mes-text-inverse);
   --color-mes-text-brand: var(--mes-text-brand);
   --color-mes-text-danger: var(--mes-text-danger);
+  --color-mes-text-success: var(--mes-text-success);
   --color-mes-border-default: var(--mes-border-default);
   --color-mes-border-strong: var(--mes-border-strong);
   --color-mes-border-warning-subtle: var(--mes-border-warning-subtle);
@@ -290,6 +325,9 @@
   --color-mes-bg-danger: var(--mes-bg-danger);
   --color-mes-bg-warning-subtle: var(--mes-bg-warning-subtle);
   --color-mes-icon-warning: var(--mes-icon-warning);
+  --color-mes-border-success-subtle: var(--mes-border-success-subtle);
+  --color-mes-bg-success-subtle: var(--mes-bg-success-subtle);
+  --color-mes-icon-success: var(--mes-icon-success);
   --color-mes-bg-info: var(--mes-bg-info);
   --color-mes-bg-strong: var(--mes-bg-strong);
 

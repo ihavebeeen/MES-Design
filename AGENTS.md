@@ -1396,8 +1396,25 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
   재현(재시도로 해결 안 됨 — 다음에 필요하면 담당자가 개별 자식 노드 URL을 직접
   지정해줘야 진행 가능). Checkbox/Radio disabled+checked 조합, Nested Modal 정확한
   구조는 `search_design_system`이 컴포넌트/변수 이름 검색이라 화면 인스턴스 탐색에는
-  안 맞아 이번엔 해소 못 함. 나머지(Badge orange/yellow 이름, Badge blueLight/
-  blueOutline 용도, Warning/Success 데스크탑 색 신설 여부, Breakpoint Scale 필요
-  여부, ConfirmDialog/RadioChoiceDialog radius·shadow 통일 여부)는 담당자만 판단
-  가능한 디자인 결정이라 AskUserQuestion으로 확인 요청.
+  안 맞아 이번엔 해소 못 함. 나머지(Badge orange/yellow 이름, Warning/Success 데스크탑
+  색 신설 여부, Breakpoint Scale 필요 여부, ConfirmDialog/RadioChoiceDialog
+  radius·shadow 통일 여부)는 담당자만 판단 가능한 디자인 결정이라 AskUserQuestion으로
+  확인 요청, 답변 받은 대로 처리:
+  1) Badge orange/yellow — 확인해보니 2026-07-29에 이미 코드에서 grayFill/blue2로
+     개명 완료된 상태였음(체크리스트만 미갱신). 체크리스트만 바로잡음, 코드 변경 없음.
+  2) Breakpoint Scale — "화면(템플릿) 단위에서나 필요한 거 아니냐"는 담당자 반문이
+     맞는 판단이라 확인해주고, 템플릿 작업 시작 시점까지 보류로 체크리스트에 확정.
+  3) ConfirmDialog/RadioChoiceDialog — "그대로 유지"로 확정, 변경 없음.
+  4) Warning/Success 색 — 담당자가 "모바일과 같은 값 그대로 사용"으로 결정. 확인해보니
+     Warning(코드상 Yellow)은 2026-07-30에 이미 데스크탑 전용 레퍼런스 프레임(node
+     20170:67850)으로 확정돼 `globals.css`에 반영까지 끝나 있었음(체크리스트만
+     미갱신 — 마침 담당자가 고른 "모바일과 같은 값"과 우연히 일치하는 값이 이미 있었음).
+     Success는 데스크탑에 끝내 없어서 신규 추가: `globals.css`에 `--mes-success-10~110`
+     (모바일 체크리스트 0-1절 확정값 그대로) + 시맨틱 토큰(`text-success`,
+     `border/bg-success-subtle`, `icon-success`, Danger/Warning과 동일 패턴) 추가,
+     `page.tsx` 색상 팔레트 섹션에 `SUCCESS_PALETTE` 행과 시맨틱 토큰 표에도 반영.
+     아직 실사용 컴포넌트는 없음(선제 정의만, 필요해지면 ConfirmDialog `tone="success"`
+     등으로 확장 — 이번 요청 범위 밖이라 손 안 댐). Badge blueLight/blueOutline 용도는
+     "실사용 화면 확인 필요"로 여전히 열려있음(질문에 포함 안 함 — 예/아니오로 답할
+     수 있는 질문이 아니라 담당자 도메인 지식이 따로 필요). tsc 클린 확인 후 커밋.
 
