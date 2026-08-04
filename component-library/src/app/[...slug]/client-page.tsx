@@ -127,8 +127,8 @@ import {
 
 
 import {
-  firstIdOfNode,
-  FOUNDATION_ID_LIST,
+  type SidebarNode,
+  FOUNDATION_NODES,
   COMPONENT_NODES,
   SIDEBAR_GROUPS,
   TEMP_BADGE_IDS,
@@ -187,6 +187,65 @@ function TierBadge({ id }: { id: string }) {
     >
       T{tier}
     </span>
+  );
+}
+
+/**
+ * 2026-08-04 신규 — 담당자가 SEED 디자인 시스템 사이트 스크린샷을 보여주며 "그룹 구분이
+ * 애매하다, 이런 카드 그리드로 개요를 보여주자"고 요청(라이트 테마 유지, 카드 안 미리보기는
+ * 없이 이름+티어뱃지만 — 담당자가 선택한 옵션). `/foundations`, `/components`처럼 구체적
+ * 항목 없이 그룹 루트만 보고 있을 때(activeId 없음) 첫 항목을 그냥 보여주는 대신 이 그리드로
+ * 전체 항목을 한눈에 보여주고, 카드 클릭 시 해당 항목 페이지로 이동.
+ */
+function OverviewCard({
+  id,
+  label,
+  labelEn,
+}: {
+  id: string;
+  label: string;
+  labelEn?: string;
+}) {
+  return (
+    <NextLink
+      href={idToHref(id)}
+      className="flex flex-col gap-2.5 rounded-mes-control border border-mes-border-default bg-white p-4 transition-colors hover:border-mes-primary-60 hover:shadow-sm"
+    >
+      <div className="flex items-center gap-1.5">
+        <TierBadge id={id} />
+        {TEMP_BADGE_IDS.has(id) && (
+          <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
+            임시
+          </span>
+        )}
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <span className="text-[14px] font-semibold leading-tight text-mes-gray-130">{label}</span>
+        {labelEn && (
+          <span className="text-[12px] leading-tight text-mes-gray-60">{labelEn}</span>
+        )}
+      </div>
+    </NextLink>
+  );
+}
+
+function OverviewGrid({ nodes }: { nodes: SidebarNode[] }) {
+  const cards = nodes.flatMap((node) =>
+    node.kind === "leaf"
+      ? [{ id: node.id, label: node.label, labelEn: node.labelEn }]
+      : node.children.map((child) => ({
+          id: child.id,
+          label: `${node.label} — ${child.label}`,
+          labelEn:
+            node.labelEn && child.labelEn ? `${node.labelEn} — ${child.labelEn}` : child.labelEn,
+        }))
+  );
+  return (
+    <div className="grid w-full max-w-[960px] grid-cols-3 gap-3">
+      {cards.map((c) => (
+        <OverviewCard key={c.id} {...c} />
+      ))}
+    </div>
   );
 }
 
@@ -1178,15 +1237,18 @@ export default function Home() {
   // 2026-08-04 — "한 페이지에 스크롤 개길게 하지 말고 분할하자, 브레드크럼으로" 요청 반영.
   // 기존엔 스크롤 위치를 IntersectionObserver로 관찰해 activeId를 추적했는데(스크롤 스파이),
   // 이제 한 페이지에 전부 렌더링하는 구조 자체가 없어져서 필요 없음 — 현재 항목은 URL
-  // (/foundations/xxx, /components/xxx)에서 그대로 파생. slug[1](구체적 항목)이 없으면
-  // (예: /components 루트) 그 그룹의 첫 항목을 기본값으로 보여줌.
+  // (/foundations/xxx, /components/xxx)에서 그대로 파생.
+  // 2026-08-04 — 담당자가 SEED 디자인 시스템 스크린샷을 보여주며 "그룹 구분이 애매하다,
+  // 이런 카드 그리드 개요 화면을 만들자" 요청 — slug[1](구체적 항목)이 없는 그룹 루트
+  // (예: /components)에서는 예전처럼 첫 항목을 바로 보여주는 대신, 그 그룹 전체를
+  // 카드 그리드로 보여줌(`OverviewGrid`, 아래 참고). 그래서 activeId는 이제 "선택된
+  // 항목이 없을 수도 있음"을 그대로 반영해 `string | undefined`.
   const routeParams = useParams<{ slug?: string[] }>();
   const router = useRouter();
   const slug = routeParams.slug ?? [];
   const hasExplicitId = Boolean(slug[1]);
   const activeGroup: "foundations" | "components" = slug[0] === "components" ? "components" : "foundations";
-  const activeId =
-    slug[1] ?? (activeGroup === "foundations" ? FOUNDATION_ID_LIST[0] : firstIdOfNode(COMPONENT_NODES[0]));
+  const activeId: string | undefined = slug[1];
   // 2026-08-03 — 우측 서브 내비(RightRail)용 Section→Sample 목록 레지스트리. Section이
   // 렌더링될 때마다 자기 목록을 여기 채워넣고, RightRail이 같은 렌더 패스에서 바로 읽음
   // (자세한 배선 이유는 Section/RightRail 정의 쪽 주석 참고).
@@ -1202,11 +1264,11 @@ export default function Home() {
       )
     : [];
 
-  const breadcrumbInfo = BREADCRUMB_MAP[activeId];
+  const breadcrumbInfo = activeId ? BREADCRUMB_MAP[activeId] : undefined;
 
   return (
     <SectionRegistryContext.Provider value={sectionRegistryRef}>
-    <ActiveIdContext.Provider value={activeId}>
+    <ActiveIdContext.Provider value={activeId ?? ""}>
     <div className="flex min-h-screen flex-col bg-mes-gray-10">
       <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center gap-8 border-b border-mes-gray-30 bg-white px-6">
         <span className="shrink-0 text-[15px] font-bold text-mes-gray-130">MES Design System</span>
@@ -1394,15 +1456,25 @@ export default function Home() {
               데모와 동일)를 그대로 재사용, onClick에서 router.push로 실제 이동. */}
           <Breadcrumb
             className="w-full max-w-[960px]"
-            items={[
-              { label: "Home", onClick: () => router.push("/") },
-              {
-                label: activeGroup === "foundations" ? "Foundations" : "Components",
-                onClick: () => router.push(`/${activeGroup}`),
-              },
-              ...(breadcrumbInfo?.branch ? [{ label: breadcrumbInfo.branch.label }] : []),
-              { label: breadcrumbInfo?.label ?? activeId },
-            ]}
+            items={
+              activeId
+                ? [
+                    { label: "Home", onClick: () => router.push("/") },
+                    {
+                      label: activeGroup === "foundations" ? "Foundations" : "Components",
+                      onClick: () => router.push(`/${activeGroup}`),
+                    },
+                    ...(breadcrumbInfo?.branch ? [{ label: breadcrumbInfo.branch.label }] : []),
+                    { label: breadcrumbInfo?.label ?? activeId },
+                  ]
+                : [
+                    // 2026-08-04 — 구체적 항목 없이 그룹 루트(/foundations, /components)만
+                    // 보고 있을 때(=카드 그리드 개요 화면)는 마지막 항목이 곧 "현재 그룹"
+                    // 자체라 3번째 크럼 없이 2단계로 표시.
+                    { label: "Home", onClick: () => router.push("/") },
+                    { label: activeGroup === "foundations" ? "Foundations" : "Components" },
+                  ]
+            }
           />
 
           {/* 2026-08-03 신규 — 담당자 요청: 메인 화면에도 사이드바처럼 Foundation/
@@ -1421,6 +1493,8 @@ export default function Home() {
               그림자, 시맨틱 토큰. 아래 모든 컴포넌트는 이 값들을 조합해서 만들어집니다.
             </p>
           </div>
+
+          {activeGroup === "foundations" && !activeId && <OverviewGrid nodes={FOUNDATION_NODES} />}
 
           <section id="color-palette" className={cn("flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8", activeId !== "color-palette" && "hidden")}>
             <div>
@@ -1686,6 +1760,8 @@ export default function Home() {
               테이블·알림 패널 같은 복합 컴포넌트까지.
             </p>
           </div>
+
+          {activeGroup === "components" && !activeId && <OverviewGrid nodes={COMPONENT_NODES} />}
 
       <Section id="search-input" title="검색창" titleEn="SearchInput">
         <Sample
@@ -3948,7 +4024,7 @@ export default function Home() {
         />
       </section>
         </main>
-        <RightRail activeId={activeId} registryRef={sectionRegistryRef} />
+        <RightRail activeId={activeId ?? ""} registryRef={sectionRegistryRef} />
       </div>
     </div>
     </ActiveIdContext.Provider>
