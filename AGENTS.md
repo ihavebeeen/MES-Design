@@ -1570,4 +1570,39 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
   세트로 "Components 개요를 볼 때만" 보이는 게 맞음). 이번엔 `grep border-l-8`로 파일
   전체를 다시 훑어서 배너가 정확히 3개(Foundation/Components/예정)뿐이고 셋 다 조건이
   걸려 있는 것까지 확인. `npx tsc --noEmit` 클린.
+- (2026-08-05, 66~69차) Patterns(3층: Foundations → Components → Patterns) 신규 구축.
+  담당자가 클라우드MES Figma 파일의 "1차로 만들었던 화면 예시들" 보드(node
+  20274:73333, 25~30개 화면)를 가리키며 "이거를 패턴으로다가 등록해봐"라고 요청 —
+  보드 전체는 `get_metadata`가 SSE 파싱 에러(대형 노드 재현, Figma재현 문서 사례와
+  동일 계열)로 실패해서, "몇 개씩 끊어서 등록"으로 담당자와 합의 후 개별 프레임
+  링크 4개를 받아 1차 배치로 진행.
+  - 66차: 라우팅 인프라. `sidebar-data.ts`에 `PATTERN_ID_LIST`/`PATTERN_NODES` 3개
+    (리스트형 등록 모달/검사 체크리스트 모달/그룹화 리스트 관리 화면) 추가,
+    `SIDEBAR_GROUPS`/`TOP_NAV`/`idToHref`/`BREADCRUMB_MAP`을 Foundations/Components
+    2분기에서 3분기로 확장. `client-page.tsx`의 `activeGroup`도 `"patterns"` 추가,
+    Foundation/Components 배너와 동일한 구조의 Patterns 구분자 배너 신설(64~65차에서
+    고친 "배너가 조건 없이 항상 뜨는" 버그를 처음부터 안 만들도록 같은 조건 패턴 적용).
+  - 67차: 패턴 1 "리스트형 등록 모달"(공정 등록 node 19414:94157, 작업지시 등록 node
+    19098:64815) — `CenterModal` + 기존 Input/Button/Radio/Table/SearchInput/Badge로
+    구성. 신규 헬퍼 `PatternFieldRow`(라벨 100px+인풋 한 줄) 추가.
+  - 68차: 패턴 2 "검사 체크리스트 모달"(공정검사, node 19414:93662) — 좌측 대상정보
+    폼(13개 필드, "*" 표시가 hidden 속성으로 켜진 4개만 필수로 정확히 반영) + 우측
+    검사항목 O/△/X/− 4단 토글(신규 `QaToggleGroup`, 이전 세션에 이미 확보해둔
+    IconQaO/IconQaTriangle/IconQaX 재사용 — 이게 이 패턴을 신규 아이콘 없이 완성할
+    수 있었던 근거). 신규 헬퍼 `PatternGroupHeader`(회색 필 섹션 제목) 추가.
+  - 69차: 패턴 3 "그룹화 리스트 관리 화면"(메인 리스트, node 17000:39999) — 이 노드는
+    `get_metadata`가 76,712자를 반환해 도구 처리 한도를 넘김(SSE 실패가 아니라 순수
+    크기 문제라는 점에서 66차 보드 전체 실패와는 다른 원인) — 스크린샷 기반 판단값
+    구현으로 전환(프로젝트 기존 관례, GroupQuery/QuickQuery 때와 동일). 신규
+    컴포넌트를 만들지 않고 Sidebar(접힘 레일)+PageTopTabItem+DateRangePicker+
+    GroupQuery+Filter+QuickQuery+SearchInput+Table을 한 화면으로 합성 — 이 페이지에
+    이미 있는 컴포넌트 데모들의 state를 그대로 재사용(사이드바 접힘 여부만 다른
+    Section과 결합 방지 목적으로 별도 로컬 state 추가). Table에 쓰인
+    `productionColumns`/`productionGroups` 데이터 자체가 애초에 이 계열("생산실적/
+    생산지시") 화면 스크린샷에서 나온 값이었다는 것도 이번에 재확인.
+  공통: 각 단계마다 Figma metadata를 다시 조회해서 씀(이전 세션 요약 재사용 안 함 —
+  `AI_에이전트_구조적_한계_기록.md` 3번 "그 순간엔 알았지만 코드 짤 때 다시 안 씀"
+  재발 방지), 판단값/대체값은 전부 JSX 주석에 "왜 대체했는지" 남김, 각 차수마다
+  `npx tsc --noEmit` 클린 확인 후 개별 커밋. 로컬 브라우저 렌더링 확인은 이번에도
+  샌드박스 제약상 불가 — 담당자 재확인 필요.
 
