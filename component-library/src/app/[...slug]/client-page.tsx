@@ -10,7 +10,7 @@ import {
   cloneElement,
   Fragment,
 } from "react";
-import { ChevronRight, Plus, Search, Palette, Blocks, Hammer } from "lucide-react";
+import { ChevronRight, Plus, Search, Palette, Blocks, Hammer, LayoutTemplate } from "lucide-react";
 import NextLink from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -130,6 +130,7 @@ import {
   type SidebarNode,
   FOUNDATION_NODES,
   COMPONENT_NODES,
+  PATTERN_NODES,
   SIDEBAR_GROUPS,
   TEMP_BADGE_IDS,
   TIER_BY_ID,
@@ -1256,8 +1257,16 @@ export default function Home() {
   const routeParams = useParams<{ slug?: string[] }>();
   const router = useRouter();
   const slug = routeParams.slug ?? [];
-  const activeGroup: "home" | "foundations" | "components" =
-    slug.length === 0 ? "home" : slug[0] === "components" ? "components" : "foundations";
+  // 2026-08-05 — Patterns 그룹 추가로 "components 아니면 무조건 foundations"이던
+  // 이진 분기를 3분기로 확장.
+  const activeGroup: "home" | "foundations" | "components" | "patterns" =
+    slug.length === 0
+      ? "home"
+      : slug[0] === "components"
+        ? "components"
+        : slug[0] === "patterns"
+          ? "patterns"
+          : "foundations";
   const activeId: string | undefined = slug[1];
   // 2026-08-03 — 우측 서브 내비(RightRail)용 Section→Sample 목록 레지스트리. Section이
   // 렌더링될 때마다 자기 목록을 여기 채워넣고, RightRail이 같은 렌더 패스에서 바로 읽음
@@ -1477,7 +1486,12 @@ export default function Home() {
                 ? [
                     { label: "Home", onClick: () => router.push("/") },
                     {
-                      label: activeGroup === "foundations" ? "Foundations" : "Components",
+                      label:
+                        activeGroup === "foundations"
+                          ? "Foundations"
+                          : activeGroup === "patterns"
+                            ? "Patterns"
+                            : "Components",
                       onClick: () => router.push(`/${activeGroup}`),
                     },
                     ...(breadcrumbInfo?.branch ? [{ label: breadcrumbInfo.branch.label }] : []),
@@ -1488,7 +1502,14 @@ export default function Home() {
                     // 보고 있을 때(=카드 그리드 개요 화면)는 마지막 항목이 곧 "현재 그룹"
                     // 자체라 3번째 크럼 없이 2단계로 표시.
                     { label: "Home", onClick: () => router.push("/") },
-                    { label: activeGroup === "foundations" ? "Foundations" : "Components" },
+                    {
+                      label:
+                        activeGroup === "foundations"
+                          ? "Foundations"
+                          : activeGroup === "patterns"
+                            ? "Patterns"
+                            : "Components",
+                    },
                   ]
             }
           />
@@ -1788,6 +1809,25 @@ export default function Home() {
                 </p>
               </div>
               {!activeId && <OverviewGrid nodes={COMPONENT_NODES} />}
+            </>
+          )}
+
+          {/* 2026-08-05 신규 — Patterns(3층) 구분자. Foundation/Components 배너와 같은
+              구조(28px 굵은 제목 + 좌측 두꺼운 바 + 설명 한 줄) + 같은 버그 방지 조건
+              (Patterns 페이지이거나 홈일 때만). */}
+          {(activeGroup === "patterns" || activeGroup === "home") && (
+            <>
+              <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
+                <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+                  <LayoutTemplate className="size-7 shrink-0 text-mes-primary-60" />
+                  Patterns
+                </span>
+                <p className="text-[13px] leading-[1.5] text-mes-gray-70">
+                  Components를 조합해 실제 화면/플로우로 완성한 것들입니다 — 등록 모달,
+                  체크리스트, 리스트 관리 화면처럼 여러 컴포넌트가 함께 쓰이는 단위.
+                </p>
+              </div>
+              {!activeId && <OverviewGrid nodes={PATTERN_NODES} />}
             </>
           )}
 

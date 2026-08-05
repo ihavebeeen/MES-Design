@@ -1,6 +1,7 @@
 import {
   FOUNDATION_ID_LIST,
   COMPONENT_NODES,
+  PATTERN_ID_LIST,
   flattenSidebarNodes,
 } from "@/lib/sidebar-data";
 import ClientPage from "./client-page";
@@ -16,7 +17,8 @@ import ClientPage from "./client-page";
  * 계산해서 넘겨주고, 실제 렌더링은 client-page.tsx에 위임하는 구조로 분리.
  *
  * 경로 목록 = "/foundations"(그룹 루트, 첫 항목 기본 표시) + "/foundations/{id}" 8개
- *           + "/components"(그룹 루트) + "/components/{id}" 63개 = 총 73개.
+ *           + "/components"(그룹 루트) + "/components/{id}" 63개
+ *           + "/patterns"(그룹 루트) + "/patterns/{id}" 3개(2026-08-05 신규) = 총 77개.
  */
 export function generateStaticParams() {
   const foundationParams = [
@@ -28,7 +30,11 @@ export function generateStaticParams() {
     { slug: ["components"] },
     ...componentIds.map((id) => ({ slug: ["components", id] })),
   ];
-  return [...foundationParams, ...componentParams];
+  const patternParams = [
+    { slug: ["patterns"] },
+    ...PATTERN_ID_LIST.map((id) => ({ slug: ["patterns", id] })),
+  ];
+  return [...foundationParams, ...componentParams, ...patternParams];
 }
 
 export default function Page() {

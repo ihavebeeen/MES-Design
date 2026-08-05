@@ -98,6 +98,26 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   { id: "icons", label: "아이콘" },
   { id: "table-parts", label: "분리", labelEn: "Parts" },
   { id: "table-full", label: "합본", labelEn: "Full" },
+  // 2026-08-05 신규 — Patterns(3층) 첫 항목들. 담당자가 클라우드MES Figma 파일에서
+  // "1차로 만들었던 화면 예시들" 보드(node 20274:73333, 20개 넘는 화면이 있어 한
+  // 번에 전부는 무리라 몇 개씩 끊어 등록하기로 함)에서 개별 프레임 링크로 골라줌.
+  // Components처럼 낱개 UI가 아니라 여러 컴포넌트를 실제 화면으로 합성한 것이라
+  // 별도 그룹(Patterns)으로 관리 — label은 담당자가 프레임에 붙인 이름 그대로.
+  {
+    id: "list-registration-modal",
+    label: "리스트형 등록 모달",
+    labelEn: "List Registration Modal",
+  },
+  {
+    id: "inspection-checklist-modal",
+    label: "검사 체크리스트 모달",
+    labelEn: "Inspection Checklist Modal",
+  },
+  {
+    id: "grouped-list-screen",
+    label: "그룹화 리스트 관리 화면",
+    labelEn: "Grouped List Screen",
+  },
 ];
 
 /**
@@ -187,6 +207,15 @@ export const FOUNDATION_ID_LIST = [
 ];
 export const FOUNDATION_NODES: SidebarNode[] = FOUNDATION_ID_LIST.map((id) => leaf(id));
 
+/** 2026-08-05 신규 — Patterns(3층) id 목록. 지금은 순서가 곧 등록한 순서(별도 정렬 없음
+ *  — 아직 3개뿐이라 Components처럼 티어 정렬을 도입할 필요가 없음, 늘어나면 재검토). */
+export const PATTERN_ID_LIST = [
+  "list-registration-modal",
+  "inspection-checklist-modal",
+  "grouped-list-screen",
+];
+export const PATTERN_NODES: SidebarNode[] = PATTERN_ID_LIST.map((id) => leaf(id));
+
 export const COMPONENT_NODES: SidebarNode[] = [
   branch("버튼", "Button", ["button-size", "button-icon", "button-color"]),
   leaf("icon-button"),
@@ -254,6 +283,9 @@ export const COMPONENT_NODES: SidebarNode[] = [
 export const SIDEBAR_GROUPS: { title: string; nodes: SidebarNode[] }[] = [
   { title: "Foundations", nodes: FOUNDATION_NODES },
   { title: "Components", nodes: COMPONENT_NODES },
+  // 2026-08-05 신규 — 3층(합성 패턴 카탈로그) 실제 첫 콘텐츠. TOP_NAV의 "Patterns"
+  // 탭이 지금까지 firstId 없이 비활성 상태로만 자리를 잡고 있었는데, 이걸로 활성화.
+  { title: "Patterns", nodes: PATTERN_NODES },
   { title: "예정", nodes: [] },
 ];
 
@@ -413,34 +445,39 @@ export const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
   { key: "foundations", label: "Foundations", firstId: firstIdOfNode(FOUNDATION_NODES[0]) },
   { key: "components", label: "Components", firstId: firstIdOfNode(COMPONENT_NODES[0]) },
   // 2026-07-31 신규 — AGENTS.md에 기록된 3층 구조(1층 토큰=Foundations, 2층
-  // 컴포넌트=Components, 3층 합성 패턴 카탈로그)의 3층에 해당. 아직 코드/문서 둘 다
-  // 없어서 클릭 불가 상태(비활성)로만 자리를 잡아둠 — 실제 내용이 생기면 firstId를
-  // 채우고 활성화.
-  { key: "patterns", label: "Patterns" },
+  // 컴포넌트=Components, 3층 합성 패턴 카탈로그)의 3층에 해당. 지금까지 코드/문서
+  // 둘 다 없어서 firstId 없이 비활성 상태로만 자리를 잡아뒀는데(클릭 불가),
+  // 2026-08-05 실제 콘텐츠(PATTERN_NODES)가 생겨서 firstId를 채워 활성화.
+  { key: "patterns", label: "Patterns", firstId: firstIdOfNode(PATTERN_NODES[0]) },
 ];
 
 /** Foundation 섹션 id 집합(8개, 2026-08-03 아이콘·Grid/Container 재분류로 6→8) — 상단
  *  탭 활성 표시를 스크롤 위치(activeId)와 연동할 때 씀. `FOUNDATION_ID_LIST`와 동일 소스. */
 export const FOUNDATION_IDS = new Set(FOUNDATION_ID_LIST);
+/** 2026-08-05 신규 — Patterns id 집합. FOUNDATION_IDS와 같은 방식(idToHref 판별용). */
+export const PATTERN_IDS = new Set(PATTERN_ID_LIST);
 
 /**
  * 2026-08-04 신규 — "한 페이지에 스크롤 개길게 하지 말고 분할하자, 브레드크럼으로"
  * 요청 반영: 한 페이지 전체 스크롤 방식에서 실제 라우팅(/foundations/xxx,
- * /components/xxx)으로 전환. id 하나가 Foundations/Components 어느 그룹인지에 따라
- * URL을 결정하는 헬퍼 — 사이드바/검색/상단탭 등 내부 링크 전부 여기를 거침.
+ * /components/xxx)으로 전환. id 하나가 Foundations/Components/Patterns 어느
+ * 그룹인지에 따라 URL을 결정하는 헬퍼 — 사이드바/검색/상단탭 등 내부 링크 전부
+ * 여기를 거침. 2026-08-05 — Patterns 추가되면서 이진 판별에서 3분기로 확장.
  */
 export function idToHref(id: string): string {
-  return FOUNDATION_IDS.has(id) ? `/foundations/${id}` : `/components/${id}`;
+  if (FOUNDATION_IDS.has(id)) return `/foundations/${id}`;
+  if (PATTERN_IDS.has(id)) return `/patterns/${id}`;
+  return `/components/${id}`;
 }
 
 /**
  * 2026-08-04 신규 — 브레드크럼(Home > Foundations/Components > (그룹명) > 현재 항목)
  * 렌더링용 역참조 맵. SIDEBAR_GROUPS를 한 번 순회해 id → 그룹/상위분류/라벨 정보를
  * 미리 만들어둠(정렬 순서와 무관 — 단순 조회용 맵이라 COMPONENT_NODES.sort() 전에
- * 만들어도 안전).
+ * 만들어도 안전). 2026-08-05 — Patterns 그룹 추가.
  */
 export type BreadcrumbInfo = {
-  group: "foundations" | "components";
+  group: "foundations" | "components" | "patterns";
   groupLabel: string;
   branch?: { label: string; labelEn?: string };
   label: string;
@@ -448,9 +485,10 @@ export type BreadcrumbInfo = {
 };
 export const BREADCRUMB_MAP: Record<string, BreadcrumbInfo> = {};
 for (const group of SIDEBAR_GROUPS) {
-  if (group.title !== "Foundations" && group.title !== "Components") continue;
-  const groupKey: "foundations" | "components" =
-    group.title === "Foundations" ? "foundations" : "components";
+  if (group.title !== "Foundations" && group.title !== "Components" && group.title !== "Patterns")
+    continue;
+  const groupKey: "foundations" | "components" | "patterns" =
+    group.title === "Foundations" ? "foundations" : group.title === "Components" ? "components" : "patterns";
   for (const node of group.nodes) {
     if (node.kind === "leaf") {
       BREADCRUMB_MAP[node.id] = {
@@ -490,4 +528,5 @@ export function flattenSidebarNodes(
 export const ALL_SEARCHABLE_ITEMS = [
   ...flattenSidebarNodes(FOUNDATION_NODES),
   ...flattenSidebarNodes(COMPONENT_NODES),
+  ...flattenSidebarNodes(PATTERN_NODES),
 ];
