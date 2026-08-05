@@ -300,10 +300,16 @@ function PatternFieldRow({
  * hug-width였고 나머지 공간은 흰 배경 그대로였음. `w-full`→hug(`inline-flex`+
  * `self-start`)로 수정.
  * 실측: 높이 28px(hug), 좌우 padding 10px, 배경 Gray-20, 텍스트 13px semibold Gray-130.
+ *
+ * 2026-08-05 재수정 — `get_design_context`로 node 19414:94157/19098:64815("공정 등록"/
+ * "작업지시 등록" 모달)을 직접 읽어보니 "기본정보" 필 배경이 실제로는
+ * `var(--gray30,#e4e7ee)`(Gray-30)였음 — 스크린샷 육안 대조로는 Gray-20/30 차이가
+ * 육안 구분이 거의 안 돼서(둘 다 아주 옅은 회색) 이전엔 Gray-20으로 오판했던 것.
+ * 두 모달 인스턴스 모두 동일하게 Gray-30을 써서 확정 채택.
  */
 function PatternGroupHeader({ children }: { children: React.ReactNode }) {
   return (
-    <div className="inline-flex h-7 w-fit shrink-0 items-center self-start rounded-mes-control-sm bg-mes-gray-20 px-2.5">
+    <div className="inline-flex h-7 w-fit shrink-0 items-center self-start rounded-mes-control-sm bg-mes-gray-30 px-2.5">
       <span className="whitespace-nowrap text-[13px] font-semibold leading-[1.5] text-mes-gray-130">
         {children}
       </span>
@@ -1318,12 +1324,6 @@ export default function Home() {
   // 컴포넌트 데모(다른 Section)와 상태를 공유하면 서로 영향을 주므로 로컬로 분리.
   const [workOrderInspectionDate, setWorkOrderInspectionDate] = useState<Date | null>(
     new Date(2025, 9, 30)
-  );
-  // 2026-08-05 3차 수정 — 사용자가 실제 운영 화면 스크린샷을 보여주며 "등록일" 필드가
-  // (Figma엔 "입고예정일"로 찍혀 있었지만) 실제로는 캘린더 아이콘이 있는 DatePicker임을
-  // 확인시켜줌 — 별도 로컬 state로 분리(다른 Section의 DatePicker 데모와 결합 방지).
-  const [processRegisterDate, setProcessRegisterDate] = useState<Date | null>(
-    new Date(2026, 1, 8)
   );
   // 2026-08-05 신규 — Patterns "검사 체크리스트 모달"(공정검사). QaToggleGroup 4개 행의
   // 선택 상태만 실제로 인터랙티브하게 관리(나머지 폼 필드는 다른 패턴과 동일하게
@@ -3301,46 +3301,61 @@ export default function Home() {
         </Sample>
       </Section>
 
-      {/* 2026-08-05 신규, 이후 사용자 지적 3회로 총 4판째 — Patterns(3층) 첫 항목
+      {/* 2026-08-05 신규, 이후 사용자 지적 4회로 총 5판째 — Patterns(3층) 첫 항목
           "리스트형 등록 모달".
           1판(최초 구현, Figma 스크린샷 육안) → 2판("피그마 원본과 전혀 다르다" 지적,
           고해상도 스크린샷+get_variable_defs 재대조) → 3판("분명 슬라이드팝업이었는데
-          아니고, 추가 아이콘도 이상하고 섹션 구분도 없다" 지적, CenterModal→
-          SideSlidePanel 전환) → 4판(담당자가 **실제 운영 중인 서비스의 스크린샷 2장
-          (내가 만든 것 vs 실제 화면)을 직접 캡처해서 제공** — 지금까지 중 가장 확실한
-          근거. 아래는 이 실제 화면 캡처 기준으로 다시 맞춘 4판 변경분:
-          A) 모달 형태: 3판에서 "슬라이드팝업"이라는 이름을 근거로 SideSlidePanel(우측
-             고정)로 바꿨는데, 실제 운영 화면 캡처를 보니 화면 중앙에 뜨는 둥근 모서리
-             모달이었음 — CenterModal로 원복. Figma 레이어 이름("슬라이드 팝업")과 실제
-             구현이 다를 수 있다는 걸 이번에 확인함(이름만 보고 판단하면 안 됨, 실제
-             렌더링 증거가 최우선).
-          B) "등록일"(Figma엔 "입고예정일"로 찍혀 있었지만 실제 화면 라벨은 "등록일")로
-             교체, 우측에 캘린더 아이콘이 있는 실제 DatePicker로 변경(readOnly Input
-             아님).
-          C) 라벨 공백 수정: "사용 여부"→"사용여부", "품목등록"→"품목 등록"(실제 화면
-             기준 공백 유무 반대로 되어 있었음).
-          D) "리스트 조회/선택" 버튼: 실제 화면은 흰 배경 아웃라인이 아니라 진한 남색
-             채움 버튼이었음 — lineBlacktxt→fillBlack.
-          E) "품목" 필드: plain Input이 아니라 드롭다운 화살표가 있는 Select였음.
-          F) 품목 리스트 표: 컬럼명 "품목"→"품목명"(실제 화면 기준), 품목명 컬럼이
-             훨씬 넓고 파란 링크 스타일(다른 Table 데모의 기존 링크 셀 관례 재사용),
-             단위는 숫자가 아니라 "ea", 규격은 빈 칸. 실제 화면에 보이는 상품명 일부를
-             그대로 가져와 데이터도 교체(빙그레/해태 빙수 제품명 등).
-          이전 판에서 고쳤고 이번에도 유지되는 것: "기본정보"/"품목 등록"/"작업지시
-          정보" 제목의 회색 필(pill) 배경(`PatternGroupHeader`), "기본정보" 대 나머지
-          사이 구분선, "설정" 버튼 색(opacityMain), "추가" 버튼 아이콘(IconArrow
-          -rotate-90), 작업지시 등록의 설비/품목/담당기사/근무조 Select, 지시일
-          DatePicker, 상태 Badge 행별 매핑.
-          여전히 판단값으로 남은 것: "설정" 버튼 아이콘(Figma "mes/icon-setting"이
-          이 저장소엔 없어 lucide Settings 대체), 품목 리스트의 정확한 전체 행 수(실제
-          화면은 스크롤되는 긴 목록, 데모는 대표 5개만). */}
+          아니고" 지적, CenterModal→SideSlidePanel 전환) → 4판(담당자가 실제 운영 중인
+          서비스의 스크린샷 2장을 제공, "슬라이드팝업이 아니다"로 다시 정정 — 이땐 그
+          근거를 CenterModal 원복으로 잘못 해석함) → 5판(담당자가 **Figma 파일 링크를
+          직접 제공**하며 "테두리 r값이 어디 있냐, 품목등록 영역에 흐린 배경이 깔려
+          있다"고 지적 — `get_design_context`로 해당 노드(19414:94157, 19098:64815)를
+          코드 그대로 직접 읽어서 재구성. 지금까지 중 가장 신뢰도 높은 근거(dev-mode
+          원본 마크업 그대로).
+          5판에서 확인된 사실:
+          A) 모달 루트에 radius 클래스가 아예 없음(그림자만 있음: drop-shadow(0 0 12px
+             rgba(0,0,0,.2))) — 이 그림자 값이 저장소의 `SideSlidePanel`(우측 고정, 전체
+             높이, radius 없음) 컴포넌트 문서 주석에 이미 정확히 같은 값으로 실측돼
+             있었음. 즉 4판에서 "슬라이드팝업 아님, 중앙 모달"이라고 판단한 게 틀렸고,
+             3판의 SideSlidePanel 선택이 맞았음 — SideSlidePanel로 재전환.
+          B) "품목등록"/"작업지시 정보" 영역은 실제로 `bg-gray20(#eff2f8) rounded-8`
+             카드로 감싸져 있고, "추가" 버튼이 카드 하단 경계에 절반씩 걸치도록
+             (`absolute bottom-[-16px]`) 배치돼 있음 — 이게 사용자가 말한 "흐린색
+             배경"의 정체. 이전 판들엔 이 카드 래퍼 자체가 없었음(가장 큰 누락).
+          C) "기본정보" 필(pill) 배경은 Gray-20이 아니라 Gray-30이었음(다른 라운드에서
+             육안 대조로 잘못 판단했던 부분, 이번에 direct read로 확정) — 공용
+             `PatternGroupHeader` 자체를 Gray-30으로 수정(위 컴포넌트 주석 참고).
+          D) "품목등록"/"작업지시 정보" 타이틀은 회색 필이 아니라 그냥 16px bold
+             텍스트 — `PatternGroupHeader`를 쓰지 않음(기본정보만 필 사용).
+          E) 라벨: "입고예정일"(등록일 아님, 리터럴 텍스트 확인), "사용 여부"(공백
+             있음), "품목등록"(공백 없음, 4판에서 반대로 고쳤던 게 틀림) — 전부 Figma
+             리터럴 텍스트 그대로 되돌림.
+          F) "입고예정일"은 캘린더 아이콘이 없는 순수 정적 텍스트(readOnly, 인터랙션
+             없음) — DatePicker 아님. 반대로 작업지시 등록의 "지시일"은 실제로 인라인
+             캘린더 아이콘이 있어 DatePicker 유지가 맞음.
+          G) "품목"(공정 등록)·"품목구분" 필드는 Select가 아니라 plain Input이었음
+             (Input Textbox 인스턴스, 드롭다운 화살표 마크업 없음) — Select→Input 원복.
+          H) 작업지시 등록의 품목구분/단위/규격 필드는 배경이 Gray-20이 아니라
+             Gray-30 + 텍스트 Gray-70 — `Input`의 `readOnly`(Gray-20)가 아니라
+             `disabled`(Gray-30/Gray-70) 상태와 정확히 일치해서 disabled로 교체.
+             포장인원은 반대로 흰 배경 일반 입력 필드(readOnly 아님) — 수정.
+          I) 품목 리스트 표: 공정 등록은 5개 컬럼이 전부 동일폭(flex-1)이고 체크박스
+             칸이 없는 단순 표 — 공용 `Table`(체크박스+점선 구분선+회색 헤더 포함)이
+             구조 자체가 안 맞아서 재사용 대신 이 패턴 전용 경량 표를 새로 만듦. 데모
+             데이터도 Figma 원본 그대로 "비비빅/완제품/A/4,000" 2행으로 되돌림(4판에서
+             임의로 넣은 실제 제품명들은 검증 안 된 추정이었음).
+          "설정" 버튼: 폭 65px, 높이가 32px 행에 꽉 차는 걸 확인해서 xsmall(22px)이
+          아니라 small(32px) 사이즈로 교체.
+          여전히 판단값으로 남은 것: "설정" 버튼 아이콘(Figma "mes/icon-setting"이 이
+          저장소엔 없어 lucide Settings 대체), 작업지시 리스트 표의 행별 하이라이트
+          배경(파란/주황 톤 강조 — 장식적 요소라 우선순위 낮음으로 보류). */}
       <Section id="list-registration-modal" title="리스트형 등록 모달" titleEn="List Registration Modal">
         <Sample
           label="공정 등록"
           spec={[
-            { label: "출처", value: "클라우드MES node 19414:94157 + 실제 운영 화면 캡처" },
-            { label: "형태", value: "CenterModal(중앙), 900px(기본 960px 오버라이드)" },
-            { label: "구성", value: "기본정보 폼 + 구분선 + 품목 등록 폼 + 품목 리스트 표" },
+            { label: "출처", value: "클라우드MES node 19414:94157 (get_design_context 직접 확인)" },
+            { label: "형태", value: "SideSlidePanel(우측 고정, radius 없음), 기본 960px" },
+            { label: "구성", value: "기본정보 폼 + 회색 카드(품목등록 폼) + 품목 리스트 표" },
           ]}
         >
           <Button size="basic" onClick={() => setProcessRegisterModalOpen(true)}>
@@ -3350,9 +3365,9 @@ export default function Home() {
         <Sample
           label="작업지시 등록"
           spec={[
-            { label: "출처", value: "클라우드MES node 19098:64815" },
-            { label: "형태", value: "CenterModal(중앙), 900px(기본 960px 오버라이드)" },
-            { label: "구성", value: "기본정보 폼 + 구분선 + 작업지시 정보 폼 + 작업지시 리스트 표" },
+            { label: "출처", value: "클라우드MES node 19098:64815 (get_design_context 직접 확인)" },
+            { label: "형태", value: "SideSlidePanel(우측 고정, radius 없음), 기본 960px" },
+            { label: "구성", value: "기본정보 폼 + 회색 카드(작업지시 정보 폼) + 작업지시 리스트 표" },
           ]}
         >
           <Button size="basic" onClick={() => setWorkOrderRegisterModalOpen(true)}>
@@ -3361,42 +3376,47 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <CenterModal
+      <SideSlidePanel
         open={processRegisterModalOpen}
         onOpenChange={setProcessRegisterModalOpen}
         title="공정 등록"
-        className="max-w-[900px]"
         confirmLabel="등록"
         onCancel={() => setProcessRegisterModalOpen(false)}
         onConfirm={() => setProcessRegisterModalOpen(false)}
       >
-        <div className="flex w-full flex-col gap-6 pb-5">
-          <div className="flex flex-col gap-3">
+        <div className="flex w-full flex-col pb-5">
+          <div className="flex w-full flex-col gap-3 border-b border-mes-gray-30 pb-5">
             <PatternGroupHeader>기본정보</PatternGroupHeader>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
               <PatternFieldRow label="공정명" required>
                 <Input className="flex-1" placeholder="내용 입력" />
               </PatternFieldRow>
-              <PatternFieldRow label="등록일">
-                <DatePicker
-                  value={processRegisterDate}
-                  onValueChange={setProcessRegisterDate}
-                  className="flex-1"
-                />
+              <PatternFieldRow label="입고예정일">
+                <Input className="flex-1" readOnly defaultValue="2025-04-01" />
               </PatternFieldRow>
               <PatternFieldRow label="불량유형">
-                <Input className="flex-1" readOnly defaultValue="2건" />
-                <Button variant="opacityMain" size="xsmall" startIcon={<Settings size={14} />}>
+                <Input className="flex-1" defaultValue="4건" />
+                <Button
+                  variant="opacityMain"
+                  size="small"
+                  className="w-[65px]"
+                  startIcon={<Settings size={14} />}
+                >
                   설정
                 </Button>
               </PatternFieldRow>
               <PatternFieldRow label="비가동유형">
-                <Input className="flex-1" readOnly defaultValue="1건" />
-                <Button variant="opacityMain" size="xsmall" startIcon={<Settings size={14} />}>
+                <Input className="flex-1" defaultValue="3건" />
+                <Button
+                  variant="opacityMain"
+                  size="small"
+                  className="w-[65px]"
+                  startIcon={<Settings size={14} />}
+                >
                   설정
                 </Button>
               </PatternFieldRow>
-              <PatternFieldRow label="사용여부" required>
+              <PatternFieldRow label="사용 여부" required>
                 <div className="flex items-center gap-4">
                   <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
                     <Radio name="process-register-use" defaultChecked />
@@ -3411,122 +3431,108 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="border-t border-mes-gray-30" />
-
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <PatternGroupHeader>품목 등록</PatternGroupHeader>
-              <Button
-                variant="fillBlack"
-                size="xsmall"
-                endIcon={<IconArrow size={12} className="rotate-180" />}
-              >
-                리스트 조회/선택
-              </Button>
-            </div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
-              <PatternFieldRow label="품목" required>
-                <Select>
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="품목 선택" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="item-1">빙그레 딸기품당빙수 Cap(완)</SelectItem>
-                    <SelectItem value="item-2">해태 찐팥빙수 Cap(완)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </PatternFieldRow>
-              <PatternFieldRow label="품목구분">
-                <Input className="flex-1" readOnly placeholder="" />
-              </PatternFieldRow>
-            </div>
-            <div className="flex justify-center pt-1">
+          <div className="flex w-full flex-col gap-5 pt-5">
+            {/* Figma node 19414:94157: "품목등록" 영역 전체가 bg-gray20/rounded-8 카드로
+                감싸져 있고, "추가" 버튼이 카드 하단 경계에 절반 걸치도록 배치됨. */}
+            <div className="relative flex w-full flex-col gap-4 rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
+              <div className="flex w-full flex-col gap-[10px]">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">품목등록</h3>
+                  <Button
+                    variant="fillBlack"
+                    size="small"
+                    className="h-7"
+                    endIcon={<IconArrow size={12} className="rotate-180" />}
+                  >
+                    리스트 조회/선택
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
+                  <PatternFieldRow label="품목" required>
+                    <Input className="flex-1" defaultValue="비비빅" />
+                  </PatternFieldRow>
+                  <PatternFieldRow label="품목구분">
+                    <Input className="flex-1" readOnly defaultValue="완제품" />
+                  </PatternFieldRow>
+                </div>
+              </div>
               <Button
                 variant="fillMain"
                 size="small"
+                className="absolute -bottom-4 left-1/2 w-[160px] -translate-x-1/2"
                 startIcon={<IconArrow size={16} className="-rotate-90" />}
               >
                 추가
               </Button>
             </div>
-          </div>
 
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">품목 리스트</h3>
-              <SearchInput value="" onChange={() => {}} placeholder="검색" className="w-[200px]" />
+            <div className="flex w-full flex-1 flex-col gap-[10px]">
+              <div className="flex items-center justify-between">
+                <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">품목리스트</h3>
+                <SearchInput value="" onChange={() => {}} placeholder="검색어 입력.." className="w-[200px]" />
+              </div>
+              {/* 공용 Table 컴포넌트는 체크박스 칼럼+점선 구분선+회색(Gray-10) 헤더가
+                  기본 구조라 이 패턴(체크박스 없음, 실선 구분선, 흰 헤더, 5칼럼 동일폭)엔
+                  맞지 않아 재사용하지 않고 Figma 마크업을 그대로 옮긴 경량 표를 사용. */}
+              <div className="flex w-full flex-col overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
+                <div className="flex h-[30px] w-full shrink-0 items-center border-b border-mes-gray-30">
+                  {["품목", "품목구분", "규격", "단위", "삭제"].map((label) => (
+                    <div key={label} className="flex h-full flex-1 items-center justify-center">
+                      <span className="text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
+                        {label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                {[
+                  { item: "비비빅", type: "완제품", spec: "A", unit: "4,000" },
+                  { item: "비비빅", type: "완제품", spec: "A", unit: "4,000" },
+                ].map((row, i) => (
+                  <div
+                    key={i}
+                    className="flex min-h-[30px] w-full items-center border-b border-mes-gray-30 last:border-b-0"
+                  >
+                    <div className="flex flex-1 items-center justify-center p-[6px]">
+                      <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.item}</span>
+                    </div>
+                    <div className="flex flex-1 items-center justify-center p-[6px]">
+                      <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.type}</span>
+                    </div>
+                    <div className="flex flex-1 items-center justify-center p-[6px]">
+                      <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.spec}</span>
+                    </div>
+                    <div className="flex flex-1 items-center justify-center p-[6px]">
+                      <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.unit}</span>
+                    </div>
+                    <div className="flex flex-1 items-center justify-center p-[6px]">
+                      <button
+                        type="button"
+                        aria-label="삭제"
+                        className="inline-flex items-center justify-center rounded-[2px] px-2 py-1 text-mes-gray-70"
+                      >
+                        <IconTrash size={16} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <Table
-              columns={[
-                {
-                  key: "item",
-                  label: "품목명",
-                  width: 340,
-                  render: (row) => (
-                    <a href="#" className="text-mes-primary-60 underline">
-                      {row.item}
-                    </a>
-                  ),
-                },
-                { key: "type", label: "품목구분", width: 140 },
-                { key: "spec", label: "규격", width: 100, align: "center" },
-                { key: "unit", label: "단위", width: 90, align: "center" },
-                {
-                  key: "delete",
-                  label: "삭제",
-                  width: 80,
-                  align: "center",
-                  render: () => (
-                    <button
-                      type="button"
-                      aria-label="삭제"
-                      className="inline-flex size-6 items-center justify-center text-mes-gray-70"
-                    >
-                      <IconTrash size={16} />
-                    </button>
-                  ),
-                },
-              ]}
-              rows={[
-                {
-                  id: "item-1",
-                  data: { item: "빙그레 딸기품당빙수 Cap(완)", type: "완제품", spec: "", unit: "ea" },
-                },
-                {
-                  id: "item-2",
-                  data: { item: "빙그레 트리플베리빙수 Cap(완)", type: "완제품", spec: "", unit: "ea" },
-                },
-                {
-                  id: "item-3",
-                  data: { item: "빙그레 전통팥빙수 CAP(완)", type: "완제품", spec: "", unit: "ea" },
-                },
-                {
-                  id: "item-4",
-                  data: { item: "해태 찐절미빙수 Cap(완)", type: "완제품", spec: "", unit: "ea" },
-                },
-                {
-                  id: "item-5",
-                  data: { item: "해태 찐팥빙수 Cap(완)", type: "완제품", spec: "", unit: "ea" },
-                },
-              ]}
-            />
           </div>
         </div>
-      </CenterModal>
+      </SideSlidePanel>
 
-      <CenterModal
+      <SideSlidePanel
         open={workOrderRegisterModalOpen}
         onOpenChange={setWorkOrderRegisterModalOpen}
         title="작업지시 등록"
-        className="max-w-[900px]"
         confirmLabel="등록"
         onCancel={() => setWorkOrderRegisterModalOpen(false)}
         onConfirm={() => setWorkOrderRegisterModalOpen(false)}
       >
-        <div className="flex w-full flex-col gap-6 pb-5">
-          <div className="flex flex-col gap-3">
+        <div className="flex w-full flex-col pb-5">
+          <div className="flex w-full flex-col gap-3 border-b border-mes-gray-30 pb-5">
             <PatternGroupHeader>기본정보</PatternGroupHeader>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
               <PatternFieldRow label="설비" required>
                 <Select>
                   <SelectTrigger className="flex-1">
@@ -3548,121 +3554,97 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="border-t border-mes-gray-30" />
-
-          <div className="flex flex-col gap-3">
-            <PatternGroupHeader>작업지시 정보</PatternGroupHeader>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
-              <PatternFieldRow label="품목" required>
-                <Select>
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="선택" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="item-1">죠스바</SelectItem>
-                    <SelectItem value="item-2">월드콘 뚜껑(소)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </PatternFieldRow>
-              <PatternFieldRow label="품목구분">
-                <Input className="flex-1" readOnly defaultValue="완제품" />
-              </PatternFieldRow>
-              <PatternFieldRow label="담당기사" required>
-                <Select>
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="선택" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="mgr-1">윤대원</SelectItem>
-                    <SelectItem value="mgr-2">신선미</SelectItem>
-                  </SelectContent>
-                </Select>
-              </PatternFieldRow>
-              <PatternFieldRow label="단위">
-                <Input className="flex-1" readOnly defaultValue="EA" />
-              </PatternFieldRow>
-              <PatternFieldRow label="근무조" required>
-                <Select>
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="선택" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="shift-day">주간</SelectItem>
-                    <SelectItem value="shift-night">야간</SelectItem>
-                  </SelectContent>
-                </Select>
-              </PatternFieldRow>
-              <PatternFieldRow label="규격">
-                <Input className="flex-1" readOnly defaultValue="아사노" />
-              </PatternFieldRow>
-              <PatternFieldRow label="지시수량" required>
-                <Input className="flex-1" defaultValue="1,000" />
-              </PatternFieldRow>
-              <PatternFieldRow label="포장인원">
-                <Input className="flex-1" readOnly placeholder="" />
-              </PatternFieldRow>
-            </div>
-            <div className="flex justify-center pt-1">
+          <div className="flex w-full flex-col gap-5 pt-5">
+            <div className="relative flex w-full flex-col gap-4 rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
+              <div className="flex w-full flex-col gap-[10px]">
+                <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">작업지시 정보</h3>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
+                  <PatternFieldRow label="품목" required>
+                    <Select>
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="item-1">죠스바</SelectItem>
+                        <SelectItem value="item-2">월드콘 뚜껑(소)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </PatternFieldRow>
+                  <PatternFieldRow label="품목구분">
+                    <Input className="flex-1" disabled defaultValue="완제품" />
+                  </PatternFieldRow>
+                  <PatternFieldRow label="담당기사" required>
+                    <Select>
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mgr-1">윤대원</SelectItem>
+                        <SelectItem value="mgr-2">신선미</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </PatternFieldRow>
+                  <PatternFieldRow label="단위">
+                    <Input className="flex-1" disabled defaultValue="EA" />
+                  </PatternFieldRow>
+                  <PatternFieldRow label="근무조" required>
+                    <Select>
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="shift-day">주간</SelectItem>
+                        <SelectItem value="shift-night">야간</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </PatternFieldRow>
+                  <PatternFieldRow label="규격">
+                    <Input className="flex-1" disabled defaultValue="아사노" />
+                  </PatternFieldRow>
+                  <PatternFieldRow label="지시수량" required>
+                    <Input className="flex-1" defaultValue="1,000" />
+                  </PatternFieldRow>
+                  <PatternFieldRow label="포장인원">
+                    <Input className="flex-1" placeholder="" />
+                  </PatternFieldRow>
+                </div>
+              </div>
               <Button
                 variant="fillMain"
                 size="small"
+                className="absolute -bottom-4 left-1/2 w-[160px] -translate-x-1/2"
                 startIcon={<IconArrow size={16} className="-rotate-90" />}
               >
                 추가
               </Button>
             </div>
-          </div>
 
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">작업지시 리스트</h3>
-              <SearchInput value="" onChange={() => {}} className="w-[200px]" />
-            </div>
-            <Table
-              columns={[
-                { key: "shift", label: "근무조", width: 77, align: "center" },
-                { key: "item", label: "품목", width: 180 },
-                { key: "type", label: "품목구분", width: 79, align: "center" },
-                { key: "manager", label: "담당기사", width: 70, align: "center" },
-                { key: "unit", label: "단위", width: 68, align: "center" },
-                { key: "packCount", label: "포장인원", width: 70, align: "right" },
-                { key: "orderQty", label: "지시수량", width: 95, align: "right" },
-                { key: "producedQty", label: "생산수량", width: 95, align: "right" },
-                {
-                  key: "status",
-                  label: "상태",
-                  width: 64,
-                  align: "center",
-                  render: (row) =>
-                    row.status === "작업중" ? (
-                      <Badge variant="blue">작업중</Badge>
-                    ) : row.status === "대기" ? (
-                      <Badge variant="grayFill">대기</Badge>
-                    ) : (
-                      <Badge variant="gray">완료</Badge>
-                    ),
-                },
-                {
-                  key: "delete",
-                  label: "삭제",
-                  width: 60,
-                  align: "center",
-                  render: () => (
-                    <button
-                      type="button"
-                      aria-label="삭제"
-                      className="inline-flex size-6 items-center justify-center text-mes-gray-70"
-                    >
-                      <IconTrash size={16} />
-                    </button>
-                  ),
-                },
-              ]}
-              rows={[
-                {
-                  id: "wo-1",
-                  isNew: true,
-                  data: {
+            <div className="flex w-full flex-1 flex-col gap-[10px]">
+              <div className="flex items-center justify-between">
+                <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">작업지시 리스트</h3>
+                <SearchInput value="" onChange={() => {}} placeholder="검색어 입력.." className="w-[200px]" />
+              </div>
+              {(() => {
+                const workOrderColumns: {
+                  key: string;
+                  label: string;
+                  width: number;
+                  align?: "left" | "center" | "right";
+                }[] = [
+                  { key: "shift", label: "근무조", width: 77 },
+                  { key: "item", label: "품목", width: 180 },
+                  { key: "type", label: "품목구분", width: 79 },
+                  { key: "manager", label: "담당기사", width: 70 },
+                  { key: "unit", label: "단위", width: 68 },
+                  { key: "packCount", label: "포장인원", width: 70 },
+                  { key: "orderQty", label: "지시수량", width: 95, align: "right" },
+                  { key: "producedQty", label: "생산수량", width: 95, align: "right" },
+                  { key: "status", label: "상태", width: 64 },
+                  { key: "delete", label: "삭제", width: 60 },
+                ];
+                const workOrderRows = [
+                  {
+                    id: "wo-1",
                     shift: "주간",
                     item: "죠스바",
                     type: "완제품",
@@ -3671,12 +3653,10 @@ export default function Home() {
                     packCount: "5",
                     orderQty: "2,600 (+600)",
                     producedQty: "3000",
-                    status: "작업중",
+                    status: "작업중" as const,
                   },
-                },
-                {
-                  id: "wo-2",
-                  data: {
+                  {
+                    id: "wo-2",
                     shift: "야간",
                     item: "월드콘 뚜껑(소)",
                     type: "완제품",
@@ -3685,12 +3665,10 @@ export default function Home() {
                     packCount: "5",
                     orderQty: "3,000 (+3,000)",
                     producedQty: "-",
-                    status: "대기",
+                    status: "대기" as const,
                   },
-                },
-                {
-                  id: "wo-3",
-                  data: {
+                  {
+                    id: "wo-3",
                     shift: "주간",
                     item: "월드콘 뚜껑(대)",
                     type: "완제품",
@@ -3699,12 +3677,10 @@ export default function Home() {
                     packCount: "5",
                     orderQty: "3000",
                     producedQty: "3,000",
-                    status: "완료",
+                    status: "완료" as const,
                   },
-                },
-                {
-                  id: "wo-4",
-                  data: {
+                  {
+                    id: "wo-4",
                     shift: "주간",
                     item: "팥빙수",
                     type: "완제품",
@@ -3713,14 +3689,70 @@ export default function Home() {
                     packCount: "5",
                     orderQty: "3000",
                     producedQty: "4,000",
-                    status: "완료",
+                    status: "완료" as const,
                   },
-                },
-              ]}
-            />
+                ];
+                return (
+                  <div className="flex w-full flex-col overflow-x-auto rounded-mes-control border border-mes-gray-30 bg-white">
+                    <div className="flex h-[30px] w-max min-w-full shrink-0 items-center border-b border-mes-gray-30">
+                      {workOrderColumns.map((col) => (
+                        <div
+                          key={col.key}
+                          style={{ width: col.width }}
+                          className="flex h-full shrink-0 items-center justify-center"
+                        >
+                          <span className="text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
+                            {col.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    {workOrderRows.map((row) => (
+                      <div
+                        key={row.id}
+                        className="flex min-h-[30px] w-max min-w-full items-center border-b border-mes-gray-30 last:border-b-0"
+                      >
+                        {workOrderColumns.map((col) => (
+                          <div
+                            key={col.key}
+                            style={{ width: col.width }}
+                            className={cn(
+                              "flex h-full shrink-0 items-center p-[6px]",
+                              col.align === "right" ? "justify-end" : "justify-center"
+                            )}
+                          >
+                            {col.key === "status" ? (
+                              row.status === "작업중" ? (
+                                <Badge variant="blue">작업중</Badge>
+                              ) : row.status === "대기" ? (
+                                <Badge variant="grayFill">대기</Badge>
+                              ) : (
+                                <Badge variant="gray">완료</Badge>
+                              )
+                            ) : col.key === "delete" ? (
+                              <button
+                                type="button"
+                                aria-label="삭제"
+                                className="inline-flex items-center justify-center rounded-[2px] px-2 py-1 text-mes-gray-70"
+                              >
+                                <IconTrash size={16} />
+                              </button>
+                            ) : (
+                              <span className="text-[14px] leading-[1.3] text-mes-gray-130">
+                                {(row as unknown as Record<string, string>)[col.key]}
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
           </div>
         </div>
-      </CenterModal>
+      </SideSlidePanel>
 
       {/* 2026-08-05 신규 — Patterns(3층) 두 번째 항목 "검사 체크리스트 모달"(공정검사,
           Figma node 19414:93662, 760px 2단 레이아웃). 좌측 "대상정보"는 13개 필드 중
