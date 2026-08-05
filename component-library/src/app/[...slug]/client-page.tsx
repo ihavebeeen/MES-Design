@@ -1319,6 +1319,12 @@ export default function Home() {
   const [workOrderInspectionDate, setWorkOrderInspectionDate] = useState<Date | null>(
     new Date(2025, 9, 30)
   );
+  // 2026-08-05 3차 수정 — 사용자가 실제 운영 화면 스크린샷을 보여주며 "등록일" 필드가
+  // (Figma엔 "입고예정일"로 찍혀 있었지만) 실제로는 캘린더 아이콘이 있는 DatePicker임을
+  // 확인시켜줌 — 별도 로컬 state로 분리(다른 Section의 DatePicker 데모와 결합 방지).
+  const [processRegisterDate, setProcessRegisterDate] = useState<Date | null>(
+    new Date(2026, 1, 8)
+  );
   // 2026-08-05 신규 — Patterns "검사 체크리스트 모달"(공정검사). QaToggleGroup 4개 행의
   // 선택 상태만 실제로 인터랙티브하게 관리(나머지 폼 필드는 다른 패턴과 동일하게
   // defaultValue 비제어) — Figma 스크린샷 기준 4개 행 전부 기본값 "o"(합격 표시).
@@ -3295,41 +3301,46 @@ export default function Home() {
         </Sample>
       </Section>
 
-      {/* 2026-08-05 신규, 이후 사용자 지적 2회로 총 3판째 — Patterns(3층) 첫 항목
+      {/* 2026-08-05 신규, 이후 사용자 지적 3회로 총 4판째 — Patterns(3층) 첫 항목
           "리스트형 등록 모달".
-          1판(최초 구현) → 2판(1차 지적 "피그마 원본 디자인과 전혀 다르다" 반영,
-          고해상도 스크린샷+get_variable_defs로 재대조) → 3판(2차 지적 "분명 슬라이드
-          팝업이었는데 그것도 아니고, 추가 아이콘도 이상하고 섹션 나누는 것도 없다"
-          반영, 현재 버전). 3판에서 고친 것:
-          A) 담당자가 처음부터 이 두 프레임을 "슬라이드 팝업 1/2"라고 이름 붙여
-             줬는데(원 요청 메시지 참고), 화면 중앙 위치처럼 보인다는 내 판단으로
-             `CenterModal`을 썼던 게 틀렸음 — 담당자의 명명을 우선해 `SideSlidePanel`
-             (우측 고정 슬라이드 패널)로 교체.
-          B) "추가" 버튼 아이콘: 2판에서 IconArrowLine(선+화살촉 형태, "뒤로가기"류
-             아이콘)을 썼는데, 노드(19414:94212)를 다시 크게 캡처해보니 실제로는
-             가느다란 쉐브론 모양("<" 계열)이라 IconArrowLine보다 IconArrow(단순
-             꺾쇠 모양, 코드베이스에 이미 있음)가 훨씬 가까움 — IconArrow를
-             -rotate-90(왼쪽→아래)으로 교체.
-          C) metadata를 다시 보니 "기본정보" 프레임과 "품목등록+품목리스트"를 묶은
-             프레임(공정 등록), "기본정보" 프레임과 "작업지시 정보+작업지시 리스트"를
-             묶은 프레임(작업지시 등록) 사이에 각각 구분선이 있었음 — 최초엔 완전히
-             빠뜨렸던 부분. `border-t border-mes-gray-30` 한 줄씩 추가(모달당 정확히
-             1개, metadata상 위치와 일치).
-          2판에서 이미 고쳤던 것(3판에서도 유지): "기본정보"/"품목등록"/"작업지시
-          정보" 제목의 회색 필(pill) 배경(`PatternGroupHeader`), "설정" 버튼 색
-          (opacityMain), 읽기전용 값 필드(`readOnly`+실제값), 작업지시 등록의
-          설비/품목/담당기사/근무조 Select 전환, 지시일 DatePicker 전환, 상태 Badge
-          행별 매핑(작업중/대기/완료), 품목리스트 표 데이터 실제값 일치.
+          1판(최초 구현, Figma 스크린샷 육안) → 2판("피그마 원본과 전혀 다르다" 지적,
+          고해상도 스크린샷+get_variable_defs 재대조) → 3판("분명 슬라이드팝업이었는데
+          아니고, 추가 아이콘도 이상하고 섹션 구분도 없다" 지적, CenterModal→
+          SideSlidePanel 전환) → 4판(담당자가 **실제 운영 중인 서비스의 스크린샷 2장
+          (내가 만든 것 vs 실제 화면)을 직접 캡처해서 제공** — 지금까지 중 가장 확실한
+          근거. 아래는 이 실제 화면 캡처 기준으로 다시 맞춘 4판 변경분:
+          A) 모달 형태: 3판에서 "슬라이드팝업"이라는 이름을 근거로 SideSlidePanel(우측
+             고정)로 바꿨는데, 실제 운영 화면 캡처를 보니 화면 중앙에 뜨는 둥근 모서리
+             모달이었음 — CenterModal로 원복. Figma 레이어 이름("슬라이드 팝업")과 실제
+             구현이 다를 수 있다는 걸 이번에 확인함(이름만 보고 판단하면 안 됨, 실제
+             렌더링 증거가 최우선).
+          B) "등록일"(Figma엔 "입고예정일"로 찍혀 있었지만 실제 화면 라벨은 "등록일")로
+             교체, 우측에 캘린더 아이콘이 있는 실제 DatePicker로 변경(readOnly Input
+             아님).
+          C) 라벨 공백 수정: "사용 여부"→"사용여부", "품목등록"→"품목 등록"(실제 화면
+             기준 공백 유무 반대로 되어 있었음).
+          D) "리스트 조회/선택" 버튼: 실제 화면은 흰 배경 아웃라인이 아니라 진한 남색
+             채움 버튼이었음 — lineBlacktxt→fillBlack.
+          E) "품목" 필드: plain Input이 아니라 드롭다운 화살표가 있는 Select였음.
+          F) 품목 리스트 표: 컬럼명 "품목"→"품목명"(실제 화면 기준), 품목명 컬럼이
+             훨씬 넓고 파란 링크 스타일(다른 Table 데모의 기존 링크 셀 관례 재사용),
+             단위는 숫자가 아니라 "ea", 규격은 빈 칸. 실제 화면에 보이는 상품명 일부를
+             그대로 가져와 데이터도 교체(빙그레/해태 빙수 제품명 등).
+          이전 판에서 고쳤고 이번에도 유지되는 것: "기본정보"/"품목 등록"/"작업지시
+          정보" 제목의 회색 필(pill) 배경(`PatternGroupHeader`), "기본정보" 대 나머지
+          사이 구분선, "설정" 버튼 색(opacityMain), "추가" 버튼 아이콘(IconArrow
+          -rotate-90), 작업지시 등록의 설비/품목/담당기사/근무조 Select, 지시일
+          DatePicker, 상태 Badge 행별 매핑.
           여전히 판단값으로 남은 것: "설정" 버튼 아이콘(Figma "mes/icon-setting"이
-          이 저장소엔 없어 lucide Settings 대체, 변경 없음), 지시일 캘린더 픽커의
-          초기 날짜(Figma 예시 "2025-10-30" 그대로 사용). */}
+          이 저장소엔 없어 lucide Settings 대체), 품목 리스트의 정확한 전체 행 수(실제
+          화면은 스크롤되는 긴 목록, 데모는 대표 5개만). */}
       <Section id="list-registration-modal" title="리스트형 등록 모달" titleEn="List Registration Modal">
         <Sample
           label="공정 등록"
           spec={[
-            { label: "출처", value: "클라우드MES node 19414:94157" },
-            { label: "형태", value: "SideSlidePanel(우측 슬라이드), 900px(기본 960px 오버라이드)" },
-            { label: "구성", value: "기본정보 폼 + 구분선 + 품목등록 폼 + 품목리스트 표" },
+            { label: "출처", value: "클라우드MES node 19414:94157 + 실제 운영 화면 캡처" },
+            { label: "형태", value: "CenterModal(중앙), 900px(기본 960px 오버라이드)" },
+            { label: "구성", value: "기본정보 폼 + 구분선 + 품목 등록 폼 + 품목 리스트 표" },
           ]}
         >
           <Button size="basic" onClick={() => setProcessRegisterModalOpen(true)}>
@@ -3340,7 +3351,7 @@ export default function Home() {
           label="작업지시 등록"
           spec={[
             { label: "출처", value: "클라우드MES node 19098:64815" },
-            { label: "형태", value: "SideSlidePanel(우측 슬라이드), 900px(기본 960px 오버라이드)" },
+            { label: "형태", value: "CenterModal(중앙), 900px(기본 960px 오버라이드)" },
             { label: "구성", value: "기본정보 폼 + 구분선 + 작업지시 정보 폼 + 작업지시 리스트 표" },
           ]}
         >
@@ -3350,7 +3361,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <SideSlidePanel
+      <CenterModal
         open={processRegisterModalOpen}
         onOpenChange={setProcessRegisterModalOpen}
         title="공정 등록"
@@ -3366,22 +3377,26 @@ export default function Home() {
               <PatternFieldRow label="공정명" required>
                 <Input className="flex-1" placeholder="내용 입력" />
               </PatternFieldRow>
-              <PatternFieldRow label="입고예정일">
-                <Input className="flex-1" readOnly defaultValue="2025-04-01" />
+              <PatternFieldRow label="등록일">
+                <DatePicker
+                  value={processRegisterDate}
+                  onValueChange={setProcessRegisterDate}
+                  className="flex-1"
+                />
               </PatternFieldRow>
               <PatternFieldRow label="불량유형">
-                <Input className="flex-1" readOnly defaultValue="4건" />
+                <Input className="flex-1" readOnly defaultValue="2건" />
                 <Button variant="opacityMain" size="xsmall" startIcon={<Settings size={14} />}>
                   설정
                 </Button>
               </PatternFieldRow>
               <PatternFieldRow label="비가동유형">
-                <Input className="flex-1" readOnly defaultValue="3건" />
+                <Input className="flex-1" readOnly defaultValue="1건" />
                 <Button variant="opacityMain" size="xsmall" startIcon={<Settings size={14} />}>
                   설정
                 </Button>
               </PatternFieldRow>
-              <PatternFieldRow label="사용 여부" required>
+              <PatternFieldRow label="사용여부" required>
                 <div className="flex items-center gap-4">
                   <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
                     <Radio name="process-register-use" defaultChecked />
@@ -3396,18 +3411,13 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 2026-08-05 재수정 — 사용자가 "섹션 나누는 게 없다"고 재지적. Figma metadata를
-              다시 보니 "기본정보" 프레임(y=52,h=196)과 "품목등록+품목리스트"를 묶은
-              프레임(y=248,h=640)이 이어져 있고 둘 사이에 이 구분선이 있었음 — 두 프레임
-              사이(기본정보 대 나머지 전체)에 딱 하나만 있고, 품목등록과 품목리스트 사이엔
-              없음(그 둘은 같은 프레임 안에 같이 있었음). */}
           <div className="border-t border-mes-gray-30" />
 
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <PatternGroupHeader>품목등록</PatternGroupHeader>
+              <PatternGroupHeader>품목 등록</PatternGroupHeader>
               <Button
-                variant="lineBlacktxt"
+                variant="fillBlack"
                 size="xsmall"
                 endIcon={<IconArrow size={12} className="rotate-180" />}
               >
@@ -3416,10 +3426,18 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 gap-x-6 gap-y-3">
               <PatternFieldRow label="품목" required>
-                <Input className="flex-1" defaultValue="비비빅" />
+                <Select>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="품목 선택" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="item-1">빙그레 딸기품당빙수 Cap(완)</SelectItem>
+                    <SelectItem value="item-2">해태 찐팥빙수 Cap(완)</SelectItem>
+                  </SelectContent>
+                </Select>
               </PatternFieldRow>
               <PatternFieldRow label="품목구분">
-                <Input className="flex-1" readOnly defaultValue="완제품" />
+                <Input className="flex-1" readOnly placeholder="" />
               </PatternFieldRow>
             </div>
             <div className="flex justify-center pt-1">
@@ -3435,19 +3453,28 @@ export default function Home() {
 
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">품목리스트</h3>
-              <SearchInput value="" onChange={() => {}} className="w-[200px]" />
+              <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">품목 리스트</h3>
+              <SearchInput value="" onChange={() => {}} placeholder="검색" className="w-[200px]" />
             </div>
             <Table
               columns={[
-                { key: "item", label: "품목", width: 172 },
-                { key: "type", label: "품목구분", width: 172 },
-                { key: "spec", label: "규격", width: 172 },
-                { key: "unit", label: "단위", width: 172, align: "center" },
+                {
+                  key: "item",
+                  label: "품목명",
+                  width: 340,
+                  render: (row) => (
+                    <a href="#" className="text-mes-primary-60 underline">
+                      {row.item}
+                    </a>
+                  ),
+                },
+                { key: "type", label: "품목구분", width: 140 },
+                { key: "spec", label: "규격", width: 100, align: "center" },
+                { key: "unit", label: "단위", width: 90, align: "center" },
                 {
                   key: "delete",
                   label: "삭제",
-                  width: 172,
+                  width: 80,
                   align: "center",
                   render: () => (
                     <button
@@ -3463,19 +3490,31 @@ export default function Home() {
               rows={[
                 {
                   id: "item-1",
-                  data: { item: "비비빅", type: "완제품", spec: "A", unit: "4,000" },
+                  data: { item: "빙그레 딸기품당빙수 Cap(완)", type: "완제품", spec: "", unit: "ea" },
                 },
                 {
                   id: "item-2",
-                  data: { item: "비비빅", type: "완제품", spec: "A", unit: "4,000" },
+                  data: { item: "빙그레 트리플베리빙수 Cap(완)", type: "완제품", spec: "", unit: "ea" },
+                },
+                {
+                  id: "item-3",
+                  data: { item: "빙그레 전통팥빙수 CAP(완)", type: "완제품", spec: "", unit: "ea" },
+                },
+                {
+                  id: "item-4",
+                  data: { item: "해태 찐절미빙수 Cap(완)", type: "완제품", spec: "", unit: "ea" },
+                },
+                {
+                  id: "item-5",
+                  data: { item: "해태 찐팥빙수 Cap(완)", type: "완제품", spec: "", unit: "ea" },
                 },
               ]}
             />
           </div>
         </div>
-      </SideSlidePanel>
+      </CenterModal>
 
-      <SideSlidePanel
+      <CenterModal
         open={workOrderRegisterModalOpen}
         onOpenChange={setWorkOrderRegisterModalOpen}
         title="작업지시 등록"
@@ -3681,7 +3720,7 @@ export default function Home() {
             />
           </div>
         </div>
-      </SideSlidePanel>
+      </CenterModal>
 
       {/* 2026-08-05 신규 — Patterns(3층) 두 번째 항목 "검사 체크리스트 모달"(공정검사,
           Figma node 19414:93662, 760px 2단 레이아웃). 좌측 "대상정보"는 13개 필드 중
