@@ -1313,6 +1313,15 @@ export default function Home() {
     packagingStatus: "o",
     bandingStatus: "o",
   });
+  // 2026-08-05 신규 — Patterns "그룹화 리스트 관리 화면"(메인 리스트) 미리보기 전용
+  // 사이드바 접힘 상태. 사이드바 컴포넌트 자체 데모 섹션의 `sidebarCollapsed`와 상태를
+  // 공유하면 서로 다른 두 섹션이 우연히 서로의 UI를 바꿔버리는 결합이 생겨서(한쪽에서
+  // 접으면 다른 섹션도 접힘) 의도적으로 분리된 로컬 state를 새로 둠 — 나머지
+  // (GroupQuery/Filter/QuickQuery/SearchInput/Table/DateRangePicker) 상태는 전부 이
+  // 페이지의 기존 컴포넌트 데모가 이미 갖고 있는 state를 그대로 재사용(같은 화면
+  // 구성요소를 다시 만들지 않기 위함 — 실제로 이 Figma 화면 자체가 그 데모들의
+  // 근거였던 "생산실적/생산지시" 스크린샷과 동일 계열임).
+  const [patternScreenSidebarCollapsed, setPatternScreenSidebarCollapsed] = useState(true);
   const [sideSlidePanelOpen, setSideSlidePanelOpen] = useState(false);
   const [sidebarExpandedKey, setSidebarExpandedKey] = useState<string | undefined>(
     "mes-setting"
@@ -3745,6 +3754,157 @@ export default function Home() {
           </div>
         </div>
       </CenterModal>
+
+      {/* 2026-08-05 신규 — Patterns(3층) 세 번째 항목 "그룹화 리스트 관리 화면"(메인 리스트,
+          Figma node 17000:39999). 이 노드는 get_metadata가 76,712자를 반환해 처리 한도를
+          넘겨서(SSE 파싱 실패는 아니고 순수 크기 문제) 메타데이터 좌표 기반이 아니라
+          스크린샷 육안 대조 + 판단값으로 구성 — 프로젝트 관례상 GroupQuery/QuickQuery를
+          만들 때 쓴 것과 같은 방식(AGENTS.md 참고).
+          이 패턴의 핵심은 신규 컴포넌트를 만드는 게 아니라, 이 페이지에 이미 실측/구현되어
+          있는 화면 구성요소들을 그대로 조합하는 것 — 실제로 스크린샷을 보면 Sidebar(접힘
+          레일 상태), PageTopTabItem, DateRangePicker, GroupQuery, Filter, QuickQuery,
+          SearchInput, Table(그룹화+총계행)이 전부 이미 이 페이지 다른 Section에서 각각
+          Figma 실측으로 구현된 상태였고, 심지어 Table의 productionColumns/productionGroups
+          데이터 자체가 이미 이 계열("생산실적"/"생산지시") 화면 스크린샷에서 나온 값이라
+          그대로 재사용함(중복 구현 방지). 따라서 아래 프리뷰의 GroupQuery/Filter/
+          QuickQuery/SearchInput/DateRangePicker/Table은 전부 이 페이지의 기존 state를
+          그대로 공유 — 새 state는 사이드바 접힘 여부(다른 Section의 사이드바 데모와
+          결합되지 않도록 로컬로 분리) 하나만 추가함.
+          판단값: 상단 탭 우측 벨/유저 아이콘은 스크린샷에 작게만 보여 정확한 사이즈/색
+          미실측(18px, Gray-60으로 판단). 하단 "복사/다운로드"는 테두리 없는 텍스트+아이콘
+          버튼으로 보여 기존 Button variant 중 맞는 게 없어 커스텀 버튼으로 구현. 우측
+          3버튼(원료투입분석/삭제/생산실적등록)은 육안상 fillGray/fillGray/fillBlack으로
+          판단(삭제도 danger 색이 아니라 회색이었음 — 실측 후 그대로 반영, 임의로 빨간색
+          추정하지 않음). Table 그룹 구성 자체는 스크린샷의 "설비별 1단 그룹"과 완전히
+          똑같지는 않음(재사용한 productionGroups는 지시일→설비→담당기사 3단) — 화면
+          합성 패턴을 보여주는 게 목적이라 데이터를 새로 만들지 않고 기존 검증된 데이터를
+          그대로 씀. */}
+      <Section id="grouped-list-screen" title="그룹화 리스트 관리 화면" titleEn="Grouped List Screen">
+        <Sample
+          label="생산실적 리스트"
+          spec={[
+            { label: "출처", value: "클라우드MES node 17000:39999(스크린샷 기반)" },
+            {
+              label: "구성",
+              value: "Sidebar+상단탭+조회헤더+GroupQuery/Filter/QuickQuery/SearchInput+Table+액션바",
+            },
+            { label: "재사용", value: "전부 이 페이지의 기존 컴포넌트·state 재사용" },
+          ]}
+        >
+          <div className="w-full overflow-x-auto rounded-lg border border-mes-gray-30">
+            <div className="flex h-[640px] min-w-[1040px]">
+              <Sidebar
+                items={SIDEBAR_NAV_ITEMS}
+                collapsed={patternScreenSidebarCollapsed}
+                onCollapseClick={() => setPatternScreenSidebarCollapsed((v) => !v)}
+                activeKey="production"
+              />
+              <div className="flex min-w-0 flex-1 flex-col bg-white">
+                <div className="flex h-[38px] shrink-0 items-center justify-between bg-black pr-3">
+                  <div className="flex h-full">
+                    <PageTopTabItem label="생산실적" active />
+                    <PageTopTabItem label="거래처 등록" />
+                    <PageTopTabItem label="품목 등록" />
+                  </div>
+                  <div className="flex items-center gap-2.5 text-mes-gray-60">
+                    <IconBell size={18} />
+                    <IconUserMono size={18} />
+                  </div>
+                </div>
+
+                <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-[17px] font-bold leading-tight text-mes-gray-130">
+                      생산실적 리스트
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <span className="whitespace-nowrap text-[13px] text-mes-gray-70">
+                        조회기준일자
+                      </span>
+                      <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
+                      <Button size="small">조회</Button>
+                      <Button variant="lineBlacktxt" size="small" startIcon={<Settings size={14} />}>
+                        설정
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="flex w-full flex-wrap items-center justify-between gap-x-2.5 gap-y-2">
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <GroupQuery
+                        options={groupQueryOptions}
+                        levels={groupQueryLevels}
+                        onLevelChange={(index, value) =>
+                          setGroupQueryLevels((prev) => prev.map((v, i) => (i === index ? value : v)))
+                        }
+                      />
+                      <Filter
+                        categories={filterCategories}
+                        value={filterValue}
+                        onChange={(categoryId, optionIds) =>
+                          setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <QuickQuery
+                        presets={quickQuerySlots
+                          .filter((s): s is QuickQuerySlot & { name: string } => s.name !== null)
+                          .map((s) => ({ id: s.id, label: s.name }))}
+                        activeId={quickQueryActiveId}
+                        onApply={setQuickQueryActiveId}
+                        onClearActive={() => setQuickQueryActiveId(null)}
+                        onSettingsClick={() => setQuickQueryDialogOpen(true)}
+                      />
+                      <SearchInput value={groupQuerySearchValue} onChange={setGroupQuerySearchValue} />
+                    </div>
+                  </div>
+
+                  <div className="w-full overflow-x-auto">
+                    <Table
+                      columns={productionColumns}
+                      groups={productionGroups}
+                      selectedIds={tableSelectedIds}
+                      onSelectedIdsChange={setTableSelectedIds}
+                      totals={{ qty: fmt(16000), defectQty: fmt(30), packQty: fmt(160) }}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex h-14 shrink-0 items-center justify-between border-t border-mes-gray-30 px-4">
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      className="flex items-center gap-1.5 text-[13px] text-mes-gray-70"
+                    >
+                      <IconCopy size={16} />
+                      복사
+                    </button>
+                    <button
+                      type="button"
+                      className="flex items-center gap-1.5 text-[13px] text-mes-gray-70"
+                    >
+                      <IconDownload size={16} />
+                      다운로드
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button variant="fillGray" size="basic">
+                      원료투입분석
+                    </Button>
+                    <Button variant="fillGray" size="basic">
+                      삭제
+                    </Button>
+                    <Button variant="fillBlack" size="basic">
+                      생산실적등록
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Sample>
+      </Section>
 
       {/* 2026-08-03 신규 — 담당자 요청: "더 작업이 필요한 것들의 구역을 미리 생성해 둬".
           아직 착수 안 한 티어3/4를 위한 자리만 미리 만들어둠(SIDEBAR_GROUPS의 "예정"
