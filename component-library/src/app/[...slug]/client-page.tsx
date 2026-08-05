@@ -10,7 +10,16 @@ import {
   cloneElement,
   Fragment,
 } from "react";
-import { ChevronRight, Plus, Search, Palette, Blocks, Hammer, LayoutTemplate } from "lucide-react";
+import {
+  ChevronRight,
+  Plus,
+  Search,
+  Palette,
+  Blocks,
+  Hammer,
+  LayoutTemplate,
+  Settings,
+} from "lucide-react";
 import NextLink from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -246,6 +255,34 @@ function OverviewGrid({ nodes }: { nodes: SidebarNode[] }) {
       {cards.map((c) => (
         <OverviewCard key={c.id} {...c} />
       ))}
+    </div>
+  );
+}
+
+/**
+ * 2026-08-05 신규 — Patterns(3층) 첫 항목 "리스트형 등록 모달"에서 반복되는 "라벨(100px
+ * 고정) + 입력 컨트롤" 한 줄짜리 폼 필드 레이아웃을 헬퍼로 뺌(공정 등록/작업지시 등록
+ * 모달 두 곳에서 총 13번 반복되는 구조). Figma 실측(node 19414:94157/19098:64815):
+ * 라벨 너비 100px, 라벨↔인풋 간격 8px(gap-2 = 8px), 라벨 텍스트 14px, 필수 표시는
+ * 라벨 바로 뒤 빨간 "*". `PatternFieldRow`라는 이름으로 이 패턴 파일 전용 헬퍼임을
+ * 표시 — 범용 컴포넌트로 승격은 다른 화면에서도 같은 구조가 재확인되면 그때 진행.
+ */
+function PatternFieldRow({
+  label,
+  required,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="flex w-[100px] shrink-0 items-center gap-0.5 text-[14px] leading-[1.5] text-mes-gray-130">
+        {label}
+        {required && <span className="text-mes-danger-60">*</span>}
+      </span>
+      <div className="flex min-w-0 flex-1 items-center gap-2">{children}</div>
     </div>
   );
 }
@@ -1198,6 +1235,11 @@ export default function Home() {
   // 2026-08-03 — 담당자가 클라우드MES "Modal" 스펙 페이지(node 9873:82872, Type01/02)를
   // 전달해 보류 해제. Center Modal(화면 중앙)/Side Slide Panel(우측 고정) 둘 다 신규 구현.
   const [centerModalOpen, setCenterModalOpen] = useState(false);
+  // 2026-08-05 신규 — Patterns "리스트형 등록 모달"의 예시 2개(공정 등록/작업지시 등록)
+  // 각각 독립된 열림 상태. 폼 필드 자체는 이 페이지의 다른 폼 데모들과 동일하게
+  // defaultValue(비제어)로만 구성 — 실제 저장 로직 없는 정적 시연이 목적.
+  const [processRegisterModalOpen, setProcessRegisterModalOpen] = useState(false);
+  const [workOrderRegisterModalOpen, setWorkOrderRegisterModalOpen] = useState(false);
   const [sideSlidePanelOpen, setSideSlidePanelOpen] = useState(false);
   const [sidebarExpandedKey, setSidebarExpandedKey] = useState<string | undefined>(
     "mes-setting"
@@ -3155,6 +3197,335 @@ export default function Home() {
         </Sample>
       </Section>
 
+      {/* 2026-08-05 신규 — Patterns(3층) 첫 항목 "리스트형 등록 모달". 담당자가 클라우드MES
+          Figma 파일(F4n5Zr04PAbiRjfIFQAo6v)에서 직접 골라준 2개 프레임을 CenterModal +
+          기존 컴포넌트(Input, Button, Radio, Table, SearchInput, Badge)로 구성:
+          - "공정 등록"(node 19414:94157, 900px 모달): 기본정보(공정명(필수), 입고예정일,
+            불량유형+설정, 비가동유형+설정, 사용여부 라디오) + 품목등록(리스트 조회/선택
+            버튼, 품목(필수), 품목구분, 추가 버튼) + 품목리스트 표.
+          - "작업지시 등록"(node 19098:64815, 900px 모달): 기본정보(설비(필수), 지시일
+            (필수)) + 작업지시 정보(품목(필수), 품목구분, 담당기사(필수), 단위, 규격,
+            근무조(필수), 포장인원, 지시수량(필수), 2열x4행) + 추가 버튼 + 작업지시 리스트
+            표(상태 컬럼은 기존 Badge 재사용 — 같은 파일의 "상태 뱃지 NEW" 컴포넌트와
+            출처가 동일).
+          판단값(Figma에 없거나 벡터라 직접 못 뽑은 값):
+          - "설정" 버튼 아이콘: Figma엔 "mes/icon-setting"이 있지만 이 저장소 아이콘
+            세트엔 없음(icon-setting.tsx 없음) — lucide-react Settings로 대체.
+          - "추가" 버튼: 스크린샷 확인 결과 아이콘(아래 방향 화살표)이 텍스트 위에
+            쌓이는 특이한 레이아웃이라, 기존 Button의 좌우 아이콘 슬롯 대신
+            className로 flex-col 오버라이드해서 재현(새 variant는 만들지 않음).
+          - "리스트 조회/선택" 버튼: 아웃라인 없이 진한 남색 텍스트, 우측 화살표로
+            보여서 lineBlacktxt를 그대로 쓰되 시각적 판단으로 골랐음(정확한 variant명
+            metadata엔 없음).
+          - 상태 Badge 텍스트: Figma가 컴포넌트 인스턴스만 참조해서 실제 표시 텍스트를
+            못 뽑았음 — "신규"로 판단해 채움.
+          - 품목, 작업지시 리스트의 예시 데이터는 Figma 목업에 있던 값 중 일부를 그대로
+            가져왔고(비비빅, 죠스바 등), 나머지는 표 구조를 보여주기 위한 대표 예시. */}
+      <Section id="list-registration-modal" title="리스트형 등록 모달" titleEn="List Registration Modal">
+        <Sample
+          label="공정 등록"
+          spec={[
+            { label: "출처", value: "클라우드MES node 19414:94157" },
+            { label: "너비", value: "900px(기본 CenterModal 960px 오버라이드)" },
+            { label: "구성", value: "기본정보 폼 + 품목등록 폼 + 품목리스트 표" },
+          ]}
+        >
+          <Button size="basic" onClick={() => setProcessRegisterModalOpen(true)}>
+            공정 등록 모달 열기
+          </Button>
+        </Sample>
+        <Sample
+          label="작업지시 등록"
+          spec={[
+            { label: "출처", value: "클라우드MES node 19098:64815" },
+            { label: "너비", value: "900px(기본 CenterModal 960px 오버라이드)" },
+            { label: "구성", value: "기본정보 폼 + 작업지시 정보 폼 + 작업지시 리스트 표" },
+          ]}
+        >
+          <Button size="basic" onClick={() => setWorkOrderRegisterModalOpen(true)}>
+            작업지시 등록 모달 열기
+          </Button>
+        </Sample>
+      </Section>
+
+      <CenterModal
+        open={processRegisterModalOpen}
+        onOpenChange={setProcessRegisterModalOpen}
+        title="공정 등록"
+        className="max-w-[900px]"
+        confirmLabel="등록"
+        onCancel={() => setProcessRegisterModalOpen(false)}
+        onConfirm={() => setProcessRegisterModalOpen(false)}
+      >
+        <div className="flex w-full flex-col gap-6 pb-5">
+          <div className="flex flex-col gap-3">
+            <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">기본정보</h3>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+              <PatternFieldRow label="공정명" required>
+                <Input className="flex-1" placeholder="공정명 입력" />
+              </PatternFieldRow>
+              <PatternFieldRow label="입고예정일">
+                <Input className="flex-1" placeholder="YYYY-MM-DD" />
+              </PatternFieldRow>
+              <PatternFieldRow label="불량유형">
+                <Input className="flex-1" placeholder="불량유형 선택" />
+                <Button variant="lineMain" size="xsmall" startIcon={<Settings size={14} />}>
+                  설정
+                </Button>
+              </PatternFieldRow>
+              <PatternFieldRow label="비가동유형">
+                <Input className="flex-1" placeholder="비가동유형 선택" />
+                <Button variant="lineMain" size="xsmall" startIcon={<Settings size={14} />}>
+                  설정
+                </Button>
+              </PatternFieldRow>
+              <PatternFieldRow label="사용 여부" required>
+                <div className="flex items-center gap-4">
+                  <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
+                    <Radio name="process-register-use" defaultChecked />
+                    사용
+                  </label>
+                  <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
+                    <Radio name="process-register-use" />
+                    미사용
+                  </label>
+                </div>
+              </PatternFieldRow>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">품목등록</h3>
+              <Button
+                variant="lineBlacktxt"
+                size="xsmall"
+                endIcon={<IconArrow size={12} className="rotate-180" />}
+              >
+                리스트 조회/선택
+              </Button>
+            </div>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+              <PatternFieldRow label="품목" required>
+                <Input className="flex-1" placeholder="품목 선택" />
+              </PatternFieldRow>
+              <PatternFieldRow label="품목구분">
+                <Input className="flex-1" placeholder="품목구분" />
+              </PatternFieldRow>
+            </div>
+            <div className="flex justify-center pt-1">
+              <Button
+                variant="fillMain"
+                size="small"
+                className="h-auto flex-col gap-0.5 py-1.5"
+                startIcon={<IconArrowLine size={16} />}
+              >
+                추가
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">품목리스트</h3>
+              <SearchInput value="" onChange={() => {}} className="w-[200px]" />
+            </div>
+            <Table
+              columns={[
+                { key: "item", label: "품목", width: 172 },
+                { key: "type", label: "품목구분", width: 172 },
+                { key: "spec", label: "규격", width: 172 },
+                { key: "unit", label: "단위", width: 172, align: "center" },
+                {
+                  key: "delete",
+                  label: "삭제",
+                  width: 172,
+                  align: "center",
+                  render: () => (
+                    <button
+                      type="button"
+                      aria-label="삭제"
+                      className="inline-flex size-6 items-center justify-center text-mes-gray-70"
+                    >
+                      <IconTrash size={16} />
+                    </button>
+                  ),
+                },
+              ]}
+              rows={[
+                {
+                  id: "item-1",
+                  data: { item: "비비빅", type: "완제품", spec: "A", unit: "4,000" },
+                },
+                {
+                  id: "item-2",
+                  data: { item: "죠스바", type: "완제품", spec: "A", unit: "3,000" },
+                },
+              ]}
+            />
+          </div>
+        </div>
+      </CenterModal>
+
+      <CenterModal
+        open={workOrderRegisterModalOpen}
+        onOpenChange={setWorkOrderRegisterModalOpen}
+        title="작업지시 등록"
+        className="max-w-[900px]"
+        confirmLabel="등록"
+        onCancel={() => setWorkOrderRegisterModalOpen(false)}
+        onConfirm={() => setWorkOrderRegisterModalOpen(false)}
+      >
+        <div className="flex w-full flex-col gap-6 pb-5">
+          <div className="flex flex-col gap-3">
+            <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">기본정보</h3>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+              <PatternFieldRow label="설비" required>
+                <Input className="flex-1" placeholder="설비 선택" />
+              </PatternFieldRow>
+              <PatternFieldRow label="지시일" required>
+                <Input className="flex-1" placeholder="YYYY-MM-DD" />
+              </PatternFieldRow>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">작업지시 정보</h3>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+              <PatternFieldRow label="품목" required>
+                <Input className="flex-1" placeholder="품목 선택" />
+              </PatternFieldRow>
+              <PatternFieldRow label="품목구분">
+                <Input className="flex-1" placeholder="품목구분" />
+              </PatternFieldRow>
+              <PatternFieldRow label="담당기사" required>
+                <Input className="flex-1" placeholder="담당기사 선택" />
+              </PatternFieldRow>
+              <PatternFieldRow label="단위">
+                <Input className="flex-1" placeholder="단위" />
+              </PatternFieldRow>
+              <PatternFieldRow label="근무조" required>
+                <Input className="flex-1" placeholder="근무조 선택" />
+              </PatternFieldRow>
+              <PatternFieldRow label="규격">
+                <Input className="flex-1" placeholder="규격" />
+              </PatternFieldRow>
+              <PatternFieldRow label="지시수량" required>
+                <Input className="flex-1" placeholder="0" />
+              </PatternFieldRow>
+              <PatternFieldRow label="포장인원">
+                <Input className="flex-1" placeholder="0" />
+              </PatternFieldRow>
+            </div>
+            <div className="flex justify-center pt-1">
+              <Button
+                variant="fillMain"
+                size="small"
+                className="h-auto flex-col gap-0.5 py-1.5"
+                startIcon={<IconArrowLine size={16} />}
+              >
+                추가
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">작업지시 리스트</h3>
+              <SearchInput value="" onChange={() => {}} className="w-[200px]" />
+            </div>
+            <Table
+              columns={[
+                { key: "shift", label: "근무조", width: 77, align: "center" },
+                { key: "item", label: "품목", width: 180 },
+                { key: "type", label: "품목구분", width: 79, align: "center" },
+                { key: "manager", label: "담당기사", width: 70, align: "center" },
+                { key: "unit", label: "단위", width: 68, align: "center" },
+                { key: "packCount", label: "포장인원", width: 70, align: "right" },
+                { key: "orderQty", label: "지시수량", width: 95, align: "right" },
+                { key: "producedQty", label: "생산수량", width: 95, align: "right" },
+                {
+                  key: "status",
+                  label: "상태",
+                  width: 64,
+                  align: "center",
+                  render: () => <Badge variant="blue">신규</Badge>,
+                },
+                {
+                  key: "delete",
+                  label: "삭제",
+                  width: 60,
+                  align: "center",
+                  render: () => (
+                    <button
+                      type="button"
+                      aria-label="삭제"
+                      className="inline-flex size-6 items-center justify-center text-mes-gray-70"
+                    >
+                      <IconTrash size={16} />
+                    </button>
+                  ),
+                },
+              ]}
+              rows={[
+                {
+                  id: "wo-1",
+                  isNew: true,
+                  data: {
+                    shift: "주간",
+                    item: "죠스바",
+                    type: "완제품",
+                    manager: "윤대원",
+                    unit: "kg",
+                    packCount: "5",
+                    orderQty: "2,600 (+600)",
+                    producedQty: "3000",
+                  },
+                },
+                {
+                  id: "wo-2",
+                  data: {
+                    shift: "야간",
+                    item: "월드콘 뚜껑(소)",
+                    type: "완제품",
+                    manager: "신선미",
+                    unit: "kg",
+                    packCount: "5",
+                    orderQty: "3,000 (+3,000)",
+                    producedQty: "-",
+                  },
+                },
+                {
+                  id: "wo-3",
+                  data: {
+                    shift: "주간",
+                    item: "월드콘 뚜껑(대)",
+                    type: "완제품",
+                    manager: "신선미",
+                    unit: "kg",
+                    packCount: "5",
+                    orderQty: "3000",
+                    producedQty: "3,000",
+                  },
+                },
+                {
+                  id: "wo-4",
+                  data: {
+                    shift: "주간",
+                    item: "팥빙수",
+                    type: "완제품",
+                    manager: "신선미",
+                    unit: "kg",
+                    packCount: "5",
+                    orderQty: "3000",
+                    producedQty: "4,000",
+                  },
+                },
+              ]}
+            />
+          </div>
+        </div>
+      </CenterModal>
 
       {/* 2026-08-03 신규 — 담당자 요청: "더 작업이 필요한 것들의 구역을 미리 생성해 둬".
           아직 착수 안 한 티어3/4를 위한 자리만 미리 만들어둠(SIDEBAR_GROUPS의 "예정"
