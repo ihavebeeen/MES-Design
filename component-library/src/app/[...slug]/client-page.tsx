@@ -3295,38 +3295,31 @@ export default function Home() {
         </Sample>
       </Section>
 
-      {/* 2026-08-05 신규, 2026-08-05 재수정(사용자 지적 — "피그마 원본 디자인과 전혀
-          다르다") — Patterns(3층) 첫 항목 "리스트형 등록 모달". 재수정판은 고해상도
-          스크린샷(maxDimension 1000) + get_variable_defs로 개별 요소를 하나씩 다시
-          대조해서 아래 오류를 바로잡음:
-          1) "기본정보"/"품목등록"/"작업지시 정보" 제목에 옅은 회색 필(pill) 배경이
-             있는데 최초 구현은 이걸 통째로 빠뜨리고 일반 굵은 텍스트로만 그림 —
-             `PatternGroupHeader`(패턴2에서 이미 만든 헬퍼) 재사용으로 교체.
-          2) "설정" 버튼: get_variable_defs로 확인한 실제 배경색이 #E8F5FF(Primary-20)
-             인데 최초 구현은 흰 배경+파란 테두리(lineMain)를 썼음 — opacityMain(배경
-             Primary-20 그대로 일치)으로 교체.
-          3) "추가" 버튼: 저해상도 크롭에서 아이콘이 텍스트 위에 쌓인 것처럼 보여
-             flex-col로 재현했었는데, 큰 스크린샷으로 다시 보니 "↓ 추가"가 한 줄
-             가로 배치였음 — flex-col 오버라이드 제거, 아이콘 방향만 IconArrowLine
-             (기본은 왼쪽 화살표)을 -rotate-90으로 돌려서 아래 방향으로 맞춤.
-          4) 읽기전용으로 보이는 값 필드(입고예정일/불량유형/비가동유형/품목구분,
-             작업지시 등록의 품목구분/단위/규격/포장인원)가 최초 구현엔 전부 빈
-             placeholder였는데, 실제로는 옅은 회색 배경의 값-표시 필드였음 —
-             `readOnly` + Figma에 찍힌 실제 값(defaultValue)으로 교체.
-          5) "리스트 조회/선택" 버튼은 get_variable_defs로 흰 배경/Gray-30 테두리/
-             Gray-130 텍스트가 확인돼 기존 lineBlacktxt가 맞았음(변경 없음).
-          6) 작업지시 등록의 "설비/품목/담당기사/근무조"는 plain Input이 아니라
-             드롭다운 화살표가 있는 실제 Select였음 — `Select`/`SelectTrigger`/
-             `SelectContent`/`SelectItem`으로 교체. "지시일"은 우측에 캘린더
-             아이콘이 있어 `DatePicker`로 교체(다른 Section의 DatePicker 데모와
-             상태 공유하면 서로 영향을 주므로 `workOrderInspectionDate` 로컬 state
-             신규 추가).
-          7) 작업지시 리스트의 "상태" 컬럼이 최초엔 전부 "신규"(blue) 고정이었는데,
-             실제로는 행마다 다른 상태(작업중=blue/대기=grayFill/완료=텍스트만
-             있는 gray)였음 — 각 행에 `status` 필드를 추가해 행별로 다른 Badge
-             variant/텍스트를 렌더링하도록 수정.
-          8) 품목리스트 표 데이터를 Figma 원본 값 그대로(비비빅/완제품/A/4,000 두
-             줄 전부 동일)로 맞춤 — 이전엔 다양성을 준다고 죠스바로 임의로 바꿨었음.
+      {/* 2026-08-05 신규, 이후 사용자 지적 2회로 총 3판째 — Patterns(3층) 첫 항목
+          "리스트형 등록 모달".
+          1판(최초 구현) → 2판(1차 지적 "피그마 원본 디자인과 전혀 다르다" 반영,
+          고해상도 스크린샷+get_variable_defs로 재대조) → 3판(2차 지적 "분명 슬라이드
+          팝업이었는데 그것도 아니고, 추가 아이콘도 이상하고 섹션 나누는 것도 없다"
+          반영, 현재 버전). 3판에서 고친 것:
+          A) 담당자가 처음부터 이 두 프레임을 "슬라이드 팝업 1/2"라고 이름 붙여
+             줬는데(원 요청 메시지 참고), 화면 중앙 위치처럼 보인다는 내 판단으로
+             `CenterModal`을 썼던 게 틀렸음 — 담당자의 명명을 우선해 `SideSlidePanel`
+             (우측 고정 슬라이드 패널)로 교체.
+          B) "추가" 버튼 아이콘: 2판에서 IconArrowLine(선+화살촉 형태, "뒤로가기"류
+             아이콘)을 썼는데, 노드(19414:94212)를 다시 크게 캡처해보니 실제로는
+             가느다란 쉐브론 모양("<" 계열)이라 IconArrowLine보다 IconArrow(단순
+             꺾쇠 모양, 코드베이스에 이미 있음)가 훨씬 가까움 — IconArrow를
+             -rotate-90(왼쪽→아래)으로 교체.
+          C) metadata를 다시 보니 "기본정보" 프레임과 "품목등록+품목리스트"를 묶은
+             프레임(공정 등록), "기본정보" 프레임과 "작업지시 정보+작업지시 리스트"를
+             묶은 프레임(작업지시 등록) 사이에 각각 구분선이 있었음 — 최초엔 완전히
+             빠뜨렸던 부분. `border-t border-mes-gray-30` 한 줄씩 추가(모달당 정확히
+             1개, metadata상 위치와 일치).
+          2판에서 이미 고쳤던 것(3판에서도 유지): "기본정보"/"품목등록"/"작업지시
+          정보" 제목의 회색 필(pill) 배경(`PatternGroupHeader`), "설정" 버튼 색
+          (opacityMain), 읽기전용 값 필드(`readOnly`+실제값), 작업지시 등록의
+          설비/품목/담당기사/근무조 Select 전환, 지시일 DatePicker 전환, 상태 Badge
+          행별 매핑(작업중/대기/완료), 품목리스트 표 데이터 실제값 일치.
           여전히 판단값으로 남은 것: "설정" 버튼 아이콘(Figma "mes/icon-setting"이
           이 저장소엔 없어 lucide Settings 대체, 변경 없음), 지시일 캘린더 픽커의
           초기 날짜(Figma 예시 "2025-10-30" 그대로 사용). */}
@@ -3335,8 +3328,8 @@ export default function Home() {
           label="공정 등록"
           spec={[
             { label: "출처", value: "클라우드MES node 19414:94157" },
-            { label: "너비", value: "900px(기본 CenterModal 960px 오버라이드)" },
-            { label: "구성", value: "기본정보 폼 + 품목등록 폼 + 품목리스트 표" },
+            { label: "형태", value: "SideSlidePanel(우측 슬라이드), 900px(기본 960px 오버라이드)" },
+            { label: "구성", value: "기본정보 폼 + 구분선 + 품목등록 폼 + 품목리스트 표" },
           ]}
         >
           <Button size="basic" onClick={() => setProcessRegisterModalOpen(true)}>
@@ -3347,8 +3340,8 @@ export default function Home() {
           label="작업지시 등록"
           spec={[
             { label: "출처", value: "클라우드MES node 19098:64815" },
-            { label: "너비", value: "900px(기본 CenterModal 960px 오버라이드)" },
-            { label: "구성", value: "기본정보 폼 + 작업지시 정보 폼 + 작업지시 리스트 표" },
+            { label: "형태", value: "SideSlidePanel(우측 슬라이드), 900px(기본 960px 오버라이드)" },
+            { label: "구성", value: "기본정보 폼 + 구분선 + 작업지시 정보 폼 + 작업지시 리스트 표" },
           ]}
         >
           <Button size="basic" onClick={() => setWorkOrderRegisterModalOpen(true)}>
@@ -3357,7 +3350,7 @@ export default function Home() {
         </Sample>
       </Section>
 
-      <CenterModal
+      <SideSlidePanel
         open={processRegisterModalOpen}
         onOpenChange={setProcessRegisterModalOpen}
         title="공정 등록"
@@ -3403,6 +3396,13 @@ export default function Home() {
             </div>
           </div>
 
+          {/* 2026-08-05 재수정 — 사용자가 "섹션 나누는 게 없다"고 재지적. Figma metadata를
+              다시 보니 "기본정보" 프레임(y=52,h=196)과 "품목등록+품목리스트"를 묶은
+              프레임(y=248,h=640)이 이어져 있고 둘 사이에 이 구분선이 있었음 — 두 프레임
+              사이(기본정보 대 나머지 전체)에 딱 하나만 있고, 품목등록과 품목리스트 사이엔
+              없음(그 둘은 같은 프레임 안에 같이 있었음). */}
+          <div className="border-t border-mes-gray-30" />
+
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <PatternGroupHeader>품목등록</PatternGroupHeader>
@@ -3426,7 +3426,7 @@ export default function Home() {
               <Button
                 variant="fillMain"
                 size="small"
-                startIcon={<IconArrowLine size={16} className="-rotate-90" />}
+                startIcon={<IconArrow size={16} className="-rotate-90" />}
               >
                 추가
               </Button>
@@ -3473,9 +3473,9 @@ export default function Home() {
             />
           </div>
         </div>
-      </CenterModal>
+      </SideSlidePanel>
 
-      <CenterModal
+      <SideSlidePanel
         open={workOrderRegisterModalOpen}
         onOpenChange={setWorkOrderRegisterModalOpen}
         title="작업지시 등록"
@@ -3508,6 +3508,8 @@ export default function Home() {
               </PatternFieldRow>
             </div>
           </div>
+
+          <div className="border-t border-mes-gray-30" />
 
           <div className="flex flex-col gap-3">
             <PatternGroupHeader>작업지시 정보</PatternGroupHeader>
@@ -3565,7 +3567,7 @@ export default function Home() {
               <Button
                 variant="fillMain"
                 size="small"
-                startIcon={<IconArrowLine size={16} className="-rotate-90" />}
+                startIcon={<IconArrow size={16} className="-rotate-90" />}
               >
                 추가
               </Button>
@@ -3679,7 +3681,7 @@ export default function Home() {
             />
           </div>
         </div>
-      </CenterModal>
+      </SideSlidePanel>
 
       {/* 2026-08-05 신규 — Patterns(3층) 두 번째 항목 "검사 체크리스트 모달"(공정검사,
           Figma node 19414:93662, 760px 2단 레이아웃). 좌측 "대상정보"는 13개 필드 중
