@@ -1557,4 +1557,17 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
      이 블록이 아니라 바로 위 Components 배너였을 가능성이 높음).
   검증: `npx tsc --noEmit` 클린. 이번에도 로컬 dev 서버로 직접 화면 확인은 샌드박스
   제약상 못 함 — 담당자가 로컬에서 재확인 필요.
+- (2026-08-04, 65차) 64차가 실제로는 안 고쳐졌다는 스크린샷 리포트: "/components/date-
+  range-picker"(브레드크럼 Home > Components > 피커 > 기간)를 보고 있는데도 "Components"
+  배너와 "예정" 배너가 위에 같이 떠 있음. 64차에서 Foundation/Components 배너 2개는
+  고쳤다고 생각했는데, 실은 **세 번째 배너가 하나 더 있었음** — 61차("'작업 필요' 구역
+  사이드바/메인에 미리 생성")에 추가된, Components 목록 물리적 순서 중간(정확히는
+  `sticky-header-footer` 섹션 바로 앞)에 끼워져 있던 별도의 "예정" 배너
+  (`<Hammer>` 아이콘, `border-mes-gray-60`)를 완전히 놓치고 있었음 — 64차에서
+  `border-l-8` 배너를 찾을 때 Foundation/Components 2개만 찾고 grep으로 전체 재검증을
+  안 해서 발생한 실수. 이 배너에 `activeGroup === "components" && !activeId` 조건 추가
+  (맨 아래 upcoming-tier3/4 EmptyState 두 개와 동일 조건 — 원래 이 배너도 그 둘과
+  세트로 "Components 개요를 볼 때만" 보이는 게 맞음). 이번엔 `grep border-l-8`로 파일
+  전체를 다시 훑어서 배너가 정확히 3개(Foundation/Components/예정)뿐이고 셋 다 조건이
+  걸려 있는 것까지 확인. `npx tsc --noEmit` 클린.
 
