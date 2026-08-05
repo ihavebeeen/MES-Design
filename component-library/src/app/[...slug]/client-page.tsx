@@ -279,7 +279,7 @@ function PatternFieldRow({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="flex w-[100px] shrink-0 items-center gap-0.5 text-[14px] leading-[1.5] text-mes-gray-130">
+      <span className="flex w-[100px] shrink-0 items-center gap-[3px] text-[14px] leading-[1.5] text-mes-gray-130">
         {label}
         {required && <span className="text-mes-danger-60">*</span>}
       </span>
@@ -3395,34 +3395,34 @@ export default function Home() {
                 <Input className="flex-1" readOnly defaultValue="2025-04-01" />
               </PatternFieldRow>
               <PatternFieldRow label="불량유형">
-                <Input className="flex-1" defaultValue="4건" />
+                <Input className="flex-1 pr-1" defaultValue="4건" />
                 <Button
                   variant="opacityMain"
                   size="small"
-                  className="w-[65px]"
-                  startIcon={<Settings size={14} />}
+                  className="w-[65px] gap-2"
+                  startIcon={<Settings size={16} />}
                 >
                   설정
                 </Button>
               </PatternFieldRow>
               <PatternFieldRow label="비가동유형">
-                <Input className="flex-1" defaultValue="3건" />
+                <Input className="flex-1 pr-1" defaultValue="3건" />
                 <Button
                   variant="opacityMain"
                   size="small"
-                  className="w-[65px]"
-                  startIcon={<Settings size={14} />}
+                  className="w-[65px] gap-2"
+                  startIcon={<Settings size={16} />}
                 >
                   설정
                 </Button>
               </PatternFieldRow>
               <PatternFieldRow label="사용 여부" required>
                 <div className="flex items-center gap-4">
-                  <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
+                  <label className="flex items-center gap-1.5 text-[14px] leading-[1.5] text-mes-gray-130">
                     <Radio name="process-register-use" defaultChecked />
                     사용
                   </label>
-                  <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
+                  <label className="flex items-center gap-1.5 text-[14px] leading-[1.5] text-mes-gray-130">
                     <Radio name="process-register-use" />
                     미사용
                   </label>
@@ -3441,7 +3441,7 @@ export default function Home() {
                   <Button
                     variant="fillBlack"
                     size="small"
-                    className="h-7"
+                    className="h-7 gap-0.5"
                     endIcon={<IconArrow size={12} className="rotate-180" />}
                   >
                     리스트 조회/선택
@@ -3460,7 +3460,7 @@ export default function Home() {
                 variant="fillMain"
                 size="small"
                 className="absolute -bottom-4 left-1/2 w-[160px] -translate-x-1/2"
-                startIcon={<IconArrow size={16} className="-rotate-90" />}
+                startIcon={<IconArrowLine size={16} className="-rotate-90" />}
               >
                 추가
               </Button>
@@ -3490,7 +3490,7 @@ export default function Home() {
                 ].map((row, i) => (
                   <div
                     key={i}
-                    className="flex min-h-[30px] w-full items-center border-b border-mes-gray-30 last:border-b-0"
+                    className="flex min-h-[30px] w-full items-center border-b border-mes-gray-30"
                   >
                     <div className="flex flex-1 items-center justify-center p-[6px]">
                       <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.item}</span>
@@ -3613,7 +3613,7 @@ export default function Home() {
                 variant="fillMain"
                 size="small"
                 className="absolute -bottom-4 left-1/2 w-[160px] -translate-x-1/2"
-                startIcon={<IconArrow size={16} className="-rotate-90" />}
+                startIcon={<IconArrowLine size={16} className="-rotate-90" />}
               >
                 추가
               </Button>
@@ -3710,7 +3710,7 @@ export default function Home() {
                     {workOrderRows.map((row) => (
                       <div
                         key={row.id}
-                        className="flex min-h-[30px] w-max min-w-full items-center border-b border-mes-gray-30 last:border-b-0"
+                        className="flex min-h-[30px] w-max min-w-full items-center border-b border-mes-gray-30"
                       >
                         {workOrderColumns.map((col) => (
                           <div
