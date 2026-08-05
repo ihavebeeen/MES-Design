@@ -19,6 +19,7 @@ import {
   Hammer,
   LayoutTemplate,
   Settings,
+  Pencil,
 } from "lucide-react";
 import NextLink from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -283,6 +284,68 @@ function PatternFieldRow({
         {required && <span className="text-mes-danger-60">*</span>}
       </span>
       <div className="flex min-w-0 flex-1 items-center gap-2">{children}</div>
+    </div>
+  );
+}
+
+/**
+ * 2026-08-05 신규 — Patterns "검사 체크리스트 모달"(공정검사, node 19414:93662)의
+ * "대상정보"/"검사항목" 구획 제목. 스크린샷 확인 결과 패턴1의 border-l-4 텍스트형
+ * 제목과 달리 옅은 회색 필(pill) 배경 안에 제목이 들어가는 형태라 별도 헬퍼로 분리.
+ * 실측: 높이 28px(hug), 좌측 padding 10px, 배경 Gray-20, 텍스트 13px semibold Gray-130.
+ */
+function PatternGroupHeader({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex h-7 w-full items-center rounded-mes-control-sm bg-mes-gray-20 pl-2.5">
+      <span className="text-[13px] font-semibold leading-[1.5] text-mes-gray-130">{children}</span>
+    </div>
+  );
+}
+
+/**
+ * 2026-08-05 신규 — 검사 체크리스트 모달의 O/△/X/− 4단 토글 버튼 그룹(Pallet 상태,
+ * 표기사항, 포장상태, 상차밴딩 등 검사항목 행마다 반복). 아이콘은 이전 세션에서 이미
+ * 확인된 기존 아이콘(IconQaO/IconQaTriangle/IconQaX)을 재사용 — 이 패턴을 위해 새
+ * 아이콘을 만들지 않음. 실측(스크린샷 대조): 버튼 54x32px, gap 8px, 선택 시 배경
+ * Primary-60 채움+흰 아이콘, 미선택 시 흰 배경+Gray-30 테두리+옅은 아이콘(Gray-40
+ * 톤 — 정확한 hex는 벡터라 미실측, 판단값으로 text-mes-gray-40 사용).
+ */
+type QaToggleState = "o" | "triangle" | "x" | "dash";
+
+function QaToggleGroup({
+  value,
+  onChange,
+}: {
+  value: QaToggleState;
+  onChange: (next: QaToggleState) => void;
+}) {
+  const options: { key: QaToggleState; render: (selected: boolean) => React.ReactNode }[] = [
+    { key: "o", render: () => <IconQaO size={16} /> },
+    { key: "triangle", render: () => <IconQaTriangle size={16} /> },
+    { key: "x", render: () => <IconQaX size={16} /> },
+    { key: "dash", render: () => <span className="text-[16px] leading-none">-</span> },
+  ];
+  return (
+    <div className="flex items-center gap-2">
+      {options.map((opt) => {
+        const selected = value === opt.key;
+        return (
+          <button
+            key={opt.key}
+            type="button"
+            onClick={() => onChange(opt.key)}
+            aria-pressed={selected}
+            className={cn(
+              "flex h-8 w-[54px] shrink-0 items-center justify-center rounded-mes-control-sm border transition-colors",
+              selected
+                ? "border-mes-primary-60 bg-mes-bg-brand text-white"
+                : "border-mes-border-default bg-white text-mes-gray-40"
+            )}
+          >
+            {opt.render(selected)}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -1240,6 +1303,16 @@ export default function Home() {
   // defaultValue(비제어)로만 구성 — 실제 저장 로직 없는 정적 시연이 목적.
   const [processRegisterModalOpen, setProcessRegisterModalOpen] = useState(false);
   const [workOrderRegisterModalOpen, setWorkOrderRegisterModalOpen] = useState(false);
+  // 2026-08-05 신규 — Patterns "검사 체크리스트 모달"(공정검사). QaToggleGroup 4개 행의
+  // 선택 상태만 실제로 인터랙티브하게 관리(나머지 폼 필드는 다른 패턴과 동일하게
+  // defaultValue 비제어) — Figma 스크린샷 기준 4개 행 전부 기본값 "o"(합격 표시).
+  const [inspectionChecklistModalOpen, setInspectionChecklistModalOpen] = useState(false);
+  const [qaChecklist, setQaChecklist] = useState<Record<string, QaToggleState>>({
+    palletStatus: "o",
+    labelStatus: "o",
+    packagingStatus: "o",
+    bandingStatus: "o",
+  });
   const [sideSlidePanelOpen, setSideSlidePanelOpen] = useState(false);
   const [sidebarExpandedKey, setSidebarExpandedKey] = useState<string | undefined>(
     "mes-setting"
@@ -3523,6 +3596,152 @@ export default function Home() {
                 },
               ]}
             />
+          </div>
+        </div>
+      </CenterModal>
+
+      {/* 2026-08-05 신규 — Patterns(3층) 두 번째 항목 "검사 체크리스트 모달"(공정검사,
+          Figma node 19414:93662, 760px 2단 레이아웃). 좌측 "대상정보"는 13개 필드 중
+          검사일/검사시간/검사자/중량검사 4개만 필수(Figma에서 "*" 텍스트가 hidden=false로
+          켜져 있는 필드만 확인해서 반영 — 나머지 9개는 "*" 레이어 자체는 있지만
+          hidden=true라 화면엔 안 보임). 우측 "검사항목"은 이전 세션에 이미 확인해둔
+          IconQaO/IconQaTriangle/IconQaX 아이콘을 재사용한 4단 토글(QaToggleGroup)로 4개
+          행(Pallet 상태/표기사항/포장상태/상차밴딩) 구성 — 이 3개 아이콘 재사용이 애초에
+          이 패턴을 CenterModal 하나로 구현 가능하게 만든 근거였음(신규 아이콘 제작 불필요).
+          판단값: "입력" 버튼 아이콘(Figma "icon-pen", 저장소에 없음) → lucide-react
+          Pencil로 대체. QaToggleGroup 미선택 색상은 벡터라 정확한 hex 미실측(text-mes-gray-40
+          판단값). 날짜/시간/검사자 필드 옆 캘린더·화살표 아이콘은 장식용이라 생략
+          (Input 컴포넌트가 trailing icon을 지원하지 않아 이 패턴만을 위해 확장하지 않음). */}
+      <Section id="inspection-checklist-modal" title="검사 체크리스트 모달" titleEn="Inspection Checklist Modal">
+        <Sample
+          label="공정검사"
+          spec={[
+            { label: "출처", value: "클라우드MES node 19414:93662" },
+            { label: "너비", value: "760px(기본 CenterModal 960px 오버라이드)" },
+            { label: "구성", value: "대상정보 폼(좌 360px) + 검사항목 O/△/X/− 토글(우 400px)" },
+          ]}
+        >
+          <Button size="basic" onClick={() => setInspectionChecklistModalOpen(true)}>
+            공정검사 모달 열기
+          </Button>
+        </Sample>
+      </Section>
+
+      <CenterModal
+        open={inspectionChecklistModalOpen}
+        onOpenChange={setInspectionChecklistModalOpen}
+        title="공정검사"
+        className="max-w-[760px]"
+        confirmLabel="저장"
+        onCancel={() => setInspectionChecklistModalOpen(false)}
+        onConfirm={() => setInspectionChecklistModalOpen(false)}
+      >
+        <div className="flex w-full gap-5 pb-5">
+          <div className="flex w-[320px] shrink-0 flex-col gap-3">
+            <PatternGroupHeader>대상정보</PatternGroupHeader>
+            <div className="flex flex-col gap-3">
+              <PatternFieldRow label="생산일">
+                <Input className="flex-1" defaultValue="2024-10-30" />
+              </PatternFieldRow>
+              <PatternFieldRow label="작업자">
+                <Input className="flex-1" defaultValue="홍길동" />
+              </PatternFieldRow>
+              <PatternFieldRow label="설비">
+                <Input className="flex-1" defaultValue="A1" />
+              </PatternFieldRow>
+              <PatternFieldRow label="제품명">
+                <Input className="flex-1" defaultValue="더블비얀코" />
+              </PatternFieldRow>
+              <PatternFieldRow label="공정">
+                <Input className="flex-1" defaultValue="압출" />
+              </PatternFieldRow>
+              <PatternFieldRow label="검사일" required>
+                <Input className="flex-1" defaultValue="2025-10-30" />
+              </PatternFieldRow>
+              <PatternFieldRow label="검사시간" required>
+                <Input className="flex-1" defaultValue="14:45" />
+              </PatternFieldRow>
+              <PatternFieldRow label="검사자" required>
+                <Input className="flex-1" defaultValue="김아무개" />
+              </PatternFieldRow>
+              <PatternFieldRow label="Box-No">
+                <Input className="flex-1" defaultValue="150" />
+              </PatternFieldRow>
+              <PatternFieldRow label="실적입력시간">
+                <Input className="flex-1" placeholder="-- : --" />
+              </PatternFieldRow>
+              <PatternFieldRow label="Sheet-Lot">
+                <Input className="flex-1" placeholder="Sheet-Lot 입력" />
+              </PatternFieldRow>
+              <PatternFieldRow label="중량검사" required>
+                <Input className="flex-1" defaultValue="4" />
+                <Button variant="opacityMain" size="xsmall" startIcon={<Pencil size={14} />}>
+                  입력
+                </Button>
+              </PatternFieldRow>
+              <PatternFieldRow label="특이사항">
+                <Input className="flex-1" placeholder="특이사항 입력" />
+                <Button variant="opacityMain" size="xsmall" startIcon={<Pencil size={14} />}>
+                  입력
+                </Button>
+              </PatternFieldRow>
+              <PatternFieldRow label="결과">
+                <div className="flex items-center gap-4">
+                  <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
+                    <Radio name="inspection-result" defaultChecked />
+                    합격
+                  </label>
+                  <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
+                    <Radio name="inspection-result" />
+                    일부
+                  </label>
+                  <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
+                    <Radio name="inspection-result" />
+                    불합
+                  </label>
+                </div>
+              </PatternFieldRow>
+            </div>
+          </div>
+
+          <div className="flex w-[360px] shrink-0 flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <PatternGroupHeader>검사항목</PatternGroupHeader>
+              <Button
+                variant="fillBlack"
+                size="xsmall"
+                className="ml-2 shrink-0"
+                startIcon={<IconPlus size={14} />}
+              >
+                항목 추가
+              </Button>
+            </div>
+            <div className="flex flex-col gap-3">
+              <PatternFieldRow label="Pallet 상태">
+                <QaToggleGroup
+                  value={qaChecklist.palletStatus}
+                  onChange={(next) => setQaChecklist((prev) => ({ ...prev, palletStatus: next }))}
+                />
+              </PatternFieldRow>
+              <PatternFieldRow label="표기사항">
+                <QaToggleGroup
+                  value={qaChecklist.labelStatus}
+                  onChange={(next) => setQaChecklist((prev) => ({ ...prev, labelStatus: next }))}
+                />
+              </PatternFieldRow>
+              <PatternFieldRow label="포장상태">
+                <QaToggleGroup
+                  value={qaChecklist.packagingStatus}
+                  onChange={(next) => setQaChecklist((prev) => ({ ...prev, packagingStatus: next }))}
+                />
+              </PatternFieldRow>
+              <PatternFieldRow label="상차밴딩">
+                <QaToggleGroup
+                  value={qaChecklist.bandingStatus}
+                  onChange={(next) => setQaChecklist((prev) => ({ ...prev, bandingStatus: next }))}
+                />
+              </PatternFieldRow>
+            </div>
           </div>
         </div>
       </CenterModal>
