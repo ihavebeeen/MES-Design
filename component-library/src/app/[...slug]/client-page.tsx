@@ -289,15 +289,24 @@ function PatternFieldRow({
 }
 
 /**
- * 2026-08-05 신규 — Patterns "검사 체크리스트 모달"(공정검사, node 19414:93662)의
- * "대상정보"/"검사항목" 구획 제목. 스크린샷 확인 결과 패턴1의 border-l-4 텍스트형
- * 제목과 달리 옅은 회색 필(pill) 배경 안에 제목이 들어가는 형태라 별도 헬퍼로 분리.
- * 실측: 높이 28px(hug), 좌측 padding 10px, 배경 Gray-20, 텍스트 13px semibold Gray-130.
+ * 2026-08-05 신규, 2026-08-05 수정(사용자 재지적) — Patterns "리스트형 등록 모달"/
+ * "검사 체크리스트 모달"의 "기본정보"/"품목등록"/"대상정보"/"검사항목" 구획 제목.
+ * 옅은 회색 필(pill) 배경 안에 제목 텍스트가 들어가는 형태.
+ *
+ * 최초 구현은 `w-full`로 만들어서 형제 요소(버튼)와 flex 한 줄에 놓일 때 회색
+ * 배경이 버튼 앞까지 넓게 늘어나 보였음 — 실제 Figma 고해상도 스크린샷을 다시
+ * 대조해보니 "기본정보"/"대상정보"처럼 버튼이 없는 줄도, "품목등록"처럼 우측에
+ * 버튼(리스트 조회/선택)이 같이 있는 줄도, 회색 필은 항상 텍스트 길이에 딱 맞는
+ * hug-width였고 나머지 공간은 흰 배경 그대로였음. `w-full`→hug(`inline-flex`+
+ * `self-start`)로 수정.
+ * 실측: 높이 28px(hug), 좌우 padding 10px, 배경 Gray-20, 텍스트 13px semibold Gray-130.
  */
 function PatternGroupHeader({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-7 w-full items-center rounded-mes-control-sm bg-mes-gray-20 pl-2.5">
-      <span className="text-[13px] font-semibold leading-[1.5] text-mes-gray-130">{children}</span>
+    <div className="inline-flex h-7 w-fit shrink-0 items-center self-start rounded-mes-control-sm bg-mes-gray-20 px-2.5">
+      <span className="whitespace-nowrap text-[13px] font-semibold leading-[1.5] text-mes-gray-130">
+        {children}
+      </span>
     </div>
   );
 }
@@ -1303,6 +1312,13 @@ export default function Home() {
   // defaultValue(비제어)로만 구성 — 실제 저장 로직 없는 정적 시연이 목적.
   const [processRegisterModalOpen, setProcessRegisterModalOpen] = useState(false);
   const [workOrderRegisterModalOpen, setWorkOrderRegisterModalOpen] = useState(false);
+  // 2026-08-05 수정 — 작업지시 등록 모달의 "지시일" 필드가 원래는 plain Input이었는데,
+  // Figma 스크린샷 재대조 결과 우측에 캘린더 아이콘이 있는 실제 DatePicker 트리거였음
+  // (사용자가 "피그마 원본과 전혀 다르다"고 지적한 항목 중 하나) — 기존 DatePicker
+  // 컴포넌트 데모(다른 Section)와 상태를 공유하면 서로 영향을 주므로 로컬로 분리.
+  const [workOrderInspectionDate, setWorkOrderInspectionDate] = useState<Date | null>(
+    new Date(2025, 9, 30)
+  );
   // 2026-08-05 신규 — Patterns "검사 체크리스트 모달"(공정검사). QaToggleGroup 4개 행의
   // 선택 상태만 실제로 인터랙티브하게 관리(나머지 폼 필드는 다른 패턴과 동일하게
   // defaultValue 비제어) — Figma 스크린샷 기준 4개 행 전부 기본값 "o"(합격 표시).
@@ -3279,30 +3295,41 @@ export default function Home() {
         </Sample>
       </Section>
 
-      {/* 2026-08-05 신규 — Patterns(3층) 첫 항목 "리스트형 등록 모달". 담당자가 클라우드MES
-          Figma 파일(F4n5Zr04PAbiRjfIFQAo6v)에서 직접 골라준 2개 프레임을 CenterModal +
-          기존 컴포넌트(Input, Button, Radio, Table, SearchInput, Badge)로 구성:
-          - "공정 등록"(node 19414:94157, 900px 모달): 기본정보(공정명(필수), 입고예정일,
-            불량유형+설정, 비가동유형+설정, 사용여부 라디오) + 품목등록(리스트 조회/선택
-            버튼, 품목(필수), 품목구분, 추가 버튼) + 품목리스트 표.
-          - "작업지시 등록"(node 19098:64815, 900px 모달): 기본정보(설비(필수), 지시일
-            (필수)) + 작업지시 정보(품목(필수), 품목구분, 담당기사(필수), 단위, 규격,
-            근무조(필수), 포장인원, 지시수량(필수), 2열x4행) + 추가 버튼 + 작업지시 리스트
-            표(상태 컬럼은 기존 Badge 재사용 — 같은 파일의 "상태 뱃지 NEW" 컴포넌트와
-            출처가 동일).
-          판단값(Figma에 없거나 벡터라 직접 못 뽑은 값):
-          - "설정" 버튼 아이콘: Figma엔 "mes/icon-setting"이 있지만 이 저장소 아이콘
-            세트엔 없음(icon-setting.tsx 없음) — lucide-react Settings로 대체.
-          - "추가" 버튼: 스크린샷 확인 결과 아이콘(아래 방향 화살표)이 텍스트 위에
-            쌓이는 특이한 레이아웃이라, 기존 Button의 좌우 아이콘 슬롯 대신
-            className로 flex-col 오버라이드해서 재현(새 variant는 만들지 않음).
-          - "리스트 조회/선택" 버튼: 아웃라인 없이 진한 남색 텍스트, 우측 화살표로
-            보여서 lineBlacktxt를 그대로 쓰되 시각적 판단으로 골랐음(정확한 variant명
-            metadata엔 없음).
-          - 상태 Badge 텍스트: Figma가 컴포넌트 인스턴스만 참조해서 실제 표시 텍스트를
-            못 뽑았음 — "신규"로 판단해 채움.
-          - 품목, 작업지시 리스트의 예시 데이터는 Figma 목업에 있던 값 중 일부를 그대로
-            가져왔고(비비빅, 죠스바 등), 나머지는 표 구조를 보여주기 위한 대표 예시. */}
+      {/* 2026-08-05 신규, 2026-08-05 재수정(사용자 지적 — "피그마 원본 디자인과 전혀
+          다르다") — Patterns(3층) 첫 항목 "리스트형 등록 모달". 재수정판은 고해상도
+          스크린샷(maxDimension 1000) + get_variable_defs로 개별 요소를 하나씩 다시
+          대조해서 아래 오류를 바로잡음:
+          1) "기본정보"/"품목등록"/"작업지시 정보" 제목에 옅은 회색 필(pill) 배경이
+             있는데 최초 구현은 이걸 통째로 빠뜨리고 일반 굵은 텍스트로만 그림 —
+             `PatternGroupHeader`(패턴2에서 이미 만든 헬퍼) 재사용으로 교체.
+          2) "설정" 버튼: get_variable_defs로 확인한 실제 배경색이 #E8F5FF(Primary-20)
+             인데 최초 구현은 흰 배경+파란 테두리(lineMain)를 썼음 — opacityMain(배경
+             Primary-20 그대로 일치)으로 교체.
+          3) "추가" 버튼: 저해상도 크롭에서 아이콘이 텍스트 위에 쌓인 것처럼 보여
+             flex-col로 재현했었는데, 큰 스크린샷으로 다시 보니 "↓ 추가"가 한 줄
+             가로 배치였음 — flex-col 오버라이드 제거, 아이콘 방향만 IconArrowLine
+             (기본은 왼쪽 화살표)을 -rotate-90으로 돌려서 아래 방향으로 맞춤.
+          4) 읽기전용으로 보이는 값 필드(입고예정일/불량유형/비가동유형/품목구분,
+             작업지시 등록의 품목구분/단위/규격/포장인원)가 최초 구현엔 전부 빈
+             placeholder였는데, 실제로는 옅은 회색 배경의 값-표시 필드였음 —
+             `readOnly` + Figma에 찍힌 실제 값(defaultValue)으로 교체.
+          5) "리스트 조회/선택" 버튼은 get_variable_defs로 흰 배경/Gray-30 테두리/
+             Gray-130 텍스트가 확인돼 기존 lineBlacktxt가 맞았음(변경 없음).
+          6) 작업지시 등록의 "설비/품목/담당기사/근무조"는 plain Input이 아니라
+             드롭다운 화살표가 있는 실제 Select였음 — `Select`/`SelectTrigger`/
+             `SelectContent`/`SelectItem`으로 교체. "지시일"은 우측에 캘린더
+             아이콘이 있어 `DatePicker`로 교체(다른 Section의 DatePicker 데모와
+             상태 공유하면 서로 영향을 주므로 `workOrderInspectionDate` 로컬 state
+             신규 추가).
+          7) 작업지시 리스트의 "상태" 컬럼이 최초엔 전부 "신규"(blue) 고정이었는데,
+             실제로는 행마다 다른 상태(작업중=blue/대기=grayFill/완료=텍스트만
+             있는 gray)였음 — 각 행에 `status` 필드를 추가해 행별로 다른 Badge
+             variant/텍스트를 렌더링하도록 수정.
+          8) 품목리스트 표 데이터를 Figma 원본 값 그대로(비비빅/완제품/A/4,000 두
+             줄 전부 동일)로 맞춤 — 이전엔 다양성을 준다고 죠스바로 임의로 바꿨었음.
+          여전히 판단값으로 남은 것: "설정" 버튼 아이콘(Figma "mes/icon-setting"이
+          이 저장소엔 없어 lucide Settings 대체, 변경 없음), 지시일 캘린더 픽커의
+          초기 날짜(Figma 예시 "2025-10-30" 그대로 사용). */}
       <Section id="list-registration-modal" title="리스트형 등록 모달" titleEn="List Registration Modal">
         <Sample
           label="공정 등록"
@@ -3341,23 +3368,23 @@ export default function Home() {
       >
         <div className="flex w-full flex-col gap-6 pb-5">
           <div className="flex flex-col gap-3">
-            <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">기본정보</h3>
+            <PatternGroupHeader>기본정보</PatternGroupHeader>
             <div className="grid grid-cols-2 gap-x-6 gap-y-3">
               <PatternFieldRow label="공정명" required>
-                <Input className="flex-1" placeholder="공정명 입력" />
+                <Input className="flex-1" placeholder="내용 입력" />
               </PatternFieldRow>
               <PatternFieldRow label="입고예정일">
-                <Input className="flex-1" placeholder="YYYY-MM-DD" />
+                <Input className="flex-1" readOnly defaultValue="2025-04-01" />
               </PatternFieldRow>
               <PatternFieldRow label="불량유형">
-                <Input className="flex-1" placeholder="불량유형 선택" />
-                <Button variant="lineMain" size="xsmall" startIcon={<Settings size={14} />}>
+                <Input className="flex-1" readOnly defaultValue="4건" />
+                <Button variant="opacityMain" size="xsmall" startIcon={<Settings size={14} />}>
                   설정
                 </Button>
               </PatternFieldRow>
               <PatternFieldRow label="비가동유형">
-                <Input className="flex-1" placeholder="비가동유형 선택" />
-                <Button variant="lineMain" size="xsmall" startIcon={<Settings size={14} />}>
+                <Input className="flex-1" readOnly defaultValue="3건" />
+                <Button variant="opacityMain" size="xsmall" startIcon={<Settings size={14} />}>
                   설정
                 </Button>
               </PatternFieldRow>
@@ -3378,7 +3405,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">품목등록</h3>
+              <PatternGroupHeader>품목등록</PatternGroupHeader>
               <Button
                 variant="lineBlacktxt"
                 size="xsmall"
@@ -3389,18 +3416,17 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 gap-x-6 gap-y-3">
               <PatternFieldRow label="품목" required>
-                <Input className="flex-1" placeholder="품목 선택" />
+                <Input className="flex-1" defaultValue="비비빅" />
               </PatternFieldRow>
               <PatternFieldRow label="품목구분">
-                <Input className="flex-1" placeholder="품목구분" />
+                <Input className="flex-1" readOnly defaultValue="완제품" />
               </PatternFieldRow>
             </div>
             <div className="flex justify-center pt-1">
               <Button
                 variant="fillMain"
                 size="small"
-                className="h-auto flex-col gap-0.5 py-1.5"
-                startIcon={<IconArrowLine size={16} />}
+                startIcon={<IconArrowLine size={16} className="-rotate-90" />}
               >
                 추가
               </Button>
@@ -3441,7 +3467,7 @@ export default function Home() {
                 },
                 {
                   id: "item-2",
-                  data: { item: "죠스바", type: "완제품", spec: "A", unit: "3,000" },
+                  data: { item: "비비빅", type: "완제품", spec: "A", unit: "4,000" },
                 },
               ]}
             />
@@ -3460,51 +3486,86 @@ export default function Home() {
       >
         <div className="flex w-full flex-col gap-6 pb-5">
           <div className="flex flex-col gap-3">
-            <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">기본정보</h3>
+            <PatternGroupHeader>기본정보</PatternGroupHeader>
             <div className="grid grid-cols-2 gap-x-6 gap-y-3">
               <PatternFieldRow label="설비" required>
-                <Input className="flex-1" placeholder="설비 선택" />
+                <Select>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="선택" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="eq-1">성형기 1호</SelectItem>
+                    <SelectItem value="eq-2">성형기 2호</SelectItem>
+                  </SelectContent>
+                </Select>
               </PatternFieldRow>
               <PatternFieldRow label="지시일" required>
-                <Input className="flex-1" placeholder="YYYY-MM-DD" />
+                <DatePicker
+                  value={workOrderInspectionDate}
+                  onValueChange={setWorkOrderInspectionDate}
+                  className="flex-1"
+                />
               </PatternFieldRow>
             </div>
           </div>
 
           <div className="flex flex-col gap-3">
-            <h3 className="text-[14px] font-bold leading-[1.5] text-mes-gray-130">작업지시 정보</h3>
+            <PatternGroupHeader>작업지시 정보</PatternGroupHeader>
             <div className="grid grid-cols-2 gap-x-6 gap-y-3">
               <PatternFieldRow label="품목" required>
-                <Input className="flex-1" placeholder="품목 선택" />
+                <Select>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="선택" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="item-1">죠스바</SelectItem>
+                    <SelectItem value="item-2">월드콘 뚜껑(소)</SelectItem>
+                  </SelectContent>
+                </Select>
               </PatternFieldRow>
               <PatternFieldRow label="품목구분">
-                <Input className="flex-1" placeholder="품목구분" />
+                <Input className="flex-1" readOnly defaultValue="완제품" />
               </PatternFieldRow>
               <PatternFieldRow label="담당기사" required>
-                <Input className="flex-1" placeholder="담당기사 선택" />
+                <Select>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="선택" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="mgr-1">윤대원</SelectItem>
+                    <SelectItem value="mgr-2">신선미</SelectItem>
+                  </SelectContent>
+                </Select>
               </PatternFieldRow>
               <PatternFieldRow label="단위">
-                <Input className="flex-1" placeholder="단위" />
+                <Input className="flex-1" readOnly defaultValue="EA" />
               </PatternFieldRow>
               <PatternFieldRow label="근무조" required>
-                <Input className="flex-1" placeholder="근무조 선택" />
+                <Select>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="선택" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="shift-day">주간</SelectItem>
+                    <SelectItem value="shift-night">야간</SelectItem>
+                  </SelectContent>
+                </Select>
               </PatternFieldRow>
               <PatternFieldRow label="규격">
-                <Input className="flex-1" placeholder="규격" />
+                <Input className="flex-1" readOnly defaultValue="아사노" />
               </PatternFieldRow>
               <PatternFieldRow label="지시수량" required>
-                <Input className="flex-1" placeholder="0" />
+                <Input className="flex-1" defaultValue="1,000" />
               </PatternFieldRow>
               <PatternFieldRow label="포장인원">
-                <Input className="flex-1" placeholder="0" />
+                <Input className="flex-1" readOnly placeholder="" />
               </PatternFieldRow>
             </div>
             <div className="flex justify-center pt-1">
               <Button
                 variant="fillMain"
                 size="small"
-                className="h-auto flex-col gap-0.5 py-1.5"
-                startIcon={<IconArrowLine size={16} />}
+                startIcon={<IconArrowLine size={16} className="-rotate-90" />}
               >
                 추가
               </Button>
@@ -3531,7 +3592,14 @@ export default function Home() {
                   label: "상태",
                   width: 64,
                   align: "center",
-                  render: () => <Badge variant="blue">신규</Badge>,
+                  render: (row) =>
+                    row.status === "작업중" ? (
+                      <Badge variant="blue">작업중</Badge>
+                    ) : row.status === "대기" ? (
+                      <Badge variant="grayFill">대기</Badge>
+                    ) : (
+                      <Badge variant="gray">완료</Badge>
+                    ),
                 },
                 {
                   key: "delete",
@@ -3562,6 +3630,7 @@ export default function Home() {
                     packCount: "5",
                     orderQty: "2,600 (+600)",
                     producedQty: "3000",
+                    status: "작업중",
                   },
                 },
                 {
@@ -3575,6 +3644,7 @@ export default function Home() {
                     packCount: "5",
                     orderQty: "3,000 (+3,000)",
                     producedQty: "-",
+                    status: "대기",
                   },
                 },
                 {
@@ -3588,6 +3658,7 @@ export default function Home() {
                     packCount: "5",
                     orderQty: "3000",
                     producedQty: "3,000",
+                    status: "완료",
                   },
                 },
                 {
@@ -3601,6 +3672,7 @@ export default function Home() {
                     packCount: "5",
                     orderQty: "3000",
                     producedQty: "4,000",
+                    status: "완료",
                   },
                 },
               ]}
