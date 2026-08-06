@@ -309,7 +309,7 @@ function PatternFieldRow({
  */
 function PatternGroupHeader({ children }: { children: React.ReactNode }) {
   return (
-    <div className="inline-flex h-7 w-fit shrink-0 items-center self-start rounded-mes-control-sm bg-mes-gray-30 px-2.5">
+    <div className="inline-flex h-7 w-fit shrink-0 items-center self-start rounded-mes-control bg-mes-gray-30 px-2.5">
       <span className="whitespace-nowrap text-[13px] font-semibold leading-[1.5] text-mes-gray-130">
         {children}
       </span>
@@ -3354,7 +3354,7 @@ export default function Home() {
           label="공정 등록"
           spec={[
             { label: "출처", value: "클라우드MES node 19414:94157 (get_design_context 직접 확인)" },
-            { label: "형태", value: "SideSlidePanel(우측 고정, radius 없음), 기본 960px" },
+            { label: "형태", value: "SideSlidePanel(우측 고정, radius 없음), 948px(get_screenshot 실측, 기본 960px 오버라이드)" },
             { label: "구성", value: "기본정보 폼 + 회색 카드(품목등록 폼) + 품목 리스트 표" },
           ]}
         >
@@ -3366,7 +3366,7 @@ export default function Home() {
           label="작업지시 등록"
           spec={[
             { label: "출처", value: "클라우드MES node 19098:64815 (get_design_context 직접 확인)" },
-            { label: "형태", value: "SideSlidePanel(우측 고정, radius 없음), 기본 960px" },
+            { label: "형태", value: "SideSlidePanel(우측 고정, radius 없음), 948px(get_screenshot 실측, 기본 960px 오버라이드)" },
             { label: "구성", value: "기본정보 폼 + 회색 카드(작업지시 정보 폼) + 작업지시 리스트 표" },
           ]}
         >
@@ -3380,6 +3380,7 @@ export default function Home() {
         open={processRegisterModalOpen}
         onOpenChange={setProcessRegisterModalOpen}
         title="공정 등록"
+        className="max-w-[948px]"
         confirmLabel="등록"
         onCancel={() => setProcessRegisterModalOpen(false)}
         onConfirm={() => setProcessRegisterModalOpen(false)}
@@ -3525,6 +3526,7 @@ export default function Home() {
         open={workOrderRegisterModalOpen}
         onOpenChange={setWorkOrderRegisterModalOpen}
         title="작업지시 등록"
+        className="max-w-[948px]"
         confirmLabel="등록"
         onCancel={() => setWorkOrderRegisterModalOpen(false)}
         onConfirm={() => setWorkOrderRegisterModalOpen(false)}
