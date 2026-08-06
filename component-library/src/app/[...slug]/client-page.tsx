@@ -1335,15 +1335,20 @@ export default function Home() {
   const [workOrderInspectionDate, setWorkOrderInspectionDate] = useState<Date | null>(
     new Date(2025, 9, 30)
   );
-  // 2026-08-05 신규 — Patterns "검사 체크리스트 모달"(공정검사). QaToggleGroup 4개 행의
-  // 선택 상태만 실제로 인터랙티브하게 관리(나머지 폼 필드는 다른 패턴과 동일하게
-  // defaultValue 비제어) — Figma 스크린샷 기준 4개 행 전부 기본값 "o"(합격 표시).
+  // 2026-08-06 재구성 — 담당자가 "우측에서 나오는 슬라이드팝업인데 중앙 모달로
+  // 나온다"고 지적, Figma node 19339:96268("입고검사")을 새 기준으로 제시받음.
+  // 이전 node(19414:93662, "공정검사")는 폐기 — 필드셋 자체가 다름(대상정보 13개
+  // 필드 전부 이 새 노드 기준으로 교체). QaToggleGroup은 4개 행의 선택 상태만
+  // 실제로 인터랙티브하게 관리 — Figma 기준 4개 행 전부 기본값 "o"(합격 표시).
   const [inspectionChecklistModalOpen, setInspectionChecklistModalOpen] = useState(false);
+  const [inspectionCheckDate, setInspectionCheckDate] = useState<Date | null>(
+    new Date(2025, 3, 1)
+  );
   const [qaChecklist, setQaChecklist] = useState<Record<string, QaToggleState>>({
-    palletStatus: "o",
-    labelStatus: "o",
-    packagingStatus: "o",
-    bandingStatus: "o",
+    specStatus: "o",
+    colorStatus: "o",
+    certStatus: "o",
+    vehicleCleanStatus: "o",
   });
   // 2026-08-05 신규 — Patterns "그룹화 리스트 관리 화면"(메인 리스트) 미리보기 전용
   // 사이드바 접힘 상태. 사이드바 컴포넌트 자체 데모 섹션의 `sidebarCollapsed`와 상태를
@@ -3971,151 +3976,194 @@ export default function Home() {
         </div>
       </SideSlidePanel>
 
-      {/* 2026-08-05 신규 — Patterns(3층) 두 번째 항목 "검사 체크리스트 모달"(공정검사,
-          Figma node 19414:93662, 760px 2단 레이아웃). 좌측 "대상정보"는 13개 필드 중
-          검사일/검사시간/검사자/중량검사 4개만 필수(Figma에서 "*" 텍스트가 hidden=false로
-          켜져 있는 필드만 확인해서 반영 — 나머지 9개는 "*" 레이어 자체는 있지만
-          hidden=true라 화면엔 안 보임). 우측 "검사항목"은 이전 세션에 이미 확인해둔
-          IconQaO/IconQaTriangle/IconQaX 아이콘을 재사용한 4단 토글(QaToggleGroup)로 4개
-          행(Pallet 상태/표기사항/포장상태/상차밴딩) 구성 — 이 3개 아이콘 재사용이 애초에
-          이 패턴을 CenterModal 하나로 구현 가능하게 만든 근거였음(신규 아이콘 제작 불필요).
-          판단값: "입력" 버튼 아이콘(Figma "icon-pen", 저장소에 없음) → lucide-react
-          Pencil로 대체. QaToggleGroup 미선택 색상은 벡터라 정확한 hex 미실측(text-mes-gray-40
-          판단값). 날짜/시간/검사자 필드 옆 캘린더·화살표 아이콘은 장식용이라 생략
-          (Input 컴포넌트가 trailing icon을 지원하지 않아 이 패턴만을 위해 확장하지 않음). */}
+      {/* 2026-08-06 전면 재구성 — 담당자 직접 지적: "검사 체크리스트도 우측에서 나오는
+          슬라이드팝업인데 지금 걍 중앙 모달로 나오고있고" + 새 Figma 링크
+          (node 19339:96268, "입고검사") 제시. 이전 node(19414:93662, "공정검사")는
+          get_design_context로 재조회한 적이 없었고, 이번에 새 node를 직접 조회해보니
+          modal 루트에 radius 클래스가 전혀 없음(다른 두 리스트형 등록 모달과 동일한
+          신호) — CenterModal이 아니라 SideSlidePanel이 맞다는 게 이번에도 확인됨.
+          필드셋 자체도 이전 node와 완전히 다름(예전"대상정보"는 생산일/작업자/설비 등
+          공정검사용 13필드였는데, 새 node의 "대상정보"는 상태/입고일자/거래처명/품목 등
+          입고검사용 13필드) — 재사용 가능한 부분(PatternGroupHeader/QaToggleGroup/결과
+          라디오 3종)만 남기고 필드 내용 전체를 새 node 기준으로 다시 씀.
+          너비: get_screenshot(19339:96268)의 original_width=808px을 그대로 채택(다른 두
+          모달의 948px과 같은 방식 — 텍스트 설명이 아니라 프레임 실측값).
+          레이아웃: 좌측 "대상정보"(w-360px, border-r, 필수(*) 표시 없음 — 새 node엔
+          "*" 레이어 자체가 안 보임, 이전 node의 4개 필수 판단은 이 node엔 적용 안 됨),
+          우측 "검사항목"(flex-1) 둘 다 자체 p-[20px]를 갖고 h-full로 서로 맞닿는 구조라,
+          SideSlidePanel 콘텐츠 래퍼의 고정 px-5 pt-5를 음수 마진으로 상쇄해서 두 컬럼이
+          모달 안쪽 경계에 정확히 맞닿게 함(다른 두 모달처럼 안쪽에 다시 패딩을 감싸면
+          border-r 구분선이 위쪽/양옆 20px씩 짧아져서 Figma와 안 맞음).
+          검사일=DatePicker(캘린더 아이콘 있음), 검사자=Select(화살표 아이콘 있음,
+          "김아무개" 선택된 상태로 실측) — 둘 다 리터럴 마크업에 해당 아이콘이 보여서
+          이전 node에서 "장식용이라 생략"했던 판단을 이번엔 적용하지 않음. 포장상태 행만
+          숫자 입력+범위 텍스트(판정 기준값, 그대로 전사) 조합이고 규격/색상/성적서/
+          차량청결 4개 행은 QaToggleGroup 재사용(기존 컴포넌트 크기 54x32px, gap 8px가
+          이 node의 버튼 4개+간격3개=w-240px와 정확히 일치해서 컴포넌트 자체는 안 고침). */}
       <Section id="inspection-checklist-modal" title="검사 체크리스트 모달" titleEn="Inspection Checklist Modal">
         <Sample
-          label="공정검사"
+          label="입고검사"
           spec={[
-            { label: "출처", value: "클라우드MES node 19414:93662" },
-            { label: "너비", value: "760px(기본 CenterModal 960px 오버라이드)" },
-            { label: "구성", value: "대상정보 폼(좌 360px) + 검사항목 O/△/X/− 토글(우 400px)" },
+            { label: "출처", value: "클라우드MES node 19339:96268" },
+            { label: "형태", value: "SideSlidePanel(우측 슬라이드), 너비 808px" },
+            { label: "구성", value: "대상정보 폼(좌 360px, border-r) + 검사항목 숫자/O·△·X·− 토글(우 flex-1)" },
           ]}
         >
           <Button size="basic" onClick={() => setInspectionChecklistModalOpen(true)}>
-            공정검사 모달 열기
+            입고검사 모달 열기
           </Button>
         </Sample>
       </Section>
 
-      <CenterModal
+      <SideSlidePanel
         open={inspectionChecklistModalOpen}
         onOpenChange={setInspectionChecklistModalOpen}
-        title="공정검사"
-        className="max-w-[760px]"
-        confirmLabel="저장"
+        title="입고검사"
+        className="max-w-[808px]"
         onCancel={() => setInspectionChecklistModalOpen(false)}
         onConfirm={() => setInspectionChecklistModalOpen(false)}
       >
-        <div className="flex w-full gap-5 pb-5">
-          <div className="flex w-[320px] shrink-0 flex-col gap-3">
-            <PatternGroupHeader>대상정보</PatternGroupHeader>
-            <div className="flex flex-col gap-3">
-              <PatternFieldRow label="생산일">
-                <Input className="flex-1" defaultValue="2024-10-30" />
-              </PatternFieldRow>
-              <PatternFieldRow label="작업자">
-                <Input className="flex-1" defaultValue="홍길동" />
-              </PatternFieldRow>
-              <PatternFieldRow label="설비">
-                <Input className="flex-1" defaultValue="A1" />
-              </PatternFieldRow>
-              <PatternFieldRow label="제품명">
-                <Input className="flex-1" defaultValue="더블비얀코" />
-              </PatternFieldRow>
-              <PatternFieldRow label="공정">
-                <Input className="flex-1" defaultValue="압출" />
-              </PatternFieldRow>
-              <PatternFieldRow label="검사일" required>
-                <Input className="flex-1" defaultValue="2025-10-30" />
-              </PatternFieldRow>
-              <PatternFieldRow label="검사시간" required>
-                <Input className="flex-1" defaultValue="14:45" />
-              </PatternFieldRow>
-              <PatternFieldRow label="검사자" required>
-                <Input className="flex-1" defaultValue="김아무개" />
-              </PatternFieldRow>
-              <PatternFieldRow label="Box-No">
-                <Input className="flex-1" defaultValue="150" />
-              </PatternFieldRow>
-              <PatternFieldRow label="실적입력시간">
-                <Input className="flex-1" placeholder="-- : --" />
-              </PatternFieldRow>
-              <PatternFieldRow label="Sheet-Lot">
-                <Input className="flex-1" placeholder="Sheet-Lot 입력" />
-              </PatternFieldRow>
-              <PatternFieldRow label="중량검사" required>
-                <Input className="flex-1" defaultValue="4" />
-                <Button variant="opacityMain" size="xsmall" startIcon={<Pencil size={14} />}>
-                  입력
-                </Button>
-              </PatternFieldRow>
-              <PatternFieldRow label="특이사항">
-                <Input className="flex-1" placeholder="특이사항 입력" />
-                <Button variant="opacityMain" size="xsmall" startIcon={<Pencil size={14} />}>
-                  입력
-                </Button>
-              </PatternFieldRow>
-              <PatternFieldRow label="결과">
-                <div className="flex items-center gap-4">
-                  <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
-                    <Radio name="inspection-result" defaultChecked />
-                    합격
-                  </label>
-                  <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
-                    <Radio name="inspection-result" />
-                    일부
-                  </label>
-                  <label className="flex items-center gap-1 text-[14px] leading-[1.5] text-mes-gray-130">
-                    <Radio name="inspection-result" />
-                    불합
-                  </label>
-                </div>
-              </PatternFieldRow>
+        <div className="-mx-5 -mt-5 flex min-h-0 w-[calc(100%+40px)] flex-1">
+          <div className="flex h-full w-[360px] shrink-0 flex-col border-r border-mes-gray-30 p-5">
+            <div className="flex min-h-0 flex-1 flex-col gap-3">
+              <PatternGroupHeader>대상정보</PatternGroupHeader>
+              <div className="flex min-h-0 flex-1 flex-col gap-4">
+                <PatternFieldRow label="상태">
+                  <Input className="flex-1" readOnly defaultValue="검사대기" />
+                </PatternFieldRow>
+                <PatternFieldRow label="입고일자">
+                  <Input className="flex-1" readOnly defaultValue="2025-04-01" />
+                </PatternFieldRow>
+                <PatternFieldRow label="거래처명">
+                  <Input className="flex-1" readOnly defaultValue="유호스트" />
+                </PatternFieldRow>
+                <PatternFieldRow label="품목">
+                  <Input className="flex-1" readOnly defaultValue="더블비얀코" />
+                </PatternFieldRow>
+                <PatternFieldRow label="품목구분">
+                  <Input className="flex-1" readOnly defaultValue="완제품" />
+                </PatternFieldRow>
+                <PatternFieldRow label="규격">
+                  <Input className="flex-1" readOnly defaultValue="A" />
+                </PatternFieldRow>
+                <PatternFieldRow label="단위">
+                  <Input className="flex-1" readOnly defaultValue="kg" />
+                </PatternFieldRow>
+                <PatternFieldRow label="입고량">
+                  <Input className="flex-1" readOnly defaultValue="3,000" />
+                </PatternFieldRow>
+                <PatternFieldRow label="Lot-No">
+                  <Input className="flex-1" readOnly defaultValue="A0401-123-123" />
+                </PatternFieldRow>
+                <PatternFieldRow label="공급사 Lot">
+                  <Input className="flex-1" placeholder="내용 입력" />
+                </PatternFieldRow>
+                <PatternFieldRow label="검사일">
+                  <DatePicker
+                    value={inspectionCheckDate}
+                    onValueChange={setInspectionCheckDate}
+                    className="flex-1"
+                  />
+                </PatternFieldRow>
+                <PatternFieldRow label="검사자">
+                  <Select defaultValue="insp-1">
+                    <SelectTrigger className="flex-1">
+                      <SelectValue placeholder="검사자 선택" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="insp-1">김아무개</SelectItem>
+                      <SelectItem value="insp-2">이수민</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </PatternFieldRow>
+                <PatternFieldRow label="결과">
+                  <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-1.5 text-[14px] font-medium leading-[1.5] text-mes-gray-130">
+                      <Radio name="inspection-result" defaultChecked />
+                      합격
+                    </label>
+                    <label className="flex items-center gap-1.5 text-[14px] leading-[1.5] text-mes-gray-80">
+                      <Radio name="inspection-result" />
+                      일부
+                    </label>
+                    <label className="flex items-center gap-1.5 text-[14px] leading-[1.5] text-mes-gray-80">
+                      <Radio name="inspection-result" />
+                      불합
+                    </label>
+                  </div>
+                </PatternFieldRow>
+              </div>
             </div>
           </div>
 
-          <div className="flex w-[360px] shrink-0 flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <PatternGroupHeader>검사항목</PatternGroupHeader>
-              <Button
-                variant="fillBlack"
-                size="xsmall"
-                className="ml-2 shrink-0"
-                startIcon={<IconPlus size={14} />}
-              >
-                항목 추가
-              </Button>
-            </div>
-            <div className="flex flex-col gap-3">
-              <PatternFieldRow label="Pallet 상태">
-                <QaToggleGroup
-                  value={qaChecklist.palletStatus}
-                  onChange={(next) => setQaChecklist((prev) => ({ ...prev, palletStatus: next }))}
-                />
-              </PatternFieldRow>
-              <PatternFieldRow label="표기사항">
-                <QaToggleGroup
-                  value={qaChecklist.labelStatus}
-                  onChange={(next) => setQaChecklist((prev) => ({ ...prev, labelStatus: next }))}
-                />
-              </PatternFieldRow>
-              <PatternFieldRow label="포장상태">
-                <QaToggleGroup
-                  value={qaChecklist.packagingStatus}
-                  onChange={(next) => setQaChecklist((prev) => ({ ...prev, packagingStatus: next }))}
-                />
-              </PatternFieldRow>
-              <PatternFieldRow label="상차밴딩">
-                <QaToggleGroup
-                  value={qaChecklist.bandingStatus}
-                  onChange={(next) => setQaChecklist((prev) => ({ ...prev, bandingStatus: next }))}
-                />
-              </PatternFieldRow>
+          <div className="flex h-full min-w-0 flex-1 flex-col p-5">
+            <div className="flex min-h-0 flex-1 flex-col gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="min-w-0 flex-1">
+                  <PatternGroupHeader>검사항목</PatternGroupHeader>
+                </div>
+                <Button
+                  variant="fillBlack"
+                  size="small"
+                  className="h-7 shrink-0 gap-0.5"
+                  startIcon={<IconPlus size={16} />}
+                >
+                  항목 추가
+                </Button>
+              </div>
+              <div className="flex min-h-0 flex-1 flex-col gap-4">
+                <div className="flex h-8 w-full items-center justify-between">
+                  <span className="flex w-[100px] shrink-0 items-center text-[14px] leading-[1.5] text-mes-gray-130">
+                    포장상태
+                  </span>
+                  <div className="flex w-[240px] shrink-0 items-center gap-2">
+                    <Input className="w-[114px] shrink-0" placeholder="숫자 입력" />
+                    <span className="w-[118px] shrink-0 text-[12px] leading-[1.5] text-mes-gray-130">
+                      50 ≤ X ≤ 60 / X ≤ 60
+                    </span>
+                  </div>
+                </div>
+                <div className="flex h-8 w-full items-center justify-between">
+                  <span className="flex w-[100px] shrink-0 items-center text-[14px] leading-[1.5] text-mes-gray-130">
+                    규격
+                  </span>
+                  <QaToggleGroup
+                    value={qaChecklist.specStatus}
+                    onChange={(next) => setQaChecklist((prev) => ({ ...prev, specStatus: next }))}
+                  />
+                </div>
+                <div className="flex h-8 w-full items-center justify-between">
+                  <span className="flex w-[100px] shrink-0 items-center text-[14px] leading-[1.5] text-mes-gray-130">
+                    색상
+                  </span>
+                  <QaToggleGroup
+                    value={qaChecklist.colorStatus}
+                    onChange={(next) => setQaChecklist((prev) => ({ ...prev, colorStatus: next }))}
+                  />
+                </div>
+                <div className="flex h-8 w-full items-center justify-between">
+                  <span className="flex w-[100px] shrink-0 items-center text-[14px] leading-[1.5] text-mes-gray-130">
+                    성적서
+                  </span>
+                  <QaToggleGroup
+                    value={qaChecklist.certStatus}
+                    onChange={(next) => setQaChecklist((prev) => ({ ...prev, certStatus: next }))}
+                  />
+                </div>
+                <div className="flex h-8 w-full items-center justify-between">
+                  <span className="flex w-[100px] shrink-0 items-center text-[14px] leading-[1.5] text-mes-gray-130">
+                    차량청결
+                  </span>
+                  <QaToggleGroup
+                    value={qaChecklist.vehicleCleanStatus}
+                    onChange={(next) => setQaChecklist((prev) => ({ ...prev, vehicleCleanStatus: next }))}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </CenterModal>
+      </SideSlidePanel>
 
       {/* 2026-08-05 신규 — Patterns(3층) 세 번째 항목 "그룹화 리스트 관리 화면"(메인 리스트,
           Figma node 17000:39999). 이 노드는 get_metadata가 76,712자를 반환해 처리 한도를
