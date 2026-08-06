@@ -314,7 +314,7 @@ function PatternFieldRow({
 function PatternGroupHeader({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-7 w-full shrink-0 items-center rounded-mes-control bg-mes-gray-30 px-2.5">
-      <span className="whitespace-nowrap text-[13px] font-semibold leading-[1.5] text-mes-gray-130">
+      <span className="whitespace-nowrap text-[14px] font-bold leading-[1.5] text-mes-gray-100">
         {children}
       </span>
     </div>
@@ -3444,11 +3444,11 @@ export default function Home() {
               </PatternFieldRow>
               <PatternFieldRow label="사용 여부" required>
                 <div className="flex items-center gap-4">
-                  <label className="flex items-center gap-1.5 text-[14px] leading-[1.5] text-mes-gray-130">
+                  <label className="flex items-center gap-1.5 text-[14px] font-medium leading-[1.5] text-mes-gray-130">
                     <Radio name="process-register-use" defaultChecked />
                     사용
                   </label>
-                  <label className="flex items-center gap-1.5 text-[14px] leading-[1.5] text-mes-gray-130">
+                  <label className="flex items-center gap-1.5 text-[14px] leading-[1.5] text-mes-gray-80">
                     <Radio name="process-register-use" />
                     미사용
                   </label>
