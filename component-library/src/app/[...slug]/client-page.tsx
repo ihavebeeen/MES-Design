@@ -4334,13 +4334,13 @@ export default function Home() {
                     </button>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button variant="fillBlack" size="basic">
+                    <Button variant="fillBlack" size="small" className="w-[160px]">
                       원료투입분석
                     </Button>
-                    <Button variant="fillBlack" size="basic">
+                    <Button variant="fillBlack" size="small" className="w-[160px]">
                       삭제
                     </Button>
-                    <Button variant="fillBlack" size="basic">
+                    <Button variant="fillBlack" size="small" className="w-[160px]">
                       생산실적등록
                     </Button>
                   </div>
