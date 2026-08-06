@@ -306,10 +306,14 @@ function PatternFieldRow({
  * `var(--gray30,#e4e7ee)`(Gray-30)였음 — 스크린샷 육안 대조로는 Gray-20/30 차이가
  * 육안 구분이 거의 안 돼서(둘 다 아주 옅은 회색) 이전엔 Gray-20으로 오판했던 것.
  * 두 모달 인스턴스 모두 동일하게 Gray-30을 써서 확정 채택.
+ *
+ * 2026-08-06 재수정(사용자 직접 지적, 본인이 만든 Figma 디자인 기준) — "'기본정보'
+ * 부분 그레이 배경이 화면 끝으로 가야 한다"고 명시적으로 정정받음. hug-width로
+ * 바꿨던 판단이 이번엔 틀렸음 — 최초 구현(`w-full`)이 맞았던 것으로 원복.
  */
 function PatternGroupHeader({ children }: { children: React.ReactNode }) {
   return (
-    <div className="inline-flex h-7 w-fit shrink-0 items-center self-start rounded-mes-control bg-mes-gray-30 px-2.5">
+    <div className="flex h-7 w-full shrink-0 items-center rounded-mes-control bg-mes-gray-30 px-2.5">
       <span className="whitespace-nowrap text-[13px] font-semibold leading-[1.5] text-mes-gray-130">
         {children}
       </span>
@@ -3472,27 +3476,28 @@ export default function Home() {
                 <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">품목리스트</h3>
                 <SearchInput value="" onChange={() => {}} placeholder="검색어 입력.." className="w-[200px]" />
               </div>
-              {/* 공용 Table 컴포넌트는 체크박스 칼럼+점선 구분선+회색(Gray-10) 헤더가
-                  기본 구조라 이 패턴(체크박스 없음, 실선 구분선, 흰 헤더, 5칼럼 동일폭)엔
-                  맞지 않아 재사용하지 않고 Figma 마크업을 그대로 옮긴 경량 표를 사용.
-                  2026-08-06 재수정 — 처음엔 전 컬럼을 균일하게 justify-center 처리했는데,
-                  get_design_context로 표 노드(19414:94222)만 따로 다시 받아보니 컬럼별로
-                  justify-center 유무가 갈려 있었음(품목/규격/삭제엔 있고, 품목구분/단위엔
-                  없음) — 데이터 행 기준으로 품목구분·단위만 좌측 정렬로 수정. */}
+              {/* 2026-08-06 재수정(사용자 직접 지적) — 이 노드(19414:94222)의 표 마크업만
+                  그대로 옮겨서 흰 헤더+구분선 없는 형태로 만들었는데, 실제로는 이 파일
+                  다른 곳의 공용 Table 컴포넌트와 동일하게 헤더 배경(Gray-10)과 칼럼 사이
+                  점선 구분선(Gray-40)이 있어야 한다는 걸 확인받음 — 이 특정 프레임의
+                  표가 단순화된 목업이었던 것으로 보고, 실제 서비스 전역에서 이미 검증된
+                  Table 디자인 컨벤션(`table.tsx` 참고)에 맞춤. 체크박스 칼럼만 이 패턴엔
+                  없어서(사용자가 이번엔 지적 안 함) 제외하고 나머지 시각 스타일만 통일. */}
               <div className="flex w-full flex-col overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
-                <div className="flex h-[30px] w-full shrink-0 items-center border-b border-mes-gray-30">
+                <div className="flex h-[30px] w-full shrink-0 items-center border-b border-mes-gray-30 bg-mes-gray-10">
                   {[
                     { label: "품목", align: "center" as const },
                     { label: "품목구분", align: "left" as const },
                     { label: "규격", align: "center" as const },
                     { label: "단위", align: "left" as const },
                     { label: "삭제", align: "center" as const },
-                  ].map((col) => (
+                  ].map((col, i) => (
                     <div
                       key={col.label}
                       className={cn(
                         "flex h-full flex-1 items-center",
-                        col.align === "center" ? "justify-center" : "justify-start"
+                        col.align === "center" ? "justify-center" : "justify-start pl-[6px]",
+                        i < 4 && "border-r border-dashed border-mes-gray-40"
                       )}
                     >
                       <span className="text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
@@ -3509,16 +3514,16 @@ export default function Home() {
                     key={i}
                     className="flex min-h-[30px] w-full items-center border-b border-mes-gray-30"
                   >
-                    <div className="flex flex-1 items-center justify-center p-[6px]">
+                    <div className="flex flex-1 items-center justify-center border-r border-dashed border-mes-gray-40 p-[6px]">
                       <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.item}</span>
                     </div>
-                    <div className="flex flex-1 items-center justify-start p-[6px]">
+                    <div className="flex flex-1 items-center justify-start border-r border-dashed border-mes-gray-40 p-[6px]">
                       <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.type}</span>
                     </div>
-                    <div className="flex flex-1 items-center justify-center p-[6px]">
+                    <div className="flex flex-1 items-center justify-center border-r border-dashed border-mes-gray-40 p-[6px]">
                       <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.spec}</span>
                     </div>
-                    <div className="flex flex-1 items-center justify-start p-[6px]">
+                    <div className="flex flex-1 items-center justify-start border-r border-dashed border-mes-gray-40 p-[6px]">
                       <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.unit}</span>
                     </div>
                     <div className="flex flex-1 items-center justify-center p-[6px]">
@@ -3712,12 +3717,16 @@ export default function Home() {
                 ];
                 return (
                   <div className="flex w-full flex-col overflow-x-auto rounded-mes-control border border-mes-gray-30 bg-white">
-                    <div className="flex h-[30px] w-max min-w-full shrink-0 items-center border-b border-mes-gray-30">
-                      {workOrderColumns.map((col) => (
+                    <div className="flex h-[30px] w-max min-w-full shrink-0 items-center border-b border-mes-gray-30 bg-mes-gray-10">
+                      {workOrderColumns.map((col, i) => (
                         <div
                           key={col.key}
                           style={{ width: col.width }}
-                          className="flex h-full shrink-0 items-center justify-center"
+                          className={cn(
+                            "flex h-full shrink-0 items-center justify-center",
+                            i < workOrderColumns.length - 1 &&
+                              "border-r border-dashed border-mes-gray-40"
+                          )}
                         >
                           <span className="text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
                             {col.label}
@@ -3730,13 +3739,15 @@ export default function Home() {
                         key={row.id}
                         className="flex min-h-[30px] w-max min-w-full items-center border-b border-mes-gray-30"
                       >
-                        {workOrderColumns.map((col) => (
+                        {workOrderColumns.map((col, i) => (
                           <div
                             key={col.key}
                             style={{ width: col.width }}
                             className={cn(
                               "flex h-full shrink-0 items-center p-[6px]",
-                              col.align === "right" ? "justify-end" : "justify-center"
+                              col.align === "right" ? "justify-end" : "justify-center",
+                              i < workOrderColumns.length - 1 &&
+                                "border-r border-dashed border-mes-gray-40"
                             )}
                           >
                             {col.key === "status" ? (
