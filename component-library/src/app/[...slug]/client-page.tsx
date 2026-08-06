@@ -4257,51 +4257,61 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-4">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="text-[17px] font-bold leading-tight text-mes-gray-130">
-                      생산실적 리스트
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      <span className="whitespace-nowrap text-[13px] text-mes-gray-70">
-                        조회기준일자
-                      </span>
-                      <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
-                      <Button size="small">조회</Button>
-                      <Button variant="lineBlacktxt" size="small" startIcon={<Settings size={14} />}>
-                        설정
-                      </Button>
+                <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+                  {/* 2026-08-06 수정 — 담당자 직접 지적: "왼쪽 사이드바랑 표 사이에 유격이
+                      없는데 너는 왜 유격을 추가했니?" 정확한 지적 — 이 데모 전체를
+                      `p-4`로 통째로 감싸서 표까지 좌우 16px씩 안으로 들어가 있었음.
+                      실측이 아니라(이 노드는 get_metadata/get_design_context가 74k+
+                      토큰이라 둘 다 실패해서 스크린샷 육안 대조로 만든 상태) 흔히 쓰는
+                      "콘텐츠 영역 전체에 패딩" 기본값을 별 확인 없이 적용했던 것 —
+                      담당자가 보여준 실제 화면 기준으로 표만 사이드바/우측 끝까지 꽉 차게
+                      빼고, 제목·필터 줄만 자체 `p-4`를 갖도록 구조를 분리함. */}
+                  <div className="flex flex-col gap-3 p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <h3 className="text-[17px] font-bold leading-tight text-mes-gray-130">
+                        생산실적 리스트
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <span className="whitespace-nowrap text-[13px] text-mes-gray-70">
+                          조회기준일자
+                        </span>
+                        <DateRangePicker value={dateRangeValue} onValueChange={setDateRangeValue} />
+                        <Button size="small">조회</Button>
+                        <Button variant="lineBlacktxt" size="small" startIcon={<Settings size={14} />}>
+                          설정
+                        </Button>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex w-full flex-wrap items-center justify-between gap-x-2.5 gap-y-2">
-                    <div className="flex flex-wrap items-center gap-2.5">
-                      <GroupQuery
-                        options={groupQueryOptions}
-                        levels={groupQueryLevels}
-                        onLevelChange={(index, value) =>
-                          setGroupQueryLevels((prev) => prev.map((v, i) => (i === index ? value : v)))
-                        }
-                      />
-                      <Filter
-                        categories={filterCategories}
-                        value={filterValue}
-                        onChange={(categoryId, optionIds) =>
-                          setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
-                        }
-                      />
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2.5">
-                      <QuickQuery
-                        presets={quickQuerySlots
-                          .filter((s): s is QuickQuerySlot & { name: string } => s.name !== null)
-                          .map((s) => ({ id: s.id, label: s.name }))}
-                        activeId={quickQueryActiveId}
-                        onApply={setQuickQueryActiveId}
-                        onClearActive={() => setQuickQueryActiveId(null)}
-                        onSettingsClick={() => setQuickQueryDialogOpen(true)}
-                      />
-                      <SearchInput value={groupQuerySearchValue} onChange={setGroupQuerySearchValue} />
+                    <div className="flex w-full flex-wrap items-center justify-between gap-x-2.5 gap-y-2">
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        <GroupQuery
+                          options={groupQueryOptions}
+                          levels={groupQueryLevels}
+                          onLevelChange={(index, value) =>
+                            setGroupQueryLevels((prev) => prev.map((v, i) => (i === index ? value : v)))
+                          }
+                        />
+                        <Filter
+                          categories={filterCategories}
+                          value={filterValue}
+                          onChange={(categoryId, optionIds) =>
+                            setFilterValue((prev) => ({ ...prev, [categoryId]: optionIds }))
+                          }
+                        />
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        <QuickQuery
+                          presets={quickQuerySlots
+                            .filter((s): s is QuickQuerySlot & { name: string } => s.name !== null)
+                            .map((s) => ({ id: s.id, label: s.name }))}
+                          activeId={quickQueryActiveId}
+                          onApply={setQuickQueryActiveId}
+                          onClearActive={() => setQuickQueryActiveId(null)}
+                          onSettingsClick={() => setQuickQueryDialogOpen(true)}
+                        />
+                        <SearchInput value={groupQuerySearchValue} onChange={setGroupQuerySearchValue} />
+                      </div>
                     </div>
                   </div>
 
