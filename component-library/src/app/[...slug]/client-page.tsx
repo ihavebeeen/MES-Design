@@ -3410,7 +3410,7 @@ export default function Home() {
         onCancel={() => setProcessRegisterModalOpen(false)}
         onConfirm={() => setProcessRegisterModalOpen(false)}
       >
-        <div className="flex w-full flex-col pb-5">
+        <div className="flex w-full flex-1 flex-col pb-5">
           <div className="flex w-full flex-col gap-3 border-b border-mes-gray-30 pb-5">
             <PatternGroupHeader>기본정보</PatternGroupHeader>
             <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
@@ -3457,7 +3457,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex w-full flex-col gap-5 pt-5">
+          <div className="flex w-full min-h-0 flex-1 flex-col gap-5 pt-5">
             {/* Figma node 19414:94157: "품목등록" 영역 전체가 bg-gray20/rounded-8 카드로
                 감싸져 있고, "추가" 버튼이 카드 하단 경계에 절반 걸치도록 배치됨. */}
             <div className="relative flex w-full flex-col gap-4 rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
@@ -3492,7 +3492,7 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="flex w-full flex-1 flex-col gap-[10px]">
+            <div className="flex w-full min-h-0 flex-1 flex-col gap-[10px]">
               <div className="flex items-center justify-between">
                 <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">품목리스트</h3>
                 <SearchInput value="" onChange={() => {}} placeholder="검색어 입력.." className="w-[200px]" />
@@ -3503,8 +3503,14 @@ export default function Home() {
                   점선 구분선(Gray-40)이 있어야 한다는 걸 확인받음 — 이 특정 프레임의
                   표가 단순화된 목업이었던 것으로 보고, 실제 서비스 전역에서 이미 검증된
                   Table 디자인 컨벤션(`table.tsx` 참고)에 맞춤. 체크박스 칼럼만 이 패턴엔
-                  없어서(사용자가 이번엔 지적 안 함) 제외하고 나머지 시각 스타일만 통일. */}
-              <div className="flex w-full flex-col overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
+                  없어서(사용자가 이번엔 지적 안 함) 제외하고 나머지 시각 스타일만 통일.
+                  2026-08-06 추가 재수정 — 표 박스 자체가 내용(헤더+2행)만큼만 hug되고
+                  그 아래 빈 공간은 표 밖(섹션 배경)으로 남아있던 걸 "리스트 자체 높이도
+                  화면을 채워야 한다"고 지적받음 — 표 박스에 flex-1을 줘서 테두리 자체가
+                  남은 세로 공간을 다 채우도록 수정(행 높이 30px은 그대로, 빈 공간은
+                  테두리 안쪽 흰 여백으로 표현됨). 상위 wrapper 체인(모달 콘텐츠→이
+                  섹션)에도 flex-1/min-h-0을 연쇄로 걸어야 실제로 남는 공간이 전달됨. */}
+              <div className="flex w-full min-h-0 flex-1 flex-col overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
                 <div className="flex h-[30px] w-full shrink-0 items-center border-b border-mes-gray-30 bg-mes-gray-10">
                   {[
                     { label: "품목", align: "center" as const },
@@ -3527,37 +3533,39 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                {[
-                  { item: "비비빅", type: "완제품", spec: "A", unit: "4,000" },
-                  { item: "비비빅", type: "완제품", spec: "A", unit: "4,000" },
-                ].map((row, i) => (
-                  <div
-                    key={i}
-                    className="flex min-h-[30px] w-full items-center border-b border-mes-gray-30"
-                  >
-                    <div className="flex flex-1 items-center justify-center border-r border-dashed border-mes-gray-40 p-[6px]">
-                      <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.item}</span>
+                <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+                  {[
+                    { item: "비비빅", type: "완제품", spec: "A", unit: "4,000" },
+                    { item: "비비빅", type: "완제품", spec: "A", unit: "4,000" },
+                  ].map((row, i) => (
+                    <div
+                      key={i}
+                      className="flex min-h-[30px] w-full shrink-0 items-center border-b border-mes-gray-30"
+                    >
+                      <div className="flex flex-1 items-center justify-center border-r border-dashed border-mes-gray-40 p-[6px]">
+                        <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.item}</span>
+                      </div>
+                      <div className="flex flex-1 items-center justify-start border-r border-dashed border-mes-gray-40 p-[6px]">
+                        <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.type}</span>
+                      </div>
+                      <div className="flex flex-1 items-center justify-center border-r border-dashed border-mes-gray-40 p-[6px]">
+                        <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.spec}</span>
+                      </div>
+                      <div className="flex flex-1 items-center justify-start border-r border-dashed border-mes-gray-40 p-[6px]">
+                        <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.unit}</span>
+                      </div>
+                      <div className="flex flex-1 items-center justify-center p-[6px]">
+                        <button
+                          type="button"
+                          aria-label="삭제"
+                          className="inline-flex items-center justify-center rounded-[2px] px-2 py-1 text-mes-gray-70"
+                        >
+                          <IconTrash size={16} />
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex flex-1 items-center justify-start border-r border-dashed border-mes-gray-40 p-[6px]">
-                      <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.type}</span>
-                    </div>
-                    <div className="flex flex-1 items-center justify-center border-r border-dashed border-mes-gray-40 p-[6px]">
-                      <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.spec}</span>
-                    </div>
-                    <div className="flex flex-1 items-center justify-start border-r border-dashed border-mes-gray-40 p-[6px]">
-                      <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.unit}</span>
-                    </div>
-                    <div className="flex flex-1 items-center justify-center p-[6px]">
-                      <button
-                        type="button"
-                        aria-label="삭제"
-                        className="inline-flex items-center justify-center rounded-[2px] px-2 py-1 text-mes-gray-70"
-                      >
-                        <IconTrash size={16} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -3580,7 +3588,7 @@ export default function Home() {
         onCancel={() => setWorkOrderRegisterModalOpen(false)}
         onConfirm={() => setWorkOrderRegisterModalOpen(false)}
       >
-        <div className="flex w-full flex-col pb-5">
+        <div className="flex w-full flex-1 flex-col pb-5">
           <div className="flex w-full flex-col gap-3 border-b border-mes-gray-30 pb-5">
             <PatternGroupHeader>기본정보</PatternGroupHeader>
             <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
@@ -3605,7 +3613,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex w-full flex-col gap-5 pt-5">
+          <div className="flex w-full min-h-0 flex-1 flex-col gap-5 pt-5">
             <div className="relative flex w-full flex-col gap-4 rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
               <div className="flex w-full flex-col gap-[10px]">
                 <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">생산지시 정보</h3>
@@ -3670,7 +3678,7 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="flex w-full flex-1 flex-col gap-[10px]">
+            <div className="flex w-full min-h-0 flex-1 flex-col gap-[10px]">
               <div className="flex items-center justify-between">
                 <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">생산지시 리스트</h3>
                 <SearchInput value="" onChange={() => {}} placeholder="검색" className="w-[200px]" />
@@ -3750,66 +3758,73 @@ export default function Home() {
                     status: "완료" as const,
                   },
                 ];
+                {/* 2026-08-06 재수정(사용자 직접 지적) — 표 박스가 행 개수만큼만
+                    hug되고 그 아래 빈 공간이 밖으로 남던 걸 flex-1로 채우도록 수정.
+                    가로 스크롤(overflow-x, 칼럼 폭 합이 넓을 때)과 세로 스크롤(행이
+                    많아 넘칠 때)을 같은 내부 컨테이너(overflow-auto)에서 같이
+                    처리하고, 헤더는 sticky top-0로 고정. */}
                 return (
-                  <div className="flex w-full flex-col overflow-x-auto rounded-mes-control border border-mes-gray-30 bg-white">
-                    <div className="flex h-[30px] w-max min-w-full shrink-0 items-center border-b border-mes-gray-30 bg-mes-gray-10">
-                      {workOrderColumns.map((col, i) => (
-                        <div
-                          key={col.key}
-                          style={{ width: col.width }}
-                          className={cn(
-                            "flex h-full shrink-0 items-center justify-center",
-                            i < workOrderColumns.length - 1 &&
-                              "border-r border-dashed border-mes-gray-40"
-                          )}
-                        >
-                          <span className="text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
-                            {col.label}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                    {workOrderRows.map((row) => (
-                      <div
-                        key={row.id}
-                        className="flex min-h-[30px] w-max min-w-full items-center border-b border-mes-gray-30"
-                      >
+                  <div className="flex w-full min-h-0 flex-1 flex-col overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
+                    <div className="min-h-0 flex-1 overflow-auto">
+                      <div className="sticky top-0 z-10 flex h-[30px] w-max min-w-full shrink-0 items-center border-b border-mes-gray-30 bg-mes-gray-10">
                         {workOrderColumns.map((col, i) => (
                           <div
                             key={col.key}
                             style={{ width: col.width }}
                             className={cn(
-                              "flex h-full shrink-0 items-center p-[6px]",
-                              col.align === "right" ? "justify-end" : "justify-center",
+                              "flex h-full shrink-0 items-center justify-center",
                               i < workOrderColumns.length - 1 &&
                                 "border-r border-dashed border-mes-gray-40"
                             )}
                           >
-                            {col.key === "status" ? (
-                              row.status === "작업중" ? (
-                                <Badge variant="blue">작업중</Badge>
-                              ) : row.status === "대기" ? (
-                                <Badge variant="grayFill">대기</Badge>
-                              ) : (
-                                <Badge variant="gray">완료</Badge>
-                              )
-                            ) : col.key === "delete" ? (
-                              <button
-                                type="button"
-                                aria-label="삭제"
-                                className="inline-flex items-center justify-center rounded-[2px] px-2 py-1 text-mes-gray-70"
-                              >
-                                <IconTrash size={16} />
-                              </button>
-                            ) : (
-                              <span className="whitespace-nowrap text-[14px] leading-[1.3] text-mes-gray-130">
-                                {(row as unknown as Record<string, string>)[col.key]}
-                              </span>
-                            )}
+                            <span className="text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
+                              {col.label}
+                            </span>
                           </div>
                         ))}
                       </div>
-                    ))}
+                      {workOrderRows.map((row) => (
+                        <div
+                          key={row.id}
+                          className="flex min-h-[30px] w-max min-w-full items-center border-b border-mes-gray-30"
+                        >
+                          {workOrderColumns.map((col, i) => (
+                            <div
+                              key={col.key}
+                              style={{ width: col.width }}
+                              className={cn(
+                                "flex h-full shrink-0 items-center p-[6px]",
+                                col.align === "right" ? "justify-end" : "justify-center",
+                                i < workOrderColumns.length - 1 &&
+                                  "border-r border-dashed border-mes-gray-40"
+                              )}
+                            >
+                              {col.key === "status" ? (
+                                row.status === "작업중" ? (
+                                  <Badge variant="blue">작업중</Badge>
+                                ) : row.status === "대기" ? (
+                                  <Badge variant="grayFill">대기</Badge>
+                                ) : (
+                                  <Badge variant="gray">완료</Badge>
+                                )
+                              ) : col.key === "delete" ? (
+                                <button
+                                  type="button"
+                                  aria-label="삭제"
+                                  className="inline-flex items-center justify-center rounded-[2px] px-2 py-1 text-mes-gray-70"
+                                >
+                                  <IconTrash size={16} />
+                                </button>
+                              ) : (
+                                <span className="whitespace-nowrap text-[14px] leading-[1.3] text-mes-gray-130">
+                                  {(row as unknown as Record<string, string>)[col.key]}
+                                </span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 );
               })()}
@@ -3831,7 +3846,7 @@ export default function Home() {
         onCancel={() => setWorkOrderEmptyModalOpen(false)}
         onConfirm={() => setWorkOrderEmptyModalOpen(false)}
       >
-        <div className="flex w-full flex-col pb-5">
+        <div className="flex w-full flex-1 flex-col pb-5">
           <div className="flex w-full flex-col gap-3 border-b border-mes-gray-30 pb-5">
             <PatternGroupHeader>기본정보</PatternGroupHeader>
             <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
@@ -3852,7 +3867,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex w-full flex-col gap-5 pt-5">
+          <div className="flex w-full min-h-0 flex-1 flex-col gap-5 pt-5">
             <div className="relative flex w-full flex-col gap-4 rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
               <div className="flex w-full flex-col gap-[10px]">
                 <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">생산지시 정보</h3>
@@ -3917,12 +3932,12 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="flex w-full flex-1 flex-col gap-[10px]">
+            <div className="flex w-full min-h-0 flex-1 flex-col gap-[10px]">
               <div className="flex items-center justify-between">
                 <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">생산지시 리스트</h3>
                 <SearchInput value="" onChange={() => {}} placeholder="검색" className="w-[200px]" />
               </div>
-              <div className="flex w-full flex-1 flex-col overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
+              <div className="flex w-full min-h-0 flex-1 flex-col overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
                 <div className="flex h-[30px] w-full shrink-0 items-center border-b border-mes-gray-30 bg-mes-gray-10">
                   {[
                     "근무조",
