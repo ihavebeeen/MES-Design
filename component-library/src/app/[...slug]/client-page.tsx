@@ -3474,13 +3474,29 @@ export default function Home() {
               </div>
               {/* 공용 Table 컴포넌트는 체크박스 칼럼+점선 구분선+회색(Gray-10) 헤더가
                   기본 구조라 이 패턴(체크박스 없음, 실선 구분선, 흰 헤더, 5칼럼 동일폭)엔
-                  맞지 않아 재사용하지 않고 Figma 마크업을 그대로 옮긴 경량 표를 사용. */}
+                  맞지 않아 재사용하지 않고 Figma 마크업을 그대로 옮긴 경량 표를 사용.
+                  2026-08-06 재수정 — 처음엔 전 컬럼을 균일하게 justify-center 처리했는데,
+                  get_design_context로 표 노드(19414:94222)만 따로 다시 받아보니 컬럼별로
+                  justify-center 유무가 갈려 있었음(품목/규격/삭제엔 있고, 품목구분/단위엔
+                  없음) — 데이터 행 기준으로 품목구분·단위만 좌측 정렬로 수정. */}
               <div className="flex w-full flex-col overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
                 <div className="flex h-[30px] w-full shrink-0 items-center border-b border-mes-gray-30">
-                  {["품목", "품목구분", "규격", "단위", "삭제"].map((label) => (
-                    <div key={label} className="flex h-full flex-1 items-center justify-center">
+                  {[
+                    { label: "품목", align: "center" as const },
+                    { label: "품목구분", align: "left" as const },
+                    { label: "규격", align: "center" as const },
+                    { label: "단위", align: "left" as const },
+                    { label: "삭제", align: "center" as const },
+                  ].map((col) => (
+                    <div
+                      key={col.label}
+                      className={cn(
+                        "flex h-full flex-1 items-center",
+                        col.align === "center" ? "justify-center" : "justify-start"
+                      )}
+                    >
                       <span className="text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
-                        {label}
+                        {col.label}
                       </span>
                     </div>
                   ))}
@@ -3496,13 +3512,13 @@ export default function Home() {
                     <div className="flex flex-1 items-center justify-center p-[6px]">
                       <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.item}</span>
                     </div>
-                    <div className="flex flex-1 items-center justify-center p-[6px]">
+                    <div className="flex flex-1 items-center justify-start p-[6px]">
                       <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.type}</span>
                     </div>
                     <div className="flex flex-1 items-center justify-center p-[6px]">
                       <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.spec}</span>
                     </div>
-                    <div className="flex flex-1 items-center justify-center p-[6px]">
+                    <div className="flex flex-1 items-center justify-start p-[6px]">
                       <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.unit}</span>
                     </div>
                     <div className="flex flex-1 items-center justify-center p-[6px]">
