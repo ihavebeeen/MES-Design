@@ -1322,6 +1322,12 @@ export default function Home() {
   // defaultValue(비제어)로만 구성 — 실제 저장 로직 없는 정적 시연이 목적.
   const [processRegisterModalOpen, setProcessRegisterModalOpen] = useState(false);
   const [workOrderRegisterModalOpen, setWorkOrderRegisterModalOpen] = useState(false);
+  // 2026-08-06 신규 — 사용자가 실제 개발된 화면(품목 미등록 상태 스크린샷)을 제공하며
+  // "리스트 정보가 없을 때 화면도 작성해달라" 요청 — 위 workOrderRegisterModalOpen과
+  // 별도의 열림 상태로 분리(같은 모달의 "값이 채워진 데모" vs "빈 리스트 데모" 두
+  // 상태를 동시에 시연하기 위함, 이 파일의 다른 Section들도 상태별로 별도 트리거를
+  // 쓰는 관례를 그대로 따름).
+  const [workOrderEmptyModalOpen, setWorkOrderEmptyModalOpen] = useState(false);
   // 2026-08-05 수정 — 작업지시 등록 모달의 "지시일" 필드가 원래는 plain Input이었는데,
   // Figma 스크린샷 재대조 결과 우측에 캘린더 아이콘이 있는 실제 DatePicker 트리거였음
   // (사용자가 "피그마 원본과 전혀 다르다"고 지적한 항목 중 하나) — 기존 DatePicker
@@ -3367,15 +3373,30 @@ export default function Home() {
           </Button>
         </Sample>
         <Sample
-          label="작업지시 등록"
+          label="생산지시 등록"
           spec={[
-            { label: "출처", value: "클라우드MES node 19098:64815 (get_design_context 직접 확인)" },
+            {
+              label: "출처",
+              value: "클라우드MES node 19098:64815(Figma) + 실제 운영화면 스크린샷(라벨/타이틀은 스크린샷 우선)",
+            },
             { label: "형태", value: "SideSlidePanel(우측 고정, radius 없음), 948px(get_screenshot 실측, 기본 960px 오버라이드)" },
-            { label: "구성", value: "기본정보 폼 + 회색 카드(작업지시 정보 폼) + 작업지시 리스트 표" },
+            { label: "구성", value: "기본정보 폼 + 회색 카드(생산지시 정보 폼) + 생산지시 리스트 표" },
           ]}
         >
           <Button size="basic" onClick={() => setWorkOrderRegisterModalOpen(true)}>
-            작업지시 등록 모달 열기
+            생산지시 등록 모달 열기
+          </Button>
+        </Sample>
+        <Sample
+          label="생산지시 등록 · 리스트 빈 상태"
+          spec={[
+            { label: "출처", value: "사용자 제공 실제 운영화면 스크린샷(신규/미입력 상태)" },
+            { label: "구성", value: "선택 필드 전부 미선택 + 파생 필드 빈 값 + 리스트 영역 EmptyState" },
+            { label: "안내 문구", value: "\"생산지시 품목을 추가하세요.\"" },
+          ]}
+        >
+          <Button size="basic" onClick={() => setWorkOrderEmptyModalOpen(true)}>
+            빈 리스트 상태로 열기
           </Button>
         </Sample>
       </Section>
@@ -3543,12 +3564,19 @@ export default function Home() {
         </div>
       </SideSlidePanel>
 
+      {/* 2026-08-06 재수정(사용자 직접 제공, "실제 화면으로 개발된 화면") — 실제
+          운영 화면 스크린샷 기준으로 타이틀/라벨/placeholder를 다시 맞춤. Figma
+          node 19098:64815엔 "작업지시 등록"/"작업지시 정보"/"작업지시 리스트"/"규격"으로
+          찍혀 있었지만, 실제 배포된 화면은 "생산지시 등록"/"생산지시 정보"/
+          "생산지시 리스트"/"제품규격"으로 다름 — Figma 목업과 실제 구현이 갈린
+          또 다른 사례(이 파일에서 반복 확인된 패턴: 실측 스크린샷 > Figma).
+          확인 버튼 라벨도 Figma엔 "저장"으로 찍혀 있었는데 이전 라운드에서 "등록"으로
+          임의로 바꿔놨던 게 있어서 원복(SideSlidePanel 기본값이 "저장"이라 prop 자체를 뺌). */}
       <SideSlidePanel
         open={workOrderRegisterModalOpen}
         onOpenChange={setWorkOrderRegisterModalOpen}
-        title="작업지시 등록"
+        title="생산지시 등록"
         className="max-w-[948px]"
-        confirmLabel="등록"
         onCancel={() => setWorkOrderRegisterModalOpen(false)}
         onConfirm={() => setWorkOrderRegisterModalOpen(false)}
       >
@@ -3559,7 +3587,7 @@ export default function Home() {
               <PatternFieldRow label="설비" required>
                 <Select>
                   <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="선택" />
+                    <SelectValue placeholder="설비 선택" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="eq-1">성형기 1호</SelectItem>
@@ -3580,12 +3608,12 @@ export default function Home() {
           <div className="flex w-full flex-col gap-5 pt-5">
             <div className="relative flex w-full flex-col gap-4 rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
               <div className="flex w-full flex-col gap-[10px]">
-                <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">작업지시 정보</h3>
+                <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">생산지시 정보</h3>
                 <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
                   <PatternFieldRow label="품목" required>
                     <Select>
                       <SelectTrigger className="flex-1">
-                        <SelectValue placeholder="선택" />
+                        <SelectValue placeholder="품목 선택" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="item-1">죠스바</SelectItem>
@@ -3596,10 +3624,10 @@ export default function Home() {
                   <PatternFieldRow label="품목구분">
                     <Input className="flex-1" disabled defaultValue="완제품" />
                   </PatternFieldRow>
-                  <PatternFieldRow label="담당기사" required>
+                  <PatternFieldRow label="담당기사">
                     <Select>
                       <SelectTrigger className="flex-1">
-                        <SelectValue placeholder="선택" />
+                        <SelectValue placeholder="담당기사 선택" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="mgr-1">윤대원</SelectItem>
@@ -3613,7 +3641,7 @@ export default function Home() {
                   <PatternFieldRow label="근무조" required>
                     <Select>
                       <SelectTrigger className="flex-1">
-                        <SelectValue placeholder="선택" />
+                        <SelectValue placeholder="근무조 선택" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="shift-day">주간</SelectItem>
@@ -3621,14 +3649,14 @@ export default function Home() {
                       </SelectContent>
                     </Select>
                   </PatternFieldRow>
-                  <PatternFieldRow label="규격">
+                  <PatternFieldRow label="제품규격">
                     <Input className="flex-1" disabled defaultValue="아사노" />
                   </PatternFieldRow>
                   <PatternFieldRow label="지시수량" required>
-                    <Input className="flex-1" defaultValue="1,000" />
+                    <Input className="flex-1" placeholder="지시수량" defaultValue="1,000" />
                   </PatternFieldRow>
                   <PatternFieldRow label="포장인원">
-                    <Input className="flex-1" placeholder="" />
+                    <Input className="flex-1" placeholder="포장인원" />
                   </PatternFieldRow>
                 </div>
               </div>
@@ -3644,26 +3672,33 @@ export default function Home() {
 
             <div className="flex w-full flex-1 flex-col gap-[10px]">
               <div className="flex items-center justify-between">
-                <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">작업지시 리스트</h3>
-                <SearchInput value="" onChange={() => {}} placeholder="검색어 입력.." className="w-[200px]" />
+                <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">생산지시 리스트</h3>
+                <SearchInput value="" onChange={() => {}} placeholder="검색" className="w-[200px]" />
               </div>
               {(() => {
+                {/* 2026-08-06 재수정(사용자 직접 지적) — 지시수량/생산수량 값에 증분
+                    표기("2,600 (+600)")가 붙어 있어서 기존 폭(95px)으로는 줄바꿈이
+                    발생했음. "포장인원/단위 같은 건 좁아도 된다"는 지적대로 짧은 값
+                    컬럼(단위/포장인원/근무조/담당기사/상태/삭제)은 좁히고, 그만큼
+                    여유를 지시수량/생산수량/품목에 배분. 셀에 whitespace-nowrap도
+                    추가해서 폭을 넘는 값은 줄바꿈 대신 넘치도록(표 자체가
+                    overflow-x-auto라 필요하면 가로 스크롤됨). */}
                 const workOrderColumns: {
                   key: string;
                   label: string;
                   width: number;
                   align?: "left" | "center" | "right";
                 }[] = [
-                  { key: "shift", label: "근무조", width: 77 },
-                  { key: "item", label: "품목", width: 180 },
-                  { key: "type", label: "품목구분", width: 79 },
-                  { key: "manager", label: "담당기사", width: 70 },
-                  { key: "unit", label: "단위", width: 68 },
-                  { key: "packCount", label: "포장인원", width: 70 },
-                  { key: "orderQty", label: "지시수량", width: 95, align: "right" },
-                  { key: "producedQty", label: "생산수량", width: 95, align: "right" },
-                  { key: "status", label: "상태", width: 64 },
-                  { key: "delete", label: "삭제", width: 60 },
+                  { key: "shift", label: "근무조", width: 64 },
+                  { key: "item", label: "품목", width: 200 },
+                  { key: "type", label: "품목구분", width: 76 },
+                  { key: "manager", label: "담당기사", width: 76 },
+                  { key: "unit", label: "단위", width: 52 },
+                  { key: "packCount", label: "포장인원", width: 64 },
+                  { key: "orderQty", label: "지시수량", width: 130, align: "right" },
+                  { key: "producedQty", label: "생산수량", width: 100, align: "right" },
+                  { key: "status", label: "상태", width: 66 },
+                  { key: "delete", label: "삭제", width: 56 },
                 ];
                 const workOrderRows = [
                   {
@@ -3767,7 +3802,7 @@ export default function Home() {
                                 <IconTrash size={16} />
                               </button>
                             ) : (
-                              <span className="text-[14px] leading-[1.3] text-mes-gray-130">
+                              <span className="whitespace-nowrap text-[14px] leading-[1.3] text-mes-gray-130">
                                 {(row as unknown as Record<string, string>)[col.key]}
                               </span>
                             )}
@@ -3778,6 +3813,144 @@ export default function Home() {
                   </div>
                 );
               })()}
+            </div>
+          </div>
+        </div>
+      </SideSlidePanel>
+
+      {/* 2026-08-06 신규 — 사용자가 제공한 "실제 개발된 화면"(생산지시 미등록 상태)
+          스크린샷을 그대로 반영한 빈 리스트 데모. 위 workOrderRegisterModalOpen과
+          내용만 다르고 구조는 동일(필드 전부 미선택/빈 값, 리스트 영역만 EmptyState로
+          교체) — 코드 중복이 있지만 이 파일 전체가 Section마다 상태별 별도 트리거로
+          시연하는 관례라 그대로 따름. */}
+      <SideSlidePanel
+        open={workOrderEmptyModalOpen}
+        onOpenChange={setWorkOrderEmptyModalOpen}
+        title="생산지시 등록"
+        className="max-w-[948px]"
+        onCancel={() => setWorkOrderEmptyModalOpen(false)}
+        onConfirm={() => setWorkOrderEmptyModalOpen(false)}
+      >
+        <div className="flex w-full flex-col pb-5">
+          <div className="flex w-full flex-col gap-3 border-b border-mes-gray-30 pb-5">
+            <PatternGroupHeader>기본정보</PatternGroupHeader>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
+              <PatternFieldRow label="설비" required>
+                <Select>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="설비 선택" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="eq-1">성형기 1호</SelectItem>
+                    <SelectItem value="eq-2">성형기 2호</SelectItem>
+                  </SelectContent>
+                </Select>
+              </PatternFieldRow>
+              <PatternFieldRow label="지시일" required>
+                <DatePicker value={null} onValueChange={() => {}} className="flex-1" />
+              </PatternFieldRow>
+            </div>
+          </div>
+
+          <div className="flex w-full flex-col gap-5 pt-5">
+            <div className="relative flex w-full flex-col gap-4 rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
+              <div className="flex w-full flex-col gap-[10px]">
+                <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">생산지시 정보</h3>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
+                  <PatternFieldRow label="품목" required>
+                    <Select>
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="품목 선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="item-1">죠스바</SelectItem>
+                        <SelectItem value="item-2">월드콘 뚜껑(소)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </PatternFieldRow>
+                  <PatternFieldRow label="품목구분">
+                    <Input className="flex-1" disabled placeholder="" />
+                  </PatternFieldRow>
+                  <PatternFieldRow label="담당기사">
+                    <Select>
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="담당기사 선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mgr-1">윤대원</SelectItem>
+                        <SelectItem value="mgr-2">신선미</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </PatternFieldRow>
+                  <PatternFieldRow label="단위">
+                    <Input className="flex-1" disabled placeholder="" />
+                  </PatternFieldRow>
+                  <PatternFieldRow label="근무조" required>
+                    <Select>
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="근무조 선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="shift-day">주간</SelectItem>
+                        <SelectItem value="shift-night">야간</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </PatternFieldRow>
+                  <PatternFieldRow label="제품규격">
+                    <Input className="flex-1" disabled placeholder="" />
+                  </PatternFieldRow>
+                  <PatternFieldRow label="지시수량" required>
+                    <Input className="flex-1" placeholder="지시수량" />
+                  </PatternFieldRow>
+                  <PatternFieldRow label="포장인원">
+                    <Input className="flex-1" placeholder="포장인원" />
+                  </PatternFieldRow>
+                </div>
+              </div>
+              <Button
+                variant="fillMain"
+                size="small"
+                className="absolute -bottom-4 left-1/2 w-[160px] -translate-x-1/2"
+                startIcon={<IconArrowLine size={16} className="-rotate-90" />}
+              >
+                추가
+              </Button>
+            </div>
+
+            <div className="flex w-full flex-1 flex-col gap-[10px]">
+              <div className="flex items-center justify-between">
+                <h3 className="text-[16px] font-bold leading-[1.5] text-mes-gray-130">생산지시 리스트</h3>
+                <SearchInput value="" onChange={() => {}} placeholder="검색" className="w-[200px]" />
+              </div>
+              <div className="flex w-full flex-1 flex-col overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
+                <div className="flex h-[30px] w-full shrink-0 items-center border-b border-mes-gray-30 bg-mes-gray-10">
+                  {[
+                    "근무조",
+                    "품목",
+                    "품목구분",
+                    "담당기사",
+                    "단위",
+                    "포장인원",
+                    "지시수량",
+                    "생산수량",
+                    "상태",
+                    "삭제",
+                  ].map((label, i, arr) => (
+                    <div
+                      key={label}
+                      className={cn(
+                        "flex h-full flex-1 items-center justify-center",
+                        i < arr.length - 1 && "border-r border-dashed border-mes-gray-40"
+                      )}
+                    >
+                      <span className="text-[13px] font-semibold leading-[1.3] text-mes-gray-130">
+                        {label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <EmptyState title="생산지시 품목을 추가하세요." className="flex-1 py-16" />
+              </div>
             </div>
           </div>
         </div>
