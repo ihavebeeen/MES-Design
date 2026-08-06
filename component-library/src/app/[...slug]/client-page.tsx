@@ -4198,14 +4198,46 @@ export default function Home() {
           한 번 겪었고, 그때도 `Sample`을 쓰지 않고 일반 `<div>`로 우회한 전례가 있음
           — `table-full` 섹션 참고). 여기도 같은 방식으로 `Sample`을 걷어내고 라벨/스펙을
           일반 `<div>`로 세로 배치해 `w-full`이 Section의 960px 안에서 정상적으로
-          계산되게 함. */}
-      <Section id="grouped-list-screen" title="그룹화 리스트 관리 화면" titleEn="Grouped List Screen">
-        <div className="flex w-full flex-col items-start gap-3 py-7">
+          계산되게 함.
+          2026-08-06 후속 수정 — 담당자가 스크린샷으로 재지적: 위 수정 때문에 잘리지는
+          않게 됐지만 이번엔 반대로 960px 박스 안에 욱여넣어져 가로 스크롤 없이는 표가
+          거의 안 보이는 상태("이렇게 넣어버리면 다 잘려서보이잖아. 전체화면으로
+          보여질수있도록 구성해줘"). 이 데모는 다른 컴포넌트 샘플과 달리 "실제 풀스크린
+          화면이 이렇게 조합된다"를 보여주는 게 목적이라 애초에 960px 콘텐츠 폭에 맞을
+          이유가 없음 — `Section` 컴포넌트 자체를 안 쓰고(`Section`은 `max-w-[960px]`가
+          하드코딩돼 있어 prop으로 못 풂) `table-full`과 같은 방식으로 raw `<section>` +
+          `activeId` 수동 처리로 전환, 폭 제한을 없애 `<main>`이 실제로 내주는 폭
+          전체(사이드바 두 개를 뺀 나머지)를 그대로 씀. 데모 자체의 최소폭(1040px)은
+          안전장치로 유지하되 `w-full`을 우선해서 넓은 화면에서는 스크롤 없이 다 보이고
+          진짜 좁은 화면에서만 폴백으로 스크롤되게 함. 높이도 640px→900px로 늘려 실제
+          Figma 프레임(16938:42501, 1920×960 실측) 비율에 더 가깝게 맞춤.
+          하단 액션바 버튼 색도 같은 스크린샷에서 재확인: "원료투입분석"/"삭제"가
+          기존엔 fillGray였는데, node 16938:42501을 3000px로 확대해서 보니 "생산실적등록"과
+          동일한 진한 남색/검정 계열로 렌더링돼 있어(fillGray처럼 밝은 회색이 아님) 3개
+          버튼 다 fillBlack으로 통일 — 이전 판단("삭제도 danger 색이 아니라 회색")은 더
+          작은/다른 참고 자료 기준이었던 것으로 보이며, 이번엔 해당 노드를 직접 고해상도로
+          확인한 결과라 우선함. get_design_context/get_metadata는 이 노드가 74k+ 토큰이라
+          둘 다 크기 초과로 실패 — 고해상도 스크린샷(tier 4, 문서화된 근거 우선순위표
+          기준)이 이번에 쓸 수 있는 최선의 실측 수단이었음. */}
+      <section
+        id="grouped-list-screen"
+        className={cn(
+          "flex w-full scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8",
+          activeId !== "grouped-list-screen" && "hidden"
+        )}
+      >
+        <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+          <h2 className="flex items-center gap-2 text-[17px] font-bold leading-tight text-mes-gray-130">
+            그룹화 리스트 관리 화면
+          </h2>
+          <span className="text-[12px] leading-tight text-mes-gray-60">Grouped List Screen</span>
+        </div>
+        <div className="flex w-full flex-col items-start gap-3">
           <span className="font-mono text-[13px] font-semibold leading-none text-mes-gray-100">
             생산실적 리스트
           </span>
           <div className="w-full overflow-x-auto rounded-lg border border-mes-gray-30">
-            <div className="flex h-[640px] min-w-[1040px]">
+            <div className="flex h-[900px] w-full min-w-[1040px]">
               <Sidebar
                 items={SIDEBAR_NAV_ITEMS}
                 collapsed={patternScreenSidebarCollapsed}
@@ -4302,10 +4334,10 @@ export default function Home() {
                     </button>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button variant="fillGray" size="basic">
+                    <Button variant="fillBlack" size="basic">
                       원료투입분석
                     </Button>
-                    <Button variant="fillGray" size="basic">
+                    <Button variant="fillBlack" size="basic">
                       삭제
                     </Button>
                     <Button variant="fillBlack" size="basic">
@@ -4337,7 +4369,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* 2026-08-03 신규 — 담당자 요청: "더 작업이 필요한 것들의 구역을 미리 생성해 둬".
           아직 착수 안 한 티어3/4를 위한 자리만 미리 만들어둠(SIDEBAR_GROUPS의 "예정"
