@@ -4188,19 +4188,22 @@ export default function Home() {
           추정하지 않음). Table 그룹 구성 자체는 스크린샷의 "설비별 1단 그룹"과 완전히
           똑같지는 않음(재사용한 productionGroups는 지시일→설비→담당기사 3단) — 화면
           합성 패턴을 보여주는 게 목적이라 데이터를 새로 만들지 않고 기존 검증된 데이터를
-          그대로 씀. */}
+          그대로 씀.
+          2026-08-06 버그 수정 — 담당자가 스크린샷으로 "화면이 말도안되게 떠버림"이라고
+          지적. 원인: `Sample`의 children 래퍼가 `w-fit`(내용에 맞춰 hug)인데, 이 데모의
+          `min-w-[1040px]` 박스를 넣으면 그 래퍼 자체가 1040px로 커져서 Section의
+          `max-w-[960px]`를 뚫고 나가고, `overflow-x-auto`도 "이미 내용 크기에 맞춰진
+          박스"라 스크롤이 걸릴 대상이 없어져 무력화됨 — 그 결과 데모 박스와 Sample의
+          우측 spec 박스가 겹쳐 보였음(같은 문제를 이미 "테이블 · 합본 데모" 섹션에서
+          한 번 겪었고, 그때도 `Sample`을 쓰지 않고 일반 `<div>`로 우회한 전례가 있음
+          — `table-full` 섹션 참고). 여기도 같은 방식으로 `Sample`을 걷어내고 라벨/스펙을
+          일반 `<div>`로 세로 배치해 `w-full`이 Section의 960px 안에서 정상적으로
+          계산되게 함. */}
       <Section id="grouped-list-screen" title="그룹화 리스트 관리 화면" titleEn="Grouped List Screen">
-        <Sample
-          label="생산실적 리스트"
-          spec={[
-            { label: "출처", value: "클라우드MES node 17000:39999(스크린샷 기반)" },
-            {
-              label: "구성",
-              value: "Sidebar+상단탭+조회헤더+GroupQuery/Filter/QuickQuery/SearchInput+Table+액션바",
-            },
-            { label: "재사용", value: "전부 이 페이지의 기존 컴포넌트·state 재사용" },
-          ]}
-        >
+        <div className="flex w-full flex-col items-start gap-3 py-7">
+          <span className="font-mono text-[13px] font-semibold leading-none text-mes-gray-100">
+            생산실적 리스트
+          </span>
           <div className="w-full overflow-x-auto rounded-lg border border-mes-gray-30">
             <div className="flex h-[640px] min-w-[1040px]">
               <Sidebar
@@ -4313,7 +4316,27 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </Sample>
+          <div className="flex w-full flex-col gap-1.5 rounded-mes-control border border-mes-border-default bg-mes-bg-subtle px-3 py-2.5 text-[12px] leading-[1.5]">
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="shrink-0 text-mes-gray-60">출처</span>
+              <span className="text-right font-mono text-mes-gray-100">
+                클라우드MES node 17000:39999(스크린샷 기반)
+              </span>
+            </div>
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="shrink-0 text-mes-gray-60">구성</span>
+              <span className="text-right font-mono text-mes-gray-100">
+                Sidebar+상단탭+조회헤더+GroupQuery/Filter/QuickQuery/SearchInput+Table+액션바
+              </span>
+            </div>
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="shrink-0 text-mes-gray-60">재사용</span>
+              <span className="text-right font-mono text-mes-gray-100">
+                전부 이 페이지의 기존 컴포넌트·state 재사용
+              </span>
+            </div>
+          </div>
+        </div>
       </Section>
 
       {/* 2026-08-03 신규 — 담당자 요청: "더 작업이 필요한 것들의 구역을 미리 생성해 둬".
