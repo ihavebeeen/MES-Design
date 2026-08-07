@@ -14,6 +14,8 @@ import { cn } from "@/lib/utils";
  *
  * ── 1. 크기/레이아웃(정확한 실측치) ──────────────────────────────
  * - 전체 24x24px, 박스는 사방 1px 인셋 → 22x22px, radius 3px
+ * - 완성 화면 node 20274:73333에서 일부 20px 인스턴스가 확인되어 small(20)/default(24)
+ *   size를 지원한다.
  * - default-line(테두리형)만 border 1px, 나머지는 배경색 채움(border 없음)
  *
  * ── 2. Property별 실측값(get_variable_defs로 조회, 확정 팔레트와 정확히 일치) ──
@@ -64,10 +66,11 @@ export interface CheckboxProps
   color?: CheckboxColor;
   /** 일부만 선택된 상태(하위 항목 중 일부만 체크됨) — 판단 구현, 위 주석 5번 참고 */
   indeterminate?: boolean;
+  size?: "small" | "default";
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, color = "main", disabled, indeterminate = false, ...props }, ref) => {
+  ({ className, color = "main", disabled, indeterminate = false, size = "default", ...props }, ref) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
     React.useEffect(() => {
@@ -75,12 +78,18 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     }, [indeterminate]);
 
     return (
-      <span className={cn("relative inline-flex size-6 shrink-0 items-center justify-center", className)}>
+      <span
+        className={cn(
+          "relative inline-flex shrink-0 items-center justify-center",
+          size === "small" ? "size-5" : "size-6",
+          className
+        )}
+      >
         <input
           ref={inputRef}
           type="checkbox"
           disabled={disabled}
-          className="peer absolute inset-0 size-6 cursor-pointer appearance-none disabled:cursor-not-allowed"
+          className="peer absolute inset-0 size-full cursor-pointer appearance-none disabled:cursor-not-allowed"
           {...props}
         />
         {/* 박스 */}
@@ -98,7 +107,8 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           aria-hidden
           strokeWidth={3}
           className={cn(
-            "pointer-events-none absolute size-3.5 text-white opacity-0 transition-opacity",
+            "pointer-events-none absolute text-white opacity-0 transition-opacity",
+            size === "small" ? "size-3" : "size-3.5",
             "peer-checked:opacity-100",
             "peer-disabled:text-mes-gray-60"
           )}
@@ -108,7 +118,8 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           aria-hidden
           strokeWidth={3}
           className={cn(
-            "pointer-events-none absolute size-3.5 text-white opacity-0 transition-opacity",
+            "pointer-events-none absolute text-white opacity-0 transition-opacity",
+            size === "small" ? "size-3" : "size-3.5",
             "peer-indeterminate:opacity-100",
             "peer-disabled:text-mes-gray-60"
           )}

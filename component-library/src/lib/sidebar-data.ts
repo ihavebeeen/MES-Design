@@ -118,6 +118,31 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
     label: "그룹화 리스트 관리 화면",
     labelEn: "Grouped List Screen",
   },
+  {
+    id: "completed-entity-list",
+    label: "완성 화면 — 출하지시 리스트",
+    labelEn: "Shipment Instruction List",
+  },
+  {
+    id: "completed-master-detail",
+    label: "완성 화면 — LOT 추적",
+    labelEn: "LOT Trace Master Detail",
+  },
+  {
+    id: "completed-analytics-dashboard",
+    label: "완성 화면 — 생산분석 현황",
+    labelEn: "Production Analytics",
+  },
+  {
+    id: "completed-popup-types",
+    label: "완성 화면 — 팝업 유형",
+    labelEn: "Completed Popup Types",
+  },
+  {
+    id: "table-column-settings-pattern",
+    label: "테이블 컬럼 설정",
+    labelEn: "Table Column Settings",
+  },
 ];
 
 /**
@@ -213,6 +238,11 @@ export const PATTERN_ID_LIST = [
   "list-registration-modal",
   "inspection-checklist-modal",
   "grouped-list-screen",
+  "completed-entity-list",
+  "completed-master-detail",
+  "completed-analytics-dashboard",
+  "completed-popup-types",
+  "table-column-settings-pattern",
 ];
 export const PATTERN_NODES: SidebarNode[] = PATTERN_ID_LIST.map((id) => leaf(id));
 

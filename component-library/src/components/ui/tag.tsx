@@ -19,6 +19,8 @@ import { cn } from "@/lib/utils";
  * - 높이 22px, radius 2px, 좌우 padding 8px/상하 3px, 요소 간 gap 4px
  * - 텍스트 Pretendard SemiBold 12px/line-height 150%/letter-spacing -0.15px, 흰색 고정
  * - fill-main: 배경 Primary-60 / fill-gray: 배경 Gray-90(#5C667B) / fill-red: 배경 Danger-60
+ * - 완성 화면 node 20274:73333에서 opacity-main 62x18px specimen 2개가 확인되어
+ *   `opacityMain` color와 `compact`(18px) size를 추가했다.
  *
  * ── 아이콘 슬롯(2026-07-28 담당자 정정) ────────────────────────
  * Figma 원본엔 X(닫기) 아이콘이 텍스트 앞뒤로 2개 있었는데, 이건 실수/중복이 아니라
@@ -31,26 +33,30 @@ import { cn } from "@/lib/utils";
  * `whitespace-nowrap` 추가(원인/배경은 `filter.tsx` 5번 항목 참고).
  */
 
-export type TagColor = "main" | "gray" | "red";
+export type TagColor = "main" | "gray" | "red" | "opacityMain";
+export type TagSize = "compact" | "default";
 
 const tagColorClasses: Record<TagColor, string> = {
   main: "bg-mes-bg-brand",
   gray: "bg-mes-gray-90",
   red: "bg-mes-bg-danger",
+  opacityMain: "bg-mes-bg-brand-subtle-strong text-mes-text-brand",
 };
 
 export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   color?: TagColor;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
+  size?: TagSize;
 }
 
 const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
-  ({ color = "main", startIcon, endIcon, children, className, ...props }, ref) => (
+  ({ color = "main", size = "default", startIcon, endIcon, children, className, ...props }, ref) => (
     <span
       ref={ref}
       className={cn(
-        "inline-flex h-[22px] shrink-0 items-center gap-1 whitespace-nowrap rounded-mes-control-xs px-2 py-[3px] text-[12px] font-semibold leading-[1.5] text-mes-text-inverse",
+        "inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-mes-control-xs px-2 font-semibold leading-[1.5] text-mes-text-inverse",
+        size === "compact" ? "h-[18px] text-[11px]" : "h-[22px] py-[3px] text-[12px]",
         tagColorClasses[color],
         className
       )}

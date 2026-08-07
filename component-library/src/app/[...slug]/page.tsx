@@ -18,7 +18,7 @@ import ClientPage from "./client-page";
  *
  * 경로 목록 = "/foundations"(그룹 루트, 첫 항목 기본 표시) + "/foundations/{id}" 8개
  *           + "/components"(그룹 루트) + "/components/{id}" 63개
- *           + "/patterns"(그룹 루트) + "/patterns/{id}" 3개(2026-08-05 신규) = 총 77개.
+ *           + "/patterns"(그룹 루트) + "/patterns/{id}" 8개 = 총 82개.
  */
 export function generateStaticParams() {
   const foundationParams = [

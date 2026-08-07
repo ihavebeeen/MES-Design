@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils";
  * ── 1. 크기/레이아웃(정확한 실측치) ──────────────────────────────
  * - 전체 24x24px, 바깥 원(테두리)은 사방 4.17% 인셋(24*0.0417≈1px) → 지름 22px
  * - 선택됨 상태의 내부 점은 사방 20.83% 인셋(24*0.2083=5px) → 지름 14px
+ * - 완성 화면 node 20274:73333에서 20px 인스턴스도 반복 확인되어 small(20)/default(24)
+ *   size를 지원한다.
  *
  * ── 2. 상태별 색상(get_variable_defs로 조회, 확정 팔레트와 정확히 일치) ──
  * - sel(선택됨): 바깥 원 + 안쪽 점 모두 Primary-60(#1573FB) 단색
@@ -32,16 +34,25 @@ import { cn } from "@/lib/utils";
  *   내부 점 색은 Gray-50으로 임의 처리해둠(판단값, Figma 근거 없음) — 실제 디자인 필요시 확인.
  */
 
-export type RadioProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size">;
+export interface RadioProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
+  size?: "small" | "default";
+}
 
 const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
-  ({ className, disabled, ...props }, ref) => (
-    <span className={cn("relative inline-flex size-6 shrink-0 items-center justify-center", className)}>
+  ({ className, disabled, size = "default", ...props }, ref) => (
+    <span
+      className={cn(
+        "relative inline-flex shrink-0 items-center justify-center",
+        size === "small" ? "size-5" : "size-6",
+        className
+      )}
+    >
       <input
         ref={ref}
         type="radio"
         disabled={disabled}
-        className="peer absolute inset-0 size-6 cursor-pointer appearance-none disabled:cursor-not-allowed"
+        className="peer absolute inset-0 size-full cursor-pointer appearance-none disabled:cursor-not-allowed"
         {...props}
       />
       {/* 바깥 원 */}
@@ -57,7 +68,8 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       <span
         aria-hidden
         className={cn(
-          "pointer-events-none absolute inset-[5px] scale-0 rounded-full bg-mes-bg-brand transition-transform",
+          "pointer-events-none absolute scale-0 rounded-full bg-mes-bg-brand transition-transform",
+          size === "small" ? "inset-1" : "inset-[5px]",
           "peer-checked:scale-100",
           "peer-disabled:peer-checked:bg-mes-gray-50"
         )}

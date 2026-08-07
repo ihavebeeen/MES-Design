@@ -16,7 +16,7 @@ import { IconX } from "../icons/icon-x";
  * 컴포넌트로 확정.
  *
  * ── 1. 레이아웃(실측) ──────────────────────────────────────────────
- * 고정 크기 200×32px(하그 아님 — 다른 컴포넌트들과 달리 폭 고정), radius 3px.
+ * 기본 크기 200×32px(하그 아님 — 다른 컴포넌트들과 달리 폭 고정), radius 3px.
  * 좌측: 검색 아이콘(`mes/icon-search`, 16px, 좌 padding 12px) + gap 8px + 입력 텍스트
  * (Pretendard Medium 16px, Gray-130). 우측: 닫기(X) 버튼(32×32 히트영역, 아이콘 16px).
  *
@@ -34,8 +34,8 @@ import { IconX } from "../icons/icon-x";
  *
  * ── 3. 다른 트리거 바 컴포넌트와의 배치 차이 ─────────────────────────
  * `GroupQuery`/`QuickQuery`/`Filter`는 전부 내용에 따라 폭이 늘어나는 hug-width인 반면,
- * 이 컴포넌트만 유일하게 고정폭(200px) — 실측 노드에도 `w-[200px]`가 명시돼 있어 임의
- * 판단이 아니라 원본 그대로.
+ * 기본은 고정폭 200px이다. 완성 화면 node 20274:73333에서 327×32px 인스턴스가 추가로
+ * 확인되어 화면 slot이 폭을 소유할 수 있도록 `width="fill"`을 지원한다.
  */
 
 export interface SearchInputProps {
@@ -43,12 +43,14 @@ export interface SearchInputProps {
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  width?: "fixed" | "fill";
 }
 
 function SearchInput({
   value,
   onChange,
   placeholder = "검색어를 입력하세요",
+  width = "fixed",
   className,
 }: SearchInputProps) {
   const hasValue = value.length > 0;
@@ -56,7 +58,8 @@ function SearchInput({
   return (
     <div
       className={cn(
-        "flex h-8 w-[200px] shrink-0 items-center justify-between self-start rounded-mes-control-sm border transition-colors",
+        "flex h-8 shrink-0 items-center justify-between self-start rounded-mes-control-sm border transition-colors",
+        width === "fill" ? "w-full" : "w-[200px]",
         hasValue
           ? "border-mes-primary-30 bg-mes-bg-brand-subtle-strong"
           : "border-mes-border-default bg-white",

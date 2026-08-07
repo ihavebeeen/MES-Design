@@ -180,6 +180,8 @@ export interface SidebarProps {
   favorited?: boolean;
   onFavoriteClick?: () => void;
   onDashboardClick?: () => void;
+  /** 대시보드 완성 화면처럼 대시보드 바로가기를 현재 위치로 강조한다. */
+  dashboardActive?: boolean;
   /**
    * 사이드바 전체를 62px 아이콘 레일로 접을지 여부 — 제어 prop(node 9873:83651
    * "SNB-hide" 실측, 2026-07-31 6. 참고). `expandedKey`(1-depth 항목 펼침)와는
@@ -204,6 +206,7 @@ function Sidebar({
   favorited = false,
   onFavoriteClick,
   onDashboardClick,
+  dashboardActive = false,
   collapsed = false,
   onCollapseClick,
   onManualClick,
@@ -264,6 +267,7 @@ function Sidebar({
             onClick={onDashboardClick}
             className={cn(
               "flex h-[42px] w-full shrink-0 items-center rounded text-white",
+              dashboardActive && "bg-mes-primary-60",
               collapsed ? "justify-center" : "gap-2.5 px-[10px]"
             )}
           >

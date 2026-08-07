@@ -97,6 +97,13 @@ import { UserAccountMenu } from "@/components/ui/user-account-menu";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { X } from "lucide-react";
 import {
+  CompletedAnalyticsExample,
+  CompletedColumnSettingsExample,
+  CompletedEntityListExample,
+  CompletedMasterDetailExample,
+  CompletedPopupExamples,
+} from "@/components/patterns";
+import {
   IconArrow,
   IconArrowDownRight,
   IconArrowLine,
@@ -517,6 +524,36 @@ function Section({
         {titleEn && <span className="text-[12px] leading-tight text-mes-gray-60">{titleEn}</span>}
       </div>
       <div className="flex w-full flex-col divide-y divide-mes-gray-30">{laidOutChildren}</div>
+    </section>
+  );
+}
+
+/** 실제 1920×960 화면 조합을 960px 컴포넌트 샘플 폭으로 잘라내지 않는 패턴 전용 섹션. */
+function WidePatternSection({
+  id,
+  title,
+  titleEn,
+  children,
+}: {
+  id: string;
+  title: string;
+  titleEn: string;
+  children: React.ReactNode;
+}) {
+  const currentId = useContext(ActiveIdContext);
+  return (
+    <section
+      id={id}
+      className={cn(
+        "flex w-full scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8",
+        currentId !== id && "hidden"
+      )}
+    >
+      <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
+        <h2 className="text-[17px] font-bold leading-tight text-mes-gray-130">{title}</h2>
+        <span className="text-[12px] leading-tight text-mes-gray-60">{titleEn}</span>
+      </div>
+      <div className="w-full overflow-x-auto pb-2">{children}</div>
     </section>
   );
 }
@@ -1627,7 +1664,7 @@ export default function Home() {
           })}
         </aside>
 
-        <main className="flex flex-1 flex-col items-center gap-20 p-16">
+      <main className="flex min-w-0 flex-1 flex-col items-center gap-20 p-16">
           <h1 className="w-full max-w-[960px] text-xl font-semibold text-mes-gray-130">
             MES 컴포넌트 라이브러리
           </h1>
@@ -5296,6 +5333,51 @@ export default function Home() {
           </Fieldset>
         </Sample>
       </Section>
+
+      <WidePatternSection
+        id="completed-entity-list"
+        title="완성 화면 — 출하지시 리스트"
+        titleEn="Shipment Instruction List · Figma 11210:53641"
+      >
+        <CompletedEntityListExample />
+      </WidePatternSection>
+
+      <WidePatternSection
+        id="completed-master-detail"
+        title="완성 화면 — LOT 추적"
+        titleEn="LOT Trace Master Detail · Figma 11210:46674"
+      >
+        <CompletedMasterDetailExample />
+      </WidePatternSection>
+
+      <WidePatternSection
+        id="completed-analytics-dashboard"
+        title="완성 화면 — 생산분석 현황"
+        titleEn="Production Analytics · Figma 11210:47757"
+      >
+        <CompletedAnalyticsExample />
+      </WidePatternSection>
+
+      <Section
+        id="completed-popup-types"
+        title="완성 화면 — 팝업 유형"
+        titleEn="Completed Popup Types"
+      >
+        <div className="py-5">
+          <CompletedPopupExamples />
+        </div>
+      </Section>
+
+      <Section
+        id="table-column-settings-pattern"
+        title="테이블 컬럼 설정"
+        titleEn="Table Column Settings"
+      >
+        <div className="py-5">
+          <CompletedColumnSettingsExample />
+        </div>
+      </Section>
+
       {/* 2026-08-04 — 페이지 분할 도입 후: 이 두 안내 블록은 특정 id에 매인 게 아니라
           "/components 루트(카드 그리드 개요 화면)"에서만 같이 노출 — 특정 항목 페이지
           (/foundations/xxx, /components/xxx)나 홈("/")에서는 숨김. 담당자 리포트("radius

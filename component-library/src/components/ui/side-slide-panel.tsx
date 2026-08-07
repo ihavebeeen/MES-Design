@@ -3,8 +3,16 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
-import { Button } from "./button";
 import { IconX } from "../icons/icon-x";
+import { DialogFooter, type DialogAction } from "./dialog-footer";
+
+export type SideSlidePanelSize = "narrow-760" | "standard-900" | "wide-960";
+
+const sideSlidePanelSizeClasses: Record<SideSlidePanelSize, string> = {
+  "narrow-760": "max-w-[760px]",
+  "standard-900": "max-w-[900px]",
+  "wide-960": "max-w-[960px]",
+};
 
 /**
  * MES Side Slide Panel (우측 전체 슬라이드 패널, 오가니즘) — Figma 실측 기반
@@ -23,7 +31,8 @@ import { IconX } from "../icons/icon-x";
  *   변형 가능)"인데, 실제 스펙 페이지의 예시 프레임 자체는 900px로 그려져 있음(설명 텍스트와
  *   예시 프레임이 어긋난 경우 — Table 작업 때도 있었던 패턴) — 텍스트가 명시적으로 "기본"
  *   값을 못 박고 있고, 페이지 전체 콘텐츠 max-width(`max-w-[960px]`)와도 일치해서 960px을
- *   확정값으로 채택, 900px 프레임은 이 예시 하나의 변형으로 판단.
+ *   기본값으로 채택했다. 이후 완성 화면 node 20274:73333에서 760px 3종, 900px 2종이
+ *   반복 확인되어 760/900/960px size preset으로 확장했다. 기존 호출은 960px을 유지한다.
  * - 헤더(52px)/본문/푸터 구조, 패딩, 버튼 크기는 Center Modal과 완전히 동일한 값 —
  *   `center-modal.tsx` 문서 주석의 "1. 레이아웃" 항목 참고(중복 서술 안 함).
  * - 헤더/푸터는 항상 고정, 본문(`콘텐츠 스크롤 영역`)만 "모달창 높이에 따라 가변" —
@@ -47,6 +56,11 @@ export interface SideSlidePanelProps {
   onCancel?: () => void;
   confirmLabel?: string;
   onConfirm?: () => void;
+  /** 완성 화면의 실제 우측 패널 폭. 기본값은 기존 동작과 같은 960px. */
+  size?: SideSlidePanelSize;
+  /** 지정하면 기존 취소/저장 2버튼 대신 이 배열을 렌더링한다. 빈 배열은 푸터 없음. */
+  actions?: DialogAction[];
+  footer?: React.ReactNode;
   className?: string;
 }
 
@@ -59,16 +73,25 @@ function SideSlidePanel({
   onCancel,
   confirmLabel = "저장",
   onConfirm,
+  size = "wide-960",
+  actions,
+  footer,
   className,
 }: SideSlidePanelProps) {
+  const resolvedActions: DialogAction[] = actions ?? [
+    { id: "cancel", label: cancelLabel, variant: "fillGray", onClick: onCancel },
+    { id: "confirm", label: confirmLabel, variant: "fillBlack", onClick: onConfirm },
+  ];
+
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40" />
         <DialogPrimitive.Content
           className={cn(
-            "fixed inset-y-0 right-0 z-50 flex h-full w-full max-w-[960px] flex-col overflow-hidden bg-white",
+            "fixed inset-y-0 right-0 z-50 flex h-full w-full flex-col overflow-hidden bg-white",
             "shadow-[0px_0px_12px_rgba(0,0,0,0.2)]",
+            sideSlidePanelSizeClasses[size],
             className
           )}
         >
@@ -91,30 +114,11 @@ function SideSlidePanel({
             {children}
           </div>
 
-          <div className="flex w-full shrink-0 flex-col items-center justify-center py-4">
-            <div className="flex items-center gap-2.5">
-              <Button
-                variant="fillGray"
-                size="basic"
-                className="w-[160px]"
-                onClick={onCancel}
-              >
-                {cancelLabel}
-              </Button>
-              <Button
-                variant="fillBlack"
-                size="basic"
-                className="w-[160px]"
-                onClick={onConfirm}
-              >
-                {confirmLabel}
-              </Button>
-            </div>
-          </div>
+          {footer !== undefined ? footer : <DialogFooter actions={resolvedActions} />}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
   );
 }
 
-export { SideSlidePanel };
+export { SideSlidePanel, sideSlidePanelSizeClasses };

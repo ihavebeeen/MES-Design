@@ -3,8 +3,25 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
-import { Button } from "./button";
 import { IconX } from "../icons/icon-x";
+import { DialogFooter, type DialogAction } from "./dialog-footer";
+
+export type CenterModalSize =
+  | "compact-400"
+  | "compact-480"
+  | "medium-600"
+  | "standard-960"
+  | "large-1100"
+  | "wide-1400";
+
+const centerModalSizeClasses: Record<CenterModalSize, string> = {
+  "compact-400": "max-w-[400px]",
+  "compact-480": "max-w-[480px]",
+  "medium-600": "max-w-[600px]",
+  "standard-960": "max-w-[960px]",
+  "large-1100": "max-w-[1100px]",
+  "wide-1400": "max-w-[1400px]",
+};
 
 /**
  * MES Center Modal (화면 중앙 기본 팝업, 오가니즘) — Figma 실측 기반
@@ -21,9 +38,8 @@ import { IconX } from "../icons/icon-x";
  * ── 1. 레이아웃(실측, node 9873:82872 Type01) ──────────────────────
  * 전체: 흰 배경, radius **16px**(ConfirmDialog의 12px과 다름 — 과거에 이 둘을 같은
  * 값으로 착각했던 사고가 있어 재차 강조), 그림자 `0px 0px 24px rgba(0,0,0,.2)`.
- * - 너비: **960px**(구 버전은 원본 노드에 고유 너비 토큰이 없어 720px을 판단값으로
- *   뒀었는데, 이번 스펙 페이지가 명시적으로 960px 프레임을 보여줘 확정값으로 교체 —
- *   페이지 전체 콘텐츠 max-width(`max-w-[960px]`)와도 일치).
+ * - 기본 너비: **960px**. 완성 화면 node 20274:73333 감사 후 실제 콘텐츠 유형에 맞춘
+ *   400/480/600/960/1100/1400px size preset을 추가했다. 기존 호출은 960px을 유지한다.
  * - 최대 높이: **80vh**(스펙 페이지 빨간 주석 "모달창 최대 높이값은 화면의 80%(80vh)").
  *   헤더/푸터는 고정, 본문만 스크롤 — Type02(Side Slide Panel)와 동일한 규칙을 공유.
  * - 헤더(52px): 하단 테두리 1px Gray-30(#E4E7EE), 좌측 padding 20px/우측 14px, 상하 10px.
@@ -59,6 +75,12 @@ export interface CenterModalProps {
   onCancel?: () => void;
   confirmLabel?: string;
   onConfirm?: () => void;
+  /** 완성 화면의 실제 팝업 폭 체계. 기본값은 기존 동작과 같은 960px. */
+  size?: CenterModalSize;
+  /** 지정하면 기존 취소/저장 2버튼 대신 이 배열을 렌더링한다. 빈 배열은 푸터 없음. */
+  actions?: DialogAction[];
+  /** 완전한 커스텀 푸터가 필요할 때 사용. actions보다 우선한다. */
+  footer?: React.ReactNode;
   className?: string;
 }
 
@@ -71,16 +93,25 @@ function CenterModal({
   onCancel,
   confirmLabel = "저장",
   onConfirm,
+  size = "standard-960",
+  actions,
+  footer,
   className,
 }: CenterModalProps) {
+  const resolvedActions: DialogAction[] = actions ?? [
+    { id: "cancel", label: cancelLabel, variant: "fillGray", onClick: onCancel },
+    { id: "confirm", label: confirmLabel, variant: "fillBlack", onClick: onConfirm },
+  ];
+
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40" />
         <DialogPrimitive.Content
           className={cn(
-            "fixed left-1/2 top-1/2 z-50 flex max-h-[80vh] w-full max-w-[960px] -translate-x-1/2 -translate-y-1/2",
+            "fixed left-1/2 top-1/2 z-50 flex max-h-[80vh] w-[calc(100vw-40px)] -translate-x-1/2 -translate-y-1/2",
             "flex-col overflow-hidden rounded-[16px] bg-white shadow-[0px_0px_24px_rgba(0,0,0,0.2)]",
+            centerModalSizeClasses[size],
             className
           )}
         >
@@ -103,30 +134,12 @@ function CenterModal({
             {children}
           </div>
 
-          <div className="flex w-full shrink-0 flex-col items-center justify-center py-4">
-            <div className="flex items-center gap-2.5">
-              <Button
-                variant="fillGray"
-                size="basic"
-                className="w-[160px]"
-                onClick={onCancel}
-              >
-                {cancelLabel}
-              </Button>
-              <Button
-                variant="fillBlack"
-                size="basic"
-                className="w-[160px]"
-                onClick={onConfirm}
-              >
-                {confirmLabel}
-              </Button>
-            </div>
-          </div>
+          {footer !== undefined ? footer : <DialogFooter actions={resolvedActions} />}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
   );
 }
 
-export { CenterModal };
+export { CenterModal, centerModalSizeClasses };
+export type { DialogAction } from "./dialog-footer";
