@@ -89,7 +89,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           ref={inputRef}
           type="checkbox"
           disabled={disabled}
-          className="peer absolute inset-0 size-full cursor-pointer appearance-none disabled:cursor-not-allowed"
+          className="peer absolute inset-0 size-full cursor-pointer appearance-none rounded-mes-control-sm focus:outline-none disabled:cursor-not-allowed"
           {...props}
         />
         {/* 박스 */}

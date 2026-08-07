@@ -193,6 +193,7 @@ const LOOKUP_COLUMN_WIDTHS = [125.75, 125.75, 125.75, 58, 80, 80, 125.75, 80, 12
 const LOOKUP_COLUMN_ALIGNS: Array<"left" | "center" | "right"> = ["center", "left", "center", "center", "right", "right", "center", "center", "center", "right", "center", "center"];
 
 function LookupWorkOrderContent() {
+  const [checkedRows, setCheckedRows] = React.useState(() => LOOKUP_ITEMS.map((_, index) => index));
   const headers = ["계획일", "품목", "품목구분", "단위", "계획수량", "포장인원", "설비", "근무조", "지시일", "지시수량", "담당기사", "작업지시여부"];
   const units = ["EA", "EA", "EA", "kg", "kg", "EA", "EA", "kg"];
   const equipment = ["A1", "A2", "A3", "A5", "A2", "A4", "A1", "A2"];
@@ -224,8 +225,8 @@ function LookupWorkOrderContent() {
           </div>
         </div>
         <div className="flex h-12 shrink-0 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
-          <FixtureFilter />
-          <FixtureSearch placeholder="검색어 입력.." iconColor="default" className="w-[200px]" />
+          <FixtureFilter className="self-center" />
+          <FixtureSearch placeholder="검색어 입력.." iconColor="default" className="w-[200px] self-center" />
         </div>
       </section>
       <section data-figma-section="table" className="h-[448px] shrink-0 px-5 pt-4">
@@ -234,7 +235,8 @@ function LookupWorkOrderContent() {
           rows={rows}
           widths={LOOKUP_COLUMN_WIDTHS}
           aligns={LOOKUP_COLUMN_ALIGNS}
-          checkedRows={rows.map((_, index) => index)}
+          checkedRows={checkedRows}
+          onCheckedRowsChange={setCheckedRows}
           activeRow={0}
           selectionColor="gray"
           disabledRows={[7]}

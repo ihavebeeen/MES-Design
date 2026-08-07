@@ -131,14 +131,14 @@ function FixtureGroupQuery() {
   return <GroupQuery options={[]} levels={[null, null, null]} onLevelChange={() => undefined} />;
 }
 
-function FixtureFilter({ tags = [] }: { tags?: Array<{ label: string; count: number }> }) {
+function FixtureFilter({ tags = [], className }: { tags?: Array<{ label: string; count: number }>; className?: string }) {
   const categories = tags.map((tag, index) => ({
     id: `fixture-filter-${index}`,
     label: tag.label,
     options: Array.from({ length: Math.max(1, tag.count) }, (_, optionIndex) => ({ id: `option-${optionIndex}`, label: `${tag.label} ${optionIndex + 1}` })),
   }));
   const value = Object.fromEntries(categories.map((category, index) => [category.id, categories[index].options.map((option) => option.id)]));
-  return <Filter categories={categories} value={value} onChange={() => undefined} />;
+  return <Filter categories={categories} value={value} onChange={() => undefined} className={className} />;
 }
 
 interface FixtureTableProps {
@@ -149,6 +149,7 @@ interface FixtureTableProps {
   selectedRow?: number;
   selectedRows?: number[];
   checkedRows?: number[];
+  onCheckedRowsChange?: (rows: number[]) => void;
   activeRow?: number | null;
   selectionColor?: "main" | "gray" | "black";
   disabledRows?: number[];
@@ -166,7 +167,7 @@ interface FixtureTableProps {
 
 type FixtureTableData = { cells: React.ReactNode[] };
 
-function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, activeRow, selectionColor, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
+function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, onCheckedRowsChange, activeRow, selectionColor, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
   const columns: TableColumn<FixtureTableData>[] = headers.map((header, index) => ({
     key: `column-${index}`,
     label: header,
@@ -205,7 +206,13 @@ function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows
       horizontalScroll={horizontalScroll}
       disabledTextTone={disabledTextTone}
       selectedIds={resolvedSelectedRows.map((index) => `fixture-row-${index}`)}
-      onSelectedIdsChange={() => undefined}
+      onSelectedIdsChange={(ids) => {
+        if (!onCheckedRowsChange) return;
+        onCheckedRowsChange(ids.flatMap((id) => {
+          const match = /^fixture-row-(\d+)$/.exec(id);
+          return match ? [Number(match[1])] : [];
+        }));
+      }}
       className={cn("rounded-none border-x-0 border-t-0", className)}
     />
   );

@@ -64,6 +64,38 @@ npx eslint .            # 린트 검사
    사용자 입장에서는 "요청 안 한 걸 왜 바꿨냐"는 신뢰 문제가 된다 — 범위 밖 변경이
    필요하다고 생각되면 먼저 이유를 설명하고 확인을 구한 뒤 진행한다.
 
+## 완성 화면 Figma 재현 절차 (2026-08-07 확정)
+
+완성 화면을 여러 개 한꺼번에 비슷하게 만드는 방식은 금지한다. `생산계획(일) 연동
+일괄작업지시` 팝업(Figma `11210:50866`)을 다시 구현하면서 아래 절차가 실제로 정확도를
+높인 것이 확인됐다. 이후 모든 완성 화면과 팝업에 같은 순서를 적용한다.
+
+1. **한 번에 한 화면만 고정한다.** 대상 node와 이번에 수정하지 않을 화면을 먼저 선언한다.
+2. `get_design_context`만 보고 코드를 시작하지 않는다. `get_metadata`로 외곽 프레임부터
+   헤더·본문·섹션·테이블·행·셀 순서의 좌표/크기 장부를 만든다. HUG인 영역은 부모 크기와
+   자식 크기·gap·padding의 합을 모두 대조한다.
+3. **외곽 → 내부 순서로 맞춘다.** viewport, overlay, modal, header/body/footer, section,
+   table, cell control 순서로 고친다. 바깥 크기가 틀린 상태에서 내부 여백을 눈대중으로
+   보정하지 않는다.
+4. 기존 Foundation/Component를 우선 사용한다. 원본에 필요한 차이가 있으면 기존 기본값을
+   깨지 않는 optional prop/variant로 확장하고, 화면 안에서 비슷한 UI를 새로 그리지 않는다.
+5. Figma의 시각 상태뿐 아니라 **동작 상태도 연결한다.** Checkbox/Radio/Input/Table에
+   `onChange={() => undefined}` 같은 no-op 핸들러가 남아 있으면 완료로 보지 않는다. 선택 전후,
+   전체선택/부분선택, disabled, 열기/닫기를 실제 브라우저에서 조작해 상태 변화를 확인한다.
+6. Figma 기준 viewport에서 로컬 렌더를 실측한다. `getBoundingClientRect`, `clientWidth`,
+   `scrollWidth`, `clientHeight`, `scrollHeight`를 기록하고, 의도하지 않은 가로·세로 overflow가
+   0인지 확인한다. 스크린샷 육안 확인은 이 수치 검증 뒤에 한다.
+7. 차이는 `layout`, `token`, `component`, `content`, `state`로 분리해 하나씩 없앤다. "대충
+   비슷함"을 완료 기준으로 사용하지 않는다.
+8. TypeScript, 변경 파일 ESLint, `check:patterns`, production build를 통과시킨 뒤 화면 하나를
+   의미 단위 커밋 하나로 묶는다.
+
+`11210:50866`에서 정확도가 올라간 직접 원인은 (a) `1400×680` 모달이 공통 `max-height:80vh`로
+실제로 `1240×576`까지 잘리던 문제를 브라우저에서 발견한 것, (b) Figma의 108px 조회 영역과
+448px 테이블 영역을 별도 고정 섹션으로 복원한 것, (c) 선택열과 12개 컬럼 폭의 합을 1360px로
+계산하고 DOM의 `scrollWidth/clientWidth`가 둘 다 1360인지 확인한 것, (d) 공통 컴포넌트를
+재사용하면서 화면별 차이는 prop으로만 확장한 것이다.
+
 ## 참고 ID 모음 (검색 없이 바로 사용)
 
 - Figma 컴포넌트 라이브러리 파일: fileKey `qEAQNTqXf76bYydyupti2V`
