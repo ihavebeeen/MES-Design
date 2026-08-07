@@ -84,6 +84,9 @@ npx eslint .            # 린트 검사
 5. Figma의 시각 상태뿐 아니라 **동작 상태도 연결한다.** Checkbox/Radio/Input/Table에
    `onChange={() => undefined}` 같은 no-op 핸들러가 남아 있으면 완료로 보지 않는다. 선택 전후,
    전체선택/부분선택, disabled, 열기/닫기를 실제 브라우저에서 조작해 상태 변화를 확인한다.
+   선택된 행에서만 Input/Select/DatePicker가 보이는 화면은 특정 행 index에 편집 UI를
+   하드코딩하지 않는다. 실제 선택 state에서 편집 상태를 파생하고, 다른 행의 선택·해제·재선택 및
+   다중 선택에서도 컨트롤 전환과 입력값 유지 여부를 확인한다.
 6. Figma 기준 viewport에서 로컬 렌더를 실측한다. `getBoundingClientRect`, `clientWidth`,
    `scrollWidth`, `clientHeight`, `scrollHeight`를 기록하고, 의도하지 않은 가로·세로 overflow가
    0인지 확인한다. 스크린샷 육안 확인은 이 수치 검증 뒤에 한다.

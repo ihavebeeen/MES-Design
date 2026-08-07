@@ -102,11 +102,23 @@ function FixtureInput({ value, muted = false, onValueChange, className, ...props
   );
 }
 
-function FixtureSelect({ value, className, size = "default" }: { value: string; className?: string; size?: "default" | "small" }) {
+interface FixtureSelectProps {
+  value: string;
+  options?: string[];
+  onValueChange?: (value: string) => void;
+  className?: string;
+  size?: "default" | "small";
+}
+
+function FixtureSelect({ value, options, onValueChange, className, size = "default" }: FixtureSelectProps) {
+  const resolvedOptions = Array.from(new Set([value, ...(options ?? [])]));
+
   return (
-    <Select value={value} onValueChange={() => undefined}>
+    <Select value={value} onValueChange={(nextValue) => onValueChange?.(nextValue)}>
       <SelectTrigger size={size} className={className}><SelectValue /></SelectTrigger>
-      <SelectContent><SelectItem value={value}>{value}</SelectItem></SelectContent>
+      <SelectContent>
+        {resolvedOptions.map((option) => <SelectItem key={option} value={option}>{option}</SelectItem>)}
+      </SelectContent>
     </Select>
   );
 }

@@ -35,6 +35,8 @@ adapter다. 신규 제품 코드에서는 가능하면 public component를 직�
 | Adapter | Prop | 역할 |
 |---|---|---|
 | `FixtureInput` | `onValueChange` | 고정 예시값이 아니라 실제 입력 state를 갱신한다. 일괄작업지시의 `지시수량`에 사용한다. |
+| `FixtureSelect` | `options` | 선택된 행이 편집 상태가 될 때 실제 선택 가능한 옵션 목록을 전달한다. |
+| `FixtureSelect` | `onValueChange` | 드롭다운에서 바꾼 값을 행별 편집 state에 반영한다. |
 | `FixtureFilter` | `definitions` | 빈 필터가 아니라 실제 카테고리와 옵션을 `Filter`에 전달한다. |
 | `FixtureFilter` | `searchable` | public `Filter.searchable`을 화면 조립부에 전달한다. |
 | `FixtureTable` | `onCheckedRowsChange` | `Table`의 id 배열을 예제 행 index 배열로 변환해 실제 선택 state에 연결한다. |

@@ -191,28 +191,57 @@ function PurchaseContent() {
 
 const LOOKUP_COLUMN_WIDTHS = [125.75, 125.75, 125.75, 58, 80, 80, 125.75, 80, 125.75, 125.75, 125.75, 125.75];
 const LOOKUP_COLUMN_ALIGNS: Array<"left" | "center" | "right"> = ["center", "left", "center", "center", "right", "right", "center", "center", "center", "right", "center", "center"];
+const LOOKUP_EQUIPMENT_OPTIONS = ["A1", "A2", "A3", "A4", "A5"];
+const LOOKUP_SHIFT_OPTIONS = ["주간", "야간"];
+const LOOKUP_MANAGER_OPTIONS = ["선택", "홍길동", "김아무개"];
+
+interface LookupWorkOrderDraft {
+  equipment: string;
+  shift: string;
+  instructionDate: Date;
+  instructionQuantity: string;
+  manager: string;
+}
 
 function LookupWorkOrderContent() {
   const [checkedRows, setCheckedRows] = React.useState([0]);
-  const [instructionQuantity, setInstructionQuantity] = React.useState("3000");
   const headers = ["계획일", "품목", "품목구분", "단위", "계획수량", "포장인원", "설비", "근무조", "지시일", "지시수량", "담당기사", "작업지시여부"];
   const units = ["EA", "EA", "EA", "kg", "kg", "EA", "EA", "kg"];
   const equipment = ["A1", "A2", "A3", "A5", "A2", "A4", "A1", "A2"];
   const shifts = ["주간", "주간", "주간", "주간", "주간", "야간", "야간", "야간"];
-  const rows = LOOKUP_ITEMS.map((item, index) => [
-    "2024-08-30",
-    item,
-    "완제품",
-    units[index],
-    "2000",
-    "2000",
-    index === 0 ? <FixtureSelect key="equipment" value={equipment[index]} size="small" /> : equipment[index],
-    index === 0 ? <FixtureSelect key="shift" value={shifts[index]} size="small" /> : shifts[index],
-    index === 0 ? <DatePicker key="date" value={new Date(2025, 9, 30)} separator="-" iconColor="default" className="h-[22px] gap-1 rounded-mes-control-sm px-[6px] text-[13px]" /> : index === 7 ? "2025-10-30" : "",
-    index === 0 ? <FixtureInput key="qty" value={instructionQuantity} onValueChange={setInstructionQuantity} inputMode="numeric" size="small" /> : index === 7 ? "2000" : "",
-    index === 0 ? <FixtureSelect key="manager" value="홍길동" size="small" /> : index === 7 ? "김아무개" : "",
-    index === 7 ? <Tag key="done" color="gray">지시완료</Tag> : "",
-  ]);
+  const [rowDrafts, setRowDrafts] = React.useState<LookupWorkOrderDraft[]>(() =>
+    LOOKUP_ITEMS.map((_, index) => ({
+      equipment: equipment[index],
+      shift: shifts[index],
+      instructionDate: new Date(2025, 9, 30),
+      instructionQuantity: index === 0 ? "3000" : "",
+      manager: index === 0 ? "홍길동" : "선택",
+    }))
+  );
+
+  const updateRowDraft = <Key extends keyof LookupWorkOrderDraft>(index: number, key: Key, value: LookupWorkOrderDraft[Key]) => {
+    setRowDrafts((current) => current.map((draft, draftIndex) => draftIndex === index ? { ...draft, [key]: value } : draft));
+  };
+
+  const rows = LOOKUP_ITEMS.map((item, index) => {
+    const selected = checkedRows.includes(index);
+    const draft = rowDrafts[index];
+
+    return [
+      "2024-08-30",
+      item,
+      "완제품",
+      units[index],
+      "2000",
+      "2000",
+      selected ? <FixtureSelect key="equipment" value={draft.equipment} options={LOOKUP_EQUIPMENT_OPTIONS} onValueChange={(value) => updateRowDraft(index, "equipment", value)} size="small" /> : draft.equipment,
+      selected ? <FixtureSelect key="shift" value={draft.shift} options={LOOKUP_SHIFT_OPTIONS} onValueChange={(value) => updateRowDraft(index, "shift", value)} size="small" /> : draft.shift,
+      selected ? <DatePicker key="date" value={draft.instructionDate} onValueChange={(value) => updateRowDraft(index, "instructionDate", value)} separator="-" iconColor="default" className="h-[22px] gap-1 rounded-mes-control-sm px-[6px] text-[13px]" /> : index === 7 ? "2025-10-30" : "",
+      selected ? <FixtureInput key="qty" value={draft.instructionQuantity} onValueChange={(value) => updateRowDraft(index, "instructionQuantity", value)} inputMode="numeric" size="small" /> : index === 7 ? "2000" : "",
+      selected ? <FixtureSelect key="manager" value={draft.manager} options={LOOKUP_MANAGER_OPTIONS} onValueChange={(value) => updateRowDraft(index, "manager", value)} size="small" /> : index === 7 ? "김아무개" : "",
+      index === 7 ? <Tag key="done" color="gray">지시완료</Tag> : "",
+    ];
+  });
 
   return (
     <div className="flex h-[556px] w-full flex-col">
