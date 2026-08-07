@@ -5360,8 +5360,8 @@ export default function Home() {
 
       <Section
         id="completed-popup-types"
-        title="완성 화면 — 팝업 유형"
-        titleEn="Completed Popup Types"
+        title="완성 화면 — 팝업 패턴 분류"
+        titleEn="Completed Popup Pattern Taxonomy"
       >
         <div className="py-5">
           <CompletedPopupExamples />

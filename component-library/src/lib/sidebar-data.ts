@@ -135,8 +135,8 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   },
   {
     id: "completed-popup-types",
-    label: "완성 화면 — 팝업 유형",
-    labelEn: "Completed Popup Types",
+    label: "완성 화면 — 팝업 패턴 분류",
+    labelEn: "Completed Popup Pattern Taxonomy",
   },
   {
     id: "table-column-settings-pattern",

@@ -19,6 +19,7 @@ import {
   IconReload,
   IconShare,
   IconTrash,
+  IconX,
 } from "@/components/icons";
 import {
   FixtureDateRange,
@@ -31,9 +32,22 @@ import {
   SectionBand,
 } from "./mes-screen-fixtures";
 
-type PopupKind = "quantity" | "details" | "defect" | "weight" | "purchase" | "lookup" | "production" | "inspection";
+type PopupKind = "quantity" | "details" | "defect" | "weight" | "purchase" | "lookup" | "production" | "custom" | "inspection";
 
-const POPUPS: Array<{ id: PopupKind; label: string; node: string }> = [
+interface PopupDefinition {
+  id: PopupKind;
+  label: string;
+  node: string;
+}
+
+interface PopupPatternGroup {
+  id: string;
+  title: string;
+  description: string;
+  examples: PopupKind[];
+}
+
+const POPUPS: PopupDefinition[] = [
   { id: "quantity", label: "400 · 생산수량 입력", node: "11210:52992" },
   { id: "details", label: "480 · 품목 상세정보", node: "11210:52744" },
   { id: "defect", label: "600 · 불량수량 입력", node: "11210:52919" },
@@ -41,7 +55,44 @@ const POPUPS: Array<{ id: PopupKind; label: string; node: string }> = [
   { id: "purchase", label: "1100 · 발주 일괄등록", node: "11210:52026" },
   { id: "lookup", label: "1400 · 일괄작업지시", node: "11210:50866" },
   { id: "production", label: "900 · 생산실적 등록", node: "11210:48851" },
+  { id: "custom", label: "760 · 커스텀 정보 등록", node: "11210:51570" },
   { id: "inspection", label: "760 · 자주검사", node: "11210:51420" },
+];
+
+const SIDE_POPUP_GROUPS: PopupPatternGroup[] = [
+  {
+    id: "side-custom-columns",
+    title: "좌우 분할 · 커스텀 정보",
+    description: "좌측 기본 폼과 우측 커스텀 정보 컬럼을 함께 편집하는 유형",
+    examples: ["custom"],
+  },
+  {
+    id: "side-add-list",
+    title: "상하 분할 · 추가 + 하단 리스트",
+    description: "상단 입력값을 ‘추가’하여 하단 상세 리스트에 쌓는 유형",
+    examples: ["production"],
+  },
+  {
+    id: "side-inspection-items",
+    title: "좌우 분할 · 검사항목",
+    description: "좌측 검사 정보와 우측 항목별 판정을 함께 입력하는 유형",
+    examples: ["inspection"],
+  },
+];
+
+const CENTER_POPUP_GROUPS: PopupPatternGroup[] = [
+  {
+    id: "center-without-list",
+    title: "리스트 없음",
+    description: "단일 입력, 상세정보, 검사 폼처럼 폼과 정보 자체가 중심인 유형",
+    examples: ["quantity", "details", "weight"],
+  },
+  {
+    id: "center-with-list",
+    title: "리스트 있음",
+    description: "테이블에서 여러 행을 조회·선택·편집하는 유형 — 세부 종류는 추후 분리",
+    examples: ["defect", "purchase", "lookup"],
+  },
 ];
 
 const SAVE_ACTION: DialogAction = { id: "save", label: "저장", variant: "fillBlack" };
@@ -397,6 +448,139 @@ function ProductionContent() {
   );
 }
 
+interface CustomInformationRow {
+  id: number;
+  code: string;
+  name: string;
+  inputType: string;
+  informationType: string;
+}
+
+const INITIAL_CUSTOM_INFORMATION_ROWS: CustomInformationRow[] = [
+  { id: 1, code: "항목1", name: "재질", inputType: "텍스트입력", informationType: "규격정보" },
+  { id: 2, code: "항목2", name: "색상", inputType: "텍스트입력", informationType: "규격정보" },
+  { id: 3, code: "항목3", name: "두께", inputType: "텍스트입력", informationType: "규격정보" },
+  { id: 4, code: "항목4", name: "폭", inputType: "텍스트입력", informationType: "규격정보" },
+];
+
+function CustomInformationContent() {
+  const [receivingInspection, setReceivingInspection] = React.useState(true);
+  const [processInspection, setProcessInspection] = React.useState(true);
+  const [shippingInspection, setShippingInspection] = React.useState(true);
+  const [selfInspection, setSelfInspection] = React.useState(true);
+  const [lotCreation, setLotCreation] = React.useState(true);
+  const [creationBasis, setCreationBasis] = React.useState<"production" | "packaging">("production");
+  const [rows, setRows] = React.useState<CustomInformationRow[]>(INITIAL_CUSTOM_INFORMATION_ROWS);
+  const [editorOpen, setEditorOpen] = React.useState(true);
+  const [draft, setDraft] = React.useState({ code: "항목1", name: "항목명 사용자 지정", inputType: "텍스트 입력", informationType: "규격정보" });
+
+  const addInformation = () => {
+    setRows((current) => [
+      ...current,
+      {
+        id: Date.now(),
+        code: draft.code,
+        name: draft.name,
+        inputType: draft.inputType.replace(" ", ""),
+        informationType: draft.informationType,
+      },
+    ]);
+    setEditorOpen(false);
+  };
+
+  const inspectionRadio = (name: string, value: boolean, onChange: (value: boolean) => void) => (
+    <div className="flex gap-4">
+      <RadioOption name={name} checked={value} label="Y" onChange={() => onChange(true)} />
+      <RadioOption name={name} checked={!value} label="N" onChange={() => onChange(false)} />
+    </div>
+  );
+
+  const tableRows = rows.map((row) => [
+    <IconButton
+      key={`remove-${row.id}`}
+      aria-label={`${row.name} 삭제`}
+      size="xsmall"
+      icon={<IconX size={12} />}
+      onClick={() => setRows((current) => current.filter((item) => item.id !== row.id))}
+    />,
+    row.code,
+    row.name,
+    row.inputType,
+    row.informationType,
+  ]);
+
+  return (
+    <div className="grid min-h-full w-full grid-cols-[360px_minmax(0,1fr)]">
+      <div className="border-r border-mes-gray-30 p-5">
+        <SectionBand>기본 정보</SectionBand>
+        <div className="mt-3 space-y-4">
+          <LabeledControl label="품목" required><FixtureInput value="빠삐코" /></LabeledControl>
+          <LabeledControl label="품목 구분" required><FixtureInput value="완제품" /></LabeledControl>
+          <LabeledControl label="표준 단가"><FixtureInput value="500" inputMode="numeric" /></LabeledControl>
+          <LabeledControl label="단위" required><FixtureSelect value="EA" options={["EA", "kg", "BOX"]} /></LabeledControl>
+          <LabeledControl label="ROUTE"><FixtureSelect value="압출" options={["압출", "성형", "포장"]} /></LabeledControl>
+          <LabeledControl label="입고검사" required>{inspectionRadio("custom-receiving", receivingInspection, setReceivingInspection)}</LabeledControl>
+          <LabeledControl label="공정검사" required>{inspectionRadio("custom-process", processInspection, setProcessInspection)}</LabeledControl>
+          <LabeledControl label="출하검사" required>{inspectionRadio("custom-shipping", shippingInspection, setShippingInspection)}</LabeledControl>
+          <LabeledControl label="자주검사" required>{inspectionRadio("custom-self", selfInspection, setSelfInspection)}</LabeledControl>
+          <LabeledControl label="입상수(포장단위)"><FixtureInput value="500" inputMode="numeric" /></LabeledControl>
+          <LabeledControl label="LOT 생성" required>{inspectionRadio("custom-lot", lotCreation, setLotCreation)}</LabeledControl>
+          <LabeledControl label="생성기준">
+            <div className="flex gap-3">
+              <RadioOption name="custom-basis" checked={creationBasis === "production"} label="제조수량" onChange={() => setCreationBasis("production")} />
+              <RadioOption name="custom-basis" checked={creationBasis === "packaging"} label="박스포장수량" onChange={() => setCreationBasis("packaging")} />
+            </div>
+          </LabeledControl>
+          <LabeledControl label="기준수량"><div className="flex items-center gap-2"><FixtureInput value="500" inputMode="numeric" /><span className="text-[13px] text-mes-gray-80">박스</span></div></LabeledControl>
+        </div>
+      </div>
+
+      <div className="flex min-h-full min-w-0 flex-col bg-mes-gray-20 px-3 py-4">
+        <div className="flex h-8 items-center gap-1.5 text-[15px] font-bold">
+          <IconArrow size={14} />
+          <span>커스텀 정보 등록</span>
+        </div>
+        <FixtureTable
+          selectable={false}
+          horizontalScroll={false}
+          headers={["", "항목코드", "항목명", "입력유형", "정보Type"]}
+          widths={[32, 64, 64, 86, 94]}
+          aligns={["center", "center", "center", "center", "center"]}
+          rows={tableRows}
+          className="mt-2 shrink-0 bg-white"
+        />
+        <Button
+          variant="lineMain"
+          size="small"
+          className="mt-2 w-full"
+          startIcon={<IconPlus size={15} />}
+          onClick={() => {
+            setDraft({ code: "항목1", name: "항목명 사용자 지정", inputType: "텍스트 입력", informationType: "규격정보" });
+            setEditorOpen(true);
+          }}
+        >
+          정보 추가
+        </Button>
+
+        {editorOpen && <Card className="mt-3 shrink-0 p-4">
+          <b className="text-[15px]">정보 추가</b>
+          <div className="mt-3 space-y-2.5">
+            <LabeledControl label="항목코드"><FixtureSelect value={draft.code} options={["항목1", "항목2", "항목3", "항목4"]} onValueChange={(code) => setDraft((current) => ({ ...current, code }))} /></LabeledControl>
+            <LabeledControl label="항목명"><FixtureInput value={draft.name} onValueChange={(name) => setDraft((current) => ({ ...current, name }))} /></LabeledControl>
+            <LabeledControl label="입력유형"><FixtureSelect value={draft.inputType} options={["텍스트 입력", "숫자 입력", "선택"]} onValueChange={(inputType) => setDraft((current) => ({ ...current, inputType }))} /></LabeledControl>
+            <LabeledControl label="정보 Type"><FixtureSelect value={draft.informationType} options={["규격정보", "검사정보", "생산정보"]} onValueChange={(informationType) => setDraft((current) => ({ ...current, informationType }))} /></LabeledControl>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2.5">
+            <Button size="small" variant="fillGray" onClick={() => setEditorOpen(false)}>취소</Button>
+            <Button size="small" variant="fillBlack" onClick={addInformation}>저장</Button>
+          </div>
+        </Card>}
+        <Button className="mt-auto w-full" onClick={() => setEditorOpen(false)}>완료</Button>
+      </div>
+    </div>
+  );
+}
+
 function InspectionContent() {
   const [inspectionDate, setInspectionDate] = React.useState(new Date(2025, 9, 30));
   const [inspectionTime, setInspectionTime] = React.useState("14:45");
@@ -436,7 +620,7 @@ function InspectionContent() {
   );
 }
 
-function CenterPopup({ kind, open, onOpenChange }: { kind: Exclude<PopupKind, "production" | "inspection">; open: boolean; onOpenChange: (open: boolean) => void }) {
+function CenterPopup({ kind, open, onOpenChange }: { kind: Exclude<PopupKind, "production" | "custom" | "inspection">; open: boolean; onOpenChange: (open: boolean) => void }) {
   const defaultActions = createDefaultActions(() => onOpenChange(false));
   const config: Record<typeof kind, { title: string; size: CenterModalSize; height: string; actions: DialogAction[]; content: React.ReactNode }> = {
     quantity: { title: "생산수량 입력", size: "compact-400", height: "h-[437px]", actions: [SAVE_ACTION], content: <QuantityContent /> },
@@ -453,18 +637,92 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: Exclude<PopupKind, "p
 function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
   const defaultActions = createDefaultActions(() => onOpenChange(false));
   if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch p-0"><ProductionContent /></SideSlidePanel>;
+  if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><CustomInformationContent /></SideSlidePanel>;
   if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch p-0"><InspectionContent /></SideSlidePanel>;
   return <CenterPopup kind={kind} open={open} onOpenChange={onOpenChange} />;
+}
+
+function PopupPatternCard({
+  group,
+  selectedKind,
+  onOpen,
+}: {
+  group: PopupPatternGroup;
+  selectedKind: PopupKind;
+  onOpen: (kind: PopupKind) => void;
+}) {
+  return (
+    <Card className="flex h-full min-h-[188px] flex-col p-4">
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <Tag color="opacityMain" size="compact">패턴</Tag>
+        <span className="text-[12px] text-mes-gray-60">대표 예제 {group.examples.length}개</span>
+      </div>
+      <h4 className="text-[16px] font-bold text-mes-gray-130">{group.title}</h4>
+      <p className="mt-1.5 text-[13px] leading-5 text-mes-gray-80">{group.description}</p>
+      <div className="mt-auto flex flex-wrap gap-2 pt-4">
+        {group.examples.map((popupKind) => {
+          const popup = POPUPS.find((item) => item.id === popupKind)!;
+          return (
+            <Button
+              key={popup.id}
+              size="small"
+              variant={selectedKind === popup.id ? "fillMain" : "lineBlacktxt"}
+              onClick={() => onOpen(popup.id)}
+              title={`Figma node ${popup.node}`}
+            >
+              {popup.label}
+            </Button>
+          );
+        })}
+      </div>
+    </Card>
+  );
 }
 
 function CompletedPopupExamples() {
   const [kind, setKind] = React.useState<PopupKind>("production");
   const [open, setOpen] = React.useState(false);
   const current = POPUPS.find((popup) => popup.id === kind)!;
+  const openPopup = (popupKind: PopupKind) => {
+    setKind(popupKind);
+    setOpen(true);
+  };
+
   return (
-    <div className="flex w-full flex-col gap-4">
-      <div className="flex flex-wrap gap-2">{POPUPS.map((popup) => <Button key={popup.id} size="small" variant={kind === popup.id ? "fillMain" : "lineBlacktxt"} onClick={() => { setKind(popup.id); setOpen(true); }}>{popup.label}</Button>)}</div>
-      <Card className="flex min-h-[180px] flex-col items-center justify-center gap-3 bg-mes-gray-20 p-6 text-center"><Tag color="opacityMain" size="compact">Figma node {current.node}</Tag><p className="text-[14px] text-mes-gray-80">버튼을 누르면 실제 CenterModal 또는 SideSlidePanel 컴포넌트로 열립니다.</p><Button variant="fillBlack" onClick={() => setOpen(true)}>선택한 팝업 열기</Button></Card>
+    <div className="flex w-full flex-col gap-8">
+      <section aria-labelledby="side-popup-patterns-title">
+        <div className="mb-3 flex items-end justify-between gap-4">
+          <div>
+            <h3 id="side-popup-patterns-title" className="text-[18px] font-bold text-mes-gray-130">우측 슬라이드 팝업</h3>
+            <p className="mt-1 text-[13px] text-mes-gray-80">본문의 분할 방향과 우측 콘텐츠 역할을 기준으로 3가지 패턴으로 구분합니다.</p>
+          </div>
+          <Tag color="gray" size="compact">SideSlidePanel · 3종</Tag>
+        </div>
+        <div className="grid gap-3 lg:grid-cols-3">
+          {SIDE_POPUP_GROUPS.map((group) => <PopupPatternCard key={group.id} group={group} selectedKind={kind} onOpen={openPopup} />)}
+        </div>
+      </section>
+
+      <section aria-labelledby="center-popup-patterns-title">
+        <div className="mb-3 flex items-end justify-between gap-4">
+          <div>
+            <h3 id="center-popup-patterns-title" className="text-[18px] font-bold text-mes-gray-130">중앙 팝업</h3>
+            <p className="mt-1 text-[13px] text-mes-gray-80">1차 분류에서는 리스트 유무만 구분하고, 리스트의 세부 유형은 다음 단계에서 나눕니다.</p>
+          </div>
+          <Tag color="gray" size="compact">CenterModal · 2종</Tag>
+        </div>
+        <div className="grid gap-3 lg:grid-cols-2">
+          {CENTER_POPUP_GROUPS.map((group) => <PopupPatternCard key={group.id} group={group} selectedKind={kind} onOpen={openPopup} />)}
+        </div>
+      </section>
+
+      <Card className="flex min-h-[72px] items-center justify-between gap-4 bg-mes-gray-20 px-5 py-4">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2"><Tag color="opacityMain" size="compact">선택됨</Tag><b className="text-[14px]">{current.label}</b></div>
+          <p className="mt-1 text-[12px] text-mes-gray-60">Figma node {current.node}</p>
+        </div>
+        <Button variant="fillBlack" onClick={() => setOpen(true)}>선택한 팝업 다시 열기</Button>
+      </Card>
       <PopupRenderer kind={kind} open={open} onOpenChange={setOpen} />
     </div>
   );
