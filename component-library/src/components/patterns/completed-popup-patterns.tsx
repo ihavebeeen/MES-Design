@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CenterModal, type CenterModalSize, type DialogAction } from "@/components/ui/center-modal";
 import { DatePicker } from "@/components/ui/date-picker";
 import { IconButton } from "@/components/ui/icon-button";
@@ -12,14 +12,17 @@ import { SideSlidePanel, type SideSlidePanelSize } from "@/components/ui/side-sl
 import { Tag } from "@/components/ui/tag";
 import { TimePicker } from "@/components/ui/time-picker";
 import {
+  IconArrow,
   IconDownload,
-  IconFilter,
+  IconFileNote,
   IconPlus,
   IconReload,
+  IconShare,
   IconTrash,
 } from "@/components/icons";
 import {
   FixtureDateRange,
+  FixtureFilter,
   FixtureInput,
   FixtureSearch,
   FixtureSelect,
@@ -54,6 +57,14 @@ function FieldRow({ label, value, muted = false, select = false }: { label: stri
       {select ? <FixtureSelect value={value} /> : <FixtureInput value={value} muted={muted} />}
     </div>
   );
+}
+
+function LabeledControl({ label, children }: { label: string; children: React.ReactNode }) {
+  return <div className="grid grid-cols-[100px_1fr] items-center gap-2 text-[14px]"><span>{label}</span>{children}</div>;
+}
+
+function InlineLabeledControl({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
+  return <div className={`flex h-8 min-w-0 items-center overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white ${className ?? ""}`}><span className="shrink-0 px-3 text-[13px] text-mes-gray-60">{label}</span><div className="min-w-0 flex-1">{children}</div></div>;
 }
 
 function QuantityContent() {
@@ -125,7 +136,13 @@ function DefectContent() {
 }
 
 function WeightContent() {
-  const values = [35, 35, 35, 35, 24, 11, 12, 23, 14, 15, 21, 22, 23, 24, 25, 32, 10, 32, 19, 10, 31, 32, 33, 34, 35, 24, 32, 10, 24, 32];
+  const filledValues = [
+    [35, 35, 35, 35, 24],
+    [10, 19, 24, 10, 35],
+    [32, 10, 32, 19, 10],
+    [24, 32, 10, 24, 32],
+    [19, 24, 19, 32, 19],
+  ];
   return (
     <div className="grid h-full w-full grid-cols-[300px_1fr]">
       <div className="border-r border-mes-gray-30 p-5">
@@ -138,7 +155,17 @@ function WeightContent() {
         <SectionBand>중량검사</SectionBand>
         <Card className="mt-3 px-5 pb-5 pt-3">
           <div className="mb-3 flex h-8 items-center gap-5 text-[14px]"><span>배열 설정</span><RadioOption name="weight-layout" checked label="자동배열" /><RadioOption name="weight-layout" checked={false} label="사용자 설정" /></div>
-          <div className="grid grid-cols-10 gap-[3px]">{Array.from({ length: 100 }, (_, index) => <div key={index} className={`flex h-[39px] flex-col items-center justify-center rounded-mes-control-xs border text-center ${index < values.length ? "border-mes-primary-30 bg-mes-primary-30" : "border-mes-gray-30 bg-white"}`}><span className="text-[10px] text-mes-gray-80">{index < values.length ? index + 1 : ""}</span><b className="text-[13px]">{values[index] ?? ""}</b></div>)}</div>
+          <div className="grid grid-cols-10 gap-[3px]">{Array.from({ length: 100 }, (_, index) => {
+            const row = Math.floor(index / 10);
+            const column = index % 10;
+            const value = row < 5 && column < 5 ? filledValues[row][column] : undefined;
+            const cellTone = value !== undefined
+              ? "border-mes-primary-30 bg-mes-primary-30"
+              : column < 5
+                ? "border-mes-primary-30 bg-white"
+                : "border-mes-gray-30 bg-white";
+            return <div key={index} className={`flex h-[39px] flex-col items-center justify-center rounded-mes-control-xs border text-center ${cellTone}`}><span className="text-[10px] text-mes-gray-80">{value !== undefined ? index + 1 : ""}</span><b className="text-[13px]">{value ?? ""}</b></div>;
+          })}</div>
         </Card>
         <div className="mt-4 grid grid-cols-2 gap-6"><FieldRow label="배열넘버" value="93.98" muted /><FieldRow label="하한값" value="93.98" muted /></div>
       </div>
@@ -146,30 +173,55 @@ function WeightContent() {
   );
 }
 
-const PURCHASE_ITEMS = ["비비빅", "찰옥수수", "수박바", "찰옥수수", "빠삐코", "더블 비얀코", "죠스", "메가톤", "와일드바디", "옥메와까", "돼지바", "빠삐코"];
+const PURCHASE_ITEMS = ["비비빅", "찰옥수수", "수박바", "찰옥수수", "빵빠레", "더블 비얀코", "죠스", "메가톤", "와일드바디", "옥메와까", "돼지바", "빠삐코"];
+const LOOKUP_ITEMS = ["빠삐코", "빵빠레", "더블비얀코", "비비빅", "메로나", "생귤탱귤", "허거다즈", "누가바"];
 
 function PurchaseContent({ lookup = false }: { lookup?: boolean }) {
   const headers = lookup ? ["계획일", "품목", "품목구분", "단위", "계획수량", "포장인원", "설비", "근무조", "지시일", "지시수량", "담당기사", "작업지시여부"] : ["품목", "품목구분", "규격", "단위", "입고예정일", "입고구분", "입고수량", "입고창고"];
-  const rows = PURCHASE_ITEMS.slice(0, lookup ? 8 : 12).map((item, index) => lookup
-    ? ["2024-08-30", item, "완제품", "EA", "2000", "2000", `A${index + 1}`, "주간", index === 0 ? "2025-10-30" : "", index === 0 ? "3000" : "", index === 0 ? "홍길동" : "", index === 7 ? <Badge key="done" variant="grayFill">지시완료</Badge> : ""]
-    : [item, "완제품", "A", "kg", index < 2 ? <DatePicker key="date" value={new Date(2025, 9, 30)} className="h-[22px]" /> : "", index < 2 ? <FixtureSelect key="type" value="선택" size="small" /> : "", index < 2 ? <FixtureInput key="qty" value="0" size="small" /> : "", index < 2 ? <FixtureSelect key="warehouse" value="선택" size="small" /> : ""]);
+  const rows = (lookup ? LOOKUP_ITEMS : PURCHASE_ITEMS).map((item, index) => lookup
+    ? ["2024-08-30", item, "완제품", index < 3 || index === 5 || index === 6 ? "EA" : "kg", "2000", "2000", index === 0 ? <FixtureSelect key="equipment" value="A1" size="small" /> : `A${index === 3 ? 5 : (index % 5) + 1}`, index === 0 ? <FixtureSelect key="shift" value="주간" size="small" /> : index < 5 ? "주간" : "야간", index === 0 ? <DatePicker key="date" value={new Date(2025, 9, 30)} separator="-" className="h-[22px]" /> : index === 7 ? "2025-10-30" : "", index === 0 ? <FixtureInput key="qty" value="3000" size="small" /> : index === 7 ? "2000" : "", index === 0 ? <FixtureSelect key="manager" value="홍길동" size="small" /> : index === 7 ? "김아무개" : "", index === 7 ? <Tag key="done" color="gray">지시완료</Tag> : ""]
+    : [item, "완제품", "A", "kg", index < 2 ? <DatePicker key="date" value={new Date(2025, 9, 30)} separator="-" className="h-[22px] px-1.5 text-[12px]" /> : "", index < 2 ? <FixtureSelect key="type" value="선택" size="small" /> : "", index < 2 ? <FixtureInput key="qty" value="0" size="small" /> : "", index < 2 ? <FixtureSelect key="warehouse" value="선택" size="small" /> : ""]);
   return (
     <div className="flex h-full w-full flex-col">
       <div className="flex items-center justify-between"><b className="text-[16px]">{lookup ? "생산계획 리스트" : "품목 리스트"}</b>{lookup && <div className="flex gap-2"><FixtureDateRange label="일자" /><Button size="small">조회</Button><Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button></div>}</div>
-      <div className="mt-3 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3"><Button size="small" variant="lineBlacktxt" startIcon={<IconFilter size={16} />}>필터 추가</Button><FixtureSearch /></div>
-      {!lookup && <div className="mt-3 flex h-12 items-center justify-between rounded-t-mes-control bg-mes-gray-20 px-3"><b className="flex items-center gap-1"><IconReload size={16} />전체 일괄 변경</b><div className="flex gap-2"><DatePicker value={new Date(2025, 9, 30)} className="w-[220px]" /><FixtureSelect value="입고구분 선택" className="w-[120px]" /><FixtureInput value="0" className="w-[120px]" /><Button size="small">적용</Button></div></div>}
-      <div className="min-h-0 flex-1 overflow-hidden"><FixtureTable headers={headers} rows={rows} /></div>
+      <div className="mt-3 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3"><FixtureFilter tags={lookup ? [] : [{ label: "품목", count: 5 }, { label: "품목", count: 23 }, { label: "품목: 전체보기", count: 1 }]} /><FixtureSearch /></div>
+      {!lookup && <div className="mt-3 flex h-12 items-center gap-2.5 rounded-t-mes-control bg-mes-gray-20 px-3"><b className="flex w-[160px] shrink-0 items-center gap-1"><IconReload size={16} />전체 일괄 변경</b><InlineLabeledControl label="입고 예정일" className="w-[220px] shrink-0"><DatePicker value={new Date(2025, 9, 30)} separator="-" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 구분" className="flex-1"><FixtureSelect value="선택" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 수량" className="flex-1"><FixtureInput value="0" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 창고" className="flex-1"><FixtureSelect value="선택" className="h-full rounded-none border-0" /></InlineLabeledControl><Button size="small" className="w-[60px] shrink-0">적용</Button></div>}
+      <div className="min-h-0 flex-1 overflow-hidden"><FixtureTable headers={headers} rows={rows} selectedRows={lookup ? [0] : [0, 1]} checkedRows={lookup ? Array.from({ length: 7 }, (_, index) => index) : rows.map((_, index) => index)} activeRow={lookup ? 0 : undefined} selectionColor="gray" disabledRows={lookup ? [7] : Array.from({ length: 10 }, (_, index) => index + 2)} aligns={lookup ? ["center", "left", "center", "center", "right", "right", "center", "center", "center", "right", "center", "center"] : ["left", "center", "center", "center", "center", "center", "right", "center"]} /></div>
     </div>
   );
 }
 
 function ProductionContent() {
-  const rows = Array.from({ length: 10 }, (_, index) => ["13:00", "19:00", "kg", "100", "100", <Button key={`material-${index}`} size="xsmall" variant="opacityMain">투입정보</Button>, "10", "300", "302", "동진창고", <IconButton key={`delete-${index}`} aria-label="행 삭제" size="xsmall" icon={<IconTrash size={14} />} />]);
+  const rows = Array.from({ length: 10 }, (_, index) => ["13:00", "19:00", "kg", "100", "100", <Button key={`material-${index}`} size="xsmall" variant="opacityMain" endIcon={<IconArrow size={12} className="rotate-180" />}>투입정보</Button>, "10", "300", "302", "동진창고", <IconButton key={`delete-${index}`} aria-label="행 삭제" size="xsmall" icon={<IconTrash size={14} />} />]);
   return (
     <div className="flex h-full w-full flex-col">
-      <div className="border-b border-mes-gray-30 p-5"><SectionBand>지시정보</SectionBand><div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2.5">{[["설비", "내용", false], ["지시일", "년-월-일", false], ["근무조", "내용", false], ["품목", "선택", true], ["담당기사", "선택", true], ["누적생산", "내용", false], ["포장인원", "선택", true], ["작업상태", "진행중", true]].map((item) => <FieldRow key={String(item[0])} label={String(item[0])} value={String(item[1])} muted={item[1] === "내용"} select={Boolean(item[2])} />)}</div></div>
-      <div className="border-b border-mes-gray-30 p-5"><SectionBand>실적정보</SectionBand><div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2.5"><div className="grid grid-cols-[100px_1fr] items-center gap-2 text-[14px]"><span>작업시간</span><TimePicker value="12:00" /></div>{[["불량수량", "선택", true], ["생산수량", "내용 입력", false], ["저장창고", "선택", true], ["투입품목", "내용 입력", false]].map((item) => <FieldRow key={String(item[0])} label={String(item[0])} value={String(item[1])} select={Boolean(item[2])} />)}</div><div className="mt-3 flex justify-center"><Button size="small" className="w-[130px]" startIcon={<IconPlus size={15} />}>실적 추가</Button></div></div>
-      <div className="flex min-h-0 flex-1 flex-col px-5 pt-3"><div className="mb-2 flex items-center justify-between"><b className="text-[15px]">생산실적 상세 리스트</b><FixtureSearch className="w-[180px]" /></div><FixtureTable selectable={false} headers={["시작시간", "종료시간", "단위", "생산수량", "불량수량", "투입정보", "포장수량", "총지시(No)", "총지시(EA)", "창고명", "삭제"]} rows={rows} /></div>
+      <div className="h-[238px] shrink-0 border-b border-mes-gray-30 p-5">
+        <SectionBand>지시정보</SectionBand>
+        <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2.5">
+          <LabeledControl label="설비"><FixtureInput value="내용" muted /></LabeledControl>
+          <LabeledControl label="지시일"><DatePicker placeholder="년-월-일" /></LabeledControl>
+          <LabeledControl label="근무조"><FixtureInput value="내용" muted /></LabeledControl>
+          <LabeledControl label="품목"><div className="flex gap-2"><FixtureSelect value="선택" className="flex-1" /><IconButton aria-label="품목 상세정보" size="small" className="bg-mes-primary-20 text-mes-primary-60" icon={<IconFileNote size={16} />} /></div></LabeledControl>
+          <LabeledControl label="담당기사"><FixtureSelect value="선택" /></LabeledControl>
+          <LabeledControl label="누적생산"><FixtureInput value="내용" muted /></LabeledControl>
+          <LabeledControl label="포장인원"><FixtureSelect value="선택" /></LabeledControl>
+          <LabeledControl label="작업상태"><div className="flex items-center gap-4"><FixtureInput value="진행중" muted className="flex-1" /><label className="flex items-center gap-1.5 whitespace-nowrap"><Checkbox checked readOnly color="gray" size="small" />완료</label></div></LabeledControl>
+        </div>
+      </div>
+      <div className="h-[238px] shrink-0 border-b border-mes-gray-30 bg-mes-gray-10 p-5">
+        <div className="h-[195px] rounded-xl bg-mes-gray-20 p-3">
+          <b className="text-[16px]">실적정보</b>
+          <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2.5">
+            <LabeledControl label="작업시간"><FixtureInput value="12:00 ~ 14:00" /></LabeledControl>
+            <LabeledControl label="불량수량"><FixtureSelect value="선택" /></LabeledControl>
+            <LabeledControl label="생산수량"><FixtureInput value="내용 입력" /></LabeledControl>
+            <LabeledControl label="저장창고"><FixtureSelect value="선택" /></LabeledControl>
+            <LabeledControl label="투입품목"><FixtureInput value="내용 입력" /></LabeledControl>
+          </div>
+        </div>
+        <div className="-mt-4 flex justify-center"><Button size="small" className="w-[160px]" startIcon={<IconArrow size={15} className="-rotate-90" />}>실적 추가</Button></div>
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col px-5 pt-3"><div className="mb-2 flex items-center justify-between"><b className="text-[15px]">생산실적 상세 리스트</b><FixtureSearch className="w-[200px]" /></div><FixtureTable selectable={false} headers={["시작시작", "종료시간", "단위", "생산수량", "불량수량", "투입정보", "포장수량", "흑시작(No)", "흑시작(No)", "창고명", "삭제"]} widths={[70, 70, 60, 80, 80, 90, 75, 85, 85, 95, 40]} aligns={["center", "center", "center", "right", "right", "center", "right", "right", "right", "left", "center"]} rows={rows} /></div>
     </div>
   );
 }
@@ -177,8 +229,23 @@ function ProductionContent() {
 function InspectionContent() {
   return (
     <div className="grid h-full w-full grid-cols-[360px_1fr]">
-      <div className="border-r border-mes-gray-30 p-5"><SectionBand>대상정보</SectionBand><div className="mt-3 space-y-4">{[["생산일", "2024-10-30"], ["작업자", "홍길동"], ["설비", "A1"], ["제품명", "더블비얀코"], ["ROUTE", "압출"]].map((item) => <FieldRow key={item[0]} label={item[0]} value={item[1]} muted />)}<div className="grid grid-cols-[100px_1fr] items-center gap-2 text-[14px]"><span>검사일 *</span><DatePicker value={new Date(2025, 9, 30)} /></div><div className="grid grid-cols-[100px_1fr] items-center gap-2 text-[14px]"><span>검사시간 *</span><TimePicker value="14:45" /></div><FieldRow label="검사자 *" value="김아무개" select /><FieldRow label="Box-No" value="150" /><FieldRow label="중량검사 *" value="0" /><FieldRow label="특이사항" value="" /><div className="grid grid-cols-[100px_1fr] items-center gap-2 text-[14px]"><span>결과</span><div className="flex gap-4"><RadioOption name="inspection-result" checked label="합격" /><RadioOption name="inspection-result" checked={false} label="보류" /><RadioOption name="inspection-result" checked={false} label="불합" /></div></div></div></div>
-      <div className="p-5"><div className="flex items-center justify-between"><SectionBand>검사항목</SectionBand><Button size="small" variant="fillBlack" startIcon={<IconPlus size={15} />}>항목 추가</Button></div><div className="mt-4 space-y-4">{["Pallet 상태 *", "표기사양 *", "포장상태 *", "상차밴딩 *"].map((label) => <div key={label} className="flex h-8 items-center justify-between text-[14px]"><span>{label}</span><InspectionJudgement value="pass" onValueChange={() => undefined} /></div>)}</div></div>
+      <div className="border-r border-mes-gray-30 p-5">
+        <SectionBand className="w-16">대상정보</SectionBand>
+        <div className="mt-3 space-y-4">
+          {[["생산일", "2024-10-30"], ["작업자", "홍길동"], ["설비", "A1"], ["제품명", "더블비얀코"], ["ROUTE", "압출"]].map((item) => <FieldRow key={item[0]} label={item[0]} value={item[1]} muted />)}
+          <LabeledControl label="검사일 *"><DatePicker value={new Date(2025, 9, 30)} separator="-" /></LabeledControl>
+          <LabeledControl label="검사시간 *"><TimePicker value="14:45" indicator="chevron" /></LabeledControl>
+          <FieldRow label="검사자 *" value="김아무개" select />
+          <FieldRow label="Box-No" value="150" />
+          <LabeledControl label="중량검사 *"><div className="flex gap-2"><FixtureInput value="0" muted className="flex-1" /><IconButton aria-label="중량검사 상세" size="small" className="bg-mes-primary-20 text-mes-primary-60" icon={<IconShare size={16} />} /></div></LabeledControl>
+          <LabeledControl label="특이사항"><div className="flex gap-2"><FixtureInput value="" muted className="flex-1" /><IconButton aria-label="특이사항 상세" size="small" className="bg-mes-primary-20 text-mes-primary-60" icon={<IconShare size={16} />} /></div></LabeledControl>
+          <LabeledControl label="결과"><div className="flex gap-4"><RadioOption name="inspection-result" checked label="합격" /><RadioOption name="inspection-result" checked={false} label="일부" /><RadioOption name="inspection-result" checked={false} label="불합" /></div></LabeledControl>
+        </div>
+      </div>
+      <div className="p-5">
+        <div className="flex items-center gap-2"><SectionBand>검사항목</SectionBand><Button size="small" variant="fillBlack" startIcon={<IconPlus size={15} />}>항목 추가</Button></div>
+        <div className="mt-4 space-y-4">{["Pallet 상태 *", "표기사항 *", "포장상태 *", "상차밴딩 *"].map((label) => <div key={label} className="flex h-8 items-center justify-between text-[14px]"><span>{label}</span><InspectionJudgement value="pass" onValueChange={() => undefined} /></div>)}</div>
+      </div>
     </div>
   );
 }
@@ -193,7 +260,7 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: Exclude<PopupKind, "p
     lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: DEFAULT_ACTIONS, content: <PurchaseContent lookup /> },
   };
   const current = config[kind];
-  return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} className={current.height} contentClassName={kind === "weight" ? "p-0" : undefined}>{current.content}</CenterModal>;
+  return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} className={current.height} contentClassName={kind === "weight" ? "p-0" : kind === "details" ? "pt-0" : undefined}>{current.content}</CenterModal>;
 }
 
 function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {

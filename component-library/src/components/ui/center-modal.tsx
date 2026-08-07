@@ -108,8 +108,9 @@ function CenterModal({
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40" />
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60" />
         <DialogPrimitive.Content
+          onOpenAutoFocus={(event) => event.preventDefault()}
           className={cn(
             "fixed left-1/2 top-1/2 z-50 flex max-h-[80vh] w-[calc(100vw-40px)] -translate-x-1/2 -translate-y-1/2",
             "flex-col overflow-hidden rounded-[16px] bg-white shadow-[0px_0px_24px_rgba(0,0,0,0.2)]",

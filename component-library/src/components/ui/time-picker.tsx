@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Clock } from "lucide-react";
+import { ChevronDown, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverTrigger, PopoverContent } from "./popover";
 import { inputVariants } from "./input";
@@ -18,6 +18,7 @@ export interface TimePickerProps {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  indicator?: "clock" | "chevron";
 }
 
 function buildTimeOptions(step: number): string[] {
@@ -37,6 +38,7 @@ function TimePicker({
   placeholder = "시간 선택",
   disabled,
   className,
+  indicator = "clock",
 }: TimePickerProps) {
   const [open, setOpen] = React.useState(false);
   const options = React.useMemo(() => buildTimeOptions(step), [step]);
@@ -55,7 +57,7 @@ function TimePicker({
           )}
         >
           <span className="truncate whitespace-nowrap">{value ?? placeholder}</span>
-          <Clock size={16} className="shrink-0 text-mes-gray-60" />
+          {indicator === "chevron" ? <ChevronDown size={16} className="shrink-0 text-mes-gray-80" /> : <Clock size={16} className="shrink-0 text-mes-gray-60" />}
         </button>
       </PopoverTrigger>
       <PopoverContent align="start" className="max-h-[220px] w-[120px] overflow-y-auto p-1.5">

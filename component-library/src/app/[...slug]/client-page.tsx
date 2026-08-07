@@ -1043,9 +1043,9 @@ const productionColumns: TableColumn<ProductionRow>[] = [
     width: 148,
     align: "left",
     render: (row) => (
-      <a href="#" className="text-mes-primary-60 underline">
+      <Link href="#">
         {row.item}
-      </a>
+      </Link>
     ),
   },
   {
@@ -1078,9 +1078,9 @@ const productionColumns: TableColumn<ProductionRow>[] = [
     width: 91,
     align: "center",
     render: () => (
-      <a href="#" className="text-[13px] font-semibold text-mes-primary-60 underline">
+      <Link href="#" className="text-[13px] font-semibold">
         투입정보
-      </a>
+      </Link>
     ),
   },
   {
@@ -1096,9 +1096,9 @@ const productionColumns: TableColumn<ProductionRow>[] = [
     width: 91,
     align: "center",
     render: () => (
-      <a href="#" className="text-[13px] font-semibold text-mes-primary-60 underline">
+      <Link href="#" className="text-[13px] font-semibold">
         LOT조회
-      </a>
+      </Link>
     ),
   },
 ];

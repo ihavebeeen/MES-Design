@@ -3,13 +3,18 @@
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import {
-  IconArrowLine,
+  IconArrow,
+  IconArrowDownRight,
   IconCopy,
   IconDownload,
-  IconGrid,
+  IconReload,
+  IconSetting,
+  IconTrendingDown,
+  IconTrendingUp,
 } from "@/components/icons";
 import { FigmaScreenPreview } from "./figma-screen-preview";
 import { AnalyticsDashboardPattern } from "./analytics-dashboard-pattern";
@@ -19,10 +24,10 @@ import {
   FixtureDateRange,
   FixtureFilter,
   FixtureGroupQuery,
-  FixtureInput,
   FixtureSearch,
   FixtureSelect,
   FixtureTable,
+  FixtureTextRange,
   MesFixtureSidebar,
   MesPageTabs,
   RadioOption,
@@ -58,18 +63,18 @@ function CompletedEntityListExample() {
     "2025.10.30",
     row[0], row[1], row[2], row[3], row[4],
     <span key={`qty-${index}`} className="block text-right">{row[5]}</span>,
-    <Button key={`register-${index}`} size="xsmall" variant="opacityMain" endIcon={<IconArrowLine size={12} />}>등록</Button>,
+    <Button key={`register-${index}`} size="xsmall" variant="fillGray" endIcon={<IconArrow size={12} className="rotate-180" />}>등록</Button>,
     row[6],
     <ProgressCell key={`progress-${index}`} value={row[7] as number} />,
     <StatusTag key={`status-${index}`} status={row[8] as string} />,
-    <Button key={`edit-${index}`} size="xsmall" variant="lineBlacktxt" endIcon={<IconArrowLine size={12} />}>편집</Button>,
+    <Button key={`edit-${index}`} size="xsmall" variant="fillGray" endIcon={<IconArrow size={12} className="rotate-180" />}>편집</Button>,
   ]);
 
   return (
     <FigmaScreenPreview>
       <EntityListPattern
         navigation={<MesFixtureSidebar />}
-        tabs={<MesPageTabs active="출하지시 리스트" />}
+        tabs={<MesPageTabs active="판매계획" extraTabs={[]} />}
         header={
           <>
             <div className="flex h-12 items-center justify-between border-b border-mes-gray-30 px-5">
@@ -77,12 +82,11 @@ function CompletedEntityListExample() {
               <div className="flex items-center gap-2.5">
                 <FixtureDateRange />
                 <Button size="small" className="w-[50px]">조회</Button>
-                <Button size="small" variant="lineBlacktxt" className="w-[67px]" startIcon={<IconGrid size={16} />}>설정</Button>
+                <Button size="small" variant="lineBlacktxt" className="w-[67px]" startIcon={<IconSetting size={16} />}>설정</Button>
               </div>
             </div>
             <div className="flex h-12 items-center justify-between border-b border-mes-gray-30 px-5">
               <div className="flex items-center gap-2.5"><FixtureGroupQuery /><FixtureFilter /></div>
-              <FixtureSearch />
             </div>
           </>
         }
@@ -90,16 +94,16 @@ function CompletedEntityListExample() {
           <FixtureTable
             headers={["출하지시일", "판매예정일", "거래처", "품목", "품목 구분", "규격", "단위", "출하지시수량", "출하실적등록", "출하실적수량", "출하율", "상태", "비고"]}
             widths={[128, 128, 128, 128, 128, 128, 128, 128, 100, 128, 128, 128, 72]}
+            aligns={["left", "left", "left", "left", "left", "left", "left", "right", "center", "right", "left", "center", "center"]}
             rows={rows}
+            checkedRows={shipmentRows.map((_, index) => index)}
+            activeRow={null}
+            selectionColor="gray"
           />
         }
         footer={
           <>
-            <div className="flex gap-2.5">
-              <Button size="small" variant="lineBlacktxt" startIcon={<IconCopy size={16} />}>복사</Button>
-              <Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button>
-              <Button size="small" variant="lineMain" startIcon={<IconArrowLine size={16} />}>판매목표관리(일) 연동</Button>
-            </div>
+            <Button size="small" variant="lineMain" startIcon={<IconReload size={16} />}>판매목표관리(일) 연동</Button>
             <div className="flex gap-2.5"><Button size="small" variant="fillGray" className="w-40">삭제</Button><Button size="small" variant="fillBlack" className="w-40">출하지시 등록</Button></div>
           </>
         }
@@ -131,10 +135,10 @@ function CompletedMasterDetailExample() {
             <div className="flex h-12 items-center justify-between border-b border-mes-gray-30 px-5">
               <h3 className="text-[18px] font-bold">LOT 추적</h3>
               <div className="flex items-center gap-2.5">
-                <FixtureInput aria-label="LOT No" value="P240601001-0001 ~ P240601001-9999" className="w-[310px]" />
+                <FixtureTextRange label="LOT No" start="P240601001-0001" end="P240601001-9999" />
                 <FixtureDateRange />
                 <Button size="small" className="w-[50px]">조회</Button>
-                <Button size="small" variant="lineBlacktxt" className="w-[67px]" startIcon={<IconGrid size={16} />}>설정</Button>
+                <Button size="small" variant="lineBlacktxt" className="w-[67px]" startIcon={<IconSetting size={16} />}>설정</Button>
               </div>
             </div>
             <div className="flex h-12 items-center justify-between border-b border-mes-gray-30 px-5">
@@ -150,19 +154,32 @@ function CompletedMasterDetailExample() {
           <FixtureTable
             headers={["LOT No", "품목", "품목 구분", "단위", "수량", "설비", "담당자", "입고처", "입고(생산)일", "검사여부", "출하처", "출하일"]}
             widths={[192, 192, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120]}
+            aligns={["left", "left", "left", "center", "right", "left", "left", "left", "left", "center", "left", "left"]}
             rows={lotMasterRows}
             selectedRow={1}
+            checkedRows={lotMasterRows.map((_, index) => index)}
+            activeRow={1}
+            selectionColor="gray"
+            disabledRows={[0]}
+            selectionHeaderLabel="선택"
           />
         }
-        detailTitle="↳  투입품목 상세"
+        detailTitle={<span className="flex items-center gap-2"><IconArrowDownRight size={20} className="text-mes-gray-60" />투입품목 상세</span>}
         detail={
           <FixtureTable
             headers={["LOT No", "품목", "품목 구분", "단위", "수량", "투입수량", "잔량", "ROUTE명", "설비", "담당자", "입고처", "입고(생산)일", "검사여부", "투입일"]}
             widths={[210, 210, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]}
+            aligns={["left", "left", "left", "center", "right", "right", "right", "left", "left", "left", "left", "left", "center", "left"]}
             rows={lotDetailRows}
+            selectable={false}
           />
         }
-        footer={<div className="flex gap-2.5"><Button size="small" variant="lineBlacktxt" startIcon={<IconCopy size={16} />}>복사</Button><Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button></div>}
+        footer={
+          <div className="flex gap-2.5">
+            <Button size="small" variant="lineBlacktxt" startIcon={<IconCopy size={16} />}>복사</Button>
+            <Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button>
+          </div>
+        }
       />
     </FigmaScreenPreview>
   );
@@ -172,37 +189,57 @@ const metricCards = [
   { title: "판매 계획 달성률", value: "83%", accent: "bg-mes-primary-60", left: ["당월 판매 계획", "5,000백만원"], right: ["당월 출하 실적", "4,500백만원"] },
   { title: "생산계획 진척률", value: "83%", accent: "bg-mes-primary-60", left: ["당월 생산 계획", "5,000백만원"], right: ["당월 생산 실적", "4,500백만원"] },
   { title: "당월 생산계획 증감률", value: "10.5%", accent: "text-mes-primary-60", left: ["당월 계획", "5,000백만원"], right: ["전월 계획", "4,500백만원"] },
-  { title: "종합 불량 증감률", value: "37.7%", accent: "text-mes-danger-60", left: ["당월 불량률", "3.25%"], right: ["전월 불량률", "5.24%"] },
+  { title: "종합 물량 증감률", value: "37.7%", accent: "text-mes-danger-60", left: ["당월 불량률", "3.25%"], right: ["전월 불량률", "5.24%"] },
 ];
 
 function MetricCard({ item, index }: { item: (typeof metricCards)[number]; index: number }) {
   return (
-    <Card className="flex h-[106px] flex-col rounded-xl bg-mes-gray-20 p-4">
-      <div className="flex items-center justify-between"><b className="text-[15px]">{item.title}</b><strong className="text-[24px]">{index > 1 && <span className={item.accent}>↗ </span>}{item.value}</strong></div>
-      {index < 2 && <div className="mt-3 h-2 overflow-hidden rounded-full bg-mes-gray-40"><div className={`h-full w-[83%] ${item.accent}`} /></div>}
-      <div className="mt-auto grid grid-cols-2 divide-x divide-mes-gray-30 rounded-lg bg-white py-2 text-center text-[12px]">
-        {[item.left, item.right].map((value, itemIndex) => <div key={itemIndex}><span className="block text-mes-gray-80">{value[0]}</span><b>{value[1]}</b></div>)}
+    <Card className="flex h-[197px] flex-col rounded-xl border-0 bg-mes-gray-20 p-5">
+      <div className="flex h-[27px] items-center justify-between">
+        <b className="text-[15px]">{item.title}</b>
+        <strong className="flex items-center gap-1 text-[24px]">
+          {index === 2 && <IconTrendingDown size={20} className="text-mes-primary-60" />}
+          {index === 3 && <IconTrendingUp size={20} className="text-mes-danger-60" />}
+          {item.value}
+        </strong>
+      </div>
+      <div className="mt-3 flex min-h-0 flex-1 flex-col">
+        {index < 2 && <div className="h-2 overflow-hidden rounded-full bg-mes-gray-40"><div className={`h-full w-[83%] ${item.accent}`} /></div>}
+        <div className="mt-auto grid h-[78px] grid-cols-2 divide-x divide-mes-gray-30 rounded-lg bg-white text-center text-[12px]">
+          {[item.left, item.right].map((value, itemIndex) => <div key={itemIndex} className="flex flex-col items-center justify-center"><span className="block text-mes-gray-80">{value[0]}</span><b className="mt-1 text-[14px]">{value[1]}</b></div>)}
+        </div>
       </div>
     </Card>
   );
 }
 
-function HorizontalBars({ labels, values }: { labels: string[]; values: number[] }) {
+function HorizontalBars({ labels, values, widths, ticks }: { labels: string[]; values: number[]; widths: number[]; ticks: string[] }) {
   return (
-    <div className="flex flex-1 flex-col justify-around py-3">
-      {labels.map((label, index) => <div key={label} className="grid grid-cols-[55px_1fr] items-center gap-2 text-[12px]"><span className="text-right">{label}</span><span className="relative h-5 border-l border-mes-gray-30"><span className="block h-4 rounded-r bg-mes-primary-60" style={{ width: `${values[index]}%` }} /><b className="absolute left-1 top-0 text-[10px] text-white">{index === 0 ? values[index] : values[index] * 10}</b></span></div>)}
+    <div className="grid h-full grid-cols-[55px_1fr] grid-rows-[1fr_18px] gap-x-2 pt-3 text-[12px]">
+      <div className="flex flex-col justify-around pb-1 text-right">{labels.map((label) => <span key={label}>{label}</span>)}</div>
+      <div className="flex flex-col justify-around border-l border-mes-gray-30 pb-1" style={{ backgroundImage: "repeating-linear-gradient(to right, transparent 0, transparent calc(20% - 1px), #d7dce5 calc(20% - 1px), #d7dce5 20%)" }}>
+        {labels.map((label, index) => (
+          <div key={label} className="flex h-5 items-center">
+            <span className="flex h-4 items-center rounded-r bg-mes-primary-60 px-1 text-[10px] font-semibold text-white" style={{ width: `${widths[index]}%` }}>
+              {values[index].toLocaleString("ko-KR")}
+            </span>
+          </div>
+        ))}
+      </div>
+      <span />
+      <div className="flex justify-between text-[10px] text-mes-gray-60">{ticks.map((tick) => <span key={tick}>{tick}</span>)}</div>
     </div>
   );
 }
 
 function ProductionChart() {
-  const bars = [63, 31, 50, 24, 84, 31, 51, 25, 61, 31, 79, 43];
+  const bars = [125, 58, 99, 79, 158, 58, 104, 79, 115, 58, 149, 83];
   return (
-    <div className="relative flex flex-1 items-end gap-4 border-b border-mes-gray-30 px-10 pb-5 pt-5">
-      {bars.map((value, index) => <div key={index} className="flex flex-1 flex-col items-center justify-end gap-1 text-[10px] text-mes-gray-60"><span className="w-8 rounded-t bg-mes-primary-30" style={{ height: value * 1.7 }} /><span>A{index + 1}</span></div>)}
-      <svg className="pointer-events-none absolute inset-x-10 top-8 h-[120px] w-[calc(100%-80px)]" viewBox="0 0 600 120" preserveAspectRatio="none" aria-label="불량률 추이">
-        <polyline points="0,30 55,68 110,42 165,75 220,74 275,18 330,62 385,78 440,51 495,62 550,41 600,60" fill="none" stroke="#f04452" strokeWidth="2" />
-        {[0,55,110,165,220,275,330,385,440,495,550,600].map((x, i) => <circle key={i} cx={x} cy={[30,68,42,75,74,18,62,78,51,62,41,60][i]} r="3" fill="#f04452" />)}
+    <div className="relative flex h-full items-end gap-4 border-b border-mes-gray-30 px-10 pb-5 pt-5">
+      {bars.map((value, index) => <div key={index} className="flex flex-1 flex-col items-center justify-end gap-1 text-[10px] text-mes-gray-60"><span className="w-8 rounded-t bg-mes-primary-30" style={{ height: value }} /><span>A{index + 1}</span></div>)}
+      <svg className="pointer-events-none absolute inset-x-10 top-8 h-[150px] w-[calc(100%-80px)]" viewBox="0 0 600 150" preserveAspectRatio="none" aria-label="불량률 추이">
+        <polyline points="0,58 55,88 110,66 165,104 220,105 275,44 330,85 385,103 440,71 495,81 550,59 600,83" fill="none" stroke="#f04452" strokeWidth="2" />
+        {[0,55,110,165,220,275,330,385,440,495,550,600].map((x, i) => <circle key={i} cx={x} cy={[58,88,66,104,105,44,85,103,71,81,59,83][i]} r="3" fill="#f04452" />)}
       </svg>
     </div>
   );
@@ -216,10 +253,31 @@ function CompletedAnalyticsExample() {
         tabs={<MesPageTabs active="생산분석 현황" />}
         metrics={metricCards.map((item, index) => ({ id: String(index), content: <MetricCard item={item} index={index} /> }))}
         panels={[
-          { id: "summary", title: "", content: <div className="h-full"><div className="mb-2 flex gap-2"><FixtureSelect value="2025년 09월" className="w-[140px]" /><FixtureSelect value="성형" className="w-[130px]" /></div><FixtureTable selectable={false} headers={["설비", "양품(백만원)", "불량(백만원)", "불량률(%)"]} rows={Array.from({ length: 5 }, () => ["A1", "5,000", "30", "0.6"])} /></div> },
-          { id: "production", title: "생산실적 현황", content: <ProductionChart /> },
-          { id: "defect", title: "TOP5 불량유형", content: <HorizontalBars labels={["기타", "오무힘", "중량불량", "찍힘", "스크래치"]} values={[57, 35, 8, 30, 5]} /> },
-          { id: "top", title: "TOP5 생산품", content: <HorizontalBars labels={["빙빙", "누가바", "돼지바", "비비빅", "팥빙수"]} values={[95, 55, 85, 48, 80]} /> },
+          {
+            id: "summary",
+            title: "",
+            className: "p-5",
+            content: <div className="h-full"><div className="flex h-8 items-center justify-between"><div className="flex gap-2"><FixtureSelect value="2025년 09월" className="w-[140px]" /><FixtureSelect value="성형" className="w-[140px]" /></div><Button size="small" variant="fillBlack" className="w-[69px]">전체보기</Button></div><ButtonGroup className="mt-3 w-full"><Button size="small" variant="lineBlacktxt" className="flex-1">설비별</Button><Button size="small" variant="fillGray" className="flex-1 text-mes-gray-60">작업자별</Button></ButtonGroup><div className="mt-3"><FixtureTable selectable={false} headers={["설비", "양품(백만원)", "불량(백만원)", "불량률(%)"]} aligns={["center", "right", "right", "right"]} rows={Array.from({ length: 5 }, () => ["A1", "5,000", "30", "0.6"])} /></div></div>,
+          },
+          {
+            id: "production",
+            title: "생산실적 현황",
+            legend: <div className="flex gap-4 text-[10px] text-mes-gray-70"><span className="flex items-center gap-1"><i className="h-0.5 w-4 bg-mes-primary-60" />생산실적(백만원)</span><span className="flex items-center gap-1"><i className="h-0.5 w-4 bg-mes-danger-60" />불량률(%)</span></div>,
+            contentClassName: "pt-2",
+            content: <ProductionChart />,
+          },
+          {
+            id: "defect",
+            title: "TOP5 불량유형",
+            legend: <span className="flex items-center gap-1 text-[10px] text-mes-gray-70"><i className="h-0.5 w-4 bg-mes-primary-60" />불량금액(백만원)</span>,
+            content: <HorizontalBars labels={["기타", "오무힘", "중량불량", "흑점", "스크래치"]} values={[57, 73, 42, 54, 54]} widths={[78, 47, 11, 41, 7]} ticks={["0", "20", "40", "60", "80", "100", "120", "140"]} />,
+          },
+          {
+            id: "top",
+            title: "TOP5 생산품",
+            legend: <span className="flex items-center gap-1 text-[10px] text-mes-gray-70"><i className="h-0.5 w-4 bg-mes-primary-60" />생산금액(백만원)</span>,
+            content: <HorizontalBars labels={["햇반", "누가바", "죠스바", "비비빅", "팥빙수"]} values={[5000, 3500, 4398, 3010, 3989]} widths={[82, 47, 75, 40, 72]} ticks={["0", "20", "40", "60", "80", "100", "120", "140"]} />,
+          },
         ]}
       />
     </FigmaScreenPreview>

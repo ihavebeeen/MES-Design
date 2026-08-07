@@ -10,8 +10,10 @@ export interface AnalyticsPanelItem {
   id: string;
   title: string;
   description?: string;
+  legend?: React.ReactNode;
   content: React.ReactNode;
-  span?: 1 | 2;
+  className?: string;
+  contentClassName?: string;
 }
 
 export interface AnalyticsDashboardPatternProps {
@@ -47,13 +49,13 @@ function AnalyticsDashboardPattern({
             ))}
           </div>
 
-          <div className="mt-5 grid h-[737px] grid-cols-2 grid-rows-2 gap-5">
+          <div className="mt-5 grid h-[665px] grid-cols-2 grid-rows-[308px_337px] gap-5">
             {panels.map((panel) => (
               <section
                 key={panel.id}
                 className={cn(
                   "flex min-h-0 flex-col rounded-xl border border-mes-gray-30 bg-white px-5 py-4",
-                  panel.span === 2 && "col-span-2"
+                  panel.className
                 )}
               >
                 <header className="flex shrink-0 items-center justify-between">
@@ -63,8 +65,9 @@ function AnalyticsDashboardPattern({
                       <p className="mt-0.5 text-[12px] text-mes-gray-60">{panel.description}</p>
                     )}
                   </div>
+                  {panel.legend}
                 </header>
-                <div className="min-h-0 flex-1">{panel.content}</div>
+                <div className={cn("min-h-0 flex-1", panel.contentClassName)}>{panel.content}</div>
               </section>
             ))}
           </div>

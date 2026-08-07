@@ -66,13 +66,12 @@ function MesFixtureSidebar({ dashboard = false, collapsed = false }: { dashboard
   );
 }
 
-function MesPageTabs({ active }: { active: string }) {
+function MesPageTabs({ active, extraTabs = ["거래처 등록", "품목 등록"] }: { active: string; extraTabs?: string[] }) {
   return (
     <div className="flex h-[38px] w-full items-center justify-between bg-black pr-3">
       <div className="flex h-full">
         <PageTopTabItem label={active} active />
-        <PageTopTabItem label="거래처 등록" />
-        <PageTopTabItem label="품목 등록" />
+        {extraTabs.map((label) => <PageTopTabItem key={label} label={label} />)}
       </div>
       <div className="flex h-full items-center gap-1 text-white">
         <span className="relative">
@@ -118,7 +117,7 @@ function FixtureDateRange({ label = "조회기준일자" }: { label?: string }) 
       <DateRangePicker
         value={{ start: new Date(2025, 2, 30), end: new Date(2025, 2, 30) }}
         onValueChange={() => undefined}
-        className="w-[250px] border-0"
+        className="w-[243px] border-0"
       />
     </div>
   );
@@ -132,43 +131,82 @@ function FixtureGroupQuery() {
   return <GroupQuery options={[]} levels={[null, null, null]} onLevelChange={() => undefined} />;
 }
 
-function FixtureFilter() {
-  return <Filter categories={[]} value={{}} onChange={() => undefined} />;
+function FixtureFilter({ tags = [] }: { tags?: Array<{ label: string; count: number }> }) {
+  const categories = tags.map((tag, index) => ({
+    id: `fixture-filter-${index}`,
+    label: tag.label,
+    options: Array.from({ length: Math.max(1, tag.count) }, (_, optionIndex) => ({ id: `option-${optionIndex}`, label: `${tag.label} ${optionIndex + 1}` })),
+  }));
+  const value = Object.fromEntries(categories.map((category, index) => [category.id, categories[index].options.map((option) => option.id)]));
+  return <Filter categories={categories} value={value} onChange={() => undefined} />;
 }
 
 interface FixtureTableProps {
   headers: string[];
   rows: React.ReactNode[][];
   widths?: Array<number | string>;
+  aligns?: Array<"left" | "center" | "right">;
   selectedRow?: number;
+  selectedRows?: number[];
+  checkedRows?: number[];
+  activeRow?: number | null;
+  selectionColor?: "main" | "gray" | "black";
+  disabledRows?: number[];
   selectable?: boolean;
+  selectionHeaderLabel?: string;
   className?: string;
 }
 
 type FixtureTableData = { cells: React.ReactNode[] };
 
-function FixtureTable({ headers, rows, widths, selectedRow, selectable = true, className }: FixtureTableProps) {
+function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, activeRow, selectionColor, disabledRows = [], selectable = true, selectionHeaderLabel, className }: FixtureTableProps) {
   const columns: TableColumn<FixtureTableData>[] = headers.map((header, index) => ({
     key: `column-${index}`,
     label: header,
     width: typeof widths?.[index] === "number" ? widths[index] as number : { min: 80, grow: 1 },
-    align: "center",
+    align: aligns?.[index] ?? "left",
     render: (row) => row.cells[index],
   }));
   const tableRows: TableRowData<FixtureTableData>[] = rows.map((cells, index) => ({
     id: `fixture-row-${index}`,
     data: { cells },
+    disabled: disabledRows.includes(index),
   }));
+
+  const resolvedSelectedRows = checkedRows ?? selectedRows ?? (selectedRow === undefined ? [] : [selectedRow]);
+  const resolvedActiveId = activeRow === null
+    ? null
+    : activeRow !== undefined
+      ? `fixture-row-${activeRow}`
+      : selectedRow !== undefined
+        ? `fixture-row-${selectedRow}`
+        : undefined;
 
   return (
     <Table
       columns={columns}
       rows={tableRows}
       selectable={selectable}
-      selectedIds={selectedRow === undefined ? [] : [`fixture-row-${selectedRow}`]}
+      selectionHeaderLabel={selectionHeaderLabel}
+      activeId={resolvedActiveId}
+      selectionColor={selectionColor}
+      selectedIds={resolvedSelectedRows.map((index) => `fixture-row-${index}`)}
       onSelectedIdsChange={() => undefined}
       className={cn("rounded-none border-x-0 border-t-0", className)}
     />
+  );
+}
+
+function FixtureTextRange({ label, start, end, className }: { label: string; start: string; end: string; className?: string }) {
+  return (
+    <div className={cn("flex h-8 items-center overflow-hidden rounded-mes-control border border-mes-border-default bg-white", className)}>
+      <span className="flex h-full w-[72px] shrink-0 items-center border-r border-mes-border-default px-3 text-[14px] font-medium">
+        {label}
+      </span>
+      <FixtureInput value={start} className="h-full w-[137px] rounded-none border-0" />
+      <span className="flex h-full w-[9px] shrink-0 items-center justify-center text-[14px]">~</span>
+      <FixtureInput value={end} className="h-full w-[140px] rounded-none border-0" />
+    </div>
   );
 }
 
@@ -181,8 +219,8 @@ function RadioOption({ checked, label, disabled = false, name }: { checked: bool
   );
 }
 
-function SectionBand({ children }: { children: React.ReactNode }) {
-  return <div className="flex h-7 items-center rounded-mes-control bg-mes-gray-30 px-2.5 text-[14px] font-bold text-mes-gray-100">{children}</div>;
+function SectionBand({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={cn("flex h-7 items-center rounded-mes-control bg-mes-gray-30 px-2.5 text-[14px] font-bold text-mes-gray-100", className)}>{children}</div>;
 }
 
 export {
@@ -193,6 +231,7 @@ export {
   FixtureSearch,
   FixtureSelect,
   FixtureTable,
+  FixtureTextRange,
   MesFixtureSidebar,
   MesPageTabs,
   RadioOption,

@@ -6,7 +6,7 @@ export interface MasterDetailPatternProps {
   tabs: React.ReactNode;
   header: React.ReactNode;
   master: React.ReactNode;
-  detailTitle: string;
+  detailTitle: React.ReactNode;
   detail: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;

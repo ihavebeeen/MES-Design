@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { Checkbox } from "./checkbox";
+import { Checkbox, type CheckboxColor } from "./checkbox";
 import { IconArrow } from "../icons/icon-arrow";
 
 /**
@@ -209,9 +209,15 @@ export interface TableProps<T> {
   groups?: TableGroup<T>[];
   rows?: TableRowData<T>[];
   selectedIds?: string[];
+  /** 체크 여부와 별개로 파란 활성 행을 지정한다. undefined면 기존처럼 선택 행이 활성 행이다. */
+  activeId?: string | null;
+  /** 표 안 체크박스의 기본 색. 활성 행은 원본 화면처럼 black을 우선한다. */
+  selectionColor?: CheckboxColor;
   onSelectedIdsChange?: (ids: string[]) => void;
   /** 선택 기능이 없는 조회/요약 표에서는 체크박스 열 전체를 제거한다. */
   selectable?: boolean;
+  /** Figma에서 전체선택 체크박스 대신 `선택` 텍스트를 쓰는 표의 헤더 라벨. */
+  selectionHeaderLabel?: string;
   totals?: Record<string, React.ReactNode>;
   /** 그룹 depth(0부터)별 배경색. 기본값은 판단값 — 위 2-(1) 주석 참고 */
   groupLevelColors?: string[];
@@ -310,6 +316,8 @@ function DataRow<T>({
   row,
   columns,
   isSelected,
+  isActive,
+  selectionColor,
   onToggle,
   masterToggleAreaWidth,
   selectable,
@@ -317,18 +325,20 @@ function DataRow<T>({
   row: TableRowData<T>;
   columns: TableColumn<T>[];
   isSelected: boolean;
+  isActive: boolean;
+  selectionColor: CheckboxColor;
   onToggle: (id: string) => void;
   masterToggleAreaWidth: number;
   selectable: boolean;
 }) {
-  const dividerColor = isSelected || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
+  const dividerColor = isActive || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
   return (
     <div
       className={cn(
         "flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default px-[20px]",
         // 8차 후속: 담당자가 "비활성화는 텍스트 Gray-80, 배경 Gray-10"이라고 정확한 값을
         // 줘서 기존 opacity-50 판단값을 교체함. 배경은 선택 여부보다 disabled가 우선.
-        row.disabled ? "bg-mes-gray-10" : isSelected ? "bg-mes-primary-20" : "bg-white",
+        row.disabled ? "bg-mes-gray-10" : isActive ? "bg-mes-primary-20" : "bg-white",
         row.disabled && "pointer-events-none"
       )}
     >
@@ -343,7 +353,7 @@ function DataRow<T>({
           <Checkbox
             checked={isSelected}
             onChange={() => onToggle(row.id)}
-            color="black"
+            color={isActive ? "black" : selectionColor}
             disabled={row.disabled}
           />
           {row.isNew && (
@@ -391,6 +401,7 @@ function GroupHeaderRow<T>({
   onToggleSelect,
   masterToggleAreaWidth,
   selectable,
+  selectionColor,
 }: {
   group: TableGroup<T>;
   columns: TableColumn<T>[];
@@ -403,6 +414,7 @@ function GroupHeaderRow<T>({
   onToggleSelect: () => void;
   masterToggleAreaWidth: number;
   selectable: boolean;
+  selectionColor: CheckboxColor;
 }) {
   return (
     <div
@@ -414,7 +426,7 @@ function GroupHeaderRow<T>({
           className="flex h-full shrink-0 items-center"
           style={{ width: CHECKBOX_COLUMN_WIDTH }}
         >
-          <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color="black" />
+          <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color={selectionColor} />
         </div>
       )}
       {/* 6차: 헤더의 depth별 마스터 토글 버튼과 "같은 x 위치"에 오도록, 이 영역을 헤더와
@@ -545,6 +557,8 @@ function renderGroupNode<T>({
   levelColors,
   masterToggleAreaWidth,
   selectable,
+  activeId,
+  selectionColor,
 }: {
   group: TableGroup<T>;
   depth: number;
@@ -557,6 +571,8 @@ function renderGroupNode<T>({
   levelColors: string[];
   masterToggleAreaWidth: number;
   selectable: boolean;
+  activeId?: string | null;
+  selectionColor: CheckboxColor;
 }): React.ReactNode {
   const isCollapsed = collapsed[group.id] ?? group.defaultExpanded === false;
   const rowIds = collectGroupRowIds(group);
@@ -579,6 +595,7 @@ function renderGroupNode<T>({
         onToggleSelect={() => onToggleGroupSelect(rowIds, !isAllChecked)}
         masterToggleAreaWidth={masterToggleAreaWidth}
         selectable={selectable}
+        selectionColor={selectionColor}
       />
       {!isCollapsed &&
         (group.groups
@@ -595,6 +612,8 @@ function renderGroupNode<T>({
                 levelColors,
                 masterToggleAreaWidth,
                 selectable,
+                activeId,
+                selectionColor,
               })
             )
           : (group.rows ?? []).map((row) => (
@@ -603,6 +622,8 @@ function renderGroupNode<T>({
                 row={row}
                 columns={columns}
                 isSelected={selectedIds.includes(row.id)}
+                isActive={activeId === undefined ? selectedIds.includes(row.id) : activeId === row.id}
+                selectionColor={selectionColor}
                 onToggle={onToggleOne}
                 masterToggleAreaWidth={masterToggleAreaWidth}
                 selectable={selectable}
@@ -617,8 +638,11 @@ function Table<T>({
   groups,
   rows,
   selectedIds = [],
+  activeId,
+  selectionColor = "black",
   onSelectedIdsChange,
   selectable = true,
+  selectionHeaderLabel,
   totals,
   groupLevelColors = DEFAULT_GROUP_LEVEL_COLORS,
   className,
@@ -676,8 +700,14 @@ function Table<T>({
               오른쪽에 온다(예전엔 반대였음). 7차: 폭을 CHECKBOX_COLUMN_WIDTH로 통일
               (신규 점 배치 때문에 40px로 늘어남 — 다른 행 종류와 동일해야 함). */}
           {selectable && (
-            <div className="flex h-full shrink-0 items-center" style={{ width: CHECKBOX_COLUMN_WIDTH }}>
-              <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} color="black" />
+            <div className="flex h-full shrink-0 items-center justify-center" style={{ width: CHECKBOX_COLUMN_WIDTH }}>
+              {selectionHeaderLabel ? (
+                <span className="text-[13px] font-semibold leading-[1.5] text-mes-text-default">
+                  {selectionHeaderLabel}
+                </span>
+              ) : (
+                <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} color={selectionColor} />
+              )}
             </div>
           )}
           {/* 2026-07-28 3차 피드백(4): 그룹 depth별 "한꺼번에 접기/펼치기" 버튼. 6차: 각
@@ -750,6 +780,8 @@ function Table<T>({
                 levelColors: groupLevelColors,
                 masterToggleAreaWidth,
                 selectable,
+                activeId,
+                selectionColor,
               })
             )
           : (rows ?? []).map((row) => (
@@ -758,6 +790,8 @@ function Table<T>({
                 row={row}
                 columns={columns}
                 isSelected={selectedIds.includes(row.id)}
+                isActive={activeId === undefined ? selectedIds.includes(row.id) : activeId === row.id}
+                selectionColor={selectionColor}
                 onToggle={toggleOne}
                 masterToggleAreaWidth={masterToggleAreaWidth}
                 selectable={selectable}

@@ -40,8 +40,8 @@ function isSameDay(a: Date | null, b: Date | null) {
   );
 }
 
-function formatDate(d: Date) {
-  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
+function formatDate(d: Date, separator: "." | "-" = ".") {
+  return `${d.getFullYear()}${separator}${String(d.getMonth() + 1).padStart(2, "0")}${separator}${String(d.getDate()).padStart(2, "0")}`;
 }
 
 export interface DatePickerProps {
@@ -50,6 +50,7 @@ export interface DatePickerProps {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  separator?: "." | "-";
 }
 
 function DatePicker({
@@ -58,6 +59,7 @@ function DatePicker({
   placeholder = "날짜 선택",
   disabled,
   className,
+  separator = ".",
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
   const [viewDate, setViewDate] = React.useState(value ?? new Date());
@@ -77,7 +79,7 @@ function DatePicker({
             className
           )}
         >
-          <span className="truncate whitespace-nowrap">{value ? formatDate(value) : placeholder}</span>
+          <span className="truncate whitespace-nowrap">{value ? formatDate(value, separator) : placeholder}</span>
           <IconCalendar size={16} className="shrink-0 text-mes-gray-60" />
         </button>
       </PopoverTrigger>

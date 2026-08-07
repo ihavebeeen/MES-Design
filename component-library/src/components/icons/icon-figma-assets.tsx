@@ -24,3 +24,8 @@ export function IconCalculator({ size = 16, ...props }: FigmaAssetIconProps) {
 export function IconDragHandle({ size = 20, ...props }: FigmaAssetIconProps) {
   return <AssetIcon src="/icons/mes-icon-drag-handle.svg" size={size} {...props} />;
 }
+
+/** Figma node 11210:53661의 설정 버튼에서 export한 원본 벡터. */
+export function IconSetting({ size = 16, ...props }: FigmaAssetIconProps) {
+  return <AssetIcon src="/icons/mes-icon-setting.svg" size={size} {...props} />;
+}

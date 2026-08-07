@@ -88,8 +88,9 @@ function SideSlidePanel({
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40" />
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60" />
         <DialogPrimitive.Content
+          onOpenAutoFocus={(event) => event.preventDefault()}
           className={cn(
             "fixed inset-y-0 right-0 z-50 flex h-full w-full flex-col overflow-hidden bg-white",
             "shadow-[0px_0px_12px_rgba(0,0,0,0.2)]",

@@ -8,6 +8,7 @@ const forbidden = [
   ["<input", "패턴에서 raw input을 만들지 말고 Input/Radio/Checkbox를 사용하세요."],
   ["<select", "패턴에서 raw select를 만들지 말고 Select를 사용하세요."],
   ["<table", "패턴에서 raw table을 만들지 말고 Table을 사용하세요."],
+  ["<a ", "패턴에서 raw anchor를 만들지 말고 의미가 보존되는 Link를 사용하세요."],
   ["SmallButton", "Button의 중복 구현은 허용되지 않습니다."],
   ["RadioLine", "Radio의 중복 구현은 허용되지 않습니다."],
   ["CheckboxGlyph", "Checkbox의 중복 구현은 허용되지 않습니다."],
