@@ -231,6 +231,8 @@ export interface TableProps<T> {
   horizontalScroll?: boolean;
   /** 비활성 행 텍스트 색조. */
   disabledTextTone?: "gray60" | "gray80";
+  /** 선택되지 않은 일반 행의 텍스트 색조. */
+  unselectedTextTone?: "default" | "gray80";
   onSelectedIdsChange?: (ids: string[]) => void;
   /** 선택 기능이 없는 조회/요약 표에서는 체크박스 열 전체를 제거한다. */
   selectable?: boolean;
@@ -345,6 +347,7 @@ function DataRow<T>({
   centerSelection,
   columnDividers,
   disabledTextTone,
+  unselectedTextTone,
 }: {
   row: TableRowData<T>;
   columns: TableColumn<T>[];
@@ -360,6 +363,7 @@ function DataRow<T>({
   centerSelection: boolean;
   columnDividers: boolean;
   disabledTextTone: "gray60" | "gray80";
+  unselectedTextTone: "default" | "gray80";
 }) {
   const dividerColor = isActive || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
   return (
@@ -414,7 +418,9 @@ function DataRow<T>({
               "w-full truncate text-[14px] leading-[1.5]",
               row.disabled
                 ? disabledTextTone === "gray60" ? "text-mes-gray-60" : "text-mes-gray-80"
-                : "text-mes-text-default"
+                : !isActive && unselectedTextTone === "gray80"
+                  ? "text-mes-gray-80"
+                  : "text-mes-text-default"
             )}
           >
             {col.render ? col.render(row.data) : (row.data as Record<string, React.ReactNode>)[col.key]}
@@ -611,6 +617,7 @@ function renderGroupNode<T>({
   centerSelection,
   columnDividers,
   disabledTextTone,
+  unselectedTextTone,
 }: {
   group: TableGroup<T>;
   depth: number;
@@ -631,6 +638,7 @@ function renderGroupNode<T>({
   centerSelection: boolean;
   columnDividers: boolean;
   disabledTextTone: "gray60" | "gray80";
+  unselectedTextTone: "default" | "gray80";
 }): React.ReactNode {
   const isCollapsed = collapsed[group.id] ?? group.defaultExpanded === false;
   const rowIds = collectGroupRowIds(group);
@@ -681,6 +689,7 @@ function renderGroupNode<T>({
                 centerSelection,
                 columnDividers,
                 disabledTextTone,
+                unselectedTextTone,
               })
             )
           : (group.rows ?? []).map((row) => (
@@ -700,6 +709,7 @@ function renderGroupNode<T>({
                 centerSelection={centerSelection}
                 columnDividers={columnDividers}
                 disabledTextTone={disabledTextTone}
+                unselectedTextTone={unselectedTextTone}
               />
             )))}
     </React.Fragment>
@@ -721,6 +731,7 @@ function Table<T>({
   columnDividers = true,
   horizontalScroll = true,
   disabledTextTone = "gray80",
+  unselectedTextTone = "default",
   onSelectedIdsChange,
   selectable = true,
   selectionHeaderLabel,
@@ -869,6 +880,7 @@ function Table<T>({
                 centerSelection,
                 columnDividers,
                 disabledTextTone,
+                unselectedTextTone,
               })
             )
           : (rows ?? []).map((row) => (
@@ -888,6 +900,7 @@ function Table<T>({
                 centerSelection={centerSelection}
                 columnDividers={columnDividers}
                 disabledTextTone={disabledTextTone}
+                unselectedTextTone={unselectedTextTone}
               />
             ))}
 

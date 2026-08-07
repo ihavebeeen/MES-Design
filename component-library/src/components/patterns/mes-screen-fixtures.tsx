@@ -136,8 +136,10 @@ function FixtureDateRange({ label = "조회기준일자" }: { label?: string }) 
   );
 }
 
-function FixtureSearch({ className, placeholder = "검색어 입력..", iconColor = "muted" }: { className?: string; placeholder?: string; iconColor?: "muted" | "default" }) {
-  return <SearchInput value="" onChange={() => undefined} placeholder={placeholder} iconColor={iconColor} className={className} />;
+function FixtureSearch({ value, onValueChange, className, placeholder = "검색어 입력..", iconColor = "muted" }: { value?: string; onValueChange?: (value: string) => void; className?: string; placeholder?: string; iconColor?: "muted" | "default" }) {
+  const [localValue, setLocalValue] = React.useState("");
+  const resolvedValue = value ?? localValue;
+  return <SearchInput value={resolvedValue} onChange={(nextValue) => { setLocalValue(nextValue); onValueChange?.(nextValue); }} placeholder={placeholder} iconColor={iconColor} className={className} />;
 }
 
 function FixtureGroupQuery() {
@@ -179,6 +181,7 @@ interface FixtureTableProps {
   selectionColor?: "main" | "gray" | "black";
   unselectedCheckboxAppearance?: "outline" | "grayCheck";
   selectionHeaderIndeterminate?: boolean;
+  unselectedTextTone?: "default" | "gray80";
   disabledRows?: number[];
   hiddenSelectionRows?: number[];
   selectable?: boolean;
@@ -194,7 +197,7 @@ interface FixtureTableProps {
 
 type FixtureTableData = { cells: React.ReactNode[] };
 
-function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, onCheckedRowsChange, activeRow, selectionColor, unselectedCheckboxAppearance, selectionHeaderIndeterminate, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
+function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, onCheckedRowsChange, activeRow, selectionColor, unselectedCheckboxAppearance, selectionHeaderIndeterminate, unselectedTextTone, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
   const columns: TableColumn<FixtureTableData>[] = headers.map((header, index) => ({
     key: `column-${index}`,
     label: header,
@@ -228,6 +231,7 @@ function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows
       selectionColor={selectionColor}
       unselectedCheckboxAppearance={unselectedCheckboxAppearance}
       selectionHeaderIndeterminate={selectionHeaderIndeterminate}
+      unselectedTextTone={unselectedTextTone}
       edgePadding={edgePadding}
       selectionColumnWidth={selectionColumnWidth}
       centerSelection={centerSelection}
@@ -260,10 +264,10 @@ function FixtureTextRange({ label, start, end, className }: { label: string; sta
   );
 }
 
-function RadioOption({ checked, label, disabled = false, name }: { checked: boolean; label: string; disabled?: boolean; name: string }) {
+function RadioOption({ checked, label, disabled = false, name, onChange }: { checked: boolean; label: string; disabled?: boolean; name: string; onChange?: () => void }) {
   return (
-    <label className={cn("flex h-8 items-center gap-1.5 text-[14px] font-medium", disabled && "text-mes-gray-70")}>
-      <Radio name={name} checked={checked} readOnly disabled={disabled} />
+    <label className={cn("flex h-8 items-center gap-1.5 text-[14px]", checked ? "font-medium text-mes-gray-130" : "font-normal text-mes-gray-80", disabled && "text-mes-gray-70")}>
+      <Radio name={name} checked={checked} readOnly={!onChange} onChange={onChange} disabled={disabled} />
       {label}
     </label>
   );

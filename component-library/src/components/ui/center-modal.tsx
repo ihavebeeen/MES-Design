@@ -81,6 +81,8 @@ export interface CenterModalProps {
   actions?: DialogAction[];
   /** 완전한 커스텀 푸터가 필요할 때 사용. actions보다 우선한다. */
   footer?: React.ReactNode;
+  /** 제목 아래 구분선 표시 여부. */
+  headerDivider?: boolean;
   contentClassName?: string;
   className?: string;
 }
@@ -97,6 +99,7 @@ function CenterModal({
   size = "standard-960",
   actions,
   footer,
+  headerDivider = true,
   contentClassName,
   className,
 }: CenterModalProps) {
@@ -118,7 +121,7 @@ function CenterModal({
             className
           )}
         >
-          <div className="flex h-[52px] w-full shrink-0 items-center justify-between border-b border-mes-gray-30 py-[10px] pl-5 pr-[14px]">
+          <div className={cn("flex h-[52px] w-full shrink-0 items-center justify-between py-[10px] pl-5 pr-[14px]", headerDivider && "border-b border-mes-gray-30")}>
             <DialogPrimitive.Title className="flex-1 text-[18px] font-bold leading-[1.5] text-mes-gray-130">
               {title}
             </DialogPrimitive.Title>

@@ -15,6 +15,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `DatePicker` | `iconColor` | `muted \| default`, 기본 `muted` | 완성 화면에서 달력 아이콘이 기본 텍스트 색인 경우를 지원한다. | Figma `11210:50866` |
 | `SearchInput` | `iconColor` | `muted \| default`, 기본 `muted` | 검색 아이콘의 화면별 명도 차이를 기존 컴포넌트 안에서 표현한다. | Figma `11210:50866` |
 | `Filter` | `searchable` | `boolean`, 기본 `true` | 필터 패널 내부의 카테고리·옵션 검색창 표시 여부를 제어한다. | 담당자 확정, 일괄작업지시 화면은 `false` |
+| `CenterModal` | `headerDivider` | `boolean`, 기본 `true` | 제목 아래 구분선이 없는 소형 정보 팝업을 같은 모달 컴포넌트로 표현한다. | 품목 상세정보, Figma `11210:52744` |
 | `Table` | `activeId` | `string \| null`, 기본 `undefined` | 체크 상태와 별도로 활성 행을 지정한다. 생략하면 실제 선택 행이 활성 행 배경을 가진다. | 완성 화면 상태 분리용 |
 | `Table` | `selectionColor` | `main \| gray \| black`, 기본 `black` | 선택된 체크박스 색을 지정한다. | MES Checkbox 색 variant |
 | `Table` | `unselectedCheckboxAppearance` | `outline \| grayCheck`, 기본 `outline` | 미선택 행을 회색 체크로 표시하는 MES 표 상태를 지원한다. | 일괄작업지시, Figma `20274:73333` |
@@ -25,6 +26,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `Table` | `columnDividers` | `boolean`, 기본 `true` | 셀 사이 세로 점선을 화면별로 끈다. | Figma `11210:50866`은 `false` |
 | `Table` | `horizontalScroll` | `boolean`, 기본 `true` | 고정 폭이 정확히 맞는 표에서 불필요한 가로 스크롤을 금지한다. | Figma `11210:50866`은 `false` |
 | `Table` | `disabledTextTone` | `gray60 \| gray80`, 기본 `gray80` | 비활성 행 텍스트 명도를 화면 실측에 맞춘다. | Figma `11210:50866`은 `gray60` |
+| `Table` | `unselectedTextTone` | `default \| gray80`, 기본 `default` | 비활성이 아닌 미선택 행의 텍스트 명도를 낮추고 선택 행과 편집 가능 상태를 구분한다. | 발주 일괄등록, Figma `11210:52026` |
 | `TableRowData` | `hideSelection` | `boolean`, 기본 `false` | 선택 열 폭은 유지하면서 특정 행의 체크박스만 숨긴다. | 완료된 비활성 행, Figma `11210:50866` |
 
 ## Pattern fixture / adapter
@@ -35,13 +37,15 @@ adapter다. 신규 제품 코드에서는 가능하면 public component를 직�
 | Adapter | Prop | 역할 |
 |---|---|---|
 | `FixtureInput` | `onValueChange` | 고정 예시값이 아니라 실제 입력 state를 갱신한다. 일괄작업지시의 `지시수량`에 사용한다. |
+| `FixtureSearch` | `value`, `onValueChange` | 검색어를 상위 state와 연결해 생산실적 행 필터 등 실제 검색 동작에 사용한다. 생략하면 adapter 내부 state로 입력 외형을 유지한다. |
 | `FixtureSelect` | `options` | 선택된 행이 편집 상태가 될 때 실제 선택 가능한 옵션 목록을 전달한다. |
 | `FixtureSelect` | `onValueChange` | 드롭다운에서 바꾼 값을 행별 편집 state에 반영한다. |
 | `FixtureFilter` | `definitions` | 빈 필터가 아니라 실제 카테고리와 옵션을 `Filter`에 전달한다. |
 | `FixtureFilter` | `searchable` | public `Filter.searchable`을 화면 조립부에 전달한다. |
 | `FixtureTable` | `onCheckedRowsChange` | `Table`의 id 배열을 예제 행 index 배열로 변환해 실제 선택 state에 연결한다. |
 | `FixtureTable` | `hiddenSelectionRows` | 특정 예제 행에 `TableRowData.hideSelection`을 적용한다. |
-| `FixtureTable` | Table layout props | `edgePadding`, `selectionColumnWidth`, `centerSelection`, `columnDividers`, `horizontalScroll`, `disabledTextTone`, `unselectedCheckboxAppearance`, `selectionHeaderIndeterminate`를 public `Table`에 그대로 전달한다. |
+| `FixtureTable` | Table layout props | `edgePadding`, `selectionColumnWidth`, `centerSelection`, `columnDividers`, `horizontalScroll`, `disabledTextTone`, `unselectedTextTone`, `unselectedCheckboxAppearance`, `selectionHeaderIndeterminate`를 public `Table`에 그대로 전달한다. |
+| `RadioOption` | `onChange` | 라디오 외형을 읽기 전용 예시가 아니라 수기/자동, 자동배열/사용자설정, 검사결과 state 전환에 연결한다. |
 
 ## 추가 규칙
 

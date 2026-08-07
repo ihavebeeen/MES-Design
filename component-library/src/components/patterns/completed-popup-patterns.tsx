@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { CenterModal, type CenterModalSize, type DialogAction } from "@/components/ui/center-modal";
 import { DatePicker } from "@/components/ui/date-picker";
 import { IconButton } from "@/components/ui/icon-button";
-import { InspectionJudgement } from "@/components/ui/inspection-judgement";
+import { InspectionJudgement, type InspectionJudgementValue } from "@/components/ui/inspection-judgement";
 import { SideSlidePanel, type SideSlidePanelSize } from "@/components/ui/side-slide-panel";
 import { Tag } from "@/components/ui/tag";
 import { TimePicker } from "@/components/ui/time-picker";
@@ -59,8 +59,8 @@ function FieldRow({ label, value, muted = false, select = false }: { label: stri
   );
 }
 
-function LabeledControl({ label, children }: { label: string; children: React.ReactNode }) {
-  return <div className="grid grid-cols-[100px_1fr] items-center gap-2 text-[14px]"><span>{label}</span>{children}</div>;
+function LabeledControl({ label, children, required = false }: { label: string; children: React.ReactNode; required?: boolean }) {
+  return <div className="grid grid-cols-[100px_1fr] items-center gap-2 text-[14px]"><span>{label}{required && <span className="ml-[3px] font-semibold text-mes-danger-60">*</span>}</span>{children}</div>;
 }
 
 function InlineLabeledControl({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
@@ -68,23 +68,29 @@ function InlineLabeledControl({ label, children, className }: { label: string; c
 }
 
 function QuantityContent() {
+  const [mode, setMode] = React.useState<"manual" | "automatic">("manual");
+  const [manualQuantity, setManualQuantity] = React.useState("4");
+  const [automaticQuantity, setAutomaticQuantity] = React.useState("4");
+  const [ranges, setRanges] = React.useState({ blackStart: "2", blackEnd: "0", redStart: "2", redEnd: "0" });
+  const automatic = mode === "automatic";
+  const updateRange = (key: keyof typeof ranges, value: string) => setRanges((current) => ({ ...current, [key]: value }));
   return (
     <div className="flex h-full w-full flex-col">
       <div className="flex flex-col gap-2">
-        <RadioOption name="quantity-mode" checked label="수기 입력" />
-        <div className="pl-[30px]"><FixtureInput value="4" /></div>
+        <RadioOption name="quantity-mode" checked={!automatic} label="수기 입력" onChange={() => setMode("manual")} />
+        <div className="pl-[30px]"><FixtureInput value={manualQuantity} onValueChange={setManualQuantity} muted={automatic} inputMode="numeric" /></div>
       </div>
       <div className="mt-5 flex flex-col gap-2">
-        <RadioOption name="quantity-mode" checked={false} label="자동 계산" disabled />
+        <RadioOption name="quantity-mode" checked={automatic} label="자동 계산" onChange={() => setMode("automatic")} />
         <div className="flex flex-col gap-1.5 pl-[30px]">
-          <FixtureInput value="" muted />
-          <span className="text-[14px] font-medium text-mes-gray-60">입상수 : 정보 없음</span>
-          <Card className="bg-mes-gray-10 px-5 text-[14px] text-mes-gray-60">
-            {["흑", "적"].map((label) => (
+          <FixtureInput value={automaticQuantity} onValueChange={setAutomaticQuantity} muted={!automatic} inputMode="numeric" />
+          <span className={`text-[14px] font-medium ${automatic ? "text-mes-gray-130" : "text-mes-gray-60"}`}>입상수 : 정보 없음</span>
+          <Card className={`${automatic ? "bg-white text-mes-gray-130" : "bg-mes-gray-10 text-mes-gray-60"} px-5 text-[14px]`}>
+            {[{ label: "흑", start: "blackStart", end: "blackEnd" }, { label: "적", start: "redStart", end: "redEnd" }].map(({ label, start, end }) => (
               <div key={label} className="flex h-[45px] items-center gap-2.5 border-b border-mes-gray-30 last:border-0">
                 <span className="w-5 font-medium">{label}</span>
-                <FixtureInput value="2" muted size="small" aria-label={`${label} 시작`} />
-                <FixtureInput value="0" muted size="small" aria-label={`${label} 종료`} />
+                <FixtureInput value={ranges[start as keyof typeof ranges]} onValueChange={(value) => updateRange(start as keyof typeof ranges, value)} muted={!automatic} size="small" inputMode="numeric" aria-label={`${label} 시작`} />
+                <FixtureInput value={ranges[end as keyof typeof ranges]} onValueChange={(value) => updateRange(end as keyof typeof ranges, value)} muted={!automatic} size="small" inputMode="numeric" aria-label={`${label} 종료`} />
               </div>
             ))}
           </Card>
@@ -119,23 +125,35 @@ function DetailsContent() {
 }
 
 function DefectContent() {
-  const rows = [["1", "색상", "임가공창고A", "2"], ["2", "모양", "임가공창고A", "2"], ["3", "인쇄", "선택", ""], ["4", "선택", "선택", ""], ["5", "선택", "선택", ""]];
+  const [drafts, setDrafts] = React.useState([
+    { type: "색상", warehouse: "임가공창고A", quantity: "2" },
+    { type: "모양", warehouse: "동진창고", quantity: "2" },
+    { type: "선택", warehouse: "선택", quantity: "" },
+    { type: "선택", warehouse: "선택", quantity: "" },
+    { type: "선택", warehouse: "선택", quantity: "" },
+  ]);
+  const updateDraft = (index: number, key: "type" | "warehouse" | "quantity", value: string) => setDrafts((current) => current.map((draft, draftIndex) => draftIndex === index ? { ...draft, [key]: value } : draft));
+  const total = drafts.reduce((sum, draft) => sum + (Number(draft.quantity) || 0), 0);
+  const rows = drafts.map((draft, index) => [String(index + 1), <FixtureSelect key="type" value={draft.type} options={["선택", "색상", "모양", "인쇄"]} onValueChange={(value) => updateDraft(index, "type", value)} size="small" />, <FixtureSelect key="warehouse" value={draft.warehouse} options={["선택", "임가공창고A", "동진창고"]} onValueChange={(value) => updateDraft(index, "warehouse", value)} size="small" />, <FixtureInput key="qty" value={draft.quantity} onValueChange={(value) => updateDraft(index, "quantity", value)} inputMode="numeric" size="small" />]);
   return (
     <div className="flex h-full w-full flex-col">
       <FixtureTable
         selectable={false}
         headers={["No.", "불량유형", "저장창고", "불량수량"]}
         widths={[60, 166, 166, 166]}
-        rows={rows.map((row) => [row[0], <FixtureSelect key={`${row[0]}-type`} value={row[1]} size="small" />, <FixtureSelect key={`${row[0]}-warehouse`} value={row[2]} size="small" />, <FixtureInput key={`${row[0]}-qty`} value={row[3]} size="small" />])}
+        rows={rows}
+        horizontalScroll={false}
+        className="shrink-0"
       />
       <Card className="mt-5 flex h-14 items-center justify-center gap-3 bg-mes-primary-20 text-[16px] font-semibold text-mes-primary-60">
-        <span>불량계</span><FixtureInput value="4" className="w-[120px] text-mes-gray-130" />
+        <span>불량계</span><div className="flex h-8 w-[120px] items-center rounded-mes-control border border-mes-gray-30 bg-white px-3 text-[14px] text-mes-gray-130">{total}</div>
       </Card>
     </div>
   );
 }
 
 function WeightContent() {
+  const [layout, setLayout] = React.useState<"automatic" | "custom">("automatic");
   const filledValues = [
     [35, 35, 35, 35, 24],
     [10, 19, 24, 10, 35],
@@ -154,7 +172,7 @@ function WeightContent() {
       <div className="p-5">
         <SectionBand>중량검사</SectionBand>
         <Card className="mt-3 px-5 pb-5 pt-3">
-          <div className="mb-3 flex h-8 items-center gap-5 text-[14px]"><span>배열 설정</span><RadioOption name="weight-layout" checked label="자동배열" /><RadioOption name="weight-layout" checked={false} label="사용자 설정" /></div>
+          <div className="mb-3 flex h-8 items-center gap-5 text-[14px]"><span>배열 설정</span><RadioOption name="weight-layout" checked={layout === "automatic"} label="자동배열" onChange={() => setLayout("automatic")} /><RadioOption name="weight-layout" checked={layout === "custom"} label="사용자 설정" onChange={() => setLayout("custom")} /></div>
           <div className="grid grid-cols-10 gap-[3px]">{Array.from({ length: 100 }, (_, index) => {
             const row = Math.floor(index / 10);
             const column = index % 10;
@@ -177,14 +195,34 @@ const PURCHASE_ITEMS = ["비비빅", "찰옥수수", "수박바", "찰옥수수"
 const LOOKUP_ITEMS = ["빠삐코", "빵빠레", "더블비앙코", "비비빅", "메로나", "생귤탱귤", "하겐다즈", "누가바"];
 
 function PurchaseContent() {
+  const [checkedRows, setCheckedRows] = React.useState([0, 1]);
+  const [search, setSearch] = React.useState("");
+  const [bulkDate, setBulkDate] = React.useState(new Date(2025, 9, 30));
+  const [bulkType, setBulkType] = React.useState("선택");
+  const [bulkQuantity, setBulkQuantity] = React.useState("0");
+  const [bulkWarehouse, setBulkWarehouse] = React.useState("선택");
+  const [drafts, setDrafts] = React.useState(() => PURCHASE_ITEMS.map(() => ({ date: new Date(2025, 9, 30), type: "선택", quantity: "0", warehouse: "선택" })));
   const headers = ["품목", "품목구분", "규격", "단위", "입고예정일", "입고구분", "입고수량", "입고창고"];
-  const rows = PURCHASE_ITEMS.map((item, index) => [item, "완제품", "A", "kg", index < 2 ? <DatePicker key="date" value={new Date(2025, 9, 30)} separator="-" className="h-[22px] px-1.5 text-[12px]" /> : "", index < 2 ? <FixtureSelect key="type" value="선택" size="small" /> : "", index < 2 ? <FixtureInput key="qty" value="0" size="small" /> : "", index < 2 ? <FixtureSelect key="warehouse" value="선택" size="small" /> : ""]);
+  const updateDraft = <Key extends keyof (typeof drafts)[number]>(index: number, key: Key, value: (typeof drafts)[number][Key]) => setDrafts((current) => current.map((draft, draftIndex) => draftIndex === index ? { ...draft, [key]: value } : draft));
+  const applyBulk = () => setDrafts((current) => current.map((draft, index) => checkedRows.includes(index) ? { date: bulkDate, type: bulkType, quantity: bulkQuantity, warehouse: bulkWarehouse } : draft));
+  const visibleEntries = PURCHASE_ITEMS.map((item, sourceIndex) => ({ item, sourceIndex })).filter(({ item }) => item.toLowerCase().includes(search.trim().toLowerCase()));
+  const visibleCheckedRows = visibleEntries.flatMap(({ sourceIndex }, visibleIndex) => checkedRows.includes(sourceIndex) ? [visibleIndex] : []);
+  const updateVisibleCheckedRows = (visibleIndexes: number[]) => {
+    const visibleSourceIndexes = visibleEntries.map(({ sourceIndex }) => sourceIndex);
+    const selectedVisibleSourceIndexes = visibleIndexes.map((visibleIndex) => visibleEntries[visibleIndex]?.sourceIndex).filter((sourceIndex): sourceIndex is number => sourceIndex !== undefined);
+    setCheckedRows((current) => [...current.filter((sourceIndex) => !visibleSourceIndexes.includes(sourceIndex)), ...selectedVisibleSourceIndexes]);
+  };
+  const rows = visibleEntries.map(({ item, sourceIndex }) => {
+    const selected = checkedRows.includes(sourceIndex);
+    const draft = drafts[sourceIndex];
+    return [item, "완제품", "A", "kg", selected ? <DatePicker key="date" value={draft.date} onValueChange={(value) => updateDraft(sourceIndex, "date", value)} separator="-" className="h-[22px] px-1.5 text-[12px]" /> : "", selected ? <FixtureSelect key="type" value={draft.type} options={["선택", "일반입고", "긴급입고"]} onValueChange={(value) => updateDraft(sourceIndex, "type", value)} size="small" /> : "", selected ? <FixtureInput key="qty" value={draft.quantity} onValueChange={(value) => updateDraft(sourceIndex, "quantity", value)} inputMode="numeric" size="small" /> : "", selected ? <FixtureSelect key="warehouse" value={draft.warehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={(value) => updateDraft(sourceIndex, "warehouse", value)} size="small" /> : ""];
+  });
   return (
     <div className="flex h-full w-full flex-col">
       <div className="flex items-center justify-between"><b className="text-[16px]">품목 리스트</b></div>
-      <div className="mt-3 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3"><FixtureFilter tags={[{ label: "품목", count: 5 }, { label: "품목", count: 23 }, { label: "품목: 전체보기", count: 1 }]} /><FixtureSearch /></div>
-      <div className="mt-3 flex h-12 items-center gap-2.5 rounded-t-mes-control bg-mes-gray-20 px-3"><b className="flex w-[160px] shrink-0 items-center gap-1"><IconReload size={16} />전체 일괄 변경</b><InlineLabeledControl label="입고 예정일" className="w-[220px] shrink-0"><DatePicker value={new Date(2025, 9, 30)} separator="-" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 구분" className="flex-1"><FixtureSelect value="선택" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 수량" className="flex-1"><FixtureInput value="0" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 창고" className="flex-1"><FixtureSelect value="선택" className="h-full rounded-none border-0" /></InlineLabeledControl><Button size="small" className="w-[60px] shrink-0">적용</Button></div>
-      <div className="min-h-0 flex-1 overflow-hidden"><FixtureTable headers={headers} rows={rows} selectedRows={[0, 1]} checkedRows={rows.map((_, index) => index)} selectionColor="gray" disabledRows={Array.from({ length: 10 }, (_, index) => index + 2)} aligns={["left", "center", "center", "center", "center", "center", "right", "center"]} /></div>
+      <div className="mt-3 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3"><FixtureFilter tags={[{ label: "품목", count: 5 }, { label: "품목", count: 23 }, { label: "품목: 전체보기", count: 1 }]} /><FixtureSearch value={search} onValueChange={setSearch} /></div>
+      <div className="mt-3 flex h-12 items-center gap-2.5 rounded-t-mes-control bg-mes-gray-20 px-3"><b className="flex w-[160px] shrink-0 items-center gap-1"><IconReload size={16} />전체 일괄 변경</b><InlineLabeledControl label="입고 예정일" className="w-[220px] shrink-0"><DatePicker value={bulkDate} onValueChange={setBulkDate} separator="-" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 구분" className="flex-1"><FixtureSelect value={bulkType} options={["선택", "일반입고", "긴급입고"]} onValueChange={setBulkType} className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 수량" className="flex-1"><FixtureInput value={bulkQuantity} onValueChange={setBulkQuantity} inputMode="numeric" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 창고" className="flex-1"><FixtureSelect value={bulkWarehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={setBulkWarehouse} className="h-full rounded-none border-0" /></InlineLabeledControl><Button size="small" className="w-[60px] shrink-0" onClick={applyBulk}>적용</Button></div>
+      <div className="min-h-0 flex-1 overflow-hidden"><FixtureTable headers={headers} rows={rows} checkedRows={visibleCheckedRows} onCheckedRowsChange={updateVisibleCheckedRows} selectionColor="black" unselectedCheckboxAppearance="grayCheck" selectionHeaderIndeterminate={false} unselectedTextTone="gray80" edgePadding={0} selectionColumnWidth={56} centerSelection columnDividers={false} horizontalScroll={false} aligns={["left", "center", "center", "center", "center", "center", "right", "center"]} /></div>
     </div>
   );
 }
@@ -297,60 +335,102 @@ function LookupWorkOrderContent() {
   );
 }
 
+interface ProductionRow {
+  id: number;
+  start: string;
+  end: string;
+  unit: string;
+  quantity: string;
+  defectQuantity: string;
+  packagingQuantity: string;
+  blackStart: string;
+  blackEnd: string;
+  warehouse: string;
+}
+
 function ProductionContent() {
-  const rows = Array.from({ length: 10 }, (_, index) => ["13:00", "19:00", "kg", "100", "100", <Button key={`material-${index}`} size="xsmall" variant="opacityMain" endIcon={<IconArrow size={12} className="rotate-180" />}>투입정보</Button>, "10", "300", "302", "동진창고", <IconButton key={`delete-${index}`} aria-label="행 삭제" size="xsmall" icon={<IconTrash size={14} />} />]);
+  const [instructionDate, setInstructionDate] = React.useState<Date>();
+  const [item, setItem] = React.useState("선택");
+  const [manager, setManager] = React.useState("선택");
+  const [packagingStaff, setPackagingStaff] = React.useState("선택");
+  const [completed, setCompleted] = React.useState(false);
+  const [workTime, setWorkTime] = React.useState("12:00 ~ 14:00");
+  const [defectQuantity, setDefectQuantity] = React.useState("선택");
+  const [productionQuantity, setProductionQuantity] = React.useState("내용 입력");
+  const [warehouse, setWarehouse] = React.useState("선택");
+  const [inputItem, setInputItem] = React.useState("내용 입력");
+  const [search, setSearch] = React.useState("");
+  const [resultRows, setResultRows] = React.useState<ProductionRow[]>(() => Array.from({ length: 10 }, (_, index) => ({ id: index + 1, start: "13:00", end: "19:00", unit: "kg", quantity: "100", defectQuantity: "100", packagingQuantity: "10", blackStart: "300", blackEnd: "302", warehouse: "동진창고" })));
+  const addResult = () => setResultRows((current) => [{ id: Date.now(), start: workTime.split("~")[0]?.trim() || "12:00", end: workTime.split("~")[1]?.trim() || "14:00", unit: "kg", quantity: productionQuantity, defectQuantity, packagingQuantity: packagingStaff === "선택" ? "0" : packagingStaff, blackStart: "300", blackEnd: "302", warehouse: warehouse === "선택" ? "동진창고" : warehouse }, ...current]);
+  const visibleRows = resultRows.filter((row) => !search || Object.values(row).some((value) => String(value).toLowerCase().includes(search.toLowerCase())));
+  const rows = visibleRows.map((row) => [row.start, row.end, row.unit, row.quantity, row.defectQuantity, <Button key={`material-${row.id}`} size="xsmall" variant="opacityMain" endIcon={<IconArrow size={12} className="rotate-180" />}>투입정보</Button>, row.packagingQuantity, row.blackStart, row.blackEnd, row.warehouse, <IconButton key={`delete-${row.id}`} aria-label="행 삭제" size="xsmall" onClick={() => setResultRows((current) => current.filter((itemRow) => itemRow.id !== row.id))} icon={<IconTrash size={14} />} />]);
   return (
     <div className="flex h-full w-full flex-col">
       <div className="h-[238px] shrink-0 border-b border-mes-gray-30 p-5">
         <SectionBand>지시정보</SectionBand>
         <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2.5">
           <LabeledControl label="설비"><FixtureInput value="내용" muted /></LabeledControl>
-          <LabeledControl label="지시일"><DatePicker placeholder="년-월-일" /></LabeledControl>
+          <LabeledControl label="지시일"><DatePicker value={instructionDate} onValueChange={setInstructionDate} placeholder="년-월-일" /></LabeledControl>
           <LabeledControl label="근무조"><FixtureInput value="내용" muted /></LabeledControl>
-          <LabeledControl label="품목"><div className="flex gap-2"><FixtureSelect value="선택" className="flex-1" /><IconButton aria-label="품목 상세정보" size="small" className="bg-mes-primary-20 text-mes-primary-60" icon={<IconFileNote size={16} />} /></div></LabeledControl>
-          <LabeledControl label="담당기사"><FixtureSelect value="선택" /></LabeledControl>
+          <LabeledControl label="품목"><div className="flex gap-2"><FixtureSelect value={item} options={["선택", ...LOOKUP_ITEMS]} onValueChange={setItem} className="flex-1" /><IconButton aria-label="품목 상세정보" size="small" className="bg-mes-primary-20 text-mes-primary-60" icon={<IconFileNote size={16} />} /></div></LabeledControl>
+          <LabeledControl label="담당기사"><FixtureSelect value={manager} options={LOOKUP_MANAGER_OPTIONS} onValueChange={setManager} /></LabeledControl>
           <LabeledControl label="누적생산"><FixtureInput value="내용" muted /></LabeledControl>
-          <LabeledControl label="포장인원"><FixtureSelect value="선택" /></LabeledControl>
-          <LabeledControl label="작업상태"><div className="flex items-center gap-4"><FixtureInput value="진행중" muted className="flex-1" /><label className="flex items-center gap-1.5 whitespace-nowrap"><Checkbox checked readOnly color="gray" size="small" />완료</label></div></LabeledControl>
+          <LabeledControl label="포장인원"><FixtureSelect value={packagingStaff} options={["선택", "5", "10", "15"]} onValueChange={setPackagingStaff} /></LabeledControl>
+          <LabeledControl label="작업상태"><div className="flex items-center gap-4"><FixtureInput value={completed ? "완료" : "진행중"} muted className="flex-1" /><label className="flex cursor-pointer items-center gap-1.5 whitespace-nowrap"><Checkbox checked={completed} onChange={(event) => setCompleted(event.target.checked)} color="black" uncheckedAppearance="grayCheck" size="small" />완료</label></div></LabeledControl>
         </div>
       </div>
       <div className="h-[238px] shrink-0 border-b border-mes-gray-30 bg-mes-gray-10 p-5">
         <div className="h-[195px] rounded-xl bg-mes-gray-20 p-3">
           <b className="text-[16px]">실적정보</b>
           <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2.5">
-            <LabeledControl label="작업시간"><FixtureInput value="12:00 ~ 14:00" /></LabeledControl>
-            <LabeledControl label="불량수량"><FixtureSelect value="선택" /></LabeledControl>
-            <LabeledControl label="생산수량"><FixtureInput value="내용 입력" /></LabeledControl>
-            <LabeledControl label="저장창고"><FixtureSelect value="선택" /></LabeledControl>
-            <LabeledControl label="투입품목"><FixtureInput value="내용 입력" /></LabeledControl>
+            <LabeledControl label="작업시간"><FixtureInput value={workTime} onValueChange={setWorkTime} /></LabeledControl>
+            <LabeledControl label="불량수량"><FixtureSelect value={defectQuantity} options={["선택", "0", "10", "100"]} onValueChange={setDefectQuantity} /></LabeledControl>
+            <LabeledControl label="생산수량"><FixtureInput value={productionQuantity} onValueChange={setProductionQuantity} inputMode="numeric" /></LabeledControl>
+            <LabeledControl label="저장창고"><FixtureSelect value={warehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={setWarehouse} /></LabeledControl>
+            <LabeledControl label="투입품목"><FixtureInput value={inputItem} onValueChange={setInputItem} /></LabeledControl>
           </div>
         </div>
-        <div className="-mt-4 flex justify-center"><Button size="small" className="w-[160px]" startIcon={<IconArrow size={15} className="-rotate-90" />}>실적 추가</Button></div>
+        <div className="-mt-4 flex justify-center"><Button size="small" className="w-[160px]" startIcon={<IconArrow size={15} className="-rotate-90" />} onClick={addResult}>실적 추가</Button></div>
       </div>
-      <div className="flex min-h-0 flex-1 flex-col px-5 pt-3"><div className="mb-2 flex items-center justify-between"><b className="text-[15px]">생산실적 상세 리스트</b><FixtureSearch className="w-[200px]" /></div><FixtureTable selectable={false} headers={["시작시작", "종료시간", "단위", "생산수량", "불량수량", "투입정보", "포장수량", "흑시작(No)", "흑시작(No)", "창고명", "삭제"]} widths={[70, 70, 60, 80, 80, 90, 75, 85, 85, 95, 40]} aligns={["center", "center", "center", "right", "right", "center", "right", "right", "right", "left", "center"]} rows={rows} /></div>
+      <div className="flex min-h-0 flex-1 flex-col px-5 pt-3"><div className="mb-2 flex items-center justify-between"><b className="text-[15px]">생산실적 상세 리스트</b><FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" /></div><FixtureTable selectable={false} horizontalScroll={false} headers={["시작시간", "종료시간", "단위", "생산수량", "불량수량", "투입정보", "포장수량", "흑시작(No)", "흑종료(No)", "창고명", "삭제"]} widths={[70, 70, 60, 80, 80, 90, 75, 85, 85, 95, 40]} aligns={["center", "center", "center", "right", "right", "center", "right", "right", "right", "left", "center"]} rows={rows} /></div>
     </div>
   );
 }
 
 function InspectionContent() {
+  const [inspectionDate, setInspectionDate] = React.useState(new Date(2025, 9, 30));
+  const [inspectionTime, setInspectionTime] = React.useState("14:45");
+  const [inspector, setInspector] = React.useState("김아무개");
+  const [boxNumber, setBoxNumber] = React.useState("150");
+  const [weight, setWeight] = React.useState("0");
+  const [notes, setNotes] = React.useState("");
+  const [result, setResult] = React.useState<"pass" | "partial" | "fail">("pass");
+  const [items, setItems] = React.useState<Array<{ id: number; label: string; value: InspectionJudgementValue }>>([
+    { id: 1, label: "Pallet 상태", value: "pass" },
+    { id: 2, label: "표기사항", value: "pass" },
+    { id: 3, label: "포장상태", value: "pass" },
+    { id: 4, label: "상차밴딩", value: "pass" },
+  ]);
+  const updateJudgement = (id: number, value: InspectionJudgementValue) => setItems((current) => current.map((item) => item.id === id ? { ...item, value } : item));
+  const addInspectionItem = () => setItems((current) => [...current, { id: Date.now(), label: `검사항목 ${current.length + 1}`, value: "none" }]);
   return (
     <div className="grid h-full w-full grid-cols-[360px_1fr]">
       <div className="border-r border-mes-gray-30 p-5">
-        <SectionBand className="w-16">대상정보</SectionBand>
+        <SectionBand>대상정보</SectionBand>
         <div className="mt-3 space-y-4">
           {[["생산일", "2024-10-30"], ["작업자", "홍길동"], ["설비", "A1"], ["제품명", "더블비얀코"], ["ROUTE", "압출"]].map((item) => <FieldRow key={item[0]} label={item[0]} value={item[1]} muted />)}
-          <LabeledControl label="검사일 *"><DatePicker value={new Date(2025, 9, 30)} separator="-" /></LabeledControl>
-          <LabeledControl label="검사시간 *"><TimePicker value="14:45" indicator="chevron" /></LabeledControl>
-          <FieldRow label="검사자 *" value="김아무개" select />
-          <FieldRow label="Box-No" value="150" />
-          <LabeledControl label="중량검사 *"><div className="flex gap-2"><FixtureInput value="0" muted className="flex-1" /><IconButton aria-label="중량검사 상세" size="small" className="bg-mes-primary-20 text-mes-primary-60" icon={<IconShare size={16} />} /></div></LabeledControl>
-          <LabeledControl label="특이사항"><div className="flex gap-2"><FixtureInput value="" muted className="flex-1" /><IconButton aria-label="특이사항 상세" size="small" className="bg-mes-primary-20 text-mes-primary-60" icon={<IconShare size={16} />} /></div></LabeledControl>
-          <LabeledControl label="결과"><div className="flex gap-4"><RadioOption name="inspection-result" checked label="합격" /><RadioOption name="inspection-result" checked={false} label="일부" /><RadioOption name="inspection-result" checked={false} label="불합" /></div></LabeledControl>
+          <LabeledControl label="검사일" required><DatePicker value={inspectionDate} onValueChange={setInspectionDate} separator="-" /></LabeledControl>
+          <LabeledControl label="검사시간" required><TimePicker value={inspectionTime} onValueChange={setInspectionTime} indicator="chevron" /></LabeledControl>
+          <LabeledControl label="검사자" required><FixtureSelect value={inspector} options={["김아무개", "홍길동"]} onValueChange={setInspector} /></LabeledControl>
+          <LabeledControl label="Box-No"><FixtureInput value={boxNumber} onValueChange={setBoxNumber} inputMode="numeric" /></LabeledControl>
+          <LabeledControl label="중량검사" required><div className="flex gap-2"><FixtureInput value={weight} onValueChange={setWeight} inputMode="numeric" muted className="flex-1" /><IconButton aria-label="중량검사 상세" size="small" className="bg-mes-primary-20 text-mes-primary-60" icon={<IconShare size={16} />} /></div></LabeledControl>
+          <LabeledControl label="특이사항"><div className="flex gap-2"><FixtureInput value={notes} onValueChange={setNotes} className="flex-1" /><IconButton aria-label="특이사항 상세" size="small" className="bg-mes-primary-20 text-mes-primary-60" icon={<IconShare size={16} />} /></div></LabeledControl>
+          <LabeledControl label="결과"><div className="flex gap-4"><RadioOption name="inspection-result" checked={result === "pass"} label="합격" onChange={() => setResult("pass")} /><RadioOption name="inspection-result" checked={result === "partial"} label="일부" onChange={() => setResult("partial")} /><RadioOption name="inspection-result" checked={result === "fail"} label="불합" onChange={() => setResult("fail")} /></div></LabeledControl>
         </div>
       </div>
       <div className="p-5">
-        <div className="flex items-center gap-2"><SectionBand>검사항목</SectionBand><Button size="small" variant="fillBlack" startIcon={<IconPlus size={15} />}>항목 추가</Button></div>
-        <div className="mt-4 space-y-4">{["Pallet 상태 *", "표기사항 *", "포장상태 *", "상차밴딩 *"].map((label) => <div key={label} className="flex h-8 items-center justify-between text-[14px]"><span>{label}</span><InspectionJudgement value="pass" onValueChange={() => undefined} /></div>)}</div>
+        <div className="flex items-center gap-2"><SectionBand>검사항목</SectionBand><Button size="small" variant="fillBlack" startIcon={<IconPlus size={15} />} onClick={addInspectionItem}>항목 추가</Button></div>
+        <div className="mt-4 space-y-4">{items.map((item) => <div key={item.id} className="flex h-8 items-center justify-between text-[14px]"><span>{item.label}<span className="ml-[3px] font-semibold text-mes-danger-60">*</span></span><InspectionJudgement value={item.value} onValueChange={(value) => updateJudgement(item.id, value)} /></div>)}</div>
       </div>
     </div>
   );
@@ -367,7 +447,7 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: Exclude<PopupKind, "p
     lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: defaultActions, content: <LookupWorkOrderContent /> },
   };
   const current = config[kind];
-  return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} className={`${current.height} ${kind === "lookup" ? "max-h-none" : ""}`} contentClassName={kind === "lookup" ? "items-stretch overflow-hidden p-0" : kind === "weight" ? "p-0" : kind === "details" ? "pt-0" : undefined}>{current.content}</CenterModal>;
+  return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} headerDivider={kind !== "details"} className={`${current.height} ${kind === "lookup" ? "max-h-none" : ""}`} contentClassName={kind === "lookup" ? "items-stretch overflow-hidden p-0" : kind === "weight" ? "p-0" : kind === "details" ? "pt-0" : undefined}>{current.content}</CenterModal>;
 }
 
 function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
