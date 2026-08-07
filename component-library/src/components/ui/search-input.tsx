@@ -44,6 +44,7 @@ export interface SearchInputProps {
   placeholder?: string;
   className?: string;
   width?: "fixed" | "fill";
+  iconColor?: "muted" | "default";
 }
 
 function SearchInput({
@@ -51,6 +52,7 @@ function SearchInput({
   onChange,
   placeholder = "검색어를 입력하세요",
   width = "fixed",
+  iconColor = "muted",
   className,
 }: SearchInputProps) {
   const hasValue = value.length > 0;
@@ -68,7 +70,7 @@ function SearchInput({
     >
       <div className="flex h-full min-w-0 flex-1 items-center gap-2">
         <span className="flex h-full shrink-0 items-center pl-3">
-          <IconSearch size={16} className="text-mes-gray-70" />
+          <IconSearch size={16} className={iconColor === "default" ? "text-mes-text-default" : "text-mes-gray-70"} />
         </span>
         <input
           value={value}

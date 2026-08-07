@@ -174,19 +174,80 @@ function WeightContent() {
 }
 
 const PURCHASE_ITEMS = ["비비빅", "찰옥수수", "수박바", "찰옥수수", "빵빠레", "더블 비얀코", "죠스", "메가톤", "와일드바디", "옥메와까", "돼지바", "빠삐코"];
-const LOOKUP_ITEMS = ["빠삐코", "빵빠레", "더블비얀코", "비비빅", "메로나", "생귤탱귤", "허거다즈", "누가바"];
+const LOOKUP_ITEMS = ["빠삐코", "빵빠레", "더블비앙코", "비비빅", "메로나", "생귤탱귤", "하겐다즈", "누가바"];
 
-function PurchaseContent({ lookup = false }: { lookup?: boolean }) {
-  const headers = lookup ? ["계획일", "품목", "품목구분", "단위", "계획수량", "포장인원", "설비", "근무조", "지시일", "지시수량", "담당기사", "작업지시여부"] : ["품목", "품목구분", "규격", "단위", "입고예정일", "입고구분", "입고수량", "입고창고"];
-  const rows = (lookup ? LOOKUP_ITEMS : PURCHASE_ITEMS).map((item, index) => lookup
-    ? ["2024-08-30", item, "완제품", index < 3 || index === 5 || index === 6 ? "EA" : "kg", "2000", "2000", index === 0 ? <FixtureSelect key="equipment" value="A1" size="small" /> : `A${index === 3 ? 5 : (index % 5) + 1}`, index === 0 ? <FixtureSelect key="shift" value="주간" size="small" /> : index < 5 ? "주간" : "야간", index === 0 ? <DatePicker key="date" value={new Date(2025, 9, 30)} separator="-" className="h-[22px]" /> : index === 7 ? "2025-10-30" : "", index === 0 ? <FixtureInput key="qty" value="3000" size="small" /> : index === 7 ? "2000" : "", index === 0 ? <FixtureSelect key="manager" value="홍길동" size="small" /> : index === 7 ? "김아무개" : "", index === 7 ? <Tag key="done" color="gray">지시완료</Tag> : ""]
-    : [item, "완제품", "A", "kg", index < 2 ? <DatePicker key="date" value={new Date(2025, 9, 30)} separator="-" className="h-[22px] px-1.5 text-[12px]" /> : "", index < 2 ? <FixtureSelect key="type" value="선택" size="small" /> : "", index < 2 ? <FixtureInput key="qty" value="0" size="small" /> : "", index < 2 ? <FixtureSelect key="warehouse" value="선택" size="small" /> : ""]);
+function PurchaseContent() {
+  const headers = ["품목", "품목구분", "규격", "단위", "입고예정일", "입고구분", "입고수량", "입고창고"];
+  const rows = PURCHASE_ITEMS.map((item, index) => [item, "완제품", "A", "kg", index < 2 ? <DatePicker key="date" value={new Date(2025, 9, 30)} separator="-" className="h-[22px] px-1.5 text-[12px]" /> : "", index < 2 ? <FixtureSelect key="type" value="선택" size="small" /> : "", index < 2 ? <FixtureInput key="qty" value="0" size="small" /> : "", index < 2 ? <FixtureSelect key="warehouse" value="선택" size="small" /> : ""]);
   return (
     <div className="flex h-full w-full flex-col">
-      <div className="flex items-center justify-between"><b className="text-[16px]">{lookup ? "생산계획 리스트" : "품목 리스트"}</b>{lookup && <div className="flex gap-2"><FixtureDateRange label="일자" /><Button size="small">조회</Button><Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button></div>}</div>
-      <div className="mt-3 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3"><FixtureFilter tags={lookup ? [] : [{ label: "품목", count: 5 }, { label: "품목", count: 23 }, { label: "품목: 전체보기", count: 1 }]} /><FixtureSearch /></div>
-      {!lookup && <div className="mt-3 flex h-12 items-center gap-2.5 rounded-t-mes-control bg-mes-gray-20 px-3"><b className="flex w-[160px] shrink-0 items-center gap-1"><IconReload size={16} />전체 일괄 변경</b><InlineLabeledControl label="입고 예정일" className="w-[220px] shrink-0"><DatePicker value={new Date(2025, 9, 30)} separator="-" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 구분" className="flex-1"><FixtureSelect value="선택" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 수량" className="flex-1"><FixtureInput value="0" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 창고" className="flex-1"><FixtureSelect value="선택" className="h-full rounded-none border-0" /></InlineLabeledControl><Button size="small" className="w-[60px] shrink-0">적용</Button></div>}
-      <div className="min-h-0 flex-1 overflow-hidden"><FixtureTable headers={headers} rows={rows} selectedRows={lookup ? [0] : [0, 1]} checkedRows={lookup ? Array.from({ length: 7 }, (_, index) => index) : rows.map((_, index) => index)} activeRow={lookup ? 0 : undefined} selectionColor="gray" disabledRows={lookup ? [7] : Array.from({ length: 10 }, (_, index) => index + 2)} aligns={lookup ? ["center", "left", "center", "center", "right", "right", "center", "center", "center", "right", "center", "center"] : ["left", "center", "center", "center", "center", "center", "right", "center"]} /></div>
+      <div className="flex items-center justify-between"><b className="text-[16px]">품목 리스트</b></div>
+      <div className="mt-3 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3"><FixtureFilter tags={[{ label: "품목", count: 5 }, { label: "품목", count: 23 }, { label: "품목: 전체보기", count: 1 }]} /><FixtureSearch /></div>
+      <div className="mt-3 flex h-12 items-center gap-2.5 rounded-t-mes-control bg-mes-gray-20 px-3"><b className="flex w-[160px] shrink-0 items-center gap-1"><IconReload size={16} />전체 일괄 변경</b><InlineLabeledControl label="입고 예정일" className="w-[220px] shrink-0"><DatePicker value={new Date(2025, 9, 30)} separator="-" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 구분" className="flex-1"><FixtureSelect value="선택" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 수량" className="flex-1"><FixtureInput value="0" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 창고" className="flex-1"><FixtureSelect value="선택" className="h-full rounded-none border-0" /></InlineLabeledControl><Button size="small" className="w-[60px] shrink-0">적용</Button></div>
+      <div className="min-h-0 flex-1 overflow-hidden"><FixtureTable headers={headers} rows={rows} selectedRows={[0, 1]} checkedRows={rows.map((_, index) => index)} selectionColor="gray" disabledRows={Array.from({ length: 10 }, (_, index) => index + 2)} aligns={["left", "center", "center", "center", "center", "center", "right", "center"]} /></div>
+    </div>
+  );
+}
+
+const LOOKUP_COLUMN_WIDTHS = [125.75, 125.75, 125.75, 58, 80, 80, 125.75, 80, 125.75, 125.75, 125.75, 125.75];
+const LOOKUP_COLUMN_ALIGNS: Array<"left" | "center" | "right"> = ["center", "left", "center", "center", "right", "right", "center", "center", "center", "right", "center", "center"];
+
+function LookupWorkOrderContent() {
+  const headers = ["계획일", "품목", "품목구분", "단위", "계획수량", "포장인원", "설비", "근무조", "지시일", "지시수량", "담당기사", "작업지시여부"];
+  const units = ["EA", "EA", "EA", "kg", "kg", "EA", "EA", "kg"];
+  const equipment = ["A1", "A2", "A3", "A5", "A2", "A4", "A1", "A2"];
+  const shifts = ["주간", "주간", "주간", "주간", "주간", "야간", "야간", "야간"];
+  const rows = LOOKUP_ITEMS.map((item, index) => [
+    "2024-08-30",
+    item,
+    "완제품",
+    units[index],
+    "2000",
+    "2000",
+    index === 0 ? <FixtureSelect key="equipment" value={equipment[index]} size="small" /> : equipment[index],
+    index === 0 ? <FixtureSelect key="shift" value={shifts[index]} size="small" /> : shifts[index],
+    index === 0 ? <DatePicker key="date" value={new Date(2025, 9, 30)} separator="-" iconColor="default" className="h-[22px] gap-1 rounded-mes-control-sm px-[6px] text-[13px]" /> : index === 7 ? "2025-10-30" : "",
+    index === 0 ? <FixtureInput key="qty" value="3000" size="small" /> : index === 7 ? "2000" : "",
+    index === 0 ? <FixtureSelect key="manager" value="홍길동" size="small" /> : index === 7 ? "김아무개" : "",
+    index === 7 ? <Tag key="done" color="gray">지시완료</Tag> : "",
+  ]);
+
+  return (
+    <div className="flex h-[556px] w-full flex-col">
+      <section data-figma-section="query" className="flex h-[108px] shrink-0 flex-col gap-3 px-5 pt-4">
+        <div className="flex h-8 shrink-0 items-center justify-between">
+          <b className="text-[16px] leading-[1.5]">생산계획 리스트</b>
+          <div className="flex h-8 items-center gap-2.5">
+            <FixtureDateRange label="일자" />
+            <Button size="small" className="w-[50px] shrink-0">조회</Button>
+            <Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />} className="w-[91px] shrink-0">다운로드</Button>
+          </div>
+        </div>
+        <div className="flex h-12 shrink-0 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
+          <FixtureFilter />
+          <FixtureSearch placeholder="검색어 입력.." iconColor="default" className="w-[200px]" />
+        </div>
+      </section>
+      <section data-figma-section="table" className="h-[448px] shrink-0 px-5 pt-4">
+        <FixtureTable
+          headers={headers}
+          rows={rows}
+          widths={LOOKUP_COLUMN_WIDTHS}
+          aligns={LOOKUP_COLUMN_ALIGNS}
+          checkedRows={rows.map((_, index) => index)}
+          activeRow={0}
+          selectionColor="gray"
+          disabledRows={[7]}
+          hiddenSelectionRows={[7]}
+          edgePadding={0}
+          selectionColumnWidth={56}
+          centerSelection
+          columnDividers={false}
+          horizontalScroll={false}
+          disabledTextTone="gray60"
+          className="h-[432px] rounded-mes-control border-0 ring-1 ring-inset ring-mes-border-default"
+        />
+      </section>
     </div>
   );
 }
@@ -257,10 +318,10 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: Exclude<PopupKind, "p
     defect: { title: "불량수량 입력", size: "medium-600", height: "h-[400px]", actions: [SAVE_ACTION], content: <DefectContent /> },
     weight: { title: "중량검사", size: "standard-960", height: "h-[752px]", actions: DEFAULT_ACTIONS, content: <WeightContent /> },
     purchase: { title: "발주 일괄등록", size: "large-1100", height: "h-[680px]", actions: DEFAULT_ACTIONS, content: <PurchaseContent /> },
-    lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: DEFAULT_ACTIONS, content: <PurchaseContent lookup /> },
+    lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: DEFAULT_ACTIONS, content: <LookupWorkOrderContent /> },
   };
   const current = config[kind];
-  return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} className={current.height} contentClassName={kind === "weight" ? "p-0" : kind === "details" ? "pt-0" : undefined}>{current.content}</CenterModal>;
+  return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} className={`${current.height} ${kind === "lookup" ? "max-h-none" : ""}`} contentClassName={kind === "lookup" ? "items-stretch overflow-hidden p-0" : kind === "weight" ? "p-0" : kind === "details" ? "pt-0" : undefined}>{current.content}</CenterModal>;
 }
 
 function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {

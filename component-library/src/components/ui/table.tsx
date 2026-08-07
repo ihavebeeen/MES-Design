@@ -190,6 +190,8 @@ export interface TableRowData<T> {
   /** 이번 세션(또는 최근)에 추가/변경된 행 — 좌측에 빨간 점 + 진한 구분선 */
   isNew?: boolean;
   disabled?: boolean;
+  /** 선택 열의 폭은 유지하되 해당 행의 체크박스만 숨긴다. */
+  hideSelection?: boolean;
 }
 
 export interface TableGroup<T> {
@@ -213,6 +215,18 @@ export interface TableProps<T> {
   activeId?: string | null;
   /** 표 안 체크박스의 기본 색. 활성 행은 원본 화면처럼 black을 우선한다. */
   selectionColor?: CheckboxColor;
+  /** 테이블 좌우 내부 여백. 기본 표는 20px, 화면 실측 표는 0px도 허용한다. */
+  edgePadding?: number;
+  /** 선택 열 전체 폭. 기본값은 신규 점까지 포함한 40px. */
+  selectionColumnWidth?: number;
+  /** 데이터 행 체크박스를 선택 열 가운데에 배치한다. */
+  centerSelection?: boolean;
+  /** 헤더/데이터 셀 사이 점선 구분선 표시 여부. */
+  columnDividers?: boolean;
+  /** 내용이 넘칠 때 가로 스크롤을 허용할지 여부. */
+  horizontalScroll?: boolean;
+  /** 비활성 행 텍스트 색조. */
+  disabledTextTone?: "gray60" | "gray80";
   onSelectedIdsChange?: (ids: string[]) => void;
   /** 선택 기능이 없는 조회/요약 표에서는 체크박스 열 전체를 제거한다. */
   selectable?: boolean;
@@ -321,6 +335,11 @@ function DataRow<T>({
   onToggle,
   masterToggleAreaWidth,
   selectable,
+  edgePadding,
+  selectionColumnWidth,
+  centerSelection,
+  columnDividers,
+  disabledTextTone,
 }: {
   row: TableRowData<T>;
   columns: TableColumn<T>[];
@@ -330,32 +349,40 @@ function DataRow<T>({
   onToggle: (id: string) => void;
   masterToggleAreaWidth: number;
   selectable: boolean;
+  edgePadding: number;
+  selectionColumnWidth: number;
+  centerSelection: boolean;
+  columnDividers: boolean;
+  disabledTextTone: "gray60" | "gray80";
 }) {
   const dividerColor = isActive || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
   return (
     <div
       className={cn(
-        "flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default px-[20px]",
+        "flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default",
         // 8차 후속: 담당자가 "비활성화는 텍스트 Gray-80, 배경 Gray-10"이라고 정확한 값을
         // 줘서 기존 opacity-50 판단값을 교체함. 배경은 선택 여부보다 disabled가 우선.
         row.disabled ? "bg-mes-gray-10" : isActive ? "bg-mes-primary-20" : "bg-white",
         row.disabled && "pointer-events-none"
       )}
+      style={{ paddingInline: edgePadding }}
     >
       {/* 7차: "신규" 빨간 점을 체크박스 우측으로 정확히 10px 띄운 위치에 고정 배치.
           체크박스 칼럼 폭을 CHECKBOX_COLUMN_WIDTH(40px)로 통일해서 점이 다음 요소와
           안 겹치게 함 — 이 폭은 헤더/그룹행/총계행도 전부 동일하게 써야 정렬이 맞는다. */}
       {selectable && (
         <div
-          className="relative flex h-full shrink-0 items-center"
-          style={{ width: CHECKBOX_COLUMN_WIDTH }}
+          className={cn("relative flex h-full shrink-0 items-center", centerSelection && "justify-center")}
+          style={{ width: selectionColumnWidth }}
         >
-          <Checkbox
-            checked={isSelected}
-            onChange={() => onToggle(row.id)}
-            color={isActive ? "black" : selectionColor}
-            disabled={row.disabled}
-          />
+          {!row.hideSelection && (
+            <Checkbox
+              checked={isSelected}
+              onChange={() => onToggle(row.id)}
+              color={isActive ? "black" : selectionColor}
+              disabled={row.disabled}
+            />
+          )}
           {row.isNew && (
             <span
               aria-hidden
@@ -373,12 +400,14 @@ function DataRow<T>({
         <Cell
           key={col.key}
           column={col}
-          className={cn(i < columns.length - 1 && `border-r border-dashed ${dividerColor}`)}
+          className={cn(columnDividers && i < columns.length - 1 && `border-r border-dashed ${dividerColor}`)}
         >
           <span
             className={cn(
               "w-full truncate text-[14px] leading-[1.5]",
-              row.disabled ? "text-mes-gray-80" : "text-mes-text-default"
+              row.disabled
+                ? disabledTextTone === "gray60" ? "text-mes-gray-60" : "text-mes-gray-80"
+                : "text-mes-text-default"
             )}
           >
             {col.render ? col.render(row.data) : (row.data as Record<string, React.ReactNode>)[col.key]}
@@ -402,6 +431,8 @@ function GroupHeaderRow<T>({
   masterToggleAreaWidth,
   selectable,
   selectionColor,
+  edgePadding,
+  selectionColumnWidth,
 }: {
   group: TableGroup<T>;
   columns: TableColumn<T>[];
@@ -415,16 +446,18 @@ function GroupHeaderRow<T>({
   masterToggleAreaWidth: number;
   selectable: boolean;
   selectionColor: CheckboxColor;
+  edgePadding: number;
+  selectionColumnWidth: number;
 }) {
   return (
     <div
-      className="flex h-[30px] shrink-0 items-center border-b border-solid px-[20px]"
-      style={{ background, borderColor: background }}
+      className="flex h-[30px] shrink-0 items-center border-b border-solid"
+      style={{ background, borderColor: background, paddingInline: edgePadding }}
     >
       {selectable && (
         <div
           className="flex h-full shrink-0 items-center"
-          style={{ width: CHECKBOX_COLUMN_WIDTH }}
+          style={{ width: selectionColumnWidth }}
         >
           <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color={selectionColor} />
         </div>
@@ -502,20 +535,24 @@ function TotalsRow<T>({
   totals,
   masterToggleAreaWidth,
   selectable,
+  edgePadding,
+  selectionColumnWidth,
 }: {
   columns: TableColumn<T>[];
   totals?: Record<string, React.ReactNode>;
   masterToggleAreaWidth: number;
   selectable: boolean;
+  edgePadding: number;
+  selectionColumnWidth: number;
 }) {
   if (!totals) return null;
   return (
-    <div className="flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default bg-white px-[20px]">
+    <div className="flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default bg-white" style={{ paddingInline: edgePadding }}>
       {/* 7차: 여기서 `pr-[12px]` + 명시적 `width:24`를 같이 쓰고 있었는데, Tailwind
           기본 box-sizing:border-box 때문에 실제로는 24px(패딩 포함)만 차지해서 다른
           행 종류(체크박스 24+12=36px)와 이미 안 맞고 있던 잠재 버그였음 — 발견 즉시
           CHECKBOX_COLUMN_WIDTH로 통일해서 수정 */}
-      {selectable && <div className="h-full shrink-0" style={{ width: CHECKBOX_COLUMN_WIDTH }} />}
+      {selectable && <div className="h-full shrink-0" style={{ width: selectionColumnWidth }} />}
       {/* 헤더의 마스터 토글 버튼 영역과 폭을 맞추는 빈 스페이서(5차 정정) */}
       {masterToggleAreaWidth > 0 && (
         <div className="h-full shrink-0" style={{ width: masterToggleAreaWidth }} />
@@ -559,6 +596,11 @@ function renderGroupNode<T>({
   selectable,
   activeId,
   selectionColor,
+  edgePadding,
+  selectionColumnWidth,
+  centerSelection,
+  columnDividers,
+  disabledTextTone,
 }: {
   group: TableGroup<T>;
   depth: number;
@@ -573,6 +615,11 @@ function renderGroupNode<T>({
   selectable: boolean;
   activeId?: string | null;
   selectionColor: CheckboxColor;
+  edgePadding: number;
+  selectionColumnWidth: number;
+  centerSelection: boolean;
+  columnDividers: boolean;
+  disabledTextTone: "gray60" | "gray80";
 }): React.ReactNode {
   const isCollapsed = collapsed[group.id] ?? group.defaultExpanded === false;
   const rowIds = collectGroupRowIds(group);
@@ -596,6 +643,8 @@ function renderGroupNode<T>({
         masterToggleAreaWidth={masterToggleAreaWidth}
         selectable={selectable}
         selectionColor={selectionColor}
+        edgePadding={edgePadding}
+        selectionColumnWidth={selectionColumnWidth}
       />
       {!isCollapsed &&
         (group.groups
@@ -614,6 +663,11 @@ function renderGroupNode<T>({
                 selectable,
                 activeId,
                 selectionColor,
+                edgePadding,
+                selectionColumnWidth,
+                centerSelection,
+                columnDividers,
+                disabledTextTone,
               })
             )
           : (group.rows ?? []).map((row) => (
@@ -627,6 +681,11 @@ function renderGroupNode<T>({
                 onToggle={onToggleOne}
                 masterToggleAreaWidth={masterToggleAreaWidth}
                 selectable={selectable}
+                edgePadding={edgePadding}
+                selectionColumnWidth={selectionColumnWidth}
+                centerSelection={centerSelection}
+                columnDividers={columnDividers}
+                disabledTextTone={disabledTextTone}
               />
             )))}
     </React.Fragment>
@@ -640,6 +699,12 @@ function Table<T>({
   selectedIds = [],
   activeId,
   selectionColor = "black",
+  edgePadding = 20,
+  selectionColumnWidth = CHECKBOX_COLUMN_WIDTH,
+  centerSelection = false,
+  columnDividers = true,
+  horizontalScroll = true,
+  disabledTextTone = "gray80",
   onSelectedIdsChange,
   selectable = true,
   selectionHeaderLabel,
@@ -692,15 +757,15 @@ function Table<T>({
   const masterToggleAreaWidth = groupLevelCount * MASTER_TOGGLE_SLOT_WIDTH;
 
   return (
-    <div className={cn("w-full overflow-x-auto rounded-mes-control border border-mes-border-default", className)}>
+    <div className={cn("w-full rounded-mes-control border border-mes-border-default", horizontalScroll ? "overflow-x-auto" : "overflow-x-hidden", className)}>
       <div className="min-w-max">
         {/* 헤더 */}
-        <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default bg-mes-gray-10 px-[20px]">
+        <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default bg-mes-gray-10" style={{ paddingInline: edgePadding }}>
           {/* 5차 정정: 체크박스는 항상 최좌측 고정 — 마스터 토글 버튼은 체크박스보다
               오른쪽에 온다(예전엔 반대였음). 7차: 폭을 CHECKBOX_COLUMN_WIDTH로 통일
               (신규 점 배치 때문에 40px로 늘어남 — 다른 행 종류와 동일해야 함). */}
           {selectable && (
-            <div className="flex h-full shrink-0 items-center justify-center" style={{ width: CHECKBOX_COLUMN_WIDTH }}>
+            <div className="flex h-full shrink-0 items-center justify-center" style={{ width: selectionColumnWidth }}>
               {selectionHeaderLabel ? (
                 <span className="text-[13px] font-semibold leading-[1.5] text-mes-text-default">
                   {selectionHeaderLabel}
@@ -756,7 +821,7 @@ function Table<T>({
             <Cell
               key={col.key}
               column={{ ...col, align: "center" }}
-              className={cn(i < columns.length - 1 && "border-r border-dashed border-mes-gray-40")}
+              className={cn(columnDividers && i < columns.length - 1 && "border-r border-dashed border-mes-gray-40")}
             >
               <span className="w-full truncate text-[13px] font-semibold leading-[1.5] text-mes-text-default">
                 {col.label}
@@ -782,6 +847,11 @@ function Table<T>({
                 selectable,
                 activeId,
                 selectionColor,
+                edgePadding,
+                selectionColumnWidth,
+                centerSelection,
+                columnDividers,
+                disabledTextTone,
               })
             )
           : (rows ?? []).map((row) => (
@@ -795,10 +865,15 @@ function Table<T>({
                 onToggle={toggleOne}
                 masterToggleAreaWidth={masterToggleAreaWidth}
                 selectable={selectable}
+                edgePadding={edgePadding}
+                selectionColumnWidth={selectionColumnWidth}
+                centerSelection={centerSelection}
+                columnDividers={columnDividers}
+                disabledTextTone={disabledTextTone}
               />
             ))}
 
-        <TotalsRow columns={columns} totals={totals} masterToggleAreaWidth={masterToggleAreaWidth} selectable={selectable} />
+        <TotalsRow columns={columns} totals={totals} masterToggleAreaWidth={masterToggleAreaWidth} selectable={selectable} edgePadding={edgePadding} selectionColumnWidth={selectionColumnWidth} />
       </div>
     </div>
   );

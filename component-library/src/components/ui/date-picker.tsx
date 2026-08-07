@@ -51,6 +51,8 @@ export interface DatePickerProps {
   disabled?: boolean;
   className?: string;
   separator?: "." | "-";
+  iconPosition?: "start" | "end";
+  iconColor?: "muted" | "default";
 }
 
 function DatePicker({
@@ -60,6 +62,8 @@ function DatePicker({
   disabled,
   className,
   separator = ".",
+  iconPosition = "end",
+  iconColor = "muted",
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
   const [viewDate, setViewDate] = React.useState(value ?? new Date());
@@ -79,8 +83,9 @@ function DatePicker({
             className
           )}
         >
+          {iconPosition === "start" && <IconCalendar size={16} className={cn("shrink-0", iconColor === "default" ? "text-mes-text-default" : "text-mes-gray-60")} />}
           <span className="truncate whitespace-nowrap">{value ? formatDate(value, separator) : placeholder}</span>
-          <IconCalendar size={16} className="shrink-0 text-mes-gray-60" />
+          {iconPosition === "end" && <IconCalendar size={16} className={cn("shrink-0", iconColor === "default" ? "text-mes-text-default" : "text-mes-gray-60")} />}
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-[240px] p-3">

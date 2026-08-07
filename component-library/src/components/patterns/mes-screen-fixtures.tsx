@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Sidebar, type SidebarNavItem } from "@/components/ui/sidebar";
 import { Table, type TableColumn, type TableRowData } from "@/components/ui/table";
-import { DateRangePicker } from "@/components/ui/date-range-picker";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   IconBell,
   IconBox,
@@ -112,19 +112,19 @@ function FixtureSelect({ value, className, size = "default" }: { value: string; 
 
 function FixtureDateRange({ label = "조회기준일자" }: { label?: string }) {
   return (
-    <div className="flex h-8 items-center overflow-hidden rounded-mes-control border border-mes-border-default bg-white">
-      <span className="flex h-full items-center border-r border-mes-border-default px-3 text-[14px] font-medium">{label}</span>
-      <DateRangePicker
-        value={{ start: new Date(2025, 2, 30), end: new Date(2025, 2, 30) }}
-        onValueChange={() => undefined}
-        className="w-[243px] border-0"
-      />
+    <div className="flex h-8 w-[292px] items-center overflow-hidden rounded-mes-control border border-mes-border-default bg-white">
+      <span className="flex h-full w-[49px] shrink-0 items-center justify-center border-r border-mes-border-default text-[14px] font-medium">{label}</span>
+      <div className="flex h-full w-[243px] items-center">
+        <DatePicker value={new Date(2025, 2, 30)} onValueChange={() => undefined} iconPosition="start" iconColor="default" className="w-[117px] border-0 px-1.5" />
+        <span className="flex w-[9px] shrink-0 justify-center text-[14px] text-mes-gray-80">~</span>
+        <DatePicker value={new Date(2025, 2, 30)} onValueChange={() => undefined} iconPosition="start" iconColor="default" className="w-[117px] border-0 px-1.5" />
+      </div>
     </div>
   );
 }
 
-function FixtureSearch({ className }: { className?: string }) {
-  return <SearchInput value="" onChange={() => undefined} placeholder="검색어 입력.." className={className} />;
+function FixtureSearch({ className, placeholder = "검색어 입력..", iconColor = "muted" }: { className?: string; placeholder?: string; iconColor?: "muted" | "default" }) {
+  return <SearchInput value="" onChange={() => undefined} placeholder={placeholder} iconColor={iconColor} className={className} />;
 }
 
 function FixtureGroupQuery() {
@@ -152,14 +152,21 @@ interface FixtureTableProps {
   activeRow?: number | null;
   selectionColor?: "main" | "gray" | "black";
   disabledRows?: number[];
+  hiddenSelectionRows?: number[];
   selectable?: boolean;
   selectionHeaderLabel?: string;
+  edgePadding?: number;
+  selectionColumnWidth?: number;
+  centerSelection?: boolean;
+  columnDividers?: boolean;
+  horizontalScroll?: boolean;
+  disabledTextTone?: "gray60" | "gray80";
   className?: string;
 }
 
 type FixtureTableData = { cells: React.ReactNode[] };
 
-function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, activeRow, selectionColor, disabledRows = [], selectable = true, selectionHeaderLabel, className }: FixtureTableProps) {
+function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, activeRow, selectionColor, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
   const columns: TableColumn<FixtureTableData>[] = headers.map((header, index) => ({
     key: `column-${index}`,
     label: header,
@@ -171,6 +178,7 @@ function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows
     id: `fixture-row-${index}`,
     data: { cells },
     disabled: disabledRows.includes(index),
+    hideSelection: hiddenSelectionRows.includes(index),
   }));
 
   const resolvedSelectedRows = checkedRows ?? selectedRows ?? (selectedRow === undefined ? [] : [selectedRow]);
@@ -190,6 +198,12 @@ function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows
       selectionHeaderLabel={selectionHeaderLabel}
       activeId={resolvedActiveId}
       selectionColor={selectionColor}
+      edgePadding={edgePadding}
+      selectionColumnWidth={selectionColumnWidth}
+      centerSelection={centerSelection}
+      columnDividers={columnDividers}
+      horizontalScroll={horizontalScroll}
+      disabledTextTone={disabledTextTone}
       selectedIds={resolvedSelectedRows.map((index) => `fixture-row-${index}`)}
       onSelectedIdsChange={() => undefined}
       className={cn("rounded-none border-x-0 border-t-0", className)}
