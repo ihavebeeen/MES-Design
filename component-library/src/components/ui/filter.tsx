@@ -67,6 +67,8 @@ export interface FilterProps {
   value: Record<string, string[]>;
   onChange: (categoryId: string, optionIds: string[]) => void;
   className?: string;
+  /** 카테고리/옵션 패널의 내부 검색창 표시 여부. */
+  searchable?: boolean;
 }
 
 function SearchBox({
@@ -91,7 +93,7 @@ function SearchBox({
   );
 }
 
-function Filter({ categories, value, onChange, className }: FilterProps) {
+function Filter({ categories, value, onChange, className, searchable = true }: FilterProps) {
   const [open, setOpen] = React.useState(false);
   const [categoryQuery, setCategoryQuery] = React.useState("");
   const [optionQuery, setOptionQuery] = React.useState("");
@@ -140,7 +142,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
           <button
             type="button"
             className={cn(
-              "flex h-8 shrink-0 items-center gap-[6px] whitespace-nowrap border border-mes-border-default bg-white px-3 text-[14px] font-medium text-mes-text-default",
+              "flex h-8 shrink-0 items-center gap-[6px] whitespace-nowrap border border-mes-border-default bg-white px-3 text-[14px] font-medium text-mes-text-default focus:outline-none",
               activeTags.length > 0 ? "rounded-l-mes-control" : "rounded-mes-control"
             )}
           >
@@ -157,7 +159,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
           >
             {/* 1단: 카테고리 목록 */}
             <div className="flex w-[140px] flex-col gap-1.5 border-r border-mes-border-default p-2">
-              <SearchBox value={categoryQuery} onChange={setCategoryQuery} placeholder="검색" />
+              {searchable && <SearchBox value={categoryQuery} onChange={setCategoryQuery} placeholder="검색" />}
               <div className="flex max-h-[240px] flex-col overflow-y-auto">
                 {filteredCategories.map((category) => {
                   const isActive = category.id === activeCategoryId;
@@ -168,7 +170,7 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
                       title={category.label}
                       onClick={() => setActiveCategoryId(category.id)}
                       className={cn(
-                        "flex items-center justify-between gap-1 rounded-mes-control px-1.5 py-1 text-left text-[13px] leading-[1.5] text-mes-text-default",
+                        "flex items-center justify-between gap-1 rounded-mes-control px-1.5 py-1 text-left text-[13px] leading-[1.5] text-mes-text-default focus:outline-none",
                         isActive ? "bg-mes-bg-subtle" : "hover:bg-mes-bg-subtle"
                       )}
                     >
@@ -185,11 +187,13 @@ function Filter({ categories, value, onChange, className }: FilterProps) {
             {/* 2단: 선택된 카테고리의 체크박스 서브목록 */}
             {activeCategory && (
               <div className="flex w-[180px] flex-col gap-1.5 p-2">
-                <SearchBox
-                  value={optionQuery}
-                  onChange={setOptionQuery}
-                  placeholder={`${activeCategory.label} 검색`}
-                />
+                {searchable && (
+                  <SearchBox
+                    value={optionQuery}
+                    onChange={setOptionQuery}
+                    placeholder={`${activeCategory.label} 검색`}
+                  />
+                )}
                 <div className="flex max-h-[240px] flex-col overflow-y-auto">
                   {filteredOptions.map((option) => {
                     const checked = (value[activeCategory.id] ?? []).includes(option.id);

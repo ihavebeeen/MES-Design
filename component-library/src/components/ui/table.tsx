@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { Checkbox, type CheckboxColor } from "./checkbox";
+import { Checkbox, type CheckboxColor, type CheckboxUncheckedAppearance } from "./checkbox";
 import { IconArrow } from "../icons/icon-arrow";
 
 /**
@@ -215,6 +215,10 @@ export interface TableProps<T> {
   activeId?: string | null;
   /** 표 안 체크박스의 기본 색. 활성 행은 원본 화면처럼 black을 우선한다. */
   selectionColor?: CheckboxColor;
+  /** 미선택 체크박스 외형. MES 표에서는 회색 체크형을 사용한다. */
+  unselectedCheckboxAppearance?: CheckboxUncheckedAppearance;
+  /** 일부 행만 선택됐을 때 헤더의 indeterminate 표시 여부. */
+  selectionHeaderIndeterminate?: boolean;
   /** 테이블 좌우 내부 여백. 기본 표는 20px, 화면 실측 표는 0px도 허용한다. */
   edgePadding?: number;
   /** 선택 열 전체 폭. 기본값은 신규 점까지 포함한 40px. */
@@ -332,6 +336,7 @@ function DataRow<T>({
   isSelected,
   isActive,
   selectionColor,
+  unselectedCheckboxAppearance,
   onToggle,
   masterToggleAreaWidth,
   selectable,
@@ -346,6 +351,7 @@ function DataRow<T>({
   isSelected: boolean;
   isActive: boolean;
   selectionColor: CheckboxColor;
+  unselectedCheckboxAppearance: CheckboxUncheckedAppearance;
   onToggle: (id: string) => void;
   masterToggleAreaWidth: number;
   selectable: boolean;
@@ -380,6 +386,7 @@ function DataRow<T>({
               checked={isSelected}
               onChange={() => onToggle(row.id)}
               color={isActive ? "black" : selectionColor}
+              uncheckedAppearance={unselectedCheckboxAppearance}
               disabled={row.disabled}
             />
           )}
@@ -431,6 +438,7 @@ function GroupHeaderRow<T>({
   masterToggleAreaWidth,
   selectable,
   selectionColor,
+  unselectedCheckboxAppearance,
   edgePadding,
   selectionColumnWidth,
 }: {
@@ -446,6 +454,7 @@ function GroupHeaderRow<T>({
   masterToggleAreaWidth: number;
   selectable: boolean;
   selectionColor: CheckboxColor;
+  unselectedCheckboxAppearance: CheckboxUncheckedAppearance;
   edgePadding: number;
   selectionColumnWidth: number;
 }) {
@@ -459,7 +468,7 @@ function GroupHeaderRow<T>({
           className="flex h-full shrink-0 items-center"
           style={{ width: selectionColumnWidth }}
         >
-          <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color={selectionColor} />
+          <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color={selectionColor} uncheckedAppearance={unselectedCheckboxAppearance} />
         </div>
       )}
       {/* 6차: 헤더의 depth별 마스터 토글 버튼과 "같은 x 위치"에 오도록, 이 영역을 헤더와
@@ -596,6 +605,7 @@ function renderGroupNode<T>({
   selectable,
   activeId,
   selectionColor,
+  unselectedCheckboxAppearance,
   edgePadding,
   selectionColumnWidth,
   centerSelection,
@@ -615,6 +625,7 @@ function renderGroupNode<T>({
   selectable: boolean;
   activeId?: string | null;
   selectionColor: CheckboxColor;
+  unselectedCheckboxAppearance: CheckboxUncheckedAppearance;
   edgePadding: number;
   selectionColumnWidth: number;
   centerSelection: boolean;
@@ -643,6 +654,7 @@ function renderGroupNode<T>({
         masterToggleAreaWidth={masterToggleAreaWidth}
         selectable={selectable}
         selectionColor={selectionColor}
+        unselectedCheckboxAppearance={unselectedCheckboxAppearance}
         edgePadding={edgePadding}
         selectionColumnWidth={selectionColumnWidth}
       />
@@ -663,6 +675,7 @@ function renderGroupNode<T>({
                 selectable,
                 activeId,
                 selectionColor,
+                unselectedCheckboxAppearance,
                 edgePadding,
                 selectionColumnWidth,
                 centerSelection,
@@ -678,6 +691,7 @@ function renderGroupNode<T>({
                 isSelected={selectedIds.includes(row.id)}
                 isActive={activeId === undefined ? selectedIds.includes(row.id) : activeId === row.id}
                 selectionColor={selectionColor}
+                unselectedCheckboxAppearance={unselectedCheckboxAppearance}
                 onToggle={onToggleOne}
                 masterToggleAreaWidth={masterToggleAreaWidth}
                 selectable={selectable}
@@ -699,6 +713,8 @@ function Table<T>({
   selectedIds = [],
   activeId,
   selectionColor = "black",
+  unselectedCheckboxAppearance = "outline",
+  selectionHeaderIndeterminate = true,
   edgePadding = 20,
   selectionColumnWidth = CHECKBOX_COLUMN_WIDTH,
   centerSelection = false,
@@ -771,7 +787,7 @@ function Table<T>({
                   {selectionHeaderLabel}
                 </span>
               ) : (
-                <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} color={selectionColor} />
+                <Checkbox checked={allSelected} indeterminate={selectionHeaderIndeterminate && someSelected} onChange={toggleAll} color={selectionColor} uncheckedAppearance={unselectedCheckboxAppearance} />
               )}
             </div>
           )}
@@ -847,6 +863,7 @@ function Table<T>({
                 selectable,
                 activeId,
                 selectionColor,
+                unselectedCheckboxAppearance,
                 edgePadding,
                 selectionColumnWidth,
                 centerSelection,
@@ -862,6 +879,7 @@ function Table<T>({
                 isSelected={selectedIds.includes(row.id)}
                 isActive={activeId === undefined ? selectedIds.includes(row.id) : activeId === row.id}
                 selectionColor={selectionColor}
+                unselectedCheckboxAppearance={unselectedCheckboxAppearance}
                 onToggle={toggleOne}
                 masterToggleAreaWidth={masterToggleAreaWidth}
                 selectable={selectable}

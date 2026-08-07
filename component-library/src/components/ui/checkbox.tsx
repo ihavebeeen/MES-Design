@@ -48,6 +48,7 @@ import { cn } from "@/lib/utils";
  */
 
 export type CheckboxColor = "main" | "gray" | "black";
+export type CheckboxUncheckedAppearance = "outline" | "grayCheck";
 
 const checkedStyles: Record<CheckboxColor, string> = {
   main: "peer-checked:border-mes-primary-60 peer-checked:bg-mes-bg-brand",
@@ -67,10 +68,12 @@ export interface CheckboxProps
   /** 일부만 선택된 상태(하위 항목 중 일부만 체크됨) — 판단 구현, 위 주석 5번 참고 */
   indeterminate?: boolean;
   size?: "small" | "default";
+  /** 선택되지 않았을 때의 외형. grayCheck는 MES 표의 회색 체크 미선택 상태다. */
+  uncheckedAppearance?: CheckboxUncheckedAppearance;
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, color = "main", disabled, indeterminate = false, size = "default", ...props }, ref) => {
+  ({ className, color = "main", disabled, indeterminate = false, size = "default", uncheckedAppearance = "outline", ...props }, ref) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
     React.useEffect(() => {
@@ -96,7 +99,10 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute inset-px rounded-mes-control-sm border border-mes-gray-40 bg-white transition-colors",
+            "pointer-events-none absolute inset-px rounded-mes-control-sm border transition-colors",
+            uncheckedAppearance === "grayCheck"
+              ? "border-mes-gray-50 bg-mes-gray-50"
+              : "border-mes-gray-40 bg-white",
             checkedStyles[color],
             indeterminateStyles[color],
             "peer-disabled:border-mes-gray-30 peer-disabled:bg-mes-bg-disabled"
@@ -107,9 +113,11 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           aria-hidden
           strokeWidth={3}
           className={cn(
-            "pointer-events-none absolute text-white opacity-0 transition-opacity",
+            "pointer-events-none absolute text-white transition-opacity",
             size === "small" ? "size-3" : "size-3.5",
+            uncheckedAppearance === "grayCheck" ? "opacity-100" : "opacity-0",
             "peer-checked:opacity-100",
+            "peer-indeterminate:opacity-0",
             "peer-disabled:text-mes-gray-60"
           )}
         />

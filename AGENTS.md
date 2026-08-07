@@ -79,6 +79,8 @@ npx eslint .            # 린트 검사
    보정하지 않는다.
 4. 기존 Foundation/Component를 우선 사용한다. 원본에 필요한 차이가 있으면 기존 기본값을
    깨지 않는 optional prop/variant로 확장하고, 화면 안에서 비슷한 UI를 새로 그리지 않는다.
+   optional prop을 추가하거나 의미를 바꾸면 `docs/컴포넌트_OPTIONAL_PROP_레지스트리.md`도
+   같은 커밋에서 반드시 갱신한다.
 5. Figma의 시각 상태뿐 아니라 **동작 상태도 연결한다.** Checkbox/Radio/Input/Table에
    `onChange={() => undefined}` 같은 no-op 핸들러가 남아 있으면 완료로 보지 않는다. 선택 전후,
    전체선택/부분선택, disabled, 열기/닫기를 실제 브라우저에서 조작해 상태 변화를 확인한다.

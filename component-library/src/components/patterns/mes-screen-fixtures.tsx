@@ -87,13 +87,14 @@ function MesPageTabs({ active, extraTabs = ["거래처 등록", "품목 등록"]
 interface FixtureInputProps extends Omit<InputProps, "value" | "onChange" | "readOnly"> {
   value: React.ReactNode;
   muted?: boolean;
+  onValueChange?: (value: string) => void;
 }
 
-function FixtureInput({ value, muted = false, className, ...props }: FixtureInputProps) {
+function FixtureInput({ value, muted = false, onValueChange, className, ...props }: FixtureInputProps) {
   return (
     <Input
       value={typeof value === "string" || typeof value === "number" ? String(value) : ""}
-      onChange={() => undefined}
+      onChange={(event) => onValueChange?.(event.target.value)}
       readOnly={muted}
       className={className}
       {...props}
@@ -131,14 +132,26 @@ function FixtureGroupQuery() {
   return <GroupQuery options={[]} levels={[null, null, null]} onLevelChange={() => undefined} />;
 }
 
-function FixtureFilter({ tags = [], className }: { tags?: Array<{ label: string; count: number }>; className?: string }) {
-  const categories = tags.map((tag, index) => ({
-    id: `fixture-filter-${index}`,
-    label: tag.label,
-    options: Array.from({ length: Math.max(1, tag.count) }, (_, optionIndex) => ({ id: `option-${optionIndex}`, label: `${tag.label} ${optionIndex + 1}` })),
-  }));
-  const value = Object.fromEntries(categories.map((category, index) => [category.id, categories[index].options.map((option) => option.id)]));
-  return <Filter categories={categories} value={value} onChange={() => undefined} className={className} />;
+interface FixtureFilterDefinition {
+  id: string;
+  label: string;
+  options: string[];
+}
+
+function FixtureFilter({ tags = [], definitions, searchable = true, className }: { tags?: Array<{ label: string; count: number }>; definitions?: FixtureFilterDefinition[]; searchable?: boolean; className?: string }) {
+  const categories = definitions
+    ? definitions.map((definition) => ({
+        id: definition.id,
+        label: definition.label,
+        options: definition.options.map((option, index) => ({ id: `${definition.id}-${index}`, label: option })),
+      }))
+    : tags.map((tag, index) => ({
+        id: `fixture-filter-${index}`,
+        label: tag.label,
+        options: Array.from({ length: Math.max(1, tag.count) }, (_, optionIndex) => ({ id: `option-${optionIndex}`, label: `${tag.label} ${optionIndex + 1}` })),
+      }));
+  const [value, setValue] = React.useState<Record<string, string[]>>(() => Object.fromEntries(categories.map((category) => [category.id, definitions ? [] : category.options.map((option) => option.id)])));
+  return <Filter categories={categories} value={value} onChange={(categoryId, optionIds) => setValue((current) => ({ ...current, [categoryId]: optionIds }))} searchable={searchable} className={className} />;
 }
 
 interface FixtureTableProps {
@@ -152,6 +165,8 @@ interface FixtureTableProps {
   onCheckedRowsChange?: (rows: number[]) => void;
   activeRow?: number | null;
   selectionColor?: "main" | "gray" | "black";
+  unselectedCheckboxAppearance?: "outline" | "grayCheck";
+  selectionHeaderIndeterminate?: boolean;
   disabledRows?: number[];
   hiddenSelectionRows?: number[];
   selectable?: boolean;
@@ -167,7 +182,7 @@ interface FixtureTableProps {
 
 type FixtureTableData = { cells: React.ReactNode[] };
 
-function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, onCheckedRowsChange, activeRow, selectionColor, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
+function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, onCheckedRowsChange, activeRow, selectionColor, unselectedCheckboxAppearance, selectionHeaderIndeterminate, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
   const columns: TableColumn<FixtureTableData>[] = headers.map((header, index) => ({
     key: `column-${index}`,
     label: header,
@@ -199,6 +214,8 @@ function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows
       selectionHeaderLabel={selectionHeaderLabel}
       activeId={resolvedActiveId}
       selectionColor={selectionColor}
+      unselectedCheckboxAppearance={unselectedCheckboxAppearance}
+      selectionHeaderIndeterminate={selectionHeaderIndeterminate}
       edgePadding={edgePadding}
       selectionColumnWidth={selectionColumnWidth}
       centerSelection={centerSelection}
