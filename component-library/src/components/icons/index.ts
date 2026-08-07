@@ -13,6 +13,7 @@ export * from "./icon-copy";
 export * from "./icon-download";
 export * from "./icon-exclamation-circle";
 export * from "./icon-file-note";
+export * from "./icon-figma-assets";
 export * from "./icon-filter";
 export * from "./icon-flat-box-check";
 export * from "./icon-flat-file-check";

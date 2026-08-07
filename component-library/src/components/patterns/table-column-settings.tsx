@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Calculator, Eye, GripVertical, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CloseButton } from "@/components/ui/icon-button";
 import { Switch } from "@/components/ui/switch";
 import { Tag } from "@/components/ui/tag";
+import { IconCalculator, IconDragHandle, IconEyeMono, IconReload } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 export interface TableColumnSettingItem {
@@ -68,13 +69,11 @@ function TableColumnSettings({
       <header className="flex h-[42px] shrink-0 items-center border-b border-mes-gray-30 pl-4 pr-2.5">
         <h3 className="shrink-0 text-[15px] font-bold text-mes-gray-130">테이블 컬럼 설정</h3>
         <div className="ml-3 flex h-[24px] items-center gap-2 rounded-[4px] bg-mes-gray-20 px-2 text-[12px] font-semibold text-mes-gray-80">
-          <span className="flex items-center gap-1"><Eye size={14} />표시 {visibleCount}</span>
+          <span className="flex items-center gap-1"><IconEyeMono size={14} />표시 {visibleCount}</span>
           <span className="h-3 w-px bg-mes-gray-40" />
-          <span className="flex items-center gap-1"><Calculator size={14} />합계 {summarizedCount}</span>
+          <span className="flex items-center gap-1"><IconCalculator size={14} />합계 {summarizedCount}</span>
         </div>
-        <button type="button" aria-label="닫기" onClick={onClose} className="ml-auto flex size-8 items-center justify-center text-mes-gray-100">
-          <X size={18} />
-        </button>
+        <CloseButton onClick={onClose} className="ml-auto text-mes-gray-100" />
       </header>
 
       <div className="flex h-[306px] shrink-0 flex-col gap-2 px-4 py-4">
@@ -87,13 +86,13 @@ function TableColumnSettings({
             onDragOver={(event) => event.preventDefault()}
             onDrop={() => moveColumn(column.id)}
             className={cn(
-              "flex h-[39px] shrink-0 cursor-grab items-center rounded-[4px] border border-mes-gray-30 bg-white px-2 active:cursor-grabbing",
+              "flex h-[39px] shrink-0 cursor-grab items-center rounded-[6px] bg-mes-gray-20 pr-2.5 active:cursor-grabbing",
               draggedId === column.id && "border-mes-primary-60 bg-mes-primary-10 opacity-70"
             )}
           >
-            <GripVertical size={20} className="mr-2 shrink-0 text-mes-gray-60" aria-hidden />
+            <span className="flex w-11 shrink-0 items-center justify-center"><IconDragHandle size={20} /></span>
             <span className="min-w-0 truncate text-[13px] font-medium text-mes-gray-130">{column.label}</span>
-            {column.grouped && <Tag color="opacityMain" size="compact" className="ml-2">그룹화</Tag>}
+            {column.grouped && <Tag color="opacityMain" size="compact" className="ml-2">사용자 추가</Tag>}
             <div className="ml-auto flex items-center gap-3">
               <label className="flex w-[71px] items-center justify-end gap-2 text-[12px] text-mes-gray-80">
                 표시
@@ -118,7 +117,7 @@ function TableColumnSettings({
       </div>
 
       <footer className="flex h-16 shrink-0 items-center border-t border-mes-gray-30 px-4">
-        <Button variant="lineBlacktxt" size="small" className="w-[79px]" onClick={onReset}>초기화</Button>
+        <Button variant="lineBlacktxt" size="small" className="w-[79px]" startIcon={<IconReload size={16} />} onClick={onReset}>초기화</Button>
         <div className="ml-auto flex gap-2.5">
           <Button variant="fillGray" size="small" className="w-[125px]" onClick={onCancel}>취소</Button>
           <Button variant="fillBlack" size="small" className="w-[125px]" onClick={onApply}>적용</Button>

@@ -3,8 +3,8 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
-import { IconX } from "../icons/icon-x";
 import { DialogFooter, type DialogAction } from "./dialog-footer";
+import { CloseButton } from "./icon-button";
 
 export type SideSlidePanelSize = "narrow-760" | "standard-900" | "wide-960";
 
@@ -61,6 +61,7 @@ export interface SideSlidePanelProps {
   /** 지정하면 기존 취소/저장 2버튼 대신 이 배열을 렌더링한다. 빈 배열은 푸터 없음. */
   actions?: DialogAction[];
   footer?: React.ReactNode;
+  contentClassName?: string;
   className?: string;
 }
 
@@ -76,6 +77,7 @@ function SideSlidePanel({
   size = "wide-960",
   actions,
   footer,
+  contentClassName,
   className,
 }: SideSlidePanelProps) {
   const resolvedActions: DialogAction[] = actions ?? [
@@ -100,17 +102,11 @@ function SideSlidePanel({
               {title}
             </DialogPrimitive.Title>
             <DialogPrimitive.Close asChild>
-              <button
-                type="button"
-                aria-label="닫기"
-                className="flex size-8 shrink-0 items-center justify-center text-mes-gray-130"
-              >
-                <IconX size={20} />
-              </button>
+              <CloseButton className="text-mes-gray-130" />
             </DialogPrimitive.Close>
           </div>
 
-          <div className="flex min-h-0 w-full flex-1 flex-col items-center overflow-y-auto px-5 pt-5">
+          <div className={cn("flex min-h-0 w-full flex-1 flex-col items-center overflow-y-auto px-5 pt-5", contentClassName)}>
             {children}
           </div>
 

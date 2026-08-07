@@ -210,6 +210,8 @@ export interface TableProps<T> {
   rows?: TableRowData<T>[];
   selectedIds?: string[];
   onSelectedIdsChange?: (ids: string[]) => void;
+  /** 선택 기능이 없는 조회/요약 표에서는 체크박스 열 전체를 제거한다. */
+  selectable?: boolean;
   totals?: Record<string, React.ReactNode>;
   /** 그룹 depth(0부터)별 배경색. 기본값은 판단값 — 위 2-(1) 주석 참고 */
   groupLevelColors?: string[];
@@ -310,12 +312,14 @@ function DataRow<T>({
   isSelected,
   onToggle,
   masterToggleAreaWidth,
+  selectable,
 }: {
   row: TableRowData<T>;
   columns: TableColumn<T>[];
   isSelected: boolean;
   onToggle: (id: string) => void;
   masterToggleAreaWidth: number;
+  selectable: boolean;
 }) {
   const dividerColor = isSelected || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
   return (
@@ -331,24 +335,26 @@ function DataRow<T>({
       {/* 7차: "신규" 빨간 점을 체크박스 우측으로 정확히 10px 띄운 위치에 고정 배치.
           체크박스 칼럼 폭을 CHECKBOX_COLUMN_WIDTH(40px)로 통일해서 점이 다음 요소와
           안 겹치게 함 — 이 폭은 헤더/그룹행/총계행도 전부 동일하게 써야 정렬이 맞는다. */}
-      <div
-        className="relative flex h-full shrink-0 items-center"
-        style={{ width: CHECKBOX_COLUMN_WIDTH }}
-      >
-        <Checkbox
-          checked={isSelected}
-          onChange={() => onToggle(row.id)}
-          color="black"
-          disabled={row.disabled}
-        />
-        {row.isNew && (
-          <span
-            aria-hidden
-            className="absolute top-1/2 size-[6px] -translate-y-1/2 rounded-full bg-mes-danger-60"
-            style={{ left: 24 + NEW_DOT_GAP_FROM_CHECKBOX }}
+      {selectable && (
+        <div
+          className="relative flex h-full shrink-0 items-center"
+          style={{ width: CHECKBOX_COLUMN_WIDTH }}
+        >
+          <Checkbox
+            checked={isSelected}
+            onChange={() => onToggle(row.id)}
+            color="black"
+            disabled={row.disabled}
           />
-        )}
-      </div>
+          {row.isNew && (
+            <span
+              aria-hidden
+              className="absolute top-1/2 size-[6px] -translate-y-1/2 rounded-full bg-mes-danger-60"
+              style={{ left: 24 + NEW_DOT_GAP_FROM_CHECKBOX }}
+            />
+          )}
+        </div>
+      )}
       {/* 헤더의 마스터 토글 버튼 영역과 폭을 맞추는 빈 스페이서(5차 정정) */}
       {masterToggleAreaWidth > 0 && (
         <div className="h-full shrink-0" style={{ width: masterToggleAreaWidth }} />
@@ -384,6 +390,7 @@ function GroupHeaderRow<T>({
   indeterminate,
   onToggleSelect,
   masterToggleAreaWidth,
+  selectable,
 }: {
   group: TableGroup<T>;
   columns: TableColumn<T>[];
@@ -395,18 +402,21 @@ function GroupHeaderRow<T>({
   indeterminate: boolean;
   onToggleSelect: () => void;
   masterToggleAreaWidth: number;
+  selectable: boolean;
 }) {
   return (
     <div
       className="flex h-[30px] shrink-0 items-center border-b border-solid px-[20px]"
       style={{ background, borderColor: background }}
     >
-      <div
-        className="flex h-full shrink-0 items-center"
-        style={{ width: CHECKBOX_COLUMN_WIDTH }}
-      >
-        <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color="black" />
-      </div>
+      {selectable && (
+        <div
+          className="flex h-full shrink-0 items-center"
+          style={{ width: CHECKBOX_COLUMN_WIDTH }}
+        >
+          <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color="black" />
+        </div>
+      )}
       {/* 6차: 헤더의 depth별 마스터 토글 버튼과 "같은 x 위치"에 오도록, 이 영역을 헤더와
           똑같이 depth 슬롯(폭 MASTER_TOGGLE_SLOT_WIDTH씩)으로 나누고, 이 그룹의 depth에
           해당하는 슬롯에만 실제 펼침 버튼을 넣는다. 이전엔 라벨 앞에 paddingLeft로
@@ -479,10 +489,12 @@ function TotalsRow<T>({
   columns,
   totals,
   masterToggleAreaWidth,
+  selectable,
 }: {
   columns: TableColumn<T>[];
   totals?: Record<string, React.ReactNode>;
   masterToggleAreaWidth: number;
+  selectable: boolean;
 }) {
   if (!totals) return null;
   return (
@@ -491,7 +503,7 @@ function TotalsRow<T>({
           기본 box-sizing:border-box 때문에 실제로는 24px(패딩 포함)만 차지해서 다른
           행 종류(체크박스 24+12=36px)와 이미 안 맞고 있던 잠재 버그였음 — 발견 즉시
           CHECKBOX_COLUMN_WIDTH로 통일해서 수정 */}
-      <div className="h-full shrink-0" style={{ width: CHECKBOX_COLUMN_WIDTH }} />
+      {selectable && <div className="h-full shrink-0" style={{ width: CHECKBOX_COLUMN_WIDTH }} />}
       {/* 헤더의 마스터 토글 버튼 영역과 폭을 맞추는 빈 스페이서(5차 정정) */}
       {masterToggleAreaWidth > 0 && (
         <div className="h-full shrink-0" style={{ width: masterToggleAreaWidth }} />
@@ -532,6 +544,7 @@ function renderGroupNode<T>({
   onToggleOne,
   levelColors,
   masterToggleAreaWidth,
+  selectable,
 }: {
   group: TableGroup<T>;
   depth: number;
@@ -543,6 +556,7 @@ function renderGroupNode<T>({
   onToggleOne: (id: string) => void;
   levelColors: string[];
   masterToggleAreaWidth: number;
+  selectable: boolean;
 }): React.ReactNode {
   const isCollapsed = collapsed[group.id] ?? group.defaultExpanded === false;
   const rowIds = collectGroupRowIds(group);
@@ -564,6 +578,7 @@ function renderGroupNode<T>({
         indeterminate={isIndeterminate}
         onToggleSelect={() => onToggleGroupSelect(rowIds, !isAllChecked)}
         masterToggleAreaWidth={masterToggleAreaWidth}
+        selectable={selectable}
       />
       {!isCollapsed &&
         (group.groups
@@ -579,6 +594,7 @@ function renderGroupNode<T>({
                 onToggleOne,
                 levelColors,
                 masterToggleAreaWidth,
+                selectable,
               })
             )
           : (group.rows ?? []).map((row) => (
@@ -589,6 +605,7 @@ function renderGroupNode<T>({
                 isSelected={selectedIds.includes(row.id)}
                 onToggle={onToggleOne}
                 masterToggleAreaWidth={masterToggleAreaWidth}
+                selectable={selectable}
               />
             )))}
     </React.Fragment>
@@ -601,6 +618,7 @@ function Table<T>({
   rows,
   selectedIds = [],
   onSelectedIdsChange,
+  selectable = true,
   totals,
   groupLevelColors = DEFAULT_GROUP_LEVEL_COLORS,
   className,
@@ -657,9 +675,11 @@ function Table<T>({
           {/* 5차 정정: 체크박스는 항상 최좌측 고정 — 마스터 토글 버튼은 체크박스보다
               오른쪽에 온다(예전엔 반대였음). 7차: 폭을 CHECKBOX_COLUMN_WIDTH로 통일
               (신규 점 배치 때문에 40px로 늘어남 — 다른 행 종류와 동일해야 함). */}
-          <div className="flex h-full shrink-0 items-center" style={{ width: CHECKBOX_COLUMN_WIDTH }}>
-            <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} color="black" />
-          </div>
+          {selectable && (
+            <div className="flex h-full shrink-0 items-center" style={{ width: CHECKBOX_COLUMN_WIDTH }}>
+              <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} color="black" />
+            </div>
+          )}
           {/* 2026-07-28 3차 피드백(4): 그룹 depth별 "한꺼번에 접기/펼치기" 버튼. 6차: 각
               버튼을 폭 MASTER_TOGGLE_SLOT_WIDTH의 슬롯 안에 넣어서, 그룹행(GroupHeaderRow)
               의 depth별 슬롯과 정확히 같은 x 위치에 오도록 통일(이전엔 gap 기반이라 슬롯
@@ -729,6 +749,7 @@ function Table<T>({
                 onToggleOne: toggleOne,
                 levelColors: groupLevelColors,
                 masterToggleAreaWidth,
+                selectable,
               })
             )
           : (rows ?? []).map((row) => (
@@ -739,10 +760,11 @@ function Table<T>({
                 isSelected={selectedIds.includes(row.id)}
                 onToggle={toggleOne}
                 masterToggleAreaWidth={masterToggleAreaWidth}
+                selectable={selectable}
               />
             ))}
 
-        <TotalsRow columns={columns} totals={totals} masterToggleAreaWidth={masterToggleAreaWidth} />
+        <TotalsRow columns={columns} totals={totals} masterToggleAreaWidth={masterToggleAreaWidth} selectable={selectable} />
       </div>
     </div>
   );

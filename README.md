@@ -33,7 +33,7 @@
 - 중앙·사이드 팝업 8종 (`11210:52992` 등)
 - 출하지시 리스트의 테이블 컬럼 설정 (`11210:55894`)
 
-TypeScript 검사와 production build는 통과합니다. ESLint에는 렌더 중 ref 변경, 미사용 import, 빈 interface 등 기존 정리 대상이 남아 있습니다.
+TypeScript 검사와 production build는 통과합니다. `npm run check:patterns`로 완성 화면 패턴이 기존 Button, Radio, Checkbox, Table, Badge 등 디자인 시스템 컴포넌트를 우회하지 않는지 검사합니다. ESLint에는 렌더 중 ref 변경, 미사용 import, 빈 interface 등 기존 정리 대상이 남아 있습니다.
 
 ## 기술 스택
 

@@ -3,8 +3,8 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
-import { IconX } from "../icons/icon-x";
 import { DialogFooter, type DialogAction } from "./dialog-footer";
+import { CloseButton } from "./icon-button";
 
 export type CenterModalSize =
   | "compact-400"
@@ -81,6 +81,7 @@ export interface CenterModalProps {
   actions?: DialogAction[];
   /** 완전한 커스텀 푸터가 필요할 때 사용. actions보다 우선한다. */
   footer?: React.ReactNode;
+  contentClassName?: string;
   className?: string;
 }
 
@@ -96,6 +97,7 @@ function CenterModal({
   size = "standard-960",
   actions,
   footer,
+  contentClassName,
   className,
 }: CenterModalProps) {
   const resolvedActions: DialogAction[] = actions ?? [
@@ -120,17 +122,11 @@ function CenterModal({
               {title}
             </DialogPrimitive.Title>
             <DialogPrimitive.Close asChild>
-              <button
-                type="button"
-                aria-label="닫기"
-                className="flex size-8 shrink-0 items-center justify-center text-mes-gray-130"
-              >
-                <IconX size={20} />
-              </button>
+              <CloseButton className="text-mes-gray-130" />
             </DialogPrimitive.Close>
           </div>
 
-          <div className="flex min-h-0 w-full flex-1 flex-col items-center overflow-y-auto px-5 pt-5">
+          <div className={cn("flex min-h-0 w-full flex-1 flex-col items-center overflow-y-auto px-5 pt-5", contentClassName)}>
             {children}
           </div>
 

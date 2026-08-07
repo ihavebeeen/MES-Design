@@ -1,9 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Plus, Search, Settings2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { IconButton } from "@/components/ui/icon-button";
+import { IconGrid, IconPlus, IconSearch } from "@/components/icons";
 import { FigmaScreenPreview } from "./figma-screen-preview";
-import { MesFixtureSidebar, MesPageTabs, SmallButton } from "./mes-screen-fixtures";
+import { FixtureDateRange, FixtureTable, MesFixtureSidebar, MesPageTabs } from "./mes-screen-fixtures";
 import { TableColumnSettings, type TableColumnSettingItem } from "./table-column-settings";
 
 const INITIAL_COLUMNS: TableColumnSettingItem[] = [
@@ -25,6 +28,15 @@ const ROWS = Array.from({ length: 14 }, (_, index) => ({
 
 function CompletedColumnSettingsExample() {
   const [columns, setColumns] = React.useState(INITIAL_COLUMNS);
+  const tableRows = ROWS.map((row, index) => [
+    index + 1,
+    row.date,
+    row.number,
+    row.customer,
+    row.item,
+    row.quantity.toLocaleString(),
+    <Badge key={row.number} variant="blueLight">출하대기</Badge>,
+  ]);
 
   return (
     <FigmaScreenPreview>
@@ -35,20 +47,15 @@ function CompletedColumnSettingsExample() {
           <div className="flex h-12 items-center justify-between border-b border-mes-gray-30 px-5">
             <h2 className="text-[18px] font-bold">출하지시 리스트</h2>
             <div className="flex items-center gap-2">
-              <SmallButton><Search size={15} />조회</SmallButton>
-              <SmallButton tone="main"><Plus size={15} />출하지시 등록</SmallButton>
-              <button type="button" aria-label="테이블 컬럼 설정" className="flex size-8 items-center justify-center rounded-[4px] border border-mes-gray-30 bg-white">
-                <Settings2 size={16} />
-              </button>
+              <Button size="small" variant="lineBlacktxt" startIcon={<IconSearch size={15} />}>조회</Button>
+              <Button size="small" startIcon={<IconPlus size={15} />}>출하지시 등록</Button>
+              <IconButton aria-label="테이블 컬럼 설정" variant="lineBlacktxt" icon={<IconGrid size={16} />} />
             </div>
           </div>
           <div className="h-12 border-b border-mes-gray-30 bg-mes-gray-10 px-5 py-2">
-            <div className="flex h-8 w-[560px] items-center rounded-[4px] border border-mes-gray-30 bg-white px-3 text-[14px] text-mes-gray-70">조회기간&nbsp;&nbsp;&nbsp; 2025.03.01&nbsp;&nbsp;~&nbsp;&nbsp;2025.03.31</div>
+            <FixtureDateRange label="조회기간" />
           </div>
-          <table className="w-full table-fixed border-collapse text-[13px]">
-            <thead><tr className="h-[30px] border-b border-mes-gray-30"><th className="w-12">No.</th><th>출하지시일</th><th>출하지시번호</th><th>거래처</th><th>품목</th><th>수량</th><th>상태</th></tr></thead>
-            <tbody>{ROWS.map((row, index) => <tr key={row.number} className="h-[30px] border-b border-mes-gray-30 text-center"><td>{index + 1}</td><td>{row.date}</td><td>{row.number}</td><td>{row.customer}</td><td>{row.item}</td><td>{row.quantity.toLocaleString()}</td><td><span className="rounded-sm bg-mes-primary-20 px-2 py-0.5 text-mes-primary-70">출하대기</span></td></tr>)}</tbody>
-          </table>
+          <FixtureTable selectable={false} headers={["No.", "출하지시일", "출하지시번호", "거래처", "품목", "수량", "상태"]} rows={tableRows} />
         </main>
         <div className="absolute inset-0 bg-black/10" />
         <TableColumnSettings

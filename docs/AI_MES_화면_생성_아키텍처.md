@@ -407,6 +407,7 @@ AI는 작업에 필요한 node만 조회한다. 전체 파일 메타데이터는
 - Next.js production build
 - 금지된 raw color, 임의 spacing, 임의 radius 탐지
 - 화면 내부 중복 컴포넌트 탐지
+- `npm run check:patterns`: pattern에서 raw `button/input/select/table`, 직접 `lucide-react`, 기존 컴포넌트의 재구현 이름을 금지
 
 ### 11.2 동작 검증
 

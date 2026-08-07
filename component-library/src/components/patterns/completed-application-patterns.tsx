@@ -1,21 +1,31 @@
 "use client";
 
 import * as React from "react";
-import { Copy, Download, Filter, Link2, Settings } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import {
+  IconArrowLine,
+  IconCopy,
+  IconDownload,
+  IconGrid,
+} from "@/components/icons";
 import { FigmaScreenPreview } from "./figma-screen-preview";
 import { AnalyticsDashboardPattern } from "./analytics-dashboard-pattern";
 import { EntityListPattern } from "./entity-list-pattern";
 import { MasterDetailPattern } from "./master-detail-pattern";
 import {
-  CheckboxGlyph,
-  ControlBox,
-  DateRangeControl,
-  DenseTable,
-  GroupControl,
+  FixtureDateRange,
+  FixtureFilter,
+  FixtureGroupQuery,
+  FixtureInput,
+  FixtureSearch,
+  FixtureSelect,
+  FixtureTable,
   MesFixtureSidebar,
   MesPageTabs,
-  SearchControl,
-  SmallButton,
+  RadioOption,
 } from "./mes-screen-fixtures";
 
 const shipmentRows = [
@@ -34,31 +44,25 @@ const shipmentRows = [
 ];
 
 function StatusTag({ status }: { status: string }) {
-  const tone = status === "완료" ? "bg-mes-primary-60" : status === "출하중" ? "bg-mes-primary-20 text-mes-primary-60" : status === "취소 요청" ? "bg-mes-danger-60" : "bg-mes-gray-80";
-  return <span className={`inline-flex h-[22px] items-center rounded-[2px] px-2 text-[12px] font-semibold text-white ${tone}`}>{status}</span>;
+  const variant = status === "완료" ? "blue" : status === "출하중" ? "blueLight" : status === "취소 요청" ? "red" : "grayFill";
+  return <Badge variant={variant}>{status}</Badge>;
 }
 
 function ProgressCell({ value }: { value: number }) {
-  return (
-    <div className="flex items-center justify-center gap-2">
-      <span className="h-1.5 w-[70px] overflow-hidden rounded-full bg-mes-gray-40"><span className="block h-full bg-mes-gray-100" style={{ width: `${value}%` }} /></span>
-      <span className="w-10 text-left">{value}%</span>
-    </div>
-  );
+  return <Progress value={value} />;
 }
 
 function CompletedEntityListExample() {
   const rows = shipmentRows.map((row, index) => [
-    <CheckboxGlyph key={`check-${index}`} />,
     "2025.10.30",
     "2025.10.30",
     row[0], row[1], row[2], row[3], row[4],
     <span key={`qty-${index}`} className="block text-right">{row[5]}</span>,
-    <span key={`register-${index}`} className="rounded-[2px] bg-mes-gray-20 px-2 py-1 text-[12px] font-semibold">등록 〉</span>,
+    <Button key={`register-${index}`} size="xsmall" variant="opacityMain" endIcon={<IconArrowLine size={12} />}>등록</Button>,
     row[6],
     <ProgressCell key={`progress-${index}`} value={row[7] as number} />,
     <StatusTag key={`status-${index}`} status={row[8] as string} />,
-    <span key={`edit-${index}`} className="rounded-[2px] bg-mes-gray-20 px-2 py-1 text-[12px] font-semibold">편집 〉</span>,
+    <Button key={`edit-${index}`} size="xsmall" variant="lineBlacktxt" endIcon={<IconArrowLine size={12} />}>편집</Button>,
   ]);
 
   return (
@@ -71,32 +75,32 @@ function CompletedEntityListExample() {
             <div className="flex h-12 items-center justify-between border-b border-mes-gray-30 px-5">
               <h3 className="text-[18px] font-bold">출하지시 리스트</h3>
               <div className="flex items-center gap-2.5">
-                <DateRangeControl />
-                <SmallButton tone="main" className="w-[50px]">조회</SmallButton>
-                <SmallButton className="w-[67px]"><Settings size={16} /> 설정</SmallButton>
+                <FixtureDateRange />
+                <Button size="small" className="w-[50px]">조회</Button>
+                <Button size="small" variant="lineBlacktxt" className="w-[67px]" startIcon={<IconGrid size={16} />}>설정</Button>
               </div>
             </div>
             <div className="flex h-12 items-center justify-between border-b border-mes-gray-30 px-5">
-              <div className="flex items-center gap-2.5"><GroupControl /><SmallButton><Filter size={16} /> 필터 추가</SmallButton></div>
-              <SearchControl />
+              <div className="flex items-center gap-2.5"><FixtureGroupQuery /><FixtureFilter /></div>
+              <FixtureSearch />
             </div>
           </>
         }
         table={
-          <DenseTable
-            headers={["", "출하지시일", "판매예정일", "거래처", "품목", "품목 구분", "규격", "단위", "출하지시수량", "출하실적등록", "출하실적수량", "출하율", "상태", "비고"]}
-            widths={[56, 128, 128, 128, 128, 128, 128, 128, 128, 100, 128, 128, 128, 72]}
+          <FixtureTable
+            headers={["출하지시일", "판매예정일", "거래처", "품목", "품목 구분", "규격", "단위", "출하지시수량", "출하실적등록", "출하실적수량", "출하율", "상태", "비고"]}
+            widths={[128, 128, 128, 128, 128, 128, 128, 128, 100, 128, 128, 128, 72]}
             rows={rows}
           />
         }
         footer={
           <>
             <div className="flex gap-2.5">
-              <SmallButton><Copy size={16} /> 복사</SmallButton>
-              <SmallButton><Download size={16} /> 다운로드</SmallButton>
-              <SmallButton className="text-mes-primary-60"><Link2 size={16} /> 판매목표관리(일) 연동</SmallButton>
+              <Button size="small" variant="lineBlacktxt" startIcon={<IconCopy size={16} />}>복사</Button>
+              <Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button>
+              <Button size="small" variant="lineMain" startIcon={<IconArrowLine size={16} />}>판매목표관리(일) 연동</Button>
             </div>
-            <div className="flex gap-2.5"><SmallButton tone="gray" className="w-40">삭제</SmallButton><SmallButton tone="black" className="w-40">출하지시 등록</SmallButton></div>
+            <div className="flex gap-2.5"><Button size="small" variant="fillGray" className="w-40">삭제</Button><Button size="small" variant="fillBlack" className="w-40">출하지시 등록</Button></div>
           </>
         }
       />
@@ -105,7 +109,6 @@ function CompletedEntityListExample() {
 }
 
 const lotMasterRows = Array.from({ length: 12 }, (_, index) => [
-  <CheckboxGlyph key={`lot-check-${index}`} selected={index === 1} />,
   "250801-1234-A-0081", "팥빙수", "완제품", "EA", "1000", index < 2 ? "A1" : "", "윤대원", index > 1 ? "오리온" : "", "25.08.01", index < 2 ? "N" : "Y", index < 2 ? "롯데" : "", index < 2 ? "25.08.01" : "",
 ]);
 
@@ -128,38 +131,38 @@ function CompletedMasterDetailExample() {
             <div className="flex h-12 items-center justify-between border-b border-mes-gray-30 px-5">
               <h3 className="text-[18px] font-bold">LOT 추적</h3>
               <div className="flex items-center gap-2.5">
-                <ControlBox><b className="mr-3">LOT No</b><span className="text-mes-gray-60">P240601001-0001&nbsp; ~ &nbsp;P240601001-9999</span></ControlBox>
-                <DateRangeControl />
-                <SmallButton tone="main" className="w-[50px]">조회</SmallButton>
-                <SmallButton className="w-[67px]"><Settings size={16} /> 설정</SmallButton>
+                <FixtureInput aria-label="LOT No" value="P240601001-0001 ~ P240601001-9999" className="w-[310px]" />
+                <FixtureDateRange />
+                <Button size="small" className="w-[50px]">조회</Button>
+                <Button size="small" variant="lineBlacktxt" className="w-[67px]" startIcon={<IconGrid size={16} />}>설정</Button>
               </div>
             </div>
             <div className="flex h-12 items-center justify-between border-b border-mes-gray-30 px-5">
-              <div className="flex h-8 overflow-hidden rounded-[4px] border border-mes-gray-30 text-[14px]">
-                <span className="flex items-center gap-2 bg-white px-3 font-semibold"><span className="size-5 rounded-full border-[5px] border-mes-primary-60" />투입품목 추적(역전개)</span>
-                <span className="flex items-center gap-2 bg-mes-gray-20 px-3 text-mes-gray-80"><span className="size-5 rounded-full border border-mes-gray-50" />생산품목 추적(정전개)</span>
+              <div className="flex h-8 items-center gap-4 text-[14px]">
+                <RadioOption name="lot-direction" checked label="투입품목 추적(역전개)" />
+                <RadioOption name="lot-direction" checked={false} label="생산품목 추적(정전개)" />
               </div>
-              <SearchControl />
+              <FixtureSearch />
             </div>
           </>
         }
         master={
-          <DenseTable
-            headers={["선택", "LOT No", "품목", "품목 구분", "단위", "수량", "설비", "담당자", "입고처", "입고(생산)일", "검사여부", "출하처", "출하일"]}
-            widths={[56, 192, 192, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120]}
+          <FixtureTable
+            headers={["LOT No", "품목", "품목 구분", "단위", "수량", "설비", "담당자", "입고처", "입고(생산)일", "검사여부", "출하처", "출하일"]}
+            widths={[192, 192, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120]}
             rows={lotMasterRows}
             selectedRow={1}
           />
         }
         detailTitle="↳  투입품목 상세"
         detail={
-          <DenseTable
+          <FixtureTable
             headers={["LOT No", "품목", "품목 구분", "단위", "수량", "투입수량", "잔량", "ROUTE명", "설비", "담당자", "입고처", "입고(생산)일", "검사여부", "투입일"]}
             widths={[210, 210, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]}
             rows={lotDetailRows}
           />
         }
-        footer={<div className="flex gap-2.5"><SmallButton><Copy size={16} /> 복사</SmallButton><SmallButton><Download size={16} /> 다운로드</SmallButton></div>}
+        footer={<div className="flex gap-2.5"><Button size="small" variant="lineBlacktxt" startIcon={<IconCopy size={16} />}>복사</Button><Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button></div>}
       />
     </FigmaScreenPreview>
   );
@@ -174,13 +177,13 @@ const metricCards = [
 
 function MetricCard({ item, index }: { item: (typeof metricCards)[number]; index: number }) {
   return (
-    <div className="flex h-[106px] flex-col rounded-xl bg-mes-gray-20 p-4">
+    <Card className="flex h-[106px] flex-col rounded-xl bg-mes-gray-20 p-4">
       <div className="flex items-center justify-between"><b className="text-[15px]">{item.title}</b><strong className="text-[24px]">{index > 1 && <span className={item.accent}>↗ </span>}{item.value}</strong></div>
       {index < 2 && <div className="mt-3 h-2 overflow-hidden rounded-full bg-mes-gray-40"><div className={`h-full w-[83%] ${item.accent}`} /></div>}
       <div className="mt-auto grid grid-cols-2 divide-x divide-mes-gray-30 rounded-lg bg-white py-2 text-center text-[12px]">
         {[item.left, item.right].map((value, itemIndex) => <div key={itemIndex}><span className="block text-mes-gray-80">{value[0]}</span><b>{value[1]}</b></div>)}
       </div>
-    </div>
+    </Card>
   );
 }
 
@@ -213,7 +216,7 @@ function CompletedAnalyticsExample() {
         tabs={<MesPageTabs active="생산분석 현황" />}
         metrics={metricCards.map((item, index) => ({ id: String(index), content: <MetricCard item={item} index={index} /> }))}
         panels={[
-          { id: "summary", title: "", content: <div className="h-full"><div className="mb-2 flex gap-2"><ControlBox className="w-[140px] justify-between">2025년 09월⌄</ControlBox><ControlBox className="w-[130px] justify-between">성형⌄</ControlBox></div><DenseTable headers={["설비", "양품(백만원)", "불량(백만원)", "불량률(%)"]} rows={Array.from({ length: 5 }, () => ["A1", "5,000", "30", "0.6"])} /></div> },
+          { id: "summary", title: "", content: <div className="h-full"><div className="mb-2 flex gap-2"><FixtureSelect value="2025년 09월" className="w-[140px]" /><FixtureSelect value="성형" className="w-[130px]" /></div><FixtureTable selectable={false} headers={["설비", "양품(백만원)", "불량(백만원)", "불량률(%)"]} rows={Array.from({ length: 5 }, () => ["A1", "5,000", "30", "0.6"])} /></div> },
           { id: "production", title: "생산실적 현황", content: <ProductionChart /> },
           { id: "defect", title: "TOP5 불량유형", content: <HorizontalBars labels={["기타", "오무힘", "중량불량", "찍힘", "스크래치"]} values={[57, 35, 8, 30, 5]} /> },
           { id: "top", title: "TOP5 생산품", content: <HorizontalBars labels={["빙빙", "누가바", "돼지바", "비비빅", "팥빙수"]} values={[95, 55, 85, 48, 80]} /> },
