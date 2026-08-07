@@ -45,8 +45,8 @@ const POPUPS: Array<{ id: PopupKind; label: string; node: string }> = [
 ];
 
 const SAVE_ACTION: DialogAction = { id: "save", label: "저장", variant: "fillBlack" };
-const DEFAULT_ACTIONS: DialogAction[] = [
-  { id: "cancel", label: "취소", variant: "fillGray" },
+const createDefaultActions = (onCancel: () => void): DialogAction[] => [
+  { id: "cancel", label: "취소", variant: "fillGray", onClick: onCancel },
   SAVE_ACTION,
 ];
 
@@ -357,21 +357,23 @@ function InspectionContent() {
 }
 
 function CenterPopup({ kind, open, onOpenChange }: { kind: Exclude<PopupKind, "production" | "inspection">; open: boolean; onOpenChange: (open: boolean) => void }) {
+  const defaultActions = createDefaultActions(() => onOpenChange(false));
   const config: Record<typeof kind, { title: string; size: CenterModalSize; height: string; actions: DialogAction[]; content: React.ReactNode }> = {
     quantity: { title: "생산수량 입력", size: "compact-400", height: "h-[437px]", actions: [SAVE_ACTION], content: <QuantityContent /> },
     details: { title: "품목 상세정보", size: "compact-480", height: "h-[436px]", actions: [], content: <DetailsContent /> },
     defect: { title: "불량수량 입력", size: "medium-600", height: "h-[400px]", actions: [SAVE_ACTION], content: <DefectContent /> },
-    weight: { title: "중량검사", size: "standard-960", height: "h-[752px]", actions: DEFAULT_ACTIONS, content: <WeightContent /> },
-    purchase: { title: "발주 일괄등록", size: "large-1100", height: "h-[680px]", actions: DEFAULT_ACTIONS, content: <PurchaseContent /> },
-    lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: DEFAULT_ACTIONS, content: <LookupWorkOrderContent /> },
+    weight: { title: "중량검사", size: "standard-960", height: "h-[752px]", actions: defaultActions, content: <WeightContent /> },
+    purchase: { title: "발주 일괄등록", size: "large-1100", height: "h-[680px]", actions: defaultActions, content: <PurchaseContent /> },
+    lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: defaultActions, content: <LookupWorkOrderContent /> },
   };
   const current = config[kind];
   return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} className={`${current.height} ${kind === "lookup" ? "max-h-none" : ""}`} contentClassName={kind === "lookup" ? "items-stretch overflow-hidden p-0" : kind === "weight" ? "p-0" : kind === "details" ? "pt-0" : undefined}>{current.content}</CenterModal>;
 }
 
 function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
-  if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={DEFAULT_ACTIONS} contentClassName="items-stretch p-0"><ProductionContent /></SideSlidePanel>;
-  if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={DEFAULT_ACTIONS} contentClassName="items-stretch p-0"><InspectionContent /></SideSlidePanel>;
+  const defaultActions = createDefaultActions(() => onOpenChange(false));
+  if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch p-0"><ProductionContent /></SideSlidePanel>;
+  if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch p-0"><InspectionContent /></SideSlidePanel>;
   return <CenterPopup kind={kind} open={open} onOpenChange={onOpenChange} />;
 }
 
