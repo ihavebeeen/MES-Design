@@ -104,16 +104,6 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   // Components처럼 낱개 UI가 아니라 여러 컴포넌트를 실제 화면으로 합성한 것이라
   // 별도 그룹(Patterns)으로 관리 — label은 담당자가 프레임에 붙인 이름 그대로.
   {
-    id: "list-registration-modal",
-    label: "리스트형 등록 모달",
-    labelEn: "List Registration Modal",
-  },
-  {
-    id: "inspection-checklist-modal",
-    label: "검사 체크리스트 모달",
-    labelEn: "Inspection Checklist Modal",
-  },
-  {
     id: "grouped-list-screen",
     label: "그룹화 리스트 관리 화면",
     labelEn: "Grouped List Screen",
@@ -135,8 +125,8 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   },
   {
     id: "completed-popup-types",
-    label: "완성 화면 — 팝업 패턴 분류",
-    labelEn: "Completed Popup Pattern Taxonomy",
+    label: "팝업",
+    labelEn: "Popup Catalog",
   },
   {
     id: "table-column-settings-pattern",
@@ -235,13 +225,11 @@ export const FOUNDATION_NODES: SidebarNode[] = FOUNDATION_ID_LIST.map((id) => le
 /** 2026-08-05 신규 — Patterns(3층) id 목록. 지금은 순서가 곧 등록한 순서(별도 정렬 없음
  *  — 아직 3개뿐이라 Components처럼 티어 정렬을 도입할 필요가 없음, 늘어나면 재검토). */
 export const PATTERN_ID_LIST = [
-  "list-registration-modal",
-  "inspection-checklist-modal",
+  "completed-popup-types",
   "grouped-list-screen",
   "completed-entity-list",
   "completed-master-detail",
   "completed-analytics-dashboard",
-  "completed-popup-types",
   "table-column-settings-pattern",
 ];
 export const PATTERN_NODES: SidebarNode[] = PATTERN_ID_LIST.map((id) => leaf(id));

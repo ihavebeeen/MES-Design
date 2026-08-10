@@ -32,12 +32,19 @@ const closeActions = (onClose: () => void, confirmLabel = "확인"): DialogActio
 const materialRows = [
   ["LOT-AA-11", "박스", "반제품", "A", "0", "kg", "동진창고"],
   ["LOT-AA-12", "박스", "반제품", "A", "0", "kg", "동진창고"],
-  ["LOT-AA-13", "박스", "반제품", "A", "1000", "kg", "동진창고"],
-  ["LOT-AA-13", "원재료4", "반제품", "A", "86,432", "kg", "동진창고"],
-  ["LOT-AA-13", "원재료9", "반제품", "A", "346,865", "kg", "동진창고"],
-  ["LOT-AA-14", "비닐125*125", "반제품", "A", "124,000", "kg", "동진창고"],
-  ["LOT-AA-15", "더블비앙코", "반제품", "A", "1000", "kg", "동진창고"],
-  ["LOT-AA-16", "더블비앙코 뚜껑-BX", "반제품", "A", "1000", "kg", "동진창고"],
+  ["LOT-AA-13", "박스", "반제품", "아사노", "1000", "kg", "동진창고"],
+  ["LOT-AA-13", "원재료4", "반제품", "아사노", "86,432", "kg", "동진창고"],
+  ["LOT-AA-13", "원재료9", "반제품", "아사노", "346,865", "kg", "동진창고"],
+  ["LOT-AA-14", "비닐125*125", "반제품", "아사노", "124,000", "kg", "동진창고"],
+  ["LOT-AA-15", "더블비앙코", "반제품", "아사노", "1000", "kg", "동진창고"],
+  ["LOT-AA-16", "더블비앙코 뚜껑-BX", "반제품", "아사노", "1000", "kg", "동진창고"],
+  ["LOT-AA-17", "유기농 두부-BX", "반제품", "아사노", "1000", "kg", "동진창고"],
+  ["LOT-AA-18", "BIO 치킨용-BX", "반제품", "아사노", "1000", "kg", "동진창고"],
+  ["LOT-AA-19", "지팩 리드 중-BX", "반제품", "아사노", "1000", "kg", "동진창고"],
+  ["LOT-AA-11", "더블비앙코", "반제품", "아사노", "1000", "kg", "동진창고"],
+  ["LOT-AA-11", "더블비앙코", "반제품", "아사노", "1000", "kg", "동진창고"],
+  ["LOT-AA-11", "더블비앙코", "반제품", "아사노", "1000", "kg", "동진창고"],
+  ["LOT-AA-11", "더블비앙코", "반제품", "아사노", "1000", "kg", "동진창고"],
 ];
 
 const requirementRows = [
@@ -53,24 +60,33 @@ export function MaterialInputSetupContent() {
   const [selectedRows, setSelectedRows] = React.useState([0, 1, 2, 3, 4]);
   const [search, setSearch] = React.useState("");
   const [scanReady, setScanReady] = React.useState(false);
-  const [quantities, setQuantities] = React.useState<Record<number, string>>({ 0: "3000", 1: "3000", 2: "500", 3: "500", 4: "400" });
+  const [quantities, setQuantities] = React.useState<Record<number, string>>({ 0: "3000", 1: "3000", 2: "500", 3: "400", 4: "400" });
 
   const visibleMaterialRows = materialRows
     .map((row, index) => ({ row, index }))
     .filter(({ row }) => !search || row.some((cell) => cell.toLowerCase().includes(search.toLowerCase())));
 
+  const visibleSelectedRows = visibleMaterialRows.flatMap(({ index }, visibleIndex) => selectedRows.includes(index) ? [visibleIndex] : []);
+  const updateVisibleSelectedRows = (visibleIndexes: number[]) => {
+    const visibleSourceIndexes = visibleMaterialRows.map(({ index }) => index);
+    setSelectedRows((current) => [
+      ...current.filter((index) => !visibleSourceIndexes.includes(index)),
+      ...visibleIndexes.map((visibleIndex) => visibleMaterialRows[visibleIndex].index),
+    ]);
+  };
+
   const rows = visibleMaterialRows.map(({ row, index }) => [
     ...row,
-    <div key={`quantity-${index}`} className="flex items-center gap-1.5">
+    selectedRows.includes(index) ? <div key={`quantity-${index}`} className="flex items-center gap-2 px-3">
       <FixtureInput
         value={quantities[index] ?? ""}
         onValueChange={(value) => setQuantities((current) => ({ ...current, [index]: value }))}
         inputMode="numeric"
         size="small"
-        className="h-[22px] min-w-0 flex-1 px-1.5 text-right"
+        className="h-[22px] w-[119px] min-w-0 px-1.5 text-right"
         aria-label={`${row[1]} 투입수량`}
       />
-      <label className="flex items-center gap-1 text-[12px]">
+      <label className="flex items-center gap-1.5 text-[12px]">
         <Checkbox
           size="small"
           color="main"
@@ -79,54 +95,64 @@ export function MaterialInputSetupContent() {
         />
         ALL
       </label>
-    </div>,
+    </div> : "",
   ]);
 
   return (
-    <div className="grid h-full min-h-0 w-full grid-cols-[170px_1fr]">
-      <aside className="flex min-h-0 flex-col gap-4 border-r border-mes-gray-30 p-3.5">
+    <div className="grid h-full min-h-0 w-full grid-cols-[240px_1fr]">
+      <aside className="flex h-[619px] min-h-0 flex-col gap-5 border-r border-mes-gray-30 p-5">
         <Button className="w-full" size="basic" startIcon={<IconScan size={16} />} onClick={() => setScanReady((current) => !current)}>
           {scanReady ? "Scan 준비" : "Scan"}
         </Button>
-        <div className="border-t border-mes-gray-30 pt-3">
-          <b className="text-[14px] text-mes-gray-80">Auto Bom</b>
-          <div className="mt-2 space-y-1.5">
+        <div className="border-t border-mes-gray-30 pt-4">
+          <b className="text-[16px] text-mes-gray-80">Auto Bom</b>
+          <div className="mt-2.5 space-y-2">
             {["CUSTOM", "표준"].map((type) => (
               <Button key={type} size="small" variant={selectedType === type ? "lineMain" : "lineBlacktxt"} className="w-full" onClick={() => setSelectedType(type)}>{type}</Button>
             ))}
             {Array.from({ length: 9 }, (_, index) => <Button key={index} size="small" className="w-full" disabled>Type {String(index + 2).padStart(2, "0")}</Button>)}
           </div>
         </div>
-        <Link href="#bom-register" onClick={(event) => event.preventDefault()} className="mt-auto self-end text-[12px]">BOM 등록 바로가기</Link>
+        <Link href="#bom-register" onClick={(event) => event.preventDefault()} className="mt-auto self-end text-[14px]">BOM 등록 바로가기</Link>
       </aside>
 
-      <div className="flex min-h-0 flex-col gap-2.5 p-3.5">
-        <b className="text-[14px]">품목 재고 리스트</b>
-        <div className="flex h-9 items-center justify-between rounded-mes-control bg-mes-gray-20 px-2.5">
-          <FixtureFilter tags={[]} searchable={false} />
-          <FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" />
+      <div className="flex min-h-0 flex-col">
+        <div className="h-[100px] shrink-0">
+          <b className="flex h-[52px] items-center px-5 text-[16px]">품목 재고 리스트</b>
+          <div className="mx-5 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
+            <FixtureFilter tags={[]} searchable={false} />
+            <FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" />
+          </div>
         </div>
-        <FixtureTable
-          headers={["LOT-NO", "품목", "품목구분", "규격", "수량", "단위", "창고", "투입수량"]}
-          rows={rows}
-          widths={[90, 110, 82, 55, 70, 48, 80, 138]}
-          aligns={["left", "left", "center", "center", "right", "center", "center", "left"]}
-          checkedRows={selectedRows}
-          onCheckedRowsChange={setSelectedRows}
-          selectionColor="black"
-          unselectedCheckboxAppearance="grayCheck"
-          selectionColumnWidth={36}
-          className="h-[224px] shrink-0"
-        />
-        <div className="flex items-center gap-2 pt-0.5"><b className="text-[14px]">품목별 투입 결과</b><Tag color="gray" size="compact">표준</Tag></div>
-        <FixtureTable
-          selectable={false}
-          headers={["품목", "현재고", "필요수량", "선택수량", "미투입수량"]}
-          rows={requirementRows.map((row) => row.map((cell, index) => index === 4 && cell !== "-" ? <span key={cell} className="font-semibold text-mes-danger-60">{cell}</span> : cell))}
-          aligns={["left", "right", "right", "right", "right"]}
-          widths={[220, 110, 110, 110, 110]}
-          className="min-h-0 flex-1"
-        />
+        <div className="h-[576px] shrink-0 px-5 pt-4">
+          <FixtureTable
+            headers={["LOT-NO", "품목", "품목구분", "규격", "수량", "단위", "창고", "투입수량"]}
+            rows={rows}
+            widths={[123.43, 123.43, 123.43, 123.43, 123.43, 123.43, 123.43, 200]}
+            aligns={["left", "left", "left", "left", "right", "left", "left", "left"]}
+            checkedRows={visibleSelectedRows}
+            onCheckedRowsChange={updateVisibleSelectedRows}
+            selectionColor="black"
+            unselectedCheckboxAppearance="grayCheck"
+            selectionHeaderIndeterminate={false}
+            selectionColumnWidth={56}
+            edgePadding={0}
+            horizontalScroll={false}
+            className="h-[318px] shrink-0"
+          />
+          <div className="mt-2.5 h-[212px]">
+            <div className="flex h-[22px] items-center gap-2.5 px-2.5"><b className="text-[14px]">품목별 투입 결과</b><Tag color="gray" size="compact">표준</Tag></div>
+            <FixtureTable
+              selectable={false}
+              headers={["품목", "현재고", "필요수량", "선택수량", "미투입수량"]}
+              rows={requirementRows.map((row) => row.map((cell, index) => index === 4 && cell !== "-" ? <span key={cell} className="font-semibold text-mes-danger-60">{cell}</span> : cell))}
+              aligns={["left", "right", "right", "right", "right"]}
+              widths={[216, 216, 216, 216, 216]}
+              horizontalScroll={false}
+              className="mt-2.5 h-[180px]"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -50,21 +50,20 @@ type CenterPopupKind =
   | "material-input-setup"
   | "bom-copy"
   | "preissued-label"
-  | "operation-log"
   | "operating-time-picker"
   | "downtime-picker";
-type SidePopupKind = "production" | "receiving" | "custom" | "inspection";
+type SidePopupKind = "production" | "receiving" | "custom" | "inspection" | "operation-log";
 type PopupKind = CenterPopupKind | SidePopupKind;
 type PopupPatternId =
   | "side-custom-columns"
   | "side-add-list"
   | "side-inspection-items"
+  | "side-time-records"
   | "center-form"
   | "center-table"
   | "center-dual-pane"
   | "center-navigation-detail"
-  | "center-time-selector"
-  | "center-split-editor";
+  | "center-time-selector";
 
 interface PopupDefinition {
   id: PopupKind;
@@ -86,10 +85,10 @@ const POPUPS: PopupDefinition[] = [
   { id: "weight", label: "960 · 중량검사", node: "11210:51787", pattern: "center-form" },
   { id: "purchase", label: "1100 · 발주 일괄등록", node: "11210:52026", pattern: "center-table" },
   { id: "lookup", label: "1400 · 일괄작업지시", node: "11210:50866", pattern: "center-table" },
-  { id: "material-input-setup", label: "1024 · 투입품목 설정/조회", node: "18826:60554", pattern: "center-navigation-detail" },
+  { id: "material-input-setup", label: "1400 · 투입품목 설정/조회", node: "18826:60554", pattern: "center-navigation-detail" },
   { id: "bom-copy", label: "1024 · BOM 복사", node: "18962:67817", pattern: "center-dual-pane" },
   { id: "preissued-label", label: "1024 · 선발행 라벨 수량 확정", node: "18756:60803", pattern: "center-table" },
-  { id: "operation-log", label: "900 · 운전일지 등록", node: "17303:45841", pattern: "center-split-editor" },
+  { id: "operation-log", label: "900 · 운전일지 등록", node: "17303:45841", pattern: "side-time-records" },
   { id: "operating-time-picker", label: "600 · 가동시간 선택", node: "17309:156861", pattern: "center-time-selector" },
   { id: "downtime-picker", label: "600 · 비가동시간 선택", node: "17768:51611", pattern: "center-time-selector" },
   { id: "production", label: "900 · 생산실적 등록", node: "11210:48851", pattern: "side-add-list" },
@@ -113,6 +112,11 @@ const SIDE_POPUP_GROUPS: PopupPatternGroup[] = [
     id: "side-inspection-items",
     title: "좌우 분할 · 검사항목",
     description: "좌측 검사 정보와 우측 항목별 판정을 함께 입력하는 유형",
+  },
+  {
+    id: "side-time-records",
+    title: "좌우 분할 · 시간 기록",
+    description: "좌측 시간대별 일지와 우측 가동·비가동 기록 및 합계를 함께 편집하는 유형",
   },
 ];
 
@@ -141,11 +145,6 @@ const CENTER_POPUP_GROUPS: PopupPatternGroup[] = [
     id: "center-time-selector",
     title: "시간 휠 + 계산",
     description: "시작·종료 시각을 휠로 선택하고 계산된 분 단위 결과를 확인하는 유형",
-  },
-  {
-    id: "center-split-editor",
-    title: "분할 기록 편집 + 합계",
-    description: "좌측 시간대 기록과 우측 업무별 기록을 나누고 하단 계산 합계를 제공하는 유형",
   },
 ];
 
@@ -797,10 +796,9 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: CenterPopupKind; open
     weight: { title: "중량검사", size: "standard-960", height: "h-[752px]", actions: defaultActions, content: <WeightContent />, contentClassName: "p-0" },
     purchase: { title: "발주 일괄등록", size: "large-1100", height: "h-[680px]", actions: defaultActions, content: <PurchaseContent /> },
     lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: defaultActions, content: <LookupWorkOrderContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-none" },
-    "material-input-setup": { title: "투입품목 설정/조회", size: "wide-1024", height: "h-[600px]", actions: defaultActions, content: <MaterialInputSetupContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
+    "material-input-setup": { title: "투입품목 설정/조회", size: "wide-1400", height: "h-[800px]", actions: defaultActions, content: <MaterialInputSetupContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-none" },
     "bom-copy": { title: "BOM 복사", size: "wide-1024", height: "h-[678px]", actions: confirmActions("확인"), content: <BomCopyContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
     "preissued-label": { title: "선발행 라벨 수량 확정", size: "wide-1024", height: "h-[576px]", actions: confirmActions("확인"), content: <PreissuedLabelContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
-    "operation-log": { title: "운전일지 등록", size: "standard-900", height: "h-[960px]", actions: defaultActions, content: <UpdatedOperationLogContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-none" },
     "operating-time-picker": { title: "가동시간 선택", size: "medium-600", height: "h-[666px]", actions: confirmActions("입력"), content: <TimeSelectionContent mode="operating" />, contentClassName: "items-stretch overflow-hidden px-5 pt-5", maxHeight: "max-h-[calc(100vh-32px)]" },
     "downtime-picker": { title: "비가동시간 선택", size: "medium-600", height: "h-[666px]", actions: confirmActions("입력"), content: <TimeSelectionContent mode="downtime" />, contentClassName: "items-stretch overflow-hidden px-5 pt-5", maxHeight: "max-h-[calc(100vh-32px)]" },
   };
@@ -814,6 +812,7 @@ function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: bo
   if (kind === "receiving") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="입고등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><ReceivingContent /></SideSlidePanel>;
   if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="커스텀 정보 등록" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><CustomInformationContent /></SideSlidePanel>;
   if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch p-0"><InspectionContent /></SideSlidePanel>;
+  if (kind === "operation-log") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="운전일지 등록" size="standard-900" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><UpdatedOperationLogContent /></SideSlidePanel>;
   return <CenterPopup kind={kind} open={open} onOpenChange={onOpenChange} />;
 }
 
@@ -863,15 +862,21 @@ function CompletedPopupExamples() {
 
   return (
     <div className="flex w-full flex-col gap-8">
+      <Card className="border-l-4 border-l-mes-primary-60 bg-mes-gray-20 p-5">
+        <h3 className="text-[18px] font-bold text-mes-gray-130">팝업</h3>
+        <p className="mt-1.5 text-[13px] leading-5 text-mes-gray-80">
+          등록 모달, 체크리스트 모달, 조회·선택 팝업을 하나의 카탈로그로 통합합니다. 먼저 표시 위치를 중앙과 우측 슬라이드로 나누고, 그 안에서 본문 구조와 작업 흐름을 기준으로 분류합니다.
+        </p>
+      </Card>
       <section aria-labelledby="side-popup-patterns-title">
         <div className="mb-3 flex items-end justify-between gap-4">
           <div>
             <h3 id="side-popup-patterns-title" className="text-[18px] font-bold text-mes-gray-130">우측 슬라이드 팝업</h3>
-            <p className="mt-1 text-[13px] text-mes-gray-80">본문의 분할 방향과 우측 콘텐츠 역할을 기준으로 3가지 패턴으로 구분합니다.</p>
+            <p className="mt-1 text-[13px] text-mes-gray-80">등록과 검사를 별도 메뉴로 떼지 않고, 우측에서 열리는 모든 팝업을 본문 구조에 따라 나눕니다.</p>
           </div>
-          <Tag color="gray" size="compact">SideSlidePanel · 3종</Tag>
+          <Tag color="gray" size="compact">4개 구조 · 5개 화면</Tag>
         </div>
-        <div className="grid gap-3 lg:grid-cols-3">
+        <div className="grid gap-3 lg:grid-cols-2">
           {SIDE_POPUP_GROUPS.map((group) => <PopupPatternCard key={group.id} group={group} selectedKind={kind} onOpen={openPopup} />)}
         </div>
       </section>
@@ -880,9 +885,9 @@ function CompletedPopupExamples() {
         <div className="mb-3 flex items-end justify-between gap-4">
           <div>
             <h3 id="center-popup-patterns-title" className="text-[18px] font-bold text-mes-gray-130">중앙 팝업</h3>
-            <p className="mt-1 text-[13px] text-mes-gray-80">폼, 테이블, 비교, 탐색, 시간 선택, 분할 편집처럼 실제 본문 구조와 작업 흐름을 기준으로 구분합니다.</p>
+            <p className="mt-1 text-[13px] text-mes-gray-80">화면 중앙에서 열리는 팝업만 모은 뒤 폼, 테이블, 비교, 탐색, 시간 선택 구조로 세분화합니다.</p>
           </div>
-          <Tag color="gray" size="compact">CenterModal · 6종</Tag>
+          <Tag color="gray" size="compact">5개 구조 · 11개 화면</Tag>
         </div>
         <div className="grid gap-3 lg:grid-cols-3">
           {CENTER_POPUP_GROUPS.map((group) => <PopupPatternCard key={group.id} group={group} selectedKind={kind} onOpen={openPopup} />)}
