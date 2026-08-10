@@ -59,8 +59,9 @@ import { IconX } from "../icons/icon-x";
  * `align-items: stretch` 기본값 때문에 이 컴포넌트의 루트 div(테두리 있음)가 실제 내용
  * 폭과 무관하게 부모 폭(섹션 최대 960px)까지 늘어나 보이는 문제가 있었음 — `inline-flex`는
  * "내부 자식 배치"만 영향을 주지 "이 요소 자체가 flex item으로서 부모에게 늘어나 보이는지"는
- * 별개 문제라 `inline-flex`만으로는 안 막힘. `self-start`(+`shrink-0`)를 루트에 추가해
- * 항상 내용 폭만큼만 차지하도록 고정.
+ * 별개 문제라 `inline-flex`만으로는 안 막힘. 처음에는 `self-start`로 막았지만, 이 값이
+ * 툴바 부모의 `items-center`까지 덮어써 수직 정렬 회귀를 만들 수 있어 `w-fit`+`shrink-0`로
+ * 교체했다. 너비만 내용에 맞추고 교차축 배치는 부모 레이아웃이 결정한다.
  *
  * ── 5. 2026-08-03 검증 중 발견: 중첩 인터랙티브 엘리먼트 수정 ────────────
  * 처음엔 칩의 X(선택 해제)를 Popover 트리거 `<button>` 안에 `<span role="button">`으로
@@ -194,7 +195,7 @@ function GroupQuery({ options, levels, onLevelChange, className }: GroupQueryPro
   return (
     <div
       className={cn(
-        "inline-flex h-8 shrink-0 items-center self-start overflow-clip rounded-mes-control border border-mes-border-default",
+        "inline-flex h-8 w-fit shrink-0 items-center overflow-clip rounded-mes-control border border-mes-border-default",
         className
       )}
     >

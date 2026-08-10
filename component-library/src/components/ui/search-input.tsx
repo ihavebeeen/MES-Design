@@ -36,6 +36,11 @@ import { IconX } from "../icons/icon-x";
  * `GroupQuery`/`QuickQuery`/`Filter`는 전부 내용에 따라 폭이 늘어나는 hug-width인 반면,
  * 기본은 고정폭 200px이다. 완성 화면 node 20274:73333에서 327×32px 인스턴스가 추가로
  * 확인되어 화면 slot이 폭을 소유할 수 있도록 `width="fill"`을 지원한다.
+ *
+ * ── 4. 배치 책임 ───────────────────────────────────────────────────
+ * 컴포넌트 루트는 `self-start`/`self-center`처럼 부모의 교차축 정렬을 덮어쓰지 않는다.
+ * 상단 툴바에서 `items-center`를 선언해도 검색창만 위에 붙던 회귀가 있었기 때문이다.
+ * SearchInput은 높이와 폭만 소유하고, 수직·수평 배치는 사용하는 레이아웃 slot이 소유한다.
  */
 
 export interface SearchInputProps {
@@ -60,7 +65,7 @@ function SearchInput({
   return (
     <div
       className={cn(
-        "flex h-8 shrink-0 items-center justify-between self-start rounded-mes-control-sm border transition-colors",
+        "flex h-8 shrink-0 items-center justify-between rounded-mes-control-sm border transition-colors",
         width === "fill" ? "w-full" : "w-[200px]",
         hasValue
           ? "border-mes-primary-30 bg-mes-bg-brand-subtle-strong"

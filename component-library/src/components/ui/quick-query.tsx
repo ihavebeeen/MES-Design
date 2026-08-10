@@ -80,8 +80,9 @@ import { IconX } from "../icons/icon-x";
  * 바로 배치했는데, flexbox `align-items: stretch` 기본값 때문에 flex item인 이 컴포넌트의
  * 루트 div(테두리 있음)가 부모 폭(섹션 최대 960px)까지 늘어남 — `inline-flex`는 "이
  * 요소가 자기 자식들을 어떻게 배치하는지"만 결정할 뿐, "이 요소 자체가 부모의 flex item으로
- * 취급될 때 늘어나는지"는 별개 문제라 막아주지 못함. 루트에 `self-start`(+`shrink-0`) 추가로
- * 항상 내용 폭만큼만 차지하도록 고정.
+ * 취급될 때 늘어나는지"는 별개 문제라 막아주지 못함. 처음에는 `self-start`로 막았지만,
+ * 부모의 `items-center`를 덮어쓰는 정렬 회귀가 생길 수 있어 `w-fit`+`shrink-0`로 교체했다.
+ * 내용 폭 계약만 컴포넌트가 갖고 교차축 배치는 부모 레이아웃이 결정한다.
  */
 
 export interface QuickQueryPreset {
@@ -111,7 +112,7 @@ function QuickQuery({
   return (
     <div
       className={cn(
-        "inline-flex h-8 shrink-0 items-center self-start overflow-clip rounded-mes-control border border-mes-border-default",
+        "inline-flex h-8 w-fit shrink-0 items-center overflow-clip rounded-mes-control border border-mes-border-default",
         className
       )}
     >

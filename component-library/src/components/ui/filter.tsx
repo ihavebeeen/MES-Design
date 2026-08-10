@@ -126,7 +126,7 @@ function Filter({ categories, value, onChange, className, searchable = true }: F
     .filter((c) => c.selected.length > 0);
 
   return (
-    <div className={cn("inline-flex shrink-0 items-center", className)}>
+    <div className={cn("inline-flex w-fit shrink-0 items-center", className)}>
       <PopoverPrimitive.Root
         open={open}
         onOpenChange={(next) => {
