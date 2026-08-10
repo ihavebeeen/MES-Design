@@ -11,6 +11,9 @@ interface FigmaScreenPreviewProps {
   className?: string;
   /** 원본보다 확대하지 않고, 문서 본문 폭에 맞춰 축소만 한다. */
   maxScale?: number;
+  /** Figma 원본 프레임의 자연 크기. 기본은 기존 1920×960 화면. */
+  sourceWidth?: number;
+  sourceHeight?: number;
 }
 
 /**
@@ -18,7 +21,7 @@ interface FigmaScreenPreviewProps {
  * 문서 사이트 안에서만 바깥 컨테이너 폭에 맞춰 transform으로 축소하므로
  * Sidebar 260, Page tab 38, Bottom action 46 같은 Figma 실측값이 깨지지 않는다.
  */
-function FigmaScreenPreview({ children, className, maxScale = 1 }: FigmaScreenPreviewProps) {
+function FigmaScreenPreview({ children, className, maxScale = 1, sourceWidth = FIGMA_SCREEN_WIDTH, sourceHeight = FIGMA_SCREEN_HEIGHT }: FigmaScreenPreviewProps) {
   const hostRef = React.useRef<HTMLDivElement>(null);
   const [scale, setScale] = React.useState(0.72);
 
@@ -27,7 +30,7 @@ function FigmaScreenPreview({ children, className, maxScale = 1 }: FigmaScreenPr
     if (!host) return;
 
     const update = () => {
-      const next = Math.min(maxScale, host.clientWidth / FIGMA_SCREEN_WIDTH);
+      const next = Math.min(maxScale, host.clientWidth / sourceWidth);
       setScale(Number.isFinite(next) && next > 0 ? next : 0.72);
     };
 
@@ -35,18 +38,18 @@ function FigmaScreenPreview({ children, className, maxScale = 1 }: FigmaScreenPr
     const observer = new ResizeObserver(update);
     observer.observe(host);
     return () => observer.disconnect();
-  }, [maxScale]);
+  }, [maxScale, sourceWidth]);
 
   return (
     <div
       ref={hostRef}
       className={cn("min-w-0 w-full max-w-full overflow-clip rounded-lg border border-mes-gray-30 bg-mes-gray-20", className)}
-      style={{ height: FIGMA_SCREEN_HEIGHT * scale }}
+      style={{ height: sourceHeight * scale }}
     >
       <div
         style={{
-          width: FIGMA_SCREEN_WIDTH,
-          height: FIGMA_SCREEN_HEIGHT,
+          width: sourceWidth,
+          height: sourceHeight,
           zoom: scale,
         }}
       >

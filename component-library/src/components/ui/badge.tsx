@@ -47,6 +47,7 @@ const badgeVariants = cva(
         gray: "bg-transparent px-2 py-[3px] text-mes-text-secondary",
         blueLight: "bg-mes-bg-brand-subtle-strong px-2 py-[3px] text-mes-text-brand",
         blueOutline: "border border-mes-primary-60 bg-white px-[9px] py-px text-mes-text-brand",
+        amber: "bg-[#f5a000] px-2 py-[3px] text-white",
       },
     },
     defaultVariants: {

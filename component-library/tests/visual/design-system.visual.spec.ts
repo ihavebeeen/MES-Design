@@ -17,6 +17,15 @@ test("투입품목 설정/조회 팝업", async ({ page }) => {
   await expect(dialog).toHaveScreenshot("material-input-settings.png");
 });
 
+test("Figma 원본 재고 추가 팝업", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/visual-regression/source-inventory-add");
+  const dialog = page.getByRole("dialog", { name: "재고 추가" });
+  await expect(dialog).toBeVisible();
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("source-inventory-add.png");
+});
+
 test("그룹화 테이블 핵심 상태", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/visual-regression/table");

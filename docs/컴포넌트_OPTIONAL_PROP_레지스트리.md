@@ -13,8 +13,21 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `DatePicker` | `separator` | `"." \| "-"`, 기본 `.` | 화면 원본에 따라 날짜 구분자를 보존한다. | Figma `11210:50866` 외 완성 화면 |
 | `DatePicker` | `iconPosition` | `start \| end`, 기본 `end` | 기간 조회 영역처럼 달력 아이콘이 날짜 앞에 오는 변형을 지원한다. | Figma `11210:50866` |
 | `DatePicker` | `iconColor` | `muted \| default`, 기본 `muted` | 완성 화면에서 달력 아이콘이 기본 텍스트 색인 경우를 지원한다. | Figma `11210:50866` |
+| `DatePicker` | `size` | `default \| small`, 기본 `default` | 테이블 편집 셀의 22px 날짜 입력을 공용 DatePicker로 유지한다. | Figma `18813:62490` |
+| `Progress` | `labelTone` | `default \| danger`, 기본 `default` | 진행률 수치가 지연/오류 상태일 때 막대는 유지하고 라벨만 Danger-60으로 표시한다. | Figma `17503:85192` |
+| `Logo` | `brand` | `mes \| moncat-factory`, 기본 `mes` | 실제 MES 애플리케이션 원본 화면의 제품 워드마크를 표시한다. | Figma `17520:46628` |
 | `SearchInput` | `iconColor` | `muted \| default`, 기본 `muted` | 검색 아이콘의 화면별 명도 차이를 기존 컴포넌트 안에서 표현한다. | Figma `11210:50866` |
+| `SearchInput` | `size` | `default \| compact`, 기본 `default` | 상단 조회 툴바의 220×32, 14px, Gray-20 검색창을 페이지 CSS 덮어쓰기 없이 재사용한다. | 양식관리 목록, Figma `17309:158828` |
+| `SearchInput` | `background` | `white \| subtle`, 기본은 size 규격에 따름 | 같은 14px compact 검색창이 흰 모달 표면과 Gray-20 조회 툴바 양쪽에 쓰이는 차이를 표현한다. | 입고검사, Figma `19768:100249` |
+| `Sidebar` | `productSwitcher` | `ReactNode`, 기본 없음 | 원본 화면에 존재하는 MES/FEMS 전환 컴포넌트를 내비게이션 순서 안에 조립한다. | 양식관리 목록, Figma `17309:158828` |
+| `PageTopTabItem` | `closable` | `boolean`, 기본 `true` | 모바일에서 현재 탭 하나만 간결하게 표시할 때 닫기 버튼을 숨긴다. | 생산실적 375, Figma `18849:65980` |
 | `Filter` | `searchable` | `boolean`, 기본 `true` | 필터 패널 내부의 카테고리·옵션 검색창 표시 여부를 제어한다. | 담당자 확정, 일괄작업지시 화면은 `false` |
+| `Filter` | `triggerLabel` | `string \| false`, 기본 `필터 추가` | 1280px 생산실적 조회 툴바처럼 아이콘만 쓰는 트리거를 같은 Filter 동작으로 제공한다. | Figma `18849:62315` |
+| `Filter` | `showTriggerArrow` | `boolean`, 기본 `false` | 768/375 breakpoint의 드롭다운형 압축 트리거에 화살표를 표시한다. | Figma `18849:64894`, `18849:65980` |
+| `Filter` | `showActiveTags` | `boolean`, 기본 `true` | breakpoint 압축 상태에서 선택값은 유지하되 툴바의 활성 태그는 숨긴다. | Figma `18849:64894`, `18849:65980` |
+| `QuickQuery` | `triggerLabel` | `string \| false`, 기본 `빠른 조회` | 빠른 조회의 별 아이콘만 노출되는 압축형 툴바를 지원한다. | Figma `18849:62315` |
+| `QuickQuery` | `compact` | `boolean`, 기본 `false` | 모바일에서 프리셋 목록 대신 별+화살표 트리거만 노출한다. | Figma `18849:65980` |
+| `GroupQuery` | `compact`, `compactLabel` | `boolean`, `string \| false` | 768에서는 아이콘+그룹화+화살표, 375에서는 아이콘+화살표만 표시하고 동일한 Level 상태를 유지한다. | Figma `18849:64894`, `18849:65980` |
 | `CenterModal` | `headerDivider` | `boolean`, 기본 `true` | 제목 아래 구분선이 없는 소형 정보 팝업을 같은 모달 컴포넌트로 표현한다. | 품목 상세정보, Figma `11210:52744` |
 | `CenterModal` | `size` 확장 | `wide-1024` 추가 | 화면별 임의 폭 덮어쓰기 없이 1024px BOM 복사·선발행 라벨 팝업의 폭 계약을 명시한다. 투입품목 설정/조회는 기존 `wide-1400`, 운전일지는 `SideSlidePanel.standard-900`을 사용한다. | Figma `18962:67817`, `18756:60803` |
 | `Table` | `activeId` | `string \| null`, 기본 `undefined` | 체크 상태와 별도로 활성 행을 지정한다. 생략하면 실제 선택 행이 활성 행 배경을 가진다. | 완성 화면 상태 분리용 |
@@ -26,6 +39,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `Table` | `centerSelection` | `boolean`, 기본 `false` | 데이터 행 체크박스를 선택 열 중앙에 배치한다. | Figma `11210:50866` |
 | `Table` | `columnDividers` | `boolean`, 기본 `true` | 셀 사이 세로 점선을 화면별로 끈다. | Figma `11210:50866`은 `false` |
 | `Table` | `horizontalScroll` | `boolean`, 기본 `true` | 고정 폭이 정확히 맞는 표에서 불필요한 가로 스크롤을 금지한다. | Figma `11210:50866`은 `false` |
+| `Table` | `showMasterGroupToggles` | `boolean`, 기본 `true` | 그룹 표이지만 헤더에 depth 일괄 접기 슬롯이 없는 화면에서 컬럼 시작점을 원본과 일치시킨다. | 생산실적 1280, Figma `18849:62315` |
 | `Table` | `disabledTextTone` | `gray60 \| gray80`, 기본 `gray80` | 비활성 행 텍스트 명도를 화면 실측에 맞춘다. | Figma `11210:50866`은 `gray60` |
 | `Table` | `unselectedTextTone` | `default \| gray80`, 기본 `default` | 비활성이 아닌 미선택 행의 텍스트 명도를 낮추고 선택 행과 편집 가능 상태를 구분한다. | 발주 일괄등록, Figma `11210:52026` |
 | `TableRowData` | `hideSelection` | `boolean`, 기본 `false` | 선택 열 폭은 유지하면서 특정 행의 체크박스만 숨긴다. | 완료된 비활성 행, Figma `11210:50866` |
@@ -47,6 +61,7 @@ adapter다. 신규 제품 코드에서는 가능하면 public component를 직�
 | `FixtureTable` | `hiddenSelectionRows` | 특정 예제 행에 `TableRowData.hideSelection`을 적용한다. |
 | `FixtureTable` | Table layout props | `edgePadding`, `selectionColumnWidth`, `centerSelection`, `columnDividers`, `horizontalScroll`, `disabledTextTone`, `unselectedTextTone`, `unselectedCheckboxAppearance`, `selectionHeaderIndeterminate`를 public `Table`에 그대로 전달한다. |
 | `RadioOption` | `onChange` | 라디오 외형을 읽기 전용 예시가 아니라 수기/자동, 자동배열/사용자설정, 검사결과 state 전환에 연결한다. |
+| `FigmaScreenPreview` | `sourceWidth`, `sourceHeight` | 1920 고정 가정 대신 1280·786·375 등 실제 Figma 프레임의 자연 크기를 기준으로 문서 안에서 축소한다. |
 
 ## 추가 규칙
 

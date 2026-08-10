@@ -83,6 +83,8 @@ export interface GroupQueryProps {
   levels: (string | null)[];
   onLevelChange: (levelIndex: number, value: string | null) => void;
   className?: string;
+  compact?: boolean;
+  compactLabel?: string | false;
 }
 
 function GroupQueryLevelCell({
@@ -191,7 +193,24 @@ function GroupQueryLevelCell({
   );
 }
 
-function GroupQuery({ options, levels, onLevelChange, className }: GroupQueryProps) {
+function GroupQuery({ options, levels, onLevelChange, className, compact = false, compactLabel = "그룹화" }: GroupQueryProps) {
+  const [compactOpen, setCompactOpen] = React.useState(false);
+  if (compact) {
+    return (
+      <PopoverPrimitive.Root open={compactOpen} onOpenChange={setCompactOpen}>
+        <PopoverPrimitive.Trigger asChild>
+          <button type="button" className={cn("flex h-8 shrink-0 items-center gap-[6px] rounded-mes-control border border-mes-border-default bg-white px-3 text-[14px] font-medium", className)}>
+            <IconGroupDown size={16} />{compactLabel !== false && compactLabel}<IconArrow size={12} className="-rotate-90" />
+          </button>
+        </PopoverPrimitive.Trigger>
+        <PopoverPrimitive.Portal>
+          <PopoverPrimitive.Content align="start" sideOffset={4} className="z-50 flex flex-col overflow-hidden rounded-mes-panel border border-mes-border-default bg-white shadow-mes-panel">
+            {levels.map((value, index) => <GroupQueryLevelCell key={index} index={index} value={value} options={options} onChange={(next) => onLevelChange(index, next)} showDivider={index < levels.length - 1} />)}
+          </PopoverPrimitive.Content>
+        </PopoverPrimitive.Portal>
+      </PopoverPrimitive.Root>
+    );
+  }
   return (
     <div
       className={cn(

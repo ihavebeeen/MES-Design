@@ -192,6 +192,8 @@ export interface SidebarProps {
   onManualClick?: () => void;
   onLogoutClick?: () => void;
   logo?: React.ReactNode;
+  /** 즐겨찾기/대시보드 아래에 놓이는 MES/FEMS 전환 슬롯. */
+  productSwitcher?: React.ReactNode;
   className?: string;
 }
 
@@ -212,6 +214,7 @@ function Sidebar({
   onManualClick,
   onLogoutClick,
   logo,
+  productSwitcher,
   className,
 }: SidebarProps) {
   return (
@@ -277,6 +280,12 @@ function Sidebar({
             )}
           </button>
         </div>
+
+        {productSwitcher && (
+          <div className={cn("flex w-full shrink-0 justify-center py-[10px]", collapsed ? "px-2" : "px-[10px]") }>
+            {productSwitcher}
+          </div>
+        )}
 
         <div className="flex w-full flex-1 flex-col gap-2.5 border-b border-mes-gray-120 p-[10px]">
           <div className="flex w-full flex-col gap-1">

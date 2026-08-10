@@ -34,7 +34,7 @@
       "kind": "popup",
       "placement": "center",
       "source": "src/components/patterns/original-mes-screen-assets.tsx",
-      "requiredComponents": ["center-modal", "filter", "search-input", "table", "checkbox", "input", "select"],
+      "requiredComponents": ["center-modal", "filter", "search-input", "table", "checkbox", "input", "select", "date-picker", "labeled-select"],
       "rules": ["선택 행을 목록 상단에 고정한다.", "선택된 행만 입고일·수량·창고·비고 입력을 활성화한다."]
     },
     {
@@ -43,7 +43,7 @@
       "kind": "popup",
       "placement": "center",
       "source": "src/components/patterns/original-mes-screen-assets.tsx",
-      "requiredComponents": ["center-modal", "filter", "search-input", "table", "checkbox", "input", "select"],
+      "requiredComponents": ["center-modal", "filter", "search-input", "table", "checkbox", "input", "select", "selection-action-bar", "labeled-input", "labeled-select"],
       "rules": ["선택 시 하단 플로팅 툴바를 노출한다.", "이동 설정과 삭제 설정은 메인 목록의 선택 상태를 이어받는 보조 모달이다."]
     },
     {
@@ -52,7 +52,7 @@
       "kind": "popup",
       "placement": "center",
       "source": "src/components/patterns/original-mes-screen-assets.tsx",
-      "requiredComponents": ["center-modal", "date-range-picker", "filter", "search-input", "table", "link"],
+      "requiredComponents": ["center-modal", "query-date-range", "filter", "search-input", "table", "link", "progress", "badge"],
       "rules": ["품목 건수는 링크이며 선택 시 품목 상세 팝업을 연다.", "진행중·대기 행의 핵심 텍스트는 위험색으로 표시하되 상태 컬러 규칙은 유지한다."]
     }
   ],
@@ -63,6 +63,6 @@
     { "id": "inventory-add", "name": "재고 추가", "patternId": "popup.center.inventory-add", "source": "src/components/patterns/original-mes-screen-assets.tsx", "figmaNode": "18813:64179", "stateRules": ["선택 행은 상단 고정되고 입력 컨트롤이 활성화된다."] },
     { "id": "inventory-edit", "name": "재고편집", "patternId": "popup.center.inventory-edit", "source": "src/components/patterns/original-mes-screen-assets.tsx", "figmaNode": "17491:82304", "stateRules": ["이동·삭제는 선택 목록에서 파생되는 보조 모달이다."] },
     { "id": "purchase-order-lookup", "name": "발주 정보", "patternId": "popup.center.purchase-lookup", "source": "src/components/patterns/original-mes-screen-assets.tsx", "figmaNode": "17503:85601", "stateRules": ["품목 건수 링크가 품목 상세 목록을 연다."] },
-    { "id": "production-analytics-latest", "name": "생산분석 현황", "patternId": "screen.analytics-dashboard", "source": "src/components/patterns/completed-application-patterns.tsx", "figmaNode": "17520:46628", "stateRules": ["조회기간과 조회기준은 KPI·차트·목록 단위를 함께 바꾼다.", "판매계획·생산계획 설정은 카드 내부 설정 상태로 관리한다."] }
+    { "id": "production-analytics-latest", "name": "생산분석 현황", "patternId": "screen.analytics-dashboard", "source": "src/components/patterns/exact-production-analytics-screen.tsx", "figmaNode": "17520:46628", "stateRules": ["조회기간과 조회기준은 KPI·차트·목록 단위를 함께 바꾼다.", "판매계획·생산계획 설정은 카드 내부 설정 상태로 관리한다."] }
   ]
 }

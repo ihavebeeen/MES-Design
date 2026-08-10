@@ -43,6 +43,7 @@ export interface PageTopTabItemProps {
   bookmarked?: boolean;
   onBookmarkClick?: () => void;
   onClose?: () => void;
+  closable?: boolean;
   className?: string;
 }
 
@@ -52,6 +53,7 @@ function PageTopTabItem({
   bookmarked = false,
   onBookmarkClick,
   onClose,
+  closable = true,
   className,
 }: PageTopTabItemProps) {
   return (
@@ -80,14 +82,14 @@ function PageTopTabItem({
           {label}
         </span>
       </div>
-      <button
+      {closable && <button
         type="button"
         onClick={onClose}
         aria-label="탭 닫기"
         className="flex size-7 shrink-0 items-center justify-center rounded-mes-control-sm text-mes-gray-60"
       >
         <IconX size={16} />
-      </button>
+      </button>}
     </div>
   );
 }

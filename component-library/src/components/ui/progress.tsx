@@ -28,10 +28,11 @@ import { cn } from "@/lib/utils";
 export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   value: number;
   showLabel?: boolean;
+  labelTone?: "default" | "danger";
 }
 
 const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
-  ({ className, value, showLabel = true, ...props }, ref) => {
+  ({ className, value, showLabel = true, labelTone = "default", ...props }, ref) => {
     const clamped = Math.min(100, Math.max(0, value));
     return (
       <div
@@ -52,7 +53,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
           </div>
           {showLabel && (
             <span className="flex w-[44px] shrink-0 items-center justify-center">
-              <span className="flex-1 text-right text-[14px] leading-[1.5] text-mes-gray-130">
+              <span className={cn("flex-1 text-right text-[14px] leading-[1.5]", labelTone === "danger" ? "text-mes-danger-60" : "text-mes-gray-130")}>
                 {clamped}%
               </span>
             </span>

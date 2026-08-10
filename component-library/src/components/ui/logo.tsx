@@ -8,10 +8,14 @@ import { cn } from "@/lib/utils";
  */
 export interface LogoProps {
   size?: "small" | "default";
+  brand?: "mes" | "moncat-factory";
   className?: string;
 }
 
-function Logo({ size = "default", className }: LogoProps) {
+function Logo({ size = "default", brand = "mes", className }: LogoProps) {
+  if (brand === "moncat-factory") {
+    return <span className={cn("inline-flex items-center gap-1 whitespace-nowrap text-[18px] font-semibold leading-none text-white", className)}><span className="relative block h-4 w-4"><span className="absolute bottom-0 left-0 h-2 w-[5px] -skew-x-12 rounded-[1px] bg-[#126df5]" /><span className="absolute bottom-0 left-[5px] h-4 w-[5px] -skew-x-12 rounded-[1px] bg-[#00c2a8]" /><span className="absolute bottom-0 right-0 h-3 w-[5px] -skew-x-12 rounded-[1px] bg-white" /></span><span>moncat factory</span></span>;
+  }
   return (
     <span
       className={cn(

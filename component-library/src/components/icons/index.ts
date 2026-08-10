@@ -22,6 +22,7 @@ export * from "./icon-flat-out";
 export * from "./icon-grid";
 export * from "./icon-group-down";
 export * from "./icon-medal-check";
+export * from "./icon-menu";
 export * from "./icon-plus";
 export * from "./icon-qa-o";
 export * from "./icon-qa-triangle";

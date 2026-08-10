@@ -53,6 +53,8 @@ export interface DatePickerProps {
   separator?: "." | "-";
   iconPosition?: "start" | "end";
   iconColor?: "muted" | "default";
+  /** 표 셀처럼 22px 컨트롤이 필요한 경우 사용한다. */
+  size?: "default" | "small";
 }
 
 function DatePicker({
@@ -64,6 +66,7 @@ function DatePicker({
   separator = ".",
   iconPosition = "end",
   iconColor = "muted",
+  size = "default",
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
   const [viewDate, setViewDate] = React.useState(value ?? new Date());
@@ -77,7 +80,7 @@ function DatePicker({
           type="button"
           disabled={disabled}
           className={cn(
-            inputVariants({ size: "default" }),
+            inputVariants({ size }),
             "flex items-center justify-between gap-2 text-left",
             !value && "text-mes-text-placeholder",
             className

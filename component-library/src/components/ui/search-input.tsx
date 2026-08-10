@@ -50,6 +50,10 @@ export interface SearchInputProps {
   className?: string;
   width?: "fixed" | "fill";
   iconColor?: "muted" | "default";
+  /** 화면 상단의 조밀한 조회 툴바용 규격. 기본값은 기존 16px 입력형을 유지한다. */
+  size?: "default" | "compact";
+  /** 빈 검색창의 표면색. 생략하면 compact만 subtle, default는 white를 사용한다. */
+  background?: "white" | "subtle";
 }
 
 function SearchInput({
@@ -58,15 +62,19 @@ function SearchInput({
   placeholder = "검색어를 입력하세요",
   width = "fixed",
   iconColor = "muted",
+  size = "default",
+  background,
   className,
 }: SearchInputProps) {
   const hasValue = value.length > 0;
+  const resolvedBackground = background ?? (size === "compact" ? "subtle" : "white");
 
   return (
     <div
       className={cn(
         "flex h-8 shrink-0 items-center justify-between rounded-mes-control-sm border transition-colors",
-        width === "fill" ? "w-full" : "w-[200px]",
+        width === "fill" ? "w-full" : size === "compact" ? "w-[220px]" : "w-[200px]",
+        !hasValue && resolvedBackground === "subtle" && "bg-mes-gray-20",
         hasValue
           ? "border-mes-primary-30 bg-mes-bg-brand-subtle-strong"
           : "border-mes-border-default bg-white",
@@ -81,7 +89,10 @@ function SearchInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="h-full min-w-0 flex-1 bg-transparent text-[16px] font-medium text-mes-text-default outline-none placeholder:font-normal placeholder:text-mes-text-placeholder"
+          className={cn(
+            "h-full min-w-0 flex-1 bg-transparent font-medium text-mes-text-default outline-none placeholder:font-normal placeholder:text-mes-text-placeholder",
+            size === "compact" ? "text-[14px]" : "text-[16px]"
+          )}
         />
       </div>
       {hasValue && (

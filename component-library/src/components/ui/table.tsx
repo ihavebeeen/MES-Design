@@ -241,6 +241,8 @@ export interface TableProps<T> {
   totals?: Record<string, React.ReactNode>;
   /** 그룹 depth(0부터)별 배경색. 기본값은 판단값 — 위 2-(1) 주석 참고 */
   groupLevelColors?: string[];
+  /** 그룹 depth 일괄 접기 버튼 슬롯 표시 여부. 원본에 없는 화면은 false. */
+  showMasterGroupToggles?: boolean;
   className?: string;
 }
 
@@ -737,6 +739,7 @@ function Table<T>({
   selectionHeaderLabel,
   totals,
   groupLevelColors = DEFAULT_GROUP_LEVEL_COLORS,
+  showMasterGroupToggles = true,
   className,
 }: TableProps<T>) {
   const [collapsed, setCollapsed] = React.useState<Record<string, boolean>>({});
@@ -781,10 +784,10 @@ function Table<T>({
     });
   };
   const groupLevelCount = React.useMemo(() => getMaxGroupDepth(groups), [groups]);
-  const masterToggleAreaWidth = groupLevelCount * MASTER_TOGGLE_SLOT_WIDTH;
+  const masterToggleAreaWidth = showMasterGroupToggles ? groupLevelCount * MASTER_TOGGLE_SLOT_WIDTH : 0;
 
   return (
-    <div className={cn("w-full rounded-mes-control border border-mes-border-default", horizontalScroll ? "overflow-x-auto" : "overflow-x-hidden", className)}>
+    <div className={cn("w-full rounded-mes-control border border-mes-border-default", horizontalScroll ? "overflow-x-auto" : "overflow-hidden", className)}>
       <div className="min-w-max">
         {/* 헤더 */}
         <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default bg-mes-gray-10" style={{ paddingInline: edgePadding }}>
@@ -808,7 +811,7 @@ function Table<T>({
               경계가 그룹행과 미묘하게 안 맞을 수 있었음). 이 영역의 폭(`masterToggleAreaWidth`)
               은 그룹행/데이터행/총계행에도 동일하게 예약돼 있어야 컬럼이 안 어긋난다
               (재발 방지 규칙 6번). */}
-          {groupLevelCount > 0 && (
+          {showMasterGroupToggles && groupLevelCount > 0 && (
             <div className="flex h-full shrink-0 items-center" style={{ width: masterToggleAreaWidth }}>
               {Array.from({ length: groupLevelCount }).map((_, depth) => {
                 const groupsAtDepth = getGroupsAtDepth(groups, depth);

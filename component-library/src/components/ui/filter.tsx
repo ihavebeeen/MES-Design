@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { ChevronRight, Search } from "lucide-react";
+import { ChevronDown, ChevronRight, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "./checkbox";
 import { FilterTag } from "./filter-tag";
@@ -69,6 +69,10 @@ export interface FilterProps {
   className?: string;
   /** 카테고리/옵션 패널의 내부 검색창 표시 여부. */
   searchable?: boolean;
+  /** 좁은 조회 툴바에서 필터 아이콘만 표시한다. */
+  triggerLabel?: string | false;
+  showTriggerArrow?: boolean;
+  showActiveTags?: boolean;
 }
 
 function SearchBox({
@@ -93,7 +97,7 @@ function SearchBox({
   );
 }
 
-function Filter({ categories, value, onChange, className, searchable = true }: FilterProps) {
+function Filter({ categories, value, onChange, className, searchable = true, triggerLabel = "필터 추가", showTriggerArrow = false, showActiveTags = true }: FilterProps) {
   const [open, setOpen] = React.useState(false);
   const [categoryQuery, setCategoryQuery] = React.useState("");
   const [optionQuery, setOptionQuery] = React.useState("");
@@ -143,11 +147,12 @@ function Filter({ categories, value, onChange, className, searchable = true }: F
             type="button"
             className={cn(
               "flex h-8 shrink-0 items-center gap-[6px] whitespace-nowrap border border-mes-border-default bg-white px-3 text-[14px] font-medium text-mes-text-default focus:outline-none",
-              activeTags.length > 0 ? "rounded-l-mes-control" : "rounded-mes-control"
+              showActiveTags && activeTags.length > 0 ? "rounded-l-mes-control" : "rounded-mes-control"
             )}
           >
             <IconFilter size={16} className="shrink-0" />
-            필터 추가
+            {triggerLabel !== false && triggerLabel}
+            {showTriggerArrow && <ChevronDown className="size-3 shrink-0" />}
           </button>
         </PopoverPrimitive.Trigger>
 
@@ -218,7 +223,7 @@ function Filter({ categories, value, onChange, className, searchable = true }: F
         </PopoverPrimitive.Portal>
       </PopoverPrimitive.Root>
 
-      {activeTags.length > 0 && (
+      {showActiveTags && activeTags.length > 0 && (
         <div className="flex h-8 shrink-0 items-center gap-[5px] rounded-r-mes-control border border-l-0 border-mes-border-default bg-white px-[5px]">
           {activeTags.map(({ category, selected }) => (
             <FilterTag

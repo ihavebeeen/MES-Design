@@ -44,11 +44,14 @@ const buttonVariants = cva(
         lineBlacktxt:
           "bg-white text-mes-text-default border border-mes-border-default hover:bg-mes-bg-subtler",
         opacityMain: "bg-mes-bg-brand-subtle-strong text-mes-text-brand hover:bg-[#d4eaff]",
+        softMain: "border border-mes-primary-30 bg-mes-primary-10 text-mes-primary-60 hover:bg-mes-primary-20",
+        softDanger: "border border-mes-danger-20 bg-mes-danger-10 text-mes-danger-60 hover:bg-mes-danger-20",
       },
       size: {
         basic: "h-10 px-4 text-[15px] rounded-mes-control",
         small: "h-8 px-2.5 text-[14px] rounded-mes-control",
         xsmall: "h-[22px] px-2 text-[12px] rounded-mes-control-xs",
+        toolbar: "h-[30px] px-2.5 text-[14px] rounded-mes-control",
       },
     },
     defaultVariants: {

@@ -9,6 +9,7 @@ import { Checkbox } from "./checkbox";
 import { Input } from "./input";
 import { IconStar } from "../icons/icon-star";
 import { IconX } from "../icons/icon-x";
+import { IconArrow } from "../icons/icon-arrow";
 
 /**
  * MES QuickQuery (빠른 조회) — Figma 실측 기반
@@ -99,6 +100,9 @@ export interface QuickQueryProps {
   onClearActive: () => void;
   onSettingsClick: () => void;
   className?: string;
+  /** 좁은 조회 툴바에서 별 아이콘만 표시한다. */
+  triggerLabel?: string | false;
+  compact?: boolean;
 }
 
 function QuickQuery({
@@ -108,7 +112,12 @@ function QuickQuery({
   onClearActive,
   onSettingsClick,
   className,
+  triggerLabel = "빠른 조회",
+  compact = false,
 }: QuickQueryProps) {
+  if (compact) {
+    return <button type="button" onClick={onSettingsClick} className={cn("flex h-8 shrink-0 items-center gap-[6px] rounded-mes-control border border-mes-border-default bg-white px-3", className)} aria-label="빠른 조회"><IconStar size={16} variant="filled" className="text-mes-icon-warning" /><IconArrow size={12} className="-rotate-90" /></button>;
+  }
   return (
     <div
       className={cn(
@@ -118,9 +127,7 @@ function QuickQuery({
     >
       <div className="flex h-full items-center gap-[6px] border-r border-mes-border-default px-3">
         <IconStar size={16} variant="filled" className="shrink-0 text-mes-icon-warning" />
-        <span className="whitespace-nowrap text-[14px] font-medium text-mes-text-default">
-          빠른 조회
-        </span>
+        {triggerLabel !== false && <span className="whitespace-nowrap text-[14px] font-medium text-mes-text-default">{triggerLabel}</span>}
       </div>
       <div className="flex h-full items-center gap-2 px-[10px]">
         {presets.map((preset) => {
