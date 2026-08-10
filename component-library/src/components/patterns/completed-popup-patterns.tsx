@@ -8,6 +8,7 @@ import { CenterModal, type CenterModalSize, type DialogAction } from "@/componen
 import { DatePicker } from "@/components/ui/date-picker";
 import { IconButton } from "@/components/ui/icon-button";
 import { InspectionJudgement, type InspectionJudgementValue } from "@/components/ui/inspection-judgement";
+import { Link } from "@/components/ui/link";
 import { SideSlidePanel, type SideSlidePanelSize } from "@/components/ui/side-slide-panel";
 import { Tag } from "@/components/ui/tag";
 import { TimePicker } from "@/components/ui/time-picker";
@@ -32,31 +33,36 @@ import {
   SectionBand,
 } from "./mes-screen-fixtures";
 
-type PopupKind = "quantity" | "details" | "defect" | "weight" | "purchase" | "lookup" | "production" | "custom" | "inspection";
+type CenterPopupKind = "quantity" | "details" | "defect" | "weight" | "purchase" | "lookup";
+type SidePopupKind = "production" | "receiving" | "custom" | "operation-log" | "inspection";
+type PopupKind = CenterPopupKind | SidePopupKind;
+type PopupPatternId = "side-custom-columns" | "side-add-list" | "side-inspection-items" | "center-without-list" | "center-with-list";
 
 interface PopupDefinition {
   id: PopupKind;
   label: string;
   node: string;
+  pattern: PopupPatternId;
 }
 
 interface PopupPatternGroup {
-  id: string;
+  id: PopupPatternId;
   title: string;
   description: string;
-  examples: PopupKind[];
 }
 
 const POPUPS: PopupDefinition[] = [
-  { id: "quantity", label: "400 · 생산수량 입력", node: "11210:52992" },
-  { id: "details", label: "480 · 품목 상세정보", node: "11210:52744" },
-  { id: "defect", label: "600 · 불량수량 입력", node: "11210:52919" },
-  { id: "weight", label: "960 · 중량검사", node: "11210:51787" },
-  { id: "purchase", label: "1100 · 발주 일괄등록", node: "11210:52026" },
-  { id: "lookup", label: "1400 · 일괄작업지시", node: "11210:50866" },
-  { id: "production", label: "900 · 생산실적 등록", node: "11210:48851" },
-  { id: "custom", label: "760 · 커스텀 정보 등록", node: "11210:51570" },
-  { id: "inspection", label: "760 · 자주검사", node: "11210:51420" },
+  { id: "quantity", label: "400 · 생산수량 입력", node: "11210:52992", pattern: "center-without-list" },
+  { id: "details", label: "480 · 품목 상세정보", node: "11210:52744", pattern: "center-without-list" },
+  { id: "defect", label: "600 · 불량수량 입력", node: "11210:52919", pattern: "center-with-list" },
+  { id: "weight", label: "960 · 중량검사", node: "11210:51787", pattern: "center-without-list" },
+  { id: "purchase", label: "1100 · 발주 일괄등록", node: "11210:52026", pattern: "center-with-list" },
+  { id: "lookup", label: "1400 · 일괄작업지시", node: "11210:50866", pattern: "center-with-list" },
+  { id: "production", label: "900 · 생산실적 등록", node: "11210:48851", pattern: "side-add-list" },
+  { id: "receiving", label: "900 · 입고등록", node: "11210:49261", pattern: "side-add-list" },
+  { id: "custom", label: "760 · 커스텀 정보 등록", node: "11210:51570", pattern: "side-custom-columns" },
+  { id: "operation-log", label: "760 · 운전일지", node: "11210:53517", pattern: "side-custom-columns" },
+  { id: "inspection", label: "760 · 자주검사", node: "11210:51420", pattern: "side-inspection-items" },
 ];
 
 const SIDE_POPUP_GROUPS: PopupPatternGroup[] = [
@@ -64,19 +70,16 @@ const SIDE_POPUP_GROUPS: PopupPatternGroup[] = [
     id: "side-custom-columns",
     title: "좌우 분할 · 커스텀 정보",
     description: "좌측 기본 폼과 우측 커스텀 정보 컬럼을 함께 편집하는 유형",
-    examples: ["custom"],
   },
   {
     id: "side-add-list",
     title: "상하 분할 · 추가 + 하단 리스트",
     description: "상단 입력값을 ‘추가’하여 하단 상세 리스트에 쌓는 유형",
-    examples: ["production"],
   },
   {
     id: "side-inspection-items",
     title: "좌우 분할 · 검사항목",
     description: "좌측 검사 정보와 우측 항목별 판정을 함께 입력하는 유형",
-    examples: ["inspection"],
   },
 ];
 
@@ -85,13 +88,11 @@ const CENTER_POPUP_GROUPS: PopupPatternGroup[] = [
     id: "center-without-list",
     title: "리스트 없음",
     description: "단일 입력, 상세정보, 검사 폼처럼 폼과 정보 자체가 중심인 유형",
-    examples: ["quantity", "details", "weight"],
   },
   {
     id: "center-with-list",
     title: "리스트 있음",
     description: "테이블에서 여러 행을 조회·선택·편집하는 유형 — 세부 종류는 추후 분리",
-    examples: ["defect", "purchase", "lookup"],
   },
 ];
 
@@ -448,6 +449,116 @@ function ProductionContent() {
   );
 }
 
+interface ReceivingRow {
+  id: number;
+  item: string;
+  itemType: string;
+  specification: string;
+  unit: string;
+  orderQuantity: string;
+  receivingType: string;
+  lastReceivingDate: string;
+  receivingQuantity: string;
+  registrationCount: string;
+}
+
+const INITIAL_RECEIVING_ROWS: ReceivingRow[] = [
+  { id: 1, item: "비비빅", itemType: "완제품", specification: "A", unit: "kg", orderQuantity: "4,000", receivingType: "임가공", lastReceivingDate: "2024.10.30", receivingQuantity: "3,980", registrationCount: "3" },
+  { id: 2, item: "죠스바", itemType: "완제품", specification: "A", unit: "kg", orderQuantity: "4,000", receivingType: "임가공", lastReceivingDate: "", receivingQuantity: "", registrationCount: "" },
+  { id: 3, item: "빵빠레 꿀고구마", itemType: "완제품", specification: "A", unit: "kg", orderQuantity: "1,500", receivingType: "임가공", lastReceivingDate: "2024.10.30", receivingQuantity: "1,280", registrationCount: "1" },
+  { id: 4, item: "누가바 피스타치오", itemType: "완제품", specification: "A", unit: "Ea", orderQuantity: "380", receivingType: "임가공", lastReceivingDate: "2024.10.30", receivingQuantity: "280", registrationCount: "1" },
+  { id: 5, item: "빵빠레 초코크림", itemType: "완제품", specification: "A", unit: "kg", orderQuantity: "1,500", receivingType: "임가공", lastReceivingDate: "", receivingQuantity: "", registrationCount: "" },
+  { id: 6, item: "누가바 크런치", itemType: "완제품", specification: "A", unit: "Ea", orderQuantity: "800", receivingType: "임가공", lastReceivingDate: "", receivingQuantity: "", registrationCount: "" },
+];
+
+function ReceivingContent() {
+  const [customer, setCustomer] = React.useState("D업체");
+  const [expectedDate, setExpectedDate] = React.useState(new Date(2025, 9, 30));
+  const [item, setItem] = React.useState("비비빅");
+  const [quantity, setQuantity] = React.useState("13");
+  const [receivingDate, setReceivingDate] = React.useState(new Date(2025, 9, 30));
+  const [warehouse, setWarehouse] = React.useState("선택");
+  const [search, setSearch] = React.useState("");
+  const [rows, setRows] = React.useState<ReceivingRow[]>(INITIAL_RECEIVING_ROWS);
+
+  const addReceivingRow = () => {
+    setRows((current) => [
+      {
+        id: Date.now(),
+        item,
+        itemType: "완제품",
+        specification: "A",
+        unit: "kg",
+        orderQuantity: "4,000",
+        receivingType: "임가공",
+        lastReceivingDate: `${receivingDate.getFullYear()}.${String(receivingDate.getMonth() + 1).padStart(2, "0")}.${String(receivingDate.getDate()).padStart(2, "0")}`,
+        receivingQuantity: quantity,
+        registrationCount: "1",
+      },
+      ...current,
+    ]);
+  };
+
+  const visibleRows = rows.filter((row) => !search || Object.values(row).some((value) => String(value).toLowerCase().includes(search.toLowerCase())));
+  const tableRows = visibleRows.map((row) => [
+    row.item,
+    row.itemType,
+    row.specification,
+    row.unit,
+    row.orderQuantity,
+    row.receivingType,
+    row.lastReceivingDate,
+    row.receivingQuantity,
+    row.registrationCount ? <Link key={`count-${row.id}`} href={`#receiving-registration-${row.id}`} onClick={(event) => event.preventDefault()}>{row.registrationCount}</Link> : "",
+    <IconButton key={`delete-${row.id}`} aria-label={`${row.item} 삭제`} size="xsmall" icon={<IconTrash size={14} />} onClick={() => setRows((current) => current.filter((itemRow) => itemRow.id !== row.id))} />,
+  ]);
+
+  return (
+    <div className="flex h-full w-full flex-col">
+      <div className="shrink-0 border-b border-mes-gray-30 p-5">
+        <SectionBand>기본정보</SectionBand>
+        <div className="mt-3 grid grid-cols-2 gap-6">
+          <LabeledControl label="거래처" required><FixtureSelect value={customer} options={["D업체", "A업체", "B업체"]} onValueChange={setCustomer} /></LabeledControl>
+          <LabeledControl label="입고예정일"><DatePicker value={expectedDate} onValueChange={setExpectedDate} separator="-" /></LabeledControl>
+        </div>
+      </div>
+
+      <div className="shrink-0 px-5 pt-5">
+        <div className="rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
+          <div className="flex items-center justify-between">
+            <b className="text-[16px]">LOT단위 품목 추가</b>
+            <Button size="small" variant="fillBlack" endIcon={<IconArrow size={14} className="rotate-180" />}>리스트 조회/선택</Button>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2.5">
+            <LabeledControl label="품목" required><FixtureSelect value={item} options={PURCHASE_ITEMS} onValueChange={setItem} /></LabeledControl>
+            <LabeledControl label="품목구분"><FixtureInput value="완제품" muted /></LabeledControl>
+            <LabeledControl label="입고수량" required><FixtureInput value={quantity} onValueChange={setQuantity} inputMode="numeric" /></LabeledControl>
+            <LabeledControl label="단위"><FixtureInput value="kg" muted /></LabeledControl>
+            <LabeledControl label="입고창고" required><FixtureSelect value={warehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={setWarehouse} /></LabeledControl>
+            <LabeledControl label="규격"><FixtureInput value="A" muted /></LabeledControl>
+            <LabeledControl label="입고일" required><DatePicker value={receivingDate} onValueChange={setReceivingDate} separator="-" /></LabeledControl>
+            <LabeledControl label="입고구분"><FixtureInput value="임가공" muted /></LabeledControl>
+          </div>
+          <div className="-mb-4 mt-3 flex justify-center"><Button size="small" className="w-[160px]" startIcon={<IconArrow size={15} className="-rotate-90" />} onClick={addReceivingRow}>추가</Button></div>
+        </div>
+      </div>
+
+      <div className="flex min-h-0 flex-1 flex-col px-5 pt-3">
+        <div className="mb-2 flex items-center justify-between"><b className="text-[15px]">생산실적 상세 리스트</b><FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" /></div>
+        <FixtureTable
+          selectable={false}
+          horizontalScroll={false}
+          headers={["품목", "품목구분", "규격", "단위", "발주수량", "입고구분", "최종입고일", "입고실적", "등록내역", "삭제"]}
+          widths={[150, 90, 55, 55, 75, 80, 90, 70, 65, 45]}
+          aligns={["left", "center", "center", "center", "right", "center", "center", "right", "center", "center"]}
+          rows={tableRows}
+          className="min-h-0 flex-1"
+        />
+      </div>
+    </div>
+  );
+}
+
 interface CustomInformationRow {
   id: number;
   code: string;
@@ -581,6 +692,87 @@ function CustomInformationContent() {
   );
 }
 
+interface DowntimeCategory {
+  id: number;
+  label: string;
+  minutes: string;
+}
+
+const OPERATION_HOURS = Array.from({ length: 12 }, (_, index) => `${index + 7}:00`);
+const INITIAL_DOWNTIME_CATEGORIES: DowntimeCategory[] = [
+  { id: 1, label: "금형교체", minutes: "20" },
+  { id: 2, label: "셋팅", minutes: "40" },
+  { id: 3, label: "짠짱이", minutes: "60" },
+  { id: 4, label: "정리", minutes: "50" },
+  { id: 5, label: "기계수리", minutes: "90" },
+  { id: 6, label: "기타", minutes: "10" },
+  { id: 7, label: "식사부동", minutes: "20" },
+];
+
+function OperationLogContent() {
+  const [operationDate, setOperationDate] = React.useState(new Date(2025, 9, 30));
+  const [equipment, setEquipment] = React.useState("압출기 1호");
+  const [logType, setLogType] = React.useState("주간일지");
+  const [manager, setManager] = React.useState("김수현");
+  const [timeTable, setTimeTable] = React.useState<Record<string, string>>(() => Object.fromEntries(OPERATION_HOURS.map((hour) => [hour, ""])));
+  const [operatingMinutes, setOperatingMinutes] = React.useState("10");
+  const [categories, setCategories] = React.useState<DowntimeCategory[]>(INITIAL_DOWNTIME_CATEGORIES);
+
+  const addCategory = () => {
+    setCategories((current) => [...current, { id: Date.now(), label: `신규 분류 ${current.length - INITIAL_DOWNTIME_CATEGORIES.length + 1}`, minutes: "0" }]);
+  };
+
+  return (
+    <div className="grid min-h-full w-full grid-cols-2">
+      <div className="border-r border-mes-gray-30 p-5">
+        <SectionBand>기본 정보</SectionBand>
+        <div className="mt-3 space-y-4">
+          <LabeledControl label="가동일" required><DatePicker value={operationDate} onValueChange={setOperationDate} separator="-" /></LabeledControl>
+          <LabeledControl label="설비명" required><FixtureSelect value={equipment} options={["압출기 1호", "압출기 2호"]} onValueChange={setEquipment} /></LabeledControl>
+          <LabeledControl label="일지구분" required><FixtureSelect value={logType} options={["주간일지", "야간일지"]} onValueChange={setLogType} /></LabeledControl>
+          <LabeledControl label="담당자" required><FixtureSelect value={manager} options={["김수현", "홍길동", "김아무개"]} onValueChange={setManager} /></LabeledControl>
+          <div className="grid grid-cols-[100px_1fr] items-start gap-2 text-[14px]">
+            <span className="pt-1.5">타임테이블</span>
+            <div className="overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
+              {OPERATION_HOURS.map((hour) => (
+                <div key={hour} className="flex h-8 items-center border-b border-mes-gray-30 px-1.5 last:border-0">
+                  <span className="w-12 shrink-0 pl-1 text-mes-gray-80">{hour}</span>
+                  <FixtureInput
+                    value={timeTable[hour]}
+                    onValueChange={(value) => setTimeTable((current) => ({ ...current, [hour]: value }))}
+                    size="small"
+                    aria-label={`${hour} 운전 기록`}
+                    className="min-w-0 flex-1"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <LabeledControl label="가동시간"><div className="flex items-center gap-2"><FixtureInput value={operatingMinutes} onValueChange={setOperatingMinutes} inputMode="numeric" muted /><span className="text-[13px] text-mes-gray-80">min</span></div></LabeledControl>
+        </div>
+      </div>
+
+      <div className="p-5">
+        <div className="flex items-center gap-2">
+          <SectionBand className="flex-1">커스텀 비가동 분류</SectionBand>
+          <Button size="small" variant="fillBlack" className="h-7" startIcon={<IconPlus size={14} />} onClick={addCategory}>추가</Button>
+        </div>
+        <div className="mt-3 space-y-4">
+          {categories.map((category) => (
+            <LabeledControl key={category.id} label={category.label}>
+              <FixtureInput
+                value={category.minutes}
+                onValueChange={(minutes) => setCategories((current) => current.map((item) => item.id === category.id ? { ...item, minutes } : item))}
+                inputMode="numeric"
+              />
+            </LabeledControl>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function InspectionContent() {
   const [inspectionDate, setInspectionDate] = React.useState(new Date(2025, 9, 30));
   const [inspectionTime, setInspectionTime] = React.useState("14:45");
@@ -620,7 +812,7 @@ function InspectionContent() {
   );
 }
 
-function CenterPopup({ kind, open, onOpenChange }: { kind: Exclude<PopupKind, "production" | "custom" | "inspection">; open: boolean; onOpenChange: (open: boolean) => void }) {
+function CenterPopup({ kind, open, onOpenChange }: { kind: CenterPopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
   const defaultActions = createDefaultActions(() => onOpenChange(false));
   const config: Record<typeof kind, { title: string; size: CenterModalSize; height: string; actions: DialogAction[]; content: React.ReactNode }> = {
     quantity: { title: "생산수량 입력", size: "compact-400", height: "h-[437px]", actions: [SAVE_ACTION], content: <QuantityContent /> },
@@ -637,7 +829,9 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: Exclude<PopupKind, "p
 function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
   const defaultActions = createDefaultActions(() => onOpenChange(false));
   if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch p-0"><ProductionContent /></SideSlidePanel>;
-  if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><CustomInformationContent /></SideSlidePanel>;
+  if (kind === "receiving") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="입고등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><ReceivingContent /></SideSlidePanel>;
+  if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="커스텀 정보 등록" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><CustomInformationContent /></SideSlidePanel>;
+  if (kind === "operation-log") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="운전일지" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><OperationLogContent /></SideSlidePanel>;
   if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch p-0"><InspectionContent /></SideSlidePanel>;
   return <CenterPopup kind={kind} open={open} onOpenChange={onOpenChange} />;
 }
@@ -651,18 +845,17 @@ function PopupPatternCard({
   selectedKind: PopupKind;
   onOpen: (kind: PopupKind) => void;
 }) {
+  const examples = POPUPS.filter((popup) => popup.pattern === group.id);
   return (
     <Card className="flex h-full min-h-[188px] flex-col p-4">
       <div className="mb-3 flex items-center justify-between gap-3">
         <Tag color="opacityMain" size="compact">패턴</Tag>
-        <span className="text-[12px] text-mes-gray-60">대표 예제 {group.examples.length}개</span>
+        <span className="text-[12px] text-mes-gray-60">대표 예제 {examples.length}개</span>
       </div>
       <h4 className="text-[16px] font-bold text-mes-gray-130">{group.title}</h4>
       <p className="mt-1.5 text-[13px] leading-5 text-mes-gray-80">{group.description}</p>
       <div className="mt-auto flex flex-wrap gap-2 pt-4">
-        {group.examples.map((popupKind) => {
-          const popup = POPUPS.find((item) => item.id === popupKind)!;
-          return (
+        {examples.map((popup) => (
             <Button
               key={popup.id}
               size="small"
@@ -672,8 +865,7 @@ function PopupPatternCard({
             >
               {popup.label}
             </Button>
-          );
-        })}
+        ))}
       </div>
     </Card>
   );
