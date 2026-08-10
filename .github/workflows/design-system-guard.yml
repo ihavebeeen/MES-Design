@@ -1,0 +1,42 @@
+name: Design system guard
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  registry-and-visual:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: component-library
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: component-library/package-lock.json
+
+      - run: npm ci
+      - run: npm run check:design-system
+      - run: npx tsc --noEmit
+      - run: npm run lint:design-system
+      - run: npx playwright install chromium
+      - run: npm run test:visual
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-regression-failure
+          path: |
+            component-library/test-results
+            component-library/playwright-report
+          if-no-files-found: ignore
+          retention-days: 7

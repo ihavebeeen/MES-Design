@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "patterns": [
+    {
+      "id": "popup.center.form",
+      "name": "중앙 · 폼/정보 중심",
+      "kind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "requiredComponents": ["center-modal", "button", "input", "select", "radio"],
+      "rules": ["단일 입력 또는 상세정보가 중심이며 주 데이터 테이블을 만들지 않는다.", "너비와 높이는 화면별 CenterModal variant와 실측값으로 고정한다."]
+    },
+    {
+      "id": "popup.center.table",
+      "name": "중앙 · 단일 테이블 선택/편집",
+      "kind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "requiredComponents": ["center-modal", "button", "checkbox", "filter", "search-input", "table", "input", "select"],
+      "rules": ["조회 toolbar와 table을 별도 고정 영역으로 측정한다.", "선택된 행에만 입력·선택 컨트롤을 노출한다.", "불필요한 가로 스크롤이 생기지 않도록 viewport에서 scrollWidth를 검증한다."]
+    },
+    {
+      "id": "popup.center.dual-pane",
+      "name": "중앙 · 원본/대상 비교",
+      "kind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "requiredComponents": ["center-modal", "button", "checkbox", "table", "input", "select"],
+      "rules": ["좌측 원본과 우측 대상의 경계를 유지하고 각 pane의 스크롤을 독립적으로 검증한다."]
+    },
+    {
+      "id": "popup.center.navigation-detail",
+      "name": "중앙 · 탐색 레일 + 상세",
+      "kind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "requiredComponents": ["center-modal", "button", "checkbox", "filter", "search-input", "table", "input", "select"],
+      "rules": ["좌측 탐색 레일과 우측 상세 영역의 고정 폭을 원본 기준으로 유지한다.", "filter와 search는 같은 toolbar의 수직 중앙에 배치한다.", "테이블 선택은 회색 미선택 체크, 검정 선택 체크, 파란 행 배경을 함께 사용한다."]
+    },
+    {
+      "id": "popup.center.time-selector",
+      "name": "중앙 · 시간 휠 + 계산",
+      "kind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "requiredComponents": ["center-modal", "button", "time-picker"],
+      "rules": ["시작·종료 시간과 계산된 분 단위 결과를 같은 상태에서 파생한다."]
+    },
+    {
+      "id": "popup.side.add-list",
+      "name": "우측 슬라이드 · 추가 + 하단 리스트",
+      "kind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "requiredComponents": ["side-slide-panel", "button", "input", "select", "table"],
+      "rules": ["상단 입력값을 추가하면 하단 리스트 state에 실제 행이 생성되어야 한다."]
+    },
+    {
+      "id": "popup.side.custom-columns",
+      "name": "우측 슬라이드 · 커스텀 정보",
+      "kind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "requiredComponents": ["side-slide-panel", "button", "input", "select", "table"],
+      "rules": ["좌측 기본 폼과 우측 커스텀 컬럼 편집 영역을 분리한다."]
+    },
+    {
+      "id": "popup.side.inspection-items",
+      "name": "우측 슬라이드 · 검사항목",
+      "kind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "requiredComponents": ["side-slide-panel", "button", "input", "inspection-judgement"],
+      "rules": ["좌측 대상정보와 우측 검사항목 판정 영역을 분리한다."]
+    },
+    {
+      "id": "popup.side.time-records",
+      "name": "우측 슬라이드 · 시간 기록",
+      "kind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "requiredComponents": ["side-slide-panel", "button", "input", "time-picker", "table"],
+      "rules": ["운전일지는 중앙 모달이 아니라 우측 슬라이드 팝업이다.", "시간대별 일지와 가동·비가동 기록을 좌우로 나눈다."]
+    },
+    {
+      "id": "screen.entity-list",
+      "name": "엔티티 리스트 화면",
+      "kind": "screen",
+      "placement": "page",
+      "source": "src/components/patterns/entity-list-pattern.tsx",
+      "requiredComponents": ["sidebar", "page-top-tab-item", "filter", "search-input", "table", "pagination"],
+      "rules": ["조회 조건, 검색, 목록, 페이지네이션 순서를 유지한다."]
+    },
+    {
+      "id": "screen.master-detail",
+      "name": "마스터-디테일 화면",
+      "kind": "screen",
+      "placement": "page",
+      "source": "src/components/patterns/master-detail-pattern.tsx",
+      "requiredComponents": ["table", "panel", "descriptions"],
+      "rules": ["마스터 선택 state로 상세 pane의 내용을 파생한다."]
+    },
+    {
+      "id": "screen.analytics-dashboard",
+      "name": "분석 대시보드",
+      "kind": "screen",
+      "placement": "page",
+      "source": "src/components/patterns/analytics-dashboard-pattern.tsx",
+      "requiredComponents": ["card", "date-range-picker", "filter"],
+      "rules": ["요약 지표와 분석 패널의 정보 위계를 유지한다."]
+    },
+    {
+      "id": "table.grouped-list",
+      "name": "그룹화 선택 테이블",
+      "kind": "table",
+      "placement": "page",
+      "source": "src/components/ui/table.tsx",
+      "requiredComponents": ["table", "checkbox"],
+      "rules": ["그룹 깊이에 관계없이 header, group, row, totals의 컬럼 좌표를 공유한다.", "그룹 전체·부분·미선택 상태를 하위 행 id로 계산한다."]
+    },
+    {
+      "id": "table.column-settings",
+      "name": "테이블 컬럼 설정",
+      "kind": "table",
+      "placement": "page",
+      "source": "src/components/patterns/table-column-settings.tsx",
+      "requiredComponents": ["button", "checkbox", "input"],
+      "rules": ["표시·고정·순서 설정을 실제 컬럼 구성 state에 반영한다."]
+    }
+  ]
+}

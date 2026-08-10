@@ -1643,3 +1643,14 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
   `npx tsc --noEmit` 클린 확인 후 개별 커밋. 로컬 브라우저 렌더링 확인은 이번에도
   샌드박스 제약상 불가 — 담당자 재확인 필요.
 
+# 디자인 시스템 레지스트리와 시각 회귀 검사 (2026-08-10)
+
+새 화면 또는 패턴 작업을 시작하기 전에 `component-library/src/design-system/registry/`를 먼저 조회한다.
+
+1. `screens.json`에서 가까운 MES 화면을 찾는다.
+2. 화면의 `patternId`를 `patterns.json`에서 조회한다.
+3. 패턴의 `requiredComponents`와 각 컴포넌트의 `source`/`rules`를 `components.json`에서 확인한다.
+4. 기존 컴포넌트로 표현할 수 없는 차이만 optional prop 또는 variant로 확장한다.
+5. 작업 후 `npm run check:design-system`, `npx tsc --noEmit`, `npm run lint:design-system`, `npm run test:visual`을 실행한다.
+
+활성 `src/components/ui/*.tsx` 파일은 전부 레지스트리에 등록해야 하며, 화면은 반드시 하나의 pattern에 연결한다. 의도한 시각 변경이 아니면 기준 PNG를 갱신하지 않는다. 상세 절차는 `docs/디자인_시스템_레지스트리_및_시각회귀_테스트.md`를 참고한다.

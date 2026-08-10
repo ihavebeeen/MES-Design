@@ -53,7 +53,7 @@ type CenterPopupKind =
   | "operating-time-picker"
   | "downtime-picker";
 type SidePopupKind = "production" | "receiving" | "custom" | "inspection" | "operation-log";
-type PopupKind = CenterPopupKind | SidePopupKind;
+export type PopupKind = CenterPopupKind | SidePopupKind;
 type PopupPatternId =
   | "side-custom-columns"
   | "side-add-list"
@@ -806,7 +806,7 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: CenterPopupKind; open
   return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} headerDivider={kind !== "details"} className={`${current.height} ${current.maxHeight ?? ""}`} contentClassName={current.contentClassName ?? (kind === "details" ? "pt-0" : undefined)}>{current.content}</CenterModal>;
 }
 
-function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
+export function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
   const defaultActions = createDefaultActions(() => onOpenChange(false));
   if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch p-0"><ProductionContent /></SideSlidePanel>;
   if (kind === "receiving") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="입고등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><ReceivingContent /></SideSlidePanel>;

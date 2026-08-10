@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    { "id": "popup-material-input", "name": "투입품목 설정/조회 팝업", "route": "/visual-regression/popup", "snapshot": "material-input-settings.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "material-input-settings" },
+    { "id": "table-core-states", "name": "그룹화 테이블 핵심 상태", "route": "/visual-regression/table", "snapshot": "grouped-table-core-states.png", "viewport": { "width": 1280, "height": 720 }, "patternId": "table.grouped-list" }
+  ]
+}
