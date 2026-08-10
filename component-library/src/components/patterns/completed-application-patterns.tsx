@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Radio } from "@/components/ui/radio";
 import {
   IconArrow,
   IconArrowDownRight,
@@ -24,6 +25,7 @@ import {
   FixtureDateRange,
   FixtureFilter,
   FixtureGroupQuery,
+  FixtureInput,
   FixtureSearch,
   FixtureSelect,
   FixtureTable,
@@ -245,7 +247,7 @@ function ProductionChart() {
   );
 }
 
-function CompletedAnalyticsExample() {
+function LegacyCompletedAnalyticsExample() {
   return (
     <FigmaScreenPreview>
       <AnalyticsDashboardPattern
@@ -282,6 +284,38 @@ function CompletedAnalyticsExample() {
       />
     </FigmaScreenPreview>
   );
+}
+
+void LegacyCompletedAnalyticsExample;
+
+function LatestMetricSettings({ onClose }: { onClose: () => void }) {
+  const [mode, setMode] = React.useState("system");
+  return (
+    <div className="absolute inset-x-5 top-12 z-10 rounded-lg border border-mes-gray-30 bg-white p-3 shadow-mes-panel">
+      <div className="flex items-center justify-between"><b className="text-[13px]">계획값 설정</b><Button size="xsmall" variant="lineBlacktxt" onClick={onClose}>닫기</Button></div>
+      <div className="mt-2 flex gap-4 text-[12px]"><label className="flex items-center gap-1"><Radio name="latest-metric-mode" size="small" checked={mode === "system"} onChange={() => setMode("system")} />시스템 계산값</label><label className="flex items-center gap-1"><Radio name="latest-metric-mode" size="small" checked={mode === "user"} onChange={() => setMode("user")} />사용자 입력값</label></div>
+      <div className="mt-2 flex gap-2"><FixtureInput value="5,000" muted={mode === "system"} /><Button size="small" onClick={onClose}>적용</Button></div>
+    </div>
+  );
+}
+
+function LatestPlanMetric({ title, editing, onEdit }: { title: string; editing: boolean; onEdit: () => void }) {
+  return <Card className="relative flex h-[197px] flex-col rounded-xl border-0 bg-mes-gray-20 p-5"><div className="flex items-center justify-between"><b className="text-[15px]">{title}</b><Button size="xsmall" variant="lineBlacktxt" aria-label={`${title} 설정`} onClick={onEdit}><IconSetting size={16} /></Button></div><div className="mt-4 flex items-center gap-5"><div className="h-2 flex-1 overflow-hidden rounded-full bg-mes-gray-40"><div className="h-full w-[83%] bg-mes-primary-60" /></div><strong className="text-[24px]">83%</strong></div><div className="mt-auto grid h-[69px] grid-cols-2 divide-x divide-mes-gray-30 rounded-lg bg-white text-center text-[12px]"><div className="flex flex-col items-center justify-center"><span>{title.startsWith("판매") ? "당월 판매 계획" : "당월 생산 계획"}</span><b className="mt-1 text-[14px]">5,000백만원</b></div><div className="flex flex-col items-center justify-center"><span>{title.startsWith("판매") ? "당월 출하 실적" : "당월 생산 실적"}</span><b className="mt-1 text-[14px]">4,500백만원</b></div></div>{editing && <LatestMetricSettings onClose={onEdit} />}</Card>;
+}
+
+function LatestInventoryMetric() {
+  return <Card className="flex h-[197px] flex-col rounded-xl border-0 bg-mes-gray-20 p-5"><div className="flex items-center justify-between"><b className="text-[15px]">당월 재고 현황</b><span className="text-[10px] text-mes-gray-70">■ 전월　<span className="text-mes-primary-60">■ 당월</span></span></div><div className="mt-2 grid flex-1 grid-cols-2 items-end gap-8 px-8"><div className="flex items-end justify-center gap-2"><span className="h-8 w-10 bg-green-200" /><span className="h-12 w-10 bg-mes-primary-60" /></div><div className="flex items-end justify-center gap-2"><span className="h-12 w-10 bg-green-200" /><span className="h-9 w-10 bg-mes-primary-60" /></div></div><div className="grid h-9 grid-cols-2 rounded bg-white text-center text-[13px] leading-9"><span>당월 재고　<b>5,000백만원</b></span><span>전월 재고　<b>4,500백만원</b></span></div></Card>;
+}
+
+function LatestProductionMetric() {
+  return <Card className="flex h-[197px] flex-col rounded-xl border-0 bg-mes-gray-20 p-5"><div className="flex items-center justify-between"><b className="text-[15px]">당월 생산 현황</b><span className="text-[10px] text-mes-gray-70">2025.11 기준</span></div><div className="mt-3 grid flex-1 grid-cols-[70px_1fr_1fr] grid-rows-3 overflow-hidden rounded border border-mes-gray-30 text-[11px]"><span className="row-span-3 flex items-center justify-center border-r border-mes-gray-30">생산</span><span className="border-b border-mes-gray-30 px-2">성형(천원)</span><span className="border-b border-mes-gray-30 px-2 text-right">5,000,000</span><span className="border-b border-mes-gray-30 px-2">압출(천원)</span><span className="border-b border-mes-gray-30 px-2 text-right">800,000</span><span className="bg-mes-primary-10 px-2 font-bold">합계(천원)</span><span className="bg-mes-primary-10 px-2 text-right font-bold">5,800,000</span></div></Card>;
+}
+
+function CompletedAnalyticsExample() {
+  const [period, setPeriod] = React.useState("당월");
+  const [basis, setBasis] = React.useState("금액");
+  const [editing, setEditing] = React.useState<number | null>(null);
+  return <FigmaScreenPreview><AnalyticsDashboardPattern navigation={<MesFixtureSidebar dashboard />} tabs={<MesPageTabs active="생산분석 현황" />} toolbar={<><strong className="text-[15px]">생산분석 현황</strong><div className="ml-auto flex items-center gap-4"><ButtonGroup>{["당월","당일"].map((item) => <Button key={item} size="small" variant={period === item ? "lineBlacktxt" : "fillGray"} className="w-[75px]" onClick={() => setPeriod(item)}>{item}</Button>)}</ButtonGroup><span className="h-5 w-px bg-mes-gray-30" /><ButtonGroup>{["금액","수량"].map((item) => <Button key={item} size="small" variant={basis === item ? "lineBlacktxt" : "fillGray"} className="w-[75px]" onClick={() => setBasis(item)}>{item}</Button>)}</ButtonGroup></div></>} metrics={[{id:"sales",content:<LatestPlanMetric title="판매 계획 달성률" editing={editing===0} onEdit={() => setEditing(editing===0?null:0)} />},{id:"production-plan",content:<LatestPlanMetric title="생산계획 진척률" editing={editing===1} onEdit={() => setEditing(editing===1?null:1)} />},{id:"inventory",content:<LatestInventoryMetric />},{id:"production",content:<LatestProductionMetric />}]} panels={[{id:"summary",title:"월별 생산실적",className:"p-5",content:<div className="h-full"><div className="flex h-8 items-center justify-end gap-2"><FixtureSelect value="2025년 9월" className="w-[140px]" /><FixtureSelect value="성형" className="w-[140px]" /><Button size="small" variant="fillBlack">전체보기</Button></div><ButtonGroup className="mt-3 w-full"><Button size="small" variant="lineBlacktxt" className="flex-1">설비별</Button><Button size="small" variant="fillGray" className="flex-1 text-mes-gray-60">작업자별</Button></ButtonGroup><div className="mt-3"><FixtureTable selectable={false} headers={["설비",`양품(${basis === "금액" ? "백만원" : "수량"})`,`불량(${basis === "금액" ? "백만원" : "수량"})`,"불량률(%)"]} aligns={["center","right","right","right"]} rows={Array.from({length:5},() => ["A1","5,000","30","0.6"])} /></div></div>},{id:"production",title:"설비별 생산실적 현황",legend:<div className="flex gap-4 text-[10px] text-mes-gray-70"><span>━ 생산실적({basis === "금액" ? "백만원" : "수량"})</span><span className="text-mes-danger-60">━ 불량률(%)</span></div>,content:<ProductionChart />},{id:"defect",title:"TOP5 불량유형",legend:<span className="text-[10px] text-mes-gray-70">━ 불량금액({basis === "금액" ? "백만원" : "수량"})</span>,content:<HorizontalBars labels={["기타","오투입","중량불량","흑점","스크래치"]} values={[57,73,42,54,54]} widths={[78,47,11,41,7]} ticks={["0","20","40","60","80","100","120","140"]} />},{id:"top",title:"TOP5 생산품",legend:<span className="text-[10px] text-mes-gray-70">━ 생산금액({basis === "금액" ? "백만원" : "수량"})</span>,content:<HorizontalBars labels={["햇반","누가바","죠스바","비비빅","팥빙수"]} values={[5000,3500,4398,3010,3989]} widths={[82,47,75,40,72]} ticks={["0","20","40","60","80","100","120","140"]} />}]} /></FigmaScreenPreview>;
 }
 
 export { CompletedAnalyticsExample, CompletedEntityListExample, CompletedMasterDetailExample };

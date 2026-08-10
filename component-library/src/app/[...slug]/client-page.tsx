@@ -102,6 +102,7 @@ import {
   CompletedEntityListExample,
   CompletedMasterDetailExample,
   CompletedPopupExamples,
+  OriginalMesScreenAssets,
 } from "@/components/patterns";
 import {
   IconArrow,
@@ -5353,9 +5354,17 @@ export default function Home() {
       <WidePatternSection
         id="completed-analytics-dashboard"
         title="완성 화면 — 생산분석 현황"
-        titleEn="Production Analytics · Figma 11210:47757"
+        titleEn="Production Analytics · Figma 17520:46628"
       >
         <CompletedAnalyticsExample />
+      </WidePatternSection>
+
+      <WidePatternSection
+        id="original-mes-screen-assets"
+        title="MES 원본 화면 자산"
+        titleEn="Normalized source screens · Figma revisions merged as states"
+      >
+        <OriginalMesScreenAssets />
       </WidePatternSection>
 
       <Section

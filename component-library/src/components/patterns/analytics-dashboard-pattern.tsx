@@ -19,6 +19,7 @@ export interface AnalyticsPanelItem {
 export interface AnalyticsDashboardPatternProps {
   navigation: React.ReactNode;
   tabs: React.ReactNode;
+  toolbar?: React.ReactNode;
   metrics: MetricItem[];
   panels: AnalyticsPanelItem[];
   className?: string;
@@ -28,6 +29,7 @@ export interface AnalyticsDashboardPatternProps {
 function AnalyticsDashboardPattern({
   navigation,
   tabs,
+  toolbar,
   metrics,
   panels,
   className,
@@ -42,6 +44,7 @@ function AnalyticsDashboardPattern({
       {navigation}
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex h-[38px] shrink-0 items-center bg-black">{tabs}</div>
+        {toolbar && <div className="flex h-[42px] shrink-0 items-center border-b border-mes-gray-30 px-5">{toolbar}</div>}
         <div className="min-h-0 flex-1 overflow-hidden p-5">
           <div className="grid grid-cols-4 gap-5">
             {metrics.map((metric) => (
@@ -49,7 +52,7 @@ function AnalyticsDashboardPattern({
             ))}
           </div>
 
-          <div className="mt-5 grid h-[665px] grid-cols-2 grid-rows-[308px_337px] gap-5">
+          <div className={cn("mt-5 grid grid-cols-2 gap-5", toolbar ? "h-[623px] grid-rows-[308px_295px]" : "h-[665px] grid-rows-[308px_337px]")}>
             {panels.map((panel) => (
               <section
                 key={panel.id}

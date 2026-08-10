@@ -40,15 +40,14 @@ function FigmaScreenPreview({ children, className, maxScale = 1 }: FigmaScreenPr
   return (
     <div
       ref={hostRef}
-      className={cn("min-w-0 w-full max-w-full overflow-hidden rounded-lg border border-mes-gray-30 bg-mes-gray-20", className)}
+      className={cn("min-w-0 w-full max-w-full overflow-clip rounded-lg border border-mes-gray-30 bg-mes-gray-20", className)}
       style={{ height: FIGMA_SCREEN_HEIGHT * scale }}
     >
       <div
-        className="origin-top-left"
         style={{
           width: FIGMA_SCREEN_WIDTH,
           height: FIGMA_SCREEN_HEIGHT,
-          transform: `scale(${scale})`,
+          zoom: scale,
         }}
       >
         {children}

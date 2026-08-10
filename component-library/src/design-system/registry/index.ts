@@ -2,6 +2,7 @@ import componentData from "./components.json";
 import patternData from "./patterns.json";
 import screenData from "./screens.json";
 import visualRegressionData from "./visual-regression.json";
+import sourceAssetData from "./source-assets.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -12,8 +13,8 @@ import type {
 export type * from "./registry.types";
 
 export const componentRegistry = componentData as ComponentRegistry;
-export const patternRegistry = patternData as PatternRegistry;
-export const screenRegistry = screenData as ScreenRegistry;
+export const patternRegistry = { schemaVersion: 1, patterns: [...patternData.patterns, ...sourceAssetData.patterns] } as PatternRegistry;
+export const screenRegistry = { schemaVersion: 1, screens: [...screenData.screens, ...sourceAssetData.screens] } as ScreenRegistry;
 export const visualRegressionRegistry = visualRegressionData as VisualRegressionRegistry;
 
 export function getComponent(id: string) {

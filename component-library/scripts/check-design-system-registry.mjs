@@ -9,6 +9,9 @@ const componentRegistry = readJson("components.json");
 const patternRegistry = readJson("patterns.json");
 const screenRegistry = readJson("screens.json");
 const visualRegistry = readJson("visual-regression.json");
+const sourceAssetRegistry = readJson("source-assets.json");
+patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
+screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
 
 function checkVersion(name, registry) {
@@ -38,6 +41,7 @@ checkVersion("components", componentRegistry);
 checkVersion("patterns", patternRegistry);
 checkVersion("screens", screenRegistry);
 checkVersion("visual-regression", visualRegistry);
+checkVersion("source-assets", sourceAssetRegistry);
 
 const components = mapByUniqueId("components", componentRegistry.components ?? []);
 const patterns = mapByUniqueId("patterns", patternRegistry.patterns ?? []);

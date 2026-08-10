@@ -124,6 +124,11 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
     labelEn: "Production Analytics",
   },
   {
+    id: "original-mes-screen-assets",
+    label: "MES 원본 화면 자산",
+    labelEn: "Original MES Screen Assets",
+  },
+  {
     id: "completed-popup-types",
     label: "팝업",
     labelEn: "Popup Catalog",
@@ -230,6 +235,7 @@ export const PATTERN_ID_LIST = [
   "completed-entity-list",
   "completed-master-detail",
   "completed-analytics-dashboard",
+  "original-mes-screen-assets",
   "table-column-settings-pattern",
 ];
 export const PATTERN_NODES: SidebarNode[] = PATTERN_ID_LIST.map((id) => leaf(id));
