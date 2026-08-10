@@ -16,12 +16,8 @@ import { cn } from "@/lib/utils";
 import { FigmaScreenPreview } from "./figma-screen-preview";
 import { ExactFormManagementScreen } from "./exact-form-management-screen";
 import { ExactProductionResultScreen } from "./exact-production-result-screen";
-import { ExactInventoryAddContent } from "./exact-inventory-add-modal";
-import { ExactInventoryEditContent } from "./exact-inventory-edit-modal";
-import { ExactInventoryActionContent } from "./exact-inventory-action-modal";
-import { ExactPurchaseContent, ExactPurchaseItemsContent } from "./exact-purchase-modals";
 
-type AssetId = "forms" | "responsive" | "cavity" | "inventory-add" | "inventory-edit" | "purchase";
+type AssetId = "forms" | "responsive";
 
 function RotateCcw({ className }: { className?: string }) { return <IconReload size={16} className={className} />; }
 function ArrowLeftRight({ className }: { className?: string }) { return <span className={className}>↔</span>; }
@@ -30,15 +26,11 @@ function ArrowUpDown({ className }: { className?: string }) { return <span class
 const ASSETS: Array<{ id: AssetId; label: string; node: string; summary: string }> = [
   { id: "forms", label: "양식관리", node: "17377:50192", summary: "목록 · 양식 편집 · 기준 설정 · 검사 상태" },
   { id: "responsive", label: "생산실적 반응형", node: "18849:62314", summary: "1280 원본 완료 · 786/375 대조 중" },
-  { id: "cavity", label: "금형 캐비티", node: "18795:62149", summary: "960×760 캐비티 배열 설정" },
-  { id: "inventory-add", label: "재고 추가", node: "18813:64179", summary: "1280×655 선택행 편집 모달" },
-  { id: "inventory-edit", label: "재고 편집", node: "17491:82304", summary: "1294×745 선택 액션 모달" },
-  { id: "purchase", label: "발주 정보", node: "17503:85601", summary: "800×680 목록 · 507×384 품목 상세" },
 ];
 
 function AssetHeader({ active, onChange }: { active: AssetId; onChange: (id: AssetId) => void }) {
   return (
-    <div className="mb-5 grid grid-cols-2 gap-2 lg:grid-cols-3">
+    <div className="mb-5 grid grid-cols-1 gap-2 md:grid-cols-2">
       {ASSETS.map((asset) => (
         <Button
           key={asset.id}
@@ -199,44 +191,11 @@ function CavityContent() {
   return <div className="grid min-h-[636px] w-full grid-cols-[300px_minmax(0,1fr)] divide-x divide-mes-gray-30"><section className="p-5"><SectionHeader>금형 정보</SectionHeader><div className="mt-3 space-y-3">{[["설비명","빠삐코 금형",true],["배열(가로)","5",false],["배열(세로)","5",false],["CAVITY","5*5",true]].map(([label,value,readonly]) => <EditorField key={String(label)} label={String(label)}><Input value={String(value)} readOnly={Boolean(readonly)} /></EditorField>)}</div><SectionHeader className="mt-5">배열 생성</SectionHeader><div className="mt-3 grid h-8 grid-cols-[70px_1fr] items-center text-[14px]"><span>배열 설정</span><div className="flex gap-4"><label className="flex items-center gap-[6px]"><Radio name="cavity-mode" checked={automatic} onChange={() => setAutomatic(true)} />자동배열</label><label className="flex items-center gap-[6px]"><Radio name="cavity-mode" checked={!automatic} onChange={() => setAutomatic(false)} />사용자 설정</label></div></div><p className="mt-3 text-[14px]">번호 생성 방향</p><div className="mt-1 grid grid-cols-2 gap-2"><Button size="small" variant={horizontal ? "fillMain" : "lineBlacktxt"} onClick={() => setHorizontal(true)}>→　가로</Button><Button size="small" variant={!horizontal ? "fillMain" : "lineBlacktxt"} onClick={() => setHorizontal(false)}>↓　세로</Button></div><p className="mt-3 text-[14px]">줄 전환 방향</p><div className="mt-1 grid grid-cols-2 gap-2"><Button size="small" variant={sequential ? "fillMain" : "lineBlacktxt"} onClick={() => setSequential(true)}>☰　순차</Button><Button size="small" variant={!sequential ? "fillMain" : "lineBlacktxt"} onClick={() => setSequential(false)}>⇄　교차</Button></div></section><section className="p-5"><SectionHeader>캐비티 배열</SectionHeader><div className="mt-3 h-[504px] rounded-lg border border-mes-gray-30 p-5"><div className="flex h-8 items-center"><div className="flex gap-2"><Button size="small" variant="lineBlacktxt" startIcon={<ArrowLeftRight className="size-4" />}>좌우 반전</Button><Button size="small" variant="lineBlacktxt" startIcon={<ArrowUpDown className="size-4" />}>상하 반전</Button></div><Button size="small" variant="lineMain" className="ml-auto" startIcon={<RotateCcw className="size-4" />} onClick={() => { setSelected(9); setExchange("19"); setAutomatic(true); setHorizontal(false); setSequential(false); }}>초기화</Button></div><div className="mt-2 text-[12px] text-mes-gray-60">↙ 진행방향</div><div className="mt-1 grid grid-cols-10 gap-1">{cells.map((cell,index) => <CavityCell key={index} value={cell} selected={cell === selected} onClick={() => cell && setSelected(cell)} />)}</div></div><div className="mt-5 grid grid-cols-[96px_148px_120px_148px_60px] items-center gap-3 text-[14px]"><span>선택한 셀</span><Input value={String(selected)} readOnly /><span>교환할 번호 입력</span><Input value={exchange} onChange={(event) => setExchange(event.target.value)} inputMode="numeric" readOnly={automatic} /><Button size="small" disabled={automatic} onClick={swap}>교환</Button></div></section></div>;
 }
 
-function CavityAsset() { const [open,setOpen]=React.useState(false); return <Launcher title="캐비티 배열 설정" description="Figma 960×760 원본 상태" onOpen={() => setOpen(true)}><CenterModal open={open} onOpenChange={setOpen} title="캐비티 배열 설정" size="standard-960" className="!h-[760px] !max-h-[calc(100vh-40px)]" confirmLabel="저장" contentClassName="p-0 items-stretch"><CavityContent /></CenterModal></Launcher>; }
-
-function InventoryAddAsset() {
-  const [open, setOpen] = React.useState(false);
-  return (
-    <Launcher title="재고 추가" description="Figma 원본의 선택행 정렬·셀 편집 상태를 그대로 구현합니다." onOpen={() => setOpen(true)}>
-      <CenterModal
-        open={open}
-        onOpenChange={setOpen}
-        onCancel={() => setOpen(false)}
-        title="재고 추가"
-        size="wide-1400"
-        className="!h-[655px] !max-h-[calc(100vh-40px)] !max-w-[1280px]"
-        confirmLabel="저장"
-        contentClassName="items-stretch !overflow-y-hidden"
-      >
-        <ExactInventoryAddContent />
-      </CenterModal>
-    </Launcher>
-  );
-}
-
-function InventoryEditAsset() {
-  const [open,setOpen]=React.useState(false); const [action,setAction]=React.useState<"delete"|"move"|null>(null);
-  return <Launcher title="재고편집" description="선택 행 수는 하단 플로팅 툴바와 이동/삭제 설정에 그대로 전달됩니다." onOpen={() => setOpen(true)}><CenterModal open={open} onOpenChange={setOpen} title="재고편집" size="wide-1400" className="!h-[745px] !max-h-[calc(100vh-40px)] !max-w-[1294px]" actions={[{id:"close",label:"닫기",variant:"fillBlack",onClick:() => setOpen(false)}]} contentClassName="items-stretch !overflow-y-hidden p-0"><ExactInventoryEditContent onDelete={() => setAction("delete")} onMove={() => setAction("move")} /></CenterModal><CenterModal open={action !== null} onOpenChange={(next) => !next && setAction(null)} onCancel={() => setAction(null)} title={action === "delete" ? "삭제 설정" : "이동 설정"} size="wide-1024" className="!h-[456px] !max-h-[calc(100vh-40px)] !max-w-[1013px]" confirmLabel="저장" contentClassName="items-stretch !overflow-y-hidden">{action && <ExactInventoryActionContent type={action} />}</CenterModal></Launcher>;
-}
-
-function PurchaseAsset() {
-  const [open,setOpen]=React.useState(false); const [detail,setDetail]=React.useState(false);
-  return <Launcher title="발주 정보" description="품목 건수는 링크이며, 클릭하면 원본 품목 리스트가 열립니다." onOpen={() => setOpen(true)}><CenterModal open={open} onOpenChange={setOpen} onCancel={() => setOpen(false)} title="발주 정보" size="standard-960" className="!h-[680px] !max-h-[calc(100vh-40px)] !max-w-[800px]" confirmLabel="선택" contentClassName="items-stretch !overflow-y-hidden p-0"><ExactPurchaseContent onOpenItems={() => setDetail(true)} /></CenterModal><CenterModal open={detail} onOpenChange={setDetail} title="품목 리스트" size="medium-600" className="!h-[384px] !max-h-[calc(100vh-40px)] !max-w-[507px]" actions={[{id:"close",label:"닫기",variant:"fillBlack",onClick:() => setDetail(false)}]} contentClassName="items-stretch !overflow-y-hidden"><ExactPurchaseItemsContent /></CenterModal></Launcher>;
-}
-
 function Required() { return <span className="ml-1 font-bold text-mes-danger-60">*</span>; }
-function Launcher({ title, description, onOpen, children }: { title: string; description: string; onOpen: () => void; children: React.ReactNode }) { return <div className="flex min-h-[280px] items-center justify-center rounded-lg border border-mes-gray-30 bg-mes-gray-10"><div className="max-w-md text-center"><h3 className="text-[20px] font-bold">{title}</h3><p className="mt-2 text-[14px] text-mes-gray-70">{description}</p><Button className="mt-5" onClick={onOpen}>원본 상태 열기</Button></div>{children}</div>; }
 
 function OriginalMesScreenAssets() {
   const [active,setActive]=React.useState<AssetId>("forms");
-  return <div><AssetHeader active={active} onChange={setActive} />{active === "forms" && <FormsAsset />}{active === "responsive" && <ProductionResultResponsiveAsset />}{active === "cavity" && <CavityAsset />}{active === "inventory-add" && <InventoryAddAsset />}{active === "inventory-edit" && <InventoryEditAsset />}{active === "purchase" && <PurchaseAsset />}</div>;
+  return <div><AssetHeader active={active} onChange={setActive} />{active === "forms" && <FormsAsset />}{active === "responsive" && <ProductionResultResponsiveAsset />}</div>;
 }
 
-export { OriginalMesScreenAssets, ProductionResultResponsiveAsset };
+export { CavityContent, OriginalMesScreenAssets, ProductionResultResponsiveAsset };

@@ -74,6 +74,7 @@ export interface CenterModalProps {
   title: string;
   children: React.ReactNode;
   cancelLabel?: string;
+  /** 취소·X·Esc·배경 클릭에 공통 적용되는 변경 폐기/원상복구 콜백. 실행 후 모달이 닫힌다. */
   onCancel?: () => void;
   confirmLabel?: string;
   onConfirm?: () => void;
@@ -105,13 +106,26 @@ function CenterModal({
   contentClassName,
   className,
 }: CenterModalProps) {
-  const resolvedActions: DialogAction[] = actions ?? [
-    { id: "cancel", label: cancelLabel, variant: "fillGray", onClick: onCancel },
+  const dismiss = React.useCallback(() => {
+    onCancel?.();
+    onOpenChange(false);
+  }, [onCancel, onOpenChange]);
+
+  const handleOpenChange = React.useCallback((nextOpen: boolean) => {
+    if (nextOpen) onOpenChange(true);
+    else dismiss();
+  }, [dismiss, onOpenChange]);
+
+  const baseActions: DialogAction[] = actions ?? [
+    { id: "cancel", label: cancelLabel, variant: "fillGray", onClick: dismiss },
     { id: "confirm", label: confirmLabel, variant: "fillBlack", onClick: onConfirm },
   ];
+  const resolvedActions = baseActions.map((action) => action.id === "cancel"
+    ? { ...action, onClick: dismiss }
+    : action);
 
   return (
-    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
+    <DialogPrimitive.Root open={open} onOpenChange={handleOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60" />
         <DialogPrimitive.Content

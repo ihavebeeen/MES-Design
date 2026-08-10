@@ -5361,16 +5361,16 @@ export default function Home() {
 
       <WidePatternSection
         id="original-mes-screen-assets"
-        title="MES 원본 화면 자산"
-        titleEn="Normalized source screens · Figma revisions merged as states"
+        title="원본 화면"
+        titleEn="Source screens · revisions merged as states"
       >
         <OriginalMesScreenAssets />
       </WidePatternSection>
 
       <Section
         id="completed-popup-types"
-        title="팝업"
-        titleEn="Popup Catalog"
+        title="팝업 자산"
+        titleEn="Popup assets · grouped by placement and structure"
       >
         <div className="py-5">
           <CompletedPopupExamples />

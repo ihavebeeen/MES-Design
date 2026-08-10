@@ -26,6 +26,32 @@ test("Figma 원본 재고 추가 팝업", async ({ page }) => {
   await expect(dialog).toHaveScreenshot("source-inventory-add.png");
 });
 
+test("팝업 취소와 X는 변경값을 버리고 닫는다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/patterns/completed-popup-types");
+  const openButton = page.getByRole("button", { name: "실제 팝업으로 열기" });
+  await openButton.click();
+
+  let dialog = page.getByRole("dialog", { name: "재고 추가" });
+  let quantity = dialog.locator('input[inputmode="numeric"]').first();
+  await quantity.fill("7777");
+  await expect(quantity).toHaveValue("7,777");
+  await dialog.getByRole("button", { name: "취소" }).click();
+  await expect(dialog).toBeHidden();
+
+  await openButton.click();
+  dialog = page.getByRole("dialog", { name: "재고 추가" });
+  quantity = dialog.locator('input[inputmode="numeric"]').first();
+  await expect(quantity).toHaveValue("1,000,000");
+  await quantity.fill("8888");
+  await dialog.getByRole("button", { name: "닫기" }).click();
+  await expect(dialog).toBeHidden();
+
+  await openButton.click();
+  dialog = page.getByRole("dialog", { name: "재고 추가" });
+  await expect(dialog.locator('input[inputmode="numeric"]').first()).toHaveValue("1,000,000");
+});
+
 test("그룹화 테이블 핵심 상태", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/visual-regression/table");

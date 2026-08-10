@@ -125,13 +125,13 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   },
   {
     id: "original-mes-screen-assets",
-    label: "MES 원본 화면 자산",
-    labelEn: "Original MES Screen Assets",
+    label: "원본 화면",
+    labelEn: "Source Screens",
   },
   {
     id: "completed-popup-types",
-    label: "팝업",
-    labelEn: "Popup Catalog",
+    label: "팝업 자산",
+    labelEn: "Popup Assets",
   },
   {
     id: "table-column-settings-pattern",
@@ -230,15 +230,25 @@ export const FOUNDATION_NODES: SidebarNode[] = FOUNDATION_ID_LIST.map((id) => le
 /** 2026-08-05 신규 — Patterns(3층) id 목록. 지금은 순서가 곧 등록한 순서(별도 정렬 없음
  *  — 아직 3개뿐이라 Components처럼 티어 정렬을 도입할 필요가 없음, 늘어나면 재검토). */
 export const PATTERN_ID_LIST = [
-  "completed-popup-types",
+  "original-mes-screen-assets",
   "grouped-list-screen",
   "completed-entity-list",
   "completed-master-detail",
   "completed-analytics-dashboard",
-  "original-mes-screen-assets",
+  "completed-popup-types",
   "table-column-settings-pattern",
 ];
-export const PATTERN_NODES: SidebarNode[] = PATTERN_ID_LIST.map((id) => leaf(id));
+export const PATTERN_NODES: SidebarNode[] = [
+  branch("화면", "Screens", [
+    "original-mes-screen-assets",
+    "grouped-list-screen",
+    "completed-entity-list",
+    "completed-master-detail",
+    "completed-analytics-dashboard",
+  ]),
+  branch("팝업", "Popups", ["completed-popup-types"]),
+  branch("테이블", "Tables", ["table-column-settings-pattern"]),
+];
 
 export const COMPONENT_NODES: SidebarNode[] = [
   branch("버튼", "Button", ["button-size", "button-icon", "button-color"]),

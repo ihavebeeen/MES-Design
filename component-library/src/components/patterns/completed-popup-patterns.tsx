@@ -39,6 +39,7 @@ import {
   TimeSelectionContent,
   UpdatedOperationLogContent,
 } from "./completed-popup-expanded-content";
+import { SourcePopupGallery } from "./source-popup-gallery";
 
 type CenterPopupKind =
   | "quantity"
@@ -862,11 +863,10 @@ function CompletedPopupExamples() {
 
   return (
     <div className="flex w-full flex-col gap-8">
-      <Card className="border-l-4 border-l-mes-primary-60 bg-mes-gray-20 p-5">
-        <h3 className="text-[18px] font-bold text-mes-gray-130">팝업</h3>
-        <p className="mt-1.5 text-[13px] leading-5 text-mes-gray-80">
-          등록 모달, 체크리스트 모달, 조회·선택 팝업을 하나의 카탈로그로 통합합니다. 먼저 표시 위치를 중앙과 우측 슬라이드로 나누고, 그 안에서 본문 구조와 작업 흐름을 기준으로 분류합니다.
-        </p>
+      <SourcePopupGallery />
+      <Card className="bg-mes-gray-20 p-5">
+        <h3 className="text-[18px] font-bold text-mes-gray-130">추가 구현 팝업 패턴</h3>
+        <p className="mt-1.5 text-[13px] leading-5 text-mes-gray-80">원본 코드화 팝업 아래에는 재사용 구조를 확인하기 위한 추가 구현 예제를 위치 기준으로 정리합니다.</p>
       </Card>
       <section aria-labelledby="side-popup-patterns-title">
         <div className="mb-3 flex items-end justify-between gap-4">
