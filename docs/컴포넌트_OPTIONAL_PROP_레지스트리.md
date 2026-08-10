@@ -16,6 +16,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `SearchInput` | `iconColor` | `muted \| default`, 기본 `muted` | 검색 아이콘의 화면별 명도 차이를 기존 컴포넌트 안에서 표현한다. | Figma `11210:50866` |
 | `Filter` | `searchable` | `boolean`, 기본 `true` | 필터 패널 내부의 카테고리·옵션 검색창 표시 여부를 제어한다. | 담당자 확정, 일괄작업지시 화면은 `false` |
 | `CenterModal` | `headerDivider` | `boolean`, 기본 `true` | 제목 아래 구분선이 없는 소형 정보 팝업을 같은 모달 컴포넌트로 표현한다. | 품목 상세정보, Figma `11210:52744` |
+| `CenterModal` | `size` 확장 | `standard-900`, `wide-1024` 추가 | 화면별 임의 폭 덮어쓰기 없이 최신 900px 운전일지와 1024px 업무 팝업의 폭 계약을 명시한다. | Figma `17303:45841`, `18826:60554`, `18962:67817`, `18756:60803` |
 | `Table` | `activeId` | `string \| null`, 기본 `undefined` | 체크 상태와 별도로 활성 행을 지정한다. 생략하면 실제 선택 행이 활성 행 배경을 가진다. | 완성 화면 상태 분리용 |
 | `Table` | `selectionColor` | `main \| gray \| black`, 기본 `black` | 선택된 체크박스 색을 지정한다. | MES Checkbox 색 variant |
 | `Table` | `unselectedCheckboxAppearance` | `outline \| grayCheck`, 기본 `outline` | 미선택 행을 회색 체크로 표시하는 MES 표 상태를 지원한다. | 일괄작업지시, Figma `20274:73333` |

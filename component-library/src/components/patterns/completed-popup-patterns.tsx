@@ -32,11 +32,39 @@ import {
   RadioOption,
   SectionBand,
 } from "./mes-screen-fixtures";
+import {
+  BomCopyContent,
+  MaterialInputSetupContent,
+  PreissuedLabelContent,
+  TimeSelectionContent,
+  UpdatedOperationLogContent,
+} from "./completed-popup-expanded-content";
 
-type CenterPopupKind = "quantity" | "details" | "defect" | "weight" | "purchase" | "lookup";
-type SidePopupKind = "production" | "receiving" | "custom" | "operation-log" | "inspection";
+type CenterPopupKind =
+  | "quantity"
+  | "details"
+  | "defect"
+  | "weight"
+  | "purchase"
+  | "lookup"
+  | "material-input-setup"
+  | "bom-copy"
+  | "preissued-label"
+  | "operation-log"
+  | "operating-time-picker"
+  | "downtime-picker";
+type SidePopupKind = "production" | "receiving" | "custom" | "inspection";
 type PopupKind = CenterPopupKind | SidePopupKind;
-type PopupPatternId = "side-custom-columns" | "side-add-list" | "side-inspection-items" | "center-without-list" | "center-with-list";
+type PopupPatternId =
+  | "side-custom-columns"
+  | "side-add-list"
+  | "side-inspection-items"
+  | "center-form"
+  | "center-table"
+  | "center-dual-pane"
+  | "center-navigation-detail"
+  | "center-time-selector"
+  | "center-split-editor";
 
 interface PopupDefinition {
   id: PopupKind;
@@ -52,16 +80,21 @@ interface PopupPatternGroup {
 }
 
 const POPUPS: PopupDefinition[] = [
-  { id: "quantity", label: "400 · 생산수량 입력", node: "11210:52992", pattern: "center-without-list" },
-  { id: "details", label: "480 · 품목 상세정보", node: "11210:52744", pattern: "center-without-list" },
-  { id: "defect", label: "600 · 불량수량 입력", node: "11210:52919", pattern: "center-with-list" },
-  { id: "weight", label: "960 · 중량검사", node: "11210:51787", pattern: "center-without-list" },
-  { id: "purchase", label: "1100 · 발주 일괄등록", node: "11210:52026", pattern: "center-with-list" },
-  { id: "lookup", label: "1400 · 일괄작업지시", node: "11210:50866", pattern: "center-with-list" },
+  { id: "quantity", label: "400 · 생산수량 입력", node: "11210:52992", pattern: "center-form" },
+  { id: "details", label: "480 · 품목 상세정보", node: "11210:52744", pattern: "center-form" },
+  { id: "defect", label: "600 · 불량수량 입력", node: "11210:52919", pattern: "center-table" },
+  { id: "weight", label: "960 · 중량검사", node: "11210:51787", pattern: "center-form" },
+  { id: "purchase", label: "1100 · 발주 일괄등록", node: "11210:52026", pattern: "center-table" },
+  { id: "lookup", label: "1400 · 일괄작업지시", node: "11210:50866", pattern: "center-table" },
+  { id: "material-input-setup", label: "1024 · 투입품목 설정/조회", node: "18826:60554", pattern: "center-navigation-detail" },
+  { id: "bom-copy", label: "1024 · BOM 복사", node: "18962:67817", pattern: "center-dual-pane" },
+  { id: "preissued-label", label: "1024 · 선발행 라벨 수량 확정", node: "18756:60803", pattern: "center-table" },
+  { id: "operation-log", label: "900 · 운전일지 등록", node: "17303:45841", pattern: "center-split-editor" },
+  { id: "operating-time-picker", label: "600 · 가동시간 선택", node: "17309:156861", pattern: "center-time-selector" },
+  { id: "downtime-picker", label: "600 · 비가동시간 선택", node: "17768:51611", pattern: "center-time-selector" },
   { id: "production", label: "900 · 생산실적 등록", node: "11210:48851", pattern: "side-add-list" },
   { id: "receiving", label: "900 · 입고등록", node: "11210:49261", pattern: "side-add-list" },
   { id: "custom", label: "760 · 커스텀 정보 등록", node: "11210:51570", pattern: "side-custom-columns" },
-  { id: "operation-log", label: "760 · 운전일지", node: "11210:53517", pattern: "side-custom-columns" },
   { id: "inspection", label: "760 · 자주검사", node: "11210:51420", pattern: "side-inspection-items" },
 ];
 
@@ -85,14 +118,34 @@ const SIDE_POPUP_GROUPS: PopupPatternGroup[] = [
 
 const CENTER_POPUP_GROUPS: PopupPatternGroup[] = [
   {
-    id: "center-without-list",
-    title: "리스트 없음",
+    id: "center-form",
+    title: "폼·정보 중심",
     description: "단일 입력, 상세정보, 검사 폼처럼 폼과 정보 자체가 중심인 유형",
   },
   {
-    id: "center-with-list",
-    title: "리스트 있음",
-    description: "테이블에서 여러 행을 조회·선택·편집하는 유형 — 세부 종류는 추후 분리",
+    id: "center-table",
+    title: "단일 테이블 · 선택/편집",
+    description: "하나의 주 테이블에서 여러 행을 선택·배분·일괄 편집하는 유형",
+  },
+  {
+    id: "center-dual-pane",
+    title: "원본/대상 비교",
+    description: "좌측 원본 정보와 우측 적용 대상을 나란히 비교하며 설정하는 유형",
+  },
+  {
+    id: "center-navigation-detail",
+    title: "탐색 레일 + 상세",
+    description: "좌측 탐색·모드 레일과 우측 다단 상세 테이블을 함께 제공하는 유형",
+  },
+  {
+    id: "center-time-selector",
+    title: "시간 휠 + 계산",
+    description: "시작·종료 시각을 휠로 선택하고 계산된 분 단위 결과를 확인하는 유형",
+  },
+  {
+    id: "center-split-editor",
+    title: "분할 기록 편집 + 합계",
+    description: "좌측 시간대 기록과 우측 업무별 기록을 나누고 하단 계산 합계를 제공하는 유형",
   },
 ];
 
@@ -692,87 +745,6 @@ function CustomInformationContent() {
   );
 }
 
-interface DowntimeCategory {
-  id: number;
-  label: string;
-  minutes: string;
-}
-
-const OPERATION_HOURS = Array.from({ length: 12 }, (_, index) => `${index + 7}:00`);
-const INITIAL_DOWNTIME_CATEGORIES: DowntimeCategory[] = [
-  { id: 1, label: "금형교체", minutes: "20" },
-  { id: 2, label: "셋팅", minutes: "40" },
-  { id: 3, label: "짠짱이", minutes: "60" },
-  { id: 4, label: "정리", minutes: "50" },
-  { id: 5, label: "기계수리", minutes: "90" },
-  { id: 6, label: "기타", minutes: "10" },
-  { id: 7, label: "식사부동", minutes: "20" },
-];
-
-function OperationLogContent() {
-  const [operationDate, setOperationDate] = React.useState(new Date(2025, 9, 30));
-  const [equipment, setEquipment] = React.useState("압출기 1호");
-  const [logType, setLogType] = React.useState("주간일지");
-  const [manager, setManager] = React.useState("김수현");
-  const [timeTable, setTimeTable] = React.useState<Record<string, string>>(() => Object.fromEntries(OPERATION_HOURS.map((hour) => [hour, ""])));
-  const [operatingMinutes, setOperatingMinutes] = React.useState("10");
-  const [categories, setCategories] = React.useState<DowntimeCategory[]>(INITIAL_DOWNTIME_CATEGORIES);
-
-  const addCategory = () => {
-    setCategories((current) => [...current, { id: Date.now(), label: `신규 분류 ${current.length - INITIAL_DOWNTIME_CATEGORIES.length + 1}`, minutes: "0" }]);
-  };
-
-  return (
-    <div className="grid min-h-full w-full grid-cols-2">
-      <div className="border-r border-mes-gray-30 p-5">
-        <SectionBand>기본 정보</SectionBand>
-        <div className="mt-3 space-y-4">
-          <LabeledControl label="가동일" required><DatePicker value={operationDate} onValueChange={setOperationDate} separator="-" /></LabeledControl>
-          <LabeledControl label="설비명" required><FixtureSelect value={equipment} options={["압출기 1호", "압출기 2호"]} onValueChange={setEquipment} /></LabeledControl>
-          <LabeledControl label="일지구분" required><FixtureSelect value={logType} options={["주간일지", "야간일지"]} onValueChange={setLogType} /></LabeledControl>
-          <LabeledControl label="담당자" required><FixtureSelect value={manager} options={["김수현", "홍길동", "김아무개"]} onValueChange={setManager} /></LabeledControl>
-          <div className="grid grid-cols-[100px_1fr] items-start gap-2 text-[14px]">
-            <span className="pt-1.5">타임테이블</span>
-            <div className="overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
-              {OPERATION_HOURS.map((hour) => (
-                <div key={hour} className="flex h-8 items-center border-b border-mes-gray-30 px-1.5 last:border-0">
-                  <span className="w-12 shrink-0 pl-1 text-mes-gray-80">{hour}</span>
-                  <FixtureInput
-                    value={timeTable[hour]}
-                    onValueChange={(value) => setTimeTable((current) => ({ ...current, [hour]: value }))}
-                    size="small"
-                    aria-label={`${hour} 운전 기록`}
-                    className="min-w-0 flex-1"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-          <LabeledControl label="가동시간"><div className="flex items-center gap-2"><FixtureInput value={operatingMinutes} onValueChange={setOperatingMinutes} inputMode="numeric" muted /><span className="text-[13px] text-mes-gray-80">min</span></div></LabeledControl>
-        </div>
-      </div>
-
-      <div className="p-5">
-        <div className="flex items-center gap-2">
-          <SectionBand className="flex-1">커스텀 비가동 분류</SectionBand>
-          <Button size="small" variant="fillBlack" className="h-7" startIcon={<IconPlus size={14} />} onClick={addCategory}>추가</Button>
-        </div>
-        <div className="mt-3 space-y-4">
-          {categories.map((category) => (
-            <LabeledControl key={category.id} label={category.label}>
-              <FixtureInput
-                value={category.minutes}
-                onValueChange={(minutes) => setCategories((current) => current.map((item) => item.id === category.id ? { ...item, minutes } : item))}
-                inputMode="numeric"
-              />
-            </LabeledControl>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function InspectionContent() {
   const [inspectionDate, setInspectionDate] = React.useState(new Date(2025, 9, 30));
   const [inspectionTime, setInspectionTime] = React.useState("14:45");
@@ -814,16 +786,26 @@ function InspectionContent() {
 
 function CenterPopup({ kind, open, onOpenChange }: { kind: CenterPopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
   const defaultActions = createDefaultActions(() => onOpenChange(false));
-  const config: Record<typeof kind, { title: string; size: CenterModalSize; height: string; actions: DialogAction[]; content: React.ReactNode }> = {
+  const confirmActions = (label: string): DialogAction[] => [
+    { id: "cancel", label: "취소", variant: "fillGray", onClick: () => onOpenChange(false) },
+    { id: "confirm", label, variant: "fillBlack", onClick: () => onOpenChange(false) },
+  ];
+  const config: Record<typeof kind, { title: string; size: CenterModalSize; height: string; actions: DialogAction[]; content: React.ReactNode; contentClassName?: string; maxHeight?: string }> = {
     quantity: { title: "생산수량 입력", size: "compact-400", height: "h-[437px]", actions: [SAVE_ACTION], content: <QuantityContent /> },
     details: { title: "품목 상세정보", size: "compact-480", height: "h-[436px]", actions: [], content: <DetailsContent /> },
     defect: { title: "불량수량 입력", size: "medium-600", height: "h-[400px]", actions: [SAVE_ACTION], content: <DefectContent /> },
-    weight: { title: "중량검사", size: "standard-960", height: "h-[752px]", actions: defaultActions, content: <WeightContent /> },
+    weight: { title: "중량검사", size: "standard-960", height: "h-[752px]", actions: defaultActions, content: <WeightContent />, contentClassName: "p-0" },
     purchase: { title: "발주 일괄등록", size: "large-1100", height: "h-[680px]", actions: defaultActions, content: <PurchaseContent /> },
-    lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: defaultActions, content: <LookupWorkOrderContent /> },
+    lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: defaultActions, content: <LookupWorkOrderContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-none" },
+    "material-input-setup": { title: "투입품목 설정/조회", size: "wide-1024", height: "h-[600px]", actions: defaultActions, content: <MaterialInputSetupContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
+    "bom-copy": { title: "BOM 복사", size: "wide-1024", height: "h-[678px]", actions: confirmActions("확인"), content: <BomCopyContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
+    "preissued-label": { title: "선발행 라벨 수량 확정", size: "wide-1024", height: "h-[576px]", actions: confirmActions("확인"), content: <PreissuedLabelContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
+    "operation-log": { title: "운전일지 등록", size: "standard-900", height: "h-[960px]", actions: defaultActions, content: <UpdatedOperationLogContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-none" },
+    "operating-time-picker": { title: "가동시간 선택", size: "medium-600", height: "h-[666px]", actions: confirmActions("입력"), content: <TimeSelectionContent mode="operating" />, contentClassName: "items-stretch overflow-hidden px-5 pt-5", maxHeight: "max-h-[calc(100vh-32px)]" },
+    "downtime-picker": { title: "비가동시간 선택", size: "medium-600", height: "h-[666px]", actions: confirmActions("입력"), content: <TimeSelectionContent mode="downtime" />, contentClassName: "items-stretch overflow-hidden px-5 pt-5", maxHeight: "max-h-[calc(100vh-32px)]" },
   };
   const current = config[kind];
-  return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} headerDivider={kind !== "details"} className={`${current.height} ${kind === "lookup" ? "max-h-none" : ""}`} contentClassName={kind === "lookup" ? "items-stretch overflow-hidden p-0" : kind === "weight" ? "p-0" : kind === "details" ? "pt-0" : undefined}>{current.content}</CenterModal>;
+  return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} headerDivider={kind !== "details"} className={`${current.height} ${current.maxHeight ?? ""}`} contentClassName={current.contentClassName ?? (kind === "details" ? "pt-0" : undefined)}>{current.content}</CenterModal>;
 }
 
 function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
@@ -831,7 +813,6 @@ function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: bo
   if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch p-0"><ProductionContent /></SideSlidePanel>;
   if (kind === "receiving") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="입고등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><ReceivingContent /></SideSlidePanel>;
   if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="커스텀 정보 등록" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><CustomInformationContent /></SideSlidePanel>;
-  if (kind === "operation-log") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="운전일지" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><OperationLogContent /></SideSlidePanel>;
   if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch p-0"><InspectionContent /></SideSlidePanel>;
   return <CenterPopup kind={kind} open={open} onOpenChange={onOpenChange} />;
 }
@@ -899,11 +880,11 @@ function CompletedPopupExamples() {
         <div className="mb-3 flex items-end justify-between gap-4">
           <div>
             <h3 id="center-popup-patterns-title" className="text-[18px] font-bold text-mes-gray-130">중앙 팝업</h3>
-            <p className="mt-1 text-[13px] text-mes-gray-80">1차 분류에서는 리스트 유무만 구분하고, 리스트의 세부 유형은 다음 단계에서 나눕니다.</p>
+            <p className="mt-1 text-[13px] text-mes-gray-80">폼, 테이블, 비교, 탐색, 시간 선택, 분할 편집처럼 실제 본문 구조와 작업 흐름을 기준으로 구분합니다.</p>
           </div>
-          <Tag color="gray" size="compact">CenterModal · 2종</Tag>
+          <Tag color="gray" size="compact">CenterModal · 6종</Tag>
         </div>
-        <div className="grid gap-3 lg:grid-cols-2">
+        <div className="grid gap-3 lg:grid-cols-3">
           {CENTER_POPUP_GROUPS.map((group) => <PopupPatternCard key={group.id} group={group} selectedKind={kind} onOpen={openPopup} />)}
         </div>
       </section>
