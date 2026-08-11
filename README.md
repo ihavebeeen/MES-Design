@@ -125,6 +125,8 @@ MES-Design/
 ├─ README.md
 ├─ docs/
 │  ├─ AI_MES_화면_생성_아키텍처.md
+│  ├─ 디자인_판단_레지스트리_운영규칙.md
+│  ├─ 디자인_값_자동감사_보고서.md
 │  ├─ 디자인_시스템_레지스트리_및_시각회귀_테스트.md
 │  ├─ 원본_화면_정규화_기록.md
 │  └─ ...
@@ -149,6 +151,8 @@ MES-Design/
 - `component-library/src/components/icons/`: MES 아이콘 컴포넌트
 - `component-library/src/components/patterns/`: 업무 화면과 팝업 조합 패턴
 - `component-library/src/design-system/registry/`: AI 조회용 컴포넌트·패턴·화면 레지스트리
+- `component-library/src/design-system/registry/design-decisions.json`: 관찰값과 표준값의 사람 검토·판단 기록
+- `component-library/src/design-system/registry/design-value-audit.json`: 코드에서 자동 수집한 값 분포와 검토 후보
 - `component-library/src/lib/sidebar-data.ts`: 문서 사이트 메뉴와 정적 경로 데이터
 - `component-library/src/app/[...slug]/client-page.tsx`: 문서 사이트의 실제 콘텐츠
 
@@ -175,6 +179,12 @@ npm exec tsc -- --noEmit
 
 # 패턴의 공용 컴포넌트 재사용 + 레지스트리 무결성
 npm run check:design-system
+
+# 현재 코드의 디자인 값 분포와 검토 후보 갱신
+npm run audit:design-values
+
+# 코드와 커밋된 감사 결과 사이의 drift 검사
+npm run check:design-values
 
 # 디자인 시스템 관련 코드 린트
 npm run lint:design-system
@@ -216,6 +226,8 @@ AI가 임의의 JSX를 바로 생성하거나 특정 Figma 프레임을 복사�
 - `screens.json`: 기존 대표 화면과 상태 규칙
 - `source-assets.json`: 정규화된 원본 화면, Figma node, 상태와 breakpoint 규칙
 - `visual-regression.json`: 대표 시각 회귀 기준
+- `design-decisions.json`: 관찰값, 표준값, 판단, 근거와 적용 범위
+- `design-value-audit.json`: 코드에서 자동 수집된 사용 빈도와 단발성 값 검토 대기열
 
 장기적으로 각 판단 기록에는 다음 정보가 연결되어야 합니다.
 
@@ -262,6 +274,8 @@ AI가 임의의 JSX를 바로 생성하거나 특정 Figma 프레임을 복사�
 - [디자인 시스템 레지스트리 및 시각 회귀 테스트](./docs/디자인_시스템_레지스트리_및_시각회귀_테스트.md)
 - [원본 화면 정규화 기록](./docs/원본_화면_정규화_기록.md)
 - [디자인 토큰 사용 규칙](./docs/디자인_토큰_사용_규칙.md)
+- [디자인 판단 레지스트리 운영 규칙](./docs/디자인_판단_레지스트리_운영규칙.md)
+- [디자인 값 자동감사 보고서](./docs/디자인_값_자동감사_보고서.md)
 - [완성 화면 기반 UI 감사](./docs/완성화면_기반_UI_감사_20274-73333.md)
 - [UI 컴포넌트 총망라 체크리스트](./docs/UI_컴포넌트_총망라_체크리스트.md)
 - [컴포넌트 Optional Prop 레지스트리](./docs/컴포넌트_OPTIONAL_PROP_레지스트리.md)
