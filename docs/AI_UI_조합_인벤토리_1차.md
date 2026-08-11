@@ -7,11 +7,11 @@
 | 항목 | 결과 |
 |---|---:|
 | 검사 파일 | 24 |
-| 전체 줄 수 | 4,438 |
+| 전체 줄 수 | 4,519 |
 | 혼합 Section Frame 파일 | 3 |
 | 표준 Frame 없이 native section만 사용 | 7 |
 | rounded wrapper가 있는 Section 후보 파일 | 13 |
-| fingerprint | `e6653f1ec00405fd` |
+| fingerprint | `5989f155000df571` |
 
 ## Shell 사용
 
@@ -25,11 +25,11 @@
 
 | 표현 방식 | 사용 횟수 |
 |---|---:|
-| sectionBand | 16 |
+| sectionBand | 15 |
 | sectionHeader | 7 |
 | patternGroupHeader | 0 |
 | nativeSection | 26 |
-| dividerContainer | 23 |
+| dividerContainer | 22 |
 | roundedContainer | 48 |
 | gray20Container | 24 |
 
@@ -50,7 +50,7 @@
 | 후보 | 파일 수 | 주요 소스 |
 |---|---:|---|
 | `selection.enable-editor` | 10 | `completed-application-patterns.tsx`, `completed-popup-expanded-content.tsx`, `completed-popup-patterns.tsx`, `exact-form-management-screen.tsx` |
-| `dismiss.restore-committed` | 4 | `easy-mode-receiving-pattern.tsx`, `inspection-criteria-pattern.tsx`, `source-popup-gallery.tsx`, `table-column-settings.tsx` |
+| `dismiss.restore-committed` | 5 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `inspection-criteria-pattern.tsx`, `source-popup-gallery.tsx` |
 | `row.add-remove` | 3 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `original-mes-screen-assets.tsx` |
 | `row.inherit-previous` | 1 | `easy-mode-receiving-pattern.tsx` |
 | `section.toggle-collapse` | 1 | `easy-mode-receiving-pattern.tsx` |
@@ -60,7 +60,7 @@
 
 | 파일 | 줄 수 | Shell | Section 후보 | 검토 플래그 |
 |---|---:|---|---|---|
-| `completed-popup-patterns.tsx` | 942 | CenterModal 1, SideSlidePanel 5 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
+| `completed-popup-patterns.tsx` | 1023 | CenterModal 1, SideSlidePanel 5 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
 | `completed-popup-expanded-content.tsx` | 479 | CenterModal 1 | section.summary | rounded-wrapper-around-section-candidate |
 | `completed-application-patterns.tsx` | 329 | - | section.summary | rounded-wrapper-around-section-candidate |
 | `mes-screen-fixtures.tsx` | 313 | - | section.search-table | rounded-wrapper-around-section-candidate |

@@ -6,9 +6,11 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CenterModal, type CenterModalSize, type DialogAction } from "@/components/ui/center-modal";
 import { DatePicker } from "@/components/ui/date-picker";
+import { FormFieldRow, FormGrid } from "@/components/ui/form-grid";
 import { IconButton } from "@/components/ui/icon-button";
 import { InspectionJudgement, type InspectionJudgementValue } from "@/components/ui/inspection-judgement";
 import { Link } from "@/components/ui/link";
+import { SectionFrame } from "@/components/ui/section-frame";
 import { SideSlidePanel, type SideSlidePanelSize } from "@/components/ui/side-slide-panel";
 import { Tag } from "@/components/ui/tag";
 import { TimePicker } from "@/components/ui/time-picker";
@@ -544,7 +546,26 @@ const INITIAL_RECEIVING_ROWS: ReceivingRow[] = [
   { id: 6, item: "누가바 크런치", itemType: "완제품", specification: "A", unit: "Ea", orderQuantity: "800", receivingType: "임가공", lastReceivingDate: "", receivingQuantity: "", registrationCount: "" },
 ];
 
-function ReceivingContent() {
+interface ReceivingDraftSnapshot {
+  customer: string;
+  expectedDate: Date;
+  item: string;
+  quantity: string;
+  receivingDate: Date;
+  warehouse: string;
+  rows: ReceivingRow[];
+}
+
+interface ReceivingContentHandle {
+  commit: () => void;
+  restoreCommitted: () => void;
+}
+
+function cloneReceivingRows(rows: ReceivingRow[]) {
+  return rows.map((row) => ({ ...row }));
+}
+
+const ReceivingContent = React.forwardRef<ReceivingContentHandle>(function ReceivingContent(_, ref) {
   const [customer, setCustomer] = React.useState("D업체");
   const [expectedDate, setExpectedDate] = React.useState(new Date(2025, 9, 30));
   const [item, setItem] = React.useState("비비빅");
@@ -553,6 +574,41 @@ function ReceivingContent() {
   const [warehouse, setWarehouse] = React.useState("선택");
   const [search, setSearch] = React.useState("");
   const [rows, setRows] = React.useState<ReceivingRow[]>(INITIAL_RECEIVING_ROWS);
+  const committed = React.useRef<ReceivingDraftSnapshot>({
+    customer: "D업체",
+    expectedDate: new Date(2025, 9, 30),
+    item: "비비빅",
+    quantity: "13",
+    receivingDate: new Date(2025, 9, 30),
+    warehouse: "선택",
+    rows: cloneReceivingRows(INITIAL_RECEIVING_ROWS),
+  });
+
+  const commit = React.useCallback(() => {
+    committed.current = {
+      customer,
+      expectedDate: new Date(expectedDate),
+      item,
+      quantity,
+      receivingDate: new Date(receivingDate),
+      warehouse,
+      rows: cloneReceivingRows(rows),
+    };
+  }, [customer, expectedDate, item, quantity, receivingDate, rows, warehouse]);
+
+  const restoreCommitted = React.useCallback(() => {
+    const snapshot = committed.current;
+    setCustomer(snapshot.customer);
+    setExpectedDate(new Date(snapshot.expectedDate));
+    setItem(snapshot.item);
+    setQuantity(snapshot.quantity);
+    setReceivingDate(new Date(snapshot.receivingDate));
+    setWarehouse(snapshot.warehouse);
+    setRows(cloneReceivingRows(snapshot.rows));
+    setSearch("");
+  }, []);
+
+  React.useImperativeHandle(ref, () => ({ commit, restoreCommitted }), [commit, restoreCommitted]);
 
   const addReceivingRow = () => {
     setRows((current) => [
@@ -588,13 +644,12 @@ function ReceivingContent() {
 
   return (
     <div className="flex h-full w-full flex-col">
-      <div className="shrink-0 border-b border-mes-gray-30 p-5">
-        <SectionBand>기본정보</SectionBand>
-        <div className="mt-3 grid grid-cols-2 gap-6">
-          <LabeledControl label="거래처" required><FixtureSelect value={customer} options={["D업체", "A업체", "B업체"]} onValueChange={setCustomer} /></LabeledControl>
-          <LabeledControl label="입고예정일"><DatePicker value={expectedDate} onValueChange={setExpectedDate} separator="-" /></LabeledControl>
-        </div>
-      </div>
+      <SectionFrame title="기본정보" divider="bottom" data-pilot-pattern="frame.standard-section">
+        <FormGrid columns={2} density="compact" data-pilot-pattern-part="section.form-grid">
+          <FormFieldRow label="거래처" required><FixtureSelect value={customer} options={["D업체", "A업체", "B업체"]} onValueChange={setCustomer} /></FormFieldRow>
+          <FormFieldRow label="입고예정일"><DatePicker value={expectedDate} onValueChange={setExpectedDate} separator="-" /></FormFieldRow>
+        </FormGrid>
+      </SectionFrame>
 
       <div className="shrink-0 px-5 pt-5">
         <div className="rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
@@ -602,16 +657,16 @@ function ReceivingContent() {
             <b className="text-[16px]">LOT단위 품목 추가</b>
             <Button size="small" variant="fillBlack" endIcon={<IconArrow size={14} className="rotate-180" />}>리스트 조회/선택</Button>
           </div>
-          <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2.5">
-            <LabeledControl label="품목" required><FixtureSelect value={item} options={PURCHASE_ITEMS} onValueChange={setItem} /></LabeledControl>
-            <LabeledControl label="품목구분"><FixtureInput value="완제품" muted /></LabeledControl>
-            <LabeledControl label="입고수량" required><FixtureInput value={quantity} onValueChange={setQuantity} inputMode="numeric" /></LabeledControl>
-            <LabeledControl label="단위"><FixtureInput value="kg" muted /></LabeledControl>
-            <LabeledControl label="입고창고" required><FixtureSelect value={warehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={setWarehouse} /></LabeledControl>
-            <LabeledControl label="규격"><FixtureInput value="A" muted /></LabeledControl>
-            <LabeledControl label="입고일" required><DatePicker value={receivingDate} onValueChange={setReceivingDate} separator="-" /></LabeledControl>
-            <LabeledControl label="입고구분"><FixtureInput value="임가공" muted /></LabeledControl>
-          </div>
+          <FormGrid columns={2} density="compact" className="mt-3" data-pilot-pattern="section.form-grid">
+            <FormFieldRow label="품목" required><FixtureSelect value={item} options={PURCHASE_ITEMS} onValueChange={setItem} /></FormFieldRow>
+            <FormFieldRow label="품목구분"><FixtureInput value="완제품" muted /></FormFieldRow>
+            <FormFieldRow label="입고수량" required><FixtureInput value={quantity} onValueChange={setQuantity} inputMode="numeric" /></FormFieldRow>
+            <FormFieldRow label="단위"><FixtureInput value="kg" muted /></FormFieldRow>
+            <FormFieldRow label="입고창고" required><FixtureSelect value={warehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={setWarehouse} /></FormFieldRow>
+            <FormFieldRow label="규격"><FixtureInput value="A" muted /></FormFieldRow>
+            <FormFieldRow label="입고일" required><DatePicker value={receivingDate} onValueChange={setReceivingDate} separator="-" /></FormFieldRow>
+            <FormFieldRow label="입고구분"><FixtureInput value="임가공" muted /></FormFieldRow>
+          </FormGrid>
           <div className="-mb-4 mt-3 flex justify-center"><Button size="small" className="w-[160px]" startIcon={<IconArrow size={15} className="-rotate-90" />} onClick={addReceivingRow}>추가</Button></div>
         </div>
       </div>
@@ -629,6 +684,32 @@ function ReceivingContent() {
         />
       </div>
     </div>
+  );
+});
+
+function ReceivingPopup({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+  const contentRef = React.useRef<ReceivingContentHandle>(null);
+  const save = React.useCallback(() => {
+    contentRef.current?.commit();
+    onOpenChange(false);
+  }, [onOpenChange]);
+  const actions: DialogAction[] = [
+    { id: "cancel", label: "취소", variant: "fillGray" },
+    { id: "save", label: "저장", variant: "fillBlack", onClick: save },
+  ];
+
+  return (
+    <SideSlidePanel
+      open={open}
+      onOpenChange={onOpenChange}
+      onCancel={() => contentRef.current?.restoreCommitted()}
+      title="입고등록"
+      size="standard-900"
+      actions={actions}
+      contentClassName="items-stretch overflow-x-hidden p-0"
+    >
+      <ReceivingContent ref={contentRef} />
+    </SideSlidePanel>
   );
 }
 
@@ -842,7 +923,7 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: CenterPopupKind; open
 export function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
   const defaultActions = createDefaultActions(() => onOpenChange(false));
   if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch p-0"><ProductionContent /></SideSlidePanel>;
-  if (kind === "receiving") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="입고등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><ReceivingContent /></SideSlidePanel>;
+  if (kind === "receiving") return <ReceivingPopup open={open} onOpenChange={onOpenChange} />;
   if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><CustomInformationContent /></SideSlidePanel>;
   if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch p-0"><InspectionContent /></SideSlidePanel>;
   if (kind === "operation-log") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="운전일지 등록" size="standard-900" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><UpdatedOperationLogContent /></SideSlidePanel>;

@@ -144,6 +144,33 @@
       "source": "src/components/patterns/production-quantity-reregistration-pattern.tsx",
       "requiredComponents": ["confirm-dialog", "before-after-comparison", "button"],
       "rules": ["표는 목록이 아니라 변경 전후 값을 같은 좌표에서 비교하는 요약표다.", "닫기는 기존 정보를 유지하고 재등록은 투입품목 설정/조회 흐름을 요청한다.", "작은 알림 팝업이므로 CenterModal이 아니라 ConfirmDialog 외곽 규격을 재사용한다."]
+    },
+    {
+      "id": "frame.standard-section",
+      "name": "표준 섹션 프레임",
+      "kind": "section-frame",
+      "placement": "section",
+      "source": "src/components/ui/section-frame.tsx",
+      "requiredComponents": ["section-frame", "section-header"],
+      "rules": ["외곽 20px padding, divider와 background를 SectionFrame에서 소유한다.", "기본정보 같은 업무 제목은 패턴 ID가 아니라 title slot 데이터다.", "고정 height와 Shell scroll 책임을 가져오지 않는다."]
+    },
+    {
+      "id": "section.form-grid",
+      "name": "폼 그리드",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/ui/form-grid.tsx",
+      "requiredComponents": ["form-grid"],
+      "rules": ["FormGrid가 열 수와 gap을, FormFieldRow가 label/control 정렬과 required marker를 소유한다.", "기본 label width는 100px이고 원본 근거가 있는 기존 화면만 wide 108px variant를 사용한다."]
+    },
+    {
+      "id": "dismiss.restore-committed",
+      "name": "취소 시 저장 전 상태 복원",
+      "kind": "behavior",
+      "placement": "cross-shell",
+      "source": "src/components/ui/side-slide-panel.tsx",
+      "requiredComponents": ["center-modal", "side-slide-panel"],
+      "rules": ["취소·X·Esc·backdrop은 같은 onCancel 복원 경로를 사용한다.", "저장은 committed snapshot을 갱신한 뒤 닫고 cancel restore를 실행하지 않는다."]
     }
   ]
 }

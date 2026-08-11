@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx",
   "summary": {
     "scannedFiles": 24,
-    "totalLines": 4438,
+    "totalLines": 4519,
     "shellInstances": {
       "CenterModal": 4,
       "SideSlidePanel": 8,
@@ -106,8 +106,9 @@
     },
     {
       "id": "dismiss.restore-committed",
-      "fileCount": 4,
+      "fileCount": 5,
       "sources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/easy-mode-receiving-pattern.tsx",
         "src/components/patterns/inspection-criteria-pattern.tsx",
         "src/components/patterns/source-popup-gallery.tsx",
@@ -412,7 +413,7 @@
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "name": "completed-popup-patterns.tsx",
       "observedRole": "catalog-or-recipe",
-      "lines": 942,
+      "lines": 1023,
       "exportedSymbols": [
         "PopupRenderer"
       ],
@@ -427,11 +428,11 @@
         }
       ],
       "sectionFrames": {
-        "sectionBand": 8,
+        "sectionBand": 7,
         "sectionHeader": 0,
         "patternGroupHeader": 0,
         "nativeSection": 4,
-        "dividerContainer": 4,
+        "dividerContainer": 3,
         "roundedContainer": 6,
         "gray20Container": 6
       },
@@ -466,6 +467,14 @@
           "jsxCount": 7
         },
         {
+          "name": "FormFieldRow",
+          "jsxCount": 10
+        },
+        {
+          "name": "FormGrid",
+          "jsxCount": 2
+        },
+        {
           "name": "IconButton",
           "jsxCount": 6
         },
@@ -475,6 +484,10 @@
         },
         {
           "name": "Link",
+          "jsxCount": 1
+        },
+        {
+          "name": "SectionFrame",
           "jsxCount": 1
         },
         {
@@ -492,6 +505,7 @@
       ],
       "stateHookCount": 54,
       "behaviorSignals": [
+        "dismiss.restore-committed",
         "row.add-remove",
         "selection.enable-editor"
       ],
@@ -1762,5 +1776,5 @@
       ]
     }
   ],
-  "fingerprint": "e6653f1ec00405fd"
+  "fingerprint": "5989f155000df571"
 }

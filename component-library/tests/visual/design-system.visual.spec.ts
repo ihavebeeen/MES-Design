@@ -122,6 +122,50 @@ test("생산실적 등록 슬라이드 팝업", async ({ page }) => {
   await expect(deleteButtons).toHaveCount(11);
 });
 
+test("입고등록은 승인된 SectionFrame·FormGrid·취소 복원 계약을 사용한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/visual-regression/receiving-pilot");
+  const dialog = page.getByRole("dialog", { name: "입고등록" });
+  await expect(dialog).toBeVisible();
+
+  const frame = dialog.locator('[data-pilot-pattern="frame.standard-section"]');
+  const grids = dialog.locator('[data-pilot-pattern="section.form-grid"], [data-pilot-pattern-part="section.form-grid"]');
+  await expect(frame).toHaveCount(1);
+  await expect(grids).toHaveCount(2);
+  const frameStyle = await frame.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      paddingTop: style.paddingTop,
+      paddingRight: style.paddingRight,
+      paddingBottom: style.paddingBottom,
+      paddingLeft: style.paddingLeft,
+      borderBottomWidth: style.borderBottomWidth,
+    };
+  });
+  expect(frameStyle).toEqual({ paddingTop: "20px", paddingRight: "20px", paddingBottom: "20px", paddingLeft: "20px", borderBottomWidth: "1px" });
+
+  const horizontalOverflow = await dialog.evaluate((element) => element.scrollWidth - element.clientWidth);
+  expect(horizontalOverflow).toBe(0);
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("receiving-pattern-pilot.png");
+
+  const quantityInput = dialog.getByRole("group", { name: "입고수량" }).locator("input");
+  const deleteButtons = dialog.getByRole("button", { name: / 삭제$/ });
+  await expect(quantityInput).toHaveValue("13");
+  await expect(deleteButtons).toHaveCount(6);
+
+  await quantityInput.fill("77");
+  await dialog.getByRole("button", { name: "추가", exact: true }).click();
+  await expect(deleteButtons).toHaveCount(7);
+  await dialog.getByRole("button", { name: "저장" }).click();
+
+  await quantityInput.fill("88");
+  await dialog.getByRole("button", { name: "취소" }).click();
+  await expect(dialog).toBeVisible();
+  await expect(quantityInput).toHaveValue("77");
+  await expect(deleteButtons).toHaveCount(7);
+});
+
 test("이지모드 입고등록은 MES 우측 슬라이드 규격과 직접 입력 상태를 유지한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/visual-regression/easy-mode-receiving");

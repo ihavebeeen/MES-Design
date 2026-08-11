@@ -103,14 +103,15 @@
 - [x] 기존 패턴의 variant인지, 조합인지, 신규 후보인지 PatternDecision을 작성한다.
 - [x] 사용자 승인 전 `patterns.json`과 표준 코드에 반영하지 않는다.
 
-제안 목록은 [AI UI 표준 후보 제안 1차](./AI_UI_표준_후보_제안_1차.md)에 요약했다. 두 proposal registry는 `proposed-not-approved` 상태이며, 다음 단계는 사용자 승인 뒤 파일럿 이관이다.
+제안 목록은 [AI UI 표준 후보 제안 1차](./AI_UI_표준_후보_제안_1차.md)에 요약했다. 2026-08-11에 3개만 우선 승인하여 두 proposal registry를 `partially-approved`로 전환했다. 나머지 제안은 승인 전 상태를 유지한다.
 
 ## 4단계: 파일럿 이관
 
 - [ ] 검증된 중앙 팝업 1개를 Shell + Section + Behavior + ActionSet으로 재구성한다.
-- [ ] 검증된 우측 슬라이드 팝업 1개를 같은 구조로 재구성한다.
+- [x] 검증된 우측 슬라이드 팝업 `completed.receiving`을 승인된 3개 패턴으로 재구성한다.
 - [ ] 이지모드 입고등록은 표준 추출 근거가 아니라 새 조합 문법의 검증 대상으로 재구성한다.
-- [ ] 기존 시각 회귀, 상호작용, overflow 결과와 비교한다.
+- [x] `completed.receiving`의 시각 회귀, 취소 복원, overflow 결과를 비교한다.
+- [ ] 파일럿 결과를 기준으로 나머지 proposal 승인 범위를 결정한다.
 
 ## 현재 보류
 

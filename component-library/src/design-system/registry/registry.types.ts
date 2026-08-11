@@ -26,8 +26,8 @@ export interface ComponentRegistry {
 export interface PatternRegistryEntry {
   id: string;
   name: string;
-  kind: "popup" | "screen" | "table";
-  placement?: "center" | "right-slide" | "page";
+  kind: "popup" | "screen" | "table" | "section-frame" | "section-pattern" | "behavior";
+  placement?: "center" | "right-slide" | "page" | "section" | "cross-shell";
   source: string;
   requiredComponents: string[];
   rules: string[];
@@ -346,8 +346,9 @@ export interface SectionPatternProposal {
 export interface SectionPatternProposalRegistry {
   schemaVersion: 1;
   policyId: "mes.ai-composition-grammar";
-  status: "proposed-not-approved";
+  status: "proposed-not-approved" | "partially-approved";
   sourceLedger: string;
+  approval?: { approvedAt: string; approvedProposalIds: string[]; pilotRecipe: string };
   proposals: SectionPatternProposal[];
   holds: Array<{ id: string; reason: string }>;
 }
@@ -367,8 +368,9 @@ export interface BehaviorPatternProposal {
 export interface BehaviorPatternProposalRegistry {
   schemaVersion: 1;
   policyId: "mes.ai-composition-grammar";
-  status: "proposed-not-approved";
+  status: "proposed-not-approved" | "partially-approved";
   sourceLedger: string;
+  approval?: { approvedAt: string; approvedProposalIds: string[]; pilotRecipe: string };
   proposals: BehaviorPatternProposal[];
   holds: Array<{ id: string; reason: string }>;
 }

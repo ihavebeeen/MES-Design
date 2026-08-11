@@ -159,8 +159,8 @@ MES-Design/
 - `component-library/src/design-system/registry/composition-section-frame-ledger.json`: 혼합 파일 3개의 25개 Section Frame 관찰 장부
 - `component-library/src/design-system/registry/composition-section-pattern-ledger.json`: P1 Section Pattern 5개 후보의 수동 판정 장부
 - `component-library/src/design-system/registry/composition-behavior-ledger.json`: 선택·취소 복원·행 변경 Behavior 후보의 상태 전이 장부
-- `component-library/src/design-system/registry/section-pattern-proposals.json`: 승인 전 Section·Frame 표준 후보
-- `component-library/src/design-system/registry/behavior-pattern-proposals.json`: 승인 전 Behavior 표준 후보
+- `component-library/src/design-system/registry/section-pattern-proposals.json`: Section·Frame 표준 후보와 부분 승인 상태
+- `component-library/src/design-system/registry/behavior-pattern-proposals.json`: Behavior 표준 후보와 부분 승인 상태
 - `component-library/src/design-system/registry/design-decisions.json`: 관찰값과 표준값의 사람 검토·판단 기록
 - `component-library/src/design-system/registry/design-value-audit.json`: 코드에서 자동 수집한 값 분포와 검토 후보
 - `component-library/src/design-system/registry/generated-screen-evaluations.json`: AI 생성 시안의 점수·성공/실패 사유·승격 여부
@@ -318,6 +318,7 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 - [AI UI Section Pattern 후보 감사 1차](./docs/AI_UI_Section_Pattern_후보_감사_1차.md)
 - [AI UI Behavior 후보 감사 1차](./docs/AI_UI_Behavior_후보_감사_1차.md)
 - [AI UI 표준 후보 제안 1차](./docs/AI_UI_표준_후보_제안_1차.md)
+- [AI UI 입고등록 파일럿 이관](./docs/AI_UI_입고등록_파일럿_이관.md)
 - [AI UI 조합 문법 적용 TODO](./docs/AI_UI_조합_문법_적용_TODO.md)
 - [AI 생성 화면 평가 및 승격 규칙](./docs/AI_생성화면_평가_및_승격_규칙.md)
 - [디자인 시스템 레지스트리 및 시각 회귀 테스트](./docs/디자인_시스템_레지스트리_및_시각회귀_테스트.md)

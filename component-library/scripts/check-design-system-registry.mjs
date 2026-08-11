@@ -163,7 +163,7 @@ const proposalRegistries = [
   ["behavior-pattern-proposals", behaviorPatternProposalRegistry],
 ];
 for (const [name, registry] of proposalRegistries) {
-  if (registry.status !== "proposed-not-approved") errors.push(`${name}: status는 proposed-not-approved여야 합니다.`);
+  if (!["proposed-not-approved", "partially-approved"].includes(registry.status)) errors.push(`${name}: status는 proposed-not-approved 또는 partially-approved여야 합니다.`);
   if (!existsSync(join(registryDirectory, registry.sourceLedger ?? ""))) errors.push(`${name}: sourceLedger '${registry.sourceLedger ?? ""}'가 존재하지 않습니다.`);
   const proposals = mapByUniqueId(name, registry.proposals ?? []);
   const holds = mapByUniqueId(`${name} holds`, registry.holds ?? []);
@@ -180,6 +180,12 @@ for (const [name, registry] of proposalRegistries) {
     if (!hold.reason) errors.push(`${name} hold '${hold.id}': reason이 필요합니다.`);
     if (proposals.has(hold.id)) errors.push(`${name}: '${hold.id}'가 proposal과 hold에 동시에 있습니다.`);
   }
+  const approvedIds = registry.approval?.approvedProposalIds ?? [];
+  if (registry.status === "partially-approved" && approvedIds.length === 0) errors.push(`${name}: partially-approved 상태에는 approvedProposalIds가 필요합니다.`);
+  for (const id of approvedIds) {
+    if (!proposals.has(id)) errors.push(`${name}: 승인 ID '${id}'가 proposal에 없습니다.`);
+    if (holds.has(id)) errors.push(`${name}: 승인 ID '${id}'가 hold에도 있습니다.`);
+  }
 }
 
 const components = mapByUniqueId("components", componentRegistry.components ?? []);
@@ -188,6 +194,12 @@ const screens = mapByUniqueId("screens", screenRegistry.screens ?? []);
 const visualCases = mapByUniqueId("visual-regression", visualRegistry.cases ?? []);
 const sourceEvidence = mapByUniqueId("source-evidence", sourceEvidenceRegistry.sources ?? []);
 const generatedCandidates = mapByUniqueId("generated-screen-evaluations", generatedScreenRegistry.candidates ?? []);
+
+for (const [name, registry] of proposalRegistries) {
+  for (const id of registry.approval?.approvedProposalIds ?? []) {
+    if (!patterns.has(id)) errors.push(`${name}: 승인 ID '${id}'가 정식 patterns 레지스트리에 없습니다.`);
+  }
+}
 
 const allowedEvidenceStatuses = new Set(["queued", "in-progress", "verified"]);
 const allowedCandidateStatuses = new Set(["partial-success", "review", "approved", "rejected", "archived"]);
