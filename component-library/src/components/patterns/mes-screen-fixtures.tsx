@@ -190,6 +190,7 @@ interface FixtureTableProps {
   selectionColumnWidth?: number;
   centerSelection?: boolean;
   columnDividers?: boolean;
+  headerBackground?: "gray10" | "white";
   horizontalScroll?: boolean;
   disabledTextTone?: "gray60" | "gray80";
   className?: string;
@@ -197,7 +198,7 @@ interface FixtureTableProps {
 
 type FixtureTableData = { cells: React.ReactNode[] };
 
-function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, onCheckedRowsChange, activeRow, selectionColor, unselectedCheckboxAppearance, selectionHeaderIndeterminate, unselectedTextTone, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
+function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, onCheckedRowsChange, activeRow, selectionColor, unselectedCheckboxAppearance, selectionHeaderIndeterminate, unselectedTextTone, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, headerBackground, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
   const columns: TableColumn<FixtureTableData>[] = headers.map((header, index) => ({
     key: `column-${index}`,
     label: header,
@@ -236,6 +237,7 @@ function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows
       selectionColumnWidth={selectionColumnWidth}
       centerSelection={centerSelection}
       columnDividers={columnDividers}
+      headerBackground={headerBackground}
       horizontalScroll={horizontalScroll}
       disabledTextTone={disabledTextTone}
       selectedIds={resolvedSelectedRows.map((index) => `fixture-row-${index}`)}

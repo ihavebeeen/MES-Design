@@ -4,6 +4,7 @@
     { "id": "popup-material-input", "name": "투입품목 설정/조회 팝업", "route": "/visual-regression/popup", "snapshot": "material-input-settings.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "material-input-settings" },
     { "id": "popup-source-inventory-add", "name": "Figma 원본 재고 추가 팝업", "route": "/visual-regression/source-inventory-add", "snapshot": "source-inventory-add.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "inventory-add" },
     { "id": "popup-defect-quantity", "name": "불량수량 입력 팝업", "route": "/visual-regression/defect", "snapshot": "defect-quantity-input.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "defect-quantity-input" },
+    { "id": "popup-production-result", "name": "생산실적 등록 슬라이드 팝업", "route": "/visual-regression/production-result", "snapshot": "production-result.png", "viewport": { "width": 1920, "height": 960 }, "screenId": "production-result" },
     { "id": "table-core-states", "name": "그룹화 테이블 핵심 상태", "route": "/visual-regression/table", "snapshot": "grouped-table-core-states.png", "viewport": { "width": 1280, "height": 720 }, "patternId": "table.grouped-list" }
   ]
 }

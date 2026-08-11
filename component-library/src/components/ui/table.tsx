@@ -227,6 +227,8 @@ export interface TableProps<T> {
   centerSelection?: boolean;
   /** 헤더/데이터 셀 사이 점선 구분선 표시 여부. */
   columnDividers?: boolean;
+  /** 화면별 표 헤더 배경. 기존 표는 gray10, 흰색 헤더 원본은 white를 사용한다. */
+  headerBackground?: "gray10" | "white";
   /** 내용이 넘칠 때 가로 스크롤을 허용할지 여부. */
   horizontalScroll?: boolean;
   /** 비활성 행 텍스트 색조. */
@@ -731,6 +733,7 @@ function Table<T>({
   selectionColumnWidth = CHECKBOX_COLUMN_WIDTH,
   centerSelection = false,
   columnDividers = true,
+  headerBackground = "gray10",
   horizontalScroll = true,
   disabledTextTone = "gray80",
   unselectedTextTone = "default",
@@ -790,7 +793,7 @@ function Table<T>({
     <div className={cn("w-full rounded-mes-control border border-mes-border-default", horizontalScroll ? "overflow-x-auto" : "overflow-hidden", className)}>
       <div className="min-w-max">
         {/* 헤더 */}
-        <div className="sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default bg-mes-gray-10" style={{ paddingInline: edgePadding }}>
+        <div className={cn("sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default", headerBackground === "white" ? "bg-white" : "bg-mes-gray-10")} style={{ paddingInline: edgePadding }}>
           {/* 5차 정정: 체크박스는 항상 최좌측 고정 — 마스터 토글 버튼은 체크박스보다
               오른쪽에 온다(예전엔 반대였음). 7차: 폭을 CHECKBOX_COLUMN_WIDTH로 통일
               (신규 점 배치 때문에 40px로 늘어남 — 다른 행 종류와 동일해야 함). */}

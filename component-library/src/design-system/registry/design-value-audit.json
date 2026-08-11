@@ -8,7 +8,7 @@
   },
   "summary": {
     "scannedFiles": 93,
-    "totalOccurrences": 2352,
+    "totalOccurrences": 2357,
     "arbitraryUtilities": 860,
     "hardcodedColors": 33,
     "reviewCandidates": 0,
@@ -23,7 +23,7 @@
     },
     "pattern": {
       "files": 10,
-      "occurrences": 758,
+      "occurrences": 763,
       "arbitraryUtilities": 242,
       "hardcodedColors": 6
     },
@@ -38,11 +38,11 @@
     "spacing": [
       {
         "value": "8px",
-        "count": 155,
+        "count": 154,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 74,
-          "pattern": 51,
+          "pattern": 50,
           "evidence": 30
         },
         "examples": [
@@ -58,11 +58,11 @@
       },
       {
         "value": "12px",
-        "count": 125,
+        "count": 123,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 32,
-          "pattern": 59,
+          "pattern": 57,
           "evidence": 34
         },
         "examples": [
@@ -78,11 +78,11 @@
       },
       {
         "value": "20px",
-        "count": 116,
+        "count": 117,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 11,
-          "pattern": 62,
+          "pattern": 63,
           "evidence": 43
         },
         "examples": [
@@ -118,11 +118,11 @@
       },
       {
         "value": "10px",
-        "count": 89,
+        "count": 91,
         "arbitraryCount": 43,
         "layers": {
           "canonical": 38,
-          "pattern": 27,
+          "pattern": 29,
           "evidence": 24
         },
         "examples": [
@@ -189,11 +189,11 @@
           "src/components/ui/confirm-dialog.tsx:143",
           "src/components/ui/descriptions.tsx:24",
           "src/components/ui/inspection-judgement.tsx:35",
-          "src/components/patterns/completed-popup-patterns.tsx:798",
-          "src/components/patterns/completed-popup-patterns.tsx:800",
-          "src/components/patterns/completed-popup-patterns.tsx:801",
-          "src/components/patterns/completed-popup-patterns.tsx:802",
-          "src/components/patterns/completed-popup-patterns.tsx:803"
+          "src/components/patterns/completed-popup-patterns.tsx:812",
+          "src/components/patterns/completed-popup-patterns.tsx:814",
+          "src/components/patterns/completed-popup-patterns.tsx:815",
+          "src/components/patterns/completed-popup-patterns.tsx:816",
+          "src/components/patterns/completed-popup-patterns.tsx:817"
         ]
       },
       {
@@ -255,11 +255,11 @@
       },
       {
         "value": "32px",
-        "count": 10,
+        "count": 11,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 6,
-          "pattern": 4
+          "pattern": 5
         },
         "examples": [
           "src/components/ui/confirm-dialog.tsx:142",
@@ -489,11 +489,11 @@
     "radius": [
       {
         "value": "rounded-mes-control",
-        "count": 64,
+        "count": 65,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 41,
-          "pattern": 16,
+          "pattern": 17,
           "evidence": 7
         },
         "examples": [
@@ -684,6 +684,17 @@
         ]
       },
       {
+        "value": "8px",
+        "count": 1,
+        "arbitraryCount": 1,
+        "layers": {
+          "pattern": 1
+        },
+        "examples": [
+          "src/components/patterns/completed-popup-patterns.tsx:489"
+        ]
+      },
+      {
         "value": "rounded-b-mes-control",
         "count": 1,
         "arbitraryCount": 0,
@@ -788,32 +799,12 @@
         ]
       },
       {
-        "value": "15px",
-        "count": 26,
-        "arbitraryCount": 26,
-        "layers": {
-          "canonical": 10,
-          "pattern": 11,
-          "evidence": 5
-        },
-        "examples": [
-          "src/components/ui/button.tsx:51",
-          "src/components/ui/card.tsx:37",
-          "src/components/ui/empty-state.tsx:28",
-          "src/components/ui/error-state.tsx:35",
-          "src/components/ui/notification-panel.tsx:179",
-          "src/components/ui/sidebar.tsx:265",
-          "src/components/ui/sidebar.tsx:279",
-          "src/components/ui/sidebar.tsx:386"
-        ]
-      },
-      {
         "value": "16px",
-        "count": 26,
-        "arbitraryCount": 26,
+        "count": 27,
+        "arbitraryCount": 27,
         "layers": {
           "canonical": 8,
-          "pattern": 12,
+          "pattern": 13,
           "evidence": 6
         },
         "examples": [
@@ -825,6 +816,26 @@
           "src/components/ui/radio-choice-dialog.tsx:138",
           "src/components/ui/radio-choice-dialog.tsx:153",
           "src/components/ui/search-input.tsx:94"
+        ]
+      },
+      {
+        "value": "15px",
+        "count": 25,
+        "arbitraryCount": 25,
+        "layers": {
+          "canonical": 10,
+          "pattern": 10,
+          "evidence": 5
+        },
+        "examples": [
+          "src/components/ui/button.tsx:51",
+          "src/components/ui/card.tsx:37",
+          "src/components/ui/empty-state.tsx:28",
+          "src/components/ui/error-state.tsx:35",
+          "src/components/ui/notification-panel.tsx:179",
+          "src/components/ui/sidebar.tsx:265",
+          "src/components/ui/sidebar.tsx:279",
+          "src/components/ui/sidebar.tsx:386"
         ]
       },
       {
@@ -954,11 +965,11 @@
     "size": [
       {
         "value": "0px",
-        "count": 59,
+        "count": 61,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 13,
-          "pattern": 36,
+          "pattern": 38,
           "evidence": 10
         },
         "examples": [
@@ -974,11 +985,11 @@
       },
       {
         "value": "32px",
-        "count": 49,
+        "count": 50,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 23,
-          "pattern": 16,
+          "pattern": 17,
           "evidence": 10
         },
         "examples": [
@@ -1125,8 +1136,8 @@
           "src/components/ui/query-date-range.tsx:21",
           "src/components/ui/query-date-range.tsx:23",
           "src/components/ui/sidebar.tsx:241",
-          "src/components/ui/table.tsx:374",
-          "src/components/ui/table.tsx:471"
+          "src/components/ui/table.tsx:376",
+          "src/components/ui/table.tsx:473"
         ]
       },
       {
@@ -1345,7 +1356,7 @@
           "src/components/patterns/completed-application-patterns.tsx:319",
           "src/components/patterns/exact-production-analytics-screen.tsx:58",
           "src/components/patterns/exact-production-analytics-screen.tsx:58",
-          "src/components/patterns/mes-screen-fixtures.tsx:262"
+          "src/components/patterns/mes-screen-fixtures.tsx:264"
         ]
       },
       {
@@ -1540,7 +1551,7 @@
           "src/components/ui/center-modal.tsx:19",
           "src/components/ui/confirm-dialog.tsx:117",
           "src/components/ui/notification-panel.tsx:124",
-          "src/components/patterns/completed-popup-patterns.tsx:797"
+          "src/components/patterns/completed-popup-patterns.tsx:811"
         ]
       },
       {
@@ -1568,10 +1579,10 @@
         },
         "examples": [
           "src/components/patterns/completed-popup-expanded-content.tsx:427",
-          "src/components/patterns/completed-popup-patterns.tsx:802",
-          "src/components/patterns/completed-popup-patterns.tsx:803",
-          "src/components/patterns/completed-popup-patterns.tsx:804",
-          "src/components/patterns/completed-popup-patterns.tsx:805"
+          "src/components/patterns/completed-popup-patterns.tsx:816",
+          "src/components/patterns/completed-popup-patterns.tsx:817",
+          "src/components/patterns/completed-popup-patterns.tsx:818",
+          "src/components/patterns/completed-popup-patterns.tsx:819"
         ]
       },
       {
@@ -1815,8 +1826,8 @@
         },
         "examples": [
           "src/components/patterns/completed-popup-expanded-content.tsx:427",
-          "src/components/patterns/completed-popup-patterns.tsx:804",
-          "src/components/patterns/completed-popup-patterns.tsx:805"
+          "src/components/patterns/completed-popup-patterns.tsx:818",
+          "src/components/patterns/completed-popup-patterns.tsx:819"
         ]
       },
       {
@@ -1828,8 +1839,8 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:799",
-          "src/components/patterns/completed-popup-patterns.tsx:800",
+          "src/components/patterns/completed-popup-patterns.tsx:813",
+          "src/components/patterns/completed-popup-patterns.tsx:814",
           "src/components/patterns/source-popup-gallery.tsx:49"
         ]
       },
@@ -1842,8 +1853,8 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:898",
-          "src/components/patterns/mes-screen-fixtures.tsx:257",
+          "src/components/patterns/completed-popup-patterns.tsx:912",
+          "src/components/patterns/mes-screen-fixtures.tsx:259",
           "src/components/patterns/original-mes-screen-assets.tsx:167"
         ]
       },
@@ -1986,18 +1997,6 @@
         ]
       },
       {
-        "value": "238px",
-        "count": 2,
-        "arbitraryCount": 2,
-        "layers": {
-          "pattern": 2
-        },
-        "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:475",
-          "src/components/patterns/completed-popup-patterns.tsx:488"
-        ]
-      },
-      {
         "value": "26px",
         "count": 2,
         "arbitraryCount": 2,
@@ -2093,7 +2092,7 @@
         },
         "examples": [
           "src/components/patterns/completed-popup-expanded-content.tsx:127",
-          "src/components/patterns/completed-popup-patterns.tsx:803"
+          "src/components/patterns/completed-popup-patterns.tsx:817"
         ]
       },
       {
@@ -2130,7 +2129,7 @@
         },
         "examples": [
           "src/components/ui/progress.tsx:48",
-          "src/components/ui/table.tsx:402"
+          "src/components/ui/table.tsx:404"
         ]
       },
       {
@@ -2216,7 +2215,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:801",
+          "src/components/patterns/completed-popup-patterns.tsx:815",
           "src/components/patterns/source-popup-gallery.tsx:49"
         ]
       },
@@ -2266,7 +2265,7 @@
         },
         "examples": [
           "src/components/patterns/mes-screen-fixtures.tsx:132",
-          "src/components/patterns/mes-screen-fixtures.tsx:261"
+          "src/components/patterns/mes-screen-fixtures.tsx:263"
         ]
       },
       {
@@ -2365,7 +2364,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/mes-screen-fixtures.tsx:260"
+          "src/components/patterns/mes-screen-fixtures.tsx:262"
         ]
       },
       {
@@ -2420,11 +2419,11 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:832"
+          "src/components/patterns/completed-popup-patterns.tsx:846"
         ]
       },
       {
-        "value": "195px",
+        "value": "194px",
         "count": 1,
         "arbitraryCount": 1,
         "layers": {
@@ -2465,6 +2464,17 @@
         },
         "examples": [
           "src/components/ui/analytics-charts.tsx:38"
+        ]
+      },
+      {
+        "value": "238px",
+        "count": 1,
+        "arbitraryCount": 1,
+        "layers": {
+          "pattern": 1
+        },
+        "examples": [
+          "src/components/patterns/completed-popup-patterns.tsx:475"
         ]
       },
       {
@@ -2662,7 +2672,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:796"
+          "src/components/patterns/completed-popup-patterns.tsx:810"
         ]
       },
       {
@@ -2673,7 +2683,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:795"
+          "src/components/patterns/completed-popup-patterns.tsx:809"
         ]
       },
       {
@@ -2860,7 +2870,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:802"
+          "src/components/patterns/completed-popup-patterns.tsx:816"
         ]
       },
       {
@@ -2915,7 +2925,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:798"
+          "src/components/patterns/completed-popup-patterns.tsx:812"
         ]
       },
       {
@@ -3152,7 +3162,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/ui/table.tsx:249",
+          "src/components/ui/table.tsx:251",
           "src/components/patterns/exact-production-result-screen.tsx:104"
         ]
       },
@@ -3252,7 +3262,7 @@
           "canonical": 1
         },
         "examples": [
-          "src/components/ui/table.tsx:249"
+          "src/components/ui/table.tsx:251"
         ]
       },
       {
@@ -3274,7 +3284,7 @@
           "canonical": 1
         },
         "examples": [
-          "src/components/ui/table.tsx:249"
+          "src/components/ui/table.tsx:251"
         ]
       },
       {
@@ -3414,5 +3424,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "c2ed7daed0d280d9"
+  "fingerprint": "3951b3a37cd7c005"
 }

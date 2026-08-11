@@ -485,20 +485,34 @@ function ProductionContent() {
           <LabeledControl label="작업상태"><div className="flex items-center gap-4"><FixtureInput value={completed ? "완료" : "진행중"} muted className="flex-1" /><label className="flex cursor-pointer items-center gap-1.5 whitespace-nowrap"><Checkbox checked={completed} onChange={(event) => setCompleted(event.target.checked)} color="black" uncheckedAppearance="grayCheck" size="small" />완료</label></div></LabeledControl>
         </div>
       </div>
-      <div className="h-[238px] shrink-0 border-b border-mes-gray-30 bg-mes-gray-10 p-5">
-        <div className="h-[195px] rounded-xl bg-mes-gray-20 p-3">
+      <div className="flex min-h-0 flex-1 flex-col gap-5 px-5 pt-5">
+        <div className="relative h-[194px] shrink-0 rounded-[8px] bg-mes-gray-20 px-4 pb-8 pt-3">
           <b className="text-[16px]">실적정보</b>
-          <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2.5">
+          <div className="mt-2.5 grid grid-cols-2 gap-x-6 gap-y-2.5">
             <LabeledControl label="작업시간"><FixtureInput value={workTime} onValueChange={setWorkTime} /></LabeledControl>
             <LabeledControl label="불량수량"><FixtureSelect value={defectQuantity} options={["선택", "0", "10", "100"]} onValueChange={setDefectQuantity} /></LabeledControl>
             <LabeledControl label="생산수량"><FixtureInput value={productionQuantity} onValueChange={setProductionQuantity} inputMode="numeric" /></LabeledControl>
             <LabeledControl label="저장창고"><FixtureSelect value={warehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={setWarehouse} /></LabeledControl>
             <LabeledControl label="투입품목"><FixtureInput value={inputItem} onValueChange={setInputItem} /></LabeledControl>
           </div>
+          <Button size="small" className="absolute left-1/2 top-[178px] w-[160px] -translate-x-1/2" startIcon={<IconArrow size={15} className="-rotate-90" />} onClick={addResult}>실적 추가</Button>
         </div>
-        <div className="-mt-4 flex justify-center"><Button size="small" className="w-[160px]" startIcon={<IconArrow size={15} className="-rotate-90" />} onClick={addResult}>실적 추가</Button></div>
+        <div className="flex min-h-0 flex-1 flex-col gap-2.5">
+          <div className="flex h-8 shrink-0 items-center justify-between"><b className="text-[16px]">생산실적 상세 리스트</b><FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" /></div>
+          <FixtureTable
+            selectable={false}
+            edgePadding={0}
+            columnDividers={false}
+            headerBackground="white"
+            horizontalScroll={false}
+            headers={["시작시간", "종료시간", "단위", "생산수량", "불량수량", "투입정보", "포장수량", "흑시작(No)", "흑종료(No)", "창고명", "삭제"]}
+            widths={[68, 68, 68, 84.857143, 84.857143, 84.857143, 84.857143, 84.857143, 84.857143, 84.857143, 60]}
+            aligns={["center", "center", "center", "right", "right", "center", "right", "right", "right", "left", "center"]}
+            rows={rows}
+            className="production-result-table min-h-0 flex-1 rounded-mes-control border-x border-t"
+          />
+        </div>
       </div>
-      <div className="flex min-h-0 flex-1 flex-col px-5 pt-3"><div className="mb-2 flex items-center justify-between"><b className="text-[15px]">생산실적 상세 리스트</b><FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" /></div><FixtureTable selectable={false} horizontalScroll={false} headers={["시작시간", "종료시간", "단위", "생산수량", "불량수량", "투입정보", "포장수량", "흑시작(No)", "흑종료(No)", "창고명", "삭제"]} widths={[70, 70, 60, 80, 80, 90, 75, 85, 85, 95, 40]} aligns={["center", "center", "center", "right", "right", "center", "right", "right", "right", "left", "center"]} rows={rows} /></div>
     </div>
   );
 }

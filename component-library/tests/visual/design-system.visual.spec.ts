@@ -44,6 +44,29 @@ test("불량수량 입력 팝업", async ({ page }) => {
   await expect(dialog).toHaveScreenshot("defect-quantity-input.png");
 });
 
+test("생산실적 등록 슬라이드 팝업", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/visual-regression/production-result");
+  const dialog = page.getByRole("dialog", { name: "생산실적 등록" });
+  await expect(dialog).toBeVisible();
+
+  const tableViewport = dialog.locator(".production-result-table");
+  const overflow = await tableViewport.evaluate((element) => ({
+    horizontal: element.scrollWidth - element.clientWidth,
+    vertical: element.scrollHeight - element.clientHeight,
+  }));
+  expect(overflow.horizontal).toBe(0);
+  expect(overflow.vertical).toBeGreaterThanOrEqual(0);
+
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("production-result.png");
+
+  const deleteButtons = dialog.getByRole("button", { name: "행 삭제" });
+  await expect(deleteButtons).toHaveCount(10);
+  await dialog.getByRole("button", { name: "실적 추가" }).click();
+  await expect(deleteButtons).toHaveCount(11);
+});
+
 test("팝업 취소와 X는 변경값을 버리고 닫는다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/patterns/completed-popup-types");
