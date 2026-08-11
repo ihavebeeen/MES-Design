@@ -153,9 +153,9 @@ function buildAudit() {
   for (const category of ["spacing", "radius"]) {
     const confirmed = confirmedValues.get(category) ?? new Set();
     for (const frequency of frequencies[category]) {
-      const systemCount = (frequency.layers.canonical ?? 0) + (frequency.layers.pattern ?? 0);
+      const related = occurrences.filter((item) => item.category === category && item.value === frequency.value && item.layer !== "evidence" && item.arbitrary);
+      const systemCount = related.length;
       if (systemCount === 0 || systemCount > 2 || confirmed.has(frequency.value) || !/^-?\d+(?:\.\d+)?px$/.test(frequency.value)) continue;
-      const related = occurrences.filter((item) => item.category === category && item.value === frequency.value && item.layer !== "evidence");
       const knownNumeric = [...confirmed].filter((value) => /^\d+(?:\.\d+)?px$/.test(value));
       const numeric = Number.parseFloat(frequency.value);
       const nearestCanonical = knownNumeric.sort((a, b) => Math.abs(Number.parseFloat(a) - numeric) - Math.abs(Number.parseFloat(b) - numeric))[0] ?? null;

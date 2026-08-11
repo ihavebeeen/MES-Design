@@ -14,7 +14,7 @@ export interface SelectionActionBarProps {
 function SelectionActionBar({ selectedCount, onDelete, onMove, onClear, className }: SelectionActionBarProps) {
   if (selectedCount < 1) return null;
   return (
-    <div className={`flex h-[46px] items-center gap-6 rounded-[48px] border border-mes-gray-30 bg-white px-6 shadow-[0_0_12px_rgba(0,0,0,0.2)] ${className ?? ""}`}>
+    <div className={`flex h-[46px] items-center gap-6 rounded-full border border-mes-gray-30 bg-white px-6 shadow-[0_0_12px_rgba(0,0,0,0.2)] ${className ?? ""}`}>
       <span className="whitespace-nowrap text-[14px] font-medium">{selectedCount}개 선택됨</span>
       <span className="h-4 w-px bg-mes-gray-30" />
       <div className="flex gap-4">

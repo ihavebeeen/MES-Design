@@ -324,7 +324,7 @@ interface TimeWheelProps {
 
 function TimeWheel({ year, month, day, hour, minute, onYearChange, onMonthChange, onDayChange, onHourChange, onMinuteChange }: TimeWheelProps) {
   return (
-    <div className="flex items-center justify-center gap-[54px]">
+    <div className="flex items-center justify-center gap-14">
       <div className="flex gap-4">
         <WheelColumn values={Array.from({ length: 5 }, (_, index) => String(year + index - 2))} activeIndex={2} onChange={(index) => onYearChange(year + index - 2)} />
         <WheelColumn values={Array.from({ length: 5 }, (_, index) => `${Math.max(1, Math.min(12, month + index - 2))}월`)} activeIndex={2} onChange={(index) => onMonthChange(Math.max(1, Math.min(12, month + index - 2)))} />

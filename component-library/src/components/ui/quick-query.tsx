@@ -197,7 +197,7 @@ export interface QuickQueryPresetDialogProps {
 function DetailRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2.5">
-      <span className="flex h-6 w-[60px] shrink-0 items-center justify-center rounded-[2px] border border-mes-primary-30 bg-mes-bg-brand-subtle-strong px-[9px] py-1 text-[12px] font-semibold text-mes-gray-110">
+      <span className="flex h-6 w-[60px] shrink-0 items-center justify-center rounded-[2px] border border-mes-primary-30 bg-mes-bg-brand-subtle-strong px-2 py-1 text-[12px] font-semibold text-mes-gray-110">
         {label}
       </span>
       <span className="flex items-center gap-2.5 text-[12px] text-mes-gray-110">{children}</span>

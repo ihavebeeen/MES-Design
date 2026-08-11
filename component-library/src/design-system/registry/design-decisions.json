@@ -137,92 +137,114 @@
       "evidence": "큰 중앙 팝업 계층의 표준 radius"
     },
     {
-      "id": "review.spacing-40",
+      "id": "spacing.chart-and-section-40",
       "category": "spacing",
-      "property": "padding-or-margin",
+      "property": "layout-spacing",
       "observedValue": "40px",
-      "canonicalValue": null,
-      "decision": "needs-review",
-      "status": "open",
-      "scope": ["pattern"],
-      "evidence": "px-10과 mt-10으로 시스템 계층에서 2회 사용됨. 서로 다른 역할이므로 화면별 Figma 근거 확인 필요"
+      "canonicalValue": "40px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["pattern:production-chart", "pattern:weight-content"],
+      "evidence": "px-10은 차트 좌우 축 여백, mt-10은 서로 다른 검사 섹션 분리 간격이다. 둘 다 Tailwind 4px 스케일 안의 패턴 레이아웃 값이며 공용 control padding으로 전파하지 않는다."
     },
     {
-      "id": "review.spacing-9",
+      "id": "spacing.badge-outline-inline-9",
       "category": "spacing",
       "property": "padding-inline",
       "observedValue": "9px",
-      "canonicalValue": null,
-      "decision": "needs-review",
-      "status": "open",
-      "scope": ["component:badge", "component:quick-query"],
-      "evidence": "Badge와 QuickQuery에서 px-[9px]로 사용됨. 10px 기본 간격과 다른 의도적 실측인지 확인 필요"
+      "canonicalValue": "9px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["component:badge.blueOutline"],
+      "evidence": "Badge blueOutline은 1px border를 포함한 auto-width 보정을 위해 Figma에서 가로 9px로 실측된 의도적 예외다."
     },
     {
-      "id": "review.spacing-48",
+      "id": "spacing.quick-query-detail-inline",
+      "category": "spacing",
+      "property": "padding-inline",
+      "observedValue": "9px",
+      "canonicalValue": "8px",
+      "decision": "normalize",
+      "status": "confirmed",
+      "scope": ["component:quick-query.detail-row"],
+      "evidence": "DetailRow 라벨은 너비 60px·가운데 정렬이 고정되어 9px 보정이 레이아웃에 의미가 없다. 표준 4px 스케일의 8px으로 정규화한다."
+    },
+    {
+      "id": "spacing.state-empty-block-48",
       "category": "spacing",
       "property": "padding-block",
       "observedValue": "48px",
-      "canonicalValue": null,
-      "decision": "needs-review",
-      "status": "open",
+      "canonicalValue": "48px",
+      "decision": "keep",
+      "status": "confirmed",
       "scope": ["component:empty-state", "component:error-state"],
-      "evidence": "EmptyState와 ErrorState에서 py-12로 반복됨. 상태 화면 전용 패턴값으로 승격할지 확인 필요"
+      "evidence": "EmptyState와 ErrorState가 동일 레이아웃 계약으로 py-12를 반복 사용한다. 일반 컴포넌트 padding이 아닌 비어 있는 상태 영역의 전용 수직 여백으로 유지한다."
     },
     {
-      "id": "review.spacing-22",
+      "id": "spacing.collapsible-indent-22",
       "category": "spacing",
       "property": "padding-inline-start",
       "observedValue": "22px",
-      "canonicalValue": null,
-      "decision": "needs-review",
-      "status": "open",
+      "canonicalValue": "22px",
+      "decision": "keep",
+      "status": "confirmed",
       "scope": ["component:collapsible"],
-      "evidence": "Collapsible에서 pl-[22px]로 1회 사용됨. 아이콘 정렬 보정인지 20px 표준으로 정규화할지 확인 필요"
+      "evidence": "16px 펼침 아이콘과 6px tight gap의 합으로 콘텐츠 시작점을 트리거 텍스트에 맞추는 파생값이다. 임의 시각 보정이 아니라 구조적 들여쓰기다."
     },
     {
-      "id": "review.spacing-54",
+      "id": "spacing.progress-track-label-gap",
+      "category": "spacing",
+      "property": "gap",
+      "observedValue": "2px",
+      "canonicalValue": "2px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["component:progress"],
+      "evidence": "진행률 트랙과 고정 너비 퍼센트 라벨 사이의 실측 간격이다. 6px 높이 트랙과 44px 라벨을 하나의 조밀한 셀로 결합하는 컴포넌트 내부 구조값이므로 일반 레이아웃 간격과 분리해 유지한다."
+    },
+    {
+      "id": "spacing.time-wheel-group-gap",
       "category": "spacing",
       "property": "gap",
       "observedValue": "54px",
-      "canonicalValue": null,
-      "decision": "needs-review",
-      "status": "open",
+      "canonicalValue": "56px",
+      "decision": "normalize",
+      "status": "confirmed",
       "scope": ["pattern:completed-popup-expanded-content"],
-      "evidence": "확장 팝업 패턴에서 gap-[54px]로 1회 사용됨. 원본 열 배치 실측값인지 확인 필요"
+      "evidence": "날짜 그룹과 시간 그룹 사이의 단발성 54px은 같은 파일의 표준 gap-x-14(56px)와 2px 차이다. 별도 의도 근거가 없어 4px 스케일의 56px으로 정규화한다."
     },
     {
-      "id": "review.spacing-56",
+      "id": "spacing.operation-log-column-gap",
       "category": "spacing",
       "property": "column-gap",
       "observedValue": "56px",
-      "canonicalValue": null,
-      "decision": "needs-review",
-      "status": "open",
+      "canonicalValue": "56px",
+      "decision": "keep",
+      "status": "confirmed",
       "scope": ["pattern:completed-popup-expanded-content"],
-      "evidence": "확장 팝업 패턴에서 gap-x-14로 1회 사용됨. 54px 후보와 같은 구조인지 대조 필요"
+      "evidence": "운전일지 상단의 두 폼 열을 분리하는 Tailwind 4px 스케일 값이다. 54px 시간휠 그룹 간격도 이 값으로 정규화한다."
     },
     {
-      "id": "review.radius-48",
+      "id": "radius.selection-action-pill",
       "category": "radius",
       "property": "border-radius",
       "observedValue": "48px",
-      "canonicalValue": null,
-      "decision": "needs-review",
-      "status": "open",
+      "canonicalValue": "rounded-full",
+      "decision": "normalize",
+      "status": "confirmed",
       "scope": ["component:selection-action-bar"],
-      "evidence": "SelectionActionBar 캡슐 표현에 rounded-[48px]로 사용됨. 고정값 대신 rounded-full 표준 사용 여부 확인 필요"
+      "evidence": "SelectionActionBar는 높이가 달라져도 캡슐 형태를 유지해야 한다. 고정 48px 대신 형태 의미를 직접 표현하는 rounded-full로 정규화한다."
     },
     {
-      "id": "review.radius-6",
+      "id": "radius.table-column-row",
       "category": "radius",
       "property": "border-radius",
       "observedValue": "6px",
-      "canonicalValue": null,
-      "decision": "needs-review",
-      "status": "open",
+      "canonicalValue": "4px",
+      "decision": "normalize",
+      "status": "confirmed",
       "scope": ["pattern:table-column-settings"],
-      "evidence": "TableColumnSettings 패턴에서 rounded-[6px]로 1회 사용됨. 4px control 또는 8px panel 표준 중 어느 계층인지 확인 필요"
+      "evidence": "TableColumnSettings의 드래그 행은 패널 자체가 아니라 조작 가능한 control 행이다. 4px control radius와 8px panel radius 사이의 미등록 6px 대신 4px 토큰을 사용한다."
     }
   ]
 }

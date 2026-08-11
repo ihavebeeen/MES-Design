@@ -8,23 +8,23 @@
   },
   "summary": {
     "scannedFiles": 93,
-    "totalOccurrences": 2353,
-    "arbitraryUtilities": 864,
+    "totalOccurrences": 2352,
+    "arbitraryUtilities": 860,
     "hardcodedColors": 33,
-    "reviewCandidates": 8,
+    "reviewCandidates": 0,
     "unregisteredCandidates": 0
   },
   "layers": {
     "canonical": {
       "files": 69,
-      "occurrences": 1116,
-      "arbitraryUtilities": 387,
+      "occurrences": 1115,
+      "arbitraryUtilities": 385,
       "hardcodedColors": 23
     },
     "pattern": {
       "files": 10,
       "occurrences": 758,
-      "arbitraryUtilities": 244,
+      "arbitraryUtilities": 242,
       "hardcodedColors": 6
     },
     "evidence": {
@@ -38,10 +38,10 @@
     "spacing": [
       {
         "value": "8px",
-        "count": 154,
+        "count": 155,
         "arbitraryCount": 0,
         "layers": {
-          "canonical": 73,
+          "canonical": 74,
           "pattern": 51,
           "evidence": 30
         },
@@ -367,20 +367,6 @@
         ]
       },
       {
-        "value": "9px",
-        "count": 3,
-        "arbitraryCount": 3,
-        "layers": {
-          "canonical": 2,
-          "evidence": 1
-        },
-        "examples": [
-          "src/components/ui/badge.tsx:49",
-          "src/components/ui/quick-query.tsx:200",
-          "src/components/patterns/exact-production-result-screen.tsx:108"
-        ]
-      },
-      {
         "value": "pl-mes-dialog-x",
         "count": 3,
         "arbitraryCount": 0,
@@ -419,6 +405,31 @@
         ]
       },
       {
+        "value": "56px",
+        "count": 2,
+        "arbitraryCount": 0,
+        "layers": {
+          "pattern": 2
+        },
+        "examples": [
+          "src/components/patterns/completed-popup-expanded-content.tsx:327",
+          "src/components/patterns/completed-popup-expanded-content.tsx:397"
+        ]
+      },
+      {
+        "value": "9px",
+        "count": 2,
+        "arbitraryCount": 2,
+        "layers": {
+          "canonical": 1,
+          "evidence": 1
+        },
+        "examples": [
+          "src/components/ui/badge.tsx:49",
+          "src/components/patterns/exact-production-result-screen.tsx:108"
+        ]
+      },
+      {
         "value": "p-mes-dialog-x",
         "count": 2,
         "arbitraryCount": 0,
@@ -439,28 +450,6 @@
         },
         "examples": [
           "src/components/ui/collapsible.tsx:54"
-        ]
-      },
-      {
-        "value": "54px",
-        "count": 1,
-        "arbitraryCount": 1,
-        "layers": {
-          "pattern": 1
-        },
-        "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:327"
-        ]
-      },
-      {
-        "value": "56px",
-        "count": 1,
-        "arbitraryCount": 0,
-        "layers": {
-          "pattern": 1
-        },
-        "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:397"
         ]
       },
       {
@@ -500,11 +489,11 @@
     "radius": [
       {
         "value": "rounded-mes-control",
-        "count": 63,
+        "count": 64,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 41,
-          "pattern": 15,
+          "pattern": 16,
           "evidence": 7
         },
         "examples": [
@@ -684,17 +673,6 @@
         ]
       },
       {
-        "value": "48px",
-        "count": 1,
-        "arbitraryCount": 1,
-        "layers": {
-          "canonical": 1
-        },
-        "examples": [
-          "src/components/ui/selection-action-bar.tsx:17"
-        ]
-      },
-      {
         "value": "4px",
         "count": 1,
         "arbitraryCount": 1,
@@ -703,17 +681,6 @@
         },
         "examples": [
           "src/components/patterns/table-column-settings.tsx:71"
-        ]
-      },
-      {
-        "value": "6px",
-        "count": 1,
-        "arbitraryCount": 1,
-        "layers": {
-          "pattern": 1
-        },
-        "examples": [
-          "src/components/patterns/table-column-settings.tsx:89"
         ]
       },
       {
@@ -3446,122 +3413,6 @@
       }
     ]
   },
-  "reviewCandidates": [
-    {
-      "id": "spacing.40px",
-      "category": "spacing",
-      "observedValue": "40px",
-      "systemCount": 2,
-      "nearestCanonical": "20px",
-      "decision": "needs-review",
-      "registryId": "review.spacing-40",
-      "registryStatus": "open",
-      "reason": "표준 토큰에 없고 canonical/pattern 계층에서 2회 이하로만 사용된 단발성 값",
-      "occurrences": [
-        "src/components/patterns/completed-application-patterns.tsx:241 (px-10)",
-        "src/components/patterns/completed-popup-patterns.tsx:274 (mt-10)"
-      ]
-    },
-    {
-      "id": "spacing.9px",
-      "category": "spacing",
-      "observedValue": "9px",
-      "systemCount": 2,
-      "nearestCanonical": "10px",
-      "decision": "needs-review",
-      "registryId": "review.spacing-9",
-      "registryStatus": "open",
-      "reason": "표준 토큰에 없고 canonical/pattern 계층에서 2회 이하로만 사용된 단발성 값",
-      "occurrences": [
-        "src/components/ui/badge.tsx:49 (px-[9px])",
-        "src/components/ui/quick-query.tsx:200 (px-[9px])"
-      ]
-    },
-    {
-      "id": "spacing.48px",
-      "category": "spacing",
-      "observedValue": "48px",
-      "systemCount": 2,
-      "nearestCanonical": "20px",
-      "decision": "needs-review",
-      "registryId": "review.spacing-48",
-      "registryStatus": "open",
-      "reason": "표준 토큰에 없고 canonical/pattern 계층에서 2회 이하로만 사용된 단발성 값",
-      "occurrences": [
-        "src/components/ui/empty-state.tsx:22 (py-12)",
-        "src/components/ui/error-state.tsx:29 (py-12)"
-      ]
-    },
-    {
-      "id": "spacing.22px",
-      "category": "spacing",
-      "observedValue": "22px",
-      "systemCount": 1,
-      "nearestCanonical": "20px",
-      "decision": "needs-review",
-      "registryId": "review.spacing-22",
-      "registryStatus": "open",
-      "reason": "표준 토큰에 없고 canonical/pattern 계층에서 2회 이하로만 사용된 단발성 값",
-      "occurrences": [
-        "src/components/ui/collapsible.tsx:54 (pl-[22px])"
-      ]
-    },
-    {
-      "id": "spacing.54px",
-      "category": "spacing",
-      "observedValue": "54px",
-      "systemCount": 1,
-      "nearestCanonical": "20px",
-      "decision": "needs-review",
-      "registryId": "review.spacing-54",
-      "registryStatus": "open",
-      "reason": "표준 토큰에 없고 canonical/pattern 계층에서 2회 이하로만 사용된 단발성 값",
-      "occurrences": [
-        "src/components/patterns/completed-popup-expanded-content.tsx:327 (gap-[54px])"
-      ]
-    },
-    {
-      "id": "spacing.56px",
-      "category": "spacing",
-      "observedValue": "56px",
-      "systemCount": 1,
-      "nearestCanonical": "20px",
-      "decision": "needs-review",
-      "registryId": "review.spacing-56",
-      "registryStatus": "open",
-      "reason": "표준 토큰에 없고 canonical/pattern 계층에서 2회 이하로만 사용된 단발성 값",
-      "occurrences": [
-        "src/components/patterns/completed-popup-expanded-content.tsx:397 (gap-x-14)"
-      ]
-    },
-    {
-      "id": "radius.48px",
-      "category": "radius",
-      "observedValue": "48px",
-      "systemCount": 1,
-      "nearestCanonical": "16px",
-      "decision": "needs-review",
-      "registryId": "review.radius-48",
-      "registryStatus": "open",
-      "reason": "표준 토큰에 없고 canonical/pattern 계층에서 2회 이하로만 사용된 단발성 값",
-      "occurrences": [
-        "src/components/ui/selection-action-bar.tsx:17 (rounded-[48px])"
-      ]
-    },
-    {
-      "id": "radius.6px",
-      "category": "radius",
-      "observedValue": "6px",
-      "systemCount": 1,
-      "nearestCanonical": "4px",
-      "decision": "needs-review",
-      "registryId": "review.radius-6",
-      "registryStatus": "open",
-      "reason": "표준 토큰에 없고 canonical/pattern 계층에서 2회 이하로만 사용된 단발성 값",
-      "occurrences": [
-        "src/components/patterns/table-column-settings.tsx:89 (rounded-[6px])"
-      ]
-    }
-  ],
-  "fingerprint": "47542242bcee9fa7"
+  "reviewCandidates": [],
+  "fingerprint": "03adf2d5119e9ae8"
 }

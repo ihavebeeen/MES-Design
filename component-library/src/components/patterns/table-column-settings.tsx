@@ -86,7 +86,7 @@ function TableColumnSettings({
             onDragOver={(event) => event.preventDefault()}
             onDrop={() => moveColumn(column.id)}
             className={cn(
-              "flex h-[39px] shrink-0 cursor-grab items-center rounded-[6px] bg-mes-gray-20 pr-2.5 active:cursor-grabbing",
+              "flex h-[39px] shrink-0 cursor-grab items-center rounded-mes-control bg-mes-gray-20 pr-2.5 active:cursor-grabbing",
               draggedId === column.id && "border-mes-primary-60 bg-mes-primary-10 opacity-70"
             )}
           >
