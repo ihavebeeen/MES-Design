@@ -327,6 +327,34 @@ test("양식 편집과 입고검사는 중앙 모달이 아니라 우측 전체 
   await expect(page).toHaveScreenshot("receiving-inspection-side-panel.png");
 });
 
+test("캐비티 배열 입력은 제어 상태로 동작하고 콘솔 오류를 만들지 않는다", async ({ page }) => {
+  const consoleErrors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") consoleErrors.push(message.text());
+  });
+  page.on("pageerror", (error) => consoleErrors.push(error.message));
+
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/patterns/completed-popup-types");
+  const gallery = page.getByRole("region", { name: "Figma 원본 팝업" });
+  await gallery.getByRole("button", { name: "캐비티 배열 설정", exact: true }).click();
+
+  const horizontalCount = gallery.getByRole("textbox", { name: "배열 가로" });
+  const verticalCount = gallery.getByRole("textbox", { name: "배열 세로" });
+  await horizontalCount.fill("4");
+  await verticalCount.fill("3");
+  await expect(horizontalCount).toHaveValue("4");
+  await expect(verticalCount).toHaveValue("3");
+  await expect(gallery.locator('input[value="4*3"]')).toBeVisible();
+
+  await gallery.getByText("사용자 설정", { exact: true }).click();
+  const exchange = gallery.getByRole("textbox", { name: "교환할 번호 입력" });
+  await exchange.fill("12");
+  await gallery.getByRole("button", { name: "교환", exact: true }).click();
+  await expect(gallery.getByRole("textbox", { name: "선택한 셀" })).toHaveValue("12");
+  expect(consoleErrors).toEqual([]);
+});
+
 test("완성 팝업 16종은 데스크톱에서 가로 스크롤을 만들지 않는다", async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 960 });
   await page.goto("/patterns/completed-popup-types");

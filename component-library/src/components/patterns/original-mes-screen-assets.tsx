@@ -169,15 +169,93 @@ function CavityContent() {
   const [automatic, setAutomatic] = React.useState(true);
   const [selected, setSelected] = React.useState(9);
   const [exchange, setExchange] = React.useState("19");
+  const [columns, setColumns] = React.useState("5");
+  const [rows, setRows] = React.useState("5");
   const [horizontal, setHorizontal] = React.useState(false);
   const [sequential, setSequential] = React.useState(false);
+  const [reverseHorizontal, setReverseHorizontal] = React.useState(false);
+  const [reverseVertical, setReverseVertical] = React.useState(false);
+  const columnCount = Math.max(1, Math.min(10, Number(columns) || 1));
+  const rowCount = Math.max(1, Math.min(10, Number(rows) || 1));
   const cells = Array.from({ length: 100 }, (_, index) => {
     const row = Math.floor(index / 10);
     const column = index % 10;
-    return row < 5 && column < 5 ? row * 5 + column + 1 : undefined;
+    if (row >= rowCount || column >= columnCount) return undefined;
+    const sourceRow = reverseVertical ? rowCount - row - 1 : row;
+    const sourceColumn = reverseHorizontal ? columnCount - column - 1 : column;
+    if (horizontal) {
+      const position = !sequential && sourceRow % 2 === 1 ? columnCount - sourceColumn - 1 : sourceColumn;
+      return sourceRow * columnCount + position + 1;
+    }
+    const position = !sequential && sourceColumn % 2 === 1 ? rowCount - sourceRow - 1 : sourceRow;
+    return sourceColumn * rowCount + position + 1;
   });
-  const swap = () => { const value = Number(exchange); if (value >= 1 && value <= 25) setSelected(value); };
-  return <div className="grid min-h-[636px] w-full grid-cols-[300px_minmax(0,1fr)] divide-x divide-mes-gray-30"><section className="p-5"><SectionHeader>금형 정보</SectionHeader><div className="mt-3 space-y-3">{[["설비명","빠삐코 금형",true],["배열(가로)","5",false],["배열(세로)","5",false],["CAVITY","5*5",true]].map(([label,value,readonly]) => <EditorField key={String(label)} label={String(label)}><Input value={String(value)} readOnly={Boolean(readonly)} /></EditorField>)}</div><SectionHeader className="mt-5">배열 생성</SectionHeader><div className="mt-3 grid h-8 grid-cols-[70px_1fr] items-center text-[14px]"><span>배열 설정</span><div className="flex gap-4"><label className="flex items-center gap-[6px]"><Radio name="cavity-mode" checked={automatic} onChange={() => setAutomatic(true)} />자동배열</label><label className="flex items-center gap-[6px]"><Radio name="cavity-mode" checked={!automatic} onChange={() => setAutomatic(false)} />사용자 설정</label></div></div><p className="mt-3 text-[14px]">번호 생성 방향</p><div className="mt-1 grid grid-cols-2 gap-2"><Button size="small" variant={horizontal ? "fillMain" : "lineBlacktxt"} onClick={() => setHorizontal(true)}>→　가로</Button><Button size="small" variant={!horizontal ? "fillMain" : "lineBlacktxt"} onClick={() => setHorizontal(false)}>↓　세로</Button></div><p className="mt-3 text-[14px]">줄 전환 방향</p><div className="mt-1 grid grid-cols-2 gap-2"><Button size="small" variant={sequential ? "fillMain" : "lineBlacktxt"} onClick={() => setSequential(true)}>☰　순차</Button><Button size="small" variant={!sequential ? "fillMain" : "lineBlacktxt"} onClick={() => setSequential(false)}>⇄　교차</Button></div></section><section className="p-5"><SectionHeader>캐비티 배열</SectionHeader><div className="mt-3 h-[504px] rounded-lg border border-mes-gray-30 p-5"><div className="flex h-8 items-center"><div className="flex gap-2"><Button size="small" variant="lineBlacktxt" startIcon={<ArrowLeftRight className="size-4" />}>좌우 반전</Button><Button size="small" variant="lineBlacktxt" startIcon={<ArrowUpDown className="size-4" />}>상하 반전</Button></div><Button size="small" variant="lineMain" className="ml-auto" startIcon={<RotateCcw className="size-4" />} onClick={() => { setSelected(9); setExchange("19"); setAutomatic(true); setHorizontal(false); setSequential(false); }}>초기화</Button></div><div className="mt-2 text-[12px] text-mes-gray-60">↙ 진행방향</div><div className="mt-1 grid grid-cols-10 gap-1">{cells.map((cell,index) => <CavityCell key={index} value={cell} selected={cell === selected} onClick={() => cell && setSelected(cell)} />)}</div></div><div className="mt-5 grid grid-cols-[96px_148px_120px_148px_60px] items-center gap-3 text-[14px]"><span>선택한 셀</span><Input value={String(selected)} readOnly /><span>교환할 번호 입력</span><Input value={exchange} onChange={(event) => setExchange(event.target.value)} inputMode="numeric" readOnly={automatic} /><Button size="small" disabled={automatic} onClick={swap}>교환</Button></div></section></div>;
+  const swap = () => { const value = Number(exchange); if (value >= 1 && value <= columnCount * rowCount) setSelected(value); };
+  const updateDimension = (value: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
+    setter(value.replace(/[^0-9]/g, "").slice(0, 2));
+  };
+  const reset = () => {
+    setSelected(9);
+    setExchange("19");
+    setColumns("5");
+    setRows("5");
+    setAutomatic(true);
+    setHorizontal(false);
+    setSequential(false);
+    setReverseHorizontal(false);
+    setReverseVertical(false);
+  };
+
+  return (
+    <div className="grid min-h-[636px] w-full grid-cols-[300px_minmax(0,1fr)] divide-x divide-mes-gray-30">
+      <section className="p-5">
+        <SectionHeader>금형 정보</SectionHeader>
+        <div className="mt-3 space-y-3">
+          <EditorField label="설비명"><Input value="빠삐코 금형" readOnly /></EditorField>
+          <EditorField label="배열(가로)"><Input value={columns} onChange={(event) => updateDimension(event.target.value, setColumns)} inputMode="numeric" aria-label="배열 가로" /></EditorField>
+          <EditorField label="배열(세로)"><Input value={rows} onChange={(event) => updateDimension(event.target.value, setRows)} inputMode="numeric" aria-label="배열 세로" /></EditorField>
+          <EditorField label="CAVITY"><Input value={`${columnCount}*${rowCount}`} readOnly /></EditorField>
+        </div>
+        <SectionHeader className="mt-5">배열 생성</SectionHeader>
+        <div className="mt-3 grid h-8 grid-cols-[70px_1fr] items-center text-[14px]">
+          <span>배열 설정</span>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-[6px]"><Radio name="cavity-mode" checked={automatic} onChange={() => setAutomatic(true)} />자동배열</label>
+            <label className="flex items-center gap-[6px]"><Radio name="cavity-mode" checked={!automatic} onChange={() => setAutomatic(false)} />사용자 설정</label>
+          </div>
+        </div>
+        <p className="mt-3 text-[14px]">번호 생성 방향</p>
+        <div className="mt-1 grid grid-cols-2 gap-2">
+          <Button size="small" variant={horizontal ? "fillMain" : "lineBlacktxt"} onClick={() => setHorizontal(true)}>→　가로</Button>
+          <Button size="small" variant={!horizontal ? "fillMain" : "lineBlacktxt"} onClick={() => setHorizontal(false)}>↓　세로</Button>
+        </div>
+        <p className="mt-3 text-[14px]">줄 전환 방향</p>
+        <div className="mt-1 grid grid-cols-2 gap-2">
+          <Button size="small" variant={sequential ? "fillMain" : "lineBlacktxt"} onClick={() => setSequential(true)}>☰　순차</Button>
+          <Button size="small" variant={!sequential ? "fillMain" : "lineBlacktxt"} onClick={() => setSequential(false)}>⇄　교차</Button>
+        </div>
+      </section>
+      <section className="p-5">
+        <SectionHeader>캐비티 배열</SectionHeader>
+        <div className="mt-3 h-[504px] rounded-lg border border-mes-gray-30 p-5">
+          <div className="flex h-8 items-center">
+            <div className="flex gap-2">
+              <Button size="small" variant={reverseHorizontal ? "fillMain" : "lineBlacktxt"} startIcon={<ArrowLeftRight className="size-4" />} onClick={() => setReverseHorizontal((value) => !value)}>좌우 반전</Button>
+              <Button size="small" variant={reverseVertical ? "fillMain" : "lineBlacktxt"} startIcon={<ArrowUpDown className="size-4" />} onClick={() => setReverseVertical((value) => !value)}>상하 반전</Button>
+            </div>
+            <Button size="small" variant="lineMain" className="ml-auto" startIcon={<RotateCcw className="size-4" />} onClick={reset}>초기화</Button>
+          </div>
+          <div className="mt-2 text-[12px] text-mes-gray-60">↙ 진행방향</div>
+          <div className="mt-1 grid grid-cols-10 gap-1">{cells.map((cell, index) => <CavityCell key={index} value={cell} selected={cell === selected} onClick={() => cell && setSelected(cell)} />)}</div>
+        </div>
+        <div className="mt-5 grid grid-cols-[96px_148px_120px_148px_60px] items-center gap-3 text-[14px]">
+          <span>선택한 셀</span><Input value={String(selected)} readOnly aria-label="선택한 셀" />
+          <span>교환할 번호 입력</span><Input value={exchange} onChange={(event) => setExchange(event.target.value)} inputMode="numeric" readOnly={automatic} aria-label="교환할 번호 입력" />
+          <Button size="small" disabled={automatic} onClick={swap}>교환</Button>
+        </div>
+      </section>
+    </div>
+  );
 }
 
 function Required() { return <span className="ml-1 font-bold text-mes-danger-60">*</span>; }
