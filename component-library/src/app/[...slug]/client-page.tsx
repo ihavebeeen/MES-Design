@@ -18,6 +18,7 @@ import {
   Blocks,
   Hammer,
   LayoutTemplate,
+  Sparkles,
   Settings,
   Pencil,
 } from "lucide-react";
@@ -104,6 +105,7 @@ import {
   CompletedPopupExamples,
   OriginalMesScreenAssets,
 } from "@/components/patterns";
+import { GeneratedScreenReview } from "@/components/patterns/generated-screen-review";
 import {
   IconArrow,
   IconArrowDownRight,
@@ -149,6 +151,7 @@ import {
   FOUNDATION_NODES,
   COMPONENT_NODES,
   PATTERN_NODES,
+  GENERATED_SCREEN_NODES,
   SIDEBAR_GROUPS,
   TEMP_BADGE_IDS,
   TIER_BY_ID,
@@ -1315,7 +1318,7 @@ const miniGroups3: TableGroup<FlatRow>[] = [
   },
 ];
 
-export default function Home() {
+export default function Home({ routeOverride }: { routeOverride?: string[] } = {}) {
   const [comboValue, setComboValue] = useState<string>("");
   const [filterValue, setFilterValue] = useState<Record<string, string[]>>({
     perm: ["normal"],
@@ -1455,17 +1458,19 @@ export default function Home() {
   //    자기 그룹(또는 home)일 때만 보이도록 조건 추가.
   const routeParams = useParams<{ slug?: string[] }>();
   const router = useRouter();
-  const slug = routeParams.slug ?? [];
+  const slug = routeOverride ?? routeParams.slug ?? [];
   // 2026-08-05 — Patterns 그룹 추가로 "components 아니면 무조건 foundations"이던
   // 이진 분기를 3분기로 확장.
-  const activeGroup: "home" | "foundations" | "components" | "patterns" =
+  const activeGroup: "home" | "foundations" | "components" | "patterns" | "generated-screens" =
     slug.length === 0
       ? "home"
       : slug[0] === "components"
         ? "components"
         : slug[0] === "patterns"
           ? "patterns"
-          : "foundations";
+          : slug[0] === "generated-screens"
+            ? "generated-screens"
+            : "foundations";
   const activeId: string | undefined = slug[1];
   // 2026-08-03 — 우측 서브 내비(RightRail)용 Section→Sample 목록 레지스트리. Section이
   // 렌더링될 때마다 자기 목록을 여기 채워넣고, RightRail이 같은 렌더 패스에서 바로 읽음
@@ -1570,7 +1575,13 @@ export default function Home() {
           </Popover>
           {SIDEBAR_GROUPS.map((group) => {
             const GroupIcon =
-              group.title === "Foundations" ? Palette : group.title === "Components" ? Blocks : Hammer;
+              group.title === "Foundations"
+                ? Palette
+                : group.title === "Components"
+                  ? Blocks
+                  : group.title === "Generated Screens"
+                    ? Sparkles
+                    : Hammer;
             return (
             <div key={group.title} className="mb-7">
               <div className="mb-2 flex items-center gap-2 border-b-2 border-mes-gray-90 px-2 pb-2 text-[18px] font-extrabold tracking-tight text-mes-gray-130">
@@ -1688,6 +1699,8 @@ export default function Home() {
                       label:
                         activeGroup === "foundations"
                           ? "Foundations"
+                          : activeGroup === "generated-screens"
+                            ? "Generated Screens"
                           : activeGroup === "patterns"
                             ? "Patterns"
                             : "Components",
@@ -1705,6 +1718,8 @@ export default function Home() {
                       label:
                         activeGroup === "foundations"
                           ? "Foundations"
+                          : activeGroup === "generated-screens"
+                            ? "Generated Screens"
                           : activeGroup === "patterns"
                             ? "Patterns"
                             : "Components",
@@ -2027,6 +2042,22 @@ export default function Home() {
                 </p>
               </div>
               {!activeId && <OverviewGrid nodes={PATTERN_NODES} />}
+            </>
+          )}
+
+          {(activeGroup === "generated-screens" || activeGroup === "home") && (
+            <>
+              <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
+                <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+                  <Sparkles className="size-7 shrink-0 text-mes-primary-60" />
+                  Generated Screens
+                </span>
+                <p className="text-[13px] leading-[1.5] text-mes-gray-70">
+                  AI가 생성한 화면을 표준 자산과 분리해 평가하고, 승인된 결과만 디자인 시스템에 승격합니다.
+                </p>
+              </div>
+              {activeGroup === "home" && <OverviewGrid nodes={GENERATED_SCREEN_NODES} />}
+              {activeGroup === "generated-screens" && <GeneratedScreenReview />}
             </>
           )}
 

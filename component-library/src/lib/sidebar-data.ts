@@ -138,6 +138,11 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
     label: "테이블 컬럼 설정",
     labelEn: "Table Column Settings",
   },
+  {
+    id: "generated-screen-review",
+    label: "생성 시안 검토함",
+    labelEn: "Generated Screen Review",
+  },
 ];
 
 /**
@@ -250,6 +255,9 @@ export const PATTERN_NODES: SidebarNode[] = [
   branch("테이블", "Tables", ["table-column-settings-pattern"]),
 ];
 
+export const GENERATED_SCREEN_ID_LIST = ["generated-screen-review"];
+export const GENERATED_SCREEN_NODES: SidebarNode[] = GENERATED_SCREEN_ID_LIST.map((id) => leaf(id));
+
 export const COMPONENT_NODES: SidebarNode[] = [
   branch("버튼", "Button", ["button-size", "button-icon", "button-color"]),
   leaf("icon-button"),
@@ -320,6 +328,7 @@ export const SIDEBAR_GROUPS: { title: string; nodes: SidebarNode[] }[] = [
   // 2026-08-05 신규 — 3층(합성 패턴 카탈로그) 실제 첫 콘텐츠. TOP_NAV의 "Patterns"
   // 탭이 지금까지 firstId 없이 비활성 상태로만 자리를 잡고 있었는데, 이걸로 활성화.
   { title: "Patterns", nodes: PATTERN_NODES },
+  { title: "Generated Screens", nodes: GENERATED_SCREEN_NODES },
   { title: "예정", nodes: [] },
 ];
 
@@ -483,6 +492,7 @@ export const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
   // 둘 다 없어서 firstId 없이 비활성 상태로만 자리를 잡아뒀는데(클릭 불가),
   // 2026-08-05 실제 콘텐츠(PATTERN_NODES)가 생겨서 firstId를 채워 활성화.
   { key: "patterns", label: "Patterns", firstId: firstIdOfNode(PATTERN_NODES[0]) },
+  { key: "generated-screens", label: "Generated Screens", firstId: firstIdOfNode(GENERATED_SCREEN_NODES[0]) },
 ];
 
 /** Foundation 섹션 id 집합(8개, 2026-08-03 아이콘·Grid/Container 재분류로 6→8) — 상단
@@ -490,6 +500,7 @@ export const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
 export const FOUNDATION_IDS = new Set(FOUNDATION_ID_LIST);
 /** 2026-08-05 신규 — Patterns id 집합. FOUNDATION_IDS와 같은 방식(idToHref 판별용). */
 export const PATTERN_IDS = new Set(PATTERN_ID_LIST);
+export const GENERATED_SCREEN_IDS = new Set(GENERATED_SCREEN_ID_LIST);
 
 /**
  * 2026-08-04 신규 — "한 페이지에 스크롤 개길게 하지 말고 분할하자, 브레드크럼으로"
@@ -501,6 +512,7 @@ export const PATTERN_IDS = new Set(PATTERN_ID_LIST);
 export function idToHref(id: string): string {
   if (FOUNDATION_IDS.has(id)) return `/foundations/${id}`;
   if (PATTERN_IDS.has(id)) return `/patterns/${id}`;
+  if (GENERATED_SCREEN_IDS.has(id)) return "/generated-screens";
   return `/components/${id}`;
 }
 
@@ -511,7 +523,7 @@ export function idToHref(id: string): string {
  * 만들어도 안전). 2026-08-05 — Patterns 그룹 추가.
  */
 export type BreadcrumbInfo = {
-  group: "foundations" | "components" | "patterns";
+  group: "foundations" | "components" | "patterns" | "generated-screens";
   groupLabel: string;
   branch?: { label: string; labelEn?: string };
   label: string;
@@ -519,10 +531,16 @@ export type BreadcrumbInfo = {
 };
 export const BREADCRUMB_MAP: Record<string, BreadcrumbInfo> = {};
 for (const group of SIDEBAR_GROUPS) {
-  if (group.title !== "Foundations" && group.title !== "Components" && group.title !== "Patterns")
+  if (group.title !== "Foundations" && group.title !== "Components" && group.title !== "Patterns" && group.title !== "Generated Screens")
     continue;
-  const groupKey: "foundations" | "components" | "patterns" =
-    group.title === "Foundations" ? "foundations" : group.title === "Components" ? "components" : "patterns";
+  const groupKey: "foundations" | "components" | "patterns" | "generated-screens" =
+    group.title === "Foundations"
+      ? "foundations"
+      : group.title === "Components"
+        ? "components"
+        : group.title === "Patterns"
+          ? "patterns"
+          : "generated-screens";
   for (const node of group.nodes) {
     if (node.kind === "leaf") {
       BREADCRUMB_MAP[node.id] = {
@@ -563,4 +581,5 @@ export const ALL_SEARCHABLE_ITEMS = [
   ...flattenSidebarNodes(FOUNDATION_NODES),
   ...flattenSidebarNodes(COMPONENT_NODES),
   ...flattenSidebarNodes(PATTERN_NODES),
+  ...flattenSidebarNodes(GENERATED_SCREEN_NODES),
 ];

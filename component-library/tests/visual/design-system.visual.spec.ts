@@ -194,8 +194,14 @@ test("이지모드 입고등록은 MES 우측 슬라이드 규격과 직접 입�
 
 test("부분 성공 생성안은 표준 패턴과 분리된 검토함에 기록된다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/generated-screens");
+  await page.goto("/");
+  const generatedScreensLink = page.getByRole("link", { name: "Generated Screens", exact: true }).first();
+  await expect(generatedScreensLink).toBeVisible();
+  await generatedScreensLink.click();
+  await expect(page).toHaveURL(/\/generated-screens\/?$/);
 
+  await expect(page.getByRole("link", { name: "MES Design System", exact: true })).toBeVisible();
+  await expect(page.getByRole("navigation").getByRole("link", { name: "Generated Screens", exact: true }).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "생성 시안 검토함" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "이지모드 입고등록" })).toBeVisible();
   await expect(page.getByText("부분 성공", { exact: true })).toBeVisible();
