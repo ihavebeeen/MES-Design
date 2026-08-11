@@ -8,6 +8,9 @@
     { "id": "popup-custom-information", "name": "자주검사 커스텀 정보 등록 상태", "route": "/visual-regression/custom-information", "snapshot": "custom-information.png", "viewport": { "width": 1920, "height": 960 }, "screenId": "custom-information" },
     { "id": "popup-self-inspection", "name": "자주검사 검사항목 상태", "route": "/visual-regression/inspection", "snapshot": "self-inspection.png", "viewport": { "width": 1920, "height": 960 }, "screenId": "self-inspection" },
     { "id": "popup-bom-copy", "name": "BOM 복사 팝업", "route": "/visual-regression/bom-copy", "snapshot": "bom-copy.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "bom-copy" },
-    { "id": "table-core-states", "name": "그룹화 테이블 핵심 상태", "route": "/visual-regression/table", "snapshot": "grouped-table-core-states.png", "viewport": { "width": 1280, "height": 720 }, "patternId": "table.grouped-list" }
+    { "id": "table-core-states", "name": "그룹화 테이블 핵심 상태", "route": "/visual-regression/table", "snapshot": "grouped-table-core-states.png", "viewport": { "width": 1280, "height": 720 }, "patternId": "table.grouped-list" },
+    { "id": "popup-form-inspection-criteria", "name": "양식관리 숫자 검사 판정 기준 설정", "route": "/visual-regression/form-inspection-criteria", "snapshot": "form-inspection-criteria-simple.png", "viewport": { "width": 960, "height": 720 }, "screenId": "form-inspection-criteria" },
+    { "id": "popup-form-inspection-criteria-judgement", "name": "양식관리 O/△/X 검사 판정 기준 설정", "route": "/visual-regression/form-inspection-criteria-judgement", "snapshot": "form-inspection-criteria-judgement.png", "viewport": { "width": 960, "height": 720 }, "screenId": "form-inspection-criteria" },
+    { "id": "popup-production-quantity-reregistration", "name": "총 생산수량 변경 · 투입품 재등록 확인", "route": "/visual-regression/production-quantity-reregistration", "snapshot": "production-quantity-reregistration.png", "viewport": { "width": 960, "height": 720 }, "screenId": "production-quantity-reregistration" }
   ]
 }

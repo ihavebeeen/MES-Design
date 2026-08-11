@@ -66,3 +66,31 @@ export interface VisualRegressionRegistry {
   schemaVersion: 1;
   cases: VisualRegressionCase[];
 }
+
+export type SourceEvidenceStatus = "queued" | "in-progress" | "verified";
+
+export interface SourceEvidenceQualityGates {
+  designContext: boolean;
+  metadataLedger: boolean;
+  componentMapping: boolean;
+  browserMeasurement: boolean;
+  interactionTest: boolean;
+  visualBaseline: boolean;
+}
+
+export interface SourceEvidenceEntry {
+  id: string;
+  name: string;
+  figmaNode: string;
+  kind: "screen-bundle" | "popup-bundle" | "state-bundle";
+  normalizedTarget: string;
+  status: SourceEvidenceStatus;
+  notes: string[];
+  qualityGates: SourceEvidenceQualityGates;
+  visualCaseId?: string;
+}
+
+export interface SourceEvidenceRegistry {
+  schemaVersion: 1;
+  sources: SourceEvidenceEntry[];
+}

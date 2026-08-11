@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { FigmaScreenPreview } from "./figma-screen-preview";
 import { ExactFormManagementScreen } from "./exact-form-management-screen";
 import { ExactProductionResultScreen } from "./exact-production-result-screen";
+import { InspectionCriteriaDialog } from "./inspection-criteria-pattern";
 
 type AssetId = "forms" | "responsive";
 
@@ -106,20 +107,6 @@ function EditorField({ label, required = false, labelWidth = 108, children }: { 
   return <div className="grid h-8 items-center" style={{ gridTemplateColumns: `${labelWidth}px minmax(0,1fr)` }}><span className="text-[14px] whitespace-nowrap">{label}{required && <Required />}</span>{children}</div>;
 }
 
-function CriteriaContent() {
-  const [type, setType] = React.useState("단순조건");
-  const [value, setValue] = React.useState("50");
-  const [operator, setOperator] = React.useState("이상");
-  return (
-    <div className="h-[274px] w-full">
-      <div className="grid h-6 grid-cols-[65px_375px] items-center"><span className="text-[14px] font-semibold">조건유형</span><div className="grid h-8 -translate-y-1 grid-cols-3">{["단순조건", "범위조건", "복합조건"].map((item) => <Button key={item} size="small" variant={type === item ? "opacityMain" : "lineBlacktxt"} className="rounded-none border-r-0 first:rounded-l-mes-control last:rounded-r-mes-control last:border-r" onClick={() => setType(item)}>{item}</Button>)}</div></div>
-      <div className="mt-3 flex h-[37px] items-center justify-center gap-2 rounded-mes-control bg-mes-gray-20 text-[13px]"><IconExclamationCircle size={16} className="text-mes-gray-60" />측정값이 하나의 기준값과 비교됩니다.</div>
-      <div className="mt-3 h-[99px] rounded-lg border border-mes-gray-30 px-4 pt-3"><strong className="text-[15px]">판정 기준 입력</strong><div className="mt-4 grid grid-cols-[70px_161px_161px] items-center gap-2 text-[14px]"><span>측정값이</span><Input value={value} onChange={(event) => setValue(event.target.value)} inputMode="numeric" /><Select value={operator} onValueChange={setOperator}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{["이상", "이하", "초과", "미만"].map((item) => <SelectItem key={item} value={item}>{item}</SelectItem>)}</SelectContent></Select></div></div>
-      <div className="mt-3 flex h-[78px] flex-col items-center justify-center rounded-mes-control border border-mes-primary-30 bg-mes-primary-10"><div className="flex items-center gap-2 text-[16px] font-semibold text-mes-primary-60"><IconExclamationCircle size={16} />최종 합격 기준</div><div className="mt-1 text-[20px] font-bold">X&nbsp; ≥ {value}</div></div>
-    </div>
-  );
-}
-
 function InspectionContent({ state = "ready" }: { state?: "empty" | "ready" }) {
   const [search, setSearch] = React.useState("");
   const [pallet, setPallet] = React.useState("O");
@@ -153,18 +140,20 @@ function InspectionContent({ state = "ready" }: { state?: "empty" | "ready" }) {
 }
 
 function FormsAsset() {
-  const [modal, setModal] = React.useState<"form" | "criteria" | "inspection" | "inspection-empty" | null>(null);
+  const [modal, setModal] = React.useState<"form" | "criteria" | "criteria-judgement" | "inspection" | "inspection-empty" | null>(null);
   return (
     <>
       <div className="mb-3 flex gap-2">
         <Button size="small" variant="lineBlacktxt" onClick={() => setModal("form")}>양식 편집 원본</Button>
-        <Button size="small" variant="lineBlacktxt" onClick={() => setModal("criteria")}>검사기준 원본</Button>
+        <Button size="small" variant="lineBlacktxt" onClick={() => setModal("criteria")}>검사기준 · 숫자형</Button>
+        <Button size="small" variant="lineBlacktxt" onClick={() => setModal("criteria-judgement")}>검사기준 · 판정형</Button>
         <Button size="small" variant="lineBlacktxt" onClick={() => setModal("inspection")}>입고검사 · 항목 있음</Button>
         <Button size="small" variant="lineBlacktxt" onClick={() => setModal("inspection-empty")}>입고검사 · 항목 없음</Button>
       </div>
       <FigmaScreenPreview><ExactFormManagementScreen onOpenEditor={() => setModal("form")} onOpenCriteria={() => setModal("criteria")} /></FigmaScreenPreview>
       <CenterModal open={modal === "form"} onOpenChange={(open) => !open && setModal(null)} title="양식관리" size="standard-960" className="!max-h-[calc(100vh-40px)] !max-w-[900px] !rounded-none" actions={[{ id: "cancel", label: "취소", variant: "fillGray", onClick: () => setModal(null) }, { id: "save", label: "저장", variant: "fillGray", disabled: true }]} contentClassName="p-0 items-stretch"><FormEditorContent /></CenterModal>
-      <CenterModal open={modal === "criteria"} onOpenChange={(open) => !open && setModal(null)} title="셋팅 온도" size="compact-480" className="!h-[418px] !max-h-[calc(100vh-40px)]" footer={<div className="flex h-[72px] shrink-0 items-center justify-center gap-[10px]"><Button size="small" variant="fillGray" className="w-[139px]" onClick={() => setModal(null)}>취소</Button><Button size="small" variant="fillBlack" className="w-[139px]" onClick={() => setModal(null)}>저장</Button></div>}><CriteriaContent /></CenterModal>
+      <InspectionCriteriaDialog open={modal === "criteria"} onOpenChange={(open) => !open && setModal(null)} />
+      <InspectionCriteriaDialog open={modal === "criteria-judgement"} onOpenChange={(open) => !open && setModal(null)} title="전자접촉기 상태" mode="judgement" />
       <CenterModal open={modal === "inspection" || modal === "inspection-empty"} onOpenChange={(open) => !open && setModal(null)} title="입고검사" size="standard-960" className="!max-h-[calc(100vh-40px)] !max-w-[849px] !rounded-none" actions={[{ id: "cancel", label: "취소", variant: "fillGray", onClick: () => setModal(null) }, { id: "save", label: "저장", variant: "fillBlack", onClick: () => setModal(null) }]} contentClassName="p-0 items-stretch"><InspectionContent state={modal === "inspection-empty" ? "empty" : "ready"} /></CenterModal>
     </>
   );

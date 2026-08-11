@@ -96,6 +96,13 @@ export interface ConfirmDialogProps {
   tone?: ConfirmDialogTone;
   /** 본문과 버튼 사이에 끼워 넣는 안내 배너(선택). 2026-07-29 추가 */
   banner?: Pick<NoticeBannerProps, "message" | "linkLabel" | "onLinkClick" | "href">;
+  /** 기본 아이콘·문구 본문 대신 렌더링할 합성 콘텐츠. ConfirmDialog 외곽 규격은 유지한다. */
+  children?: React.ReactNode;
+  /** actions 대신 사용할 완전한 커스텀 푸터. */
+  footer?: React.ReactNode;
+  /** X·Esc·배경 클릭에 공통 적용되는 변경 폐기 콜백. */
+  onCancel?: () => void;
+  className?: string;
 }
 
 function ConfirmDialog({
@@ -107,15 +114,28 @@ function ConfirmDialog({
   actions = [{ label: "확인", variant: "fillBlack" }],
   tone = "error",
   banner,
+  children,
+  footer,
+  onCancel,
+  className,
 }: ConfirmDialogProps) {
+  const dismiss = React.useCallback(() => {
+    onCancel?.();
+    onOpenChange(false);
+  }, [onCancel, onOpenChange]);
+  const handleOpenChange = React.useCallback((nextOpen: boolean) => {
+    if (nextOpen) onOpenChange(true);
+    else dismiss();
+  }, [dismiss, onOpenChange]);
   return (
-    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
+    <DialogPrimitive.Root open={open} onOpenChange={handleOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40" />
         <DialogPrimitive.Content
           className={cn(
             "fixed left-1/2 top-1/2 z-50 min-w-[400px] max-w-[700px] -translate-x-1/2 -translate-y-1/2",
-            "flex flex-col overflow-hidden rounded-mes-modal-sm bg-white shadow-mes-modal-sm"
+            "flex flex-col overflow-hidden rounded-mes-modal-sm bg-white shadow-mes-modal-sm",
+            className
           )}
         >
           <div className="flex h-[52px] w-full shrink-0 items-center justify-between border-b border-mes-border-default py-[10px] pl-mes-dialog-x pr-mes-dialog-header-end">
@@ -137,47 +157,53 @@ function ConfirmDialog({
               32+20=52px는 너무 넓어 보인다는 지적) — 배너 케이스와 동일한 방식으로,
               본문 쪽엔 하단 padding을 주지 않고 푸터 자체의 pt(p-mes-dialog-x=20px)만으로 맞춤.
               배너가 있을 땐 본문→배너 간격 20px(pb-mes-dialog-x)은 그대로 유지. */}
-          <div
-            className={cn(
-              "flex shrink-0 items-center gap-mes-dialog-x px-8 pt-8",
-              banner ? "pb-mes-dialog-x" : "pb-0"
-            )}
-          >
-            <IconExclamationCircle size={44} className={cn("shrink-0", TONE_ICON_COLOR[tone])} />
-            <div className="flex flex-col gap-1">
-              <p className="text-[16px] font-semibold leading-[1.5] text-mes-text-default">
-                {heading}
-              </p>
-              {description && (
-                <p className="text-[14px] font-medium leading-[1.5] text-[#696f83] opacity-80">
-                  {description}
-                </p>
-              )}
-            </div>
-          </div>
+          {children ?? (
+            <>
+              <div
+                className={cn(
+                  "flex shrink-0 items-center gap-mes-dialog-x px-8 pt-8",
+                  banner ? "pb-mes-dialog-x" : "pb-0"
+                )}
+              >
+                <IconExclamationCircle size={44} className={cn("shrink-0", TONE_ICON_COLOR[tone])} />
+                <div className="flex flex-col gap-1">
+                  <p className="text-[16px] font-semibold leading-[1.5] text-mes-text-default">
+                    {heading}
+                  </p>
+                  {description && (
+                    <p className="text-[14px] font-medium leading-[1.5] text-[#696f83] opacity-80">
+                      {description}
+                    </p>
+                  )}
+                </div>
+              </div>
 
-          {/* 담당자 확인(2026-07-29): 이 영역(담당자 호칭 "도움말"/"툴팁")이 있을 땐 그
-              아래 버튼 영역까지 간격이 20px여야 함 — 아래쪽엔 별도 padding을 주지 않고
-              푸터 자체의 pt(p-5 = 20px)만으로 정확히 20px를 맞춤. */}
-          {banner && (
-            <div className="px-8">
-              <NoticeBanner {...banner} />
-            </div>
+              {/* 담당자 확인(2026-07-29): 이 영역(담당자 호칭 "도움말"/"툴팁")이 있을 땐 그
+                  아래 버튼 영역까지 간격이 20px여야 함 — 아래쪽엔 별도 padding을 주지 않고
+                  푸터 자체의 pt(p-5 = 20px)만으로 정확히 20px를 맞춤. */}
+              {banner && (
+                <div className="px-8">
+                  <NoticeBanner {...banner} />
+                </div>
+              )}
+            </>
           )}
 
-          <div className="flex w-full shrink-0 items-center gap-2 p-mes-dialog-x">
-            {actions.map((action, i) => (
-              <Button
-                key={i}
-                variant={action.variant ?? "fillBlack"}
-                size="basic"
-                onClick={action.onClick}
-                className="flex-1"
-              >
-                {action.label}
-              </Button>
-            ))}
-          </div>
+          {footer ?? (
+            <div className="flex w-full shrink-0 items-center gap-2 p-mes-dialog-x">
+              {actions.map((action, i) => (
+                <Button
+                  key={i}
+                  variant={action.variant ?? "fillBlack"}
+                  size="basic"
+                  onClick={action.onClick}
+                  className="flex-1"
+                >
+                  {action.label}
+                </Button>
+              ))}
+            </div>
+          )}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>

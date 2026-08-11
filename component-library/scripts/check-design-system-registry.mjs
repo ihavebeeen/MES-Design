@@ -10,6 +10,7 @@ const patternRegistry = readJson("patterns.json");
 const screenRegistry = readJson("screens.json");
 const visualRegistry = readJson("visual-regression.json");
 const sourceAssetRegistry = readJson("source-assets.json");
+const sourceEvidenceRegistry = readJson("source-evidence.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -42,11 +43,34 @@ checkVersion("patterns", patternRegistry);
 checkVersion("screens", screenRegistry);
 checkVersion("visual-regression", visualRegistry);
 checkVersion("source-assets", sourceAssetRegistry);
+checkVersion("source-evidence", sourceEvidenceRegistry);
 
 const components = mapByUniqueId("components", componentRegistry.components ?? []);
 const patterns = mapByUniqueId("patterns", patternRegistry.patterns ?? []);
 const screens = mapByUniqueId("screens", screenRegistry.screens ?? []);
-mapByUniqueId("visual-regression", visualRegistry.cases ?? []);
+const visualCases = mapByUniqueId("visual-regression", visualRegistry.cases ?? []);
+const sourceEvidence = mapByUniqueId("source-evidence", sourceEvidenceRegistry.sources ?? []);
+
+const allowedEvidenceStatuses = new Set(["queued", "in-progress", "verified"]);
+const requiredQualityGates = ["designContext", "metadataLedger", "componentMapping", "browserMeasurement", "interactionTest", "visualBaseline"];
+const figmaNodes = new Set();
+for (const source of sourceEvidence.values()) {
+  if (!/^\d+:\d+$/.test(source.figmaNode ?? "")) errors.push(`source-evidence '${source.id}': figmaNode 형식이 잘못되었습니다.`);
+  if (figmaNodes.has(source.figmaNode)) errors.push(`source-evidence: 중복 figmaNode '${source.figmaNode}'`);
+  figmaNodes.add(source.figmaNode);
+  if (!allowedEvidenceStatuses.has(source.status)) errors.push(`source-evidence '${source.id}': 알 수 없는 status '${source.status}'`);
+  if (!source.normalizedTarget) errors.push(`source-evidence '${source.id}': normalizedTarget이 필요합니다.`);
+  if (!Array.isArray(source.notes) || source.notes.length === 0) errors.push(`source-evidence '${source.id}': notes가 필요합니다.`);
+  for (const gate of requiredQualityGates) {
+    if (typeof source.qualityGates?.[gate] !== "boolean") errors.push(`source-evidence '${source.id}': qualityGates.${gate}는 boolean이어야 합니다.`);
+  }
+  if (source.status === "verified") {
+    const incomplete = requiredQualityGates.filter((gate) => source.qualityGates?.[gate] !== true);
+    if (incomplete.length > 0) errors.push(`source-evidence '${source.id}': verified 상태인데 미통과 게이트가 있습니다 (${incomplete.join(", ")}).`);
+    if (!source.visualCaseId) errors.push(`source-evidence '${source.id}': verified 상태에는 visualCaseId가 필요합니다.`);
+    else if (!visualCases.has(source.visualCaseId)) errors.push(`source-evidence '${source.id}': 미등록 visualCaseId '${source.visualCaseId}'를 참조합니다.`);
+  }
+}
 
 for (const component of components.values()) checkSource("component", component);
 for (const pattern of patterns.values()) {
@@ -116,5 +140,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${visualRegistry.cases.length} visual cases.`
+  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references.`
 );

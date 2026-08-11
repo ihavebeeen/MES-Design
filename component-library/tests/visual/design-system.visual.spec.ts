@@ -201,6 +201,104 @@ test("BOM 복사 원본 폭과 무가로스크롤", async ({ page }) => {
   await expect(dialog).toHaveScreenshot("bom-copy.png");
 });
 
+test("양식관리 숫자 검사 기준은 조건 유형별 원본 치수와 상태를 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 960, height: 720 });
+  await page.goto("/visual-regression/form-inspection-criteria");
+  const dialog = page.getByRole("dialog", { name: "셋팅 온도" });
+  await expect(dialog).toBeVisible();
+
+  const assertDialog = async (width: number, height: number) => {
+    const box = await dialog.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.width).toBe(width);
+    expect(box!.height).toBe(height);
+    expect(await dialog.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+  };
+
+  await assertDialog(480, 418);
+  const titleType = await dialog.getByText("판정 기준 입력", { exact: true }).evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { family: style.fontFamily, size: style.fontSize, weight: style.fontWeight, color: style.color };
+  });
+  expect(titleType).toEqual({ family: expect.stringContaining("Pretendard"), size: "15px", weight: "700", color: "rgb(1, 19, 39)" });
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("form-inspection-criteria-simple.png");
+
+  await dialog.getByRole("tab", { name: "범위조건" }).click();
+  await assertDialog(480, 476);
+  await expect(dialog).toHaveScreenshot("form-inspection-criteria-range.png");
+  await dialog.getByLabel("범위조건 최대값").fill("70");
+  await expect(dialog.getByText(/50.*≤ X ≤.*70/)).toBeVisible();
+
+  await dialog.getByRole("tab", { name: "복합조건" }).click();
+  await assertDialog(480, 550);
+  await expect(dialog).toHaveScreenshot("form-inspection-criteria-complex.png");
+  await expect(dialog.getByRole("button", { name: "조건 삭제" })).toHaveCount(1);
+  await dialog.getByRole("button", { name: "조건 삭제" }).click();
+  await expect(dialog.getByRole("button", { name: "조건 삭제" })).toHaveCount(0);
+
+  await dialog.getByRole("tab", { name: "단순조건" }).click();
+  await dialog.getByLabel("단순조건 측정값").fill("77");
+  await dialog.getByRole("button", { name: "취소" }).click();
+  await expect(dialog).toBeHidden();
+  await page.getByRole("button", { name: "팝업 다시 열기" }).click();
+  await expect(dialog.getByLabel("단순조건 측정값")).toHaveValue("50");
+});
+
+test("양식관리 판정형 검사 기준은 O·△·X 선택과 취소 복원을 지원한다", async ({ page }) => {
+  await page.setViewportSize({ width: 960, height: 720 });
+  await page.goto("/visual-regression/form-inspection-criteria-judgement");
+  const dialog = page.getByRole("dialog", { name: "전자접촉기 상태" });
+  await expect(dialog).toBeVisible();
+  const box = await dialog.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box!.width).toBe(480);
+  expect(box!.height).toBe(434);
+  expect(await dialog.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("form-inspection-criteria-judgement.png");
+
+  await dialog.getByRole("button", { name: "정상 기준값 △" }).click();
+  await expect(dialog.getByText("정상값 = △", { exact: true })).toBeVisible();
+  await dialog.getByRole("button", { name: "취소" }).click();
+  await page.getByRole("button", { name: "팝업 다시 열기" }).click();
+  await expect(dialog.getByText("정상값 = O", { exact: true })).toBeVisible();
+});
+
+test("총 생산수량 변경 팝업은 원본 치수와 재등록 흐름을 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 960, height: 720 });
+  await page.goto("/visual-regression/production-quantity-reregistration");
+  const dialog = page.getByRole("dialog", { name: "알림" });
+  await expect(dialog).toBeVisible();
+
+  const box = await dialog.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box!.width).toBe(490);
+  expect(box!.height).toBe(342);
+  expect(await dialog.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+
+  const content = dialog.locator("[data-production-quantity-comparison]");
+  await expect(content).toHaveCSS("height", "210px");
+  const heading = dialog.getByText("총 생산수량이 변경되었습니다.", { exact: true });
+  await expect(heading).toHaveCSS("font-size", "16px");
+  await expect(heading).toHaveCSS("font-weight", "600");
+  const comparison = dialog.getByRole("table", { name: "변경 전후 비교" });
+  await expect(comparison).toHaveCSS("height", "90px");
+  expect(await comparison.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("production-quantity-reregistration.png");
+
+  await dialog.getByRole("button", { name: "닫기", exact: true }).last().click();
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole("status")).toHaveCount(0);
+
+  await page.getByRole("button", { name: "팝업 다시 열기" }).click();
+  await dialog.getByRole("button", { name: "투입품목 재등록" }).click();
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole("status")).toHaveText("투입품목 설정/조회 열기 요청됨");
+});
+
 test("완성 팝업 16종은 데스크톱에서 가로 스크롤을 만들지 않는다", async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 960 });
   await page.goto("/patterns/completed-popup-types");

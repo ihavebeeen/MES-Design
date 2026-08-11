@@ -126,6 +126,24 @@
       "source": "src/components/patterns/table-column-settings.tsx",
       "requiredComponents": ["button", "checkbox", "input"],
       "rules": ["표시·고정·순서 설정을 실제 컬럼 구성 state에 반영한다."]
+    },
+    {
+      "id": "popup.center.inspection-criteria",
+      "name": "중앙 · 검사 판정 기준 설정",
+      "kind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/inspection-criteria-pattern.tsx",
+      "requiredComponents": ["center-modal", "button", "input", "select"],
+      "rules": ["숫자입력은 단순·범위·복합 조건을 같은 팝업 state로 전환한다.", "O/△/X 입력형은 단순조건으로 고정하고 정상값을 선택한다.", "조건 유형별 원본 높이 418·476·550px과 판정형 434px을 유지한다.", "취소·X·Esc는 편집값을 저장 전 상태로 복원한다."]
+    },
+    {
+      "id": "popup.center.before-after-confirmation",
+      "name": "중앙 · 변경 전후 비교 확인",
+      "kind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/production-quantity-reregistration-pattern.tsx",
+      "requiredComponents": ["confirm-dialog", "before-after-comparison", "button"],
+      "rules": ["표는 목록이 아니라 변경 전후 값을 같은 좌표에서 비교하는 요약표다.", "닫기는 기존 정보를 유지하고 재등록은 투입품목 설정/조회 흐름을 요청한다.", "작은 알림 팝업이므로 CenterModal이 아니라 ConfirmDialog 외곽 규격을 재사용한다."]
     }
   ]
 }
