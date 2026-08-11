@@ -167,6 +167,8 @@ test("이지모드 입고등록은 MES 우측 슬라이드 규격과 직접 입�
   await page.getByRole("button", { name: "11", exact: true }).click();
   await dialog.getByLabel("1행 거래처").click();
   await page.getByRole("option", { name: "D업체" }).click();
+  await dialog.getByLabel("1행 창고").click();
+  await page.getByRole("option", { name: "동진창고" }).click();
   await dialog.getByLabel("1행 품목").click();
   await page.getByRole("option", { name: "비비빅" }).click();
   await dialog.getByLabel("1행 수량").fill("1500");
@@ -175,6 +177,8 @@ test("이지모드 입고등록은 MES 우측 슬라이드 규격과 직접 입�
 
   await addButton.click();
   await expect(dialog.getByLabel("2행 거래처")).toBeVisible();
+  await expect(dialog.getByLabel("2행 거래처")).toHaveText("D업체");
+  await expect(dialog.getByLabel("2행 창고")).toHaveText("본창고");
   await expect(saveButton).toBeDisabled();
   await dialog.getByRole("button", { name: "2행 삭제" }).click();
   await expect(dialog.getByLabel("2행 거래처")).toHaveCount(0);

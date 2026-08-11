@@ -41,8 +41,8 @@ export interface EasyModeReceivingDialogProps {
   onSave?: (data: EasyModeReceivingData) => void;
 }
 
-function createEmptyRow(id: number): EasyModeReceivingRow {
-  return { id, customer: "", warehouse: "본창고", item: "", quantity: "0", lot: "" };
+function createEmptyRow(id: number, customer = ""): EasyModeReceivingRow {
+  return { id, customer, warehouse: "본창고", item: "", quantity: "0", lot: "" };
 }
 
 function cloneRows(rows: EasyModeReceivingRow[]) {
@@ -101,8 +101,13 @@ export function EasyModeReceivingDialog({ open, onOpenChange, onSave }: EasyMode
   };
 
   const addRow = () => {
-    if (!isComplete(rows[rows.length - 1])) return;
-    setRows((current) => [...current, createEmptyRow(Math.max(...current.map((row) => row.id)) + 1)]);
+    setRows((current) => {
+      const previousRow = current[current.length - 1];
+      if (!previousRow || !isComplete(previousRow)) return current;
+
+      const nextId = Math.max(...current.map((row) => row.id)) + 1;
+      return [...current, createEmptyRow(nextId, previousRow.customer)];
+    });
   };
 
   const canSave = Boolean(receivingDate && rows.length > 0 && rows.every(isComplete));
