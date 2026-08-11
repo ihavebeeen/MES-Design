@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "screens": [
-    { "id": "material-input-settings", "name": "투입품목 설정/조회", "patternId": "popup.center.navigation-detail", "source": "src/components/patterns/completed-popup-expanded-content.tsx", "figmaNode": "18826:60554", "stateRules": ["첫 진입 시 기존 선택 행과 투입수량을 표시한다.", "필터와 검색 입력은 48px toolbar 안에서 수직 중앙 정렬한다.", "선택 행은 black 체크박스, Primary-20 배경, 수량 입력과 ALL 체크를 함께 표시한다."] },
+    { "id": "material-input-settings", "name": "투입품목 설정/조회", "patternId": "popup.center.navigation-detail", "source": "src/components/patterns/completed-popup-expanded-content.tsx", "figmaNode": "18826:60554", "stateRules": ["첫 진입 시 기존 선택 행과 투입수량을 표시한다.", "필터와 검색 입력은 48px toolbar 안에서 수직 중앙 정렬한다.", "선택 행은 black 체크박스, Primary-20 배경, 수량 입력과 ALL 체크를 함께 표시한다.", "1280×720에서는 헤더·푸터를 화면 안에 고정하고 본문만 세로 스크롤하며 표 컬럼은 가용 폭에 맞춰 줄어든다."] },
     { "id": "batch-work-order", "name": "생산계획(일) 연동 일괄작업지시", "patternId": "popup.center.table", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:50866", "stateRules": ["행 선택 시 해당 행의 편집 컨트롤이 나타난다.", "지시수량은 숫자 입력이 가능해야 한다.", "취소 버튼은 팝업을 닫는다."] },
     { "id": "defect-quantity-input", "name": "불량수량 입력", "patternId": "popup.center.table", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:52919", "stateRules": ["600px 팝업의 20px 본문 여백 안에서 표 560px이 가로 스크롤 없이 표시된다.", "불량유형·저장창고·불량수량 입력이 합계에 즉시 반영된다."] },
     { "id": "bom-copy", "name": "BOM 복사", "patternId": "popup.center.dual-pane", "source": "src/components/patterns/completed-popup-expanded-content.tsx", "figmaNode": "18962:67817", "stateRules": ["원본 BOM과 적용 대상을 좌우로 비교한다."] },

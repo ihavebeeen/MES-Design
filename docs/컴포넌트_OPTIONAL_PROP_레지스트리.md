@@ -61,6 +61,7 @@ adapter다. 신규 제품 코드에서는 가능하면 public component를 직�
 | `FixtureFilter` | `searchable` | public `Filter.searchable`을 화면 조립부에 전달한다. |
 | `FixtureTable` | `onCheckedRowsChange` | `Table`의 id 배열을 예제 행 index 배열로 변환해 실제 선택 state에 연결한다. |
 | `FixtureTable` | `hiddenSelectionRows` | 특정 예제 행에 `TableRowData.hideSelection`을 적용한다. |
+| `FixtureTable` | `widths` | public `TableColumn.width`와 같은 `number \| { min, grow }` 타입으로 고정 컬럼과 반응형 flex 컬럼을 함께 전달한다. |
 | `FixtureTable` | Table layout props | `edgePadding`, `selectionColumnWidth`, `centerSelection`, `columnDividers`, `headerBackground`, `horizontalScroll`, `disabledTextTone`, `unselectedTextTone`, `unselectedCheckboxAppearance`, `selectionHeaderIndeterminate`를 public `Table`에 그대로 전달한다. |
 | `RadioOption` | `onChange` | 라디오 외형을 읽기 전용 예시가 아니라 수기/자동, 자동배열/사용자설정, 검사결과 state 전환에 연결한다. |
 | `FigmaScreenPreview` | `sourceWidth`, `sourceHeight` | 1920 고정 가정 대신 1280·786·375 등 실제 Figma 프레임의 자연 크기를 기준으로 문서 안에서 축소한다. |

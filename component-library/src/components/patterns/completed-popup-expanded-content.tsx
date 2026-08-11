@@ -99,7 +99,7 @@ export function MaterialInputSetupContent() {
   ]);
 
   return (
-    <div className="grid h-full min-h-0 w-full grid-cols-[240px_1fr]">
+    <div className="material-input-content grid h-full min-h-[676px] w-full grid-cols-[240px_1fr]">
       <aside className="flex h-[619px] min-h-0 flex-col gap-5 border-r border-mes-gray-30 p-5">
         <Button className="w-full" size="basic" startIcon={<IconScan size={16} />} onClick={() => setScanReady((current) => !current)}>
           {scanReady ? "Scan 준비" : "Scan"}
@@ -119,7 +119,7 @@ export function MaterialInputSetupContent() {
       <div className="flex min-h-0 flex-col">
         <div className="h-[100px] shrink-0">
           <b className="flex h-[52px] items-center px-5 text-[16px]">품목 재고 리스트</b>
-          <div className="mx-5 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
+          <div className="material-query-toolbar mx-5 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
             <FixtureFilter tags={[]} searchable={false} />
             <FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" />
           </div>
@@ -128,7 +128,16 @@ export function MaterialInputSetupContent() {
           <FixtureTable
             headers={["LOT-NO", "품목", "품목구분", "규격", "수량", "단위", "창고", "투입수량"]}
             rows={rows}
-            widths={[123.43, 123.43, 123.43, 123.43, 123.43, 123.43, 123.43, 200]}
+            widths={[
+              { min: 80, grow: 1 },
+              { min: 80, grow: 1 },
+              { min: 80, grow: 1 },
+              { min: 80, grow: 1 },
+              { min: 80, grow: 1 },
+              { min: 80, grow: 1 },
+              { min: 80, grow: 1 },
+              200,
+            ]}
             aligns={["left", "left", "left", "left", "right", "left", "left", "left"]}
             checkedRows={visibleSelectedRows}
             onCheckedRowsChange={updateVisibleSelectedRows}
@@ -137,8 +146,10 @@ export function MaterialInputSetupContent() {
             selectionHeaderIndeterminate={false}
             selectionColumnWidth={56}
             edgePadding={0}
+            columnDividers={false}
+            headerBackground="white"
             horizontalScroll={false}
-            className="h-[318px] shrink-0"
+            className="material-inventory-table h-[318px] shrink-0 rounded-mes-control border-x border-t"
           />
           <div className="mt-2.5 h-[212px]">
             <div className="flex h-[22px] items-center gap-2.5 px-2.5"><b className="text-[14px]">품목별 투입 결과</b><Tag color="gray" size="compact">표준</Tag></div>
@@ -147,9 +158,11 @@ export function MaterialInputSetupContent() {
               headers={["품목", "현재고", "필요수량", "선택수량", "미투입수량"]}
               rows={requirementRows.map((row) => row.map((cell, index) => index === 4 && cell !== "-" ? <span key={cell} className="font-semibold text-mes-danger-60">{cell}</span> : cell))}
               aligns={["left", "right", "right", "right", "right"]}
-              widths={[216, 216, 216, 216, 216]}
+              widths={Array.from({ length: 5 }, () => ({ min: 80, grow: 1 }))}
+              columnDividers={false}
+              headerBackground="white"
               horizontalScroll={false}
-              className="mt-2.5 h-[180px]"
+              className="material-requirement-table mt-2.5 h-[180px] rounded-mes-control border-x border-t"
             />
           </div>
         </div>

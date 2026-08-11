@@ -171,7 +171,7 @@ function FixtureFilter({ tags = [], definitions, searchable = true, className }:
 interface FixtureTableProps {
   headers: string[];
   rows: React.ReactNode[][];
-  widths?: Array<number | string>;
+  widths?: Array<number | { min: number; grow?: number }>;
   aligns?: Array<"left" | "center" | "right">;
   selectedRow?: number;
   selectedRows?: number[];
@@ -202,7 +202,7 @@ function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows
   const columns: TableColumn<FixtureTableData>[] = headers.map((header, index) => ({
     key: `column-${index}`,
     label: header,
-    width: typeof widths?.[index] === "number" ? widths[index] as number : { min: 80, grow: 1 },
+    width: widths?.[index] ?? { min: 80, grow: 1 },
     align: aligns?.[index] ?? "left",
     render: (row) => row.cells[index],
   }));

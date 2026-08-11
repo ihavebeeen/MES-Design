@@ -17,6 +17,53 @@ test("투입품목 설정/조회 팝업", async ({ page }) => {
   await expect(dialog).toHaveScreenshot("material-input-settings.png");
 });
 
+test("투입품목 설정/조회 작은 화면 정렬과 편집 상태", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto("/visual-regression/popup");
+  const dialog = page.getByRole("dialog", { name: "투입품목 설정/조회" });
+  await expect(dialog).toBeVisible();
+
+  const dialogBox = await dialog.boundingBox();
+  expect(dialogBox).not.toBeNull();
+  expect(dialogBox!.x).toBeGreaterThanOrEqual(20);
+  expect(dialogBox!.y).toBeGreaterThanOrEqual(16);
+  expect(dialogBox!.x + dialogBox!.width).toBeLessThanOrEqual(1260);
+  expect(dialogBox!.y + dialogBox!.height).toBeLessThanOrEqual(704);
+
+  const toolbar = dialog.locator(".material-query-toolbar");
+  const filterButton = toolbar.getByRole("button", { name: "필터 추가" });
+  const searchInput = toolbar.getByPlaceholder("검색어 입력..");
+  const [toolbarBox, filterBox, searchBox] = await Promise.all([
+    toolbar.boundingBox(),
+    filterButton.boundingBox(),
+    searchInput.boundingBox(),
+  ]);
+  expect(toolbarBox).not.toBeNull();
+  expect(filterBox).not.toBeNull();
+  expect(searchBox).not.toBeNull();
+  const toolbarCenter = toolbarBox!.y + toolbarBox!.height / 2;
+  expect(Math.abs(filterBox!.y + filterBox!.height / 2 - toolbarCenter)).toBeLessThanOrEqual(1);
+  expect(Math.abs(searchBox!.y + searchBox!.height / 2 - toolbarCenter)).toBeLessThanOrEqual(1);
+
+  for (const selector of [".material-inventory-table", ".material-requirement-table"]) {
+    const overflow = await dialog.locator(selector).evaluate((element) => element.scrollWidth - element.clientWidth);
+    expect(overflow).toBe(0);
+  }
+
+  await filterButton.click();
+  await expect(page.locator('[data-radix-popper-content-wrapper] input')).toHaveCount(0);
+  await page.keyboard.press("Escape");
+
+  const materialRow = dialog
+    .locator(".material-inventory-table")
+    .getByText("비닐125*125", { exact: true })
+    .locator("../..");
+  await materialRow.locator('input[type="checkbox"]').first().check();
+  await expect(dialog.getByLabel("비닐125*125 투입수량")).toBeVisible();
+  await dialog.getByLabel("비닐125*125 투입수량").fill("1200");
+  await expect(dialog.getByLabel("비닐125*125 투입수량")).toHaveValue("1200");
+});
+
 test("Figma 원본 재고 추가 팝업", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/visual-regression/source-inventory-add");

@@ -8,8 +8,8 @@
   },
   "summary": {
     "scannedFiles": 93,
-    "totalOccurrences": 2369,
-    "arbitraryUtilities": 866,
+    "totalOccurrences": 2372,
+    "arbitraryUtilities": 868,
     "hardcodedColors": 33,
     "reviewCandidates": 0,
     "unregisteredCandidates": 0
@@ -23,8 +23,8 @@
     },
     "pattern": {
       "files": 10,
-      "occurrences": 775,
-      "arbitraryUtilities": 248,
+      "occurrences": 778,
+      "arbitraryUtilities": 250,
       "hardcodedColors": 6
     },
     "evidence": {
@@ -303,8 +303,8 @@
         "examples": [
           "src/components/ui/center-modal.tsx:140",
           "src/components/ui/side-slide-panel.tsx:115",
-          "src/components/patterns/completed-popup-expanded-content.tsx:184",
-          "src/components/patterns/completed-popup-expanded-content.tsx:268",
+          "src/components/patterns/completed-popup-expanded-content.tsx:197",
+          "src/components/patterns/completed-popup-expanded-content.tsx:281",
           "src/components/patterns/source-popup-gallery.tsx:72"
         ]
       },
@@ -412,8 +412,8 @@
           "pattern": 2
         },
         "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:327",
-          "src/components/patterns/completed-popup-expanded-content.tsx:397"
+          "src/components/patterns/completed-popup-expanded-content.tsx:340",
+          "src/components/patterns/completed-popup-expanded-content.tsx:410"
         ]
       },
       {
@@ -489,11 +489,11 @@
     "radius": [
       {
         "value": "rounded-mes-control",
-        "count": 66,
+        "count": 68,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 41,
-          "pattern": 18,
+          "pattern": 20,
           "evidence": 7
         },
         "examples": [
@@ -703,7 +703,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:194"
+          "src/components/patterns/completed-popup-expanded-content.tsx:207"
         ]
       },
       {
@@ -893,7 +893,7 @@
           "src/components/ui/date-range-picker.tsx:107",
           "src/components/ui/tag.tsx:59",
           "src/components/patterns/completed-application-patterns.tsx:312",
-          "src/components/patterns/completed-popup-expanded-content.tsx:287",
+          "src/components/patterns/completed-popup-expanded-content.tsx:300",
           "src/components/patterns/exact-production-analytics-screen.tsx:74",
           "src/components/patterns/original-mes-screen-assets.tsx:44"
         ]
@@ -909,8 +909,8 @@
         },
         "examples": [
           "src/components/ui/inspection-judgement.tsx:38",
-          "src/components/patterns/completed-popup-expanded-content.tsx:303",
-          "src/components/patterns/completed-popup-expanded-content.tsx:365",
+          "src/components/patterns/completed-popup-expanded-content.tsx:316",
+          "src/components/patterns/completed-popup-expanded-content.tsx:378",
           "src/components/patterns/exact-form-management-screen.tsx:141",
           "src/components/patterns/exact-production-result-screen.tsx:100",
           "src/components/patterns/original-mes-screen-assets.tsx:118"
@@ -966,11 +966,11 @@
     "size": [
       {
         "value": "0px",
-        "count": 63,
+        "count": 62,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 13,
-          "pattern": 40,
+          "pattern": 39,
           "evidence": 10
         },
         "examples": [
@@ -1173,9 +1173,9 @@
         "examples": [
           "src/components/ui/dropdown-menu.tsx:33",
           "src/components/ui/filter.tsx:194",
-          "src/components/patterns/completed-popup-expanded-content.tsx:152",
-          "src/components/patterns/completed-popup-expanded-content.tsx:199",
-          "src/components/patterns/completed-popup-expanded-content.tsx:269",
+          "src/components/patterns/completed-popup-expanded-content.tsx:165",
+          "src/components/patterns/completed-popup-expanded-content.tsx:212",
+          "src/components/patterns/completed-popup-expanded-content.tsx:282",
           "src/components/patterns/exact-inventory-action-modal.tsx:81",
           "src/components/patterns/exact-inventory-action-modal.tsx:83",
           "src/components/patterns/exact-inventory-action-modal.tsx:84"
@@ -1196,8 +1196,8 @@
           "src/components/ui/page-top-tab-item.tsx:72",
           "src/components/ui/page-top-tab-item.tsx:89",
           "src/components/ui/section-header.tsx:14",
-          "src/components/patterns/completed-popup-expanded-content.tsx:194",
-          "src/components/patterns/completed-popup-expanded-content.tsx:303",
+          "src/components/patterns/completed-popup-expanded-content.tsx:207",
+          "src/components/patterns/completed-popup-expanded-content.tsx:316",
           "src/components/patterns/exact-form-management-screen.tsx:135"
         ]
       },
@@ -1276,7 +1276,7 @@
           "src/components/ui/sidebar.tsx:309",
           "src/components/ui/sidebar.tsx:365",
           "src/components/patterns/analytics-dashboard-pattern.tsx:47",
-          "src/components/patterns/completed-popup-expanded-content.tsx:303",
+          "src/components/patterns/completed-popup-expanded-content.tsx:316",
           "src/components/patterns/exact-production-analytics-screen.tsx:48"
         ]
       },
@@ -1414,7 +1414,7 @@
           "src/components/ui/analytics-charts.tsx:38",
           "src/components/patterns/completed-application-patterns.tsx:308",
           "src/components/patterns/completed-application-patterns.tsx:308",
-          "src/components/patterns/completed-popup-expanded-content.tsx:286",
+          "src/components/patterns/completed-popup-expanded-content.tsx:299",
           "src/components/patterns/exact-production-analytics-screen.tsx:58"
         ]
       },
@@ -1464,7 +1464,7 @@
         },
         "examples": [
           "src/components/ui/time-picker.tsx:63",
-          "src/components/patterns/completed-popup-expanded-content.tsx:198",
+          "src/components/patterns/completed-popup-expanded-content.tsx:211",
           "src/components/patterns/completed-popup-patterns.tsx:255",
           "src/components/patterns/exact-production-result-screen.tsx:101",
           "src/components/patterns/exact-purchase-modals.tsx:68",
@@ -1524,6 +1524,22 @@
         ]
       },
       {
+        "value": "calc(100vh-32px)",
+        "count": 6,
+        "arbitraryCount": 6,
+        "layers": {
+          "pattern": 6
+        },
+        "examples": [
+          "src/components/patterns/completed-popup-expanded-content.tsx:440",
+          "src/components/patterns/completed-popup-patterns.tsx:824",
+          "src/components/patterns/completed-popup-patterns.tsx:825",
+          "src/components/patterns/completed-popup-patterns.tsx:826",
+          "src/components/patterns/completed-popup-patterns.tsx:827",
+          "src/components/patterns/completed-popup-patterns.tsx:828"
+        ]
+      },
+      {
         "value": "27px",
         "count": 5,
         "arbitraryCount": 5,
@@ -1569,21 +1585,6 @@
           "src/components/ui/radio-choice-dialog.tsx:117",
           "src/components/patterns/exact-inventory-edit-modal.tsx:70",
           "src/components/patterns/exact-inventory-edit-modal.tsx:84"
-        ]
-      },
-      {
-        "value": "calc(100vh-32px)",
-        "count": 5,
-        "arbitraryCount": 5,
-        "layers": {
-          "pattern": 5
-        },
-        "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:427",
-          "src/components/patterns/completed-popup-patterns.tsx:825",
-          "src/components/patterns/completed-popup-patterns.tsx:826",
-          "src/components/patterns/completed-popup-patterns.tsx:827",
-          "src/components/patterns/completed-popup-patterns.tsx:828"
         ]
       },
       {
@@ -1716,7 +1717,7 @@
         },
         "examples": [
           "src/components/ui/navbar.tsx:21",
-          "src/components/patterns/completed-popup-expanded-content.tsx:422",
+          "src/components/patterns/completed-popup-expanded-content.tsx:435",
           "src/components/patterns/completed-popup-patterns.tsx:254",
           "src/components/patterns/original-mes-screen-assets.tsx:98"
         ]
@@ -1816,8 +1817,8 @@
         },
         "examples": [
           "src/components/ui/analytics-charts.tsx:38",
-          "src/components/patterns/completed-popup-expanded-content.tsx:285",
-          "src/components/patterns/completed-popup-expanded-content.tsx:365"
+          "src/components/patterns/completed-popup-expanded-content.tsx:298",
+          "src/components/patterns/completed-popup-expanded-content.tsx:378"
         ]
       },
       {
@@ -1841,7 +1842,7 @@
           "pattern": 3
         },
         "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:427",
+          "src/components/patterns/completed-popup-expanded-content.tsx:440",
           "src/components/patterns/completed-popup-patterns.tsx:827",
           "src/components/patterns/completed-popup-patterns.tsx:828"
         ]
@@ -2456,7 +2457,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:143"
+          "src/components/patterns/completed-popup-expanded-content.tsx:154"
         ]
       },
       {
@@ -2621,7 +2622,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:141"
+          "src/components/patterns/completed-popup-expanded-content.tsx:152"
         ]
       },
       {
@@ -2878,6 +2879,17 @@
         ]
       },
       {
+        "value": "676px",
+        "count": 1,
+        "arbitraryCount": 1,
+        "layers": {
+          "pattern": 1
+        },
+        "examples": [
+          "src/components/patterns/completed-popup-expanded-content.tsx:102"
+        ]
+      },
+      {
         "value": "678px",
         "count": 1,
         "arbitraryCount": 1,
@@ -2984,7 +2996,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:296"
+          "src/components/patterns/completed-popup-expanded-content.tsx:309"
         ]
       },
       {
@@ -3332,7 +3344,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:287"
+          "src/components/patterns/completed-popup-expanded-content.tsx:300"
         ]
       },
       {
@@ -3343,7 +3355,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-expanded-content.tsx:287"
+          "src/components/patterns/completed-popup-expanded-content.tsx:300"
         ]
       }
     ],
@@ -3450,5 +3462,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "089c882c050a44d9"
+  "fingerprint": "c718753394fcf297"
 }
