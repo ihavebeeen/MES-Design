@@ -2,6 +2,17 @@
   "schemaVersion": 1,
   "sources": [
     {
+      "id": "easy-mode-receiving",
+      "name": "이지모드 · 지시 없는 입고등록",
+      "figmaNode": "20368:69523",
+      "kind": "popup-bundle",
+      "normalizedTarget": "popup.side.direct-entry",
+      "status": "verified",
+      "notes": ["Figma Make에서는 무지시 직접 입력 흐름과 필드 구성을 가져온다.", "외곽·헤더·본문 여백·섹션·타이포·컨트롤·푸터는 기존 MES 900px 우측 슬라이드 팝업 규격으로 정규화한다.", "상단 모드 탭은 포함하지 않는다."],
+      "qualityGates": { "designContext": true, "metadataLedger": true, "componentMapping": true, "browserMeasurement": true, "interactionTest": true, "visualBaseline": true },
+      "visualCaseId": "popup-easy-mode-receiving"
+    },
+    {
       "id": "form-management-inspection-criteria",
       "name": "양식관리 · 검사 기준 설정 상태",
       "figmaNode": "17309:159298",

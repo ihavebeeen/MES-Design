@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
@@ -120,6 +120,76 @@ test("생산실적 등록 슬라이드 팝업", async ({ page }) => {
   await expect(deleteButtons).toHaveCount(10);
   await dialog.getByRole("button", { name: "실적 추가" }).click();
   await expect(deleteButtons).toHaveCount(11);
+});
+
+test("이지모드 입고등록은 MES 우측 슬라이드 규격과 직접 입력 상태를 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/visual-regression/easy-mode-receiving");
+  const dialog = page.getByRole("dialog", { name: "입고등록" });
+  await expect(dialog).toBeVisible();
+
+  const box = await dialog.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box!.x).toBe(540);
+  expect(box!.y).toBe(0);
+  expect(box!.width).toBe(900);
+  expect(box!.height).toBe(900);
+
+  const readTypography = (locator: Locator) => locator.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { fontSize: style.fontSize, fontWeight: style.fontWeight };
+  });
+  const typography = {
+    title: await readTypography(dialog.locator("h2")),
+    groupTitle: await readTypography(dialog.getByText("품목/수량 직접 입력", { exact: true })),
+    field: await readTypography(dialog.locator("span").filter({ hasText: /^입고일/ }).first()),
+    tableHeader: await readTypography(dialog.locator("span").filter({ hasText: /^거래처/ }).last()),
+  };
+  expect(typography.title).toEqual({ fontSize: "18px", fontWeight: "700" });
+  expect(typography.groupTitle).toEqual({ fontSize: "16px", fontWeight: "700" });
+  expect(typography.field?.fontSize).toBe("14px");
+  expect(typography.tableHeader).toEqual({ fontSize: "13px", fontWeight: "600" });
+
+  await expect(dialog.getByText("이지모드", { exact: true })).toHaveCount(0);
+  await expect(dialog.getByText("기본", { exact: true })).toHaveCount(0);
+  const contentOverflow = await dialog.locator("[data-easy-receiving-content]").evaluate((element) => element.scrollWidth - element.clientWidth);
+  expect(contentOverflow).toBe(0);
+
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("easy-mode-receiving.png");
+
+  const saveButton = dialog.getByRole("button", { name: "저장" });
+  const addButton = dialog.getByRole("button", { name: "행 추가" });
+  await expect(saveButton).toBeDisabled();
+  await expect(addButton).toBeDisabled();
+
+  await dialog.getByRole("button", { name: "날짜 선택" }).click();
+  await page.getByRole("button", { name: "11", exact: true }).click();
+  await dialog.getByLabel("1행 거래처").click();
+  await page.getByRole("option", { name: "D업체" }).click();
+  await dialog.getByLabel("1행 품목").click();
+  await page.getByRole("option", { name: "비비빅" }).click();
+  await dialog.getByLabel("1행 수량").fill("1500");
+  await expect(saveButton).toBeEnabled();
+  await expect(addButton).toBeEnabled();
+
+  await addButton.click();
+  await expect(dialog.getByLabel("2행 거래처")).toBeVisible();
+  await expect(saveButton).toBeDisabled();
+  await dialog.getByRole("button", { name: "2행 삭제" }).click();
+  await expect(dialog.getByLabel("2행 거래처")).toHaveCount(0);
+
+  await dialog.getByRole("button", { name: /선택 항목/ }).click();
+  await expect(dialog.getByLabel("입고구분")).toBeVisible();
+  await dialog.getByLabel("비고").fill("무지시 입고");
+
+  await dialog.getByRole("button", { name: "취소" }).click();
+  await expect(dialog).toBeHidden();
+  await page.getByRole("button", { name: "팝업 다시 열기" }).click();
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "날짜 선택" })).toBeVisible();
+  await expect(dialog.getByLabel("1행 거래처")).toHaveText("선택");
+  await expect(dialog.getByRole("button", { name: "저장" })).toBeDisabled();
 });
 
 test("자주검사 커스텀 정보 등록 상태", async ({ page }) => {
@@ -355,7 +425,7 @@ test("캐비티 배열 입력은 제어 상태로 동작하고 콘솔 오류를 
   expect(consoleErrors).toEqual([]);
 });
 
-test("완성 팝업 16종은 데스크톱에서 가로 스크롤을 만들지 않는다", async ({ page }) => {
+test("완성 팝업 17종은 데스크톱에서 가로 스크롤을 만들지 않는다", async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 960 });
   await page.goto("/patterns/completed-popup-types");
   const popupLabels = [
@@ -373,6 +443,7 @@ test("완성 팝업 16종은 데스크톱에서 가로 스크롤을 만들지 �
     "600 · 비가동시간 선택",
     "900 · 생산실적 등록",
     "900 · 입고등록",
+    "900 · 이지모드 입고등록",
     "760 · 커스텀 정보 등록",
     "760 · 자주검사",
   ];

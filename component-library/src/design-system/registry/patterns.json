@@ -56,6 +56,15 @@
       "rules": ["상단 입력값을 추가하면 하단 리스트 state에 실제 행이 생성되어야 한다."]
     },
     {
+      "id": "popup.side.direct-entry",
+      "name": "우측 슬라이드 · 지시 없는 직접 실적 입력",
+      "kind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/easy-mode-receiving-pattern.tsx",
+      "requiredComponents": ["side-slide-panel", "button", "date-picker", "input", "select", "icon-button"],
+      "rules": ["발주·생산지시를 선택하지 않고 입고일과 품목별 거래처·창고·수량·LOT를 직접 입력한다.", "Figma Make에서는 업무 흐름과 필드 구조만 가져오고 패널·타이포·여백·컨트롤·푸터는 MES 우측 슬라이드 규격을 사용한다.", "상단 기본/이지 모드 전환이나 페이지 탭은 표시하지 않는다.", "취소·X·Esc는 미저장 값을 마지막 저장 상태로 복원한다."]
+    },
+    {
       "id": "popup.side.custom-columns",
       "name": "우측 슬라이드 · 커스텀 정보",
       "kind": "popup",
