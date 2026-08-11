@@ -30,6 +30,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `GroupQuery` | `compact`, `compactLabel` | `boolean`, `string \| false` | 768에서는 아이콘+그룹화+화살표, 375에서는 아이콘+화살표만 표시하고 동일한 Level 상태를 유지한다. | Figma `18849:64894`, `18849:65980` |
 | `CenterModal` | `headerDivider` | `boolean`, 기본 `true` | 제목 아래 구분선이 없는 소형 정보 팝업을 같은 모달 컴포넌트로 표현한다. | 품목 상세정보, Figma `11210:52744` |
 | `CenterModal` | `size` 확장 | `wide-1024`, `wide-1142` 추가 | 화면별 임의 폭 덮어쓰기 없이 선발행 라벨 1024px, BOM 복사 1142px의 실제 폭 계약을 명시한다. 투입품목 설정/조회는 기존 `wide-1400`, 운전일지는 `SideSlidePanel.standard-900`을 사용한다. | Figma `18962:67817`, `18756:60803` |
+| `SideSlidePanel` | `size` 확장 | `medium-849` 추가 | 입고검사 원본의 849×960 우측 전체 높이 패널을 임의 `className` 폭 덮어쓰기 없이 표현한다. | Figma `19768:100249` |
 | `CenterModal`, `SideSlidePanel` | `onCancel` dismiss 계약 | `() => void` | 취소·X·Esc·배경 클릭이 동일한 콜백을 실행한다. 저장 전 임시 상태의 폐기 또는 원본 스냅샷 복원은 이 콜백에서 수행하고 컨테이너가 이어서 닫힘 상태를 반영한다. | 공통 팝업 상호작용 규칙 |
 | `ConfirmDialog` | `children`, `footer`, `onCancel`, `className` | `ReactNode`, `ReactNode`, `() => void`, `string` | 기존 12px radius·52px 헤더·그림자·dismiss 계약은 재사용하면서 변경 전후 비교표처럼 전용 본문과 푸터가 필요한 확인 팝업을 합성한다. `onCancel`은 X·Esc·배경 클릭의 공통 변경 폐기 지점이다. | 총생산수량 변경 확인, Figma `19363:63770` |
 | `Table` | `activeId` | `string \| null`, 기본 `undefined` | 체크 상태와 별도로 활성 행을 지정한다. 생략하면 실제 선택 행이 활성 행 배경을 가진다. | 완성 화면 상태 분리용 |

@@ -299,6 +299,34 @@ test("총 생산수량 변경 팝업은 원본 치수와 재등록 흐름을 유
   await expect(page.getByRole("status")).toHaveText("투입품목 설정/조회 열기 요청됨");
 });
 
+test("양식 편집과 입고검사는 중앙 모달이 아니라 우측 전체 높이 패널이다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/patterns/original-mes-screen-assets");
+  await page.getByRole("button", { name: "양식 편집 원본" }).click();
+
+  let dialog = page.getByRole("dialog", { name: "양식관리" });
+  await expect(dialog).toBeVisible();
+  let box = await dialog.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box).toEqual({ x: 540, y: 0, width: 900, height: 960 });
+  await expect(dialog).toHaveCSS("border-radius", "0px");
+  expect(await dialog.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+  await hideDevelopmentOverlay(page);
+  await expect(page).toHaveScreenshot("form-management-side-panel.png");
+  await dialog.getByRole("button", { name: "취소" }).click();
+  await expect(dialog).toBeHidden();
+
+  await page.getByRole("button", { name: "입고검사 · 항목 있음" }).click();
+  dialog = page.getByRole("dialog", { name: "입고검사" });
+  await expect(dialog).toBeVisible();
+  box = await dialog.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box).toEqual({ x: 591, y: 0, width: 849, height: 960 });
+  await expect(dialog).toHaveCSS("border-radius", "0px");
+  expect(await dialog.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+  await expect(page).toHaveScreenshot("receiving-inspection-side-panel.png");
+});
+
 test("완성 팝업 16종은 데스크톱에서 가로 스크롤을 만들지 않는다", async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 960 });
   await page.goto("/patterns/completed-popup-types");

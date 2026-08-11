@@ -7,8 +7,8 @@
       "kind": "screen",
       "placement": "page",
       "source": "src/components/patterns/original-mes-screen-assets.tsx",
-      "requiredComponents": ["sidebar", "page-top-tab-item", "group-query", "filter", "search-input", "table", "center-modal", "radio", "input", "select"],
-      "rules": ["목록·양식편집·기준설정·검사는 같은 업무 흐름의 상태와 보조 팝업으로 관리한다.", "입고검사에서 검사항목 유무는 별도 화면이 아니라 empty/populated 상태다."]
+      "requiredComponents": ["sidebar", "page-top-tab-item", "group-query", "filter", "search-input", "table", "side-slide-panel", "center-modal", "radio", "input", "select"],
+      "rules": ["목록·양식편집·기준설정·검사는 같은 업무 흐름의 상태와 보조 팝업으로 관리한다.", "양식 편집과 입고검사는 우측 전체 높이 SideSlidePanel이며 검사 기준 설정만 중앙 모달이다.", "입고검사에서 검사항목 유무는 별도 화면이 아니라 empty/populated 상태다."]
     },
     {
       "id": "screen.production-result-responsive",

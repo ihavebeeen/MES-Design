@@ -6,10 +6,11 @@ import { cn } from "@/lib/utils";
 import { DialogFooter, type DialogAction } from "./dialog-footer";
 import { CloseButton } from "./icon-button";
 
-export type SideSlidePanelSize = "narrow-760" | "standard-900" | "wide-960";
+export type SideSlidePanelSize = "narrow-760" | "medium-849" | "standard-900" | "wide-960";
 
 const sideSlidePanelSizeClasses: Record<SideSlidePanelSize, string> = {
   "narrow-760": "max-w-[760px]",
+  "medium-849": "max-w-[849px]",
   "standard-900": "max-w-[900px]",
   "wide-960": "max-w-[960px]",
 };

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { IconExclamationCircle, IconPlus, IconQaO, IconQaX, IconReload } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { CenterModal } from "@/components/ui/center-modal";
+import { SideSlidePanel } from "@/components/ui/side-slide-panel";
 import { Radio } from "@/components/ui/radio";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -151,10 +151,10 @@ function FormsAsset() {
         <Button size="small" variant="lineBlacktxt" onClick={() => setModal("inspection-empty")}>입고검사 · 항목 없음</Button>
       </div>
       <FigmaScreenPreview><ExactFormManagementScreen onOpenEditor={() => setModal("form")} onOpenCriteria={() => setModal("criteria")} /></FigmaScreenPreview>
-      <CenterModal open={modal === "form"} onOpenChange={(open) => !open && setModal(null)} title="양식관리" size="standard-960" className="!max-h-[calc(100vh-40px)] !max-w-[900px] !rounded-none" actions={[{ id: "cancel", label: "취소", variant: "fillGray", onClick: () => setModal(null) }, { id: "save", label: "저장", variant: "fillGray", disabled: true }]} contentClassName="p-0 items-stretch"><FormEditorContent /></CenterModal>
+      <SideSlidePanel key={`form-${modal === "form"}`} open={modal === "form"} onOpenChange={(open) => !open && setModal(null)} title="양식관리" size="standard-900" actions={[{ id: "cancel", label: "취소", variant: "fillGray" }, { id: "save", label: "저장", variant: "fillGray", disabled: true }]} contentClassName="items-stretch overflow-x-hidden p-0"><FormEditorContent /></SideSlidePanel>
       <InspectionCriteriaDialog open={modal === "criteria"} onOpenChange={(open) => !open && setModal(null)} />
       <InspectionCriteriaDialog open={modal === "criteria-judgement"} onOpenChange={(open) => !open && setModal(null)} title="전자접촉기 상태" mode="judgement" />
-      <CenterModal open={modal === "inspection" || modal === "inspection-empty"} onOpenChange={(open) => !open && setModal(null)} title="입고검사" size="standard-960" className="!max-h-[calc(100vh-40px)] !max-w-[849px] !rounded-none" actions={[{ id: "cancel", label: "취소", variant: "fillGray", onClick: () => setModal(null) }, { id: "save", label: "저장", variant: "fillBlack", onClick: () => setModal(null) }]} contentClassName="p-0 items-stretch"><InspectionContent state={modal === "inspection-empty" ? "empty" : "ready"} /></CenterModal>
+      <SideSlidePanel key={`inspection-${modal ?? "closed"}`} open={modal === "inspection" || modal === "inspection-empty"} onOpenChange={(open) => !open && setModal(null)} title="입고검사" size="medium-849" actions={[{ id: "cancel", label: "취소", variant: "fillGray" }, { id: "save", label: "저장", variant: "fillBlack", onClick: () => setModal(null) }]} contentClassName="items-stretch overflow-x-hidden p-0"><InspectionContent state={modal === "inspection-empty" ? "empty" : "ready"} /></SideSlidePanel>
     </>
   );
 }
