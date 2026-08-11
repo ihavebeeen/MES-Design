@@ -26,6 +26,24 @@ test("Figma 원본 재고 추가 팝업", async ({ page }) => {
   await expect(dialog).toHaveScreenshot("source-inventory-add.png");
 });
 
+test("불량수량 입력 팝업", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/visual-regression/defect");
+  const dialog = page.getByRole("dialog", { name: "불량수량 입력" });
+  await expect(dialog).toBeVisible();
+
+  const tableViewport = dialog.locator(".defect-quantity-table");
+  const overflow = await tableViewport.evaluate((element) => ({
+    horizontal: element.scrollWidth - element.clientWidth,
+    vertical: element.scrollHeight - element.clientHeight,
+  }));
+  expect(overflow.horizontal).toBe(0);
+  expect(overflow.vertical).toBe(0);
+
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("defect-quantity-input.png");
+});
+
 test("팝업 취소와 X는 변경값을 버리고 닫는다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/patterns/completed-popup-types");

@@ -247,8 +247,9 @@ function DefectContent() {
         headers={["No.", "불량유형", "저장창고", "불량수량"]}
         widths={[60, 166, 166, 166]}
         rows={rows}
+        edgePadding={0}
         horizontalScroll={false}
-        className="shrink-0"
+        className="defect-quantity-table shrink-0"
       />
       <Card className="mt-5 flex h-14 items-center justify-center gap-3 bg-mes-primary-20 text-[16px] font-semibold text-mes-primary-60">
         <span>불량계</span><div className="flex h-8 w-[120px] items-center rounded-mes-control border border-mes-gray-30 bg-white px-3 text-[14px] text-mes-gray-130">{total}</div>
