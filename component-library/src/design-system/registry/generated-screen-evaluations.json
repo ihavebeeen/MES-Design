@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "candidates": [
+    {
+      "id": "easy-mode-receiving-2026-08-11",
+      "name": "이지모드 입고등록",
+      "createdAt": "2026-08-11",
+      "figmaNode": "20368:69523",
+      "route": "/visual-regression/easy-mode-receiving",
+      "source": "src/components/patterns/easy-mode-receiving-pattern.tsx",
+      "status": "partial-success",
+      "score": 50,
+      "disposition": "prototype",
+      "influence": "quarantined",
+      "strengths": [
+        "기존 SideSlidePanel, Button, DatePicker, Select, Input, IconButton을 재사용했다.",
+        "900px 우측 전체 높이 패널과 MES 18·16·14·13px 타이포 계층을 최종 반영했다.",
+        "행 추가·삭제, 필수값 검증, 취소·X·Esc 원상복구와 무가로스크롤 테스트를 통과했다."
+      ],
+      "issues": [
+        "단일 화면 생성과 수정에 시간이 과도하게 걸렸다.",
+        "MES 원본에 없는 ‘지시 없이 입고실적을 등록합니다.’ 문구를 추가했다.",
+        "MES 원본에 없는 ‘입력하지 않아도 됩니다.’ 문구를 선택 항목에 추가했다.",
+        "최초 구현에서 중앙 모달과 Figma Make의 임시 타이포를 따라가 사용자 수정 지시가 필요했다.",
+        "생성 전에 MES 표준 자산만 사용하도록 강제하는 사전 게이트가 작동하지 않았다.",
+        "생성 시안을 표준 화면과 분리해 보관·평가하는 위치를 먼저 정하지 않았다."
+      ],
+      "promotionCriteria": [
+        "원본 또는 확정 요구사항에 없는 설명 문구를 모두 제거한다.",
+        "레이아웃·필드 순서·문구를 원본 및 MES 슬라이드 규격과 화면 단위로 다시 대조한다.",
+        "사용자 개입 없이 첫 구현부터 허용된 MES 컴포넌트만 사용한다.",
+        "사전에 합의한 시간 예산 안에서 생성과 검증을 완료한다.",
+        "사용자 검토를 통과한 뒤에만 patterns.json과 screens.json에 승격한다."
+      ]
+    }
+  ]
+}

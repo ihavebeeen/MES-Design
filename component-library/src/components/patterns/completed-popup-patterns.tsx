@@ -40,7 +40,6 @@ import {
   UpdatedOperationLogContent,
 } from "./completed-popup-expanded-content";
 import { SourcePopupGallery } from "./source-popup-gallery";
-import { EasyModeReceivingDialog } from "./easy-mode-receiving-pattern";
 
 type CenterPopupKind =
   | "quantity"
@@ -54,12 +53,11 @@ type CenterPopupKind =
   | "preissued-label"
   | "operating-time-picker"
   | "downtime-picker";
-type SidePopupKind = "production" | "receiving" | "easy-receiving" | "custom" | "inspection" | "operation-log";
+type SidePopupKind = "production" | "receiving" | "custom" | "inspection" | "operation-log";
 export type PopupKind = CenterPopupKind | SidePopupKind;
 type PopupPatternId =
   | "side-custom-columns"
   | "side-add-list"
-  | "side-direct-entry"
   | "side-inspection-items"
   | "side-time-records"
   | "center-form"
@@ -96,7 +94,6 @@ const POPUPS: PopupDefinition[] = [
   { id: "downtime-picker", label: "600 · 비가동시간 선택", node: "17768:51611", pattern: "center-time-selector" },
   { id: "production", label: "900 · 생산실적 등록", node: "11210:48851", pattern: "side-add-list" },
   { id: "receiving", label: "900 · 입고등록", node: "11210:49261", pattern: "side-add-list" },
-  { id: "easy-receiving", label: "900 · 이지모드 입고등록", node: "20368:69523", pattern: "side-direct-entry" },
   { id: "custom", label: "760 · 커스텀 정보 등록", node: "11210:51570", pattern: "side-custom-columns" },
   { id: "inspection", label: "760 · 자주검사", node: "11210:51420", pattern: "side-inspection-items" },
 ];
@@ -111,11 +108,6 @@ const SIDE_POPUP_GROUPS: PopupPatternGroup[] = [
     id: "side-add-list",
     title: "상하 분할 · 추가 + 하단 리스트",
     description: "상단 입력값을 ‘추가’하여 하단 상세 리스트에 쌓는 유형",
-  },
-  {
-    id: "side-direct-entry",
-    title: "지시 없음 · 직접 실적 입력",
-    description: "발주·생산지시를 고르지 않고 날짜와 품목별 거래처·창고·수량·LOT를 직접 등록하는 유형",
   },
   {
     id: "side-inspection-items",
@@ -851,7 +843,6 @@ export function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; o
   const defaultActions = createDefaultActions(() => onOpenChange(false));
   if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch p-0"><ProductionContent /></SideSlidePanel>;
   if (kind === "receiving") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="입고등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><ReceivingContent /></SideSlidePanel>;
-  if (kind === "easy-receiving") return <EasyModeReceivingDialog open={open} onOpenChange={onOpenChange} />;
   if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><CustomInformationContent /></SideSlidePanel>;
   if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch p-0"><InspectionContent /></SideSlidePanel>;
   if (kind === "operation-log") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="운전일지 등록" size="standard-900" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><UpdatedOperationLogContent /></SideSlidePanel>;
@@ -915,7 +906,7 @@ function CompletedPopupExamples() {
             <h3 id="side-popup-patterns-title" className="text-[18px] font-bold text-mes-gray-130">우측 슬라이드 팝업</h3>
             <p className="mt-1 text-[13px] text-mes-gray-80">등록과 검사를 별도 메뉴로 떼지 않고, 우측에서 열리는 모든 팝업을 본문 구조에 따라 나눕니다.</p>
           </div>
-          <Tag color="gray" size="compact">5개 구조 · 6개 화면</Tag>
+          <Tag color="gray" size="compact">4개 구조 · 5개 화면</Tag>
         </div>
         <div className="grid gap-3 lg:grid-cols-2">
           {SIDE_POPUP_GROUPS.map((group) => <PopupPatternCard key={group.id} group={group} selectedKind={kind} onOpen={openPopup} />)}

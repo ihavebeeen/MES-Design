@@ -11,6 +11,7 @@ const screenRegistry = readJson("screens.json");
 const visualRegistry = readJson("visual-regression.json");
 const sourceAssetRegistry = readJson("source-assets.json");
 const sourceEvidenceRegistry = readJson("source-evidence.json");
+const generatedScreenRegistry = readJson("generated-screen-evaluations.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -44,14 +45,17 @@ checkVersion("screens", screenRegistry);
 checkVersion("visual-regression", visualRegistry);
 checkVersion("source-assets", sourceAssetRegistry);
 checkVersion("source-evidence", sourceEvidenceRegistry);
+checkVersion("generated-screen-evaluations", generatedScreenRegistry);
 
 const components = mapByUniqueId("components", componentRegistry.components ?? []);
 const patterns = mapByUniqueId("patterns", patternRegistry.patterns ?? []);
 const screens = mapByUniqueId("screens", screenRegistry.screens ?? []);
 const visualCases = mapByUniqueId("visual-regression", visualRegistry.cases ?? []);
 const sourceEvidence = mapByUniqueId("source-evidence", sourceEvidenceRegistry.sources ?? []);
+const generatedCandidates = mapByUniqueId("generated-screen-evaluations", generatedScreenRegistry.candidates ?? []);
 
 const allowedEvidenceStatuses = new Set(["queued", "in-progress", "verified"]);
+const allowedCandidateStatuses = new Set(["partial-success", "review", "approved", "rejected", "archived"]);
 const requiredQualityGates = ["designContext", "metadataLedger", "componentMapping", "browserMeasurement", "interactionTest", "visualBaseline"];
 const figmaNodes = new Set();
 for (const source of sourceEvidence.values()) {
@@ -70,6 +74,19 @@ for (const source of sourceEvidence.values()) {
     if (!source.visualCaseId) errors.push(`source-evidence '${source.id}': verified 상태에는 visualCaseId가 필요합니다.`);
     else if (!visualCases.has(source.visualCaseId)) errors.push(`source-evidence '${source.id}': 미등록 visualCaseId '${source.visualCaseId}'를 참조합니다.`);
   }
+}
+
+for (const candidate of generatedCandidates.values()) {
+  checkSource("generated candidate", candidate);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(candidate.createdAt ?? "")) errors.push(`generated candidate '${candidate.id}': createdAt은 YYYY-MM-DD 형식이어야 합니다.`);
+  if (!/^\d+:\d+$/.test(candidate.figmaNode ?? "")) errors.push(`generated candidate '${candidate.id}': figmaNode 형식이 잘못되었습니다.`);
+  if (!candidate.route?.startsWith("/")) errors.push(`generated candidate '${candidate.id}': route는 '/'로 시작해야 합니다.`);
+  if (!allowedCandidateStatuses.has(candidate.status)) errors.push(`generated candidate '${candidate.id}': 알 수 없는 status '${candidate.status}'`);
+  if (!Number.isInteger(candidate.score) || candidate.score < 0 || candidate.score > 100) errors.push(`generated candidate '${candidate.id}': score는 0~100 정수여야 합니다.`);
+  if (!Array.isArray(candidate.strengths) || candidate.strengths.length === 0) errors.push(`generated candidate '${candidate.id}': strengths가 필요합니다.`);
+  if (!Array.isArray(candidate.issues) || candidate.issues.length === 0) errors.push(`generated candidate '${candidate.id}': issues가 필요합니다.`);
+  if (!Array.isArray(candidate.promotionCriteria) || candidate.promotionCriteria.length === 0) errors.push(`generated candidate '${candidate.id}': promotionCriteria가 필요합니다.`);
+  if (candidate.status !== "approved" && candidate.influence !== "quarantined") errors.push(`generated candidate '${candidate.id}': 미승인 후보는 influence가 quarantined여야 합니다.`);
 }
 
 for (const component of components.values()) checkSource("component", component);
@@ -94,14 +111,17 @@ for (const visualCase of visualRegistry.cases ?? []) {
   if (!visualCase.snapshot?.endsWith(".png")) {
     errors.push(`visual case '${visualCase.id}': snapshot은 png 파일이어야 합니다.`);
   }
-  if (!visualCase.screenId && !visualCase.patternId) {
-    errors.push(`visual case '${visualCase.id}': screenId 또는 patternId가 필요합니다.`);
+  if (!visualCase.screenId && !visualCase.patternId && !visualCase.candidateId) {
+    errors.push(`visual case '${visualCase.id}': screenId, patternId 또는 candidateId가 필요합니다.`);
   }
   if (visualCase.screenId && !screens.has(visualCase.screenId)) {
     errors.push(`visual case '${visualCase.id}': 미등록 screen '${visualCase.screenId}'를 참조합니다.`);
   }
   if (visualCase.patternId && !patterns.has(visualCase.patternId)) {
     errors.push(`visual case '${visualCase.id}': 미등록 pattern '${visualCase.patternId}'를 참조합니다.`);
+  }
+  if (visualCase.candidateId && !generatedCandidates.has(visualCase.candidateId)) {
+    errors.push(`visual case '${visualCase.id}': 미등록 candidate '${visualCase.candidateId}'를 참조합니다.`);
   }
 }
 
@@ -140,5 +160,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references.`
+  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates.`
 );

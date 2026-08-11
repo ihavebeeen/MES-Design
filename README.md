@@ -153,6 +153,7 @@ MES-Design/
 - `component-library/src/design-system/registry/`: AI 조회용 컴포넌트·패턴·화면 레지스트리
 - `component-library/src/design-system/registry/design-decisions.json`: 관찰값과 표준값의 사람 검토·판단 기록
 - `component-library/src/design-system/registry/design-value-audit.json`: 코드에서 자동 수집한 값 분포와 검토 후보
+- `component-library/src/design-system/registry/generated-screen-evaluations.json`: AI 생성 시안의 점수·성공/실패 사유·승격 여부
 - `component-library/src/lib/sidebar-data.ts`: 문서 사이트 메뉴와 정적 경로 데이터
 - `component-library/src/app/[...slug]/client-page.tsx`: 문서 사이트의 실제 콘텐츠
 
@@ -168,6 +169,7 @@ npm run dev
 
 - `/foundations/`: 디자인 토큰과 기초 규칙
 - `/components/`: 개별 UI 컴포넌트와 상태
+- `/generated-screens/`: 표준 화면과 격리된 AI 생성 시안 검토함
 - `/patterns/`: MES 업무 화면과 조합 패턴
 - `/patterns/original-mes-screen-assets/`: 정규화된 원본 화면 자산
 

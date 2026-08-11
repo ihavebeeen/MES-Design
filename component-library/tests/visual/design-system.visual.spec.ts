@@ -192,6 +192,25 @@ test("이지모드 입고등록은 MES 우측 슬라이드 규격과 직접 입�
   await expect(dialog.getByRole("button", { name: "저장" })).toBeDisabled();
 });
 
+test("부분 성공 생성안은 표준 패턴과 분리된 검토함에 기록된다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/generated-screens");
+
+  await expect(page.getByRole("heading", { name: "생성 시안 검토함" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "이지모드 입고등록" })).toBeVisible();
+  await expect(page.getByText("부분 성공", { exact: true })).toBeVisible();
+  await expect(page.getByText("표준 영향 차단", { exact: true })).toBeVisible();
+  await expect(page.getByText("50 / 100", { exact: true })).toBeVisible();
+  await expect(page.getByText("단일 화면 생성과 수정에 시간이 과도하게 걸렸다.", { exact: true })).toBeVisible();
+  await expect(page.getByText("사용자 검토를 통과한 뒤에만 patterns.json과 screens.json에 승격한다.", { exact: true })).toBeVisible();
+
+  const preview = page.frameLocator('iframe[title="이지모드 입고등록 미리보기"]');
+  await expect(preview.getByRole("dialog", { name: "입고등록" })).toBeVisible();
+
+  await page.goto("/patterns/completed-popup-types");
+  await expect(page.getByRole("button", { name: "900 · 이지모드 입고등록", exact: true })).toHaveCount(0);
+});
+
 test("자주검사 커스텀 정보 등록 상태", async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 960 });
   await page.goto("/visual-regression/custom-information");
@@ -425,7 +444,7 @@ test("캐비티 배열 입력은 제어 상태로 동작하고 콘솔 오류를 
   expect(consoleErrors).toEqual([]);
 });
 
-test("완성 팝업 17종은 데스크톱에서 가로 스크롤을 만들지 않는다", async ({ page }) => {
+test("완성 팝업 16종은 데스크톱에서 가로 스크롤을 만들지 않는다", async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 960 });
   await page.goto("/patterns/completed-popup-types");
   const popupLabels = [
@@ -443,7 +462,6 @@ test("완성 팝업 17종은 데스크톱에서 가로 스크롤을 만들지 �
     "600 · 비가동시간 선택",
     "900 · 생산실적 등록",
     "900 · 입고등록",
-    "900 · 이지모드 입고등록",
     "760 · 커스텀 정보 등록",
     "760 · 자주검사",
   ];

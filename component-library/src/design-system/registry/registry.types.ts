@@ -60,6 +60,7 @@ export interface VisualRegressionCase {
   viewport: { width: number; height: number };
   screenId?: string;
   patternId?: string;
+  candidateId?: string;
 }
 
 export interface VisualRegressionRegistry {
@@ -93,4 +94,27 @@ export interface SourceEvidenceEntry {
 export interface SourceEvidenceRegistry {
   schemaVersion: 1;
   sources: SourceEvidenceEntry[];
+}
+
+export type GeneratedScreenStatus = "partial-success" | "review" | "approved" | "rejected" | "archived";
+
+export interface GeneratedScreenEvaluationEntry {
+  id: string;
+  name: string;
+  createdAt: string;
+  figmaNode: string;
+  route: string;
+  source: string;
+  status: GeneratedScreenStatus;
+  score: number;
+  disposition: "prototype" | "standard";
+  influence: "quarantined" | "approved";
+  strengths: string[];
+  issues: string[];
+  promotionCriteria: string[];
+}
+
+export interface GeneratedScreenEvaluationRegistry {
+  schemaVersion: 1;
+  candidates: GeneratedScreenEvaluationEntry[];
 }
