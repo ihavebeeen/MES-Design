@@ -86,7 +86,13 @@ for (const candidate of generatedCandidates.values()) {
   if (!Array.isArray(candidate.strengths) || candidate.strengths.length === 0) errors.push(`generated candidate '${candidate.id}': strengths가 필요합니다.`);
   if (!Array.isArray(candidate.issues) || candidate.issues.length === 0) errors.push(`generated candidate '${candidate.id}': issues가 필요합니다.`);
   if (!Array.isArray(candidate.promotionCriteria) || candidate.promotionCriteria.length === 0) errors.push(`generated candidate '${candidate.id}': promotionCriteria가 필요합니다.`);
-  if (candidate.status !== "approved" && candidate.influence !== "quarantined") errors.push(`generated candidate '${candidate.id}': 미승인 후보는 influence가 quarantined여야 합니다.`);
+  if (candidate.status !== "approved") {
+    if (candidate.influence !== "quarantined") errors.push(`generated candidate '${candidate.id}': 미승인 후보는 influence가 quarantined여야 합니다.`);
+    const registeredPattern = [...patterns.values()].find((pattern) => pattern.source === candidate.source);
+    const registeredScreen = [...screens.values()].find((screen) => screen.source === candidate.source);
+    if (registeredPattern) errors.push(`generated candidate '${candidate.id}': 미승인 후보 source가 표준 pattern '${registeredPattern.id}'에 등록되어 있습니다.`);
+    if (registeredScreen) errors.push(`generated candidate '${candidate.id}': 미승인 후보 source가 표준 screen '${registeredScreen.id}'에 등록되어 있습니다.`);
+  }
 }
 
 for (const component of components.values()) checkSource("component", component);
