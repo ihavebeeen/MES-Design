@@ -12,6 +12,7 @@ const visualRegistry = readJson("visual-regression.json");
 const sourceAssetRegistry = readJson("source-assets.json");
 const sourceEvidenceRegistry = readJson("source-evidence.json");
 const generatedScreenRegistry = readJson("generated-screen-evaluations.json");
+const compositionPolicyRegistry = readJson("composition-policy.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -46,6 +47,18 @@ checkVersion("visual-regression", visualRegistry);
 checkVersion("source-assets", sourceAssetRegistry);
 checkVersion("source-evidence", sourceEvidenceRegistry);
 checkVersion("generated-screen-evaluations", generatedScreenRegistry);
+checkVersion("composition-policy", compositionPolicyRegistry);
+
+if (compositionPolicyRegistry.policyId !== "mes.ai-composition-grammar") errors.push("composition-policy: policyId가 잘못되었습니다.");
+if (compositionPolicyRegistry.status !== "active") errors.push("composition-policy: status는 active여야 합니다.");
+const requiredCompositionLayers = ["component", "shell", "section-frame", "section-pattern", "behavior-pattern", "recipe-archetype", "screen-spec"];
+const compositionLayers = new Set((compositionPolicyRegistry.layers ?? []).map((layer) => layer.id));
+for (const layer of requiredCompositionLayers) {
+  if (!compositionLayers.has(layer)) errors.push(`composition-policy: 필수 layer '${layer}'가 없습니다.`);
+}
+for (const hold of compositionPolicyRegistry.migrationHolds ?? []) {
+  if (hold.status !== "migration-hold") errors.push(`composition-policy: hold '${hold.id}'의 status는 migration-hold여야 합니다.`);
+}
 
 const components = mapByUniqueId("components", componentRegistry.components ?? []);
 const patterns = mapByUniqueId("patterns", patternRegistry.patterns ?? []);

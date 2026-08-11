@@ -153,6 +153,7 @@ MES-Design/
 - `component-library/src/components/icons/`: MES 아이콘 컴포넌트
 - `component-library/src/components/patterns/`: 업무 화면과 팝업 조합 패턴
 - `component-library/src/design-system/registry/`: AI 조회용 컴포넌트·패턴·화면 레지스트리
+- `component-library/src/design-system/registry/composition-policy.json`: AI 조합 계층·판정·승인·마이그레이션 보류 공통 정책
 - `component-library/src/design-system/registry/design-decisions.json`: 관찰값과 표준값의 사람 검토·판단 기록
 - `component-library/src/design-system/registry/design-value-audit.json`: 코드에서 자동 수집한 값 분포와 검토 후보
 - `component-library/src/design-system/registry/generated-screen-evaluations.json`: AI 생성 시안의 점수·성공/실패 사유·승격 여부
@@ -300,6 +301,7 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 ## 문서
 
 - [AI 기반 MES 화면 생성 아키텍처](./docs/AI_MES_화면_생성_아키텍처.md)
+- [AI UI 조합 문법 공통 정책](./docs/AI_UI_조합_문법_공통정책.md)
 - [AI 생성 화면 평가 및 승격 규칙](./docs/AI_생성화면_평가_및_승격_규칙.md)
 - [디자인 시스템 레지스트리 및 시각 회귀 테스트](./docs/디자인_시스템_레지스트리_및_시각회귀_테스트.md)
 - [원본 화면 정규화 기록](./docs/원본_화면_정규화_기록.md)

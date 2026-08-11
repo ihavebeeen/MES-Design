@@ -118,3 +118,38 @@ export interface GeneratedScreenEvaluationRegistry {
   schemaVersion: 1;
   candidates: GeneratedScreenEvaluationEntry[];
 }
+
+export interface CompositionPolicyLayer {
+  id: string;
+  role: string;
+}
+
+export interface CompositionPolicyMigrationHold {
+  id: string;
+  target: string;
+  status: "migration-hold";
+}
+
+export interface CompositionPolicyRegistry {
+  schemaVersion: 1;
+  policyId: "mes.ai-composition-grammar";
+  policyVersion: string;
+  status: "active";
+  authority: "common-policy";
+  layers: CompositionPolicyLayer[];
+  grammar: {
+    screenSpec: string[];
+    sectionInstance: string[];
+    shellSlots: string[];
+    sectionFrameVariants: string[];
+  };
+  decisionOutcomes: Array<"reuse" | "compose" | "extend" | "propose-new" | "normalize">;
+  approval: {
+    automatic: string[];
+    requiresHuman: string[];
+    quarantineBeforeApproval: boolean;
+  };
+  registrationQuestions: string[];
+  forbiddenWithoutDecision: string[];
+  migrationHolds: CompositionPolicyMigrationHold[];
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mes.ai-composition-grammar",
+  "policyVersion": "1.0.0",
+  "status": "active",
+  "authority": "common-policy",
+  "layers": [
+    { "id": "token-asset", "role": "visual-primitives" },
+    { "id": "component", "role": "independent-ui-control" },
+    { "id": "shell", "role": "screen-or-overlay-slots" },
+    { "id": "section-frame", "role": "section-visual-contract" },
+    { "id": "section-pattern", "role": "reusable-content-composition" },
+    { "id": "behavior-pattern", "role": "state-and-interaction-contract" },
+    { "id": "recipe-archetype", "role": "verified-pattern-composition" },
+    { "id": "screen-spec", "role": "concrete-screen-definition" }
+  ],
+  "grammar": {
+    "screenSpec": ["shell:1", "sections:1..n", "behaviors:0..n", "actionSet:1"],
+    "sectionInstance": ["sectionFrame:1", "sectionPattern:1", "screenConfig:1"],
+    "shellSlots": ["header", "body", "footer"],
+    "sectionFrameVariants": ["standard", "collapsible", "none"]
+  },
+  "decisionOutcomes": ["reuse", "compose", "extend", "propose-new", "normalize"],
+  "approval": {
+    "automatic": ["verified-reuse"],
+    "requiresHuman": ["meaning-changing-extend", "propose-new"],
+    "quarantineBeforeApproval": true
+  },
+  "registrationQuestions": [
+    "screen-independent-role",
+    "cross-screen-reuse",
+    "own-layout-slot-or-state-contract",
+    "independent-testability",
+    "clearer-than-existing-configuration"
+  ],
+  "forbiddenWithoutDecision": [
+    "unregistered-wrapper",
+    "unregistered-information-hierarchy",
+    "unregistered-background-radius-composition",
+    "unsupported-helper-copy"
+  ],
+  "migrationHolds": [
+    { "id": "screen-single-pattern-id", "target": "screens.json.patternId", "status": "migration-hold" },
+    { "id": "mixed-pattern-granularity", "target": "patterns.json", "status": "migration-hold" },
+    { "id": "source-asset-pattern-boundary", "target": "source-assets.json.patterns", "status": "migration-hold" },
+    { "id": "single-pattern-context-api", "target": "getImplementationContext", "status": "migration-hold" },
+    { "id": "single-pattern-validator", "target": "check-design-system-registry", "status": "migration-hold" },
+    { "id": "archetype-recipe-boundary", "target": "MES Archetype documentation", "status": "migration-hold" },
+    { "id": "mixed-pattern-source-directory", "target": "src/components/patterns", "status": "migration-hold" }
+  ]
+}

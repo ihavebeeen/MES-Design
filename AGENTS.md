@@ -1647,6 +1647,8 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
 
 새 화면 또는 패턴 작업을 시작하기 전에 `component-library/src/design-system/registry/`를 먼저 조회한다.
 
+AI 화면 조합의 공통 기준은 `docs/AI_UI_조합_문법_공통정책.md`와 `component-library/src/design-system/registry/composition-policy.json`이다. 기존 문서나 schema가 이 정책과 충돌하면 즉시 덮어쓰지 말고 `migrationHolds`에 보류한 뒤 사용자 승인과 마이그레이션 계획 없이 구조를 변경하지 않는다.
+
 1. `screens.json`에서 가까운 MES 화면을 찾는다.
 2. 화면의 현재 `patternId`와 가장 가까운 shell·content·behavior 패턴 후보를 `patterns.json`에서 조회한다.
 3. 후보 패턴의 `requiredComponents`와 각 컴포넌트의 `source`/`rules`를 `components.json`에서 확인한다.
