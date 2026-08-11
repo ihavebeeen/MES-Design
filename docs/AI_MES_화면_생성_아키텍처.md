@@ -1,7 +1,8 @@
 # AI 기반 MES 화면 생성 아키텍처
 
-> 상태: 제안 확정, 구현 전
+> 상태: 제안 확정, 기반 레지스트리와 검증 일부 구현
 > 작성일: 2026-08-07
+> 운영 원칙 보완: 2026-08-11
 > 대상 저장소: `MES-Design/component-library`
 > Figma 원본: `F4n5Zr04PAbiRjfIFQAo6v` (`클라우드MES`)
 > 기준 화면설계서 노드: `8247:18600` (`웹 화면설계서 (최종)`)
@@ -11,12 +12,13 @@
 이 프로젝트의 최종 목적은 디자인 시스템 컴포넌트를 전시하는 데 있지 않다.
 Figma와 코드로 확정된 MES 디자인 언어를 AI가 조합하여, 새로운 MES 화면을 빠르고 일관되게 생성하는 체계를 만든다.
 
-이를 위해 디자인 시스템을 사람용 설명서가 아니라 다음 네 가지 실행 가능한 자산으로 확장한다.
+이를 위해 디자인 시스템을 사람용 설명서가 아니라 다음 다섯 가지 실행 가능한 자산으로 확장한다.
 
 1. **Component Registry**: 컴포넌트의 API, 능력, 상태, 제약, Figma 근거를 구조화한다.
-2. **MES Archetype Registry**: 반복되는 MES 화면의 구성 및 행동 규칙을 구조화한다.
+2. **Pattern Grammar Registry**: shell, content, behavior 단위의 반복 구성과 사용 조건을 구조화한다.
 3. **ScreenSpec DSL**: 사용자 요구사항과 React 코드 사이의 타입 안전한 중간 표현을 정의한다.
-4. **Validation Pipeline**: 생성 결과가 디자인 시스템과 화면 명세를 준수하는지 자동 검증한다.
+4. **Pattern Decision**: 기존 패턴의 재사용·조합·확장·신규 제안·정규화 판단과 근거를 기록한다.
+5. **Validation Pipeline**: 생성 결과가 디자인 시스템과 승인된 조합 문법을 준수하는지 자동 검증한다.
 
 최종 산출물은 JSON 런타임 렌더러가 아니라 일반적인 React/Next.js 페이지 코드다.
 ScreenSpec은 생성 과정의 중간 언어 및 추적 가능한 설계 기록으로만 사용한다.
@@ -104,9 +106,49 @@ Resolver는 ScreenSpec과 Registry를 입력받아 사용할 Archetype과 Compon
 - 가장 가까운 기존 Archetype을 먼저 선택한다.
 - Registry에 등록되지 않은 컴포넌트는 자동 선택하지 않는다.
 - Registry의 `constraints`와 ScreenSpec이 충돌하면 생성에 실패해야 한다.
-- 기존 조합으로 표현할 수 없는 요구사항만 신규 패턴 후보로 분류한다.
+- 화면과 패턴을 1:1로 고정하지 않고 shell, content, behavior 패턴을 조합한다.
+- 기존 조합으로 표현할 수 없는 요구사항은 바로 구현하지 않고 조합 판정 게이트로 보낸다.
 
-### 4.3 Code Generator
+### 4.3 조합 판정 게이트
+
+등록된 컴포넌트를 사용했다는 사실만으로 디자인 시스템 준수로 판정하지 않는다. AI는 코드를 만들기 전에 조합 근거를 다음 형태로 제출해야 한다.
+
+```ts
+type PatternDecision = {
+  screenId: string;
+  selectedPatterns: {
+    shell: string[];
+    content: string[];
+    behavior: string[];
+  };
+  existingCandidates: string[];
+  delta: {
+    intent: string;
+    informationHierarchy: string;
+    interaction: string;
+    stateTransition: string;
+    visualOnly: boolean;
+  };
+  decision: "reuse" | "compose" | "extend" | "propose-new" | "normalize";
+  evidence: string[];
+  confidence: number;
+  approval: "automatic" | "required" | "approved" | "rejected";
+};
+```
+
+판정 기준:
+
+1. 목적과 상태 전이가 같고 필드·크기만 다르면 `extend`로 처리한다.
+2. 기존 패턴 여러 개로 설명할 수 있으면 `compose`로 처리한다.
+3. 기존 패턴이 선언한 적용 범위인데 표현하지 못하면 기존 패턴의 불완전성으로 보고 확장하거나 더 작은 문법으로 분해한다.
+4. 사용자 행동, 상태 전이 또는 정보 위계가 본질적으로 다를 때만 `propose-new`를 허용한다.
+5. 특정 화면의 시각적 차이에 업무·상태 근거가 없으면 `normalize`하며 신규 패턴으로 만들지 않는다.
+
+AI는 후보와 근거를 제안할 수 있지만 신규 패턴이나 기존 패턴의 의미 변경을 스스로 승인하지 않는다. 초기 운영에서는 사용자가 최종 승인한다. 승인 사례가 충분히 쌓인 뒤에도 기존 검증 패턴의 동일한 재사용만 자동 승인하고, 구조적 확장은 사람 검토를 유지한다.
+
+`propose-new` 또는 미승인 `extend` 결과는 생성 시안 검토함에 격리하며 `patterns.json`과 `screens.json`의 다음 생성 근거로 사용할 수 없다.
+
+### 4.4 Code Generator
 
 Generator는 최종적으로 평범한 React/Next.js 코드를 만든다.
 
@@ -317,15 +359,18 @@ export default defineScreen({
 1. AI는 화면 코드를 작성하기 전에 **MUST** ScreenSpec을 생성한다.
 2. ScreenSpec은 코드 생성 전에 스키마 검증을 **MUST** 통과한다.
 3. AI는 Registry에 등록된 컴포넌트를 **MUST** 우선 사용한다.
-4. AI는 같은 화면 내부에서 기존 컴포넌트와 중복되는 UI를 **MUST NOT** 재구현한다.
-5. AI는 가장 가까운 기존 Archetype을 **MUST** 선택한다.
-6. Figma 화면을 구현할 때 대상 화면의 구체적인 node ID를 **MUST** 기록한다.
-7. 비슷한 컴포넌트의 값을 다른 컴포넌트에 추론 적용하면 **MUST NOT** 된다.
-8. Figma에서 확인하지 못한 값은 `evidence: "ai-inference"`인 decision으로 **MUST** 기록한다.
-9. 모든 데이터 화면은 `loading`, `empty`, `error` 상태를 **MUST** 제공한다.
-10. 선택 및 편집이 있는 화면은 선택 전/후와 저장 성공/실패 상태를 **MUST** 정의한다.
-11. 생성 후 TypeScript와 production build를 **MUST** 실행한다.
-12. 시각 검증을 수행하지 못한 경우 검증 완료라고 **MUST NOT** 보고한다.
+4. 등록된 컴포넌트를 사용했다는 이유만으로 디자인 시스템 준수라고 보고하면 **MUST NOT** 된다.
+5. AI는 같은 화면 내부에서 기존 컴포넌트와 중복되는 UI를 **MUST NOT** 재구현한다.
+6. AI는 shell, content, behavior 패턴 후보를 조회하고 PatternDecision을 **MUST** 생성한다.
+7. AI는 화면과 패턴을 1:1로 가정하면 **MUST NOT** 된다.
+8. 미등록 조합, 신규 wrapper 또는 정보 위계 변경은 승인 전 표준 패턴에 반영하면 **MUST NOT** 된다.
+9. Figma 화면을 구현할 때 대상 화면의 구체적인 node ID를 **MUST** 기록한다.
+10. 비슷한 컴포넌트의 값을 다른 컴포넌트에 추론 적용하면 **MUST NOT** 된다.
+11. Figma에서 확인하지 못한 값은 `evidence: "ai-inference"`인 decision으로 **MUST** 기록한다.
+12. 모든 데이터 화면은 `loading`, `empty`, `error` 상태를 **MUST** 제공한다.
+13. 선택 및 편집이 있는 화면은 선택 전/후와 저장 성공/실패 상태를 **MUST** 정의한다.
+14. 생성 후 TypeScript와 production build를 **MUST** 실행한다.
+15. 시각 검증을 수행하지 못한 경우 검증 완료라고 **MUST NOT** 보고한다.
 
 ## 9. 제안 디렉터리 구조
 
@@ -408,6 +453,9 @@ AI는 작업에 필요한 node만 조회한다. 전체 파일 메타데이터는
 - 금지된 raw color, 임의 spacing, 임의 radius 탐지
 - 화면 내부 중복 컴포넌트 탐지
 - `npm run check:patterns`: pattern에서 raw `button/input/select/table`, 직접 `lucide-react`, 기존 컴포넌트의 재구현 이름을 금지
+- ScreenSpec이 참조한 shell, content, behavior 패턴과 실제 코드 구조의 일치 검사
+- 등록 컴포넌트만 사용했더라도 미승인 wrapper·배치·상태 조합이 있으면 실패하는 조합 문법 검사
+- `propose-new`와 미승인 `extend`가 표준 Registry에 유입되지 않는 격리 검사
 
 ### 11.2 동작 검증
 

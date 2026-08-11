@@ -1648,9 +1648,10 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
 새 화면 또는 패턴 작업을 시작하기 전에 `component-library/src/design-system/registry/`를 먼저 조회한다.
 
 1. `screens.json`에서 가까운 MES 화면을 찾는다.
-2. 화면의 `patternId`를 `patterns.json`에서 조회한다.
-3. 패턴의 `requiredComponents`와 각 컴포넌트의 `source`/`rules`를 `components.json`에서 확인한다.
-4. 기존 컴포넌트로 표현할 수 없는 차이만 optional prop 또는 variant로 확장한다.
-5. 작업 후 `npm run check:design-system`, `npx tsc --noEmit`, `npm run lint:design-system`, `npm run test:visual`을 실행한다.
+2. 화면의 현재 `patternId`와 가장 가까운 shell·content·behavior 패턴 후보를 `patterns.json`에서 조회한다.
+3. 후보 패턴의 `requiredComponents`와 각 컴포넌트의 `source`/`rules`를 `components.json`에서 확인한다.
+4. 기존 조합과 요구사항의 차이를 `reuse`, `compose`, `extend`, `propose-new`, `normalize` 중 하나로 판정한다.
+5. 기존 컴포넌트로 표현할 수 없는 차이만 optional prop 또는 variant로 확장한다.
+6. 작업 후 `npm run check:design-system`, `npx tsc --noEmit`, `npm run lint:design-system`, `npm run test:visual`을 실행한다.
 
-활성 `src/components/ui/*.tsx` 파일은 전부 레지스트리에 등록해야 하며, 화면은 반드시 하나의 pattern에 연결한다. 의도한 시각 변경이 아니면 기준 PNG를 갱신하지 않는다. 상세 절차는 `docs/디자인_시스템_레지스트리_및_시각회귀_테스트.md`를 참고한다.
+활성 `src/components/ui/*.tsx` 파일은 전부 레지스트리에 등록해야 한다. 화면과 pattern은 1:1 관계가 아니며, 화면은 shell·content·behavior 패턴을 하나 이상 조합할 수 있다. 등록된 컴포넌트를 사용했다는 사실만으로 디자인 시스템 준수로 판정하지 않는다. 코드 작성 전에 기존 패턴 후보와 차이를 비교해 `reuse`, `compose`, `extend`, `propose-new`, `normalize` 중 하나로 판단 근거를 남긴다. 미승인 `extend`와 `propose-new`, 임의 wrapper·정보 위계는 표준 레지스트리에 넣지 않고 생성 시안 검토함에 격리한다. 신규 패턴과 기존 패턴의 의미 변경은 AI가 스스로 승인하지 않는다. 의도한 시각 변경이 아니면 기준 PNG를 갱신하지 않는다. 상세 절차는 `docs/AI_MES_화면_생성_아키텍처.md`, `docs/AI_생성화면_평가_및_승격_규칙.md`, `docs/디자인_시스템_레지스트리_및_시각회귀_테스트.md`를 참고한다.
