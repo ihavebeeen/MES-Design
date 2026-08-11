@@ -124,13 +124,16 @@ function FixtureSelect({ value, options, onValueChange, className, size = "defau
 }
 
 function FixtureDateRange({ label = "조회기준일자" }: { label?: string }) {
+  const [startDate, setStartDate] = React.useState(new Date(2025, 2, 30));
+  const [endDate, setEndDate] = React.useState(new Date(2025, 2, 30));
+
   return (
     <div className="flex h-8 w-[292px] items-center overflow-hidden rounded-mes-control border border-mes-border-default bg-white">
       <span className="flex h-full w-[49px] shrink-0 items-center justify-center border-r border-mes-border-default text-[14px] font-medium">{label}</span>
       <div className="flex h-full w-[243px] items-center">
-        <DatePicker value={new Date(2025, 2, 30)} onValueChange={() => undefined} iconPosition="start" iconColor="default" className="w-[117px] border-0 px-1.5" />
+        <DatePicker value={startDate} onValueChange={setStartDate} iconPosition="start" iconColor="default" className="w-[117px] border-0 px-1.5" />
         <span className="flex w-[9px] shrink-0 justify-center text-[14px] text-mes-gray-80">~</span>
-        <DatePicker value={new Date(2025, 2, 30)} onValueChange={() => undefined} iconPosition="start" iconColor="default" className="w-[117px] border-0 px-1.5" />
+        <DatePicker value={endDate} onValueChange={setEndDate} iconPosition="start" iconColor="default" className="w-[117px] border-0 px-1.5" />
       </div>
     </div>
   );
@@ -143,7 +146,21 @@ function FixtureSearch({ value, onValueChange, className, placeholder = "검색�
 }
 
 function FixtureGroupQuery() {
-  return <GroupQuery options={[]} levels={[null, null, null]} onLevelChange={() => undefined} />;
+  const [levels, setLevels] = React.useState<(string | null)[]>([null, null, null]);
+  const options = [
+    { id: "order-date", label: "지시일" },
+    { id: "equipment", label: "설비" },
+    { id: "engineer", label: "담당기사" },
+    { id: "item", label: "품목" },
+  ];
+
+  return (
+    <GroupQuery
+      options={options}
+      levels={levels}
+      onLevelChange={(index, value) => setLevels((current) => current.map((item, itemIndex) => itemIndex === index ? value : item))}
+    />
+  );
 }
 
 interface FixtureFilterDefinition {

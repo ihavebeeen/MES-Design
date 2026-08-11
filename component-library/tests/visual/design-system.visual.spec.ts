@@ -168,6 +168,39 @@ test("팝업 취소와 X는 변경값을 버리고 닫는다", async ({ page }) 
   await expect(dialog.locator('input[inputmode="numeric"]').first()).toHaveValue("1,000,000");
 });
 
+test("중앙·슬라이드 팝업 저장은 작업을 완료하고 닫는다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/patterns/completed-popup-types");
+
+  await page.getByRole("button", { name: "400 · 생산수량 입력" }).click();
+  let dialog = page.getByRole("dialog", { name: "생산수량 입력" });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("button", { name: "저장" }).click();
+  await expect(dialog).toBeHidden();
+
+  await page.getByRole("button", { name: "900 · 생산실적 등록" }).click();
+  dialog = page.getByRole("dialog", { name: "생산실적 등록" });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("button", { name: "저장" }).click();
+  await expect(dialog).toBeHidden();
+});
+
+test("공통 날짜 범위와 그룹화 조회가 값을 변경한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/patterns/completed-entity-list");
+  const screen = page.locator("#completed-entity-list");
+
+  const dateButtons = screen.getByRole("button", { name: "2025.03.30" });
+  await dateButtons.first().click();
+  await page.getByRole("button", { name: "15", exact: true }).click();
+  await expect(page.getByRole("button", { name: "2025.03.15" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "15", exact: true })).toBeHidden();
+
+  await screen.getByRole("button", { name: "Level 1 그룹화 기준 선택" }).click();
+  await page.getByRole("button", { name: "지시일", exact: true }).click();
+  await expect(screen.getByText("지시일", { exact: true })).toBeVisible();
+});
+
 test("그룹화 테이블 핵심 상태", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/visual-regression/table");

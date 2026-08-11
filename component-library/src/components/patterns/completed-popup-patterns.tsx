@@ -149,10 +149,15 @@ const CENTER_POPUP_GROUPS: PopupPatternGroup[] = [
   },
 ];
 
-const SAVE_ACTION: DialogAction = { id: "save", label: "저장", variant: "fillBlack" };
-const createDefaultActions = (onCancel: () => void): DialogAction[] => [
-  { id: "cancel", label: "취소", variant: "fillGray", onClick: onCancel },
-  SAVE_ACTION,
+const createSaveAction = (onSave: () => void): DialogAction => ({
+  id: "save",
+  label: "저장",
+  variant: "fillBlack",
+  onClick: onSave,
+});
+const createDefaultActions = (onClose: () => void): DialogAction[] => [
+  { id: "cancel", label: "취소", variant: "fillGray", onClick: onClose },
+  createSaveAction(onClose),
 ];
 
 function FieldRow({ label, value, muted = false, select = false }: { label: string; value: string; muted?: boolean; select?: boolean }) {
@@ -815,9 +820,9 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: CenterPopupKind; open
     { id: "confirm", label, variant: "fillBlack", onClick: () => onOpenChange(false) },
   ];
   const config: Record<typeof kind, { title: string; size: CenterModalSize; height: string; actions: DialogAction[]; content: React.ReactNode; contentClassName?: string; maxHeight?: string }> = {
-    quantity: { title: "생산수량 입력", size: "compact-400", height: "h-[437px]", actions: [SAVE_ACTION], content: <QuantityContent /> },
+    quantity: { title: "생산수량 입력", size: "compact-400", height: "h-[437px]", actions: [createSaveAction(() => onOpenChange(false))], content: <QuantityContent /> },
     details: { title: "품목 상세정보", size: "compact-480", height: "h-[436px]", actions: [], content: <DetailsContent /> },
-    defect: { title: "불량수량 입력", size: "medium-600", height: "h-[400px]", actions: [SAVE_ACTION], content: <DefectContent /> },
+    defect: { title: "불량수량 입력", size: "medium-600", height: "h-[400px]", actions: [createSaveAction(() => onOpenChange(false))], content: <DefectContent /> },
     weight: { title: "중량검사", size: "standard-960", height: "h-[752px]", actions: defaultActions, content: <WeightContent />, contentClassName: "p-0" },
     purchase: { title: "발주 일괄등록", size: "large-1100", height: "h-[680px]", actions: defaultActions, content: <PurchaseContent /> },
     lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: defaultActions, content: <LookupWorkOrderContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-none" },

@@ -128,7 +128,11 @@ function DatePicker({
                 key={i}
                 type="button"
                 disabled={!date}
-                onClick={() => date && onValueChange?.(date)}
+                onClick={() => {
+                  if (!date) return;
+                  onValueChange?.(date);
+                  setOpen(false);
+                }}
                 className={cn(
                   "flex size-7 items-center justify-center rounded-mes-control-xs text-[12px]",
                   !date && "invisible",
