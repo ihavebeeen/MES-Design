@@ -6,6 +6,7 @@ import sourceAssetData from "./source-assets.json";
 import sourceEvidenceData from "./source-evidence.json";
 import generatedScreenEvaluationData from "./generated-screen-evaluations.json";
 import compositionPolicyData from "./composition-policy.json";
+import compositionInventoryData from "./composition-inventory.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -14,6 +15,7 @@ import type {
   SourceEvidenceRegistry,
   GeneratedScreenEvaluationRegistry,
   CompositionPolicyRegistry,
+  CompositionInventoryRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -25,6 +27,7 @@ export const visualRegressionRegistry = visualRegressionData as VisualRegression
 export const sourceEvidenceRegistry = sourceEvidenceData as SourceEvidenceRegistry;
 export const generatedScreenEvaluationRegistry = generatedScreenEvaluationData as GeneratedScreenEvaluationRegistry;
 export const compositionPolicyRegistry = compositionPolicyData as CompositionPolicyRegistry;
+export const compositionInventoryRegistry = compositionInventoryData as CompositionInventoryRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);

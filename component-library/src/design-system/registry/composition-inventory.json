@@ -1,0 +1,1766 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mes.ai-composition-grammar",
+  "status": "observed-not-canonical",
+  "scope": "src/components/patterns/*.tsx",
+  "summary": {
+    "scannedFiles": 24,
+    "totalLines": 4438,
+    "shellInstances": {
+      "CenterModal": 4,
+      "SideSlidePanel": 8,
+      "ConfirmDialog": 1
+    },
+    "filesWithMixedSectionFrames": 3,
+    "filesWithNativeSectionOnly": 7,
+    "filesWithRoundedSectionCandidates": 13
+  },
+  "sectionCandidateSignals": [
+    {
+      "id": "section.summary",
+      "fileCount": 9,
+      "sources": [
+        "src/components/patterns/completed-application-patterns.tsx",
+        "src/components/patterns/completed-popup-expanded-content.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/exact-production-analytics-screen.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/production-quantity-reregistration-pattern.tsx",
+        "src/components/patterns/source-popup-gallery.tsx",
+        "src/components/patterns/table-column-settings.tsx"
+      ]
+    },
+    {
+      "id": "section.search-table",
+      "fileCount": 6,
+      "sources": [
+        "src/components/patterns/exact-form-management-screen.tsx",
+        "src/components/patterns/exact-inventory-add-modal.tsx",
+        "src/components/patterns/exact-inventory-edit-modal.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/exact-purchase-modals.tsx",
+        "src/components/patterns/mes-screen-fixtures.tsx"
+      ]
+    },
+    {
+      "id": "section.form-grid",
+      "fileCount": 5,
+      "sources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/easy-mode-receiving-pattern.tsx",
+        "src/components/patterns/exact-production-analytics-screen.tsx",
+        "src/components/patterns/inspection-criteria-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx"
+      ]
+    },
+    {
+      "id": "section.editable-row-list",
+      "fileCount": 3,
+      "sources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/easy-mode-receiving-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx"
+      ]
+    },
+    {
+      "id": "section.inspection-items",
+      "fileCount": 3,
+      "sources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/inspection-criteria-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx"
+      ]
+    },
+    {
+      "id": "section.before-after",
+      "fileCount": 1,
+      "sources": [
+        "src/components/patterns/production-quantity-reregistration-pattern.tsx"
+      ]
+    },
+    {
+      "id": "section.collapsible-form",
+      "fileCount": 1,
+      "sources": [
+        "src/components/patterns/easy-mode-receiving-pattern.tsx"
+      ]
+    }
+  ],
+  "behaviorSignals": [
+    {
+      "id": "selection.enable-editor",
+      "fileCount": 10,
+      "sources": [
+        "src/components/patterns/completed-application-patterns.tsx",
+        "src/components/patterns/completed-popup-expanded-content.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/exact-form-management-screen.tsx",
+        "src/components/patterns/exact-inventory-add-modal.tsx",
+        "src/components/patterns/exact-inventory-edit-modal.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/exact-purchase-modals.tsx",
+        "src/components/patterns/mes-screen-fixtures.tsx",
+        "src/components/patterns/source-popup-gallery.tsx"
+      ]
+    },
+    {
+      "id": "dismiss.restore-committed",
+      "fileCount": 4,
+      "sources": [
+        "src/components/patterns/easy-mode-receiving-pattern.tsx",
+        "src/components/patterns/inspection-criteria-pattern.tsx",
+        "src/components/patterns/source-popup-gallery.tsx",
+        "src/components/patterns/table-column-settings.tsx"
+      ]
+    },
+    {
+      "id": "row.add-remove",
+      "fileCount": 3,
+      "sources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/easy-mode-receiving-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx"
+      ]
+    },
+    {
+      "id": "row.inherit-previous",
+      "fileCount": 1,
+      "sources": [
+        "src/components/patterns/easy-mode-receiving-pattern.tsx"
+      ]
+    },
+    {
+      "id": "section.toggle-collapse",
+      "fileCount": 1,
+      "sources": [
+        "src/components/patterns/easy-mode-receiving-pattern.tsx"
+      ]
+    },
+    {
+      "id": "selection.master-detail",
+      "fileCount": 1,
+      "sources": [
+        "src/components/patterns/completed-application-patterns.tsx"
+      ]
+    }
+  ],
+  "reviewQueue": [
+    {
+      "source": "src/components/patterns/analytics-dashboard-pattern.tsx",
+      "flags": [
+        "native-section-without-registered-frame"
+      ]
+    },
+    {
+      "source": "src/components/patterns/completed-application-patterns.tsx",
+      "flags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "flags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "flags": [
+        "mixed-section-frame-mechanisms",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/easy-mode-receiving-pattern.tsx",
+      "flags": [
+        "mixed-section-frame-mechanisms",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/exact-inventory-add-modal.tsx",
+      "flags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/exact-inventory-edit-modal.tsx",
+      "flags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/exact-production-analytics-screen.tsx",
+      "flags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/exact-purchase-modals.tsx",
+      "flags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/generated-screen-review.tsx",
+      "flags": [
+        "native-section-without-registered-frame"
+      ]
+    },
+    {
+      "source": "src/components/patterns/inspection-criteria-pattern.tsx",
+      "flags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/master-detail-pattern.tsx",
+      "flags": [
+        "native-section-without-registered-frame"
+      ]
+    },
+    {
+      "source": "src/components/patterns/mes-screen-fixtures.tsx",
+      "flags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/original-mes-screen-assets.tsx",
+      "flags": [
+        "mixed-section-frame-mechanisms",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "flags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/table-column-settings.tsx",
+      "flags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "source": "src/components/patterns/analytics-dashboard-pattern.tsx",
+      "name": "analytics-dashboard-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 84,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 1,
+        "dividerContainer": 1,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [],
+      "stateHookCount": 0,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": [
+        "native-section-without-registered-frame"
+      ]
+    },
+    {
+      "source": "src/components/patterns/completed-application-patterns.tsx",
+      "name": "completed-application-patterns.tsx",
+      "observedRole": "catalog-or-recipe",
+      "lines": 329,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 5,
+        "roundedContainer": 7,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Badge",
+          "jsxCount": 1
+        },
+        {
+          "name": "Button",
+          "jsxCount": 22
+        },
+        {
+          "name": "ButtonGroup",
+          "jsxCount": 4
+        },
+        {
+          "name": "Card",
+          "jsxCount": 4
+        },
+        {
+          "name": "Progress",
+          "jsxCount": 1
+        },
+        {
+          "name": "Radio",
+          "jsxCount": 2
+        }
+      ],
+      "stateHookCount": 4,
+      "behaviorSignals": [
+        "selection.enable-editor",
+        "selection.master-detail"
+      ],
+      "sectionCandidateSignals": [
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "name": "completed-popup-expanded-content.tsx",
+      "observedRole": "catalog-or-recipe",
+      "lines": 479,
+      "exportedSymbols": [
+        "BomCopyContent",
+        "MaterialInputSetupContent",
+        "PreissuedLabelContent",
+        "TimeSelectionContent",
+        "UpdatedOperationLogContent"
+      ],
+      "shells": [
+        {
+          "id": "CenterModal",
+          "count": 1
+        }
+      ],
+      "sectionFrames": {
+        "sectionBand": 7,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 9,
+        "gray20Container": 5
+      },
+      "sectionTitles": [
+        "복사 대상 BOM",
+        "비가동시간",
+        "시작 시간",
+        "원본 BOM 선택",
+        "종료 시간",
+        "타임테이블 (주간)",
+        "품목별 가동기록"
+      ],
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 11
+        },
+        {
+          "name": "CenterModal",
+          "jsxCount": 1
+        },
+        {
+          "name": "Checkbox",
+          "jsxCount": 1
+        },
+        {
+          "name": "DatePicker",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 3
+        },
+        {
+          "name": "Link",
+          "jsxCount": 1
+        },
+        {
+          "name": "Tag",
+          "jsxCount": 3
+        }
+      ],
+      "stateHookCount": 30,
+      "behaviorSignals": [
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "name": "completed-popup-patterns.tsx",
+      "observedRole": "catalog-or-recipe",
+      "lines": 942,
+      "exportedSymbols": [
+        "PopupRenderer"
+      ],
+      "shells": [
+        {
+          "id": "CenterModal",
+          "count": 1
+        },
+        {
+          "id": "SideSlidePanel",
+          "count": 5
+        }
+      ],
+      "sectionFrames": {
+        "sectionBand": 8,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 4,
+        "dividerContainer": 4,
+        "roundedContainer": 6,
+        "gray20Container": 6
+      },
+      "sectionTitles": [
+        "검사결과",
+        "검사항목",
+        "기본 정보",
+        "기본정보",
+        "대상정보",
+        "중량검사",
+        "지시정보"
+      ],
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 14
+        },
+        {
+          "name": "Card",
+          "jsxCount": 8
+        },
+        {
+          "name": "CenterModal",
+          "jsxCount": 1
+        },
+        {
+          "name": "Checkbox",
+          "jsxCount": 1
+        },
+        {
+          "name": "DatePicker",
+          "jsxCount": 7
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 6
+        },
+        {
+          "name": "InspectionJudgement",
+          "jsxCount": 1
+        },
+        {
+          "name": "Link",
+          "jsxCount": 1
+        },
+        {
+          "name": "SideSlidePanel",
+          "jsxCount": 5
+        },
+        {
+          "name": "Tag",
+          "jsxCount": 5
+        },
+        {
+          "name": "TimePicker",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 54,
+      "behaviorSignals": [
+        "row.add-remove",
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.editable-row-list",
+        "section.form-grid",
+        "section.inspection-items",
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "mixed-section-frame-mechanisms",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/completed-screen-examples.tsx",
+      "name": "completed-screen-examples.tsx",
+      "observedRole": "catalog-or-recipe",
+      "lines": 9,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [],
+      "stateHookCount": 0,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/easy-mode-receiving-pattern.tsx",
+      "name": "easy-mode-receiving-pattern.tsx",
+      "observedRole": "generated-candidate",
+      "lines": 215,
+      "exportedSymbols": [
+        "EasyModeReceivingDialog"
+      ],
+      "shells": [
+        {
+          "id": "SideSlidePanel",
+          "count": 1
+        }
+      ],
+      "sectionFrames": {
+        "sectionBand": 1,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 3,
+        "dividerContainer": 2,
+        "roundedContainer": 2,
+        "gray20Container": 1
+      },
+      "sectionTitles": [
+        "기본정보"
+      ],
+      "uiComponents": [
+        {
+          "name": "DatePicker",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconArrow",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconPlus",
+          "jsxCount": 1
+        },
+        {
+          "name": "Input",
+          "jsxCount": 4
+        },
+        {
+          "name": "Select",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 1
+        },
+        {
+          "name": "SideSlidePanel",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 5,
+      "behaviorSignals": [
+        "dismiss.restore-committed",
+        "row.add-remove",
+        "row.inherit-previous",
+        "section.toggle-collapse"
+      ],
+      "sectionCandidateSignals": [
+        "section.collapsible-form",
+        "section.editable-row-list",
+        "section.form-grid"
+      ],
+      "reviewFlags": [
+        "mixed-section-frame-mechanisms",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/entity-list-pattern.tsx",
+      "name": "entity-list-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 48,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [],
+      "stateHookCount": 0,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/exact-form-management-screen.tsx",
+      "name": "exact-form-management-screen.tsx",
+      "observedRole": "evidence",
+      "lines": 188,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 2,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Filter",
+          "jsxCount": 1
+        },
+        {
+          "name": "GroupQuery",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconBell",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconBox",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 2
+        },
+        {
+          "name": "IconChartBar",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconCompany",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconCopy",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconDownload",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconFileNote",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconMedalCheck",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconPlus",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconSetting",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconUserMono",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconWrench",
+          "jsxCount": 2
+        },
+        {
+          "name": "MesProductSwitcher",
+          "jsxCount": 1
+        },
+        {
+          "name": "PageTopTabItem",
+          "jsxCount": 3
+        },
+        {
+          "name": "QueryDateRange",
+          "jsxCount": 1
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "Sidebar",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 7,
+      "behaviorSignals": [
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.search-table"
+      ],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/exact-inventory-action-modal.tsx",
+      "name": "exact-inventory-action-modal.tsx",
+      "observedRole": "evidence",
+      "lines": 103,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Input",
+          "jsxCount": 1
+        },
+        {
+          "name": "LabeledInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "LabeledSelect",
+          "jsxCount": 3
+        },
+        {
+          "name": "Select",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 8,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/exact-inventory-add-modal.tsx",
+      "name": "exact-inventory-add-modal.tsx",
+      "observedRole": "evidence",
+      "lines": 159,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 1,
+        "gray20Container": 2
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "DatePicker",
+          "jsxCount": 1
+        },
+        {
+          "name": "Filter",
+          "jsxCount": 1
+        },
+        {
+          "name": "Input",
+          "jsxCount": 2
+        },
+        {
+          "name": "LabeledSelect",
+          "jsxCount": 2
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "Select",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 2
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 9,
+      "behaviorSignals": [
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.search-table"
+      ],
+      "reviewFlags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/exact-inventory-edit-modal.tsx",
+      "name": "exact-inventory-edit-modal.tsx",
+      "observedRole": "evidence",
+      "lines": 99,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 1,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Filter",
+          "jsxCount": 1
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectionActionBar",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 3,
+      "behaviorSignals": [
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.search-table"
+      ],
+      "reviewFlags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/exact-production-analytics-screen.tsx",
+      "name": "exact-production-analytics-screen.tsx",
+      "observedRole": "evidence",
+      "lines": 81,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 2,
+        "dividerContainer": 1,
+        "roundedContainer": 9,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "ButtonGroup",
+          "jsxCount": 2
+        },
+        {
+          "name": "Card",
+          "jsxCount": 3
+        },
+        {
+          "name": "EquipmentProductionChart",
+          "jsxCount": 1
+        },
+        {
+          "name": "HorizontalBarChart",
+          "jsxCount": 2
+        },
+        {
+          "name": "IconBell",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconBox",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 3
+        },
+        {
+          "name": "IconChartBar",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconCompany",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconGrid",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconMedalCheck",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconSetting",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconUserMono",
+          "jsxCount": 1
+        },
+        {
+          "name": "InventoryComparisonChart",
+          "jsxCount": 1
+        },
+        {
+          "name": "Logo",
+          "jsxCount": 1
+        },
+        {
+          "name": "MesProductSwitcher",
+          "jsxCount": 1
+        },
+        {
+          "name": "PageTopTabItem",
+          "jsxCount": 3
+        },
+        {
+          "name": "Select",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 1
+        },
+        {
+          "name": "Sidebar",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 6,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [
+        "section.form-grid",
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/exact-production-result-screen.tsx",
+      "name": "exact-production-result-screen.tsx",
+      "observedRole": "evidence",
+      "lines": 114,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 2,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Filter",
+          "jsxCount": 1
+        },
+        {
+          "name": "GroupQuery",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconBell",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 7
+        },
+        {
+          "name": "IconCalendar",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconCopy",
+          "jsxCount": 3
+        },
+        {
+          "name": "IconDownload",
+          "jsxCount": 3
+        },
+        {
+          "name": "IconMenu",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconSetting",
+          "jsxCount": 2
+        },
+        {
+          "name": "Link",
+          "jsxCount": 2
+        },
+        {
+          "name": "PageTopTabItem",
+          "jsxCount": 3
+        },
+        {
+          "name": "QueryDateRange",
+          "jsxCount": 1
+        },
+        {
+          "name": "QuickQuery",
+          "jsxCount": 2
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 7,
+      "behaviorSignals": [
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.search-table",
+        "section.summary"
+      ],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/exact-purchase-modals.tsx",
+      "name": "exact-purchase-modals.tsx",
+      "observedRole": "evidence",
+      "lines": 76,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 1,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Badge",
+          "jsxCount": 1
+        },
+        {
+          "name": "Button",
+          "jsxCount": 1
+        },
+        {
+          "name": "Filter",
+          "jsxCount": 1
+        },
+        {
+          "name": "Link",
+          "jsxCount": 1
+        },
+        {
+          "name": "Progress",
+          "jsxCount": 2
+        },
+        {
+          "name": "QueryDateRange",
+          "jsxCount": 1
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 2
+        }
+      ],
+      "stateHookCount": 5,
+      "behaviorSignals": [
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.search-table"
+      ],
+      "reviewFlags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/figma-screen-preview.tsx",
+      "name": "figma-screen-preview.tsx",
+      "observedRole": "composition-source",
+      "lines": 63,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [],
+      "stateHookCount": 1,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/generated-screen-review.tsx",
+      "name": "generated-screen-review.tsx",
+      "observedRole": "generated-candidate",
+      "lines": 86,
+      "exportedSymbols": [
+        "GeneratedScreenReview"
+      ],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 4,
+        "dividerContainer": 1,
+        "roundedContainer": 5,
+        "gray20Container": 2
+      },
+      "sectionTitles": [],
+      "uiComponents": [],
+      "stateHookCount": 0,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": [
+        "native-section-without-registered-frame"
+      ]
+    },
+    {
+      "source": "src/components/patterns/inspection-criteria-pattern.tsx",
+      "name": "inspection-criteria-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 305,
+      "exportedSymbols": [
+        "InspectionCriteriaDialog"
+      ],
+      "shells": [
+        {
+          "id": "CenterModal",
+          "count": 1
+        }
+      ],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 2,
+        "dividerContainer": 0,
+        "roundedContainer": 2,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "CenterModal",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconExclamationCircle",
+          "jsxCount": 2
+        },
+        {
+          "name": "IconPlus",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconQaO",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconQaTriangle",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconQaX",
+          "jsxCount": 1
+        },
+        {
+          "name": "Input",
+          "jsxCount": 1
+        },
+        {
+          "name": "Select",
+          "jsxCount": 2
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 2
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 2
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 2
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 2
+        }
+      ],
+      "stateHookCount": 2,
+      "behaviorSignals": [
+        "dismiss.restore-committed"
+      ],
+      "sectionCandidateSignals": [
+        "section.form-grid",
+        "section.inspection-items"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/master-detail-pattern.tsx",
+      "name": "master-detail-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 53,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 2,
+        "dividerContainer": 1,
+        "roundedContainer": 1,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [],
+      "stateHookCount": 0,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": [
+        "native-section-without-registered-frame"
+      ]
+    },
+    {
+      "source": "src/components/patterns/mes-screen-fixtures.tsx",
+      "name": "mes-screen-fixtures.tsx",
+      "observedRole": "composition-source",
+      "lines": 313,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 1,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "DatePicker",
+          "jsxCount": 2
+        },
+        {
+          "name": "Filter",
+          "jsxCount": 1
+        },
+        {
+          "name": "GroupQuery",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 2
+        },
+        {
+          "name": "Input",
+          "jsxCount": 1
+        },
+        {
+          "name": "InputProps",
+          "jsxCount": 1
+        },
+        {
+          "name": "Logo",
+          "jsxCount": 1
+        },
+        {
+          "name": "PageTopTabItem",
+          "jsxCount": 2
+        },
+        {
+          "name": "Radio",
+          "jsxCount": 1
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "Select",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 1
+        },
+        {
+          "name": "Sidebar",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 5,
+      "behaviorSignals": [
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.search-table"
+      ],
+      "reviewFlags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/original-mes-screen-assets.tsx",
+      "name": "original-mes-screen-assets.tsx",
+      "observedRole": "evidence",
+      "lines": 269,
+      "exportedSymbols": [],
+      "shells": [
+        {
+          "id": "SideSlidePanel",
+          "count": 2
+        }
+      ],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 7,
+        "patternGroupHeader": 0,
+        "nativeSection": 6,
+        "dividerContainer": 1,
+        "roundedContainer": 1,
+        "gray20Container": 2
+      },
+      "sectionTitles": [
+        "검사항목",
+        "금형 정보",
+        "대상정보",
+        "배열 생성",
+        "캐비티 배열"
+      ],
+      "uiComponents": [
+        {
+          "name": "CavityCell",
+          "jsxCount": 1
+        },
+        {
+          "name": "DatePicker",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconExclamationCircle",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconPlus",
+          "jsxCount": 3
+        },
+        {
+          "name": "IconQaO",
+          "jsxCount": 2
+        },
+        {
+          "name": "IconQaX",
+          "jsxCount": 2
+        },
+        {
+          "name": "Input",
+          "jsxCount": 12
+        },
+        {
+          "name": "NoticeBanner",
+          "jsxCount": 1
+        },
+        {
+          "name": "Radio",
+          "jsxCount": 5
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "SectionHeader",
+          "jsxCount": 7
+        },
+        {
+          "name": "Select",
+          "jsxCount": 3
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 3
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 4
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 3
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 3
+        },
+        {
+          "name": "SideSlidePanel",
+          "jsxCount": 2
+        }
+      ],
+      "stateHookCount": 19,
+      "behaviorSignals": [
+        "row.add-remove"
+      ],
+      "sectionCandidateSignals": [
+        "section.editable-row-list",
+        "section.form-grid",
+        "section.inspection-items",
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "mixed-section-frame-mechanisms",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/production-quantity-reregistration-pattern.tsx",
+      "name": "production-quantity-reregistration-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 63,
+      "exportedSymbols": [
+        "ProductionQuantityReregistrationDialog"
+      ],
+      "shells": [
+        {
+          "id": "ConfirmDialog",
+          "count": 1
+        }
+      ],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 2
+        },
+        {
+          "name": "ConfirmDialog",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 0,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [
+        "section.before-after",
+        "section.summary"
+      ],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "name": "source-popup-gallery.tsx",
+      "observedRole": "evidence",
+      "lines": 156,
+      "exportedSymbols": [],
+      "shells": [
+        {
+          "id": "CenterModal",
+          "count": 1
+        }
+      ],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 1,
+        "dividerContainer": 1,
+        "roundedContainer": 1,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Card",
+          "jsxCount": 2
+        },
+        {
+          "name": "CenterModal",
+          "jsxCount": 1
+        },
+        {
+          "name": "DialogFooter",
+          "jsxCount": 1
+        },
+        {
+          "name": "Tag",
+          "jsxCount": 2
+        }
+      ],
+      "stateHookCount": 4,
+      "behaviorSignals": [
+        "dismiss.restore-committed",
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/table-column-settings-example.tsx",
+      "name": "table-column-settings-example.tsx",
+      "observedRole": "catalog-or-recipe",
+      "lines": 73,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 2,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Badge",
+          "jsxCount": 1
+        },
+        {
+          "name": "Button",
+          "jsxCount": 2
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 1,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/table-column-settings.tsx",
+      "name": "table-column-settings.tsx",
+      "observedRole": "composition-source",
+      "lines": 131,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 1,
+        "dividerContainer": 0,
+        "roundedContainer": 1,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 3
+        },
+        {
+          "name": "CloseButton",
+          "jsxCount": 1
+        },
+        {
+          "name": "Switch",
+          "jsxCount": 2
+        },
+        {
+          "name": "Tag",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 1,
+      "behaviorSignals": [
+        "dismiss.restore-committed"
+      ],
+      "sectionCandidateSignals": [
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    }
+  ],
+  "fingerprint": "e6653f1ec00405fd"
+}

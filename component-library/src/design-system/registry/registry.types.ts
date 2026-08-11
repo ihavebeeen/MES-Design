@@ -153,3 +153,45 @@ export interface CompositionPolicyRegistry {
   forbiddenWithoutDecision: string[];
   migrationHolds: CompositionPolicyMigrationHold[];
 }
+
+export interface CompositionInventorySignal {
+  id: string;
+  fileCount: number;
+  sources: string[];
+}
+
+export interface CompositionInventoryFile {
+  source: string;
+  name: string;
+  observedRole: string;
+  lines: number;
+  exportedSymbols: string[];
+  shells: Array<{ id: string; count: number }>;
+  sectionFrames: Record<string, number>;
+  sectionTitles: string[];
+  uiComponents: Array<{ name: string; jsxCount: number }>;
+  stateHookCount: number;
+  behaviorSignals: string[];
+  sectionCandidateSignals: string[];
+  reviewFlags: string[];
+}
+
+export interface CompositionInventoryRegistry {
+  schemaVersion: 1;
+  policyId: "mes.ai-composition-grammar";
+  status: "observed-not-canonical";
+  scope: string;
+  summary: {
+    scannedFiles: number;
+    totalLines: number;
+    shellInstances: Record<string, number>;
+    filesWithMixedSectionFrames: number;
+    filesWithNativeSectionOnly: number;
+    filesWithRoundedSectionCandidates: number;
+  };
+  sectionCandidateSignals: CompositionInventorySignal[];
+  behaviorSignals: CompositionInventorySignal[];
+  reviewQueue: Array<{ source: string; flags: string[] }>;
+  files: CompositionInventoryFile[];
+  fingerprint: string;
+}

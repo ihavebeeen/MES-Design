@@ -176,3 +176,13 @@ AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스�
 4. 사용자 승인 후 schema·코드·문서를 같은 변경에서 갱신한다.
 
 세부 화면의 원본 충실도 규칙과 토큰 판단 규칙은 기존 문서를 그대로 유지한다. 이 정책은 그 위에서 AI의 조합 단위와 승인 절차를 통일한다.
+
+## 9. 적용 현황
+
+1차 얕은 전수조사는 완료했다.
+
+- 구조화 결과: `component-library/src/design-system/registry/composition-inventory.json`
+- 사람용 보고서: [AI UI 조합 인벤토리 1차](./AI_UI_조합_인벤토리_1차.md)
+- 후속 작업과 보류: [AI UI 조합 문법 적용 TODO](./AI_UI_조합_문법_적용_TODO.md)
+
+자동 탐지 결과의 상태는 `observed-not-canonical`이다. Section·Behavior 후보는 2차 수동 감사와 사용자 승인 전까지 공통 패턴으로 사용하지 않는다.
