@@ -8,8 +8,8 @@
   },
   "summary": {
     "scannedFiles": 93,
-    "totalOccurrences": 2357,
-    "arbitraryUtilities": 860,
+    "totalOccurrences": 2369,
+    "arbitraryUtilities": 866,
     "hardcodedColors": 33,
     "reviewCandidates": 0,
     "unregisteredCandidates": 0
@@ -23,8 +23,8 @@
     },
     "pattern": {
       "files": 10,
-      "occurrences": 763,
-      "arbitraryUtilities": 242,
+      "occurrences": 775,
+      "arbitraryUtilities": 248,
       "hardcodedColors": 6
     },
     "evidence": {
@@ -38,11 +38,11 @@
     "spacing": [
       {
         "value": "8px",
-        "count": 154,
+        "count": 153,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 74,
-          "pattern": 50,
+          "pattern": 49,
           "evidence": 30
         },
         "examples": [
@@ -58,11 +58,11 @@
       },
       {
         "value": "12px",
-        "count": 123,
+        "count": 124,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 32,
-          "pattern": 57,
+          "pattern": 58,
           "evidence": 34
         },
         "examples": [
@@ -78,11 +78,11 @@
       },
       {
         "value": "20px",
-        "count": 117,
+        "count": 121,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 11,
-          "pattern": 63,
+          "pattern": 67,
           "evidence": 43
         },
         "examples": [
@@ -158,11 +158,11 @@
       },
       {
         "value": "6px",
-        "count": 55,
+        "count": 54,
         "arbitraryCount": 15,
         "layers": {
           "canonical": 35,
-          "pattern": 12,
+          "pattern": 11,
           "evidence": 8
         },
         "examples": [
@@ -189,11 +189,11 @@
           "src/components/ui/confirm-dialog.tsx:143",
           "src/components/ui/descriptions.tsx:24",
           "src/components/ui/inspection-judgement.tsx:35",
-          "src/components/patterns/completed-popup-patterns.tsx:812",
-          "src/components/patterns/completed-popup-patterns.tsx:814",
-          "src/components/patterns/completed-popup-patterns.tsx:815",
-          "src/components/patterns/completed-popup-patterns.tsx:816",
-          "src/components/patterns/completed-popup-patterns.tsx:817"
+          "src/components/patterns/completed-popup-patterns.tsx:821",
+          "src/components/patterns/completed-popup-patterns.tsx:823",
+          "src/components/patterns/completed-popup-patterns.tsx:824",
+          "src/components/patterns/completed-popup-patterns.tsx:825",
+          "src/components/patterns/completed-popup-patterns.tsx:826"
         ]
       },
       {
@@ -489,11 +489,11 @@
     "radius": [
       {
         "value": "rounded-mes-control",
-        "count": 65,
+        "count": 66,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 41,
-          "pattern": 17,
+          "pattern": 18,
           "evidence": 7
         },
         "examples": [
@@ -638,6 +638,18 @@
         ]
       },
       {
+        "value": "8px",
+        "count": 2,
+        "arbitraryCount": 2,
+        "layers": {
+          "pattern": 2
+        },
+        "examples": [
+          "src/components/patterns/completed-popup-patterns.tsx:489",
+          "src/components/patterns/completed-popup-patterns.tsx:750"
+        ]
+      },
+      {
         "value": "rounded-mes-modal-lg",
         "count": 2,
         "arbitraryCount": 0,
@@ -681,17 +693,6 @@
         },
         "examples": [
           "src/components/patterns/table-column-settings.tsx:71"
-        ]
-      },
-      {
-        "value": "8px",
-        "count": 1,
-        "arbitraryCount": 1,
-        "layers": {
-          "pattern": 1
-        },
-        "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:489"
         ]
       },
       {
@@ -800,11 +801,11 @@
       },
       {
         "value": "16px",
-        "count": 27,
-        "arbitraryCount": 27,
+        "count": 28,
+        "arbitraryCount": 28,
         "layers": {
           "canonical": 8,
-          "pattern": 13,
+          "pattern": 14,
           "evidence": 6
         },
         "examples": [
@@ -820,11 +821,11 @@
       },
       {
         "value": "15px",
-        "count": 25,
-        "arbitraryCount": 25,
+        "count": 24,
+        "arbitraryCount": 24,
         "layers": {
           "canonical": 10,
-          "pattern": 10,
+          "pattern": 9,
           "evidence": 5
         },
         "examples": [
@@ -965,11 +966,11 @@
     "size": [
       {
         "value": "0px",
-        "count": 61,
+        "count": 63,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 13,
-          "pattern": 38,
+          "pattern": 40,
           "evidence": 10
         },
         "examples": [
@@ -985,11 +986,11 @@
       },
       {
         "value": "32px",
-        "count": 50,
+        "count": 49,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 23,
-          "pattern": 17,
+          "pattern": 16,
           "evidence": 10
         },
         "examples": [
@@ -1044,12 +1045,12 @@
       },
       {
         "value": "24px",
-        "count": 19,
+        "count": 20,
         "arbitraryCount": 1,
         "layers": {
           "canonical": 17,
-          "evidence": 1,
-          "pattern": 1
+          "pattern": 2,
+          "evidence": 1
         },
         "examples": [
           "src/components/ui/checkbox.tsx:87",
@@ -1551,7 +1552,7 @@
           "src/components/ui/center-modal.tsx:19",
           "src/components/ui/confirm-dialog.tsx:117",
           "src/components/ui/notification-panel.tsx:124",
-          "src/components/patterns/completed-popup-patterns.tsx:811"
+          "src/components/patterns/completed-popup-patterns.tsx:820"
         ]
       },
       {
@@ -1579,10 +1580,10 @@
         },
         "examples": [
           "src/components/patterns/completed-popup-expanded-content.tsx:427",
-          "src/components/patterns/completed-popup-patterns.tsx:816",
-          "src/components/patterns/completed-popup-patterns.tsx:817",
-          "src/components/patterns/completed-popup-patterns.tsx:818",
-          "src/components/patterns/completed-popup-patterns.tsx:819"
+          "src/components/patterns/completed-popup-patterns.tsx:825",
+          "src/components/patterns/completed-popup-patterns.tsx:826",
+          "src/components/patterns/completed-popup-patterns.tsx:827",
+          "src/components/patterns/completed-popup-patterns.tsx:828"
         ]
       },
       {
@@ -1736,6 +1737,21 @@
         ]
       },
       {
+        "value": "72px",
+        "count": 4,
+        "arbitraryCount": 4,
+        "layers": {
+          "pattern": 3,
+          "evidence": 1
+        },
+        "examples": [
+          "src/components/patterns/completed-popup-patterns.tsx:764",
+          "src/components/patterns/completed-popup-patterns.tsx:921",
+          "src/components/patterns/mes-screen-fixtures.tsx:259",
+          "src/components/patterns/original-mes-screen-assets.tsx:167"
+        ]
+      },
+      {
         "value": "calc(100vh-40px)",
         "count": 4,
         "arbitraryCount": 4,
@@ -1826,8 +1842,8 @@
         },
         "examples": [
           "src/components/patterns/completed-popup-expanded-content.tsx:427",
-          "src/components/patterns/completed-popup-patterns.tsx:818",
-          "src/components/patterns/completed-popup-patterns.tsx:819"
+          "src/components/patterns/completed-popup-patterns.tsx:827",
+          "src/components/patterns/completed-popup-patterns.tsx:828"
         ]
       },
       {
@@ -1839,23 +1855,9 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:813",
-          "src/components/patterns/completed-popup-patterns.tsx:814",
+          "src/components/patterns/completed-popup-patterns.tsx:822",
+          "src/components/patterns/completed-popup-patterns.tsx:823",
           "src/components/patterns/source-popup-gallery.tsx:49"
-        ]
-      },
-      {
-        "value": "72px",
-        "count": 3,
-        "arbitraryCount": 3,
-        "layers": {
-          "pattern": 2,
-          "evidence": 1
-        },
-        "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:912",
-          "src/components/patterns/mes-screen-fixtures.tsx:259",
-          "src/components/patterns/original-mes-screen-assets.tsx:167"
         ]
       },
       {
@@ -1971,6 +1973,18 @@
         ]
       },
       {
+        "value": "150px",
+        "count": 2,
+        "arbitraryCount": 2,
+        "layers": {
+          "pattern": 2
+        },
+        "examples": [
+          "src/components/patterns/completed-application-patterns.tsx:243",
+          "src/components/patterns/completed-popup-patterns.tsx:734"
+        ]
+      },
+      {
         "value": "18px",
         "count": 2,
         "arbitraryCount": 2,
@@ -1981,6 +1995,18 @@
         "examples": [
           "src/components/ui/tag.tsx:59",
           "src/components/patterns/exact-production-analytics-screen.tsx:77"
+        ]
+      },
+      {
+        "value": "194px",
+        "count": 2,
+        "arbitraryCount": 2,
+        "layers": {
+          "pattern": 2
+        },
+        "examples": [
+          "src/components/patterns/completed-popup-patterns.tsx:489",
+          "src/components/patterns/completed-popup-patterns.tsx:723"
         ]
       },
       {
@@ -2092,7 +2118,7 @@
         },
         "examples": [
           "src/components/patterns/completed-popup-expanded-content.tsx:127",
-          "src/components/patterns/completed-popup-patterns.tsx:817"
+          "src/components/patterns/completed-popup-patterns.tsx:826"
         ]
       },
       {
@@ -2215,7 +2241,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:815",
+          "src/components/patterns/completed-popup-patterns.tsx:824",
           "src/components/patterns/source-popup-gallery.tsx:49"
         ]
       },
@@ -2401,17 +2427,6 @@
         ]
       },
       {
-        "value": "150px",
-        "count": 1,
-        "arbitraryCount": 1,
-        "layers": {
-          "pattern": 1
-        },
-        "examples": [
-          "src/components/patterns/completed-application-patterns.tsx:243"
-        ]
-      },
-      {
         "value": "188px",
         "count": 1,
         "arbitraryCount": 1,
@@ -2419,18 +2434,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:846"
-        ]
-      },
-      {
-        "value": "194px",
-        "count": 1,
-        "arbitraryCount": 1,
-        "layers": {
-          "pattern": 1
-        },
-        "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:489"
+          "src/components/patterns/completed-popup-patterns.tsx:855"
         ]
       },
       {
@@ -2530,6 +2534,17 @@
         },
         "examples": [
           "src/components/patterns/exact-production-analytics-screen.tsx:59"
+        ]
+      },
+      {
+        "value": "269px",
+        "count": 1,
+        "arbitraryCount": 1,
+        "layers": {
+          "pattern": 1
+        },
+        "examples": [
+          "src/components/patterns/completed-popup-patterns.tsx:750"
         ]
       },
       {
@@ -2672,7 +2687,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:810"
+          "src/components/patterns/completed-popup-patterns.tsx:819"
         ]
       },
       {
@@ -2683,7 +2698,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:809"
+          "src/components/patterns/completed-popup-patterns.tsx:818"
         ]
       },
       {
@@ -2870,7 +2885,18 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:816"
+          "src/components/patterns/completed-popup-patterns.tsx:825"
+        ]
+      },
+      {
+        "value": "688px",
+        "count": 1,
+        "arbitraryCount": 1,
+        "layers": {
+          "pattern": 1
+        },
+        "examples": [
+          "src/components/patterns/completed-popup-patterns.tsx:722"
         ]
       },
       {
@@ -2925,7 +2951,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/completed-popup-patterns.tsx:812"
+          "src/components/patterns/completed-popup-patterns.tsx:821"
         ]
       },
       {
@@ -3424,5 +3450,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "3951b3a37cd7c005"
+  "fingerprint": "089c882c050a44d9"
 }

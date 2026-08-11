@@ -9,7 +9,7 @@
     { "id": "operation-log", "name": "운전일지 등록", "patternId": "popup.side.time-records", "source": "src/components/patterns/completed-popup-expanded-content.tsx", "figmaNode": "17303:45841", "stateRules": ["SideSlidePanel에서 열고 닫는다.", "시간 기록 추가·수정이 실제 목록 state에 반영된다."] },
     { "id": "production-result", "name": "생산실적 등록", "patternId": "popup.side.add-list", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:48851", "stateRules": ["추가 동작으로 하단 실적 목록이 변경된다."] },
     { "id": "receiving", "name": "입고등록", "patternId": "popup.side.add-list", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:49261", "stateRules": ["추가 동작으로 하단 입고 목록이 변경된다."] },
-    { "id": "custom-information", "name": "커스텀 정보 등록", "patternId": "popup.side.custom-columns", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:51570", "stateRules": ["정보 추가·취소·저장이 우측 편집 state를 변경한다."] },
+    { "id": "custom-information", "name": "자주검사 — 커스텀 정보 등록 상태", "patternId": "popup.side.custom-columns", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:51570", "stateRules": ["760px 패널을 360px 기본정보와 400px 커스텀 정보 영역으로 분할한다.", "정보 추가·취소·저장이 우측 편집 state를 변경한다."] },
     { "id": "self-inspection", "name": "자주검사", "patternId": "popup.side.inspection-items", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:51420", "stateRules": ["검사항목별 판정값을 독립적으로 변경할 수 있다."] },
     { "id": "grouped-production-list", "name": "그룹화 리스트 관리 화면", "patternId": "table.grouped-list", "source": "src/app/[...slug]/client-page.tsx", "figmaNode": "17000:39999", "stateRules": ["그룹 접기·펼치기와 그룹 선택이 하위 행 상태에 반영된다.", "총계 열은 헤더 컬럼과 정렬된다."] }
   ]

@@ -67,6 +67,34 @@ test("생산실적 등록 슬라이드 팝업", async ({ page }) => {
   await expect(deleteButtons).toHaveCount(11);
 });
 
+test("자주검사 커스텀 정보 등록 상태", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/visual-regression/custom-information");
+  const dialog = page.getByRole("dialog", { name: "자주검사" });
+  await expect(dialog).toBeVisible();
+
+  const tableViewport = dialog.locator(".custom-information-table");
+  const overflow = await tableViewport.evaluate((element) => ({
+    horizontal: element.scrollWidth - element.clientWidth,
+    vertical: element.scrollHeight - element.clientHeight,
+  }));
+  expect(overflow.horizontal).toBe(0);
+  expect(overflow.vertical).toBeLessThanOrEqual(2);
+
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("custom-information.png");
+
+  const editor = dialog.locator(".custom-information-editor");
+  await editor.getByRole("button", { name: "취소" }).click();
+  await expect(editor).toBeHidden();
+  await dialog.getByRole("button", { name: "정보 추가" }).click();
+  await expect(editor).toBeVisible();
+  await editor.locator("input").first().fill("신규 항목");
+  await editor.getByRole("button", { name: "저장" }).click();
+  await expect(editor).toBeHidden();
+  await expect(dialog.getByText("신규 항목", { exact: true })).toBeVisible();
+});
+
 test("팝업 취소와 X는 변경값을 버리고 닫는다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/patterns/completed-popup-types");

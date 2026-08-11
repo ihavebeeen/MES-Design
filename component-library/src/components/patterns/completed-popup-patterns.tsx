@@ -646,7 +646,7 @@ function CustomInformationContent() {
   const [receivingInspection, setReceivingInspection] = React.useState(true);
   const [processInspection, setProcessInspection] = React.useState(true);
   const [shippingInspection, setShippingInspection] = React.useState(true);
-  const [selfInspection, setSelfInspection] = React.useState(true);
+  const [automaticStock, setAutomaticStock] = React.useState(true);
   const [lotCreation, setLotCreation] = React.useState(true);
   const [creationBasis, setCreationBasis] = React.useState<"production" | "packaging">("production");
   const [rows, setRows] = React.useState<CustomInformationRow[]>(INITIAL_CUSTOM_INFORMATION_ROWS);
@@ -701,60 +701,69 @@ function CustomInformationContent() {
           <LabeledControl label="입고검사" required>{inspectionRadio("custom-receiving", receivingInspection, setReceivingInspection)}</LabeledControl>
           <LabeledControl label="공정검사" required>{inspectionRadio("custom-process", processInspection, setProcessInspection)}</LabeledControl>
           <LabeledControl label="출하검사" required>{inspectionRadio("custom-shipping", shippingInspection, setShippingInspection)}</LabeledControl>
-          <LabeledControl label="자주검사" required>{inspectionRadio("custom-self", selfInspection, setSelfInspection)}</LabeledControl>
+          <LabeledControl label="자동수불" required>{inspectionRadio("custom-stock", automaticStock, setAutomaticStock)}</LabeledControl>
           <LabeledControl label="입상수(포장단위)"><FixtureInput value="500" inputMode="numeric" /></LabeledControl>
           <LabeledControl label="LOT 생성" required>{inspectionRadio("custom-lot", lotCreation, setLotCreation)}</LabeledControl>
           <LabeledControl label="생성기준">
             <div className="flex gap-3">
-              <RadioOption name="custom-basis" checked={creationBasis === "production"} label="제조수량" onChange={() => setCreationBasis("production")} />
-              <RadioOption name="custom-basis" checked={creationBasis === "packaging"} label="박스포장수량" onChange={() => setCreationBasis("packaging")} />
+              <RadioOption name="custom-basis" checked={creationBasis === "production"} label="제품수량" onChange={() => setCreationBasis("production")} />
+              <RadioOption name="custom-basis" checked={creationBasis === "packaging"} label="박스(포장)수량" onChange={() => setCreationBasis("packaging")} />
             </div>
           </LabeledControl>
-          <LabeledControl label="기준수량"><div className="flex items-center gap-2"><FixtureInput value="500" inputMode="numeric" /><span className="text-[13px] text-mes-gray-80">박스</span></div></LabeledControl>
+          <LabeledControl label="기준수량"><div className="flex min-w-0 items-center gap-2"><FixtureInput value="500" inputMode="numeric" className="min-w-0 flex-1" /><span className="shrink-0 text-[13px] text-mes-gray-80">박스</span></div></LabeledControl>
         </div>
       </div>
 
-      <div className="flex min-h-full min-w-0 flex-col bg-mes-gray-20 px-3 py-4">
-        <div className="flex h-8 items-center gap-1.5 text-[15px] font-bold">
+      <div className="flex min-h-full min-w-0 flex-col bg-mes-gray-20 px-5 pt-5">
+        <div className="flex h-6 shrink-0 items-center gap-2 text-[16px] font-bold">
           <IconArrow size={14} />
           <span>커스텀 정보 등록</span>
         </div>
-        <FixtureTable
-          selectable={false}
-          horizontalScroll={false}
-          headers={["", "항목코드", "항목명", "입력유형", "정보Type"]}
-          widths={[32, 64, 64, 86, 94]}
-          aligns={["center", "center", "center", "center", "center"]}
-          rows={tableRows}
-          className="mt-2 shrink-0 bg-white"
-        />
-        <Button
-          variant="lineMain"
-          size="small"
-          className="mt-2 w-full"
-          startIcon={<IconPlus size={15} />}
-          onClick={() => {
-            setDraft({ code: "항목1", name: "항목명 사용자 지정", inputType: "텍스트 입력", informationType: "규격정보" });
-            setEditorOpen(true);
-          }}
-        >
-          정보 추가
-        </Button>
+        <div className="mt-3 flex h-[688px] shrink-0 flex-col">
+          <div className="h-[194px] shrink-0">
+            <FixtureTable
+              selectable={false}
+              edgePadding={0}
+              columnDividers={false}
+              headerBackground="white"
+              horizontalScroll={false}
+              headers={["", "항목코드", "항목명", "입력유형", "정보Type"]}
+              widths={[36, 80.5, 80.5, 80.5, 80.5]}
+              aligns={["center", "center", "center", "center", "center"]}
+              rows={tableRows}
+              className="custom-information-table h-[150px] shrink-0 rounded-mes-control border-x border-t bg-white"
+            />
+            <Button
+              variant="lineMain"
+              size="small"
+              className="mt-3 w-full"
+              startIcon={<IconPlus size={15} />}
+              onClick={() => {
+                setDraft({ code: "항목1", name: "항목명 사용자 지정", inputType: "텍스트 입력", informationType: "규격정보" });
+                setEditorOpen(true);
+              }}
+            >
+              정보 추가
+            </Button>
+          </div>
 
-        {editorOpen && <Card className="mt-3 shrink-0 p-4">
-          <b className="text-[15px]">정보 추가</b>
-          <div className="mt-3 space-y-2.5">
-            <LabeledControl label="항목코드"><FixtureSelect value={draft.code} options={["항목1", "항목2", "항목3", "항목4"]} onValueChange={(code) => setDraft((current) => ({ ...current, code }))} /></LabeledControl>
-            <LabeledControl label="항목명"><FixtureInput value={draft.name} onValueChange={(name) => setDraft((current) => ({ ...current, name }))} /></LabeledControl>
-            <LabeledControl label="입력유형"><FixtureSelect value={draft.inputType} options={["텍스트 입력", "숫자 입력", "선택"]} onValueChange={(inputType) => setDraft((current) => ({ ...current, inputType }))} /></LabeledControl>
-            <LabeledControl label="정보 Type"><FixtureSelect value={draft.informationType} options={["규격정보", "검사정보", "생산정보"]} onValueChange={(informationType) => setDraft((current) => ({ ...current, informationType }))} /></LabeledControl>
-          </div>
-          <div className="mt-4 grid grid-cols-2 gap-2.5">
-            <Button size="small" variant="fillGray" onClick={() => setEditorOpen(false)}>취소</Button>
-            <Button size="small" variant="fillBlack" onClick={addInformation}>저장</Button>
-          </div>
-        </Card>}
-        <Button className="mt-auto w-full" onClick={() => setEditorOpen(false)}>완료</Button>
+          {editorOpen && <Card className="custom-information-editor mt-5 h-[269px] shrink-0 rounded-[8px] px-4 pb-4 pt-3">
+            <b className="text-[15px]">정보 추가</b>
+            <div className="mt-3 space-y-2.5">
+              <LabeledControl label="항목코드"><FixtureSelect value={draft.code} options={["항목1", "항목2", "항목3", "항목4"]} onValueChange={(code) => setDraft((current) => ({ ...current, code }))} /></LabeledControl>
+              <LabeledControl label="항목명"><FixtureInput value={draft.name} onValueChange={(name) => setDraft((current) => ({ ...current, name }))} /></LabeledControl>
+              <LabeledControl label="입력유형"><FixtureSelect value={draft.inputType} options={["텍스트 입력", "숫자 입력", "선택"]} onValueChange={(inputType) => setDraft((current) => ({ ...current, inputType }))} /></LabeledControl>
+              <LabeledControl label="정보 Type"><FixtureSelect value={draft.informationType} options={["규격정보", "검사정보", "생산정보"]} onValueChange={(informationType) => setDraft((current) => ({ ...current, informationType }))} /></LabeledControl>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-2.5">
+              <Button size="small" variant="fillGray" onClick={() => setEditorOpen(false)}>취소</Button>
+              <Button size="small" variant="fillBlack" onClick={addInformation}>저장</Button>
+            </div>
+          </Card>}
+        </div>
+        <div className="mt-5 flex h-[72px] shrink-0 items-center">
+          <Button className="w-full" onClick={() => setEditorOpen(false)}>완료</Button>
+        </div>
       </div>
     </div>
   );
@@ -826,7 +835,7 @@ export function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; o
   const defaultActions = createDefaultActions(() => onOpenChange(false));
   if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch p-0"><ProductionContent /></SideSlidePanel>;
   if (kind === "receiving") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="입고등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><ReceivingContent /></SideSlidePanel>;
-  if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="커스텀 정보 등록" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><CustomInformationContent /></SideSlidePanel>;
+  if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><CustomInformationContent /></SideSlidePanel>;
   if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch p-0"><InspectionContent /></SideSlidePanel>;
   if (kind === "operation-log") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="운전일지 등록" size="standard-900" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><UpdatedOperationLogContent /></SideSlidePanel>;
   return <CenterPopup kind={kind} open={open} onOpenChange={onOpenChange} />;
