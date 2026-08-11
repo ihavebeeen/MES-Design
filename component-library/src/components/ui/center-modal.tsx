@@ -12,6 +12,7 @@ export type CenterModalSize =
   | "medium-600"
   | "standard-960"
   | "wide-1024"
+  | "wide-1142"
   | "large-1100"
   | "wide-1400";
 
@@ -21,6 +22,7 @@ const centerModalSizeClasses: Record<CenterModalSize, string> = {
   "medium-600": "max-w-[600px]",
   "standard-960": "max-w-[960px]",
   "wide-1024": "max-w-[1024px]",
+  "wide-1142": "max-w-[1142px]",
   "large-1100": "max-w-[1100px]",
   "wide-1400": "max-w-[1400px]",
 };

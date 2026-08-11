@@ -6,6 +6,8 @@
     { "id": "popup-defect-quantity", "name": "불량수량 입력 팝업", "route": "/visual-regression/defect", "snapshot": "defect-quantity-input.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "defect-quantity-input" },
     { "id": "popup-production-result", "name": "생산실적 등록 슬라이드 팝업", "route": "/visual-regression/production-result", "snapshot": "production-result.png", "viewport": { "width": 1920, "height": 960 }, "screenId": "production-result" },
     { "id": "popup-custom-information", "name": "자주검사 커스텀 정보 등록 상태", "route": "/visual-regression/custom-information", "snapshot": "custom-information.png", "viewport": { "width": 1920, "height": 960 }, "screenId": "custom-information" },
+    { "id": "popup-self-inspection", "name": "자주검사 검사항목 상태", "route": "/visual-regression/inspection", "snapshot": "self-inspection.png", "viewport": { "width": 1920, "height": 960 }, "screenId": "self-inspection" },
+    { "id": "popup-bom-copy", "name": "BOM 복사 팝업", "route": "/visual-regression/bom-copy", "snapshot": "bom-copy.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "bom-copy" },
     { "id": "table-core-states", "name": "그룹화 테이블 핵심 상태", "route": "/visual-regression/table", "snapshot": "grouped-table-core-states.png", "viewport": { "width": 1280, "height": 720 }, "patternId": "table.grouped-list" }
   ]
 }

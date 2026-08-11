@@ -13,6 +13,14 @@ test("투입품목 설정/조회 팝업", async ({ page }) => {
   await page.goto("/visual-regression/popup");
   const dialog = page.getByRole("dialog", { name: "투입품목 설정/조회" });
   await expect(dialog).toBeVisible();
+  const selectionCheckboxes = dialog.locator('.material-inventory-table input[type="checkbox"]');
+  const [headerCheckbox, firstRowCheckbox] = await Promise.all([
+    selectionCheckboxes.nth(0).boundingBox(),
+    selectionCheckboxes.nth(1).boundingBox(),
+  ]);
+  expect(headerCheckbox).not.toBeNull();
+  expect(firstRowCheckbox).not.toBeNull();
+  expect(Math.abs((headerCheckbox!.x + headerCheckbox!.width / 2) - (firstRowCheckbox!.x + firstRowCheckbox!.width / 2))).toBeLessThanOrEqual(1);
   await hideDevelopmentOverlay(page);
   await expect(dialog).toHaveScreenshot("material-input-settings.png");
 });
@@ -140,6 +148,96 @@ test("자주검사 커스텀 정보 등록 상태", async ({ page }) => {
   await editor.getByRole("button", { name: "저장" }).click();
   await expect(editor).toBeHidden();
   await expect(dialog.getByText("신규 항목", { exact: true })).toBeVisible();
+});
+
+test("자주검사 검사항목 헤더와 판정 영역", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/visual-regression/inspection");
+  const dialog = page.getByRole("dialog", { name: "자주검사" });
+  await expect(dialog).toBeVisible();
+
+  const sectionBand = dialog.getByText("검사항목", { exact: true });
+  const addButton = dialog.getByRole("button", { name: "항목 추가" });
+  const [bandBox, addBox] = await Promise.all([sectionBand.boundingBox(), addButton.boundingBox()]);
+  expect(bandBox).not.toBeNull();
+  expect(addBox).not.toBeNull();
+  expect(bandBox!.width).toBe(260);
+  expect(addBox!.width).toBe(90);
+  expect(addBox!.x - (bandBox!.x + bandBox!.width)).toBe(10);
+
+  const [bandType, buttonType] = await Promise.all([
+    sectionBand.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { family: style.fontFamily, size: style.fontSize, weight: style.fontWeight, color: style.color };
+    }),
+    addButton.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { family: style.fontFamily, size: style.fontSize, weight: style.fontWeight, color: style.color };
+    }),
+  ]);
+  expect(bandType).toEqual({ family: expect.stringContaining("Pretendard"), size: "14px", weight: "700", color: "rgb(71, 80, 103)" });
+  expect(buttonType).toEqual({ family: expect.stringContaining("Pretendard"), size: "14px", weight: "600", color: "rgb(255, 255, 255)" });
+
+  const overflow = await dialog.evaluate((element) => element.scrollWidth - element.clientWidth);
+  expect(overflow).toBe(0);
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("self-inspection.png");
+});
+
+test("BOM 복사 원본 폭과 무가로스크롤", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/visual-regression/bom-copy");
+  const dialog = page.getByRole("dialog", { name: "BOM 복사" });
+  await expect(dialog).toBeVisible();
+
+  const box = await dialog.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box!.width).toBe(1142);
+  expect(box!.height).toBe(733);
+  const tableOverflows = await dialog.locator("[data-bom-table]").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
+  expect(tableOverflows).toEqual([0, 0]);
+
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("bom-copy.png");
+});
+
+test("완성 팝업 16종은 데스크톱에서 가로 스크롤을 만들지 않는다", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/patterns/completed-popup-types");
+  const popupLabels = [
+    "400 · 생산수량 입력",
+    "480 · 품목 상세정보",
+    "600 · 불량수량 입력",
+    "960 · 중량검사",
+    "1100 · 발주 일괄등록",
+    "1400 · 일괄작업지시",
+    "1400 · 투입품목 설정/조회",
+    "1142 · BOM 복사",
+    "1024 · 선발행 라벨 수량 확정",
+    "900 · 운전일지 등록",
+    "600 · 가동시간 선택",
+    "600 · 비가동시간 선택",
+    "900 · 생산실적 등록",
+    "900 · 입고등록",
+    "760 · 커스텀 정보 등록",
+    "760 · 자주검사",
+  ];
+
+  for (const label of popupLabels) {
+    await page.getByRole("button", { name: label, exact: true }).click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    const offenders = await dialog.locator("*").evaluateAll((elements) => elements.flatMap((element) => {
+      const style = getComputedStyle(element);
+      const overflow = element.scrollWidth - element.clientWidth;
+      return overflow > 1 && (style.overflowX === "auto" || style.overflowX === "scroll")
+        ? [{ overflow, className: element.className }]
+        : [];
+    }));
+    expect(offenders, `${label} 내부 가로 overflow`).toEqual([]);
+    await dialog.getByRole("button", { name: "닫기" }).click();
+    await expect(dialog).toBeHidden();
+  }
 });
 
 test("팝업 취소와 X는 변경값을 버리고 닫는다", async ({ page }) => {

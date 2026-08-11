@@ -245,6 +245,17 @@
       "status": "confirmed",
       "scope": ["pattern:table-column-settings"],
       "evidence": "TableColumnSettings의 드래그 행은 패널 자체가 아니라 조작 가능한 control 행이다. 4px control radius와 8px panel radius 사이의 미등록 6px 대신 4px 토큰을 사용한다."
+    },
+    {
+      "id": "spacing.bom-target-toolbar-table-gap",
+      "category": "spacing",
+      "property": "gap",
+      "observedValue": "11px",
+      "canonicalValue": "11px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["pattern:bom-copy.target-pane"],
+      "evidence": "BOM 복사 Figma 18962:67817에서 대상 도구막대는 y=0, 높이 48px이고 표는 y=59px에서 시작해 사이 간격이 11px로 실측된다. 일반 요소 간격으로 전파하지 않는 화면 구조 전용 값이다."
     }
   ]
 }

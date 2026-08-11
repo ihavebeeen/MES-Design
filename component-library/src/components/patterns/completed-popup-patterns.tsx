@@ -87,7 +87,7 @@ const POPUPS: PopupDefinition[] = [
   { id: "purchase", label: "1100 · 발주 일괄등록", node: "11210:52026", pattern: "center-table" },
   { id: "lookup", label: "1400 · 일괄작업지시", node: "11210:50866", pattern: "center-table" },
   { id: "material-input-setup", label: "1400 · 투입품목 설정/조회", node: "18826:60554", pattern: "center-navigation-detail" },
-  { id: "bom-copy", label: "1024 · BOM 복사", node: "18962:67817", pattern: "center-dual-pane" },
+  { id: "bom-copy", label: "1142 · BOM 복사", node: "18962:67817", pattern: "center-dual-pane" },
   { id: "preissued-label", label: "1024 · 선발행 라벨 수량 확정", node: "18756:60803", pattern: "center-table" },
   { id: "operation-log", label: "900 · 운전일지 등록", node: "17303:45841", pattern: "side-time-records" },
   { id: "operating-time-picker", label: "600 · 가동시간 선택", node: "17309:156861", pattern: "center-time-selector" },
@@ -806,7 +806,10 @@ function InspectionContent() {
         </div>
       </div>
       <div className="p-5">
-        <div className="flex items-center gap-2"><SectionBand>검사항목</SectionBand><Button size="small" variant="fillBlack" startIcon={<IconPlus size={15} />} onClick={addInspectionItem}>항목 추가</Button></div>
+        <div className="grid h-7 grid-cols-[260px_90px] items-start gap-2.5">
+          <SectionBand className="w-full">검사항목</SectionBand>
+          <Button size="small" variant="fillBlack" startIcon={<IconPlus size={16} />} className="h-7 gap-0.5 px-2.5 text-[14px]" onClick={addInspectionItem}>항목 추가</Button>
+        </div>
         <div className="mt-4 space-y-4">{items.map((item) => <div key={item.id} className="flex h-8 items-center justify-between text-[14px]"><span>{item.label}<span className="ml-[3px] font-semibold text-mes-danger-60">*</span></span><InspectionJudgement value={item.value} onValueChange={(value) => updateJudgement(item.id, value)} /></div>)}</div>
       </div>
     </div>
@@ -827,7 +830,7 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: CenterPopupKind; open
     purchase: { title: "발주 일괄등록", size: "large-1100", height: "h-[680px]", actions: defaultActions, content: <PurchaseContent /> },
     lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: defaultActions, content: <LookupWorkOrderContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-none" },
     "material-input-setup": { title: "투입품목 설정/조회", size: "wide-1400", height: "material-input-modal h-[800px]", actions: defaultActions, content: <MaterialInputSetupContent />, contentClassName: "items-stretch overflow-x-hidden overflow-y-auto p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
-    "bom-copy": { title: "BOM 복사", size: "wide-1024", height: "h-[678px]", actions: confirmActions("확인"), content: <BomCopyContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
+    "bom-copy": { title: "BOM 복사", size: "wide-1142", height: "h-[733px]", actions: confirmActions("확인"), content: <BomCopyContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
     "preissued-label": { title: "선발행 라벨 수량 확정", size: "wide-1024", height: "h-[576px]", actions: confirmActions("확인"), content: <PreissuedLabelContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
     "operating-time-picker": { title: "가동시간 선택", size: "medium-600", height: "h-[666px]", actions: confirmActions("입력"), content: <TimeSelectionContent mode="operating" />, contentClassName: "items-stretch overflow-hidden px-5 pt-5", maxHeight: "max-h-[calc(100vh-32px)]" },
     "downtime-picker": { title: "비가동시간 선택", size: "medium-600", height: "h-[666px]", actions: confirmActions("입력"), content: <TimeSelectionContent mode="downtime" />, contentClassName: "items-stretch overflow-hidden px-5 pt-5", maxHeight: "max-h-[calc(100vh-32px)]" },

@@ -419,7 +419,7 @@ function DataRow<T>({
         >
           <span
             className={cn(
-              "w-full truncate text-[14px] leading-[1.5]",
+              "w-full truncate text-[14px] leading-[1.3]",
               row.disabled
                 ? disabledTextTone === "gray60" ? "text-mes-gray-60" : "text-mes-gray-80"
                 : !isActive && unselectedTextTone === "gray80"
@@ -731,7 +731,7 @@ function Table<T>({
   selectionHeaderIndeterminate = true,
   edgePadding = 20,
   selectionColumnWidth = CHECKBOX_COLUMN_WIDTH,
-  centerSelection = false,
+  centerSelection = true,
   columnDividers = true,
   headerBackground = "gray10",
   horizontalScroll = true,
@@ -800,7 +800,7 @@ function Table<T>({
           {selectable && (
             <div className="flex h-full shrink-0 items-center justify-center" style={{ width: selectionColumnWidth }}>
               {selectionHeaderLabel ? (
-                <span className="text-[13px] font-semibold leading-[1.5] text-mes-text-default">
+              <span className="text-[13px] font-semibold leading-[1.3] text-mes-text-default">
                   {selectionHeaderLabel}
                 </span>
               ) : (
@@ -856,7 +856,7 @@ function Table<T>({
               column={{ ...col, align: "center" }}
               className={cn(columnDividers && i < columns.length - 1 && "border-r border-dashed border-mes-gray-40")}
             >
-              <span className="w-full truncate text-[13px] font-semibold leading-[1.5] text-mes-text-default">
+              <span className="w-full truncate text-[13px] font-semibold leading-[1.3] text-mes-text-default">
                 {col.label}
               </span>
             </Cell>

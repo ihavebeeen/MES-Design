@@ -29,7 +29,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `QuickQuery` | `compact` | `boolean`, 기본 `false` | 모바일에서 프리셋 목록 대신 별+화살표 트리거만 노출한다. | Figma `18849:65980` |
 | `GroupQuery` | `compact`, `compactLabel` | `boolean`, `string \| false` | 768에서는 아이콘+그룹화+화살표, 375에서는 아이콘+화살표만 표시하고 동일한 Level 상태를 유지한다. | Figma `18849:64894`, `18849:65980` |
 | `CenterModal` | `headerDivider` | `boolean`, 기본 `true` | 제목 아래 구분선이 없는 소형 정보 팝업을 같은 모달 컴포넌트로 표현한다. | 품목 상세정보, Figma `11210:52744` |
-| `CenterModal` | `size` 확장 | `wide-1024` 추가 | 화면별 임의 폭 덮어쓰기 없이 1024px BOM 복사·선발행 라벨 팝업의 폭 계약을 명시한다. 투입품목 설정/조회는 기존 `wide-1400`, 운전일지는 `SideSlidePanel.standard-900`을 사용한다. | Figma `18962:67817`, `18756:60803` |
+| `CenterModal` | `size` 확장 | `wide-1024`, `wide-1142` 추가 | 화면별 임의 폭 덮어쓰기 없이 선발행 라벨 1024px, BOM 복사 1142px의 실제 폭 계약을 명시한다. 투입품목 설정/조회는 기존 `wide-1400`, 운전일지는 `SideSlidePanel.standard-900`을 사용한다. | Figma `18962:67817`, `18756:60803` |
 | `CenterModal`, `SideSlidePanel` | `onCancel` dismiss 계약 | `() => void` | 취소·X·Esc·배경 클릭이 동일한 콜백을 실행한다. 저장 전 임시 상태의 폐기 또는 원본 스냅샷 복원은 이 콜백에서 수행하고 컨테이너가 이어서 닫힘 상태를 반영한다. | 공통 팝업 상호작용 규칙 |
 | `Table` | `activeId` | `string \| null`, 기본 `undefined` | 체크 상태와 별도로 활성 행을 지정한다. 생략하면 실제 선택 행이 활성 행 배경을 가진다. | 완성 화면 상태 분리용 |
 | `Table` | `selectionColor` | `main \| gray \| black`, 기본 `black` | 선택된 체크박스 색을 지정한다. | MES Checkbox 색 variant |
@@ -37,7 +37,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `Table` | `selectionHeaderIndeterminate` | `boolean`, 기본 `true` | 일부 행 선택 시 헤더에 부분선택 표시를 쓸지 결정한다. 회색=미선택 규칙을 쓰는 일괄작업지시는 `false`다. | 일괄작업지시, Figma `20274:73333` |
 | `Table` | `edgePadding` | `number`, 기본 `20` | 표 전체 좌우 내부 여백을 화면 실측에 맞춘다. | Figma `11210:50866`은 `0` |
 | `Table` | `selectionColumnWidth` | `number`, 기본 `40` | 선택 열의 전체 폭을 헤더·데이터·그룹·총계 행에 동일 적용한다. | Figma `11210:50866`은 `56` |
-| `Table` | `centerSelection` | `boolean`, 기본 `false` | 데이터 행 체크박스를 선택 열 중앙에 배치한다. | Figma `11210:50866` |
+| `Table` | `centerSelection` | `boolean`, 기본 `true` | 헤더와 데이터 행 체크박스를 선택 열 중앙의 동일한 x축에 배치한다. 왼쪽 정렬이 명시적으로 필요한 예외만 `false`를 사용한다. | Figma `11210:50866`, `18826:60554`, `18962:67817` |
 | `Table` | `columnDividers` | `boolean`, 기본 `true` | 셀 사이 세로 점선을 화면별로 끈다. | Figma `11210:50866`은 `false` |
 | `Table` | `headerBackground` | `gray10 \| white`, 기본 `gray10` | 공통 기본 헤더 색을 유지하면서 흰색 헤더가 명시된 화면을 표현한다. | 생산실적 등록, Figma `11210:48926`은 `white` |
 | `Table` | `horizontalScroll` | `boolean`, 기본 `true` | 고정 폭이 정확히 맞는 표에서 불필요한 가로 스크롤을 금지한다. | Figma `11210:50866`은 `false` |

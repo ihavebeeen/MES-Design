@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Button } from "./button";
 import { IconQaO, IconQaTriangle, IconQaX } from "../icons";
+import { cn } from "@/lib/utils";
 
 export type InspectionJudgementValue = "pass" | "hold" | "fail" | "none";
 
@@ -32,7 +33,10 @@ function InspectionJudgement({ value, onValueChange, className }: InspectionJudg
           aria-label={option.label}
           size="small"
           variant={value === option.value ? "fillMain" : "lineBlacktxt"}
-          className="min-w-0 flex-1 px-0"
+          className={cn(
+            "min-w-0 flex-1 px-0",
+            option.value === "none" && value !== option.value && "font-medium text-mes-gray-60"
+          )}
           onClick={() => onValueChange(option.value)}
         >
           {option.icon ?? <span className="text-[20px] leading-none">-</span>}

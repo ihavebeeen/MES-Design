@@ -145,6 +145,7 @@ export function MaterialInputSetupContent() {
             unselectedCheckboxAppearance="grayCheck"
             selectionHeaderIndeterminate={false}
             selectionColumnWidth={56}
+            centerSelection
             edgePadding={0}
             columnDividers={false}
             headerBackground="white"
@@ -177,7 +178,17 @@ const bomSourceRows = [
   ["원재료1", "원재료", "kg", "0.26"],
 ];
 
-const bomTargetNames = ["비닐봉투", "비닐 125*125", "비닐 75*75", "비닐 (청) 125*125", "비닐 (청) 15*15", "비닐봉투 150*150", "1500얼려먹는트레이", "1500얼려먹는트레이-SHEET", "1500얼려먹는트레이"];
+const bomTargetNames = [
+  "비닐봉투",
+  "비닐 125*125",
+  "비닐 75*75",
+  "비닐 (청) 125*125",
+  "비닐 (청) 15*15",
+  "비닐봉투 150*150",
+  "1500얼려먹는트레이",
+  "1500얼려먹는트레이-SHEET",
+  ...Array.from({ length: 9 }, () => "1500얼려먹는트레이"),
+];
 
 export function BomCopyContent() {
   const [search, setSearch] = React.useState("");
@@ -194,35 +205,45 @@ export function BomCopyContent() {
   ]);
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-3.5 p-4">
-      <div className="grid grid-cols-[318px_1fr] gap-4"><SectionBand>원본 BOM 선택</SectionBand><SectionBand>복사 대상 BOM</SectionBand></div>
-      <div className="grid min-h-0 flex-1 grid-cols-[318px_1fr] gap-4">
-        <div className="flex min-h-0 flex-col gap-3">
-          <div className="space-y-2">
-            <div className="grid grid-cols-[84px_1fr] items-center text-[14px]"><span>품목 <b className="text-mes-danger-60">*</b></span><FixtureInput value="1500 얼초트레이 PS" muted /></div>
-            <div className="grid grid-cols-[84px_1fr] items-center text-[14px]"><span>BOM 슬롯 <b className="text-mes-danger-60">*</b></span><FixtureInput value="VER 1" muted /></div>
+    <div className="flex h-full min-h-[609px] flex-col">
+      <div className="h-11 shrink-0 px-5 pt-4">
+        <div className="grid grid-cols-[370px_1fr] gap-5"><SectionBand>원본 BOM 선택</SectionBand><SectionBand>복사 대상 BOM</SectionBand></div>
+      </div>
+      <div className="grid h-[565px] min-h-0 shrink-0 grid-cols-[370px_1fr] gap-5 px-5 pt-4">
+        <div className="flex min-h-0 flex-col gap-4">
+          <div className="space-y-2.5">
+            <div className="grid h-8 grid-cols-[100px_1fr] items-center gap-2 text-[14px]"><span>품목 <b className="font-semibold text-mes-danger-60">*</b></span><FixtureInput value="1500 얼초트레이 PS" muted /></div>
+            <div className="grid h-8 grid-cols-[100px_1fr] items-center gap-2 text-[14px]"><span>BOM 슬롯 <b className="font-semibold text-mes-danger-60">*</b></span><FixtureInput value="VER 1" muted /></div>
           </div>
-          <span className="text-[14px]">BOM 구성</span>
-          <FixtureTable selectable={false} headers={["품목", "품목구분", "단위", "수량"]} rows={bomSourceRows} widths={[100, 76, 44, 70]} aligns={["left", "center", "center", "right"]} className="min-h-0 flex-1" />
-          <div className="flex h-7 items-center justify-between rounded-b-mes-control bg-mes-gray-10 px-3 text-[13px] font-bold"><span>총계</span><span>0.99</span></div>
+          <span className="h-[21px] text-[14px] leading-[1.5]">BOM 구성</span>
+          <div data-bom-table className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-mes-control border border-mes-border-default">
+            <FixtureTable selectable={false} headers={["품목", "품목구분", "단위", "수량"]} rows={bomSourceRows} widths={Array.from({ length: 4 }, () => ({ min: 60, grow: 1 }))} aligns={["center", "center", "center", "right"]} edgePadding={0} horizontalScroll={false} className="min-h-0 flex-1 rounded-none border-0" />
+            <div className="flex h-[30px] shrink-0 items-center justify-between bg-mes-gray-10 px-1.5 text-[13px] font-semibold leading-[1.3]"><span>총계</span><span>0.99</span></div>
+          </div>
         </div>
-        <div className="flex min-h-0 flex-col gap-2.5">
-          <div className="flex h-10 items-center justify-between rounded-mes-control bg-mes-gray-20 px-2.5">
-            <FixtureSelect value="품목구분" options={["품목구분", "원자재", "완제품"]} className="w-[120px]" />
-            <FixtureSearch value={search} onValueChange={setSearch} className="w-[180px]" />
+        <div className="flex min-h-0 flex-col gap-[11px]">
+          <div className="flex h-12 shrink-0 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
+            <FixtureSelect value="품목구분" options={["품목구분", "원자재", "완제품"]} className="w-[140px]" />
+            <FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" />
           </div>
-          <FixtureTable
-            headers={["품목", "품목구분", "BOM 슬롯", "BOM 명칭"]}
-            rows={targetRows}
-            widths={[210, 100, 130, 140]}
-            aligns={["left", "center", "left", "left"]}
-            checkedRows={selectedRows}
-            onCheckedRowsChange={setSelectedRows}
-            selectionColor="black"
-            unselectedCheckboxAppearance="grayCheck"
-            selectionColumnWidth={36}
-            className="min-h-0 flex-1"
-          />
+          <div data-bom-table className="h-[490px] min-h-0 shrink-0 overflow-hidden">
+            <FixtureTable
+              headers={["품목", "품목구분", "BOM 슬롯", "BOM 명칭"]}
+              rows={targetRows}
+              widths={[164, 164, 164, 164]}
+              aligns={["left", "center", "left", "left"]}
+              checkedRows={selectedRows}
+              onCheckedRowsChange={setSelectedRows}
+              selectionColor="black"
+              unselectedCheckboxAppearance="grayCheck"
+              selectionHeaderIndeterminate={false}
+              selectionColumnWidth={56}
+              centerSelection
+              edgePadding={0}
+              horizontalScroll={false}
+              className="h-full min-h-0"
+            />
+          </div>
         </div>
       </div>
     </div>
