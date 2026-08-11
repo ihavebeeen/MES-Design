@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mes.ai-composition-grammar",
+  "status": "proposed-not-approved",
+  "sourceLedger": "composition-section-pattern-ledger.json",
+  "proposals": [
+    {
+      "id": "frame.standard-section",
+      "kind": "section-frame",
+      "decisionOutcome": "propose-new",
+      "evidence": [
+        { "recipe": "completed.production", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:48851" },
+        { "recipe": "completed.receiving", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:49261" },
+        { "recipe": "completed.inspection", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:51420" },
+        { "recipe": "source.form-editor", "source": "src/components/patterns/original-mes-screen-assets.tsx", "figmaNode": "17377:50192" }
+      ],
+      "owns": ["section-padding", "divider", "background", "content-scroll-boundary"],
+      "slots": ["heading", "body", "action"],
+      "states": ["default", "disabled-content", "empty-content"],
+      "variants": ["standard", "split-start", "split-end", "none"],
+      "forbidden": ["업무 제목을 pattern id로 사용", "근거 없는 고정 height 소유", "Shell overlay/header/footer 변경"],
+      "compatibilityImpact": "SectionBand와 SectionHeader 호출부의 raw padding/divider를 단계적으로 이관해야 한다.",
+      "approvalRequired": true
+    },
+    {
+      "id": "section.search-table-composition",
+      "kind": "section-pattern",
+      "decisionOutcome": "compose",
+      "evidence": [
+        { "recipe": "screen.form-management", "source": "src/components/patterns/exact-form-management-screen.tsx", "figmaNode": "17377:50192" },
+        { "recipe": "source.inventory-add", "source": "src/components/patterns/exact-inventory-add-modal.tsx", "figmaNode": "18813:64179" },
+        { "recipe": "source.inventory-edit", "source": "src/components/patterns/exact-inventory-edit-modal.tsx", "figmaNode": "17491:82304" },
+        { "recipe": "source.purchase", "source": "src/components/patterns/exact-purchase-modals.tsx", "figmaNode": "17503:85192" }
+      ],
+      "owns": ["toolbar-table-order", "table-flex-region", "empty-result-placement"],
+      "slots": ["title-query", "filter-toolbar", "bulk-action", "table", "selection-action", "footer-action"],
+      "states": ["idle", "filtered", "selected", "empty", "loading"],
+      "variants": ["page", "modal", "bulk-edit", "grouped"],
+      "forbidden": ["모든 slot을 강제", "Table 내부 scroll과 Section scroll 중복", "검색창·필터를 임의 추가"],
+      "compatibilityImpact": "기존 5개 화면의 toolbar 높이와 table border 차이를 variant로 매핑해야 한다.",
+      "approvalRequired": true
+    },
+    {
+      "id": "section.form-grid",
+      "kind": "section-pattern",
+      "decisionOutcome": "propose-new",
+      "evidence": [
+        { "recipe": "completed.production", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:48851" },
+        { "recipe": "completed.receiving", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:49261" },
+        { "recipe": "source.form-editor", "source": "src/components/patterns/original-mes-screen-assets.tsx", "figmaNode": "17377:50192" }
+      ],
+      "owns": ["field-row-label-alignment", "columns", "row-gap", "column-gap", "required-marker-placement"],
+      "slots": ["field-row", "full-width-row", "helper", "field-action"],
+      "states": ["editable", "read-only", "disabled", "invalid"],
+      "variants": ["single-column", "two-column", "compact", "comfortable"],
+      "forbidden": ["검사기준 수식 편집기에 사용", "화면마다 label width raw 지정", "required 별표 색상 재정의"],
+      "compatibilityImpact": "100/108px label width와 24/40px column gap을 표준 variant로 정리해야 한다.",
+      "approvalRequired": true
+    },
+    {
+      "id": "section.editable-row-list",
+      "kind": "section-pattern",
+      "decisionOutcome": "compose",
+      "evidence": [
+        { "recipe": "completed.production", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:48851" },
+        { "recipe": "completed.receiving", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:49261" },
+        { "recipe": "completed.custom", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:51570" }
+      ],
+      "owns": ["row-list-layout", "row-action-placement", "empty-row-presentation"],
+      "slots": ["entry-editor", "header", "row", "add-action", "empty-state"],
+      "states": ["empty", "editing", "ready-to-add", "row-selected"],
+      "variants": ["entry-above-list", "inline-row-editor", "separate-card-editor", "add-only"],
+      "forbidden": ["추가·삭제 상태 전이를 Section 내부 하드코딩", "handler 없는 버튼을 지원 Behavior로 간주", "행 ID로 배열 index 사용"],
+      "compatibilityImpact": "표시 구조와 row mutation Behavior를 분리해 기존 상태 코드를 주입해야 한다.",
+      "approvalRequired": true
+    },
+    {
+      "id": "section.inspection-items",
+      "kind": "section-pattern",
+      "decisionOutcome": "compose",
+      "evidence": [
+        { "recipe": "completed.inspection", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:51420" },
+        { "recipe": "source.receiving-inspection", "source": "src/components/patterns/original-mes-screen-assets.tsx", "figmaNode": "17377:50192" }
+      ],
+      "owns": ["inspection-item-row", "judgement-control-placement", "bulk-control-placement", "inspection-empty-state"],
+      "slots": ["search-sort", "bulk-judgement", "item-row", "empty-state", "add-action"],
+      "states": ["ready", "partially-judged", "complete", "empty", "read-only"],
+      "variants": ["simple-list", "searchable-bulk-list"],
+      "forbidden": ["검사기준 수식 편집기와 통합", "판정값 집합을 화면에서 임의 확장", "empty 상태에서 저장 허용"],
+      "compatibilityImpact": "현재 두 구현의 판정값과 bulk action 차이를 데이터 계약으로 올려야 한다.",
+      "approvalRequired": true
+    },
+    {
+      "id": "summary.table-total-row",
+      "kind": "section-pattern",
+      "decisionOutcome": "propose-new",
+      "evidence": [
+        { "recipe": "completed.bom-copy", "source": "src/components/patterns/completed-popup-expanded-content.tsx", "figmaNode": "18962:67817" },
+        { "recipe": "screen.production-result", "source": "src/components/patterns/exact-production-result-screen.tsx", "figmaNode": "18849:62314" }
+      ],
+      "owns": ["table-column-aligned-aggregate", "total-row-tone", "table-edge-placement"],
+      "slots": ["label", "aggregate-cell"],
+      "states": ["calculated", "empty"],
+      "variants": ["compact", "full-width"],
+      "forbidden": ["Table column과 무관한 Result Card에 사용", "고정 margin으로 컬럼 정렬", "합계 설정 toggle에 사용"],
+      "compatibilityImpact": "Table column sizing 정보와 연결되는 API가 필요하다.",
+      "approvalRequired": true
+    },
+    {
+      "id": "summary.result-total-card",
+      "kind": "section-pattern",
+      "decisionOutcome": "propose-new",
+      "evidence": [
+        { "recipe": "completed.defect", "source": "src/components/patterns/completed-popup-patterns.tsx", "figmaNode": "11210:52919" },
+        { "recipe": "completed.time-selection", "source": "src/components/patterns/completed-popup-expanded-content.tsx", "figmaNode": "17309:156861" }
+      ],
+      "owns": ["result-label", "aggregate-value", "semantic-tone", "result-layout"],
+      "slots": ["icon", "label", "value", "unit"],
+      "states": ["neutral", "information", "danger"],
+      "variants": ["single-value", "label-with-input"],
+      "forbidden": ["서로 무관한 복수 KPI 배치", "대시보드 Metric Card 대체", "근거 없는 primary 강조"],
+      "compatibilityImpact": "불량계와 시간 합계의 타이포·border 차이를 variant로 검증해야 한다.",
+      "approvalRequired": true
+    },
+    {
+      "id": "summary.quantity-status-card",
+      "kind": "section-pattern",
+      "decisionOutcome": "propose-new",
+      "evidence": [
+        { "recipe": "completed.preissued-label", "source": "src/components/patterns/completed-popup-expanded-content.tsx", "figmaNode": "18756:60803" }
+      ],
+      "owns": ["related-quantity-layout", "remainder-calculation-display", "status-tone"],
+      "slots": ["metric", "remainder", "trailing-action"],
+      "states": ["balanced", "remaining", "over-allocated"],
+      "variants": ["three-metric-with-action"],
+      "forbidden": ["독립 KPI를 관계 수량으로 표현", "계산식을 컴포넌트 내부에 고정", "단일 근거로 variant 추가"],
+      "compatibilityImpact": "현재 원본 한 계열이므로 파일럿 전 추가 반복 근거가 필요하다.",
+      "approvalRequired": true
+    }
+  ],
+  "holds": [
+    { "id": "frame.gray-entry-card", "reason": "원본 2건과 생성 후보 1건의 높이·제목·버튼 배치 차이 비교가 남았다." },
+    { "id": "frame.collapsible", "reason": "생성 후보 1건뿐이며 원본 반복 근거가 없다." },
+    { "id": "section.list-region", "reason": "제목·검색·Table border와 scroll 책임이 아직 통일되지 않았다." },
+    { "id": "summary.before-after-comparison", "reason": "검증된 원본이 1건뿐이라 재사용 API보다 Recipe local pattern 가능성이 높다." }
+  ]
+}

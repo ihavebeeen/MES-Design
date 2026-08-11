@@ -13,6 +13,12 @@ const sourceAssetRegistry = readJson("source-assets.json");
 const sourceEvidenceRegistry = readJson("source-evidence.json");
 const generatedScreenRegistry = readJson("generated-screen-evaluations.json");
 const compositionPolicyRegistry = readJson("composition-policy.json");
+const compositionShellLedgerRegistry = readJson("composition-shell-ledger.json");
+const compositionSectionFrameLedgerRegistry = readJson("composition-section-frame-ledger.json");
+const compositionSectionPatternLedgerRegistry = readJson("composition-section-pattern-ledger.json");
+const compositionBehaviorLedgerRegistry = readJson("composition-behavior-ledger.json");
+const sectionPatternProposalRegistry = readJson("section-pattern-proposals.json");
+const behaviorPatternProposalRegistry = readJson("behavior-pattern-proposals.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -48,6 +54,12 @@ checkVersion("source-assets", sourceAssetRegistry);
 checkVersion("source-evidence", sourceEvidenceRegistry);
 checkVersion("generated-screen-evaluations", generatedScreenRegistry);
 checkVersion("composition-policy", compositionPolicyRegistry);
+checkVersion("composition-shell-ledger", compositionShellLedgerRegistry);
+checkVersion("composition-section-frame-ledger", compositionSectionFrameLedgerRegistry);
+checkVersion("composition-section-pattern-ledger", compositionSectionPatternLedgerRegistry);
+checkVersion("composition-behavior-ledger", compositionBehaviorLedgerRegistry);
+checkVersion("section-pattern-proposals", sectionPatternProposalRegistry);
+checkVersion("behavior-pattern-proposals", behaviorPatternProposalRegistry);
 
 if (compositionPolicyRegistry.policyId !== "mes.ai-composition-grammar") errors.push("composition-policy: policyId가 잘못되었습니다.");
 if (compositionPolicyRegistry.status !== "active") errors.push("composition-policy: status는 active여야 합니다.");
@@ -58,6 +70,116 @@ for (const layer of requiredCompositionLayers) {
 }
 for (const hold of compositionPolicyRegistry.migrationHolds ?? []) {
   if (hold.status !== "migration-hold") errors.push(`composition-policy: hold '${hold.id}'의 status는 migration-hold여야 합니다.`);
+}
+
+if (compositionShellLedgerRegistry.status !== "observed-not-canonical") errors.push("composition-shell-ledger: status는 observed-not-canonical이어야 합니다.");
+const shellRecipes = mapByUniqueId("composition-shell-ledger", compositionShellLedgerRegistry.recipes ?? []);
+if (compositionShellLedgerRegistry.summary?.resolvedRecipes !== shellRecipes.size) errors.push("composition-shell-ledger: summary.resolvedRecipes와 실제 recipe 수가 다릅니다.");
+const allowedShellIds = new Set(["center-modal", "side-slide-panel", "confirm-dialog"]);
+for (const recipe of shellRecipes.values()) {
+  checkSource("composition shell recipe", recipe);
+  if (!allowedShellIds.has(recipe.shell)) errors.push(`composition-shell-ledger '${recipe.id}': 알 수 없는 shell '${recipe.shell}'`);
+  if (!recipe.title || !recipe.size || !recipe.content || !recipe.actionSet) errors.push(`composition-shell-ledger '${recipe.id}': title, size, content, actionSet이 필요합니다.`);
+}
+
+if (compositionSectionFrameLedgerRegistry.status !== "observed-not-canonical") errors.push("composition-section-frame-ledger: status는 observed-not-canonical이어야 합니다.");
+const sectionFrames = mapByUniqueId("composition-section-frame-ledger", compositionSectionFrameLedgerRegistry.frames ?? []);
+if (compositionSectionFrameLedgerRegistry.summary?.logicalFrames !== sectionFrames.size) errors.push("composition-section-frame-ledger: summary.logicalFrames와 실제 frame 수가 다릅니다.");
+const allowedHeadingMechanisms = new Set(["section-band", "section-header", "text", "interactive", "none"]);
+const headingMechanismCounts = {};
+let generatedCandidateFrameCount = 0;
+for (const frame of sectionFrames.values()) {
+  checkSource("composition section frame", frame);
+  if (!frame.recipe || !frame.frameRole || !frame.boundaryMechanism || !frame.candidateDisposition) errors.push(`composition-section-frame-ledger '${frame.id}': recipe, frameRole, boundaryMechanism, candidateDisposition이 필요합니다.`);
+  if (!allowedHeadingMechanisms.has(frame.headingMechanism)) errors.push(`composition-section-frame-ledger '${frame.id}': 알 수 없는 headingMechanism '${frame.headingMechanism}'`);
+  headingMechanismCounts[frame.headingMechanism] = (headingMechanismCounts[frame.headingMechanism] ?? 0) + 1;
+  if (frame.evidenceStatus === "generated-candidate") generatedCandidateFrameCount += 1;
+}
+for (const [mechanism, count] of Object.entries(compositionSectionFrameLedgerRegistry.summary?.byHeadingMechanism ?? {})) {
+  if (headingMechanismCounts[mechanism] !== count) errors.push(`composition-section-frame-ledger: heading '${mechanism}' 요약 ${count}건과 실제 ${headingMechanismCounts[mechanism] ?? 0}건이 다릅니다.`);
+}
+if (compositionSectionFrameLedgerRegistry.summary?.unframedBodies !== (compositionSectionFrameLedgerRegistry.unframedBodies ?? []).length) errors.push("composition-section-frame-ledger: summary.unframedBodies와 실제 수가 다릅니다.");
+if (compositionSectionFrameLedgerRegistry.summary?.generatedCandidateFrames !== generatedCandidateFrameCount) errors.push("composition-section-frame-ledger: summary.generatedCandidateFrames와 실제 수가 다릅니다.");
+
+if (compositionSectionPatternLedgerRegistry.status !== "observed-not-canonical") errors.push("composition-section-pattern-ledger: status는 observed-not-canonical이어야 합니다.");
+const sectionPatternCandidates = mapByUniqueId("composition-section-pattern-ledger", compositionSectionPatternLedgerRegistry.candidates ?? []);
+if (compositionSectionPatternLedgerRegistry.summary?.candidateFamilies !== sectionPatternCandidates.size) errors.push("composition-section-pattern-ledger: summary.candidateFamilies와 실제 후보 수가 다릅니다.");
+const allowedSectionPatternStatuses = new Set(["compose-candidate", "decomposed"]);
+let confirmedSectionPatternFamilies = 0;
+let decomposedSectionPatternFamilies = 0;
+const falsePositiveSources = new Set();
+for (const candidate of sectionPatternCandidates.values()) {
+  if (!allowedSectionPatternStatuses.has(candidate.status)) errors.push(`composition-section-pattern-ledger '${candidate.id}': 알 수 없는 status '${candidate.status}'`);
+  if (!candidate.decision || !Array.isArray(candidate.variants) || candidate.variants.length === 0) errors.push(`composition-section-pattern-ledger '${candidate.id}': decision과 variants가 필요합니다.`);
+  for (const source of candidate.confirmedSources ?? []) checkSource("composition section pattern", { id: candidate.id, source });
+  for (const source of candidate.falsePositiveSources ?? []) {
+    checkSource("composition section pattern false positive", { id: candidate.id, source });
+    falsePositiveSources.add(source);
+  }
+  for (const source of candidate.specialPurposeSources ?? []) checkSource("composition section pattern special purpose", { id: candidate.id, source });
+  for (const source of candidate.uiOnlySources ?? []) checkSource("composition section pattern ui-only", { id: candidate.id, source });
+  if (candidate.status === "compose-candidate") confirmedSectionPatternFamilies += 1;
+  if (candidate.status === "decomposed") decomposedSectionPatternFamilies += 1;
+}
+if (compositionSectionPatternLedgerRegistry.summary?.confirmedFamilies !== confirmedSectionPatternFamilies) errors.push("composition-section-pattern-ledger: summary.confirmedFamilies가 실제 수와 다릅니다.");
+if (compositionSectionPatternLedgerRegistry.summary?.decomposedFamilies !== decomposedSectionPatternFamilies) errors.push("composition-section-pattern-ledger: summary.decomposedFamilies가 실제 수와 다릅니다.");
+if (compositionSectionPatternLedgerRegistry.summary?.falsePositiveFindings !== falsePositiveSources.size) errors.push("composition-section-pattern-ledger: summary.falsePositiveFindings가 고유 오탐 source 수와 다릅니다.");
+const summarySubtypeIds = mapByUniqueId("composition-section-pattern-ledger summary subtype", compositionSectionPatternLedgerRegistry.summarySubtypes ?? []);
+for (const subtype of summarySubtypeIds.values()) {
+  for (const source of subtype.sources ?? []) checkSource("composition summary subtype", { id: subtype.id, source });
+}
+
+if (compositionBehaviorLedgerRegistry.status !== "observed-not-canonical") errors.push("composition-behavior-ledger: status는 observed-not-canonical이어야 합니다.");
+const behaviorCandidates = mapByUniqueId("composition-behavior-ledger", compositionBehaviorLedgerRegistry.candidates ?? []);
+if (compositionBehaviorLedgerRegistry.summary?.candidateFamilies !== behaviorCandidates.size) errors.push("composition-behavior-ledger: summary.candidateFamilies와 실제 후보 수가 다릅니다.");
+const allowedBehaviorStatuses = new Set(["decomposed", "verified-with-boundary", "migration-hold"]);
+let decomposedBehaviorFamilies = 0;
+let migrationHoldBehaviors = 0;
+for (const candidate of behaviorCandidates.values()) {
+  if (!allowedBehaviorStatuses.has(candidate.status)) errors.push(`composition-behavior-ledger '${candidate.id}': 알 수 없는 status '${candidate.status}'`);
+  if (!candidate.decision || !Array.isArray(candidate.stateContract) || candidate.stateContract.length === 0) errors.push(`composition-behavior-ledger '${candidate.id}': decision과 stateContract가 필요합니다.`);
+  for (const source of candidate.sources ?? []) checkSource("composition behavior", { id: candidate.id, source });
+  if (candidate.status === "decomposed") decomposedBehaviorFamilies += 1;
+  if (candidate.status === "migration-hold") migrationHoldBehaviors += 1;
+}
+if (compositionBehaviorLedgerRegistry.summary?.decomposedFamilies !== decomposedBehaviorFamilies) errors.push("composition-behavior-ledger: summary.decomposedFamilies가 실제 수와 다릅니다.");
+if (compositionBehaviorLedgerRegistry.summary?.migrationHolds !== migrationHoldBehaviors) errors.push("composition-behavior-ledger: summary.migrationHolds가 실제 수와 다릅니다.");
+const selectionSubtypeIds = mapByUniqueId("composition-behavior-ledger selection subtype", compositionBehaviorLedgerRegistry.selectionSubtypes ?? []);
+for (const subtype of selectionSubtypeIds.values()) {
+  for (const source of subtype.sources ?? []) checkSource("composition selection subtype", { id: subtype.id, source });
+}
+const dismissAudits = mapByUniqueId("composition-behavior-ledger dismiss audit", compositionBehaviorLedgerRegistry.dismissAudits ?? []);
+let verifiedShellDismissSources = 0;
+for (const audit of dismissAudits.values()) {
+  checkSource("composition dismiss audit", audit);
+  if (audit.result.startsWith("verified")) verifiedShellDismissSources += 1;
+}
+if (compositionBehaviorLedgerRegistry.summary?.verifiedShellDismissSources !== verifiedShellDismissSources) errors.push("composition-behavior-ledger: summary.verifiedShellDismissSources가 실제 수와 다릅니다.");
+const rowMutationAudits = mapByUniqueId("composition-behavior-ledger row mutation audit", compositionBehaviorLedgerRegistry.rowMutationAudits ?? []);
+for (const audit of rowMutationAudits.values()) checkSource("composition row mutation audit", audit);
+
+const proposalRegistries = [
+  ["section-pattern-proposals", sectionPatternProposalRegistry],
+  ["behavior-pattern-proposals", behaviorPatternProposalRegistry],
+];
+for (const [name, registry] of proposalRegistries) {
+  if (registry.status !== "proposed-not-approved") errors.push(`${name}: status는 proposed-not-approved여야 합니다.`);
+  if (!existsSync(join(registryDirectory, registry.sourceLedger ?? ""))) errors.push(`${name}: sourceLedger '${registry.sourceLedger ?? ""}'가 존재하지 않습니다.`);
+  const proposals = mapByUniqueId(name, registry.proposals ?? []);
+  const holds = mapByUniqueId(`${name} holds`, registry.holds ?? []);
+  for (const proposal of proposals.values()) {
+    if (proposal.approvalRequired !== true) errors.push(`${name} '${proposal.id}': approvalRequired는 true여야 합니다.`);
+    if (!Array.isArray(proposal.owns) || proposal.owns.length === 0 || !Array.isArray(proposal.forbidden) || proposal.forbidden.length === 0) errors.push(`${name} '${proposal.id}': owns와 forbidden이 필요합니다.`);
+    for (const evidence of proposal.evidence ?? []) {
+      checkSource(`${name} evidence`, { id: proposal.id, source: evidence.source });
+      if (!/^\d+:\d+$/.test(evidence.figmaNode ?? "")) errors.push(`${name} '${proposal.id}': figmaNode '${evidence.figmaNode ?? ""}' 형식이 잘못되었습니다.`);
+    }
+    for (const source of proposal.evidenceSources ?? []) checkSource(`${name} evidence`, { id: proposal.id, source });
+  }
+  for (const hold of holds.values()) {
+    if (!hold.reason) errors.push(`${name} hold '${hold.id}': reason이 필요합니다.`);
+    if (proposals.has(hold.id)) errors.push(`${name}: '${hold.id}'가 proposal과 hold에 동시에 있습니다.`);
+  }
 }
 
 const components = mapByUniqueId("components", componentRegistry.components ?? []);

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mes.ai-composition-grammar",
+  "status": "proposed-not-approved",
+  "sourceLedger": "composition-behavior-ledger.json",
+  "proposals": [
+    {
+      "id": "selection.reveal-inline-editor",
+      "decisionOutcome": "propose-new",
+      "evidenceSources": ["src/components/patterns/completed-popup-expanded-content.tsx", "src/components/patterns/completed-popup-patterns.tsx", "src/components/patterns/exact-inventory-add-modal.tsx"],
+      "owns": ["selected-row-set", "editor-visibility", "selected-row-initialization"],
+      "events": ["select", "deselect", "select-all", "filter-visible-rows"],
+      "states": ["unselected", "selected-editing", "selected-invalid", "selected-valid"],
+      "constraints": ["필터 변경 후 보이지 않는 선택 ID 보존 정책 명시", "선택 해제 시 draft 보존 또는 폐기 정책 명시"],
+      "forbidden": ["선택만으로 임의 필드 생성", "selected index를 원본 row ID로 사용", "Table과 별개 선택 상태 중복"],
+      "approvalRequired": true
+    },
+    {
+      "id": "selection.enable-actions",
+      "decisionOutcome": "propose-new",
+      "evidenceSources": ["src/components/patterns/exact-inventory-edit-modal.tsx"],
+      "owns": ["selected-targets", "action-enabled-state", "clear-selection-after-action"],
+      "events": ["select", "clear", "execute-batch-action", "action-complete"],
+      "states": ["none-selected", "one-selected", "many-selected", "action-pending"],
+      "constraints": ["selectedCount와 실제 대상 ID 일치", "삭제·이동 완료 후 선택 처리 명시"],
+      "forbidden": ["0건 선택에서 파괴적 action 실행", "표시 selectedCount만 전달하고 ID 누락"],
+      "approvalRequired": true
+    },
+    {
+      "id": "selection.master-detail",
+      "decisionOutcome": "compose",
+      "evidenceSources": ["src/components/patterns/completed-application-patterns.tsx"],
+      "owns": ["active-master-id", "detail-context", "active-row-highlight"],
+      "events": ["activate-master", "clear-master", "master-removed"],
+      "states": ["no-active-master", "detail-loading", "detail-ready", "detail-empty"],
+      "constraints": ["checkbox selection과 active row를 분리", "master 제거 시 fallback 명시"],
+      "forbidden": ["checked row를 자동 active row로 간주", "detail 데이터가 다른 master로 남는 stale state"],
+      "approvalRequired": true
+    },
+    {
+      "id": "dismiss.restore-committed",
+      "decisionOutcome": "reuse",
+      "evidenceSources": ["src/components/patterns/easy-mode-receiving-pattern.tsx", "src/components/patterns/inspection-criteria-pattern.tsx", "src/components/patterns/source-popup-gallery.tsx"],
+      "owns": ["committed-snapshot", "draft-restore", "dismiss-path-equivalence"],
+      "events": ["cancel", "close-button", "escape", "backdrop", "save"],
+      "states": ["clean", "dirty", "saving", "committed"],
+      "constraints": ["cancel/X/Esc/backdrop은 동일 restore callback", "save는 snapshot 갱신 후 닫기"],
+      "forbidden": ["X에서만 draft 유지", "취소에서만 복원", "programmatic close를 사용자 dismiss로 오인"],
+      "approvalRequired": true
+    },
+    {
+      "id": "row.mutation-policy",
+      "decisionOutcome": "propose-new",
+      "evidenceSources": ["src/components/patterns/completed-popup-patterns.tsx", "src/components/patterns/easy-mode-receiving-pattern.tsx"],
+      "owns": ["create-initial-values", "add-guard", "insert-position", "delete-policy", "post-delete-state"],
+      "events": ["request-add", "add", "request-delete", "delete", "validation-change"],
+      "states": ["cannot-add", "can-add", "deleting", "minimum-row-reached"],
+      "constraints": ["stable row ID", "최소 행 수와 삭제 허용 조건 명시", "초기값 출처 명시"],
+      "forbidden": ["Date.now 충돌 가능성을 ID 표준으로 고정", "배열 index를 영속 ID로 사용", "insert 위치 암묵 처리"],
+      "approvalRequired": true
+    }
+  ],
+  "holds": [
+    { "id": "selection.visual-only", "reason": "후속 상태 변화가 없어 Behavior가 아니라 불완전 구현 또는 단순 Table 상태일 수 있다." },
+    { "id": "row.inherit-previous", "reason": "이지모드 생성 후보 한 건의 customer 계승만 존재한다." },
+    { "id": "section.toggle-collapse", "reason": "이지모드 생성 후보 한 건뿐이며 공통 Behavior 근거가 없다." }
+  ]
+}

@@ -7,6 +7,12 @@ import sourceEvidenceData from "./source-evidence.json";
 import generatedScreenEvaluationData from "./generated-screen-evaluations.json";
 import compositionPolicyData from "./composition-policy.json";
 import compositionInventoryData from "./composition-inventory.json";
+import compositionShellLedgerData from "./composition-shell-ledger.json";
+import compositionSectionFrameLedgerData from "./composition-section-frame-ledger.json";
+import compositionSectionPatternLedgerData from "./composition-section-pattern-ledger.json";
+import compositionBehaviorLedgerData from "./composition-behavior-ledger.json";
+import sectionPatternProposalData from "./section-pattern-proposals.json";
+import behaviorPatternProposalData from "./behavior-pattern-proposals.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -16,6 +22,12 @@ import type {
   GeneratedScreenEvaluationRegistry,
   CompositionPolicyRegistry,
   CompositionInventoryRegistry,
+  CompositionShellLedgerRegistry,
+  CompositionSectionFrameLedgerRegistry,
+  CompositionSectionPatternLedgerRegistry,
+  CompositionBehaviorLedgerRegistry,
+  SectionPatternProposalRegistry,
+  BehaviorPatternProposalRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -28,6 +40,12 @@ export const sourceEvidenceRegistry = sourceEvidenceData as SourceEvidenceRegist
 export const generatedScreenEvaluationRegistry = generatedScreenEvaluationData as GeneratedScreenEvaluationRegistry;
 export const compositionPolicyRegistry = compositionPolicyData as CompositionPolicyRegistry;
 export const compositionInventoryRegistry = compositionInventoryData as CompositionInventoryRegistry;
+export const compositionShellLedgerRegistry = compositionShellLedgerData as CompositionShellLedgerRegistry;
+export const compositionSectionFrameLedgerRegistry = compositionSectionFrameLedgerData as CompositionSectionFrameLedgerRegistry;
+export const compositionSectionPatternLedgerRegistry = compositionSectionPatternLedgerData as CompositionSectionPatternLedgerRegistry;
+export const compositionBehaviorLedgerRegistry = compositionBehaviorLedgerData as CompositionBehaviorLedgerRegistry;
+export const sectionPatternProposalRegistry = sectionPatternProposalData as SectionPatternProposalRegistry;
+export const behaviorPatternProposalRegistry = behaviorPatternProposalData as BehaviorPatternProposalRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);

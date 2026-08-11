@@ -195,3 +195,180 @@ export interface CompositionInventoryRegistry {
   files: CompositionInventoryFile[];
   fingerprint: string;
 }
+
+export interface CompositionShellLedgerRecipe {
+  id: string;
+  source: string;
+  shell: "center-modal" | "side-slide-panel" | "confirm-dialog";
+  title: string;
+  size: string;
+  height: string;
+  content: string;
+  bodyClass: string;
+  scrollMode: "shell-body" | "shell-body-explicit" | "content-owned" | "none";
+  actionSet: string;
+  actionLabels: string[];
+  footerMode: "actions" | "custom";
+  headerDivider: boolean;
+  figmaNode: string;
+  evidenceStatus: "observed-code" | "generated-candidate";
+}
+
+export interface CompositionShellLedgerRegistry {
+  schemaVersion: 1;
+  policyId: "mes.ai-composition-grammar";
+  status: "observed-not-canonical";
+  scope: string;
+  summary: {
+    jsxCallSites: number;
+    resolvedRecipes: number;
+    byShell: Record<string, number>;
+  };
+  shellContracts: Array<{ id: string; owns: string[]; slots: string[]; defaultBody: string; defaultActionSet: string }>;
+  recipes: CompositionShellLedgerRecipe[];
+  findings: Array<{ id: string; status: "confirmed" | "needs-review"; detail: string }>;
+}
+
+export interface CompositionSectionFrameLedgerEntry {
+  id: string;
+  source: string;
+  recipe: string;
+  title: string;
+  frameRole: string;
+  boundaryMechanism: string;
+  headingMechanism: "section-band" | "section-header" | "text" | "interactive" | "none";
+  outerClass: string;
+  divider: string;
+  padding: string;
+  background: string;
+  scrollOwnership: string;
+  candidateDisposition: "reuse-signal" | "review" | "generated-quarantine";
+  evidenceStatus: "observed-code" | "generated-candidate";
+}
+
+export interface CompositionSectionFrameLedgerRegistry {
+  schemaVersion: 1;
+  policyId: "mes.ai-composition-grammar";
+  status: "observed-not-canonical";
+  scope: string;
+  summary: {
+    scannedFiles: number;
+    logicalFrames: number;
+    byHeadingMechanism: Record<string, number>;
+    unframedBodies: number;
+    generatedCandidateFrames: number;
+  };
+  frames: CompositionSectionFrameLedgerEntry[];
+  unframedBodies: Array<{ recipe: string; content: string; reason: string }>;
+  findings: Array<{ id: string; status: "confirmed" | "candidate" | "migration-hold" | "needs-review"; detail: string }>;
+}
+
+export interface CompositionSectionPatternCandidate {
+  id: string;
+  status: "compose-candidate" | "decomposed";
+  detectedFileCount: number;
+  confirmedInstanceCount: number;
+  confirmedSources: string[];
+  falsePositiveSources: string[];
+  specialPurposeSources?: string[];
+  uiOnlySources?: string[];
+  sharedContract: string[];
+  variants: string[];
+  differences: string[];
+  decision: string;
+}
+
+export interface CompositionSectionPatternLedgerRegistry {
+  schemaVersion: 1;
+  policyId: "mes.ai-composition-grammar";
+  status: "observed-not-canonical";
+  scope: string;
+  summary: {
+    candidateFamilies: number;
+    confirmedFamilies: number;
+    decomposedFamilies: number;
+    falsePositiveFindings: number;
+  };
+  candidates: CompositionSectionPatternCandidate[];
+  summarySubtypes: Array<{ id: string; status: "candidate" | "existing-domain-pattern" | "migration-hold"; sources: string[]; owns: string[] }>;
+  findings: Array<{ id: string; status: "confirmed"; detail: string }>;
+}
+
+export interface CompositionBehaviorCandidate {
+  id: string;
+  status: "decomposed" | "verified-with-boundary" | "migration-hold";
+  detectedFileCount: number;
+  sources: string[];
+  subtypes: string[];
+  stateContract: string[];
+  differences: string[];
+  decision: string;
+}
+
+export interface CompositionBehaviorLedgerRegistry {
+  schemaVersion: 1;
+  policyId: "mes.ai-composition-grammar";
+  status: "observed-not-canonical";
+  scope: string;
+  summary: {
+    candidateFamilies: number;
+    decomposedFamilies: number;
+    verifiedShellDismissSources: number;
+    migrationHolds: number;
+  };
+  candidates: CompositionBehaviorCandidate[];
+  selectionSubtypes: Array<{ id: string; status: "candidate" | "not-behavior-evidence"; sources: string[]; effect: string }>;
+  dismissAudits: Array<{ id: string; source: string; shell: string; cancel: string; closeButton: string; escape: string; backdrop: string; save: string; result: string }>;
+  rowMutationAudits: Array<{ id: string; source: string; insertPosition: string; addGuard: string; deletePolicy: string; initialValues: string; postDelete: string }>;
+  findings: Array<{ id: string; status: "confirmed"; detail: string }>;
+}
+
+export interface CompositionProposalEvidence {
+  recipe: string;
+  source: string;
+  figmaNode: string;
+}
+
+export interface SectionPatternProposal {
+  id: string;
+  kind: "section-frame" | "section-pattern";
+  decisionOutcome: "compose" | "propose-new";
+  evidence: CompositionProposalEvidence[];
+  owns: string[];
+  slots: string[];
+  states: string[];
+  variants: string[];
+  forbidden: string[];
+  compatibilityImpact: string;
+  approvalRequired: true;
+}
+
+export interface SectionPatternProposalRegistry {
+  schemaVersion: 1;
+  policyId: "mes.ai-composition-grammar";
+  status: "proposed-not-approved";
+  sourceLedger: string;
+  proposals: SectionPatternProposal[];
+  holds: Array<{ id: string; reason: string }>;
+}
+
+export interface BehaviorPatternProposal {
+  id: string;
+  decisionOutcome: "reuse" | "compose" | "propose-new";
+  evidenceSources: string[];
+  owns: string[];
+  events: string[];
+  states: string[];
+  constraints: string[];
+  forbidden: string[];
+  approvalRequired: true;
+}
+
+export interface BehaviorPatternProposalRegistry {
+  schemaVersion: 1;
+  policyId: "mes.ai-composition-grammar";
+  status: "proposed-not-approved";
+  sourceLedger: string;
+  proposals: BehaviorPatternProposal[];
+  holds: Array<{ id: string; reason: string }>;
+}

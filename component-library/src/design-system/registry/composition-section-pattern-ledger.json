@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mes.ai-composition-grammar",
+  "status": "observed-not-canonical",
+  "scope": "p1-section-pattern-candidate-review",
+  "summary": {
+    "candidateFamilies": 5,
+    "confirmedFamilies": 4,
+    "decomposedFamilies": 1,
+    "falsePositiveFindings": 6
+  },
+  "candidates": [
+    {
+      "id": "section.search-table",
+      "status": "compose-candidate",
+      "detectedFileCount": 6,
+      "confirmedInstanceCount": 5,
+      "confirmedSources": [
+        "src/components/patterns/exact-form-management-screen.tsx",
+        "src/components/patterns/exact-inventory-add-modal.tsx",
+        "src/components/patterns/exact-inventory-edit-modal.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/exact-purchase-modals.tsx"
+      ],
+      "falsePositiveSources": ["src/components/patterns/mes-screen-fixtures.tsx"],
+      "sharedContract": ["query-or-filter-toolbar", "search-control", "table-region"],
+      "variants": ["page-query-table", "modal-filter-table", "modal-bulk-edit-table", "selection-action-table", "grouped-table-with-summary"],
+      "differences": ["title-and-date-query-row", "group-query", "bulk-edit-bar", "selection-action-bar", "bottom-page-actions", "table-summary-row"],
+      "decision": "상위 단일 컴포넌트가 아니라 toolbar/table/action slot을 조합하는 Section Pattern 후보로 유지한다."
+    },
+    {
+      "id": "section.form-grid",
+      "status": "compose-candidate",
+      "detectedFileCount": 5,
+      "confirmedInstanceCount": 11,
+      "confirmedSources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/easy-mode-receiving-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx"
+      ],
+      "falsePositiveSources": ["src/components/patterns/exact-production-analytics-screen.tsx"],
+      "specialPurposeSources": ["src/components/patterns/inspection-criteria-pattern.tsx"],
+      "sharedContract": ["label-control-row", "required-marker", "one-or-two-column-layout", "control-min-width"],
+      "variants": ["single-column", "two-column", "radio-action-row", "read-only-value-row"],
+      "differences": ["label-width-100-or-108", "column-gap-24-or-40", "row-gap-10-or-16", "row-height-fixed-or-content", "required-component-duplication"],
+      "decision": "FormGrid와 FieldRow를 분리하고 label width·columns·density를 variant로 검토한다. 검사기준 수식 편집기는 별도 Pattern이다."
+    },
+    {
+      "id": "section.editable-row-list",
+      "status": "compose-candidate",
+      "detectedFileCount": 3,
+      "confirmedInstanceCount": 5,
+      "confirmedSources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/easy-mode-receiving-pattern.tsx"
+      ],
+      "falsePositiveSources": [],
+      "uiOnlySources": ["src/components/patterns/original-mes-screen-assets.tsx"],
+      "sharedContract": ["row-identity", "add-action", "optional-delete-action", "row-validation", "empty-or-minimum-row-policy"],
+      "variants": ["entry-to-list-prepend", "dialog-editor-to-list-append", "inline-row-editor", "add-only-inspection-item"],
+      "differences": ["prepend-or-append", "minimum-one-row", "add-enabled-condition", "inherit-previous-field", "delete-availability", "editor-location"],
+      "decision": "행 표시 UI와 추가·삭제 Behavior를 분리한다. original 파일의 정적 항목과 handler 없는 항목 추가 버튼은 Pattern 근거로 세지 않는다."
+    },
+    {
+      "id": "section.inspection-items",
+      "status": "compose-candidate",
+      "detectedFileCount": 3,
+      "confirmedInstanceCount": 2,
+      "confirmedSources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx"
+      ],
+      "falsePositiveSources": [],
+      "specialPurposeSources": ["src/components/patterns/inspection-criteria-pattern.tsx"],
+      "sharedContract": ["inspection-item-label", "required-state", "judgement-control", "optional-search-and-bulk-action", "empty-state"],
+      "variants": ["judgement-list", "searchable-bulk-judgement", "empty-inspection-state"],
+      "differences": ["judgement-values", "bulk-actions", "search-and-sort", "add-item-action", "empty-state-link"],
+      "decision": "검사항목 판정 목록은 후보로 유지하되 검사기준 수식 편집기와 분리한다."
+    },
+    {
+      "id": "section.summary",
+      "status": "decomposed",
+      "detectedFileCount": 9,
+      "confirmedInstanceCount": 8,
+      "confirmedSources": [
+        "src/components/patterns/completed-popup-expanded-content.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/exact-production-analytics-screen.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/production-quantity-reregistration-pattern.tsx"
+      ],
+      "falsePositiveSources": [
+        "src/components/patterns/completed-application-patterns.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/source-popup-gallery.tsx",
+        "src/components/patterns/table-column-settings.tsx"
+      ],
+      "sharedContract": [],
+      "variants": ["table-total-row", "result-total-card", "quantity-status-card", "duration-result-card", "dashboard-metric-card", "before-after-comparison"],
+      "differences": ["semantic-purpose", "placement", "number-of-metrics", "tone", "interaction", "table-column-alignment"],
+      "decision": "summary라는 단일 Pattern 후보를 폐기하고 합계행·결과카드·지표카드·전후비교로 분해한다. metadata의 summary 필드와 합계 설정 토글은 출력 Summary가 아니다."
+    }
+  ],
+  "summarySubtypes": [
+    { "id": "summary.table-total-row", "status": "candidate", "sources": ["src/components/patterns/completed-popup-expanded-content.tsx", "src/components/patterns/exact-production-result-screen.tsx"], "owns": ["table-aligned-label", "aggregate-values", "table-edge-placement"] },
+    { "id": "summary.result-total-card", "status": "candidate", "sources": ["src/components/patterns/completed-popup-patterns.tsx", "src/components/patterns/completed-popup-expanded-content.tsx"], "owns": ["result-label", "aggregate-value", "semantic-tone"] },
+    { "id": "summary.quantity-status-card", "status": "candidate", "sources": ["src/components/patterns/completed-popup-expanded-content.tsx"], "owns": ["multiple-related-quantities", "remainder-emphasis"] },
+    { "id": "summary.dashboard-metric-card", "status": "existing-domain-pattern", "sources": ["src/components/patterns/exact-production-analytics-screen.tsx"], "owns": ["metric-title", "period-context", "visualization-or-comparison"] },
+    { "id": "summary.before-after-comparison", "status": "migration-hold", "sources": ["src/components/patterns/production-quantity-reregistration-pattern.tsx"], "owns": ["before-value", "after-value", "change-emphasis"] }
+  ],
+  "findings": [
+    { "id": "file-count-is-not-instance-count", "status": "confirmed", "detail": "후보 탐지의 fileCount는 실제 Pattern 인스턴스 수가 아니며 한 파일에 여러 인스턴스가 있을 수 있다." },
+    { "id": "fixture-definition-is-not-pattern-evidence", "status": "confirmed", "detail": "mes-screen-fixtures는 Search와 Table을 정의하지만 search-table 화면 인스턴스는 아니다." },
+    { "id": "visual-action-without-behavior", "status": "confirmed", "detail": "handler가 없는 항목 추가 버튼과 정적 행은 editable-row-list Behavior 근거가 아니다." },
+    { "id": "generated-candidate-cannot-promote-pattern", "status": "confirmed", "detail": "이지모드의 행 계승과 접기/펼치기는 비교 자료지만 원본 반복 없이 표준 승격 근거로 사용할 수 없다." }
+  ]
+}

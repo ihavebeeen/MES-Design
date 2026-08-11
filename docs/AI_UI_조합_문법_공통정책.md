@@ -183,6 +183,11 @@ AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스�
 
 - 구조화 결과: `component-library/src/design-system/registry/composition-inventory.json`
 - 사람용 보고서: [AI UI 조합 인벤토리 1차](./AI_UI_조합_인벤토리_1차.md)
+- Shell 감사: [AI UI Shell·슬롯 감사 1차](./AI_UI_Shell_슬롯_감사_1차.md)
+- Section Frame 감사: [AI UI Section Frame 감사 1차](./AI_UI_Section_Frame_감사_1차.md)
+- Section Pattern 후보 감사: [AI UI Section Pattern 후보 감사 1차](./AI_UI_Section_Pattern_후보_감사_1차.md)
+- Behavior 후보 감사: [AI UI Behavior 후보 감사 1차](./AI_UI_Behavior_후보_감사_1차.md)
+- 승인 전 표준 후보: [AI UI 표준 후보 제안 1차](./AI_UI_표준_후보_제안_1차.md)
 - 후속 작업과 보류: [AI UI 조합 문법 적용 TODO](./AI_UI_조합_문법_적용_TODO.md)
 
 자동 탐지 결과의 상태는 `observed-not-canonical`이다. Section·Behavior 후보는 2차 수동 감사와 사용자 승인 전까지 공통 패턴으로 사용하지 않는다.

@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mes.ai-composition-grammar",
+  "status": "observed-not-canonical",
+  "scope": "p1-behavior-candidate-review",
+  "summary": {
+    "candidateFamilies": 4,
+    "decomposedFamilies": 2,
+    "verifiedShellDismissSources": 3,
+    "migrationHolds": 1
+  },
+  "candidates": [
+    {
+      "id": "selection.enable-editor",
+      "status": "decomposed",
+      "detectedFileCount": 10,
+      "sources": [
+        "src/components/patterns/completed-application-patterns.tsx",
+        "src/components/patterns/completed-popup-expanded-content.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/exact-form-management-screen.tsx",
+        "src/components/patterns/exact-inventory-add-modal.tsx",
+        "src/components/patterns/exact-inventory-edit-modal.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/exact-purchase-modals.tsx",
+        "src/components/patterns/mes-screen-fixtures.tsx",
+        "src/components/patterns/source-popup-gallery.tsx"
+      ],
+      "subtypes": ["selection.reveal-inline-editor", "selection.enable-actions", "selection.master-detail", "selection.visual-only"],
+      "stateContract": ["selected-ids", "selection-change", "derived-targets"],
+      "differences": ["reveals-inputs", "sorts-selected-first", "opens-detail", "enables-floating-actions", "visual-highlight-only"],
+      "decision": "enable-editor라는 이름을 폐기하고 선택 결과가 무엇을 바꾸는지에 따라 네 subtype으로 분리한다."
+    },
+    {
+      "id": "dismiss.restore-committed",
+      "status": "verified-with-boundary",
+      "detectedFileCount": 4,
+      "sources": [
+        "src/components/patterns/easy-mode-receiving-pattern.tsx",
+        "src/components/patterns/inspection-criteria-pattern.tsx",
+        "src/components/patterns/source-popup-gallery.tsx",
+        "src/components/patterns/table-column-settings.tsx"
+      ],
+      "subtypes": ["shell-owned-dismiss-restore", "delegated-overlay-cancel"],
+      "stateContract": ["draft", "committed-snapshot", "restore-on-user-dismiss", "commit-on-save"],
+      "differences": ["local-snapshot-or-remount-reset", "custom-footer-cancel", "standalone-overlay-with-parent-owned-state"],
+      "decision": "CenterModal/SideSlidePanel 3개 사용처는 취소·X·Esc·backdrop을 onCancel로 통합한다. TableColumnSettings는 복원 보장이 없는 위임형 API로 별도 분류한다."
+    },
+    {
+      "id": "row.add-remove",
+      "status": "decomposed",
+      "detectedFileCount": 3,
+      "sources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/easy-mode-receiving-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx"
+      ],
+      "subtypes": ["row.prepend-from-entry", "row.append-from-editor", "row.append-inline", "row.add-only"],
+      "stateContract": ["stable-row-id", "create-initial-values", "add-guard", "delete-policy", "post-delete-state"],
+      "differences": ["prepend-or-append", "minimum-one-row", "validate-before-add", "delete-any-or-no-delete", "inherit-field", "clear-editor-after-add"],
+      "decision": "추가·삭제를 하나의 boolean capability로 두지 않고 create, addGuard, insertPosition, deletePolicy, postDelete로 분해한다. 정적 원본 행은 Behavior 근거에서 제외한다."
+    },
+    {
+      "id": "row.inherit-previous",
+      "status": "migration-hold",
+      "detectedFileCount": 1,
+      "sources": ["src/components/patterns/easy-mode-receiving-pattern.tsx"],
+      "subtypes": ["inherit-selected-fields"],
+      "stateContract": ["previous-row", "allowlisted-fields", "new-row-only", "no-retroactive-sync"],
+      "differences": ["customer-only-in-current-candidate"],
+      "decision": "요구사항으로는 유효하지만 생성 후보 한 건뿐이다. 공통 Behavior 승격 전까지 ScreenSpec local rule로 격리한다."
+    }
+  ],
+  "selectionSubtypes": [
+    { "id": "selection.reveal-inline-editor", "status": "candidate", "sources": ["src/components/patterns/completed-popup-expanded-content.tsx", "src/components/patterns/completed-popup-patterns.tsx", "src/components/patterns/exact-inventory-add-modal.tsx"], "effect": "선택 행에만 Input, Select, DatePicker를 렌더링하고 일부 목록은 선택 행을 상단 정렬한다." },
+    { "id": "selection.enable-actions", "status": "candidate", "sources": ["src/components/patterns/exact-inventory-edit-modal.tsx"], "effect": "선택 개수와 대상 ID를 삭제·이동 같은 batch action에 전달한다." },
+    { "id": "selection.master-detail", "status": "candidate", "sources": ["src/components/patterns/completed-application-patterns.tsx"], "effect": "active master row가 detail region의 컨텍스트를 결정한다." },
+    { "id": "selection.visual-only", "status": "not-behavior-evidence", "sources": ["src/components/patterns/exact-form-management-screen.tsx", "src/components/patterns/exact-production-result-screen.tsx", "src/components/patterns/exact-purchase-modals.tsx"], "effect": "현재 구현에서는 선택 상태가 후속 편집기나 action enabled state를 바꾸지 않는다." }
+  ],
+  "dismissAudits": [
+    { "id": "dismiss.easy-mode-receiving", "source": "src/components/patterns/easy-mode-receiving-pattern.tsx", "shell": "side-slide-panel", "cancel": "restore committed rows/date/options then close", "closeButton": "shell dismiss", "escape": "shell dismiss", "backdrop": "shell dismiss", "save": "replace committed snapshot then close", "result": "verified" },
+    { "id": "dismiss.inspection-criteria", "source": "src/components/patterns/inspection-criteria-pattern.tsx", "shell": "center-modal", "cancel": "custom footer restores committed draft then closes", "closeButton": "shell onCancel restores", "escape": "shell onCancel restores", "backdrop": "shell onCancel restores", "save": "replace committed draft then close", "result": "verified" },
+    { "id": "dismiss.source-popup-gallery", "source": "src/components/patterns/source-popup-gallery.tsx", "shell": "center-modal", "cancel": "increment dialog version then close", "closeButton": "shell dismiss", "escape": "shell dismiss", "backdrop": "shell dismiss", "save": "same remount reset and close", "result": "verified-reset-not-snapshot" },
+    { "id": "dismiss.table-column-settings", "source": "src/components/patterns/table-column-settings.tsx", "shell": "standalone-overlay", "cancel": "delegated onCancel callback", "closeButton": "separate delegated onClose callback", "escape": "not-owned", "backdrop": "not-owned", "save": "delegated onApply callback", "result": "parent-contract-required" }
+  ],
+  "rowMutationAudits": [
+    { "id": "row.production-result", "source": "src/components/patterns/completed-popup-patterns.tsx", "insertPosition": "prepend", "addGuard": "none", "deletePolicy": "any-row", "initialValues": "entry-form-values-with-fallbacks", "postDelete": "remove-row" },
+    { "id": "row.receiving-result", "source": "src/components/patterns/completed-popup-patterns.tsx", "insertPosition": "prepend", "addGuard": "none", "deletePolicy": "any-row", "initialValues": "entry-form-values", "postDelete": "remove-row" },
+    { "id": "row.custom-information", "source": "src/components/patterns/completed-popup-patterns.tsx", "insertPosition": "append", "addGuard": "none", "deletePolicy": "any-row", "initialValues": "separate-editor-draft", "postDelete": "remove-row" },
+    { "id": "row.inspection-item", "source": "src/components/patterns/completed-popup-patterns.tsx", "insertPosition": "append", "addGuard": "none", "deletePolicy": "not-supported", "initialValues": "generated-label-and-none-judgement", "postDelete": "not-applicable" },
+    { "id": "row.easy-mode-receiving", "source": "src/components/patterns/easy-mode-receiving-pattern.tsx", "insertPosition": "append", "addGuard": "previous-row-complete", "deletePolicy": "keep-at-least-one", "initialValues": "empty-with-previous-customer", "postDelete": "remove-row-without-renumber-state" }
+  ],
+  "findings": [
+    { "id": "shell-dismiss-is-centralized", "status": "confirmed", "detail": "CenterModal과 SideSlidePanel은 cancel action id, X, Esc, backdrop을 동일 dismiss 함수로 연결한다." },
+    { "id": "selection-is-an-input-not-a-behavior-name", "status": "confirmed", "detail": "selectedIds 자체보다 선택 후 editor/action/detail 중 무엇이 변하는지가 Behavior ID를 결정해야 한다." },
+    { "id": "visual-selection-can-be-incomplete", "status": "confirmed", "detail": "일부 화면은 selectedIds를 저장하지만 후속 action enabled state나 editor 변화가 구현되지 않았다." },
+    { "id": "candidate-only-behaviors-stay-local", "status": "confirmed", "detail": "row.inherit-previous와 section.toggle-collapse는 생성 후보 한 건뿐이라 ScreenSpec local rule로 유지한다." }
+  ]
+}
