@@ -69,7 +69,7 @@ function PageTopTabItem({
           type="button"
           onClick={onBookmarkClick}
           aria-label="북마크"
-          className="flex size-7 shrink-0 items-center justify-center rounded text-mes-gray-60"
+          className={cn("flex size-7 shrink-0 items-center justify-center rounded", bookmarked ? "text-mes-yellow-40" : "text-mes-gray-60")}
         >
           <IconStar size={16} variant={bookmarked ? "filled" : "outline"} />
         </button>

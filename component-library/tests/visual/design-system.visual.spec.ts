@@ -801,9 +801,9 @@ test("공정검사 경향관리는 원본 분석 배치와 품목·CAVITY 연동
     analysis.boundingBox(),
   ]);
   expect(screenBox).toEqual({ x: 0, y: 0, width: 1920, height: 960 });
-  expect(firstChartBox).toEqual({ x: 280, y: 100, width: 800, height: 305 });
-  expect(secondChartBox).toEqual({ x: 1100, y: 100, width: 800, height: 305 });
-  expect(analysisBox).toEqual({ x: 286, y: 425, width: 1620, height: 512 });
+  expect(firstChartBox).toEqual({ x: 280, y: 101, width: 800, height: 305 });
+  expect(secondChartBox).toEqual({ x: 1100, y: 101, width: 800, height: 305 });
+  expect(analysisBox).toEqual({ x: 286, y: 426, width: 1620, height: 512 });
 
   const overflows = await screen.locator("[data-monthly-comparison-panel], [data-measurement-analysis-section], [data-cavity-heatmap], [data-inspection-achievement-stack]").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
   expect(overflows).toEqual([0, 0, 0, 0, 0]);
@@ -812,6 +812,14 @@ test("공정검사 경향관리는 원본 분석 배치와 품목·CAVITY 연동
   await expect(screen.locator('[data-cavity-heatmap][data-active-item="팥빙수"]')).toBeVisible();
   await expect(screen.locator("[data-cavity-heatmap]").getByText("35", { exact: true }).first()).toBeVisible();
   await screen.getByRole("row", { name: "비비빅 35 32.4 27.5 35.5" }).click();
+  await expect(screen.locator('[data-cavity-heatmap][data-active-item="비비빅"]')).toBeVisible();
+  await expect(screen.locator("[data-cavity-heatmap]").getByText("32.5", { exact: true })).toBeVisible();
+  await expect(screen.locator("[data-cavity-heatmap]").getByText("37.5", { exact: true })).toBeVisible();
+  await expect(screen.locator("[data-cavity-heatmap]").getByText("5.6", { exact: true })).toBeVisible();
+  await expect(screen.locator("[data-cavity-heatmap]").getByText("35.1", { exact: true })).toHaveCount(0);
+
+  const achievementHeights = await screen.locator("[data-inspection-achievement-stack] > section").evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().height));
+  expect(achievementHeights).toEqual([140, 140, 140]);
 
   await hideDevelopmentOverlay(page);
   await expect(screen).toHaveScreenshot("process-inspection-trend.png");

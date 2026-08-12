@@ -7,11 +7,11 @@
 | 항목 | 결과 |
 |---|---:|
 | 검사 파일 | 27 |
-| 전체 줄 수 | 5,192 |
+| 전체 줄 수 | 5,214 |
 | 혼합 Section Frame 파일 | 2 |
 | 표준 Frame 없이 native section만 사용 | 10 |
 | rounded wrapper가 있는 Section 후보 파일 | 14 |
-| fingerprint | `bfe48de28170bd6f` |
+| fingerprint | `c240fc17c94c3ead` |
 
 ## Shell 사용
 
@@ -61,10 +61,10 @@
 | `completed-popup-patterns.tsx` | 1029 | CenterModal 1, SideSlidePanel 5 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
 | `completed-popup-expanded-content.tsx` | 526 | CenterModal 1 | section.summary | rounded-wrapper-around-section-candidate |
 | `completed-application-patterns.tsx` | 334 | - | section.summary | rounded-wrapper-around-section-candidate |
-| `mes-screen-fixtures.tsx` | 319 | - | section.search-table | rounded-wrapper-around-section-candidate |
+| `mes-screen-fixtures.tsx` | 328 | - | section.search-table | rounded-wrapper-around-section-candidate |
 | `inspection-criteria-pattern.tsx` | 306 | CenterModal 1 | section.form-grid, section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 | `original-mes-screen-assets.tsx` | 272 | SideSlidePanel 2 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
-| `inspection-trend-analysis-pattern.tsx` | 228 | - | section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
+| `inspection-trend-analysis-pattern.tsx` | 241 | - | section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 | `easy-mode-receiving-pattern.tsx` | 192 | SideSlidePanel 1 | section.editable-row-list | - |
 | `equipment-inspection-records-modal.tsx` | 192 | - | section.inspection-items, section.search-table | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 | `exact-form-management-screen.tsx` | 188 | - | section.search-table | - |

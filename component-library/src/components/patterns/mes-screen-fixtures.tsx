@@ -9,6 +9,7 @@ import { Logo } from "@/components/ui/logo";
 import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
 import { Radio } from "@/components/ui/radio";
 import { SearchInput } from "@/components/ui/search-input";
+import { MesProductSwitcher } from "@/components/ui/mes-product-switcher";
 import {
   Select,
   SelectContent,
@@ -26,10 +27,21 @@ import {
   IconCompany,
   IconGrid,
   IconMedalCheck,
+  IconSetting,
   IconUserMono,
   IconWrench,
 } from "@/components/icons";
 import { cn } from "@/lib/utils";
+
+const SETTINGS_CHILDREN = [
+  { key: "customer", label: "거래처 등록" },
+  { key: "user", label: "사용자 설정" },
+  { key: "item", label: "품목 등록" },
+  { key: "warehouse", label: "창고 등록" },
+  { key: "production-info", label: "생산 정보 설정" },
+  { key: "quality-info", label: "품질 정보 설정" },
+  { key: "facility-info", label: "설비 정보 설정" },
+];
 
 const MES_NAV_ITEMS: SidebarNavItem[] = [
   { key: "material", label: "자재관리", icon: <IconBox size={20} /> },
@@ -37,46 +49,43 @@ const MES_NAV_ITEMS: SidebarNavItem[] = [
   { key: "quality", label: "품질관리", icon: <IconMedalCheck size={20} /> },
   { key: "facility", label: "설비관리", icon: <IconWrench size={20} /> },
   { key: "analysis", label: "통계분석", icon: <IconChartBar size={20} /> },
-  {
-    key: "settings",
-    label: "MES 설정",
-    icon: <IconGrid size={20} />,
-    children: [
-      { key: "customer", label: "거래처 등록" },
-      { key: "user", label: "사용자 설정" },
-      { key: "item", label: "품목 등록" },
-      { key: "warehouse", label: "창고 등록" },
-      { key: "production-info", label: "생산 정보 설정" },
-      { key: "quality-info", label: "품질 정보 설정" },
-      { key: "facility-info", label: "설비 정보 설정" },
-    ],
-  },
+  { key: "settings", label: "MES 설정", icon: <IconGrid size={20} />, children: SETTINGS_CHILDREN },
 ];
 
-function MesFixtureSidebar({ dashboard = false, collapsed = false }: { dashboard?: boolean; collapsed?: boolean }) {
+const PROCESS_TREND_NAV_ITEMS: SidebarNavItem[] = [
+  { key: "material", label: "자재관리", icon: <IconSetting size={20} className="brightness-0 invert" />, children: SETTINGS_CHILDREN },
+  { key: "production", label: "생산관리", icon: <IconCompany size={20} /> },
+  { key: "quality", label: "품질관리", icon: <IconMedalCheck size={20} /> },
+  { key: "facility", label: "설비관리", icon: <IconWrench size={20} /> },
+  { key: "analysis", label: "통계분석", icon: <IconChartBar size={20} /> },
+  { key: "settings", label: "MES 설정", icon: <IconSetting size={20} className="opacity-60 invert" /> },
+];
+
+function MesFixtureSidebar({ dashboard = false, collapsed = false, sourceNavigation = false }: { dashboard?: boolean; collapsed?: boolean; sourceNavigation?: boolean }) {
   return (
     <Sidebar
-      items={MES_NAV_ITEMS}
-      logo={<Logo className="text-white" />}
+      items={sourceNavigation ? PROCESS_TREND_NAV_ITEMS : MES_NAV_ITEMS}
+      logo={<Logo brand={sourceNavigation ? "moncat-factory" : "mes"} className="text-white" />}
       collapsed={collapsed}
-      expandedKey={dashboard ? undefined : "settings"}
-      activeSubKey={dashboard ? undefined : "user"}
+      expandedKey={sourceNavigation ? "material" : dashboard ? undefined : "settings"}
+      activeSubKey={sourceNavigation ? "user" : dashboard ? undefined : "user"}
       dashboardActive={dashboard}
+      productSwitcher={sourceNavigation ? <MesProductSwitcher value="MES" collapsed={collapsed} /> : undefined}
     />
   );
 }
 
-function MesPageTabs({ active, extraTabs = ["거래처 등록", "품목 등록"] }: { active: string; extraTabs?: string[] }) {
+function MesPageTabs({ active, extraTabs = ["거래처 등록", "품목 등록"], sourceChrome = false }: { active: string; extraTabs?: string[]; sourceChrome?: boolean }) {
   return (
     <div className="flex h-[38px] w-full items-center justify-between bg-black pr-3">
       <div className="flex h-full">
-        <PageTopTabItem label={active} active />
-        {extraTabs.map((label) => <PageTopTabItem key={label} label={label} />)}
+        <PageTopTabItem label={active} active bookmarked={sourceChrome} />
+        {extraTabs.map((label, index) => <PageTopTabItem key={label} label={label} bookmarked={sourceChrome && index === 1} />)}
       </div>
       <div className="flex h-full items-center gap-1 text-white">
         <span className="relative">
           <IconButton aria-label="알림" icon={<IconBell size={20} />} className="text-white" />
-          <span className="absolute right-0 top-0 flex size-[14px] items-center justify-center rounded-full bg-mes-danger-60 text-[9px] font-bold">3</span>
+          {!sourceChrome && <span className="absolute right-0 top-0 flex size-[14px] items-center justify-center rounded-full bg-mes-danger-60 text-[9px] font-bold">3</span>}
         </span>
         <IconButton aria-label="사용자 메뉴" icon={<IconUserMono size={20} />} className="text-white" />
       </div>

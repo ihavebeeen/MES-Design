@@ -225,17 +225,6 @@
       "evidence": "운전일지 상단의 두 폼 열을 분리하는 Tailwind 4px 스케일 값이다. 54px 시간휠 그룹 간격도 이 값으로 정규화한다."
     },
     {
-      "id": "spacing.inspection-heatmap-inline-28",
-      "category": "spacing",
-      "property": "padding-inline",
-      "observedValue": "28px",
-      "canonicalValue": "28px",
-      "decision": "keep",
-      "status": "confirmed",
-      "scope": ["pattern:measurement-heatmap-analysis"],
-      "evidence": "공정검사 경향관리 Figma 11751:102698의 CAVITY 히트맵에서 10열 축과 셀을 498px 패널 안에 맞추는 좌우 28px 실측값이다. 4px 스케일 안의 분석 패턴 전용 값이며 일반 카드 padding으로 전파하지 않는다."
-    },
-    {
       "id": "radius.selection-action-pill",
       "category": "radius",
       "property": "border-radius",
@@ -267,6 +256,50 @@
       "status": "confirmed",
       "scope": ["pattern:bom-copy.target-pane"],
       "evidence": "BOM 복사 Figma 18962:67817에서 대상 도구막대는 y=0, 높이 48px이고 표는 y=59px에서 시작해 사이 간격이 11px로 실측된다. 일반 요소 간격으로 전파하지 않는 화면 구조 전용 값이다."
+    },
+    {
+      "id": "spacing.process-trend-bordered-panel-inset",
+      "category": "spacing",
+      "property": "padding-block",
+      "observedValue": "15px",
+      "canonicalValue": "15px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["pattern:monthly-comparison-chart", "pattern:measurement-heatmap-analysis"],
+      "evidence": "공정검사 경향관리 Figma 11765:104244와 11765:103860에서 차트·히트맵의 시각적 16px 안쪽 여백은 1px border를 포함한다. CSS border-box에서 자식 좌표를 동일하게 만들기 위한 실제 padding-block은 15px이며 일반 카드 padding으로 전파하지 않는다."
+    },
+    {
+      "id": "spacing.process-trend-title-inline",
+      "category": "spacing",
+      "property": "padding-inline",
+      "observedValue": "17.869px",
+      "canonicalValue": "17.869px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["screen:process-inspection-trend"],
+      "evidence": "공정검사 경향관리 Figma 13092:32847의 페이지 제목 프레임에서 직접 실측된 좌우 inset이다. 1920px 원본 화면의 제목 x=277.869px를 보존하는 화면 전용 값이다."
+    },
+    {
+      "id": "spacing.process-trend-main-top",
+      "category": "spacing",
+      "property": "padding-top",
+      "observedValue": "21px",
+      "canonicalValue": "21px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["screen:process-inspection-trend"],
+      "evidence": "공정검사 경향관리 Figma 11765:104244의 상단 차트 y=101px을 제목 바 종료 y=80px에서 재현하는 화면 전용 상단 여백이다. 20px으로 정규화하면 하단 분석 패널도 원본보다 1px 위로 이동한다."
+    },
+    {
+      "id": "spacing.cavity-axis-leading-slot",
+      "category": "spacing",
+      "property": "padding-left",
+      "observedValue": "26px",
+      "canonicalValue": "26px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["pattern:measurement-heatmap-analysis"],
+      "evidence": "공정검사 경향관리 Figma 11751:102972의 행 축 슬롯 22px과 열 간격 4px의 합이다. 상단 열 번호를 첫 CAVITY 셀 x좌표와 맞추는 분석 패턴 전용 구조값이다."
     }
   ]
 }

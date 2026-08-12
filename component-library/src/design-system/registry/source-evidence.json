@@ -40,7 +40,7 @@
       "kind": "screen-bundle",
       "normalizedTarget": "screen.inspection-trend-analysis",
       "status": "verified",
-      "notes": ["상위 문서 node 9171:39454가 아니라 실제 화면 node 11751:102614를 구현 근거로 확정했다.", "상단 월별 반품·보류 비교, 하단 측정 데이터·CAVITY 히트맵·검사 달성률의 3개 하위 패턴으로 분해했다.", "측정 목록 active row는 CAVITY 히트맵 상태와 연결하며 공용 Table의 solid active-row 변형을 사용한다."],
+      "notes": ["상위 문서 node 9171:39454가 아니라 실제 화면 node 11751:102614를 구현 근거로 확정했다.", "상단 월별 반품·보류 비교, 하단 측정 데이터·CAVITY 히트맵·검사 달성률의 3개 하위 패턴으로 분해했다.", "측정 목록 active row는 CAVITY 히트맵 상태와 연결하며 공용 Table의 solid active-row 변형을 사용한다.", "2026-08-12 재검수에서 자체 생성 PNG를 원본 검증으로 오인한 문제를 발견해 SNB·차트·히트맵·달성률 하위 node를 다시 실측했다.", "히트맵 임의 offset을 제거하고 Figma의 5×5 값·전용 연속색, 5.6 범례, 22px 행축 슬롯을 복원했다. 이후 기준 PNG는 원본 좌표 assertions와 함께만 갱신한다."],
       "qualityGates": { "designContext": true, "metadataLedger": true, "componentMapping": true, "browserMeasurement": true, "interactionTest": true, "visualBaseline": true },
       "visualCaseId": "screen-process-inspection-trend"
     },

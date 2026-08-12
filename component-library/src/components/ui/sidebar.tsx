@@ -228,7 +228,7 @@ function Sidebar({
       <div className="flex w-full flex-1 flex-col overflow-clip">
         <div
           className={cn(
-            "flex w-full shrink-0 items-center px-5 pb-5 pt-6",
+            "relative flex h-[64px] w-full shrink-0 items-center px-5",
             collapsed ? "justify-center" : "justify-between"
           )}
         >
@@ -238,7 +238,8 @@ function Sidebar({
             onClick={onCollapseClick}
             aria-label={collapsed ? "사이드바 펼치기" : "사이드바 접기"}
             className={cn(
-              "flex size-[30px] shrink-0 items-center justify-center rounded-full bg-mes-gray-110 text-white hover:bg-mes-gray-90",
+              "absolute right-5 top-[19px] flex size-[30px] shrink-0 items-center justify-center rounded-full bg-mes-gray-110 text-white hover:bg-mes-gray-90",
+              collapsed && "right-4",
               collapsed && "rotate-180"
             )}
           >
@@ -281,13 +282,8 @@ function Sidebar({
           </button>
         </div>
 
-        {productSwitcher && (
-          <div className={cn("flex w-full shrink-0 justify-center py-[10px]", collapsed ? "px-2" : "px-[10px]") }>
-            {productSwitcher}
-          </div>
-        )}
-
-        <div className="flex w-full flex-1 flex-col gap-2.5 border-b border-mes-gray-120 p-[10px]">
+        <div className={cn("flex w-full flex-1 flex-col gap-2.5 border-b border-mes-gray-120", productSwitcher ? "px-[10px] pb-[10px] pt-[9px]" : "p-[10px]") }>
+          {productSwitcher && <div className="flex w-full shrink-0 justify-center">{productSwitcher}</div>}
           <div className="flex w-full flex-col gap-1">
             {items.map((item) => {
               const isExpanded = expandedKey === item.key;
@@ -450,10 +446,10 @@ function Sidebar({
           type="button"
           onClick={onManualClick}
           className={cn(
-            "flex flex-1 items-center justify-center text-[14px] font-medium text-white",
+            "flex flex-1 items-center justify-center text-[14px] font-medium leading-none text-white/50",
             collapsed
               ? "h-[46px] border-b border-mes-gray-120 text-[13px]"
-              : "border-r border-mes-gray-120 py-4"
+              : "h-[46px] border-r border-mes-gray-120"
           )}
         >
           메뉴얼
@@ -462,8 +458,8 @@ function Sidebar({
           type="button"
           onClick={onLogoutClick}
           className={cn(
-            "flex flex-1 items-center justify-center text-[14px] font-medium text-white",
-            collapsed ? "h-[46px] text-[13px]" : "py-4"
+            "flex flex-1 items-center justify-center text-[14px] font-medium leading-none text-white/50",
+            collapsed ? "h-[46px] text-[13px]" : "h-[46px]"
           )}
         >
           로그아웃
