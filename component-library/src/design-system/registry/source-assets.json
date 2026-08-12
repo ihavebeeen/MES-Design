@@ -54,6 +54,15 @@
       "source": "src/components/patterns/exact-purchase-modals.tsx",
       "requiredComponents": ["center-modal", "query-date-range", "filter", "search-input", "table", "link", "progress", "badge"],
       "rules": ["품목 건수는 링크이며 선택 시 품목 상세 팝업을 연다.", "진행중·대기 행의 핵심 텍스트는 위험색으로 표시하되 상태 컬러 규칙은 유지한다."]
+    },
+    {
+      "id": "popup.center.inspection-records",
+      "name": "설비 점검 기록 조회",
+      "kind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/equipment-inspection-records-modal.tsx",
+      "requiredComponents": ["center-modal", "query-date-range", "filter", "search-input", "table", "checkbox", "button"],
+      "rules": ["사용자 정의 점검항목은 항목명 42px과 판정기준 22px의 2단 헤더로 표시한다.", "선택 열과 네 개 고정 열 뒤의 사용자 정의 열을 합쳐 본문 1360px 안에 배치하며 가로 overflow를 만들지 않는다.", "회색 체크는 미선택이고 검정 체크와 파란 행 배경이 선택 상태를 함께 나타낸다."]
     }
   ],
   "screens": [
@@ -63,6 +72,7 @@
     { "id": "inventory-add", "name": "재고 추가", "patternRefs": ["popup.center.inventory-add", "shell.center-modal", "section.search-table-composition", "selection.reveal-inline-editor", "action-set.cancel-save"], "source": "src/components/patterns/exact-inventory-add-modal.tsx", "figmaNode": "18813:64179", "stateRules": ["선택 행은 상단 고정되고 입력 컨트롤이 활성화된다."] },
     { "id": "inventory-edit", "name": "재고편집", "patternRefs": ["popup.center.inventory-edit", "shell.center-modal", "section.search-table-composition", "selection.enable-actions", "action-set.close-only"], "source": "src/components/patterns/source-popup-gallery.tsx", "figmaNode": "17491:82304", "stateRules": ["이동·삭제는 선택 목록에서 파생되는 보조 모달이다."] },
     { "id": "purchase-order-lookup", "name": "발주 정보", "patternRefs": ["popup.center.purchase-lookup", "shell.center-modal", "section.search-table-composition", "action-set.cancel-select"], "source": "src/components/patterns/exact-purchase-modals.tsx", "figmaNode": "17503:85601", "stateRules": ["품목 건수 링크가 품목 상세 목록을 연다."] },
-    { "id": "production-analytics-latest", "name": "생산분석 현황", "patternRefs": ["screen.analytics-dashboard", "section.search-table-composition"], "source": "src/components/patterns/exact-production-analytics-screen.tsx", "figmaNode": "17520:46628", "stateRules": ["조회기간과 조회기준은 KPI·차트·목록 단위를 함께 바꾼다.", "판매계획·생산계획 설정은 카드 내부 설정 상태로 관리한다."] }
+    { "id": "production-analytics-latest", "name": "생산분석 현황", "patternRefs": ["screen.analytics-dashboard", "section.search-table-composition"], "source": "src/components/patterns/exact-production-analytics-screen.tsx", "figmaNode": "17520:46628", "stateRules": ["조회기간과 조회기준은 KPI·차트·목록 단위를 함께 바꾼다.", "판매계획·생산계획 설정은 카드 내부 설정 상태로 관리한다."] },
+    { "id": "equipment-inspection-records", "name": "냉각기 점검표", "patternRefs": ["popup.center.inspection-records", "shell.center-modal", "section.search-table-composition", "selection.enable-actions"], "source": "src/components/patterns/equipment-inspection-records-modal.tsx", "figmaNode": "9873:112416", "stateRules": ["검색과 필터는 동일한 조회 목록을 갱신한다.", "선택된 점검 기록만 삭제·점검 결과 등록의 대상이 된다."] }
   ]
 }

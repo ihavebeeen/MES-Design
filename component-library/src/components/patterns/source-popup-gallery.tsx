@@ -13,11 +13,12 @@ import { ExactInventoryActionContent } from "./exact-inventory-action-modal";
 import { ExactInventoryAddContent } from "./exact-inventory-add-modal";
 import { ExactInventoryEditContent } from "./exact-inventory-edit-modal";
 import { ExactPurchaseContent, ExactPurchaseItemsContent } from "./exact-purchase-modals";
+import { EquipmentInspectionRecordsContent } from "./equipment-inspection-records-modal";
 import { FigmaScreenPreview } from "./figma-screen-preview";
 import { CavityContent } from "./original-mes-screen-assets";
 import { createDialogActionSet } from "@/design-system/action-sets";
 
-type SourcePopupId = "cavity" | "inventory-add" | "inventory-edit" | "inventory-delete" | "inventory-move" | "purchase" | "purchase-items";
+type SourcePopupId = "cavity" | "inventory-add" | "inventory-edit" | "inventory-delete" | "inventory-move" | "purchase" | "purchase-items" | "equipment-inspection-records";
 type SourcePopupGroupId = "settings" | "table-edit" | "linked-detail";
 
 interface SourcePopupDefinition {
@@ -34,6 +35,8 @@ interface SourcePopupDefinition {
   scrollMode?: DialogBodyScrollMode;
   confirmLabel?: string;
   closeOnly?: boolean;
+  /** 원본 본문이 좌측 보조 동작까지 포함한 전용 72px 푸터를 소유하는 경우. */
+  contentOwnsFooter?: boolean;
 }
 
 const GROUPS: Array<{ id: SourcePopupGroupId; label: string; description: string }> = [
@@ -50,6 +53,7 @@ const SOURCE_POPUPS: SourcePopupDefinition[] = [
   { id: "inventory-move", label: "재고 이동 설정", group: "table-edit", node: "17702:49474", title: "이동 설정", summary: "선택 재고의 이동 창고 입력", width: 1013, height: 456, size: "wide-1024", scrollMode: "content" },
   { id: "purchase", label: "발주 정보", group: "linked-detail", node: "17503:85192", title: "발주 정보", summary: "발주 목록 선택과 진행 상태", width: 800, height: 680, size: "standard-960", bodyPadding: "none", scrollMode: "content", confirmLabel: "선택" },
   { id: "purchase-items", label: "발주 품목 리스트", group: "linked-detail", node: "17503:85374", title: "품목 리스트", summary: "발주 목록에서 연결되는 보조 상세", width: 507, height: 384, size: "medium-600", scrollMode: "content", closeOnly: true },
+  { id: "equipment-inspection-records", label: "냉각기 점검표", group: "linked-detail", node: "9873:112416", title: "냉각기 점검표", summary: "조회 조건과 사용자 정의 점검항목 2단 헤더 목록", width: 1400, height: 680, size: "wide-1400", bodyPadding: "none", scrollMode: "content", contentOwnsFooter: true },
 ];
 
 function SourcePopupContent({ id, onNavigate }: { id: SourcePopupId; onNavigate: (id: SourcePopupId) => void }) {
@@ -59,7 +63,8 @@ function SourcePopupContent({ id, onNavigate }: { id: SourcePopupId; onNavigate:
   if (id === "inventory-delete") return <ExactInventoryActionContent type="delete" />;
   if (id === "inventory-move") return <ExactInventoryActionContent type="move" />;
   if (id === "purchase") return <ExactPurchaseContent onOpenItems={() => onNavigate("purchase-items")} />;
-  return <ExactPurchaseItemsContent />;
+  if (id === "purchase-items") return <ExactPurchaseItemsContent />;
+  return <EquipmentInspectionRecordsContent />;
 }
 
 function StaticPopupShell({ popup, children, onReset }: { popup: SourcePopupDefinition; children: React.ReactNode; onReset: () => void }) {
@@ -73,7 +78,7 @@ function StaticPopupShell({ popup, children, onReset }: { popup: SourcePopupDefi
         <Button size="small" variant="lineBlacktxt" className="size-8 border-0 p-0" onClick={onReset} aria-label="미리보기 입력 초기화"><IconX size={20} /></Button>
       </div>
       <div className={cn("flex min-h-0 flex-1 flex-col items-stretch", dialogBodyPaddingClasses[popup.bodyPadding ?? "standard"], dialogBodyScrollClasses[popup.scrollMode ?? "shell"])}>{children}</div>
-      <DialogFooter actions={actions} />
+      {!popup.contentOwnsFooter && <DialogFooter actions={actions} />}
     </div>
   );
 }
@@ -148,6 +153,7 @@ function SourcePopupGallery() {
         cancelLabel="취소"
         confirmLabel={selected.confirmLabel ?? "저장"}
         actions={actualActions}
+        footer={selected.contentOwnsFooter ? <></> : undefined}
       >
         <SourcePopupContent key={`${selected.id}-dialog-${dialogVersion}`} id={selected.id} onNavigate={selectPopup} />
       </CenterModal>

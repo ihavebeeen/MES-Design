@@ -21,6 +21,7 @@
     { "screenId": "inventory-add", "status": "verified", "route": "/visual-regression/source-inventory-add", "contracts": ["선택 행 상단 고정", "선택 행 입력 활성화", "취소·X 복원"], "tests": ["Figma 원본 재고 추가 팝업", "팝업 취소와 X는 변경값을 버리고 닫는다"] },
     { "screenId": "inventory-edit", "status": "verified", "route": "/patterns/completed-popup-types", "contracts": ["선택 작업 bar", "이동 보조 팝업", "삭제 보조 팝업"], "tests": ["재고편집 선택 작업은 이동·삭제 보조 팝업으로 이어진다"] },
     { "screenId": "purchase-order-lookup", "status": "verified", "route": "/patterns/completed-popup-types", "contracts": ["품목 건수 링크", "품목 상세 팝업 전환"], "tests": ["발주 품목 건수 링크는 품목 상세 팝업으로 전환한다"] },
-    { "screenId": "production-analytics-latest", "status": "verified", "route": "/patterns/completed-analytics-dashboard", "contracts": ["조회기간이 KPI·목록 문맥 변경", "조회기준이 표·차트 단위 변경", "계획 카드 설정 state"], "tests": ["생산분석 조회기간과 기준은 KPI·목록 단위를 함께 변경한다"] }
+    { "screenId": "production-analytics-latest", "status": "verified", "route": "/patterns/completed-analytics-dashboard", "contracts": ["조회기간이 KPI·목록 문맥 변경", "조회기준이 표·차트 단위 변경", "계획 카드 설정 state"], "tests": ["생산분석 조회기간과 기준은 KPI·목록 단위를 함께 변경한다"] },
+    { "screenId": "equipment-inspection-records", "status": "verified", "route": "/visual-regression/equipment-inspection-records", "contracts": ["1400×680 중앙 팝업", "조회 toolbar 수직 중앙 정렬", "2단 헤더와 가로 overflow 없음", "회색 미선택·검정 선택·파란 행", "검색·필터·삭제"], "tests": ["냉각기 점검표 중앙 팝업"] }
   ]
 }

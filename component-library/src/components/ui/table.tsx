@@ -173,6 +173,8 @@ import { IconArrow } from "../icons/icon-arrow";
 export interface TableColumn<T> {
   key: string;
   label: string;
+  /** 점검 결과표처럼 컬럼명 아래에 판정 기준을 표시하는 2단 헤더. */
+  headerDetail?: React.ReactNode;
   /**
    * 숫자면 고정 px 폭(기존과 동일). `{ min, grow? }` 객체를 주면 가변폭 컬럼이 됨 —
    * `min`px 밑으로는 안 줄어들고, 남는 공간을 `grow`(기본 1) 비율로 나눠 가짐.
@@ -227,6 +229,8 @@ export interface TableProps<T> {
   centerSelection?: boolean;
   /** 헤더/데이터 셀 사이 점선 구분선 표시 여부. */
   columnDividers?: boolean;
+  /** 컬럼 구분선 정책. solid-header는 헤더에만 실선을 표시한다. */
+  columnDividerMode?: "dashed-all" | "solid-header" | "none";
   /** 화면별 표 헤더 배경. 기존 표는 gray10, 흰색 헤더 원본은 white를 사용한다. */
   headerBackground?: "gray10" | "white";
   /** 내용이 넘칠 때 가로 스크롤을 허용할지 여부. */
@@ -752,6 +756,7 @@ function Table<T>({
   selectionColumnWidth = CHECKBOX_COLUMN_WIDTH,
   centerSelection = true,
   columnDividers = true,
+  columnDividerMode,
   headerBackground = "gray10",
   horizontalScroll = true,
   disabledTextTone = "gray80",
@@ -808,17 +813,26 @@ function Table<T>({
   };
   const groupLevelCount = React.useMemo(() => getMaxGroupDepth(groups), [groups]);
   const masterToggleAreaWidth = showMasterGroupToggles ? groupLevelCount * MASTER_TOGGLE_SLOT_WIDTH : 0;
+  const resolvedDividerMode = columnDividerMode ?? (columnDividers ? "dashed-all" : "none");
+  const bodyColumnDividers = resolvedDividerMode === "dashed-all";
+  const hasHeaderDetails = columns.some((column) => column.headerDetail !== undefined);
 
   return (
     <div className={cn("w-full rounded-mes-control border border-mes-border-default", horizontalScroll ? "overflow-x-auto" : "overflow-hidden", className)}>
       <div className="min-w-max">
         {/* 헤더 */}
-        <div className={cn("sticky top-0 z-10 flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default", headerBackground === "white" ? "bg-white" : "bg-mes-gray-10")} style={{ paddingInline: edgePadding }}>
+        <div className={cn("sticky top-0 z-10 flex shrink-0 items-center border-b border-solid border-mes-border-default", hasHeaderDetails ? "h-16" : "h-[30px]", headerBackground === "white" ? "bg-white" : "bg-mes-gray-10")} style={{ paddingInline: edgePadding }}>
           {/* 5차 정정: 체크박스는 항상 최좌측 고정 — 마스터 토글 버튼은 체크박스보다
               오른쪽에 온다(예전엔 반대였음). 7차: 폭을 CHECKBOX_COLUMN_WIDTH로 통일
               (신규 점 배치 때문에 40px로 늘어남 — 다른 행 종류와 동일해야 함). */}
           {selectable && (
-            <div className="flex h-full shrink-0 items-center justify-center" style={{ width: selectionColumnWidth }}>
+            <div
+              className={cn(
+                "flex h-full shrink-0 items-center justify-center",
+                resolvedDividerMode === "solid-header" && "border-r border-solid border-mes-border-default"
+              )}
+              style={{ width: selectionColumnWidth }}
+            >
               {selectionHeaderLabel ? (
               <span className="text-[13px] font-semibold leading-[1.3] text-mes-text-default">
                   {selectionHeaderLabel}
@@ -874,11 +888,33 @@ function Table<T>({
             <Cell
               key={col.key}
               column={{ ...col, align: "center" }}
-              className={cn(columnDividers && i < columns.length - 1 && "border-r border-dashed border-mes-gray-40")}
+              className={cn(
+                hasHeaderDetails && "px-0",
+                resolvedDividerMode !== "none" && i < columns.length - 1 && "border-r border-mes-border-default",
+                resolvedDividerMode === "dashed-all" && "border-dashed",
+                resolvedDividerMode === "solid-header" && "border-solid"
+              )}
             >
-              <span className="w-full truncate text-[13px] font-semibold leading-[1.3] text-mes-text-default">
-                {col.label}
-              </span>
+              {hasHeaderDetails ? (
+                col.headerDetail !== undefined ? (
+                  <span className="flex h-full w-full flex-col">
+                    <span className="flex h-[42px] items-center justify-center px-1 text-center text-[13px] font-semibold leading-[1.3] text-mes-text-default">
+                      {col.label}
+                    </span>
+                    <span className="flex h-[22px] items-center justify-center border-t border-mes-border-default bg-mes-gray-20 px-1 text-center text-[13px] font-medium leading-[1.3] text-mes-gray-80">
+                      {col.headerDetail}
+                    </span>
+                  </span>
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center px-1 text-center text-[13px] font-semibold leading-[1.3] text-mes-text-default">
+                    {col.label}
+                  </span>
+                )
+              ) : (
+                <span className="w-full truncate text-[13px] font-semibold leading-[1.3] text-mes-text-default">
+                  {col.label}
+                </span>
+              )}
             </Cell>
           ))}
         </div>
@@ -905,7 +941,7 @@ function Table<T>({
                 edgePadding,
                 selectionColumnWidth,
                 centerSelection,
-                columnDividers,
+                columnDividers: bodyColumnDividers,
                 disabledTextTone,
                 unselectedTextTone,
               })
@@ -926,7 +962,7 @@ function Table<T>({
                 edgePadding={edgePadding}
                 selectionColumnWidth={selectionColumnWidth}
                 centerSelection={centerSelection}
-                columnDividers={columnDividers}
+                columnDividers={bodyColumnDividers}
                 disabledTextTone={disabledTextTone}
                 unselectedTextTone={unselectedTextTone}
               />

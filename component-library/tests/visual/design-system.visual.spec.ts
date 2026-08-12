@@ -81,6 +81,52 @@ test("Figma 원본 재고 추가 팝업", async ({ page }) => {
   await expect(dialog).toHaveScreenshot("source-inventory-add.png");
 });
 
+test("냉각기 점검표 중앙 팝업", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/visual-regression/equipment-inspection-records");
+  const dialog = page.getByRole("dialog", { name: "냉각기 점검표" });
+  await expect(dialog).toBeVisible();
+
+  const toolbar = dialog.locator(".inspection-record-query-toolbar");
+  const table = dialog.locator(".equipment-inspection-records-table");
+  const [toolbarBox, filterBox, searchBox, tableOverflow] = await Promise.all([
+    toolbar.boundingBox(),
+    toolbar.getByRole("button", { name: "필터 추가" }).boundingBox(),
+    toolbar.getByPlaceholder("검색어 입력..").boundingBox(),
+    table.evaluate((element) => element.scrollWidth - element.clientWidth),
+  ]);
+  expect(toolbarBox).not.toBeNull();
+  expect(filterBox).not.toBeNull();
+  expect(searchBox).not.toBeNull();
+  const toolbarCenter = toolbarBox!.y + toolbarBox!.height / 2;
+  expect(Math.abs(filterBox!.y + filterBox!.height / 2 - toolbarCenter)).toBeLessThanOrEqual(1);
+  expect(Math.abs(searchBox!.y + searchBox!.height / 2 - toolbarCenter)).toBeLessThanOrEqual(1);
+  expect(tableOverflow).toBe(0);
+
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("equipment-inspection-records.png");
+
+  const firstCheckbox = table.locator('input[type="checkbox"]').first();
+  await expect(firstCheckbox).not.toBeChecked();
+  await firstCheckbox.check();
+  await expect(firstCheckbox).toBeChecked();
+  await page.waitForTimeout(150);
+  const selectedColors = await firstCheckbox.evaluate((input) => ({
+    checkbox: getComputedStyle(input.nextElementSibling!).backgroundColor,
+    row: getComputedStyle(input.parentElement!.parentElement!.parentElement!).backgroundColor,
+  }));
+  expect(selectedColors.checkbox).toBe("rgb(1, 19, 39)");
+  expect(selectedColors.row).toBe("rgb(232, 245, 255)");
+
+  const search = toolbar.getByPlaceholder("검색어 입력..");
+  await search.fill("박지민");
+  await expect(table.locator('input[type="checkbox"]')).toHaveCount(3);
+  await search.fill("");
+  await expect(table.locator('input[type="checkbox"]')).toHaveCount(12);
+  await dialog.getByRole("button", { name: "삭제" }).click();
+  await expect(table.locator('input[type="checkbox"]')).toHaveCount(11);
+});
+
 test("불량수량 입력 팝업", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/visual-regression/defect");

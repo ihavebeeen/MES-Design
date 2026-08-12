@@ -42,6 +42,8 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `Table` | `selectionColumnWidth` | `number`, 기본 `40` | 선택 열의 전체 폭을 헤더·데이터·그룹·총계 행에 동일 적용한다. | Figma `11210:50866`은 `56` |
 | `Table` | `centerSelection` | `boolean`, 기본 `true` | 헤더와 데이터 행 체크박스를 선택 열 중앙의 동일한 x축에 배치한다. 왼쪽 정렬이 명시적으로 필요한 예외만 `false`를 사용한다. | Figma `11210:50866`, `18826:60554`, `18962:67817` |
 | `Table` | `columnDividers` | `boolean`, 기본 `true` | 셀 사이 세로 점선을 화면별로 끈다. | Figma `11210:50866`은 `false` |
+| `TableColumn` | `headerDetail` | `ReactNode`, 기본 없음 | 사용자 정의 점검항목처럼 컬럼명 아래에 판정기준이 붙는 경우 헤더 전체를 64px(42+22) 2단 구조로 전환한다. 값이 없는 고정 열은 두 행을 합친 높이로 유지한다. | 냉각기 점검표, Figma `9873:112446` |
+| `Table` | `columnDividerMode` | `dashed-all \| solid-header \| none`, 기본은 기존 `columnDividers`에서 파생 | 기존 MES 표의 전 구간 점선과, 헤더에만 실선이 있고 본문에는 세로선이 없는 점검 기록표를 같은 컬럼 좌표 구조로 표현한다. | 냉각기 점검표, Figma `9873:112446`, `9873:112501` |
 | `Table` | `headerBackground` | `gray10 \| white`, 기본 `gray10` | 공통 기본 헤더 색을 유지하면서 흰색 헤더가 명시된 화면을 표현한다. | 생산실적 등록, Figma `11210:48926`은 `white` |
 | `Table` | `horizontalScroll` | `boolean`, 기본 `true` | 고정 폭이 정확히 맞는 표에서 불필요한 가로 스크롤을 금지한다. | Figma `11210:50866`은 `false` |
 | `Table` | `showMasterGroupToggles` | `boolean`, 기본 `true` | 그룹 표이지만 헤더에 depth 일괄 접기 슬롯이 없는 화면에서 컬럼 시작점을 원본과 일치시킨다. | 생산실적 1280, Figma `18849:62315` |

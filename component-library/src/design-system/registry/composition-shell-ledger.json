@@ -5,9 +5,9 @@
   "scope": "popup-shell-recipes-in-src/components/patterns",
   "summary": {
     "jsxCallSites": 13,
-    "resolvedRecipes": 28,
+    "resolvedRecipes": 29,
     "byShell": {
-      "center-modal": 19,
+      "center-modal": 20,
       "side-slide-panel": 8,
       "confirm-dialog": 1
     }
@@ -59,6 +59,7 @@
     { "id": "source.inventory-move", "source": "src/components/patterns/source-popup-gallery.tsx", "shell": "center-modal", "title": "이동 설정", "size": "wide-1024:1013-override", "height": "456px", "content": "ExactInventoryActionContent:move", "bodyClass": "items-stretch !overflow-y-hidden", "scrollMode": "content-owned", "actionSet": "cancel-save", "actionLabels": ["취소", "저장"], "footerMode": "actions", "headerDivider": true, "figmaNode": "17702:49474", "evidenceStatus": "observed-code" },
     { "id": "source.purchase", "source": "src/components/patterns/source-popup-gallery.tsx", "shell": "center-modal", "title": "발주 정보", "size": "standard-960:800-override", "height": "680px", "content": "ExactPurchaseContent", "bodyClass": "items-stretch !overflow-y-hidden p-0", "scrollMode": "content-owned", "actionSet": "cancel-select", "actionLabels": ["취소", "선택"], "footerMode": "actions", "headerDivider": true, "figmaNode": "17503:85192", "evidenceStatus": "observed-code" },
     { "id": "source.purchase-items", "source": "src/components/patterns/source-popup-gallery.tsx", "shell": "center-modal", "title": "품목 리스트", "size": "medium-600:507-override", "height": "384px", "content": "ExactPurchaseItemsContent", "bodyClass": "items-stretch !overflow-y-hidden", "scrollMode": "content-owned", "actionSet": "close-only", "actionLabels": ["닫기"], "footerMode": "actions", "headerDivider": true, "figmaNode": "17503:85374", "evidenceStatus": "observed-code" },
+    { "id": "source.equipment-inspection-records", "source": "src/components/patterns/equipment-inspection-records-modal.tsx", "shell": "center-modal", "title": "냉각기 점검표", "size": "wide-1400", "height": "680px", "content": "EquipmentInspectionRecordsContent", "bodyClass": "items-stretch p-0", "scrollMode": "content-owned", "actionSet": "custom-copy-download-delete-register", "actionLabels": ["복사", "다운로드", "삭제", "점검 결과 등록"], "footerMode": "custom", "headerDivider": true, "figmaNode": "9873:112416", "evidenceStatus": "observed-code" },
     { "id": "source.form-editor", "source": "src/components/patterns/original-mes-screen-assets.tsx", "shell": "side-slide-panel", "title": "양식관리", "size": "standard-900", "height": "100vh", "content": "FormEditorContent", "bodyClass": "items-stretch overflow-x-hidden p-0", "scrollMode": "shell-body", "actionSet": "cancel-save-disabled", "actionLabels": ["취소", "저장"], "footerMode": "actions", "headerDivider": true, "figmaNode": "17377:50192", "evidenceStatus": "observed-code" },
     { "id": "source.receiving-inspection", "source": "src/components/patterns/original-mes-screen-assets.tsx", "shell": "side-slide-panel", "title": "입고검사", "size": "medium-849", "height": "100vh", "content": "InspectionContent:ready-or-empty", "bodyClass": "items-stretch overflow-x-hidden p-0", "scrollMode": "shell-body", "actionSet": "cancel-save", "actionLabels": ["취소", "저장"], "footerMode": "actions", "headerDivider": true, "figmaNode": "17377:50192", "evidenceStatus": "observed-code" },
     { "id": "candidate.easy-mode-receiving", "source": "src/components/patterns/easy-mode-receiving-pattern.tsx", "shell": "side-slide-panel", "title": "입고등록", "size": "standard-900", "height": "100vh", "content": "EasyModeReceivingDialog.body", "bodyClass": "items-stretch overflow-x-hidden p-0", "scrollMode": "shell-body", "actionSet": "cancel-save-validated", "actionLabels": ["취소", "저장"], "footerMode": "actions", "headerDivider": true, "figmaNode": "20368:69523", "evidenceStatus": "generated-candidate" },

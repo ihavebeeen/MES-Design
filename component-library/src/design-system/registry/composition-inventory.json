@@ -4,16 +4,16 @@
   "status": "observed-not-canonical",
   "scope": "src/components/patterns/*.tsx",
   "summary": {
-    "scannedFiles": 25,
-    "totalLines": 4764,
+    "scannedFiles": 26,
+    "totalLines": 4962,
     "shellInstances": {
       "CenterModal": 4,
       "SideSlidePanel": 8,
       "ConfirmDialog": 1
     },
     "filesWithMixedSectionFrames": 2,
-    "filesWithNativeSectionOnly": 8,
-    "filesWithRoundedSectionCandidates": 12
+    "filesWithNativeSectionOnly": 9,
+    "filesWithRoundedSectionCandidates": 13
   },
   "sectionCandidateSignals": [
     {
@@ -34,14 +34,27 @@
     },
     {
       "id": "section.search-table",
-      "fileCount": 6,
+      "fileCount": 7,
       "sources": [
+        "src/components/patterns/equipment-inspection-records-modal.tsx",
         "src/components/patterns/exact-form-management-screen.tsx",
         "src/components/patterns/exact-inventory-add-modal.tsx",
         "src/components/patterns/exact-inventory-edit-modal.tsx",
         "src/components/patterns/exact-production-result-screen.tsx",
         "src/components/patterns/exact-purchase-modals.tsx",
         "src/components/patterns/mes-screen-fixtures.tsx"
+      ]
+    },
+    {
+      "id": "section.inspection-items",
+      "fileCount": 6,
+      "sources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-inspection-records-modal.tsx",
+        "src/components/patterns/inspection-criteria-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/source-popup-gallery.tsx"
       ]
     },
     {
@@ -52,16 +65,6 @@
         "src/components/patterns/exact-production-analytics-screen.tsx",
         "src/components/patterns/inspection-criteria-pattern.tsx",
         "src/components/patterns/original-mes-screen-assets.tsx"
-      ]
-    },
-    {
-      "id": "section.inspection-items",
-      "fileCount": 4,
-      "sources": [
-        "src/components/patterns/completed-popup-patterns.tsx",
-        "src/components/patterns/inspection-criteria-pattern.tsx",
-        "src/components/patterns/original-mes-screen-assets.tsx",
-        "src/components/patterns/section-patterns.tsx"
       ]
     },
     {
@@ -84,11 +87,12 @@
   "behaviorSignals": [
     {
       "id": "selection.enable-editor",
-      "fileCount": 10,
+      "fileCount": 11,
       "sources": [
         "src/components/patterns/completed-application-patterns.tsx",
         "src/components/patterns/completed-popup-expanded-content.tsx",
         "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-inspection-records-modal.tsx",
         "src/components/patterns/exact-form-management-screen.tsx",
         "src/components/patterns/exact-inventory-add-modal.tsx",
         "src/components/patterns/exact-inventory-edit-modal.tsx",
@@ -156,6 +160,13 @@
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "flags": [
         "mixed-section-frame-mechanisms",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/equipment-inspection-records-modal.tsx",
+      "flags": [
+        "native-section-without-registered-frame",
         "rounded-wrapper-around-section-candidate"
       ]
     },
@@ -640,6 +651,62 @@
       "behaviorSignals": [],
       "sectionCandidateSignals": [],
       "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/equipment-inspection-records-modal.tsx",
+      "name": "equipment-inspection-records-modal.tsx",
+      "observedRole": "composition-source",
+      "lines": 192,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 2,
+        "dividerContainer": 0,
+        "roundedContainer": 1,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Filter",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconCopy",
+          "jsxCount": 1
+        },
+        {
+          "name": "QueryDateRange",
+          "jsxCount": 1
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 1
+        },
+        {
+          "name": "TableColumn",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 7,
+      "behaviorSignals": [
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.inspection-items",
+        "section.search-table"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
     },
     {
       "source": "src/components/patterns/exact-form-management-screen.tsx",
@@ -1667,7 +1734,7 @@
       "source": "src/components/patterns/source-popup-gallery.tsx",
       "name": "source-popup-gallery.tsx",
       "observedRole": "evidence",
-      "lines": 159,
+      "lines": 165,
       "exportedSymbols": [],
       "shells": [
         {
@@ -1709,6 +1776,7 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
+        "section.inspection-items",
         "section.summary"
       ],
       "reviewFlags": [
@@ -1800,5 +1868,5 @@
       ]
     }
   ],
-  "fingerprint": "294e3a5f27092307"
+  "fingerprint": "d17a1b680c243195"
 }
