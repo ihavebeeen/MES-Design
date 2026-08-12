@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "policyId": "mes.ai-composition-grammar",
-  "status": "partially-approved",
+  "status": "resolved",
   "sourceLedger": "composition-section-pattern-ledger.json",
   "approval": {
     "approvedAt": "2026-08-11",
-    "approvedProposalIds": ["frame.standard-section", "section.form-grid"],
+    "approvedProposalIds": ["frame.standard-section", "section.search-table-composition", "section.form-grid", "section.editable-row-list", "section.inspection-items", "summary.table-total-row", "summary.result-total-card"],
     "pilotRecipe": "completed.receiving"
   },
   "proposals": [
@@ -140,13 +140,14 @@
       "variants": ["three-metric-with-action"],
       "forbidden": ["독립 KPI를 관계 수량으로 표현", "계산식을 컴포넌트 내부에 고정", "단일 근거로 variant 추가"],
       "compatibilityImpact": "현재 원본 한 계열이므로 파일럿 전 추가 반복 근거가 필요하다.",
-      "approvalRequired": true
+      "approvalRequired": true,
+      "resolution": "공용 승격 거절. 선발행 라벨 recipe의 화면 로컬 조합으로 유지한다."
     }
   ],
   "holds": [
-    { "id": "frame.gray-entry-card", "reason": "원본 2건과 생성 후보 1건의 높이·제목·버튼 배치 차이 비교가 남았다." },
-    { "id": "frame.collapsible", "reason": "생성 후보 1건뿐이며 원본 반복 근거가 없다." },
-    { "id": "section.list-region", "reason": "제목·검색·Table border와 scroll 책임이 아직 통일되지 않았다." },
-    { "id": "summary.before-after-comparison", "reason": "검증된 원본이 1건뿐이라 재사용 API보다 Recipe local pattern 가능성이 높다." }
+    { "id": "frame.gray-entry-card", "reason": "화면마다 높이·제목·버튼 배치가 다르다.", "resolution": "공용 Frame으로 만들지 않고 각 recipe의 로컬 조합으로 유지한다." },
+    { "id": "frame.collapsible", "reason": "생성 후보 1건뿐이며 원본 반복 근거가 없다.", "resolution": "공용 승격을 거절하고 해당 생성 후보에서도 제거했다." },
+    { "id": "section.list-region", "reason": "검색·Table 영역과 책임이 중복된다.", "resolution": "section.search-table-composition으로 통합했다." },
+    { "id": "summary.before-after-comparison", "reason": "검증된 원본이 1건뿐이다.", "resolution": "production-quantity-reregistration recipe 로컬 조합으로 유지한다." }
   ]
 }

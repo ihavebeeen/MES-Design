@@ -22,6 +22,7 @@ import { AnalyticsDashboardPattern } from "./analytics-dashboard-pattern";
 import { ExactProductionAnalyticsScreen } from "./exact-production-analytics-screen";
 import { EntityListPattern } from "./entity-list-pattern";
 import { MasterDetailPattern } from "./master-detail-pattern";
+import { useMasterDetailSelection } from "@/design-system/behavior-patterns";
 import {
   FixtureDateRange,
   FixtureFilter,
@@ -128,6 +129,9 @@ const lotDetailRows = [
 ];
 
 function CompletedMasterDetailExample() {
+  const masterIds = React.useMemo(() => lotMasterRows.map((_, index) => `lot-master-${index + 1}`), []);
+  const masterSelection = useMasterDetailSelection({ ids: masterIds, initialActiveId: masterIds[1], fallback: "first" });
+  const activeMasterIndex = Math.max(0, masterIds.indexOf(masterSelection.activeId ?? ""));
   return (
     <FigmaScreenPreview>
       <MasterDetailPattern
@@ -161,13 +165,14 @@ function CompletedMasterDetailExample() {
             rows={lotMasterRows}
             selectedRow={1}
             checkedRows={lotMasterRows.map((_, index) => index)}
-            activeRow={1}
+            activeRow={activeMasterIndex}
+            onActiveRowChange={(index) => masterSelection.setActiveId(masterIds[index])}
             selectionColor="gray"
             disabledRows={[0]}
             selectionHeaderLabel="선택"
           />
         }
-        detailTitle={<span className="flex items-center gap-2"><IconArrowDownRight size={20} className="text-mes-gray-60" />투입품목 상세</span>}
+        detailTitle={<span className="flex items-center gap-2"><IconArrowDownRight size={20} className="text-mes-gray-60" />투입품목 상세 · {lotMasterRows[activeMasterIndex]?.[0]}</span>}
         detail={
           <FixtureTable
             headers={["LOT No", "품목", "품목 구분", "단위", "수량", "투입수량", "잔량", "ROUTE명", "설비", "담당자", "입고처", "입고(생산)일", "검사여부", "투입일"]}

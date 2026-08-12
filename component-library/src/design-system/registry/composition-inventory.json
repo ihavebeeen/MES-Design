@@ -4,21 +4,21 @@
   "status": "observed-not-canonical",
   "scope": "src/components/patterns/*.tsx",
   "summary": {
-    "scannedFiles": 24,
-    "totalLines": 4519,
+    "scannedFiles": 25,
+    "totalLines": 4697,
     "shellInstances": {
       "CenterModal": 4,
       "SideSlidePanel": 8,
       "ConfirmDialog": 1
     },
-    "filesWithMixedSectionFrames": 3,
-    "filesWithNativeSectionOnly": 7,
-    "filesWithRoundedSectionCandidates": 13
+    "filesWithMixedSectionFrames": 2,
+    "filesWithNativeSectionOnly": 8,
+    "filesWithRoundedSectionCandidates": 12
   },
   "sectionCandidateSignals": [
     {
       "id": "section.summary",
-      "fileCount": 9,
+      "fileCount": 10,
       "sources": [
         "src/components/patterns/completed-application-patterns.tsx",
         "src/components/patterns/completed-popup-expanded-content.tsx",
@@ -27,6 +27,7 @@
         "src/components/patterns/exact-production-result-screen.tsx",
         "src/components/patterns/original-mes-screen-assets.tsx",
         "src/components/patterns/production-quantity-reregistration-pattern.tsx",
+        "src/components/patterns/section-patterns.tsx",
         "src/components/patterns/source-popup-gallery.tsx",
         "src/components/patterns/table-column-settings.tsx"
       ]
@@ -45,13 +46,22 @@
     },
     {
       "id": "section.form-grid",
-      "fileCount": 5,
+      "fileCount": 4,
       "sources": [
         "src/components/patterns/completed-popup-patterns.tsx",
-        "src/components/patterns/easy-mode-receiving-pattern.tsx",
         "src/components/patterns/exact-production-analytics-screen.tsx",
         "src/components/patterns/inspection-criteria-pattern.tsx",
         "src/components/patterns/original-mes-screen-assets.tsx"
+      ]
+    },
+    {
+      "id": "section.inspection-items",
+      "fileCount": 4,
+      "sources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/inspection-criteria-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/section-patterns.tsx"
       ]
     },
     {
@@ -64,26 +74,10 @@
       ]
     },
     {
-      "id": "section.inspection-items",
-      "fileCount": 3,
-      "sources": [
-        "src/components/patterns/completed-popup-patterns.tsx",
-        "src/components/patterns/inspection-criteria-pattern.tsx",
-        "src/components/patterns/original-mes-screen-assets.tsx"
-      ]
-    },
-    {
       "id": "section.before-after",
       "fileCount": 1,
       "sources": [
         "src/components/patterns/production-quantity-reregistration-pattern.tsx"
-      ]
-    },
-    {
-      "id": "section.collapsible-form",
-      "fileCount": 1,
-      "sources": [
-        "src/components/patterns/easy-mode-receiving-pattern.tsx"
       ]
     }
   ],
@@ -132,13 +126,6 @@
       ]
     },
     {
-      "id": "section.toggle-collapse",
-      "fileCount": 1,
-      "sources": [
-        "src/components/patterns/easy-mode-receiving-pattern.tsx"
-      ]
-    },
-    {
       "id": "selection.master-detail",
       "fileCount": 1,
       "sources": [
@@ -167,13 +154,6 @@
     },
     {
       "source": "src/components/patterns/completed-popup-patterns.tsx",
-      "flags": [
-        "mixed-section-frame-mechanisms",
-        "rounded-wrapper-around-section-candidate"
-      ]
-    },
-    {
-      "source": "src/components/patterns/easy-mode-receiving-pattern.tsx",
       "flags": [
         "mixed-section-frame-mechanisms",
         "rounded-wrapper-around-section-candidate"
@@ -237,6 +217,12 @@
       ]
     },
     {
+      "source": "src/components/patterns/section-patterns.tsx",
+      "flags": [
+        "native-section-without-registered-frame"
+      ]
+    },
+    {
       "source": "src/components/patterns/source-popup-gallery.tsx",
       "flags": [
         "native-section-without-registered-frame",
@@ -281,7 +267,7 @@
       "source": "src/components/patterns/completed-application-patterns.tsx",
       "name": "completed-application-patterns.tsx",
       "observedRole": "catalog-or-recipe",
-      "lines": 329,
+      "lines": 334,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -336,7 +322,7 @@
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
       "name": "completed-popup-expanded-content.tsx",
       "observedRole": "catalog-or-recipe",
-      "lines": 479,
+      "lines": 477,
       "exportedSymbols": [
         "BomCopyContent",
         "MaterialInputSetupContent",
@@ -356,7 +342,7 @@
         "patternGroupHeader": 0,
         "nativeSection": 0,
         "dividerContainer": 0,
-        "roundedContainer": 9,
+        "roundedContainer": 8,
         "gray20Container": 5
       },
       "sectionTitles": [
@@ -413,7 +399,7 @@
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "name": "completed-popup-patterns.tsx",
       "observedRole": "catalog-or-recipe",
-      "lines": 1023,
+      "lines": 1029,
       "exportedSymbols": [
         "PopupRenderer"
       ],
@@ -431,9 +417,9 @@
         "sectionBand": 7,
         "sectionHeader": 0,
         "patternGroupHeader": 0,
-        "nativeSection": 4,
+        "nativeSection": 2,
         "dividerContainer": 3,
-        "roundedContainer": 6,
+        "roundedContainer": 5,
         "gray20Container": 6
       },
       "sectionTitles": [
@@ -452,7 +438,7 @@
         },
         {
           "name": "Card",
-          "jsxCount": 8
+          "jsxCount": 7
         },
         {
           "name": "CenterModal",
@@ -503,7 +489,7 @@
           "jsxCount": 1
         }
       ],
-      "stateHookCount": 54,
+      "stateHookCount": 52,
       "behaviorSignals": [
         "dismiss.restore-committed",
         "row.add-remove",
@@ -547,7 +533,7 @@
       "source": "src/components/patterns/easy-mode-receiving-pattern.tsx",
       "name": "easy-mode-receiving-pattern.tsx",
       "observedRole": "generated-candidate",
-      "lines": 215,
+      "lines": 192,
       "exportedSymbols": [
         "EasyModeReceivingDialog"
       ],
@@ -558,25 +544,27 @@
         }
       ],
       "sectionFrames": {
-        "sectionBand": 1,
+        "sectionBand": 0,
         "sectionHeader": 0,
         "patternGroupHeader": 0,
-        "nativeSection": 3,
-        "dividerContainer": 2,
-        "roundedContainer": 2,
-        "gray20Container": 1
+        "nativeSection": 0,
+        "dividerContainer": 1,
+        "roundedContainer": 0,
+        "gray20Container": 0
       },
-      "sectionTitles": [
-        "기본정보"
-      ],
+      "sectionTitles": [],
       "uiComponents": [
         {
           "name": "DatePicker",
           "jsxCount": 1
         },
         {
-          "name": "IconArrow",
-          "jsxCount": 1
+          "name": "FormFieldRow",
+          "jsxCount": 3
+        },
+        {
+          "name": "FormGrid",
+          "jsxCount": 2
         },
         {
           "name": "IconButton",
@@ -589,6 +577,10 @@
         {
           "name": "Input",
           "jsxCount": 4
+        },
+        {
+          "name": "SectionFrame",
+          "jsxCount": 3
         },
         {
           "name": "Select",
@@ -615,22 +607,16 @@
           "jsxCount": 1
         }
       ],
-      "stateHookCount": 5,
+      "stateHookCount": 0,
       "behaviorSignals": [
         "dismiss.restore-committed",
         "row.add-remove",
-        "row.inherit-previous",
-        "section.toggle-collapse"
+        "row.inherit-previous"
       ],
       "sectionCandidateSignals": [
-        "section.collapsible-form",
-        "section.editable-row-list",
-        "section.form-grid"
+        "section.editable-row-list"
       ],
-      "reviewFlags": [
-        "mixed-section-frame-mechanisms",
-        "rounded-wrapper-around-section-candidate"
-      ]
+      "reviewFlags": []
     },
     {
       "source": "src/components/patterns/entity-list-pattern.tsx",
@@ -905,7 +891,7 @@
       "source": "src/components/patterns/exact-inventory-edit-modal.tsx",
       "name": "exact-inventory-edit-modal.tsx",
       "observedRole": "evidence",
-      "lines": 99,
+      "lines": 100,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -936,7 +922,7 @@
           "jsxCount": 1
         }
       ],
-      "stateHookCount": 3,
+      "stateHookCount": 2,
       "behaviorSignals": [
         "selection.enable-editor"
       ],
@@ -1278,7 +1264,7 @@
       "source": "src/components/patterns/inspection-criteria-pattern.tsx",
       "name": "inspection-criteria-pattern.tsx",
       "observedRole": "composition-source",
-      "lines": 305,
+      "lines": 306,
       "exportedSymbols": [
         "InspectionCriteriaDialog"
       ],
@@ -1390,7 +1376,7 @@
       "source": "src/components/patterns/mes-screen-fixtures.tsx",
       "name": "mes-screen-fixtures.tsx",
       "observedRole": "composition-source",
-      "lines": 313,
+      "lines": 318,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -1488,7 +1474,7 @@
       "source": "src/components/patterns/original-mes-screen-assets.tsx",
       "name": "original-mes-screen-assets.tsx",
       "observedRole": "evidence",
-      "lines": 269,
+      "lines": 270,
       "exportedSymbols": [],
       "shells": [
         {
@@ -1519,10 +1505,6 @@
         },
         {
           "name": "DatePicker",
-          "jsxCount": 1
-        },
-        {
-          "name": "IconExclamationCircle",
           "jsxCount": 1
         },
         {
@@ -1640,10 +1622,44 @@
       "reviewFlags": []
     },
     {
+      "source": "src/components/patterns/section-patterns.tsx",
+      "name": "section-patterns.tsx",
+      "observedRole": "composition-source",
+      "lines": 181,
+      "exportedSymbols": [
+        "EditableRowListSection",
+        "InspectionItemsSection",
+        "ResultTotalCard",
+        "SearchTableSection",
+        "TableTotalRow"
+      ],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 3,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [],
+      "stateHookCount": 0,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [
+        "section.inspection-items",
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame"
+      ]
+    },
+    {
       "source": "src/components/patterns/source-popup-gallery.tsx",
       "name": "source-popup-gallery.tsx",
       "observedRole": "evidence",
-      "lines": 156,
+      "lines": 159,
       "exportedSymbols": [],
       "shells": [
         {
@@ -1776,5 +1792,5 @@
       ]
     }
   ],
-  "fingerprint": "5989f155000df571"
+  "fingerprint": "604eabcfc405d636"
 }

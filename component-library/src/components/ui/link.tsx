@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
  * 지적해서 상시 밑줄(`underline`)로 변경(원래 NoticeBanner 쪽 값은 `hover:underline`
  * 이었는데, Link 단독 아톰에서는 항상 보이는 게 맞다고 판단).
  */
-export interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {}
+export type LinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   ({ className, children, ...props }, ref) => {

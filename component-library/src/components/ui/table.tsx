@@ -236,6 +236,8 @@ export interface TableProps<T> {
   /** 선택되지 않은 일반 행의 텍스트 색조. */
   unselectedTextTone?: "default" | "gray80";
   onSelectedIdsChange?: (ids: string[]) => void;
+  /** 체크 상태와 독립적인 활성 행 변경. 제공된 경우 행 본문 클릭·Enter·Space로 호출한다. */
+  onActiveIdChange?: (id: string) => void;
   /** 선택 기능이 없는 조회/요약 표에서는 체크박스 열 전체를 제거한다. */
   selectable?: boolean;
   /** Figma에서 전체선택 체크박스 대신 `선택` 텍스트를 쓰는 표의 헤더 라벨. */
@@ -344,6 +346,7 @@ function DataRow<T>({
   selectionColor,
   unselectedCheckboxAppearance,
   onToggle,
+  onActivate,
   masterToggleAreaWidth,
   selectable,
   edgePadding,
@@ -360,6 +363,7 @@ function DataRow<T>({
   selectionColor: CheckboxColor;
   unselectedCheckboxAppearance: CheckboxUncheckedAppearance;
   onToggle: (id: string) => void;
+  onActivate?: (id: string) => void;
   masterToggleAreaWidth: number;
   selectable: boolean;
   edgePadding: number;
@@ -372,12 +376,26 @@ function DataRow<T>({
   const dividerColor = isActive || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
   return (
     <div
+        role={onActivate ? "row" : undefined}
+      tabIndex={onActivate && !row.disabled ? 0 : undefined}
+        aria-selected={onActivate ? isActive : undefined}
+      onClick={(event) => {
+        if (!onActivate || row.disabled) return;
+        if ((event.target as HTMLElement).closest("button, input, [role='checkbox']")) return;
+        onActivate(row.id);
+      }}
+      onKeyDown={(event) => {
+        if (!onActivate || row.disabled || (event.key !== "Enter" && event.key !== " ")) return;
+        event.preventDefault();
+        onActivate(row.id);
+      }}
       className={cn(
         "flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default",
         // 8차 후속: 담당자가 "비활성화는 텍스트 Gray-80, 배경 Gray-10"이라고 정확한 값을
         // 줘서 기존 opacity-50 판단값을 교체함. 배경은 선택 여부보다 disabled가 우선.
         row.disabled ? "bg-mes-gray-10" : isActive ? "bg-mes-primary-20" : "bg-white",
-        row.disabled && "pointer-events-none"
+        row.disabled && "pointer-events-none",
+        onActivate && !row.disabled && "cursor-pointer"
       )}
       style={{ paddingInline: edgePadding }}
     >
@@ -610,6 +628,7 @@ function renderGroupNode<T>({
   selectedIds,
   onToggleGroupSelect,
   onToggleOne,
+  onActivate,
   levelColors,
   masterToggleAreaWidth,
   selectable,
@@ -631,6 +650,7 @@ function renderGroupNode<T>({
   selectedIds: string[];
   onToggleGroupSelect: (rowIds: string[], nextChecked: boolean) => void;
   onToggleOne: (id: string) => void;
+  onActivate?: (id: string) => void;
   levelColors: string[];
   masterToggleAreaWidth: number;
   selectable: boolean;
@@ -682,6 +702,7 @@ function renderGroupNode<T>({
                 selectedIds,
                 onToggleGroupSelect,
                 onToggleOne,
+                onActivate,
                 levelColors,
                 masterToggleAreaWidth,
                 selectable,
@@ -706,6 +727,7 @@ function renderGroupNode<T>({
                 selectionColor={selectionColor}
                 unselectedCheckboxAppearance={unselectedCheckboxAppearance}
                 onToggle={onToggleOne}
+                onActivate={onActivate}
                 masterToggleAreaWidth={masterToggleAreaWidth}
                 selectable={selectable}
                 edgePadding={edgePadding}
@@ -738,6 +760,7 @@ function Table<T>({
   disabledTextTone = "gray80",
   unselectedTextTone = "default",
   onSelectedIdsChange,
+  onActiveIdChange,
   selectable = true,
   selectionHeaderLabel,
   totals,
@@ -875,6 +898,7 @@ function Table<T>({
                 selectedIds,
                 onToggleGroupSelect: toggleGroup,
                 onToggleOne: toggleOne,
+                onActivate: onActiveIdChange,
                 levelColors: groupLevelColors,
                 masterToggleAreaWidth,
                 selectable,
@@ -899,6 +923,7 @@ function Table<T>({
                 selectionColor={selectionColor}
                 unselectedCheckboxAppearance={unselectedCheckboxAppearance}
                 onToggle={toggleOne}
+                onActivate={onActiveIdChange}
                 masterToggleAreaWidth={masterToggleAreaWidth}
                 selectable={selectable}
                 edgePadding={edgePadding}

@@ -166,6 +166,27 @@ test("입고등록은 승인된 SectionFrame·FormGrid·취소 복원 계약을 
   await expect(deleteButtons).toHaveCount(7);
 });
 
+test("중앙 팝업 파일럿은 검색·테이블과 선택 행 편집 계약을 함께 사용한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/visual-regression/batch-work-order-pilot");
+  const dialog = page.getByRole("dialog", { name: "생산계획(일) 연동 일괄작업지시" });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator('[data-pattern="section.search-table-composition"]')).toHaveCount(1);
+
+  const numericInputs = dialog.locator('input[inputmode="numeric"]');
+  await expect(numericInputs).toHaveCount(1);
+  const checkboxes = dialog.locator('input[type="checkbox"]');
+  await checkboxes.nth(2).check();
+  await expect(numericInputs).toHaveCount(2);
+  await numericInputs.nth(1).fill("2500");
+  await expect(numericInputs.nth(1)).toHaveValue("2500");
+
+  const overflow = await dialog.evaluate((element) => element.scrollWidth - element.clientWidth);
+  expect(overflow).toBe(0);
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("batch-work-order-pilot.png");
+});
+
 test("이지모드 입고등록은 MES 우측 슬라이드 규격과 직접 입력 상태를 유지한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/visual-regression/easy-mode-receiving");
@@ -190,7 +211,7 @@ test("이지모드 입고등록은 MES 우측 슬라이드 규격과 직접 입�
     tableHeader: await readTypography(dialog.locator("span").filter({ hasText: /^거래처/ }).last()),
   };
   expect(typography.title).toEqual({ fontSize: "18px", fontWeight: "700" });
-  expect(typography.groupTitle).toEqual({ fontSize: "16px", fontWeight: "700" });
+  expect(typography.groupTitle).toEqual({ fontSize: "14px", fontWeight: "600" });
   expect(typography.field?.fontSize).toBe("14px");
   expect(typography.tableHeader).toEqual({ fontSize: "13px", fontWeight: "600" });
 
@@ -227,9 +248,10 @@ test("이지모드 입고등록은 MES 우측 슬라이드 규격과 직접 입�
   await dialog.getByRole("button", { name: "2행 삭제" }).click();
   await expect(dialog.getByLabel("2행 거래처")).toHaveCount(0);
 
-  await dialog.getByRole("button", { name: /선택 항목/ }).click();
-  await expect(dialog.getByLabel("입고구분")).toBeVisible();
-  await dialog.getByLabel("비고").fill("무지시 입고");
+  await expect(dialog.getByRole("button", { name: /선택 항목/ })).toHaveCount(0);
+  await expect(dialog.getByLabel("선택 항목")).toBeVisible();
+  await expect(dialog.getByRole("combobox", { name: "입고구분" })).toBeVisible();
+  await dialog.getByRole("textbox", { name: "비고" }).fill("무지시 입고");
 
   await dialog.getByRole("button", { name: "취소" }).click();
   await expect(dialog).toBeHidden();

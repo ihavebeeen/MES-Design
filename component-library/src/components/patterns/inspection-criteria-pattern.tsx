@@ -284,7 +284,8 @@ export function InspectionCriteriaDialog({ open, onOpenChange, title = "셋팅 �
       title={title}
       size="compact-480"
       className={cn("!max-h-[calc(100vh-40px)]", modalHeightClass)}
-      contentClassName="items-stretch overflow-hidden"
+      bodyAlign="stretch"
+      scrollMode="content"
       footer={
         <div className="flex h-[72px] shrink-0 items-center justify-center gap-[10px]">
           <Button size="small" variant="fillGray" className="w-[139px]" onClick={() => { cancel(); onOpenChange(false); }}>취소</Button>

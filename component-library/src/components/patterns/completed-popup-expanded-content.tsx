@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CenterModal, type DialogAction } from "@/components/ui/center-modal";
+import { CenterModal } from "@/components/ui/center-modal";
 import { DatePicker } from "@/components/ui/date-picker";
 import { IconButton } from "@/components/ui/icon-button";
 import { Link } from "@/components/ui/link";
@@ -23,11 +23,9 @@ import {
   FixtureTable,
   SectionBand,
 } from "./mes-screen-fixtures";
+import { ResultTotalCard, TableTotalRow } from "./section-patterns";
+import { createDialogActionSet } from "@/design-system/action-sets";
 
-const closeActions = (onClose: () => void, confirmLabel = "확인"): DialogAction[] => [
-  { id: "cancel", label: "취소", variant: "fillGray", onClick: onClose },
-  { id: "confirm", label: confirmLabel, variant: "fillBlack", onClick: onClose },
-];
 
 const materialRows = [
   ["LOT-AA-11", "박스", "반제품", "A", "0", "kg", "동진창고"],
@@ -218,7 +216,7 @@ export function BomCopyContent() {
           <span className="h-[21px] text-[14px] leading-[1.5]">BOM 구성</span>
           <div data-bom-table className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-mes-control border border-mes-border-default">
             <FixtureTable selectable={false} headers={["품목", "품목구분", "단위", "수량"]} rows={bomSourceRows} widths={Array.from({ length: 4 }, () => ({ min: 60, grow: 1 }))} aligns={["center", "center", "center", "right"]} edgePadding={0} horizontalScroll={false} className="min-h-0 flex-1 rounded-none border-0" />
-            <div className="flex h-[30px] shrink-0 items-center justify-between bg-mes-gray-10 px-1.5 text-[13px] font-semibold leading-[1.3]"><span>총계</span><span>0.99</span></div>
+            <TableTotalRow className="h-[30px] min-h-0" gridTemplateColumns="repeat(4, minmax(0, 1fr))" cells={["", "", "0.99"]} />
           </div>
         </div>
         <div className="flex min-h-0 flex-col gap-[11px]">
@@ -396,7 +394,7 @@ export function TimeSelectionContent({ mode = "operating" }: { mode?: "operating
       <TimeWheel year={startYear} month={startMonth} day={startDay} hour={startHour} minute={startMinute} onYearChange={setStartYear} onMonthChange={setStartMonth} onDayChange={setStartDay} onHourChange={setStartHour} onMinuteChange={setStartMinute} />
       <div className="flex items-center gap-2.5"><SectionBand className="flex-1">종료 시간</SectionBand><Button size="small" onClick={() => setCurrent("end")}>현재 시각</Button></div>
       <TimeWheel year={endYear} month={endMonth} day={endDay} hour={endHour} minute={endMinute} onYearChange={setEndYear} onMonthChange={setEndMonth} onDayChange={setEndDay} onHourChange={setEndHour} onMinuteChange={setEndMinute} />
-      <div className="mt-auto flex h-[54px] items-center justify-center gap-6 rounded-mes-control border border-mes-primary-30 bg-mes-primary-20"><span className="text-[15px]">{mode === "operating" ? "가동 시간" : "비가동 시간"}</span><b className="text-[20px]">{totalMinutes}분</b></div>
+      <ResultTotalCard className="mt-auto h-[54px] border border-mes-primary-30" tone="information" label={mode === "operating" ? "가동 시간" : "비가동 시간"} value={<span className="text-[20px]">{totalMinutes}분</span>} />
     </div>
   );
 }
@@ -458,7 +456,7 @@ export function UpdatedOperationLogContent() {
           </div>
         </div>
       </div>
-      <CenterModal open={picker !== null} onOpenChange={(open) => { if (!open) setPicker(null); }} title={picker === "downtime" ? "비가동시간 선택" : "가동시간 선택"} size="medium-600" actions={closeActions(() => setPicker(null), "입력")} className="h-[666px] max-h-[calc(100vh-32px)]" contentClassName="items-stretch overflow-hidden px-5 pt-5">
+      <CenterModal open={picker !== null} onOpenChange={(open) => { if (!open) setPicker(null); }} title={picker === "downtime" ? "비가동시간 선택" : "가동시간 선택"} size="medium-600" actions={createDialogActionSet("action-set.cancel-input", { onPrimary: () => setPicker(null), onDismiss: () => setPicker(null) })} exactHeight={666} maxHeight="calc(100vh - 32px)" bodyAlign="stretch" scrollMode="content">
         <TimeSelectionContent mode={picker === "downtime" ? "downtime" : "operating"} />
       </CenterModal>
     </>

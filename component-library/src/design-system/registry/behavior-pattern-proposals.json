@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "policyId": "mes.ai-composition-grammar",
-  "status": "partially-approved",
+  "status": "resolved",
   "sourceLedger": "composition-behavior-ledger.json",
   "approval": {
     "approvedAt": "2026-08-11",
-    "approvedProposalIds": ["dismiss.restore-committed"],
+    "approvedProposalIds": ["selection.reveal-inline-editor", "selection.enable-actions", "selection.master-detail", "dismiss.restore-committed", "row.mutation-policy"],
     "pilotRecipe": "completed.receiving"
   },
   "proposals": [
@@ -66,8 +66,8 @@
     }
   ],
   "holds": [
-    { "id": "selection.visual-only", "reason": "후속 상태 변화가 없어 Behavior가 아니라 불완전 구현 또는 단순 Table 상태일 수 있다." },
-    { "id": "row.inherit-previous", "reason": "이지모드 생성 후보 한 건의 customer 계승만 존재한다." },
-    { "id": "section.toggle-collapse", "reason": "이지모드 생성 후보 한 건뿐이며 공통 Behavior 근거가 없다." }
+    { "id": "selection.visual-only", "reason": "후속 상태 변화가 없다.", "resolution": "Behavior가 아니라 Table의 시각 상태로 분류한다." },
+    { "id": "row.inherit-previous", "reason": "이지모드 생성 후보 한 건의 거래처 계승만 존재한다.", "resolution": "공용 Behavior가 아니라 easy-mode ScreenSpec 로컬 규칙으로 유지한다." },
+    { "id": "section.toggle-collapse", "reason": "이지모드 생성 후보 한 건뿐이며 공통 근거가 없다.", "resolution": "공용 승격을 거절하고 생성 후보에서 제거했다." }
   ]
 }

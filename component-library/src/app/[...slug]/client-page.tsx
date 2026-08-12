@@ -2,7 +2,9 @@
 
 import {
   useState,
-  useRef,
+  useEffect,
+  useMemo,
+  useCallback,
   useContext,
   createContext,
   Children,
@@ -20,7 +22,6 @@ import {
   LayoutTemplate,
   Sparkles,
   Settings,
-  Pencil,
 } from "lucide-react";
 import NextLink from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -90,7 +91,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { DateRangePicker, type DateRange } from "@/components/ui/date-range-picker";
 import { TimePicker } from "@/components/ui/time-picker";
 import { Navbar } from "@/components/ui/navbar";
-import { Container, Grid } from "@/components/ui/grid-container";
+import { Grid } from "@/components/ui/grid-container";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { StickyHeader, StickyFooter } from "@/components/ui/sticky-header-footer";
 import { Logo } from "@/components/ui/logo";
@@ -409,9 +410,8 @@ function QaToggleGroup({
  *   렌더링될 때마다 자기 Sample 목록을 `SectionRegistryContext`에 등록해두면
  *   `RightRail`이 같은 렌더 패스 안에서 바로 읽어 씀(자세한 배선은 RightRail 정의 참고).
  */
-const SectionRegistryContext = createContext<
-  React.RefObject<Map<string, { id: string; label: string }[]>> | null
->(null);
+type SectionSampleItem = { id: string; label: string };
+const SectionRegistryContext = createContext<((id: string, items: SectionSampleItem[]) => void) | null>(null);
 
 /**
  * 2026-08-04 신규 — 페이지 분할 도입. `Section`은 모듈 최상단에 정의돼 있어 Home()의
@@ -492,21 +492,24 @@ function Section({
   badge?: string;
   children: React.ReactNode;
 }) {
-  const registryRef = useContext(SectionRegistryContext);
+  const registerSection = useContext(SectionRegistryContext);
   const currentId = useContext(ActiveIdContext);
-  const samplesWithIds: { id: string; label: string }[] = [];
-  let sampleIndex = 0;
-  const laidOutChildren = Children.map(children, (child) => {
+  const childArray = useMemo(() => Children.toArray(children), [children]);
+  const samplesWithIds = useMemo(() => childArray
+    .filter((child) => isValidElement(child) && child.type === Sample)
+    .map((child, sampleIndex) => ({
+      id: `${id}--s${sampleIndex}`,
+      label: (child as React.ReactElement<{ label: string }>).props.label,
+    })), [childArray, id]);
+  const laidOutChildren = childArray.map((child, childIndex) => {
     if (isValidElement(child) && child.type === Sample) {
+      const sampleIndex = childArray.slice(0, childIndex).filter((item) => isValidElement(item) && item.type === Sample).length;
       const sampleId = `${id}--s${sampleIndex}`;
-      sampleIndex += 1;
-      const label = (child.props as { label: string }).label;
-      samplesWithIds.push({ id: sampleId, label });
       return cloneElement(child as React.ReactElement<{ id?: string }>, { id: sampleId });
     }
     return child;
   });
-  registryRef?.current.set(id, samplesWithIds);
+  useEffect(() => registerSection?.(id, samplesWithIds), [id, registerSection, samplesWithIds]);
 
   return (
     <section
@@ -571,13 +574,10 @@ function WidePatternSection({
  * 폭만 유지한 채 빈 채로 둬서 레이아웃이 덜컹거리지 않게 함.
  */
 function RightRail({
-  activeId,
-  registryRef,
+  items,
 }: {
-  activeId: string;
-  registryRef: React.RefObject<Map<string, { id: string; label: string }[]>>;
+  items: SectionSampleItem[];
 }) {
-  const items = registryRef.current.get(activeId) ?? [];
   return (
     <aside className="sticky top-14 hidden h-[calc(100vh-56px)] w-[200px] shrink-0 overflow-y-auto px-4 py-6 xl:block">
       {items.length > 0 && (
@@ -1475,7 +1475,16 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
   // 2026-08-03 — 우측 서브 내비(RightRail)용 Section→Sample 목록 레지스트리. Section이
   // 렌더링될 때마다 자기 목록을 여기 채워넣고, RightRail이 같은 렌더 패스에서 바로 읽음
   // (자세한 배선 이유는 Section/RightRail 정의 쪽 주석 참고).
-  const sectionRegistryRef = useRef<Map<string, { id: string; label: string }[]>>(new Map());
+  const [sectionRegistry, setSectionRegistry] = useState<Map<string, SectionSampleItem[]>>(new Map());
+  const registerSection = useCallback((id: string, items: SectionSampleItem[]) => {
+    setSectionRegistry((current) => {
+      const previous = current.get(id);
+      if (previous?.length === items.length && previous.every((item, index) => item.id === items[index]?.id && item.label === items[index]?.label)) return current;
+      const next = new Map(current);
+      next.set(id, items);
+      return next;
+    });
+  }, []);
 
   // 2026-08-03 — 검색창 밑 콤보박스형 드롭다운에 쓸 결과 목록. 사이드바 자체는 안 건드림.
   const normalizedSidebarSearch = sidebarSearch.trim().toLowerCase();
@@ -1490,7 +1499,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
   const breadcrumbInfo = activeId ? BREADCRUMB_MAP[activeId] : undefined;
 
   return (
-    <SectionRegistryContext.Provider value={sectionRegistryRef}>
+    <SectionRegistryContext.Provider value={registerSection}>
     <ActiveIdContext.Provider value={activeId ?? ""}>
     <div className="flex min-h-screen flex-col bg-mes-gray-10">
       <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center gap-8 border-b border-mes-gray-30 bg-white px-6">
@@ -2179,7 +2188,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </div>
         <p className="text-[12px] text-mes-gray-70">
           화면 중앙에 뜨는 기본 팝업. 폭 960px 고정, 최대 높이 80vh — 헤더·푸터는 항상
-          고정, 본문 콘텐츠가 넘치면 본문만 스크롤. 2026-08-03 클라우드MES "Modal"
+          고정, 본문 콘텐츠가 넘치면 본문만 스크롤. 2026-08-03 클라우드MES &quot;Modal&quot;
           스펙 페이지(node 9873:82872 Type01)로 보류 해제 후 실측 반영.
         </p>
         <Button size="basic" onClick={() => setCenterModalOpen(true)}>
@@ -5451,7 +5460,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         />
       </section>
         </main>
-        <RightRail activeId={activeId ?? ""} registryRef={sectionRegistryRef} />
+        <RightRail items={sectionRegistry.get(activeId ?? "") ?? []} />
       </div>
     </div>
     </ActiveIdContext.Provider>

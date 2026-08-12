@@ -26,7 +26,7 @@ export interface ComponentRegistry {
 export interface PatternRegistryEntry {
   id: string;
   name: string;
-  kind: "popup" | "screen" | "table" | "section-frame" | "section-pattern" | "behavior";
+  kind: "popup" | "screen" | "table" | "shell" | "recipe" | "action-set" | "section-frame" | "section-pattern" | "behavior";
   placement?: "center" | "right-slide" | "page" | "section" | "cross-shell";
   source: string;
   requiredComponents: string[];
@@ -38,10 +38,24 @@ export interface PatternRegistry {
   patterns: PatternRegistryEntry[];
 }
 
+export interface ActionSetRegistryEntry {
+  id: string;
+  labels: string[];
+  layout: "none" | "single" | "paired";
+  primaryAction: string | null;
+  dismissAction: string | null;
+  states: string[];
+}
+
+export interface ActionSetRegistry {
+  schemaVersion: 1;
+  actionSets: ActionSetRegistryEntry[];
+}
+
 export interface ScreenRegistryEntry {
   id: string;
   name: string;
-  patternId: string;
+  patternRefs: string[];
   source: string;
   figmaNode?: string;
   stateRules: string[];
@@ -127,7 +141,8 @@ export interface CompositionPolicyLayer {
 export interface CompositionPolicyMigrationHold {
   id: string;
   target: string;
-  status: "migration-hold";
+  status: "resolved" | "closed-no-action";
+  decision: string;
 }
 
 export interface CompositionPolicyRegistry {
@@ -226,7 +241,7 @@ export interface CompositionShellLedgerRegistry {
   };
   shellContracts: Array<{ id: string; owns: string[]; slots: string[]; defaultBody: string; defaultActionSet: string }>;
   recipes: CompositionShellLedgerRecipe[];
-  findings: Array<{ id: string; status: "confirmed" | "needs-review"; detail: string }>;
+  findings: Array<{ id: string; status: "confirmed" | "resolved-normalize" | "resolved-keep" | "resolved-local"; detail: string }>;
 }
 
 export interface CompositionSectionFrameLedgerEntry {
@@ -341,16 +356,17 @@ export interface SectionPatternProposal {
   forbidden: string[];
   compatibilityImpact: string;
   approvalRequired: true;
+  resolution?: string;
 }
 
 export interface SectionPatternProposalRegistry {
   schemaVersion: 1;
   policyId: "mes.ai-composition-grammar";
-  status: "proposed-not-approved" | "partially-approved";
+  status: "proposed-not-approved" | "partially-approved" | "resolved";
   sourceLedger: string;
   approval?: { approvedAt: string; approvedProposalIds: string[]; pilotRecipe: string };
   proposals: SectionPatternProposal[];
-  holds: Array<{ id: string; reason: string }>;
+  holds: Array<{ id: string; reason: string; resolution?: string }>;
 }
 
 export interface BehaviorPatternProposal {
@@ -363,14 +379,15 @@ export interface BehaviorPatternProposal {
   constraints: string[];
   forbidden: string[];
   approvalRequired: true;
+  resolution?: string;
 }
 
 export interface BehaviorPatternProposalRegistry {
   schemaVersion: 1;
   policyId: "mes.ai-composition-grammar";
-  status: "proposed-not-approved" | "partially-approved";
+  status: "proposed-not-approved" | "partially-approved" | "resolved";
   sourceLedger: string;
   approval?: { approvedAt: string; approvedProposalIds: string[]; pilotRecipe: string };
   proposals: BehaviorPatternProposal[];
-  holds: Array<{ id: string; reason: string }>;
+  holds: Array<{ id: string; reason: string; resolution?: string }>;
 }

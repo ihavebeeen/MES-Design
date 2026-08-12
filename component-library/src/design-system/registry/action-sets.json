@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "actionSets": [
+    { "id": "action-set.none", "labels": [], "layout": "none", "primaryAction": null, "dismissAction": null, "states": ["default"] },
+    { "id": "action-set.confirm-only", "labels": ["확인"], "layout": "single", "primaryAction": "confirm", "dismissAction": null, "states": ["enabled", "disabled", "pending"] },
+    { "id": "action-set.save-only", "labels": ["저장"], "layout": "single", "primaryAction": "save", "dismissAction": null, "states": ["enabled", "disabled", "pending"] },
+    { "id": "action-set.cancel-save", "labels": ["취소", "저장"], "layout": "paired", "primaryAction": "save", "dismissAction": "cancel", "states": ["enabled", "disabled", "validated", "pending"] },
+    { "id": "action-set.cancel-confirm", "labels": ["취소", "확인"], "layout": "paired", "primaryAction": "confirm", "dismissAction": "cancel", "states": ["enabled", "disabled", "pending"] },
+    { "id": "action-set.cancel-input", "labels": ["취소", "입력"], "layout": "paired", "primaryAction": "input", "dismissAction": "cancel", "states": ["enabled", "disabled", "pending"] },
+    { "id": "action-set.close-only", "labels": ["닫기"], "layout": "single", "primaryAction": "close", "dismissAction": "close", "states": ["enabled"] },
+    { "id": "action-set.cancel-select", "labels": ["취소", "선택"], "layout": "paired", "primaryAction": "select", "dismissAction": "cancel", "states": ["enabled", "disabled", "pending"] },
+    { "id": "action-set.close-reregister", "labels": ["닫기", "투입품목 재등록"], "layout": "paired", "primaryAction": "reregister", "dismissAction": "close", "states": ["enabled", "pending"] }
+  ]
+}

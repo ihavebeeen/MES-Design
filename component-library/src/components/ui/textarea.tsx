@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
  * 색상, radius)을 그대로 재사용 — 새로 만든 색이나 값 없음, 여러 줄 입력에 맞게
  * `min-h`/`py`만 조정한 판단값.
  */
-export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, ...props }, ref) => {

@@ -5,6 +5,14 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 import { DialogFooter, type DialogAction } from "./dialog-footer";
 import { CloseButton } from "./icon-button";
+import {
+  dialogBodyAlignClasses,
+  dialogBodyPaddingClasses,
+  dialogBodyScrollClasses,
+  type DialogBodyAlign,
+  type DialogBodyPadding,
+  type DialogBodyScrollMode,
+} from "./dialog-body";
 
 export type SideSlidePanelSize = "narrow-760" | "medium-849" | "standard-900" | "wide-960";
 
@@ -63,6 +71,10 @@ export interface SideSlidePanelProps {
   /** 지정하면 기존 취소/저장 2버튼 대신 이 배열을 렌더링한다. 빈 배열은 푸터 없음. */
   actions?: DialogAction[];
   footer?: React.ReactNode;
+  bodyPadding?: DialogBodyPadding;
+  scrollMode?: DialogBodyScrollMode;
+  bodyAlign?: DialogBodyAlign;
+  /** @deprecated bodyPadding, scrollMode, bodyAlign로 표현할 수 없는 호환 호출에만 사용한다. */
   contentClassName?: string;
   className?: string;
 }
@@ -79,6 +91,9 @@ function SideSlidePanel({
   size = "wide-960",
   actions,
   footer,
+  bodyPadding = "standard",
+  scrollMode = "shell",
+  bodyAlign = "center",
   contentClassName,
   className,
 }: SideSlidePanelProps) {
@@ -122,7 +137,13 @@ function SideSlidePanel({
             </DialogPrimitive.Close>
           </div>
 
-          <div className={cn("flex min-h-0 w-full flex-1 flex-col items-center overflow-y-auto px-5 pt-5", contentClassName)}>
+          <div className={cn(
+            "flex min-h-0 w-full flex-1 flex-col",
+            dialogBodyPaddingClasses[bodyPadding],
+            dialogBodyScrollClasses[scrollMode],
+            dialogBodyAlignClasses[bodyAlign],
+            contentClassName
+          )}>
             {children}
           </div>
 
@@ -134,3 +155,4 @@ function SideSlidePanel({
 }
 
 export { SideSlidePanel, sideSlidePanelSizeClasses };
+export type { DialogBodyAlign, DialogBodyPadding, DialogBodyScrollMode } from "./dialog-body";

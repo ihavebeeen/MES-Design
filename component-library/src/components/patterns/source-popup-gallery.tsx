@@ -4,7 +4,8 @@ import * as React from "react";
 import { IconX } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CenterModal, type CenterModalSize, type DialogAction } from "@/components/ui/center-modal";
+import { CenterModal, type CenterModalSize, type DialogAction, type DialogBodyPadding, type DialogBodyScrollMode } from "@/components/ui/center-modal";
+import { dialogBodyPaddingClasses, dialogBodyScrollClasses } from "@/components/ui/dialog-body";
 import { DialogFooter } from "@/components/ui/dialog-footer";
 import { Tag } from "@/components/ui/tag";
 import { cn } from "@/lib/utils";
@@ -14,6 +15,7 @@ import { ExactInventoryEditContent } from "./exact-inventory-edit-modal";
 import { ExactPurchaseContent, ExactPurchaseItemsContent } from "./exact-purchase-modals";
 import { FigmaScreenPreview } from "./figma-screen-preview";
 import { CavityContent } from "./original-mes-screen-assets";
+import { createDialogActionSet } from "@/design-system/action-sets";
 
 type SourcePopupId = "cavity" | "inventory-add" | "inventory-edit" | "inventory-delete" | "inventory-move" | "purchase" | "purchase-items";
 type SourcePopupGroupId = "settings" | "table-edit" | "linked-detail";
@@ -28,8 +30,8 @@ interface SourcePopupDefinition {
   width: number;
   height: number;
   size: CenterModalSize;
-  modalClassName: string;
-  contentClassName: string;
+  bodyPadding?: DialogBodyPadding;
+  scrollMode?: DialogBodyScrollMode;
   confirmLabel?: string;
   closeOnly?: boolean;
 }
@@ -41,13 +43,13 @@ const GROUPS: Array<{ id: SourcePopupGroupId; label: string; description: string
 ];
 
 const SOURCE_POPUPS: SourcePopupDefinition[] = [
-  { id: "cavity", label: "캐비티 배열 설정", group: "settings", node: "18795:62149", title: "캐비티 배열 설정", summary: "배열 방향·번호 교환 설정", width: 960, height: 760, size: "standard-960", modalClassName: "!h-[760px]", contentClassName: "items-stretch p-0" },
-  { id: "inventory-add", label: "재고 추가", group: "table-edit", node: "18813:64179", title: "재고 추가", summary: "선택 행 상단 고정과 셀 입력", width: 1280, height: 655, size: "wide-1400", modalClassName: "!h-[655px] !max-w-[1280px]", contentClassName: "items-stretch !overflow-y-hidden" },
-  { id: "inventory-edit", label: "재고 편집", group: "table-edit", node: "17491:82304", title: "재고편집", summary: "행 선택과 플로팅 작업 도구", width: 1294, height: 745, size: "wide-1400", modalClassName: "!h-[745px] !max-w-[1294px]", contentClassName: "items-stretch !overflow-y-hidden p-0", closeOnly: true },
-  { id: "inventory-delete", label: "재고 삭제 설정", group: "table-edit", node: "17702:49052", title: "삭제 설정", summary: "선택 재고의 삭제 유형·사유 입력", width: 1013, height: 456, size: "wide-1024", modalClassName: "!h-[456px] !max-w-[1013px]", contentClassName: "items-stretch !overflow-y-hidden" },
-  { id: "inventory-move", label: "재고 이동 설정", group: "table-edit", node: "17702:49474", title: "이동 설정", summary: "선택 재고의 이동 창고 입력", width: 1013, height: 456, size: "wide-1024", modalClassName: "!h-[456px] !max-w-[1013px]", contentClassName: "items-stretch !overflow-y-hidden" },
-  { id: "purchase", label: "발주 정보", group: "linked-detail", node: "17503:85192", title: "발주 정보", summary: "발주 목록 선택과 진행 상태", width: 800, height: 680, size: "standard-960", modalClassName: "!h-[680px] !max-w-[800px]", contentClassName: "items-stretch !overflow-y-hidden p-0", confirmLabel: "선택" },
-  { id: "purchase-items", label: "발주 품목 리스트", group: "linked-detail", node: "17503:85374", title: "품목 리스트", summary: "발주 목록에서 연결되는 보조 상세", width: 507, height: 384, size: "medium-600", modalClassName: "!h-[384px] !max-w-[507px]", contentClassName: "items-stretch !overflow-y-hidden", closeOnly: true },
+  { id: "cavity", label: "캐비티 배열 설정", group: "settings", node: "18795:62149", title: "캐비티 배열 설정", summary: "배열 방향·번호 교환 설정", width: 960, height: 760, size: "standard-960", bodyPadding: "none" },
+  { id: "inventory-add", label: "재고 추가", group: "table-edit", node: "18813:64179", title: "재고 추가", summary: "선택 행 상단 고정과 셀 입력", width: 1280, height: 655, size: "wide-1400", scrollMode: "content" },
+  { id: "inventory-edit", label: "재고 편집", group: "table-edit", node: "17491:82304", title: "재고편집", summary: "행 선택과 플로팅 작업 도구", width: 1294, height: 745, size: "wide-1400", bodyPadding: "none", scrollMode: "content", closeOnly: true },
+  { id: "inventory-delete", label: "재고 삭제 설정", group: "table-edit", node: "17702:49052", title: "삭제 설정", summary: "선택 재고의 삭제 유형·사유 입력", width: 1013, height: 456, size: "wide-1024", scrollMode: "content" },
+  { id: "inventory-move", label: "재고 이동 설정", group: "table-edit", node: "17702:49474", title: "이동 설정", summary: "선택 재고의 이동 창고 입력", width: 1013, height: 456, size: "wide-1024", scrollMode: "content" },
+  { id: "purchase", label: "발주 정보", group: "linked-detail", node: "17503:85192", title: "발주 정보", summary: "발주 목록 선택과 진행 상태", width: 800, height: 680, size: "standard-960", bodyPadding: "none", scrollMode: "content", confirmLabel: "선택" },
+  { id: "purchase-items", label: "발주 품목 리스트", group: "linked-detail", node: "17503:85374", title: "품목 리스트", summary: "발주 목록에서 연결되는 보조 상세", width: 507, height: 384, size: "medium-600", scrollMode: "content", closeOnly: true },
 ];
 
 function SourcePopupContent({ id, onNavigate }: { id: SourcePopupId; onNavigate: (id: SourcePopupId) => void }) {
@@ -62,18 +64,15 @@ function SourcePopupContent({ id, onNavigate }: { id: SourcePopupId; onNavigate:
 
 function StaticPopupShell({ popup, children, onReset }: { popup: SourcePopupDefinition; children: React.ReactNode; onReset: () => void }) {
   const actions: DialogAction[] = popup.closeOnly
-    ? [{ id: "cancel", label: "닫기", variant: "fillBlack", onClick: onReset }]
-    : [
-        { id: "cancel", label: "취소", variant: "fillGray", onClick: onReset },
-        { id: "confirm", label: popup.confirmLabel ?? "저장", variant: "fillBlack" },
-      ];
+    ? createDialogActionSet("action-set.close-only", { onDismiss: onReset })
+    : createDialogActionSet(popup.confirmLabel === "선택" ? "action-set.cancel-select" : "action-set.cancel-save", { onDismiss: onReset });
   return (
     <div className="flex flex-col overflow-hidden rounded-[16px] bg-white shadow-[0_0_24px_rgba(0,0,0,0.2)]" style={{ width: popup.width, height: popup.height }}>
       <div className="flex h-[52px] shrink-0 items-center border-b border-mes-gray-30 py-[10px] pl-5 pr-[14px]">
         <strong className="flex-1 text-[18px] leading-[1.5]">{popup.title}</strong>
         <Button size="small" variant="lineBlacktxt" className="size-8 border-0 p-0" onClick={onReset} aria-label="미리보기 입력 초기화"><IconX size={20} /></Button>
       </div>
-      <div className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pt-5", popup.contentClassName)}>{children}</div>
+      <div className={cn("flex min-h-0 flex-1 flex-col items-stretch", dialogBodyPaddingClasses[popup.bodyPadding ?? "standard"], dialogBodyScrollClasses[popup.scrollMode ?? "shell"])}>{children}</div>
       <DialogFooter actions={actions} />
     </div>
   );
@@ -95,7 +94,7 @@ function SourcePopupGallery() {
     setOpen(false);
   };
   const actualActions: DialogAction[] | undefined = selected.closeOnly
-    ? [{ id: "cancel", label: "닫기", variant: "fillBlack" }]
+    ? createDialogActionSet("action-set.close-only")
     : undefined;
 
   return (
@@ -140,8 +139,12 @@ function SourcePopupGallery() {
         onConfirm={dismissActualPopup}
         title={selected.title}
         size={selected.size}
-        className={cn("!max-h-[calc(100vh-40px)]", selected.modalClassName)}
-        contentClassName={selected.contentClassName}
+        exactWidth={selected.width}
+        exactHeight={selected.height}
+        maxHeight="calc(100vh - 40px)"
+        bodyPadding={selected.bodyPadding}
+        scrollMode={selected.scrollMode}
+        bodyAlign="stretch"
         cancelLabel="취소"
         confirmLabel={selected.confirmLabel ?? "저장"}
         actions={actualActions}

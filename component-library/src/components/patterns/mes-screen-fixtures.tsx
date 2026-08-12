@@ -195,6 +195,7 @@ interface FixtureTableProps {
   checkedRows?: number[];
   onCheckedRowsChange?: (rows: number[]) => void;
   activeRow?: number | null;
+  onActiveRowChange?: (row: number) => void;
   selectionColor?: "main" | "gray" | "black";
   unselectedCheckboxAppearance?: "outline" | "grayCheck";
   selectionHeaderIndeterminate?: boolean;
@@ -215,7 +216,7 @@ interface FixtureTableProps {
 
 type FixtureTableData = { cells: React.ReactNode[] };
 
-function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, onCheckedRowsChange, activeRow, selectionColor, unselectedCheckboxAppearance, selectionHeaderIndeterminate, unselectedTextTone, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, headerBackground, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
+function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows, checkedRows, onCheckedRowsChange, activeRow, onActiveRowChange, selectionColor, unselectedCheckboxAppearance, selectionHeaderIndeterminate, unselectedTextTone, disabledRows = [], hiddenSelectionRows = [], selectable = true, selectionHeaderLabel, edgePadding, selectionColumnWidth, centerSelection, columnDividers, headerBackground, horizontalScroll, disabledTextTone, className }: FixtureTableProps) {
   const columns: TableColumn<FixtureTableData>[] = headers.map((header, index) => ({
     key: `column-${index}`,
     label: header,
@@ -246,6 +247,10 @@ function FixtureTable({ headers, rows, widths, aligns, selectedRow, selectedRows
       selectable={selectable}
       selectionHeaderLabel={selectionHeaderLabel}
       activeId={resolvedActiveId}
+      onActiveIdChange={onActiveRowChange ? (id) => {
+        const match = /^fixture-row-(\d+)$/.exec(id);
+        if (match) onActiveRowChange(Number(match[1]));
+      } : undefined}
       selectionColor={selectionColor}
       unselectedCheckboxAppearance={unselectedCheckboxAppearance}
       selectionHeaderIndeterminate={selectionHeaderIndeterminate}

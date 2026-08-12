@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CenterModal, type CenterModalSize, type DialogAction } from "@/components/ui/center-modal";
+import { CenterModal, type CenterModalSize, type DialogAction, type DialogBodyAlign, type DialogBodyPadding, type DialogBodyScrollMode } from "@/components/ui/center-modal";
 import { DatePicker } from "@/components/ui/date-picker";
 import { FormFieldRow, FormGrid } from "@/components/ui/form-grid";
 import { IconButton } from "@/components/ui/icon-button";
@@ -42,6 +42,9 @@ import {
   UpdatedOperationLogContent,
 } from "./completed-popup-expanded-content";
 import { SourcePopupGallery } from "./source-popup-gallery";
+import { InspectionItemsSection, ResultTotalCard, SearchTableSection } from "./section-patterns";
+import { useRowMutationPolicy, useSelectionBehavior } from "@/design-system/behavior-patterns";
+import { createDialogActionSet } from "@/design-system/action-sets";
 
 type CenterPopupKind =
   | "quantity"
@@ -57,6 +60,7 @@ type CenterPopupKind =
   | "downtime-picker";
 type SidePopupKind = "production" | "receiving" | "custom" | "inspection" | "operation-log";
 export type PopupKind = CenterPopupKind | SidePopupKind;
+const RECEIVING_ACTION_TEMPLATE = createDialogActionSet("action-set.cancel-save");
 type PopupPatternId =
   | "side-custom-columns"
   | "side-add-list"
@@ -149,17 +153,6 @@ const CENTER_POPUP_GROUPS: PopupPatternGroup[] = [
     title: "시간 휠 + 계산",
     description: "시작·종료 시각을 휠로 선택하고 계산된 분 단위 결과를 확인하는 유형",
   },
-];
-
-const createSaveAction = (onSave: () => void): DialogAction => ({
-  id: "save",
-  label: "저장",
-  variant: "fillBlack",
-  onClick: onSave,
-});
-const createDefaultActions = (onClose: () => void): DialogAction[] => [
-  { id: "cancel", label: "취소", variant: "fillGray", onClick: onClose },
-  createSaveAction(onClose),
 ];
 
 function FieldRow({ label, value, muted = false, select = false }: { label: string; value: string; muted?: boolean; select?: boolean }) {
@@ -258,9 +251,12 @@ function DefectContent() {
         horizontalScroll={false}
         className="defect-quantity-table shrink-0"
       />
-      <Card className="mt-5 flex h-14 items-center justify-center gap-3 bg-mes-primary-20 text-[16px] font-semibold text-mes-primary-60">
-        <span>불량계</span><div className="flex h-8 w-[120px] items-center rounded-mes-control border border-mes-gray-30 bg-white px-3 text-[14px] text-mes-gray-130">{total}</div>
-      </Card>
+      <ResultTotalCard
+        className="mt-5 h-14"
+        tone="information"
+        label="불량계"
+        value={<span className="flex h-8 w-[120px] items-center rounded-mes-control border border-mes-gray-30 bg-white px-3 text-[14px] font-normal text-mes-gray-130">{total}</span>}
+      />
     </div>
   );
 }
@@ -355,7 +351,9 @@ interface LookupWorkOrderDraft {
 }
 
 function LookupWorkOrderContent() {
-  const [checkedRows, setCheckedRows] = React.useState([0]);
+  const rowIds = React.useMemo(() => LOOKUP_ITEMS.map((_, index) => `work-order-${index + 1}`), []);
+  const selection = useSelectionBehavior<string>({ initialSelectedIds: [rowIds[0]] });
+  const checkedRows = rowIds.flatMap((id, index) => selection.isSelected(id) ? [index] : []);
   const headers = ["계획일", "품목", "품목구분", "단위", "계획수량", "포장인원", "설비", "근무조", "지시일", "지시수량", "담당기사", "작업지시여부"];
   const units = ["EA", "EA", "EA", "kg", "kg", "EA", "EA", "kg"];
   const equipment = ["A1", "A2", "A3", "A5", "A2", "A4", "A1", "A2"];
@@ -375,7 +373,7 @@ function LookupWorkOrderContent() {
   };
 
   const rows = LOOKUP_ITEMS.map((item, index) => {
-    const selected = checkedRows.includes(index);
+    const selected = selection.isSelected(rowIds[index]);
     const draft = rowDrafts[index];
 
     return [
@@ -395,17 +393,19 @@ function LookupWorkOrderContent() {
   });
 
   return (
-    <div className="flex h-[556px] w-full flex-col">
-      <section data-figma-section="query" className="flex h-[108px] shrink-0 flex-col gap-3 px-5 pt-4">
-        <div className="flex h-8 shrink-0 items-center justify-between">
-          <b className="text-[16px] leading-[1.5]">생산계획 리스트</b>
-          <div className="flex h-8 items-center gap-2.5">
+    <SearchTableSection
+      aria-label="생산계획 리스트"
+      className="h-[556px] px-5 pt-4"
+      tableClassName="pt-4"
+      title="생산계획 리스트"
+      query={
+        <div className="flex h-8 items-center gap-2.5">
             <FixtureDateRange label="일자" />
             <Button size="small" className="w-[50px] shrink-0">조회</Button>
             <Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />} className="w-[91px] shrink-0">다운로드</Button>
-          </div>
         </div>
-        <div className="flex h-12 shrink-0 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
+      }
+      toolbar={<div className="mt-3 flex h-12 shrink-0 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
           <FixtureFilter
             className="self-center"
             searchable={false}
@@ -420,16 +420,15 @@ function LookupWorkOrderContent() {
             ]}
           />
           <FixtureSearch placeholder="검색어 입력.." iconColor="default" className="w-[200px] self-center" />
-        </div>
-      </section>
-      <section data-figma-section="table" className="h-[448px] shrink-0 px-5 pt-4">
+        </div>}
+      table={
         <FixtureTable
           headers={headers}
           rows={rows}
           widths={LOOKUP_COLUMN_WIDTHS}
           aligns={LOOKUP_COLUMN_ALIGNS}
           checkedRows={checkedRows}
-          onCheckedRowsChange={setCheckedRows}
+          onCheckedRowsChange={(indexes) => selection.setSelectedIds(indexes.map((index) => rowIds[index]).filter(Boolean))}
           selectionColor="black"
           unselectedCheckboxAppearance="grayCheck"
           selectionHeaderIndeterminate={false}
@@ -441,10 +440,10 @@ function LookupWorkOrderContent() {
           columnDividers={false}
           horizontalScroll={false}
           disabledTextTone="gray60"
-          className="h-[432px] rounded-mes-control border-0 ring-1 ring-inset ring-mes-border-default"
+          className="h-full rounded-mes-control border-0 ring-1 ring-inset ring-mes-border-default"
         />
-      </section>
-    </div>
+      }
+    />
   );
 }
 
@@ -694,8 +693,8 @@ function ReceivingPopup({ open, onOpenChange }: { open: boolean; onOpenChange: (
     onOpenChange(false);
   }, [onOpenChange]);
   const actions: DialogAction[] = [
-    { id: "cancel", label: "취소", variant: "fillGray" },
-    { id: "save", label: "저장", variant: "fillBlack", onClick: save },
+    RECEIVING_ACTION_TEMPLATE[0],
+    { ...RECEIVING_ACTION_TEMPLATE[1], onClick: save },
   ];
 
   return (
@@ -706,7 +705,8 @@ function ReceivingPopup({ open, onOpenChange }: { open: boolean; onOpenChange: (
       title="입고등록"
       size="standard-900"
       actions={actions}
-      contentClassName="items-stretch overflow-x-hidden p-0"
+      bodyPadding="none"
+      bodyAlign="stretch"
     >
       <ReceivingContent ref={contentRef} />
     </SideSlidePanel>
@@ -863,14 +863,21 @@ function InspectionContent() {
   const [weight, setWeight] = React.useState("0");
   const [notes, setNotes] = React.useState("");
   const [result, setResult] = React.useState<"pass" | "partial" | "fail">("pass");
-  const [items, setItems] = React.useState<Array<{ id: number; label: string; value: InspectionJudgementValue }>>([
-    { id: 1, label: "Pallet 상태", value: "pass" },
-    { id: 2, label: "표기사항", value: "pass" },
-    { id: 3, label: "포장상태", value: "pass" },
-    { id: 4, label: "상차밴딩", value: "pass" },
-  ]);
-  const updateJudgement = (id: number, value: InspectionJudgementValue) => setItems((current) => current.map((item) => item.id === id ? { ...item, value } : item));
-  const addInspectionItem = () => setItems((current) => [...current, { id: Date.now(), label: `검사항목 ${current.length + 1}`, value: "none" }]);
+  const nextInspectionId = React.useRef(5);
+  const itemMutation = useRowMutationPolicy<{ id: number; label: string; value: InspectionJudgementValue }, number>({
+    initialRows: [
+      { id: 1, label: "Pallet 상태", value: "pass" },
+      { id: 2, label: "표기사항", value: "pass" },
+      { id: 3, label: "포장상태", value: "pass" },
+      { id: 4, label: "상차밴딩", value: "pass" },
+    ],
+    getId: (item) => item.id,
+    createRow: () => {
+      const id = nextInspectionId.current++;
+      return { id, label: `검사항목 ${id}`, value: "none" };
+    },
+  });
+  const updateJudgement = (id: number, value: InspectionJudgementValue) => itemMutation.setRows((current) => current.map((item) => item.id === id ? { ...item, value } : item));
   return (
     <div className="grid h-full w-full grid-cols-[360px_1fr]">
       <div className="border-r border-mes-gray-30 p-5">
@@ -886,47 +893,46 @@ function InspectionContent() {
           <LabeledControl label="결과"><div className="flex gap-4"><RadioOption name="inspection-result" checked={result === "pass"} label="합격" onChange={() => setResult("pass")} /><RadioOption name="inspection-result" checked={result === "partial"} label="일부" onChange={() => setResult("partial")} /><RadioOption name="inspection-result" checked={result === "fail"} label="불합" onChange={() => setResult("fail")} /></div></LabeledControl>
         </div>
       </div>
-      <div className="p-5">
-        <div className="grid h-7 grid-cols-[260px_90px] items-start gap-2.5">
+      <InspectionItemsSection
+        className="p-5"
+        searchSort={<div className="grid h-7 grid-cols-[260px_90px] items-start gap-2.5">
           <SectionBand className="w-full">검사항목</SectionBand>
-          <Button size="small" variant="fillBlack" startIcon={<IconPlus size={16} />} className="h-7 gap-0.5 px-2.5 text-[14px]" onClick={addInspectionItem}>항목 추가</Button>
-        </div>
-        <div className="mt-4 space-y-4">{items.map((item) => <div key={item.id} className="flex h-8 items-center justify-between text-[14px]"><span>{item.label}<span className="ml-[3px] font-semibold text-mes-danger-60">*</span></span><InspectionJudgement value={item.value} onValueChange={(value) => updateJudgement(item.id, value)} /></div>)}</div>
-      </div>
+          <Button size="small" variant="fillBlack" startIcon={<IconPlus size={16} />} className="h-7 gap-0.5 px-2.5 text-[14px]" onClick={itemMutation.add}>항목 추가</Button>
+        </div>}
+      >
+        <div className="mt-4 space-y-4">{itemMutation.rows.map((item) => <div key={item.id} className="flex h-8 items-center justify-between text-[14px]"><span>{item.label}<span className="ml-[3px] font-semibold text-mes-danger-60">*</span></span><InspectionJudgement value={item.value} onValueChange={(value) => updateJudgement(item.id, value)} /></div>)}</div>
+      </InspectionItemsSection>
     </div>
   );
 }
 
 function CenterPopup({ kind, open, onOpenChange }: { kind: CenterPopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
-  const defaultActions = createDefaultActions(() => onOpenChange(false));
-  const confirmActions = (label: string): DialogAction[] => [
-    { id: "cancel", label: "취소", variant: "fillGray", onClick: () => onOpenChange(false) },
-    { id: "confirm", label, variant: "fillBlack", onClick: () => onOpenChange(false) },
-  ];
-  const config: Record<typeof kind, { title: string; size: CenterModalSize; height: string; actions: DialogAction[]; content: React.ReactNode; contentClassName?: string; maxHeight?: string }> = {
-    quantity: { title: "생산수량 입력", size: "compact-400", height: "h-[437px]", actions: [createSaveAction(() => onOpenChange(false))], content: <QuantityContent /> },
-    details: { title: "품목 상세정보", size: "compact-480", height: "h-[436px]", actions: [], content: <DetailsContent /> },
-    defect: { title: "불량수량 입력", size: "medium-600", height: "h-[400px]", actions: [createSaveAction(() => onOpenChange(false))], content: <DefectContent /> },
-    weight: { title: "중량검사", size: "standard-960", height: "h-[752px]", actions: defaultActions, content: <WeightContent />, contentClassName: "p-0" },
-    purchase: { title: "발주 일괄등록", size: "large-1100", height: "h-[680px]", actions: defaultActions, content: <PurchaseContent /> },
-    lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: "h-[680px]", actions: defaultActions, content: <LookupWorkOrderContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-none" },
-    "material-input-setup": { title: "투입품목 설정/조회", size: "wide-1400", height: "material-input-modal h-[800px]", actions: defaultActions, content: <MaterialInputSetupContent />, contentClassName: "items-stretch overflow-x-hidden overflow-y-auto p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
-    "bom-copy": { title: "BOM 복사", size: "wide-1142", height: "h-[733px]", actions: confirmActions("확인"), content: <BomCopyContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
-    "preissued-label": { title: "선발행 라벨 수량 확정", size: "wide-1024", height: "h-[576px]", actions: confirmActions("확인"), content: <PreissuedLabelContent />, contentClassName: "items-stretch overflow-hidden p-0", maxHeight: "max-h-[calc(100vh-32px)]" },
-    "operating-time-picker": { title: "가동시간 선택", size: "medium-600", height: "h-[666px]", actions: confirmActions("입력"), content: <TimeSelectionContent mode="operating" />, contentClassName: "items-stretch overflow-hidden px-5 pt-5", maxHeight: "max-h-[calc(100vh-32px)]" },
-    "downtime-picker": { title: "비가동시간 선택", size: "medium-600", height: "h-[666px]", actions: confirmActions("입력"), content: <TimeSelectionContent mode="downtime" />, contentClassName: "items-stretch overflow-hidden px-5 pt-5", maxHeight: "max-h-[calc(100vh-32px)]" },
+  const close = () => onOpenChange(false);
+  const defaultActions = createDialogActionSet("action-set.cancel-save", { onDismiss: close, onPrimary: close });
+  const config: Record<typeof kind, { title: string; size: CenterModalSize; height: number; actions: DialogAction[]; content: React.ReactNode; bodyPadding?: DialogBodyPadding; scrollMode?: DialogBodyScrollMode; bodyAlign?: DialogBodyAlign; maxHeight?: React.CSSProperties["maxHeight"] }> = {
+    quantity: { title: "생산수량 입력", size: "compact-400", height: 437, actions: createDialogActionSet("action-set.save-only", { onPrimary: close }), content: <QuantityContent /> },
+    details: { title: "품목 상세정보", size: "compact-480", height: 436, actions: createDialogActionSet("action-set.none"), content: <DetailsContent />, bodyPadding: "horizontal" },
+    defect: { title: "불량수량 입력", size: "medium-600", height: 400, actions: createDialogActionSet("action-set.save-only", { onPrimary: close }), content: <DefectContent /> },
+    weight: { title: "중량검사", size: "standard-960", height: 752, actions: defaultActions, content: <WeightContent />, bodyPadding: "none", bodyAlign: "stretch" },
+    purchase: { title: "발주 일괄등록", size: "large-1100", height: 680, actions: defaultActions, content: <PurchaseContent /> },
+    lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: 680, actions: defaultActions, content: <LookupWorkOrderContent />, bodyPadding: "none", scrollMode: "content", bodyAlign: "stretch", maxHeight: "none" },
+    "material-input-setup": { title: "투입품목 설정/조회", size: "wide-1400", height: 800, actions: defaultActions, content: <MaterialInputSetupContent />, bodyPadding: "none", bodyAlign: "stretch", maxHeight: "calc(100vh - 32px)" },
+    "bom-copy": { title: "BOM 복사", size: "wide-1142", height: 733, actions: createDialogActionSet("action-set.cancel-confirm", { onDismiss: close, onPrimary: close }), content: <BomCopyContent />, bodyPadding: "none", scrollMode: "content", bodyAlign: "stretch", maxHeight: "calc(100vh - 32px)" },
+    "preissued-label": { title: "선발행 라벨 수량 확정", size: "wide-1024", height: 576, actions: createDialogActionSet("action-set.cancel-confirm", { onDismiss: close, onPrimary: close }), content: <PreissuedLabelContent />, bodyPadding: "none", scrollMode: "content", bodyAlign: "stretch", maxHeight: "calc(100vh - 32px)" },
+    "operating-time-picker": { title: "가동시간 선택", size: "medium-600", height: 666, actions: createDialogActionSet("action-set.cancel-input", { onDismiss: close, onPrimary: close }), content: <TimeSelectionContent mode="operating" />, scrollMode: "content", bodyAlign: "stretch", maxHeight: "calc(100vh - 32px)" },
+    "downtime-picker": { title: "비가동시간 선택", size: "medium-600", height: 666, actions: createDialogActionSet("action-set.cancel-input", { onDismiss: close, onPrimary: close }), content: <TimeSelectionContent mode="downtime" />, scrollMode: "content", bodyAlign: "stretch", maxHeight: "calc(100vh - 32px)" },
   };
   const current = config[kind];
-  return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} headerDivider={kind !== "details"} className={`${current.height} ${current.maxHeight ?? ""}`} contentClassName={current.contentClassName ?? (kind === "details" ? "pt-0" : undefined)}>{current.content}</CenterModal>;
+  return <CenterModal open={open} onOpenChange={onOpenChange} title={current.title} size={current.size} actions={current.actions} headerDivider={kind !== "details"} exactHeight={current.height} maxHeight={current.maxHeight} bodyPadding={current.bodyPadding} scrollMode={current.scrollMode} bodyAlign={current.bodyAlign} className={kind === "material-input-setup" ? "material-input-modal" : undefined}>{current.content}</CenterModal>;
 }
 
 export function PopupRenderer({ kind, open, onOpenChange }: { kind: PopupKind; open: boolean; onOpenChange: (open: boolean) => void }) {
-  const defaultActions = createDefaultActions(() => onOpenChange(false));
-  if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} contentClassName="items-stretch p-0"><ProductionContent /></SideSlidePanel>;
+  const defaultActions = createDialogActionSet("action-set.cancel-save", { onDismiss: () => onOpenChange(false), onPrimary: () => onOpenChange(false) });
+  if (kind === "production") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="생산실적 등록" size={"standard-900" as SideSlidePanelSize} actions={defaultActions} bodyPadding="none" bodyAlign="stretch"><ProductionContent /></SideSlidePanel>;
   if (kind === "receiving") return <ReceivingPopup open={open} onOpenChange={onOpenChange} />;
-  if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><CustomInformationContent /></SideSlidePanel>;
-  if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} contentClassName="items-stretch p-0"><InspectionContent /></SideSlidePanel>;
-  if (kind === "operation-log") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="운전일지 등록" size="standard-900" actions={defaultActions} contentClassName="items-stretch overflow-x-hidden p-0"><UpdatedOperationLogContent /></SideSlidePanel>;
+  if (kind === "custom") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} bodyPadding="none" bodyAlign="stretch"><CustomInformationContent /></SideSlidePanel>;
+  if (kind === "inspection") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="자주검사" size="narrow-760" actions={defaultActions} bodyPadding="none" bodyAlign="stretch"><InspectionContent /></SideSlidePanel>;
+  if (kind === "operation-log") return <SideSlidePanel open={open} onOpenChange={onOpenChange} title="운전일지 등록" size="standard-900" actions={defaultActions} bodyPadding="none" bodyAlign="stretch"><UpdatedOperationLogContent /></SideSlidePanel>;
   return <CenterPopup kind={kind} open={open} onOpenChange={onOpenChange} />;
 }
 

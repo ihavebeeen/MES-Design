@@ -67,12 +67,12 @@
   ],
   "findings": [
     { "id": "jsx-sites-are-not-recipes", "status": "confirmed", "detail": "13 JSX 호출부가 설정 배열과 조건 분기로 28개 화면 레시피를 렌더링한다." },
-    { "id": "body-class-crosses-shell-boundary", "status": "needs-review", "detail": "contentClassName이 정렬·padding뿐 아니라 scroll ownership까지 덮어쓴다." },
-    { "id": "size-presets-have-pixel-overrides", "status": "needs-review", "detail": "Source popup 6개가 size preset 뒤에 실제 폭 override를 사용한다." },
-    { "id": "action-arrays-are-not-named-contracts", "status": "needs-review", "detail": "cancel-save 외 action set이 raw 배열 또는 custom footer로 반복된다." },
-    { "id": "overlay-dim-conflict", "status": "needs-review", "detail": "CenterModal과 SideSlidePanel은 bg-black/60, ConfirmDialog는 bg-black/40을 사용하며 일부 주석은 /40 통일을 설명한다." },
-    { "id": "custom-footer-layouts", "status": "needs-review", "detail": "검사기준과 생산수량 재등록은 공용 DialogFooter 대신 자체 footer 크기를 사용한다." },
-    { "id": "details-header-divider-exception", "status": "needs-review", "detail": "품목 상세정보만 headerDivider=false를 사용한다." },
-    { "id": "time-picker-has-two-entry-paths", "status": "needs-review", "detail": "가동·비가동 시간 선택은 독립 레시피와 운전일지 내부 중첩 호출 경로가 함께 존재한다." }
+    { "id": "body-class-crosses-shell-boundary", "status": "resolved-normalize", "detail": "contentClassName 직접 지정은 제거하고 bodyPadding·scrollMode·bodyAlign 의미 prop으로 이관했다." },
+    { "id": "size-presets-have-pixel-overrides", "status": "resolved-keep", "detail": "Figma 원본 근거가 있는 exactWidth·exactHeight는 보존하고 범용 preset으로 확장하지 않는다." },
+    { "id": "action-arrays-are-not-named-contracts", "status": "resolved-normalize", "detail": "반복 action 배열을 ActionSet Registry와 createDialogActionSet으로 이관했다." },
+    { "id": "overlay-dim-conflict", "status": "resolved-keep", "detail": "업무 팝업은 /60, 짧은 확인 팝업은 /40으로 정보 위계에 따른 차이를 유지한다." },
+    { "id": "custom-footer-layouts", "status": "resolved-local", "detail": "고유 폭과 복합 내용을 가진 2건은 Shell variant가 아니라 Recipe 로컬 footer로 유지한다." },
+    { "id": "details-header-divider-exception", "status": "resolved-keep", "detail": "품목 상세정보의 연결된 본문 표현을 위한 원본 예외로 유지한다." },
+    { "id": "time-picker-has-two-entry-paths", "status": "resolved-keep", "detail": "동일 시간 선택 Recipe를 독립 진입과 운전일지 중첩 진입에서 재사용한다." }
   ]
 }

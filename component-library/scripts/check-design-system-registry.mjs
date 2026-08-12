@@ -19,6 +19,7 @@ const compositionSectionPatternLedgerRegistry = readJson("composition-section-pa
 const compositionBehaviorLedgerRegistry = readJson("composition-behavior-ledger.json");
 const sectionPatternProposalRegistry = readJson("section-pattern-proposals.json");
 const behaviorPatternProposalRegistry = readJson("behavior-pattern-proposals.json");
+const actionSetRegistry = readJson("action-sets.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -60,6 +61,15 @@ checkVersion("composition-section-pattern-ledger", compositionSectionPatternLedg
 checkVersion("composition-behavior-ledger", compositionBehaviorLedgerRegistry);
 checkVersion("section-pattern-proposals", sectionPatternProposalRegistry);
 checkVersion("behavior-pattern-proposals", behaviorPatternProposalRegistry);
+checkVersion("action-sets", actionSetRegistry);
+
+const actionSets = mapByUniqueId("action-sets", actionSetRegistry.actionSets ?? []);
+for (const actionSet of actionSets.values()) {
+  if (!Array.isArray(actionSet.labels) || !Array.isArray(actionSet.states) || actionSet.states.length === 0) errors.push(`action-set '${actionSet.id}': labels와 states가 필요합니다.`);
+  if (actionSet.layout === "none" && actionSet.labels.length !== 0) errors.push(`action-set '${actionSet.id}': none layout은 labels가 없어야 합니다.`);
+  if (actionSet.layout === "single" && actionSet.labels.length !== 1) errors.push(`action-set '${actionSet.id}': single layout은 label 1개여야 합니다.`);
+  if (actionSet.layout === "paired" && actionSet.labels.length !== 2) errors.push(`action-set '${actionSet.id}': paired layout은 label 2개여야 합니다.`);
+}
 
 if (compositionPolicyRegistry.policyId !== "mes.ai-composition-grammar") errors.push("composition-policy: policyId가 잘못되었습니다.");
 if (compositionPolicyRegistry.status !== "active") errors.push("composition-policy: status는 active여야 합니다.");
@@ -69,7 +79,7 @@ for (const layer of requiredCompositionLayers) {
   if (!compositionLayers.has(layer)) errors.push(`composition-policy: 필수 layer '${layer}'가 없습니다.`);
 }
 for (const hold of compositionPolicyRegistry.migrationHolds ?? []) {
-  if (hold.status !== "migration-hold") errors.push(`composition-policy: hold '${hold.id}'의 status는 migration-hold여야 합니다.`);
+  if (!["resolved", "closed-no-action"].includes(hold.status) || !hold.decision) errors.push(`composition-policy: migration '${hold.id}'는 종결 상태와 decision이 필요합니다.`);
 }
 
 if (compositionShellLedgerRegistry.status !== "observed-not-canonical") errors.push("composition-shell-ledger: status는 observed-not-canonical이어야 합니다.");
@@ -163,7 +173,7 @@ const proposalRegistries = [
   ["behavior-pattern-proposals", behaviorPatternProposalRegistry],
 ];
 for (const [name, registry] of proposalRegistries) {
-  if (!["proposed-not-approved", "partially-approved"].includes(registry.status)) errors.push(`${name}: status는 proposed-not-approved 또는 partially-approved여야 합니다.`);
+  if (!["proposed-not-approved", "partially-approved", "resolved"].includes(registry.status)) errors.push(`${name}: 알 수 없는 status '${registry.status}'입니다.`);
   if (!existsSync(join(registryDirectory, registry.sourceLedger ?? ""))) errors.push(`${name}: sourceLedger '${registry.sourceLedger ?? ""}'가 존재하지 않습니다.`);
   const proposals = mapByUniqueId(name, registry.proposals ?? []);
   const holds = mapByUniqueId(`${name} holds`, registry.holds ?? []);
@@ -178,6 +188,7 @@ for (const [name, registry] of proposalRegistries) {
   }
   for (const hold of holds.values()) {
     if (!hold.reason) errors.push(`${name} hold '${hold.id}': reason이 필요합니다.`);
+    if (registry.status === "resolved" && !hold.resolution) errors.push(`${name} hold '${hold.id}': resolved 상태에서는 resolution이 필요합니다.`);
     if (proposals.has(hold.id)) errors.push(`${name}: '${hold.id}'가 proposal과 hold에 동시에 있습니다.`);
   }
   const approvedIds = registry.approval?.approvedProposalIds ?? [];
@@ -185,6 +196,10 @@ for (const [name, registry] of proposalRegistries) {
   for (const id of approvedIds) {
     if (!proposals.has(id)) errors.push(`${name}: 승인 ID '${id}'가 proposal에 없습니다.`);
     if (holds.has(id)) errors.push(`${name}: 승인 ID '${id}'가 hold에도 있습니다.`);
+  }
+  if (registry.status === "resolved") {
+    const unresolved = [...proposals.values()].filter((proposal) => !approvedIds.includes(proposal.id) && !proposal.resolution).map((proposal) => proposal.id);
+    if (unresolved.length > 0) errors.push(`${name}: 미해결 proposal ${unresolved.join(", ")}`);
   }
 }
 
@@ -253,8 +268,13 @@ for (const pattern of patterns.values()) {
 }
 for (const screen of screens.values()) {
   checkSource("screen", screen);
-  if (!patterns.has(screen.patternId)) {
-    errors.push(`screen '${screen.id}': 미등록 pattern '${screen.patternId}'를 참조합니다.`);
+  if (!Array.isArray(screen.patternRefs) || screen.patternRefs.length === 0) {
+    errors.push(`screen '${screen.id}': patternRefs가 필요합니다.`);
+    continue;
+  }
+  if (new Set(screen.patternRefs).size !== screen.patternRefs.length) errors.push(`screen '${screen.id}': patternRefs에 중복이 있습니다.`);
+  for (const patternRef of screen.patternRefs) {
+    if (!patterns.has(patternRef)) errors.push(`screen '${screen.id}': 미등록 pattern '${patternRef}'를 참조합니다.`);
   }
 }
 for (const visualCase of visualRegistry.cases ?? []) {
@@ -300,9 +320,9 @@ for (const component of components.values()) {
 
 const visualKinds = new Set(
   (visualRegistry.cases ?? []).map((item) => {
-    if (item.screenId) return patterns.get(screens.get(item.screenId)?.patternId)?.kind;
+    if (item.screenId) return screens.get(item.screenId)?.patternRefs.map((id) => patterns.get(id)?.kind);
     return patterns.get(item.patternId)?.kind;
-  })
+  }).flat()
 );
 if (!visualKinds.has("popup")) errors.push("visual-regression: 대표 popup case가 필요합니다.");
 if (!visualKinds.has("table")) errors.push("visual-regression: 대표 table case가 필요합니다.");

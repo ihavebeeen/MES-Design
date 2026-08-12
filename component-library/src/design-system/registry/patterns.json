@@ -171,6 +171,168 @@
       "source": "src/components/ui/side-slide-panel.tsx",
       "requiredComponents": ["center-modal", "side-slide-panel"],
       "rules": ["취소·X·Esc·backdrop은 같은 onCancel 복원 경로를 사용한다.", "저장은 committed snapshot을 갱신한 뒤 닫고 cancel restore를 실행하지 않는다."]
+    },
+    {
+      "id": "shell.center-modal",
+      "name": "중앙 팝업 셸",
+      "kind": "shell",
+      "placement": "center",
+      "source": "src/components/ui/center-modal.tsx",
+      "requiredComponents": ["center-modal"],
+      "rules": ["제목·닫기·본문·푸터 슬롯과 중앙 배치를 소유한다.", "본문 padding·정렬·scroll은 의미 기반 prop으로 선언한다."]
+    },
+    {
+      "id": "shell.side-slide-panel",
+      "name": "우측 슬라이드 팝업 셸",
+      "kind": "shell",
+      "placement": "right-slide",
+      "source": "src/components/ui/side-slide-panel.tsx",
+      "requiredComponents": ["side-slide-panel"],
+      "rules": ["전체 높이·우측 배치·제목·닫기·본문·푸터 슬롯을 소유한다."]
+    },
+    {
+      "id": "shell.confirm-dialog",
+      "name": "확인 팝업 셸",
+      "kind": "shell",
+      "placement": "center",
+      "source": "src/components/ui/confirm-dialog.tsx",
+      "requiredComponents": ["confirm-dialog"],
+      "rules": ["짧은 의사결정 메시지와 확인 동작에만 사용한다."]
+    },
+    {
+      "id": "section.search-table-composition",
+      "name": "검색·필터·테이블 조합",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": ["filter", "search-input", "table"],
+      "rules": ["toolbar와 table의 순서, 중앙 정렬, 단일 scroll 책임을 소유한다."]
+    },
+    {
+      "id": "section.editable-row-list",
+      "name": "편집 가능한 행 목록",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": ["button"],
+      "rules": ["헤더·행·추가 동작·빈 상태 슬롯을 제공하고 행 mutation은 Behavior에 위임한다."]
+    },
+    {
+      "id": "section.inspection-items",
+      "name": "검사항목 목록",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": ["inspection-judgement", "button"],
+      "rules": ["검사항목 행·일괄 판정·추가 동작·빈 상태의 배치를 소유한다."]
+    },
+    {
+      "id": "summary.table-total-row",
+      "name": "표 컬럼 정렬 합계행",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": ["table"],
+      "rules": ["표 컬럼 좌표와 정렬되는 집계에만 사용한다."]
+    },
+    {
+      "id": "summary.result-total-card",
+      "name": "결과 합계 카드",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": [],
+      "rules": ["독립 결과값·단위·semantic tone을 표시하며 표 합계행을 대체하지 않는다."]
+    },
+    {
+      "id": "selection.reveal-inline-editor",
+      "name": "행 선택 시 인라인 편집 노출",
+      "kind": "behavior",
+      "placement": "cross-shell",
+      "source": "src/design-system/behavior-patterns.ts",
+      "requiredComponents": ["table"],
+      "rules": ["stable row ID를 사용하고 필터 밖 선택 보존 정책을 명시한다."]
+    },
+    {
+      "id": "selection.enable-actions",
+      "name": "선택 기반 동작 활성화",
+      "kind": "behavior",
+      "placement": "cross-shell",
+      "source": "src/design-system/behavior-patterns.ts",
+      "requiredComponents": ["table", "button"],
+      "rules": ["선택 ID 집합으로 action 활성 상태를 계산한다."]
+    },
+    {
+      "id": "selection.master-detail",
+      "name": "마스터·상세 선택",
+      "kind": "behavior",
+      "placement": "cross-shell",
+      "source": "src/design-system/behavior-patterns.ts",
+      "requiredComponents": ["table"],
+      "rules": ["active row와 checkbox selection을 서로 다른 상태로 관리한다."]
+    },
+    {
+      "id": "row.mutation-policy",
+      "name": "행 추가·삭제 정책",
+      "kind": "behavior",
+      "placement": "cross-shell",
+      "source": "src/design-system/behavior-patterns.ts",
+      "requiredComponents": ["button"],
+      "rules": ["stable ID, 추가 조건, 삽입 위치, 최소 행 수를 명시한다."]
+    },
+    {
+      "id": "action-set.cancel-save",
+      "name": "취소·저장 동작 세트",
+      "kind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": ["button"],
+      "rules": ["취소는 dismiss 계약, 저장은 commit 계약에 연결한다."]
+    },
+    {
+      "id": "action-set.save-only",
+      "name": "저장 동작 세트",
+      "kind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": ["button"],
+      "rules": ["단일 저장 동작에 사용한다."]
+    },
+    {
+      "id": "action-set.close-only",
+      "name": "닫기 동작 세트",
+      "kind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": ["button"],
+      "rules": ["변경을 커밋하지 않는 단일 닫기 동작이다."]
+    },
+    {
+      "id": "action-set.cancel-select",
+      "name": "취소·선택 동작 세트",
+      "kind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": ["button"],
+      "rules": ["조회 결과 선택 팝업에 사용한다."]
+    },
+    {
+      "id": "action-set.cancel-input",
+      "name": "취소·입력 동작 세트",
+      "kind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": ["button"],
+      "rules": ["시간 등 보조 입력 팝업에 사용한다."]
+    },
+    {
+      "id": "action-set.close-reregister",
+      "name": "닫기·재등록 동작 세트",
+      "kind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": ["button"],
+      "rules": ["재등록 확인 recipe의 화면 로컬 의미를 명시한다."]
     }
   ]
 }

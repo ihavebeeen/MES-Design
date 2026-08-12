@@ -5,6 +5,7 @@ import { Filter } from "@/components/ui/filter";
 import { SearchInput } from "@/components/ui/search-input";
 import { SelectionActionBar } from "@/components/ui/selection-action-bar";
 import { Table, type TableColumn, type TableRowData } from "@/components/ui/table";
+import { useSelectionBehavior } from "@/design-system/behavior-patterns";
 
 interface InventoryEditRow {
   id: string;
@@ -53,7 +54,7 @@ const COLUMNS: TableColumn<InventoryEditRow>[] = [
 const FILTER_CATEGORIES = [{ id: "warehouse", label: "창고명", options: [{ id: "b", label: "B창고" }] }];
 
 function ExactInventoryEditContent({ onDelete, onMove }: { onDelete: () => void; onMove: () => void }) {
-  const [selectedIds, setSelectedIds] = React.useState(ROWS.slice(0, 5).map((row) => row.id));
+  const selection = useSelectionBehavior<string>({ initialSelectedIds: ROWS.slice(0, 5).map((row) => row.id) });
   const [search, setSearch] = React.useState("");
   const [filters, setFilters] = React.useState<Record<string, string[]>>({});
   const visibleRows: TableRowData<InventoryEditRow>[] = ROWS
@@ -71,8 +72,8 @@ function ExactInventoryEditContent({ onDelete, onMove }: { onDelete: () => void;
         <Table
           columns={COLUMNS}
           rows={visibleRows}
-          selectedIds={selectedIds}
-          onSelectedIdsChange={setSelectedIds}
+          selectedIds={selection.selectedIds}
+          onSelectedIdsChange={selection.setSelectedIds}
           selectionColor="black"
           unselectedCheckboxAppearance="grayCheck"
           selectionHeaderIndeterminate={false}
@@ -85,10 +86,10 @@ function ExactInventoryEditContent({ onDelete, onMove }: { onDelete: () => void;
         />
       </div>
       <SelectionActionBar
-        selectedCount={selectedIds.length}
+        selectedCount={selection.selectedCount}
         onDelete={onDelete}
         onMove={onMove}
-        onClear={() => setSelectedIds([])}
+        onClear={selection.clear}
         className="absolute bottom-6 left-1/2 -translate-x-1/2"
       />
     </div>

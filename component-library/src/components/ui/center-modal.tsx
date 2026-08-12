@@ -5,6 +5,14 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 import { DialogFooter, type DialogAction } from "./dialog-footer";
 import { CloseButton } from "./icon-button";
+import {
+  dialogBodyAlignClasses,
+  dialogBodyPaddingClasses,
+  dialogBodyScrollClasses,
+  type DialogBodyAlign,
+  type DialogBodyPadding,
+  type DialogBodyScrollMode,
+} from "./dialog-body";
 
 export type CenterModalSize =
   | "compact-400"
@@ -56,9 +64,8 @@ const centerModalSizeClasses: Record<CenterModalSize, string> = {
  *   고정 너비 **160px**. 취소 버튼은 `variant="fillGray"`, 저장 버튼은 `variant="fillBlack"`.
  *
  * ── 2. 판단값(원본에 명시 안 됨) ──────────────────────────────────
- * - 오버레이 딤 색상: 이번 스펙 페이지는 `rgba(0,0,0,0.6)`이지만, 이 값은 스펙 페이지
- *   자체의 예시 배경일 뿐 컴포넌트 토큰이라는 근거가 약함 — 프로젝트 전체에서 이미 쓰이는
- *   ConfirmDialog 오버레이 값(`bg-black/40`)과 통일해 일관성 유지(판단값).
+ * - 오버레이 딤 색상: 스펙 페이지와 완성 화면 회귀 기준에서 확인한 `rgba(0,0,0,0.6)`을
+ *   사용한다. 작은 안내용 ConfirmDialog는 별도 위계라 `bg-black/40`을 유지한다.
  * - 버튼 라벨은 "취소"/"저장"이 원본 그대로지만, 실제 화면마다 삭제/등록 등 다른 동사가
  *   쓰일 걸 감안해 `cancelLabel`/`confirmLabel`로 커스터마이즈 가능하게 함.
  *
@@ -88,6 +95,16 @@ export interface CenterModalProps {
   footer?: React.ReactNode;
   /** 제목 아래 구분선 표시 여부. */
   headerDivider?: boolean;
+  /** Body padding 책임. 임의 class 조합 대신 의미 기반 계약을 우선 사용한다. */
+  bodyPadding?: DialogBodyPadding;
+  /** shell은 Body가 스크롤, content는 children이 스크롤을 소유한다. */
+  scrollMode?: DialogBodyScrollMode;
+  bodyAlign?: DialogBodyAlign;
+  /** Figma 원본에 독립적으로 반복되지 않는 실측 폭·높이. size preset보다 우선한다. */
+  exactWidth?: number;
+  exactHeight?: number;
+  maxHeight?: React.CSSProperties["maxHeight"];
+  /** @deprecated bodyPadding, scrollMode, bodyAlign로 표현할 수 없는 호환 호출에만 사용한다. */
   contentClassName?: string;
   className?: string;
 }
@@ -105,6 +122,12 @@ function CenterModal({
   actions,
   footer,
   headerDivider = true,
+  bodyPadding = "standard",
+  scrollMode = "shell",
+  bodyAlign = "center",
+  exactWidth,
+  exactHeight,
+  maxHeight = "80vh",
   contentClassName,
   className,
 }: CenterModalProps) {
@@ -133,11 +156,12 @@ function CenterModal({
         <DialogPrimitive.Content
           onOpenAutoFocus={(event) => event.preventDefault()}
           className={cn(
-            "fixed left-1/2 top-1/2 z-50 flex max-h-[80vh] w-[calc(100vw-40px)] -translate-x-1/2 -translate-y-1/2",
+            "fixed left-1/2 top-1/2 z-50 flex w-[calc(100vw-40px)] -translate-x-1/2 -translate-y-1/2",
             "flex-col overflow-hidden rounded-[16px] bg-white shadow-[0px_0px_24px_rgba(0,0,0,0.2)]",
             centerModalSizeClasses[size],
             className
           )}
+          style={{ maxWidth: exactWidth, height: exactHeight, maxHeight }}
         >
           <div className={cn("flex h-[52px] w-full shrink-0 items-center justify-between py-[10px] pl-5 pr-[14px]", headerDivider && "border-b border-mes-gray-30")}>
             <DialogPrimitive.Title className="flex-1 text-[18px] font-bold leading-[1.5] text-mes-gray-130">
@@ -148,7 +172,13 @@ function CenterModal({
             </DialogPrimitive.Close>
           </div>
 
-          <div className={cn("flex min-h-0 w-full flex-1 flex-col items-center overflow-y-auto px-5 pt-5", contentClassName)}>
+          <div className={cn(
+            "flex min-h-0 w-full flex-1 flex-col",
+            dialogBodyPaddingClasses[bodyPadding],
+            dialogBodyScrollClasses[scrollMode],
+            dialogBodyAlignClasses[bodyAlign],
+            contentClassName
+          )}>
             {children}
           </div>
 
@@ -161,3 +191,4 @@ function CenterModal({
 
 export { CenterModal, centerModalSizeClasses };
 export type { DialogAction } from "./dialog-footer";
+export type { DialogBodyAlign, DialogBodyPadding, DialogBodyScrollMode } from "./dialog-body";

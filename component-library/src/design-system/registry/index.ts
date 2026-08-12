@@ -13,6 +13,7 @@ import compositionSectionPatternLedgerData from "./composition-section-pattern-l
 import compositionBehaviorLedgerData from "./composition-behavior-ledger.json";
 import sectionPatternProposalData from "./section-pattern-proposals.json";
 import behaviorPatternProposalData from "./behavior-pattern-proposals.json";
+import actionSetData from "./action-sets.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -28,6 +29,7 @@ import type {
   CompositionBehaviorLedgerRegistry,
   SectionPatternProposalRegistry,
   BehaviorPatternProposalRegistry,
+  ActionSetRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -46,6 +48,7 @@ export const compositionSectionPatternLedgerRegistry = compositionSectionPattern
 export const compositionBehaviorLedgerRegistry = compositionBehaviorLedgerData as CompositionBehaviorLedgerRegistry;
 export const sectionPatternProposalRegistry = sectionPatternProposalData as SectionPatternProposalRegistry;
 export const behaviorPatternProposalRegistry = behaviorPatternProposalData as BehaviorPatternProposalRegistry;
+export const actionSetRegistry = actionSetData as ActionSetRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);
@@ -71,11 +74,12 @@ export function getGeneratedScreenCandidate(id: string) {
 export function getImplementationContext(screenId: string) {
   const screen = getScreen(screenId);
   if (!screen) return undefined;
-  const pattern = getPattern(screen.patternId);
-  if (!pattern) return undefined;
+  const patterns = screen.patternRefs.map(getPattern).filter((pattern): pattern is NonNullable<typeof pattern> => Boolean(pattern));
+  if (patterns.length !== screen.patternRefs.length) return undefined;
+  const componentIds = [...new Set(patterns.flatMap((pattern) => pattern.requiredComponents))];
   return {
     screen,
-    pattern,
-    components: pattern.requiredComponents.map(getComponent).filter(Boolean),
+    patterns,
+    components: componentIds.map(getComponent).filter(Boolean),
   };
 }
