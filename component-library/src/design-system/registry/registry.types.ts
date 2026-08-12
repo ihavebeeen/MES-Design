@@ -405,3 +405,23 @@ export interface BehaviorPatternProposalRegistry {
   proposals: BehaviorPatternProposal[];
   holds: Array<{ id: string; reason: string; resolution?: string }>;
 }
+
+export interface CompletionPolicyRegistry {
+  schemaVersion: 1;
+  policyId: "mes.completion-claims";
+  projectState: "in-progress" | "complete";
+  terms: Record<"implemented" | "verified" | "batch-complete" | "project-complete", string>;
+  reportingRequirements: string[];
+  projectCompletionBlockers: string[];
+}
+
+export interface FooterActionAuditRegistry {
+  schemaVersion: 1;
+  auditState: "in-progress" | "verified";
+  entries: Array<{
+    sourceEvidenceId: string;
+    status: "queued" | "implemented-unverified" | "verified" | "not-applicable";
+    actionSet: string;
+    note: string;
+  }>;
+}

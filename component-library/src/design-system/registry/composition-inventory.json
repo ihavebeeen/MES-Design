@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx",
   "summary": {
     "scannedFiles": 30,
-    "totalLines": 6129,
+    "totalLines": 6195,
     "shellInstances": {
       "CenterModal": 8,
       "SideSlidePanel": 9,
@@ -1327,7 +1327,7 @@
       "source": "src/components/patterns/figma-screen-preview.tsx",
       "name": "figma-screen-preview.tsx",
       "observedRole": "composition-source",
-      "lines": 63,
+      "lines": 130,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -1340,8 +1340,13 @@
         "gray20Container": 0
       },
       "sectionTitles": [],
-      "uiComponents": [],
-      "stateHookCount": 1,
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 2
+        }
+      ],
+      "stateHookCount": 3,
       "behaviorSignals": [],
       "sectionCandidateSignals": [],
       "reviewFlags": []
@@ -1624,7 +1629,7 @@
       "source": "src/components/patterns/original-mes-screen-assets.tsx",
       "name": "original-mes-screen-assets.tsx",
       "observedRole": "evidence",
-      "lines": 276,
+      "lines": 275,
       "exportedSymbols": [],
       "shells": [
         {
@@ -2187,5 +2192,5 @@
       ]
     }
   ],
-  "fingerprint": "5de65cb1185c9419"
+  "fingerprint": "e4f9307f225e5693"
 }

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mes.completion-claims",
+  "projectState": "in-progress",
+  "terms": {
+    "implemented": "코드가 존재하지만 원본 대조와 전체 검증을 모두 통과하지 않은 상태",
+    "verified": "선언한 단일 화면 또는 기능이 원본 대조·브라우저 실측·상호작용·회귀 검사를 통과한 상태",
+    "batch-complete": "작업 시작 전에 선언한 배치 항목이 모두 verified이고 배치 내부에 미검수 항목이 없는 상태",
+    "project-complete": "저장소 전체의 queued·in-progress·미승인 후보·미해결 제안·명시적 TODO가 0개인 상태"
+  },
+  "reportingRequirements": [
+    "완료라는 단어는 대상 범위를 함께 적는다.",
+    "이번 작업 범위와 전체 프로젝트 범위를 구분한다.",
+    "검증하지 않은 항목은 구현됨으로만 보고한다.",
+    "최종 보고에 남은 작업과 전체 프로젝트 상태를 반드시 적는다.",
+    "미검수 항목이 하나라도 있으면 전체 완료라고 표현하지 않는다."
+  ],
+  "projectCompletionBlockers": [
+    "source-evidence의 queued 또는 in-progress 항목",
+    "generated-screen-evaluations의 partial-success 또는 review 항목",
+    "resolved가 아닌 section/behavior pattern proposal registry",
+    "composition ledger의 migration-hold 또는 needs-review 항목",
+    "footer-action-audit의 queued 또는 implemented-unverified 항목"
+  ]
+}

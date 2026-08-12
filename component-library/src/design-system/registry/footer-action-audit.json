@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "auditState": "in-progress",
+  "entries": [
+    { "sourceEvidenceId": "easy-mode-receiving", "status": "implemented-unverified", "actionSet": "action-set.cancel-save", "note": "공통 하단 액션은 구현됐지만 Figma Make 원본과 버튼 배치·폭·색의 개별 대조가 남아 있다." },
+    { "sourceEvidenceId": "form-management-inspection-criteria", "status": "verified", "actionSet": "action-set.cancel-save", "note": "취소·저장 배치와 취소 복원 동작을 시각·상호작용 회귀로 검증했다." },
+    { "sourceEvidenceId": "equipment-inspection-list", "status": "not-applicable", "actionSet": "action-set.none", "note": "해당 냉각기 점검표 원본은 본문 조회형이며 공통 하단 액션을 사용하지 않는다." },
+    { "sourceEvidenceId": "process-inspection-trend", "status": "not-applicable", "actionSet": "action-set.none", "note": "전체 분석 화면으로 팝업 하단 액션 대상이 아니다." },
+    { "sourceEvidenceId": "user-password-settings", "status": "verified", "actionSet": "action-set.cancel-save", "note": "우측 패널 취소·저장과 보조 확인 팝업의 액션 배치를 원본 상태별로 검증했다." },
+    { "sourceEvidenceId": "sales-transaction-statement", "status": "verified", "actionSet": "action-set.contextual", "note": "판매관리 하단의 검정·검정·Primary-70 160px 액션과 거래명세서 팝업 푸터를 원본 노드로 재검수했다." },
+    { "sourceEvidenceId": "shipment-approval", "status": "verified", "actionSet": "action-set.cancel-save", "note": "960×680 일괄 승인과 670×568 상세 팝업의 취소·저장·닫기 배치를 검증했다." },
+    { "sourceEvidenceId": "equipment-discharge-settings", "status": "queued", "actionSet": "unknown", "note": "화면 원본 코드화 큐와 함께 하단 액션 원본 검수가 남아 있다." },
+    { "sourceEvidenceId": "standard-price-settings", "status": "queued", "actionSet": "unknown", "note": "화면 원본 코드화 큐와 함께 하단 액션 원본 검수가 남아 있다." },
+    { "sourceEvidenceId": "team-settings", "status": "queued", "actionSet": "unknown", "note": "화면 원본 코드화 큐와 함께 하단 액션 원본 검수가 남아 있다." },
+    { "sourceEvidenceId": "production-quantity-reregistration", "status": "verified", "actionSet": "action-set.close-reregister", "note": "닫기·투입품목 재등록 액션의 배치와 후속 팝업 전환을 검증했다." }
+  ]
+}

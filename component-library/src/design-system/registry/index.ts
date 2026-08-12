@@ -15,6 +15,8 @@ import sectionPatternProposalData from "./section-pattern-proposals.json";
 import behaviorPatternProposalData from "./behavior-pattern-proposals.json";
 import actionSetData from "./action-sets.json";
 import interactionAuditData from "./interaction-audit.json";
+import completionPolicyData from "./completion-policy.json";
+import footerActionAuditData from "./footer-action-audit.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -32,6 +34,8 @@ import type {
   BehaviorPatternProposalRegistry,
   ActionSetRegistry,
   InteractionAuditRegistry,
+  CompletionPolicyRegistry,
+  FooterActionAuditRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -52,6 +56,8 @@ export const sectionPatternProposalRegistry = sectionPatternProposalData as Sect
 export const behaviorPatternProposalRegistry = behaviorPatternProposalData as BehaviorPatternProposalRegistry;
 export const actionSetRegistry = actionSetData as ActionSetRegistry;
 export const interactionAuditRegistry = interactionAuditData as InteractionAuditRegistry;
+export const completionPolicyRegistry = completionPolicyData as CompletionPolicyRegistry;
+export const footerActionAuditRegistry = footerActionAuditData as FooterActionAuditRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);

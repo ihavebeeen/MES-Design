@@ -8,8 +8,8 @@
   },
   "summary": {
     "scannedFiles": 107,
-    "totalOccurrences": 2919,
-    "arbitraryUtilities": 1068,
+    "totalOccurrences": 2932,
+    "arbitraryUtilities": 1072,
     "hardcodedColors": 68,
     "reviewCandidates": 0,
     "unregisteredCandidates": 0
@@ -23,14 +23,14 @@
     },
     "pattern": {
       "files": 20,
-      "occurrences": 1334,
-      "arbitraryUtilities": 460,
+      "occurrences": 1345,
+      "arbitraryUtilities": 462,
       "hardcodedColors": 43
     },
     "evidence": {
       "files": 9,
-      "occurrences": 424,
-      "arbitraryUtilities": 203,
+      "occurrences": 426,
+      "arbitraryUtilities": 205,
       "hardcodedColors": 4
     }
   },
@@ -38,11 +38,11 @@
     "spacing": [
       {
         "value": "8px",
-        "count": 184,
+        "count": 186,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 74,
-          "pattern": 83,
+          "pattern": 85,
           "evidence": 27
         },
         "examples": [
@@ -58,11 +58,11 @@
       },
       {
         "value": "20px",
-        "count": 143,
+        "count": 144,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 10,
-          "pattern": 92,
+          "pattern": 93,
           "evidence": 41
         },
         "examples": [
@@ -178,11 +178,11 @@
       },
       {
         "value": "0px",
-        "count": 24,
+        "count": 26,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 5,
-          "pattern": 5,
+          "pattern": 7,
           "evidence": 14
         },
         "examples": [
@@ -305,7 +305,7 @@
           "src/components/patterns/completed-popup-patterns.tsx:278",
           "src/components/patterns/exact-inventory-action-modal.tsx:78",
           "src/components/patterns/exact-inventory-add-modal.tsx:130",
-          "src/components/patterns/original-mes-screen-assets.tsx:75"
+          "src/components/patterns/original-mes-screen-assets.tsx:74"
         ]
       },
       {
@@ -874,11 +874,11 @@
       },
       {
         "value": "12px",
-        "count": 45,
-        "arbitraryCount": 45,
+        "count": 46,
+        "arbitraryCount": 46,
         "layers": {
           "canonical": 17,
-          "pattern": 22,
+          "pattern": 23,
           "evidence": 6
         },
         "examples": [
@@ -1133,11 +1133,11 @@
     "size": [
       {
         "value": "0px",
-        "count": 100,
+        "count": 102,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 16,
-          "pattern": 74,
+          "pattern": 76,
           "evidence": 10
         },
         "examples": [
@@ -1153,11 +1153,11 @@
       },
       {
         "value": "32px",
-        "count": 67,
+        "count": 68,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 23,
-          "pattern": 35,
+          "pattern": 36,
           "evidence": 9
         },
         "examples": [
@@ -1331,12 +1331,12 @@
       },
       {
         "value": "960px",
-        "count": 14,
-        "arbitraryCount": 14,
+        "count": 15,
+        "arbitraryCount": 15,
         "layers": {
           "canonical": 3,
           "pattern": 8,
-          "evidence": 3
+          "evidence": 4
         },
         "examples": [
           "src/components/ui/center-modal.tsx:31",
@@ -1470,6 +1470,26 @@
         ]
       },
       {
+        "value": "52px",
+        "count": 10,
+        "arbitraryCount": 10,
+        "layers": {
+          "canonical": 5,
+          "pattern": 2,
+          "evidence": 3
+        },
+        "examples": [
+          "src/components/ui/center-modal.tsx:166",
+          "src/components/ui/confirm-dialog.tsx:141",
+          "src/components/ui/quick-query.tsx:254",
+          "src/components/ui/radio-choice-dialog.tsx:121",
+          "src/components/ui/side-slide-panel.tsx:131",
+          "src/components/patterns/completed-popup-expanded-content.tsx:119",
+          "src/components/patterns/exact-inventory-action-modal.tsx:78",
+          "src/components/patterns/exact-inventory-add-modal.tsx:130"
+        ]
+      },
+      {
         "value": "14px",
         "count": 9,
         "arbitraryCount": 5,
@@ -1504,7 +1524,7 @@
           "src/components/patterns/exact-production-analytics-screen.tsx:45",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:49",
           "src/components/patterns/master-detail-pattern.tsx:29",
-          "src/components/patterns/original-mes-screen-assets.tsx:272",
+          "src/components/patterns/original-mes-screen-assets.tsx:271",
           "src/components/patterns/sales-transaction-statement-pattern.tsx:293"
         ]
       },
@@ -1564,26 +1584,6 @@
           "src/components/patterns/exact-production-analytics-screen.tsx:48",
           "src/components/patterns/exact-production-result-screen.tsx:106",
           "src/components/patterns/master-detail-pattern.tsx:35"
-        ]
-      },
-      {
-        "value": "52px",
-        "count": 9,
-        "arbitraryCount": 9,
-        "layers": {
-          "canonical": 5,
-          "pattern": 1,
-          "evidence": 3
-        },
-        "examples": [
-          "src/components/ui/center-modal.tsx:166",
-          "src/components/ui/confirm-dialog.tsx:141",
-          "src/components/ui/quick-query.tsx:254",
-          "src/components/ui/radio-choice-dialog.tsx:121",
-          "src/components/ui/side-slide-panel.tsx:131",
-          "src/components/patterns/completed-popup-expanded-content.tsx:119",
-          "src/components/patterns/exact-inventory-action-modal.tsx:78",
-          "src/components/patterns/exact-inventory-add-modal.tsx:130"
         ]
       },
       {
@@ -1675,8 +1675,8 @@
           "src/components/patterns/completed-popup-patterns.tsx:333",
           "src/components/patterns/exact-inventory-action-modal.tsx:86",
           "src/components/patterns/exact-inventory-add-modal.tsx:135",
-          "src/components/patterns/original-mes-screen-assets.tsx:139",
-          "src/components/patterns/original-mes-screen-assets.tsx:139",
+          "src/components/patterns/original-mes-screen-assets.tsx:138",
+          "src/components/patterns/original-mes-screen-assets.tsx:138",
           "src/components/patterns/sales-transaction-statement-pattern.tsx:235"
         ]
       },
@@ -1727,7 +1727,7 @@
           "src/components/ui/navbar.tsx:21",
           "src/components/patterns/completed-popup-expanded-content.tsx:503",
           "src/components/patterns/completed-popup-patterns.tsx:255",
-          "src/components/patterns/original-mes-screen-assets.tsx:106",
+          "src/components/patterns/original-mes-screen-assets.tsx:105",
           "src/components/patterns/section-patterns.tsx:170",
           "src/components/patterns/shipment-approval-pattern.tsx:69"
         ]
@@ -1779,7 +1779,7 @@
           "src/components/patterns/completed-popup-patterns.tsx:258",
           "src/components/patterns/exact-production-result-screen.tsx:108",
           "src/components/patterns/exact-purchase-modals.tsx:68",
-          "src/components/patterns/original-mes-screen-assets.tsx:74"
+          "src/components/patterns/original-mes-screen-assets.tsx:73"
         ]
       },
       {
@@ -1827,7 +1827,7 @@
           "src/components/ui/descriptions.tsx:34",
           "src/components/patterns/completed-popup-expanded-content.tsx:118",
           "src/components/patterns/exact-production-result-screen.tsx:108",
-          "src/components/patterns/original-mes-screen-assets.tsx:136"
+          "src/components/patterns/original-mes-screen-assets.tsx:135"
         ]
       },
       {
@@ -1840,8 +1840,8 @@
         "examples": [
           "src/components/patterns/exact-production-result-screen.tsx:112",
           "src/components/patterns/exact-production-result-screen.tsx:112",
-          "src/components/patterns/original-mes-screen-assets.tsx:105",
-          "src/components/patterns/original-mes-screen-assets.tsx:105"
+          "src/components/patterns/original-mes-screen-assets.tsx:104",
+          "src/components/patterns/original-mes-screen-assets.tsx:104"
         ]
       },
       {
@@ -1856,6 +1856,21 @@
           "src/components/patterns/exact-production-result-screen.tsx:115",
           "src/components/patterns/exact-production-result-screen.tsx:115",
           "src/components/patterns/exact-production-result-screen.tsx:115"
+        ]
+      },
+      {
+        "value": "1440px",
+        "count": 4,
+        "arbitraryCount": 4,
+        "layers": {
+          "pattern": 2,
+          "evidence": 2
+        },
+        "examples": [
+          "src/components/patterns/generated-screen-review.tsx:55",
+          "src/components/patterns/original-mes-screen-assets.tsx:271",
+          "src/components/patterns/original-mes-screen-assets.tsx:271",
+          "src/components/patterns/shipment-approval-pattern.tsx:248"
         ]
       },
       {
@@ -1899,7 +1914,7 @@
           "src/components/patterns/exact-form-management-screen.tsx:140",
           "src/components/patterns/exact-form-management-screen.tsx:149",
           "src/components/patterns/exact-form-management-screen.tsx:172",
-          "src/components/patterns/original-mes-screen-assets.tsx:141"
+          "src/components/patterns/original-mes-screen-assets.tsx:140"
         ]
       },
       {
@@ -1929,7 +1944,7 @@
         "examples": [
           "src/components/ui/side-slide-panel.tsx:22",
           "src/components/patterns/generated-screen-review.tsx:55",
-          "src/components/patterns/original-mes-screen-assets.tsx:272",
+          "src/components/patterns/original-mes-screen-assets.tsx:271",
           "src/components/patterns/shipment-approval-pattern.tsx:248"
         ]
       },
@@ -1945,20 +1960,6 @@
           "src/components/ui/query-date-range.tsx:21",
           "src/components/ui/query-date-range.tsx:23",
           "src/components/patterns/user-password-settings-pattern.tsx:178"
-        ]
-      },
-      {
-        "value": "1440px",
-        "count": 3,
-        "arbitraryCount": 3,
-        "layers": {
-          "pattern": 2,
-          "evidence": 1
-        },
-        "examples": [
-          "src/components/patterns/generated-screen-review.tsx:55",
-          "src/components/patterns/original-mes-screen-assets.tsx:272",
-          "src/components/patterns/shipment-approval-pattern.tsx:248"
         ]
       },
       {
@@ -2131,8 +2132,8 @@
           "evidence": 2
         },
         "examples": [
-          "src/components/patterns/original-mes-screen-assets.tsx:140",
-          "src/components/patterns/original-mes-screen-assets.tsx:140"
+          "src/components/patterns/original-mes-screen-assets.tsx:139",
+          "src/components/patterns/original-mes-screen-assets.tsx:139"
         ]
       },
       {
@@ -2424,8 +2425,8 @@
           "evidence": 2
         },
         "examples": [
-          "src/components/patterns/original-mes-screen-assets.tsx:73",
-          "src/components/patterns/original-mes-screen-assets.tsx:122"
+          "src/components/patterns/original-mes-screen-assets.tsx:72",
+          "src/components/patterns/original-mes-screen-assets.tsx:121"
         ]
       },
       {
@@ -3042,7 +3043,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/original-mes-screen-assets.tsx:247"
+          "src/components/patterns/original-mes-screen-assets.tsx:246"
         ]
       },
       {
@@ -3196,7 +3197,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/original-mes-screen-assets.tsx:217"
+          "src/components/patterns/original-mes-screen-assets.tsx:216"
         ]
       },
       {
@@ -4034,5 +4035,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "9c2bdbc92d8c1bfc"
+  "fingerprint": "c703b1edb08622f9"
 }

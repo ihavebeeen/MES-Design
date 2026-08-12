@@ -19,7 +19,6 @@ import { ExactFormManagementScreen } from "./exact-form-management-screen";
 import { ExactProductionResultScreen } from "./exact-production-result-screen";
 import { InspectionCriteriaDialog } from "./inspection-criteria-pattern";
 import { InspectionTrendAnalysisScreen } from "./inspection-trend-analysis-pattern";
-import { UserPasswordSettingsVisualFixture } from "./user-password-settings-pattern";
 
 type AssetId = "forms" | "responsive" | "trend" | "user-password-settings" | "sales-transaction-statement" | "shipment-approval";
 
@@ -269,7 +268,7 @@ function Required() { return <span className="ml-1 font-bold text-mes-danger-60"
 
 function OriginalMesScreenAssets() {
   const [active,setActive]=React.useState<AssetId>("forms");
-  return <div><AssetHeader active={active} onChange={setActive} />{active === "forms" && <FormsAsset />}{active === "responsive" && <ProductionResultResponsiveAsset />}{active === "trend" && <FigmaScreenPreview><InspectionTrendAnalysisScreen /></FigmaScreenPreview>}{active === "user-password-settings" && <UserPasswordSettingsVisualFixture />}{active === "sales-transaction-statement" && <FigmaScreenPreview><iframe title="판매관리 거래명세서 원본 구현" src="/visual-regression/sales-transaction-statement" className="h-[960px] w-[1920px] border-0" /></FigmaScreenPreview>}{active === "shipment-approval" && <FigmaScreenPreview><iframe title="출하승인 원본 구현" src="/visual-regression/shipment-approval" className="h-[900px] w-[1440px] border-0" /></FigmaScreenPreview>}</div>;
+  return <div><AssetHeader active={active} onChange={setActive} />{active === "forms" && <FormsAsset />}{active === "responsive" && <ProductionResultResponsiveAsset />}{active === "trend" && <FigmaScreenPreview><InspectionTrendAnalysisScreen /></FigmaScreenPreview>}{active === "user-password-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={960}><iframe title="사용자 비밀번호 설정 원본 구현" src="/visual-regression/user-password-settings" className="h-[960px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "sales-transaction-statement" && <FigmaScreenPreview><iframe title="판매관리 거래명세서 원본 구현" src="/visual-regression/sales-transaction-statement" className="h-[960px] w-[1920px] border-0" /></FigmaScreenPreview>}{active === "shipment-approval" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={900}><iframe title="출하승인 원본 구현" src="/visual-regression/shipment-approval" className="h-[900px] w-[1440px] border-0" /></FigmaScreenPreview>}</div>;
 }
 
 export { CavityContent, OriginalMesScreenAssets, ProductionResultResponsiveAsset };

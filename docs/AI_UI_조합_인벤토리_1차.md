@@ -7,11 +7,11 @@
 | 항목 | 결과 |
 |---|---:|
 | 검사 파일 | 30 |
-| 전체 줄 수 | 6,129 |
+| 전체 줄 수 | 6,195 |
 | 혼합 Section Frame 파일 | 2 |
 | 표준 Frame 없이 native section만 사용 | 13 |
 | rounded wrapper가 있는 Section 후보 파일 | 16 |
-| fingerprint | `5de65cb1185c9419` |
+| fingerprint | `e4f9307f225e5693` |
 
 ## Shell 사용
 
@@ -65,7 +65,7 @@
 | `mes-screen-fixtures.tsx` | 328 | - | section.search-table | rounded-wrapper-around-section-candidate |
 | `inspection-criteria-pattern.tsx` | 306 | CenterModal 1 | section.form-grid, section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 | `user-password-settings-pattern.tsx` | 304 | CenterModal 1, SideSlidePanel 1, ConfirmDialog 1 | section.form-grid | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
-| `original-mes-screen-assets.tsx` | 276 | SideSlidePanel 2 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
+| `original-mes-screen-assets.tsx` | 275 | SideSlidePanel 2 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
 | `shipment-approval-pattern.tsx` | 258 | CenterModal 2 | section.search-table | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 | `inspection-trend-analysis-pattern.tsx` | 241 | - | section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 

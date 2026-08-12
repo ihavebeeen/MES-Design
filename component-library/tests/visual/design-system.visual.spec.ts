@@ -538,6 +538,33 @@ test("양식 편집과 입고검사는 중앙 모달이 아니라 우측 전체 
   await expect(page).toHaveScreenshot("receiving-inspection-side-panel.png");
 });
 
+test("원본 화면 미리보기는 전체화면·원본 1대1·화면 맞춤을 공통 지원한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/patterns/original-mes-screen-assets");
+
+  const preview = page.locator("[data-figma-screen-preview]:visible").last();
+  await expect(preview).toHaveAttribute("data-figma-preview-ready", "true");
+  await expect(preview).toHaveAttribute("data-figma-preview-mode", "inline");
+  await page.getByRole("button", { name: "전체화면으로 보기", exact: true }).click();
+  await expect(preview).toHaveAttribute("data-figma-preview-fullscreen", "true");
+  await expect(preview).toHaveAttribute("data-figma-preview-mode", "fit");
+  expect(await preview.boundingBox()).toEqual({ x: 0, y: 0, width: 1440, height: 960 });
+  await expect(preview).toHaveAttribute("data-figma-preview-scale", "0.75");
+
+  await page.getByRole("button", { name: "원본 1:1", exact: true }).click();
+  await expect(preview).toHaveAttribute("data-figma-preview-mode", "actual");
+  await expect(preview).toHaveAttribute("data-figma-preview-scale", "1");
+  const actualSize = await preview.locator("[data-figma-preview-canvas]").evaluate((element) => ({ width: element.getBoundingClientRect().width, height: element.getBoundingClientRect().height }));
+  expect(actualSize).toEqual({ width: 1920, height: 960 });
+  expect(await preview.locator("[data-figma-preview-stage]").evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+
+  await page.getByRole("button", { name: "화면 맞춤", exact: true }).click();
+  await expect(preview).toHaveAttribute("data-figma-preview-mode", "fit");
+  await page.locator("body").press("Escape");
+  await expect(preview).not.toHaveAttribute("data-figma-preview-fullscreen", "true");
+  await expect(preview.getByRole("button", { name: "전체화면으로 보기", exact: true })).toBeVisible();
+});
+
 test("캐비티 배열 입력은 제어 상태로 동작하고 콘솔 오류를 만들지 않는다", async ({ page }) => {
   const consoleErrors: string[] = [];
   page.on("console", (message) => {

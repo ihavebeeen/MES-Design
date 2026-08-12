@@ -21,6 +21,8 @@ const sectionPatternProposalRegistry = readJson("section-pattern-proposals.json"
 const behaviorPatternProposalRegistry = readJson("behavior-pattern-proposals.json");
 const actionSetRegistry = readJson("action-sets.json");
 const interactionAuditRegistry = readJson("interaction-audit.json");
+const completionPolicyRegistry = readJson("completion-policy.json");
+const footerActionAuditRegistry = readJson("footer-action-audit.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -64,6 +66,8 @@ checkVersion("section-pattern-proposals", sectionPatternProposalRegistry);
 checkVersion("behavior-pattern-proposals", behaviorPatternProposalRegistry);
 checkVersion("action-sets", actionSetRegistry);
 checkVersion("interaction-audit", interactionAuditRegistry);
+checkVersion("completion-policy", completionPolicyRegistry);
+checkVersion("footer-action-audit", footerActionAuditRegistry);
 
 const actionSets = mapByUniqueId("action-sets", actionSetRegistry.actionSets ?? []);
 for (const actionSet of actionSets.values()) {
@@ -210,8 +214,32 @@ const patterns = mapByUniqueId("patterns", patternRegistry.patterns ?? []);
 const screens = mapByUniqueId("screens", screenRegistry.screens ?? []);
 const visualCases = mapByUniqueId("visual-regression", visualRegistry.cases ?? []);
 const sourceEvidence = mapByUniqueId("source-evidence", sourceEvidenceRegistry.sources ?? []);
+const footerActionAudits = mapByUniqueId("footer-action-audit", (footerActionAuditRegistry.entries ?? []).map((entry) => ({ ...entry, id: entry.sourceEvidenceId })));
 const generatedCandidates = mapByUniqueId("generated-screen-evaluations", generatedScreenRegistry.candidates ?? []);
 const interactionAudits = mapByUniqueId("interaction-audit", (interactionAuditRegistry.screens ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
+
+if (completionPolicyRegistry.policyId !== "mes.completion-claims") errors.push("completion-policy: policyId가 잘못되었습니다.");
+if (!["in-progress", "complete"].includes(completionPolicyRegistry.projectState)) errors.push("completion-policy: projectState는 in-progress 또는 complete여야 합니다.");
+const requiredCompletionTerms = ["implemented", "verified", "batch-complete", "project-complete"];
+for (const term of requiredCompletionTerms) {
+  if (!completionPolicyRegistry.terms?.[term]) errors.push(`completion-policy: terms.${term}이 필요합니다.`);
+}
+if (!Array.isArray(completionPolicyRegistry.reportingRequirements) || completionPolicyRegistry.reportingRequirements.length === 0) errors.push("completion-policy: reportingRequirements가 필요합니다.");
+if (!Array.isArray(completionPolicyRegistry.projectCompletionBlockers) || completionPolicyRegistry.projectCompletionBlockers.length === 0) errors.push("completion-policy: projectCompletionBlockers가 필요합니다.");
+if (!["in-progress", "verified"].includes(footerActionAuditRegistry.auditState)) errors.push("footer-action-audit: auditState는 in-progress 또는 verified여야 합니다.");
+const allowedFooterAuditStatuses = new Set(["queued", "implemented-unverified", "verified", "not-applicable"]);
+for (const source of sourceEvidence.values()) {
+  if (!footerActionAudits.has(source.id)) errors.push(`footer-action-audit: source-evidence '${source.id}'의 하단 액션 판정이 없습니다.`);
+}
+for (const audit of footerActionAudits.values()) {
+  const source = sourceEvidence.get(audit.sourceEvidenceId);
+  if (!source) errors.push(`footer-action-audit: 미등록 source-evidence '${audit.sourceEvidenceId}'를 참조합니다.`);
+  if (!allowedFooterAuditStatuses.has(audit.status)) errors.push(`footer-action-audit '${audit.sourceEvidenceId}': 알 수 없는 status '${audit.status}'`);
+  if (!audit.actionSet || !audit.note) errors.push(`footer-action-audit '${audit.sourceEvidenceId}': actionSet과 note가 필요합니다.`);
+  if (audit.status === "verified" && source?.status !== "verified") errors.push(`footer-action-audit '${audit.sourceEvidenceId}': source evidence가 verified가 아닌데 하단 액션을 verified로 표시했습니다.`);
+}
+const openFooterActionAudits = [...footerActionAudits.values()].filter((audit) => ["queued", "implemented-unverified"].includes(audit.status));
+if (footerActionAuditRegistry.auditState === "verified" && openFooterActionAudits.length > 0) errors.push(`footer-action-audit: 전체 verified로 선언했지만 미검수 하단 액션이 ${openFooterActionAudits.length}건 남아 있습니다.`);
 
 if (!/^\d{4}-\d{2}-\d{2}$/.test(interactionAuditRegistry.auditedAt ?? "")) errors.push("interaction-audit: auditedAt은 YYYY-MM-DD 형식이어야 합니다.");
 for (const screen of screens.values()) {
@@ -250,6 +278,19 @@ for (const source of sourceEvidence.values()) {
     if (!source.visualCaseId) errors.push(`source-evidence '${source.id}': verified 상태에는 visualCaseId가 필요합니다.`);
     else if (!visualCases.has(source.visualCaseId)) errors.push(`source-evidence '${source.id}': 미등록 visualCaseId '${source.visualCaseId}'를 참조합니다.`);
   }
+}
+
+const openSourceEvidence = [...sourceEvidence.values()].filter((source) => source.status !== "verified");
+const openGeneratedCandidates = [...generatedCandidates.values()].filter((candidate) => ["partial-success", "review"].includes(candidate.status));
+const unresolvedProposalRegistries = proposalRegistries.filter(([, registry]) => registry.status !== "resolved");
+const openCompositionFindings = [
+  ...(compositionSectionFrameLedgerRegistry.findings ?? []),
+  ...(compositionBehaviorLedgerRegistry.findings ?? []),
+  ...Object.values(compositionBehaviorLedgerRegistry.candidates ?? {}),
+].filter((finding) => ["migration-hold", "needs-review"].includes(finding.status));
+const projectCompletionBlockerCount = openSourceEvidence.length + openGeneratedCandidates.length + unresolvedProposalRegistries.length + openCompositionFindings.length + openFooterActionAudits.length;
+if (completionPolicyRegistry.projectState === "complete" && projectCompletionBlockerCount > 0) {
+  errors.push(`completion-policy: 전체 완료로 선언했지만 미해결 근거가 ${projectCompletionBlockerCount}건 남아 있습니다.`);
 }
 
 for (const candidate of generatedCandidates.values()) {
@@ -347,5 +388,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates.`
+  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates. Project state: ${completionPolicyRegistry.projectState}, open completion blockers: ${projectCompletionBlockerCount}.`
 );
