@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "policyId": "mes.ai-composition-grammar",
-  "policyVersion": "1.0.0",
+  "policyVersion": "1.1.0",
   "status": "active",
   "authority": "common-policy",
   "layers": [

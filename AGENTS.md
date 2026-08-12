@@ -1647,12 +1647,12 @@ prop으로 내려 정렬을 구조적으로 재수정. 6차: 헤더 토글과 �
 
 새 화면 또는 패턴 작업을 시작하기 전에 `component-library/src/design-system/registry/`를 먼저 조회한다.
 
-AI 화면 조합의 공통 기준은 `docs/AI_UI_조합_문법_공통정책.md`와 `component-library/src/design-system/registry/composition-policy.json`이다. 기존 문서나 schema가 이 정책과 충돌하면 즉시 덮어쓰지 말고 `migrationHolds`에 보류한 뒤 사용자 승인과 마이그레이션 계획 없이 구조를 변경하지 않는다.
+AI 화면 조합의 공통 기준은 `docs/AI_UI_조합_문법_공통정책.md`와 `component-library/src/design-system/registry/composition-policy.json`이다. 2026-08-12 복수 `patternRefs`와 Shell·Section·Behavior·ActionSet 이관은 완료됐다. 이후 새 충돌이 발견되면 이미 종결된 이관을 되돌리지 말고 새 `migrationHolds` 항목으로 분리해 사용자 승인과 마이그레이션 계획 없이 구조를 변경하지 않는다.
 
-`src/components/patterns/*.tsx`를 추가·수정하면 `npm run audit:composition`으로 관찰 인벤토리를 갱신한다. 자동 탐지된 Section·Behavior 후보는 `observed-not-canonical`이며, `docs/AI_UI_조합_문법_적용_TODO.md`의 2차 감사와 사용자 승인 전에는 표준 패턴으로 사용하지 않는다.
+`src/components/patterns/*.tsx`를 추가·수정하면 `npm run audit:composition`으로 관찰 인벤토리를 갱신한다. 자동 탐지 인벤토리는 `observed-not-canonical`이지만, 승인 결과가 `patterns.json`에 등록된 Section·Behavior·ActionSet은 표준으로 사용할 수 있다. 새 자동 탐지 후보만 사용자 승인 전까지 표준으로 사용하지 않는다.
 
 1. `screens.json`에서 가까운 MES 화면을 찾는다.
-2. 화면의 현재 `patternId`와 가장 가까운 shell·content·behavior 패턴 후보를 `patterns.json`에서 조회한다.
+2. 화면의 현재 `patternRefs`와 가장 가까운 shell·section·behavior·action-set 후보를 `patterns.json`에서 조회한다.
 3. 후보 패턴의 `requiredComponents`와 각 컴포넌트의 `source`/`rules`를 `components.json`에서 확인한다.
 4. 기존 조합과 요구사항의 차이를 `reuse`, `compose`, `extend`, `propose-new`, `normalize` 중 하나로 판정한다.
 5. 기존 컴포넌트로 표현할 수 없는 차이만 optional prop 또는 variant로 확장한다.

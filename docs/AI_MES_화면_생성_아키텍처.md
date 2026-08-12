@@ -7,7 +7,7 @@
 > Figma 원본: `F4n5Zr04PAbiRjfIFQAo6v` (`클라우드MES`)
 > 기준 화면설계서 노드: `8247:18600` (`웹 화면설계서 (최종)`)
 
-AI의 Shell·Section·Behavior 조합 단위와 승인 절차는 [AI UI 조합 문법 공통 정책](./AI_UI_조합_문법_공통정책.md)을 우선 적용한다. 이 문서의 기존 Archetype·단일 패턴 설명과 충돌하는 부분은 공통 정책의 `migration-hold`로 보류하며 즉시 삭제하거나 자동 변환하지 않는다.
+AI의 Shell·Section·Behavior·ActionSet 조합 단위와 승인 절차는 [AI UI 조합 문법 공통 정책](./AI_UI_조합_문법_공통정책.md)을 우선 적용한다. 이 문서의 Archetype은 현재 Registry에서 화면 단위 **Recipe**의 호환 명칭이며, 재사용의 최소 단위는 아니다. 화면 레지스트리의 복수 `patternRefs` 이관은 완료됐다.
 
 ## 1. 결정
 

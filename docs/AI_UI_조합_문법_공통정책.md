@@ -1,9 +1,10 @@
 # AI UI 조합 문법 공통 정책
 
 > 정책 ID: `mes.ai-composition-grammar`
-> 버전: `1.0.0`
+> 버전: `1.1.0`
 > 상태: 공통 정책 확정
-> 확정일: 2026-08-11
+> 최초 확정일: 2026-08-11
+> 현재 구현 동기화: 2026-08-12
 
 ## 1. 목적
 
@@ -68,30 +69,28 @@ SectionInstance
 
 ### 3.3 Section Pattern
 
-초기 분류 후보는 다음과 같다.
+현재 승인·구현된 공용 Section Pattern은 다음과 같다.
 
 - `section.form-grid`: 라벨과 입력 컨트롤의 열 기반 배열
 - `section.editable-row-list`: 행 단위 반복 입력과 추가·삭제
-- `section.search-table`: 조회 조건·검색·테이블
+- `section.search-table-composition`: 조회 조건·검색·테이블
 - `section.inspection-items`: 검사항목과 판정 입력
-- `section.before-after`: 변경 전후 비교
-- `section.summary`: 합계·결과·상태 요약
-- `section.collapsible-form`: 선택 입력 영역
+- `summary.table-total-row`: 표 컬럼과 정렬되는 합계행
+- `summary.result-total-card`: 표 밖의 독립 결과 요약
 
-이 목록은 구현 확정 목록이 아니다. 실제 원본과 기존 코드 감사 후 등록 여부를 결정한다.
+`before-after`, 접이식 입력 Frame, 수량 상태 카드는 현재 반복 근거가 부족하여 공용 패턴으로 승격하지 않고 해당 Recipe/ScreenSpec의 로컬 조합으로 유지한다.
 
 ### 3.4 Behavior Pattern
 
 Behavior는 시각 패턴에 암묵적으로 숨기지 않고 대상과 상태 계약을 명시한다.
 
-- `row.add-remove`
-- `row.inherit.customer`
-- `selection.enable-editor`
+- `row.mutation-policy`
+- `selection.reveal-inline-editor`
+- `selection.enable-actions`
 - `selection.master-detail`
 - `dismiss.restore-committed`
-- `table.group-selection`
 
-Behavior는 어떤 Section 또는 Action에 적용되는지 target을 가져야 한다. 예를 들어 `row.inherit.customer`는 새 행에 직전 행의 거래처만 복사하며 창고·품목·수량·LOT은 독립 초기값을 사용한다.
+Behavior는 어떤 Section 또는 Action에 적용되는지 target을 가져야 한다. 직전 거래처 계승처럼 단일 화면에만 확인된 초기값 정책은 공용 Behavior가 아니라 해당 ScreenSpec의 `row.mutation-policy` 설정으로 기록한다.
 
 ## 4. 패턴 등록 단위
 
@@ -130,47 +129,47 @@ AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스�
 ```json
 {
   "screenId": "easy-mode-receiving",
-  "shell": "overlay.side-slide.standard-900",
+  "shell": "shell.side-slide-panel",
   "sections": [
     {
-      "frame": "section.standard",
+      "frame": "frame.standard-section",
       "pattern": "section.form-grid",
       "title": "기본정보"
     },
     {
-      "frame": "section.standard",
+      "frame": "frame.standard-section",
       "pattern": "section.editable-row-list",
       "title": "품목/수량 직접 입력",
-      "behaviors": ["row.add-remove", "row.inherit.customer"]
+      "behaviors": ["row.mutation-policy"]
     }
   ],
-  "actions": "actions.cancel-save"
+  "actions": "action-set.cancel-save"
 }
 ```
 
 이 구조에서 큰 회색 라운드 wrapper는 등록된 Section Frame 또는 Section Pattern에 없으므로 자동으로 허용되지 않는다. 필요하다면 임의 추가가 아니라 신규 조합 제안과 승인을 거쳐야 한다.
 
-## 7. 기존 구조와의 충돌 및 보류
+## 7. 기존 구조 이관 결과
 
-아래 항목은 이 정책과 충돌하거나 세분화가 필요하지만 현재 구현을 즉시 변경하지 않는다.
+1차 이관 대상은 모두 종결했다.
 
-| 항목 | 현재 상태 | 보류 이유 | 후속 결정 |
-|---|---|---|---|
-| `screens.json.patternId` | 화면당 대표 패턴 1개 | 기존 조회 함수와 검사기가 단일 참조를 전제 | `patternRefs` 마이그레이션 설계 후 변경 |
-| `patterns.json` | popup/screen/table 크기의 패턴이 혼재 | 기존 화면과 시각 회귀가 직접 참조 | Shell·Section·Behavior·Recipe 감사 후 재분류 |
-| `source-assets.json.patterns` | 구체 화면 크기 패턴 포함 | 원본 증거와 표준 패턴 경계 재검토 필요 | 증거/Recipe/Pattern 분리 후 이동 |
-| `getImplementationContext` | screen → 단일 pattern 조회 | 현재 API 호환성 유지 필요 | 복수 패턴 컨텍스트 API 설계 후 교체 |
-| `check-design-system-registry` | 단일 pattern 참조만 검사 | 새 schema 미확정 | 병행 검증 기간을 둔 뒤 강화 |
-| MES Archetype 문서 | 화면 단위 구조·행동 계약 | Recipe와 Section Pattern의 경계가 혼재 | Archetype을 상위 Recipe로 재정의할지 검토 |
-| `src/components/patterns` | 완성 화면·팝업·섹션 조합이 혼재 | 대규모 파일 이동은 회귀 위험 | 분류 감사 후 단계적으로 이동 |
+| 항목 | 현재 결정 |
+|---|---|
+| `screens.json.patternRefs` | 모든 화면이 Shell·Section·Behavior·ActionSet을 복수 참조한다. |
+| `patterns.json` | 기존 화면 단위 항목은 Recipe 호환 계층으로 유지하고 세분 패턴을 함께 등록한다. |
+| `source-assets.json.patterns` | 원본 증거와 런타임 표준의 역할을 분리하되 조회 시 합성한다. |
+| `getImplementationContext` | 화면의 모든 Pattern과 중복 제거된 Component를 반환한다. |
+| `check-design-system-registry` | 빈 배열, 중복, 미등록 참조와 미해결 제안을 차단한다. |
+| MES Archetype 문서 | Archetype은 화면 단위 Recipe의 호환 명칭으로 사용한다. |
+| `src/components/patterns` | 물리 이동은 import 변경만 늘리므로 하지 않고 Registry가 논리 분류를 담당한다. |
 
-보류 항목은 기존 표준으로 확정된 것이 아니라 `migration-hold` 상태다. 신규 AI 생성은 이 공통 정책을 우선 적용하되, 현행 schema에 없는 참조는 임의로 표준 등록하지 않고 PatternDecision과 생성 시안 기록에 남긴다.
+향후 새 충돌이 발견되면 `composition-policy.json`에 새 migration hold를 추가하되, 이미 종결된 위 항목을 다시 보류 상태로 해석하지 않는다.
 
 ## 8. 정책 우선순위
 
 새로운 AI 화면 생성과 패턴 판정에서는 이 문서를 공통 기준으로 사용한다. 기존 문서와 충돌하면 기존 구현을 즉시 삭제하거나 덮어쓰지 않고 다음 순서를 따른다.
 
-1. 충돌 항목을 migration-hold에 등록한다.
+1. 아직 등록되지 않은 충돌 항목을 migration-hold에 등록한다.
 2. 관련 원본 화면과 코드 사용처를 감사한다.
 3. 마이그레이션 영향과 호환 경로를 작성한다.
 4. 사용자 승인 후 schema·코드·문서를 같은 변경에서 갱신한다.
@@ -179,7 +178,7 @@ AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스�
 
 ## 9. 적용 현황
 
-1차 얕은 전수조사는 완료했다.
+1차 얕은 전수조사, 2차 수동 감사, 사용자 승인과 코드 이관을 완료했다.
 
 - 구조화 결과: `component-library/src/design-system/registry/composition-inventory.json`
 - 사람용 보고서: [AI UI 조합 인벤토리 1차](./AI_UI_조합_인벤토리_1차.md)
@@ -190,4 +189,4 @@ AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스�
 - 승인 전 표준 후보: [AI UI 표준 후보 제안 1차](./AI_UI_표준_후보_제안_1차.md)
 - 후속 작업과 보류: [AI UI 조합 문법 적용 TODO](./AI_UI_조합_문법_적용_TODO.md)
 
-자동 탐지 결과의 상태는 `observed-not-canonical`이다. Section·Behavior 후보는 2차 수동 감사와 사용자 승인 전까지 공통 패턴으로 사용하지 않는다.
+자동 탐지 인벤토리 자체의 상태는 계속 `observed-not-canonical`이다. 다만 승인 결과가 `patterns.json`에 등록된 Section·Behavior·ActionSet은 공용 표준으로 사용할 수 있다. 새 자동 탐지 후보는 별도 승인 전까지 표준으로 사용하지 않는다.
