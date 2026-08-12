@@ -4,16 +4,16 @@
   "status": "observed-not-canonical",
   "scope": "src/components/patterns/*.tsx",
   "summary": {
-    "scannedFiles": 29,
-    "totalLines": 5867,
+    "scannedFiles": 30,
+    "totalLines": 6129,
     "shellInstances": {
-      "CenterModal": 6,
+      "CenterModal": 8,
       "SideSlidePanel": 9,
       "ConfirmDialog": 2
     },
     "filesWithMixedSectionFrames": 2,
-    "filesWithNativeSectionOnly": 12,
-    "filesWithRoundedSectionCandidates": 15
+    "filesWithNativeSectionOnly": 13,
+    "filesWithRoundedSectionCandidates": 16
   },
   "sectionCandidateSignals": [
     {
@@ -35,7 +35,7 @@
     },
     {
       "id": "section.search-table",
-      "fileCount": 8,
+      "fileCount": 9,
       "sources": [
         "src/components/patterns/equipment-inspection-records-modal.tsx",
         "src/components/patterns/exact-form-management-screen.tsx",
@@ -44,7 +44,8 @@
         "src/components/patterns/exact-production-result-screen.tsx",
         "src/components/patterns/exact-purchase-modals.tsx",
         "src/components/patterns/mes-screen-fixtures.tsx",
-        "src/components/patterns/sales-transaction-statement-pattern.tsx"
+        "src/components/patterns/sales-transaction-statement-pattern.tsx",
+        "src/components/patterns/shipment-approval-pattern.tsx"
       ]
     },
     {
@@ -91,7 +92,7 @@
   "behaviorSignals": [
     {
       "id": "selection.enable-editor",
-      "fileCount": 12,
+      "fileCount": 13,
       "sources": [
         "src/components/patterns/completed-application-patterns.tsx",
         "src/components/patterns/completed-popup-expanded-content.tsx",
@@ -104,17 +105,19 @@
         "src/components/patterns/exact-purchase-modals.tsx",
         "src/components/patterns/mes-screen-fixtures.tsx",
         "src/components/patterns/sales-transaction-statement-pattern.tsx",
+        "src/components/patterns/shipment-approval-pattern.tsx",
         "src/components/patterns/source-popup-gallery.tsx"
       ]
     },
     {
       "id": "dismiss.restore-committed",
-      "fileCount": 7,
+      "fileCount": 8,
       "sources": [
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/easy-mode-receiving-pattern.tsx",
         "src/components/patterns/inspection-criteria-pattern.tsx",
         "src/components/patterns/sales-transaction-statement-pattern.tsx",
+        "src/components/patterns/shipment-approval-pattern.tsx",
         "src/components/patterns/source-popup-gallery.tsx",
         "src/components/patterns/table-column-settings.tsx",
         "src/components/patterns/user-password-settings-pattern.tsx"
@@ -252,6 +255,13 @@
       "source": "src/components/patterns/section-patterns.tsx",
       "flags": [
         "native-section-without-registered-frame"
+      ]
+    },
+    {
+      "source": "src/components/patterns/shipment-approval-pattern.tsx",
+      "flags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
       ]
     },
     {
@@ -1614,7 +1624,7 @@
       "source": "src/components/patterns/original-mes-screen-assets.tsx",
       "name": "original-mes-screen-assets.tsx",
       "observedRole": "evidence",
-      "lines": 275,
+      "lines": 276,
       "exportedSymbols": [],
       "shells": [
         {
@@ -1765,7 +1775,7 @@
       "source": "src/components/patterns/sales-transaction-statement-pattern.tsx",
       "name": "sales-transaction-statement-pattern.tsx",
       "observedRole": "composition-source",
-      "lines": 346,
+      "lines": 349,
       "exportedSymbols": [],
       "shells": [
         {
@@ -1829,7 +1839,7 @@
           "jsxCount": 2
         }
       ],
-      "stateHookCount": 17,
+      "stateHookCount": 18,
       "behaviorSignals": [
         "dismiss.restore-committed",
         "selection.enable-editor"
@@ -1874,6 +1884,79 @@
       ],
       "reviewFlags": [
         "native-section-without-registered-frame"
+      ]
+    },
+    {
+      "source": "src/components/patterns/shipment-approval-pattern.tsx",
+      "name": "shipment-approval-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 258,
+      "exportedSymbols": [],
+      "shells": [
+        {
+          "id": "CenterModal",
+          "count": 2
+        }
+      ],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 2,
+        "dividerContainer": 0,
+        "roundedContainer": 1,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 3
+        },
+        {
+          "name": "CenterModal",
+          "jsxCount": 2
+        },
+        {
+          "name": "Filter",
+          "jsxCount": 1
+        },
+        {
+          "name": "Link",
+          "jsxCount": 1
+        },
+        {
+          "name": "QueryDateRange",
+          "jsxCount": 1
+        },
+        {
+          "name": "Radio",
+          "jsxCount": 1
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 2
+        },
+        {
+          "name": "TableColumn",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 11,
+      "behaviorSignals": [
+        "dismiss.restore-committed",
+        "selection.enable-editor"
+      ],
+      "sectionCandidateSignals": [
+        "section.search-table"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
       ]
     },
     {
@@ -2104,5 +2187,5 @@
       ]
     }
   ],
-  "fingerprint": "18ae84502c25af5b"
+  "fingerprint": "5de65cb1185c9419"
 }

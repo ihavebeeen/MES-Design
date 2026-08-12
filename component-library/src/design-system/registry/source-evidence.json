@@ -72,9 +72,10 @@
       "figmaNode": "17370:46831",
       "kind": "popup-bundle",
       "normalizedTarget": "popup.center.shipment-approval",
-      "status": "queued",
-      "notes": ["중앙 테이블 팝업을 재사용하되 승인·취소 상태와 결과 반영을 검증한다."],
-      "qualityGates": { "designContext": false, "metadataLedger": false, "componentMapping": false, "browserMeasurement": false, "interactionTest": false, "visualBaseline": false }
+      "status": "verified",
+      "notes": ["상위 섹션만 보지 않고 기존 출하승인 17370:46832, 일괄 출하승인 17370:48519, 품목 상세 18135:49478을 각각 재조회했다.", "현재 변경안은 960×680 일괄 팝업을 주 흐름으로 사용하고 3건 링크에서 670×568 품목 상세 팝업으로 이어진다.", "설명 문서의 반려→회수 변경, 조회 기간·필터·검색어 갱신, 선택한 전체 행 상태 변경 계약을 코드 state와 연결했다.", "브라우저에서 920px 본문·48px toolbar·356px 표·56px 상태 영역, 무가로 overflow, 회색 미선택·검정 선택·파란 행, 취소 복원을 실측했다."],
+      "qualityGates": { "designContext": true, "metadataLedger": true, "componentMapping": true, "browserMeasurement": true, "interactionTest": true, "visualBaseline": true },
+      "visualCaseId": "popup-shipment-approval-bulk"
     },
     {
       "id": "equipment-discharge-settings",

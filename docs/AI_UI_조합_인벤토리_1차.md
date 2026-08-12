@@ -6,18 +6,18 @@
 
 | 항목 | 결과 |
 |---|---:|
-| 검사 파일 | 29 |
-| 전체 줄 수 | 5,867 |
+| 검사 파일 | 30 |
+| 전체 줄 수 | 6,129 |
 | 혼합 Section Frame 파일 | 2 |
-| 표준 Frame 없이 native section만 사용 | 12 |
-| rounded wrapper가 있는 Section 후보 파일 | 15 |
-| fingerprint | `18ae84502c25af5b` |
+| 표준 Frame 없이 native section만 사용 | 13 |
+| rounded wrapper가 있는 Section 후보 파일 | 16 |
+| fingerprint | `5de65cb1185c9419` |
 
 ## Shell 사용
 
 | Shell | 인스턴스 |
 |---|---:|
-| CenterModal | 6 |
+| CenterModal | 8 |
 | SideSlidePanel | 9 |
 | ConfirmDialog | 2 |
 
@@ -28,17 +28,17 @@
 | sectionBand | 14 |
 | sectionHeader | 7 |
 | patternGroupHeader | 0 |
-| nativeSection | 32 |
+| nativeSection | 34 |
 | dividerContainer | 24 |
-| roundedContainer | 51 |
-| gray20Container | 26 |
+| roundedContainer | 52 |
+| gray20Container | 27 |
 
 ## 자동 탐지 Section 후보
 
 | 후보 | 파일 수 | 주요 소스 |
 |---|---:|---|
 | `section.summary` | 11 | `completed-application-patterns.tsx`, `completed-popup-expanded-content.tsx`, `completed-popup-patterns.tsx`, `exact-production-analytics-screen.tsx` |
-| `section.search-table` | 8 | `equipment-inspection-records-modal.tsx`, `exact-form-management-screen.tsx`, `exact-inventory-add-modal.tsx`, `exact-inventory-edit-modal.tsx` |
+| `section.search-table` | 9 | `equipment-inspection-records-modal.tsx`, `exact-form-management-screen.tsx`, `exact-inventory-add-modal.tsx`, `exact-inventory-edit-modal.tsx` |
 | `section.inspection-items` | 7 | `completed-popup-patterns.tsx`, `equipment-inspection-records-modal.tsx`, `inspection-criteria-pattern.tsx`, `inspection-trend-analysis-pattern.tsx` |
 | `section.form-grid` | 5 | `completed-popup-patterns.tsx`, `exact-production-analytics-screen.tsx`, `inspection-criteria-pattern.tsx`, `original-mes-screen-assets.tsx` |
 | `section.editable-row-list` | 3 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `original-mes-screen-assets.tsx` |
@@ -48,8 +48,8 @@
 
 | 후보 | 파일 수 | 주요 소스 |
 |---|---:|---|
-| `selection.enable-editor` | 12 | `completed-application-patterns.tsx`, `completed-popup-expanded-content.tsx`, `completed-popup-patterns.tsx`, `equipment-inspection-records-modal.tsx` |
-| `dismiss.restore-committed` | 7 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `inspection-criteria-pattern.tsx`, `sales-transaction-statement-pattern.tsx` |
+| `selection.enable-editor` | 13 | `completed-application-patterns.tsx`, `completed-popup-expanded-content.tsx`, `completed-popup-patterns.tsx`, `equipment-inspection-records-modal.tsx` |
+| `dismiss.restore-committed` | 8 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `inspection-criteria-pattern.tsx`, `sales-transaction-statement-pattern.tsx` |
 | `row.add-remove` | 4 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `original-mes-screen-assets.tsx`, `user-password-settings-pattern.tsx` |
 | `row.inherit-previous` | 1 | `easy-mode-receiving-pattern.tsx` |
 | `selection.master-detail` | 1 | `completed-application-patterns.tsx` |
@@ -60,14 +60,14 @@
 |---|---:|---|---|---|
 | `completed-popup-patterns.tsx` | 1029 | CenterModal 1, SideSlidePanel 5 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
 | `completed-popup-expanded-content.tsx` | 526 | CenterModal 1 | section.summary | rounded-wrapper-around-section-candidate |
-| `sales-transaction-statement-pattern.tsx` | 346 | CenterModal 1 | section.search-table, section.summary | native-section-without-registered-frame |
+| `sales-transaction-statement-pattern.tsx` | 349 | CenterModal 1 | section.search-table, section.summary | native-section-without-registered-frame |
 | `completed-application-patterns.tsx` | 334 | - | section.summary | rounded-wrapper-around-section-candidate |
 | `mes-screen-fixtures.tsx` | 328 | - | section.search-table | rounded-wrapper-around-section-candidate |
 | `inspection-criteria-pattern.tsx` | 306 | CenterModal 1 | section.form-grid, section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 | `user-password-settings-pattern.tsx` | 304 | CenterModal 1, SideSlidePanel 1, ConfirmDialog 1 | section.form-grid | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
-| `original-mes-screen-assets.tsx` | 275 | SideSlidePanel 2 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
+| `original-mes-screen-assets.tsx` | 276 | SideSlidePanel 2 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
+| `shipment-approval-pattern.tsx` | 258 | CenterModal 2 | section.search-table | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 | `inspection-trend-analysis-pattern.tsx` | 241 | - | section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
-| `easy-mode-receiving-pattern.tsx` | 192 | SideSlidePanel 1 | section.editable-row-list | - |
 
 ## 해석 제한
 

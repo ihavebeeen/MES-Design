@@ -21,7 +21,7 @@ import { InspectionCriteriaDialog } from "./inspection-criteria-pattern";
 import { InspectionTrendAnalysisScreen } from "./inspection-trend-analysis-pattern";
 import { UserPasswordSettingsVisualFixture } from "./user-password-settings-pattern";
 
-type AssetId = "forms" | "responsive" | "trend" | "user-password-settings" | "sales-transaction-statement";
+type AssetId = "forms" | "responsive" | "trend" | "user-password-settings" | "sales-transaction-statement" | "shipment-approval";
 
 function RotateCcw({ className }: { className?: string }) { return <IconReload size={16} className={className} />; }
 function ArrowLeftRight({ className }: { className?: string }) { return <span className={className}>↔</span>; }
@@ -33,11 +33,12 @@ const ASSETS: Array<{ id: AssetId; label: string; node: string; summary: string 
   { id: "trend", label: "공정검사 경향관리", node: "11751:102614", summary: "월별 비교 · 측정 데이터 · CAVITY · 검사 달성률" },
   { id: "user-password-settings", label: "사용자 비밀번호 설정", node: "17489:80534", summary: "사용자 정보 · 초기화 확인 · 최초 로그인 재설정" },
   { id: "sales-transaction-statement", label: "판매관리 거래명세서", node: "17475:46145", summary: "그룹 판매 목록 · 거래명세서 선택 · 출력" },
+  { id: "shipment-approval", label: "출하승인", node: "17370:46831", summary: "일괄 승인 · 상태 변경 · 품목 상세" },
 ];
 
 function AssetHeader({ active, onChange }: { active: AssetId; onChange: (id: AssetId) => void }) {
   return (
-    <div className="mb-5 grid grid-cols-1 gap-2 md:grid-cols-5">
+    <div className="mb-5 grid grid-cols-1 gap-2 md:grid-cols-6">
       {ASSETS.map((asset) => (
         <Button
           key={asset.id}
@@ -268,7 +269,7 @@ function Required() { return <span className="ml-1 font-bold text-mes-danger-60"
 
 function OriginalMesScreenAssets() {
   const [active,setActive]=React.useState<AssetId>("forms");
-  return <div><AssetHeader active={active} onChange={setActive} />{active === "forms" && <FormsAsset />}{active === "responsive" && <ProductionResultResponsiveAsset />}{active === "trend" && <FigmaScreenPreview><InspectionTrendAnalysisScreen /></FigmaScreenPreview>}{active === "user-password-settings" && <UserPasswordSettingsVisualFixture />}{active === "sales-transaction-statement" && <FigmaScreenPreview><iframe title="판매관리 거래명세서 원본 구현" src="/visual-regression/sales-transaction-statement" className="h-[960px] w-[1920px] border-0" /></FigmaScreenPreview>}</div>;
+  return <div><AssetHeader active={active} onChange={setActive} />{active === "forms" && <FormsAsset />}{active === "responsive" && <ProductionResultResponsiveAsset />}{active === "trend" && <FigmaScreenPreview><InspectionTrendAnalysisScreen /></FigmaScreenPreview>}{active === "user-password-settings" && <UserPasswordSettingsVisualFixture />}{active === "sales-transaction-statement" && <FigmaScreenPreview><iframe title="판매관리 거래명세서 원본 구현" src="/visual-regression/sales-transaction-statement" className="h-[960px] w-[1920px] border-0" /></FigmaScreenPreview>}{active === "shipment-approval" && <FigmaScreenPreview><iframe title="출하승인 원본 구현" src="/visual-regression/shipment-approval" className="h-[900px] w-[1440px] border-0" /></FigmaScreenPreview>}</div>;
 }
 
 export { CavityContent, OriginalMesScreenAssets, ProductionResultResponsiveAsset };

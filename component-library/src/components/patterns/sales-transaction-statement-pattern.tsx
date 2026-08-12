@@ -15,6 +15,7 @@ import { Table, type TableColumn, type TableGroup, type TableRowData } from "@/c
 import { IconArrow, IconCopy, IconDownload, IconPlus, IconSetting } from "@/components/icons";
 import { EntityListPattern } from "./entity-list-pattern";
 import { MesFixtureSidebar, MesPageTabs } from "./mes-screen-fixtures";
+import { BulkShipmentApprovalModal } from "./shipment-approval-pattern";
 
 interface SalesRow {
   shipmentDate: string;
@@ -283,6 +284,7 @@ function TransactionStatementModal({ open, onOpenChange }: TransactionStatementM
 
 function SalesTransactionStatementScreen() {
   const [modalOpen, setModalOpen] = React.useState(true);
+  const [bulkApprovalOpen, setBulkApprovalOpen] = React.useState(false);
   const [selectedIds, setSelectedIds] = React.useState(["sales-4", "sales-5", "sales-7", "sales-8"]);
   const [start, setStart] = React.useState(new Date(2025, 2, 13));
   const [end, setEnd] = React.useState(new Date(2025, 2, 13));
@@ -331,13 +333,14 @@ function SalesTransactionStatementScreen() {
             </div>
             <div data-testid="sales-footer-actions" className="flex gap-2">
               <Button size="small" variant="fillBlack" className="w-40" onClick={() => setModalOpen(true)}>거래명세서 출력</Button>
-              <Button size="small" variant="fillBlack" className="w-40">일괄 출하승인</Button>
+              <Button size="small" variant="fillBlack" className="w-40" onClick={() => setBulkApprovalOpen(true)}>일괄 출하승인</Button>
               <Button size="small" variant="fillMain" className="w-40 bg-mes-primary-70 hover:bg-mes-primary-70" startIcon={<IconPlus size={16} />}>청구 등록</Button>
             </div>
           </>
         }
       />
       <TransactionStatementModal open={modalOpen} onOpenChange={setModalOpen} />
+      <BulkShipmentApprovalModal open={bulkApprovalOpen} onOpenChange={setBulkApprovalOpen} />
     </div>
   );
 }

@@ -882,6 +882,58 @@ test("판매관리 거래명세서는 원본 목록과 1300px 출력 팝업 계�
   await expect(quickQueryDialog).toBeVisible();
   await quickQueryDialog.getByRole("button", { name: "취소", exact: true }).click();
   await expect(quickQueryDialog).toBeHidden();
+
+  await page.getByRole("button", { name: "일괄 출하승인", exact: true }).click();
+  const bulkApprovalDialog = page.getByRole("dialog", { name: "일괄 출하승인", exact: true });
+  await expect(bulkApprovalDialog).toBeVisible();
+  await bulkApprovalDialog.getByRole("button", { name: "취소", exact: true }).click();
+  await expect(bulkApprovalDialog).toBeHidden();
+});
+
+test("일괄 출하승인은 원본 960px 선택·상태 변경과 670px 품목 상세 흐름을 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/visual-regression/shipment-approval");
+
+  const bulkDialog = page.getByRole("dialog", { name: "일괄 출하승인", exact: true });
+  await expect(bulkDialog).toBeVisible();
+  expect(await bulkDialog.boundingBox()).toEqual({ x: 240, y: 110, width: 960, height: 680 });
+  expect(await page.getByTestId("bulk-shipment-approval-body").boundingBox()).toEqual({ x: 260, y: 182, width: 920, height: 536 });
+  expect(await page.getByTestId("shipment-approval-toolbar").boundingBox()).toEqual({ x: 260, y: 226, width: 920, height: 48 });
+  expect(await page.getByTestId("shipment-approval-status").boundingBox()).toEqual({ x: 260, y: 662, width: 920, height: 56 });
+
+  const overflowValues = await bulkDialog.locator("[data-testid='bulk-shipment-approval-body'], [data-testid='shipment-approval-toolbar'], [data-testid='shipment-approval-status']").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
+  expect(overflowValues).toEqual([0, 0, 0]);
+
+  const checks = bulkDialog.getByRole("checkbox");
+  await expect(checks.nth(1)).toBeChecked();
+  await expect(checks.nth(2)).toBeChecked();
+  await expect(checks.nth(3)).not.toBeChecked();
+  await expect(bulkDialog.getByRole("radio", { name: "승인대기", exact: true })).toBeChecked();
+  await expect(bulkDialog.getByRole("link", { name: "3건", exact: true }).first()).toHaveCSS("color", "rgb(21, 115, 251)");
+
+  const search = bulkDialog.getByPlaceholder("검색어 입력..", { exact: true });
+  await search.fill("대한항공");
+  await expect(bulkDialog.getByRole("link", { name: "3건", exact: true })).toHaveCount(1);
+  await search.fill("");
+
+  await hideDevelopmentOverlay(page);
+  await expect(page).toHaveScreenshot("shipment-approval-bulk.png");
+
+  await checks.nth(3).check();
+  await bulkDialog.getByRole("radio", { name: "승인", exact: true }).check();
+  await bulkDialog.getByRole("button", { name: "취소", exact: true }).click();
+  await page.getByRole("button", { name: "일괄 출하승인 열기", exact: true }).click();
+  await expect(bulkDialog.getByRole("checkbox").nth(3)).not.toBeChecked();
+  await expect(bulkDialog.getByRole("radio", { name: "승인대기", exact: true })).toBeChecked();
+
+  await bulkDialog.getByRole("link", { name: "3건", exact: true }).first().click();
+  const detailDialog = page.getByRole("dialog", { name: "출하승인", exact: true });
+  await expect(detailDialog).toBeVisible();
+  expect(await detailDialog.boundingBox()).toEqual({ x: 385, y: 166, width: 670, height: 568 });
+  expect(await page.getByTestId("shipment-item-detail-body").boundingBox()).toEqual({ x: 405, y: 238, width: 630, height: 424 });
+  expect(await detailDialog.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+  await expect(detailDialog.getByRole("button", { name: "닫기", exact: true }).last()).toBeVisible();
+  await expect(page).toHaveScreenshot("shipment-approval-item-detail.png");
 });
 
 test("사용자 정보와 비밀번호 초기화는 원본 패널·확인 팝업 계약을 유지한다", async ({ page }) => {
