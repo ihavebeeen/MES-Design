@@ -8,7 +8,7 @@
   },
   "summary": {
     "scannedFiles": 106,
-    "totalOccurrences": 2883,
+    "totalOccurrences": 2886,
     "arbitraryUtilities": 1055,
     "hardcodedColors": 68,
     "reviewCandidates": 0,
@@ -23,7 +23,7 @@
     },
     "pattern": {
       "files": 19,
-      "occurrences": 1300,
+      "occurrences": 1303,
       "arbitraryUtilities": 449,
       "hardcodedColors": 43
     },
@@ -1172,6 +1172,26 @@
         ]
       },
       {
+        "value": "160px",
+        "count": 29,
+        "arbitraryCount": 15,
+        "layers": {
+          "canonical": 7,
+          "pattern": 16,
+          "evidence": 6
+        },
+        "examples": [
+          "src/components/ui/dialog-footer.tsx:36",
+          "src/components/ui/group-query.tsx:157",
+          "src/components/ui/logo.tsx:21",
+          "src/components/ui/quick-query.tsx:405",
+          "src/components/ui/quick-query.tsx:408",
+          "src/components/ui/radio-choice-dialog.tsx:179",
+          "src/components/ui/radio-choice-dialog.tsx:187",
+          "src/components/patterns/completed-application-patterns.tsx:111"
+        ]
+      },
+      {
         "value": "48px",
         "count": 27,
         "arbitraryCount": 0,
@@ -1189,26 +1209,6 @@
           "src/components/patterns/completed-application-patterns.tsx:151",
           "src/components/patterns/completed-application-patterns.tsx:313",
           "src/components/patterns/completed-application-patterns.tsx:313"
-        ]
-      },
-      {
-        "value": "160px",
-        "count": 26,
-        "arbitraryCount": 15,
-        "layers": {
-          "canonical": 7,
-          "pattern": 13,
-          "evidence": 6
-        },
-        "examples": [
-          "src/components/ui/dialog-footer.tsx:36",
-          "src/components/ui/group-query.tsx:157",
-          "src/components/ui/logo.tsx:21",
-          "src/components/ui/quick-query.tsx:405",
-          "src/components/ui/quick-query.tsx:408",
-          "src/components/ui/radio-choice-dialog.tsx:179",
-          "src/components/ui/radio-choice-dialog.tsx:187",
-          "src/components/patterns/completed-application-patterns.tsx:111"
         ]
       },
       {
@@ -1505,7 +1505,7 @@
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:49",
           "src/components/patterns/master-detail-pattern.tsx:29",
           "src/components/patterns/original-mes-screen-assets.tsx:271",
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:266"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:291"
         ]
       },
       {
@@ -1659,7 +1659,7 @@
           "src/components/patterns/exact-inventory-add-modal.tsx:135",
           "src/components/patterns/original-mes-screen-assets.tsx:138",
           "src/components/patterns/original-mes-screen-assets.tsx:138",
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:209"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:234"
         ]
       },
       {
@@ -1726,7 +1726,7 @@
           "src/components/patterns/equipment-inspection-records-modal.tsx:176",
           "src/components/patterns/inspection-criteria-pattern.tsx:290",
           "src/components/patterns/mes-screen-fixtures.tsx:291",
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:196"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:221"
         ]
       },
       {
@@ -2770,7 +2770,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:242"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:267"
         ]
       },
       {
@@ -2847,7 +2847,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:298"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:323"
         ]
       },
       {
@@ -2858,7 +2858,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:243"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:268"
         ]
       },
       {
@@ -2869,7 +2869,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:242"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:267"
         ]
       },
       {
@@ -2957,7 +2957,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:241"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:266"
         ]
       },
       {
@@ -4004,5 +4004,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "c61dbaec5252ac42"
+  "fingerprint": "75dab59ed4d13b02"
 }

@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx",
   "summary": {
     "scannedFiles": 29,
-    "totalLines": 5842,
+    "totalLines": 5867,
     "shellInstances": {
       "CenterModal": 6,
       "SideSlidePanel": 9,
@@ -1765,7 +1765,7 @@
       "source": "src/components/patterns/sales-transaction-statement-pattern.tsx",
       "name": "sales-transaction-statement-pattern.tsx",
       "observedRole": "composition-source",
-      "lines": 321,
+      "lines": 346,
       "exportedSymbols": [],
       "shells": [
         {
@@ -1780,7 +1780,7 @@
         "nativeSection": 2,
         "dividerContainer": 1,
         "roundedContainer": 0,
-        "gray20Container": 3
+        "gray20Container": 2
       },
       "sectionTitles": [],
       "uiComponents": [
@@ -1809,6 +1809,18 @@
           "jsxCount": 2
         },
         {
+          "name": "QuickQuery",
+          "jsxCount": 1
+        },
+        {
+          "name": "QuickQueryPresetDialog",
+          "jsxCount": 1
+        },
+        {
+          "name": "QuickQuerySlot",
+          "jsxCount": 1
+        },
+        {
           "name": "SearchInput",
           "jsxCount": 2
         },
@@ -1817,7 +1829,7 @@
           "jsxCount": 2
         }
       ],
-      "stateHookCount": 14,
+      "stateHookCount": 17,
       "behaviorSignals": [
         "dismiss.restore-committed",
         "selection.enable-editor"
@@ -2092,5 +2104,5 @@
       ]
     }
   ],
-  "fingerprint": "7c46da10cc99d63c"
+  "fingerprint": "18ae84502c25af5b"
 }

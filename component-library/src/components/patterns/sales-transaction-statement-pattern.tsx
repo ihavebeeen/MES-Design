@@ -9,9 +9,10 @@ import { Filter } from "@/components/ui/filter";
 import { GroupQuery, type GroupQueryOption } from "@/components/ui/group-query";
 import { IconButton } from "@/components/ui/icon-button";
 import { QueryDateRange } from "@/components/ui/query-date-range";
+import { QuickQuery, QuickQueryPresetDialog, type QuickQuerySlot } from "@/components/ui/quick-query";
 import { SearchInput } from "@/components/ui/search-input";
 import { Table, type TableColumn, type TableGroup, type TableRowData } from "@/components/ui/table";
-import { IconArrow, IconCopy, IconDownload, IconSetting } from "@/components/icons";
+import { IconArrow, IconCopy, IconDownload, IconPlus, IconSetting } from "@/components/icons";
 import { EntityListPattern } from "./entity-list-pattern";
 import { MesFixtureSidebar, MesPageTabs } from "./mes-screen-fixtures";
 
@@ -135,15 +136,39 @@ function SalesQueryToolbar() {
   ];
   const filterCategories = [{ id: "billing", label: "청구", options: [{ id: "unbilled", label: "미청구" }, { id: "billed", label: "청구완료" }] }];
   const [filterValue, setFilterValue] = React.useState<Record<string, string[]>>({ billing: [] });
+  const [quickQueryId, setQuickQueryId] = React.useState<string | null>(null);
+  const [quickQueryOpen, setQuickQueryOpen] = React.useState(false);
+  const [quickQuerySlots, setQuickQuerySlots] = React.useState<QuickQuerySlot[]>([
+    { id: "sales-query-1", name: null },
+    { id: "sales-query-2", name: null },
+    { id: "sales-query-3", name: null },
+  ]);
 
   return (
-    <div className="flex h-12 items-center justify-between bg-mes-gray-20 px-5">
-      <div className="flex min-w-0 items-center gap-2.5">
-        <GroupQuery options={options} levels={levels} onLevelChange={(index, value) => setLevels((current) => current.map((item, itemIndex) => itemIndex === index ? value : item))} />
-        <Filter categories={filterCategories} value={filterValue} onChange={(id, values) => setFilterValue((current) => ({ ...current, [id]: values }))} />
+    <>
+      <div data-testid="sales-query-toolbar" className="flex h-12 items-center justify-between bg-white px-5">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <GroupQuery options={options} levels={levels} onLevelChange={(index, value) => setLevels((current) => current.map((item, itemIndex) => itemIndex === index ? value : item))} />
+          <Filter categories={filterCategories} value={filterValue} onChange={(id, values) => setFilterValue((current) => ({ ...current, [id]: values }))} />
+          <QuickQuery
+            presets={quickQuerySlots.flatMap((slot) => slot.name ? [{ id: slot.id, label: slot.name }] : [])}
+            activeId={quickQueryId}
+            onApply={setQuickQueryId}
+            onClearActive={() => setQuickQueryId(null)}
+            onSettingsClick={() => setQuickQueryOpen(true)}
+          />
+        </div>
+        <SearchInput value={search} onChange={setSearch} placeholder="검색어 입력.." size="compact" background="subtle" />
       </div>
-      <SearchInput value={search} onChange={setSearch} placeholder="검색어 입력.." size="compact" background="subtle" />
-    </div>
+      <QuickQueryPresetDialog
+        open={quickQueryOpen}
+        onOpenChange={setQuickQueryOpen}
+        slots={quickQuerySlots}
+        currentPreview={{ grouping: levels.map((level) => options.find((option) => option.id === level)?.label ?? "전체").join(" / ") }}
+        onDelete={(id) => { setQuickQuerySlots((current) => current.map((slot) => slot.id === id ? { ...slot, name: null } : slot)); if (quickQueryId === id) setQuickQueryId(null); }}
+        onSaveSlot={(id, name) => setQuickQuerySlots((current) => current.map((slot) => slot.id === id ? { ...slot, name } : slot))}
+      />
+    </>
   );
 }
 
@@ -304,10 +329,10 @@ function SalesTransactionStatementScreen() {
               <Button size="small" variant="lineBlacktxt" startIcon={<IconCopy size={16} />}>복사</Button>
               <Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button>
             </div>
-            <div className="flex gap-2">
-              <Button size="small" variant="lineBlacktxt" onClick={() => setModalOpen(true)}>거래명세서 출력</Button>
-              <Button size="small">일괄 출하승인</Button>
-              <Button size="small" variant="fillBlack">청구 등록</Button>
+            <div data-testid="sales-footer-actions" className="flex gap-2">
+              <Button size="small" variant="fillBlack" className="w-40" onClick={() => setModalOpen(true)}>거래명세서 출력</Button>
+              <Button size="small" variant="fillBlack" className="w-40">일괄 출하승인</Button>
+              <Button size="small" variant="fillMain" className="w-40 bg-mes-primary-70 hover:bg-mes-primary-70" startIcon={<IconPlus size={16} />}>청구 등록</Button>
             </div>
           </>
         }

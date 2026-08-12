@@ -834,6 +834,16 @@ test("판매관리 거래명세서는 원본 목록과 1300px 출력 팝업 계�
   await expect(modal).toBeVisible();
   expect(await screen.boundingBox()).toEqual({ x: 0, y: 0, width: 1920, height: 960 });
   expect(await modal.boundingBox()).toEqual({ x: 310, y: 157, width: 1300, height: 646 });
+  await expect(page.getByTestId("sales-query-toolbar")).toHaveCSS("background-color", "rgb(255, 255, 255)");
+  await expect(page.getByText("빠른 조회", { exact: true })).toBeVisible();
+
+  const footerActions = ["거래명세서 출력", "일괄 출하승인", "청구 등록"];
+  const footerActionStyles = await Promise.all(footerActions.map(async (label) => {
+    const button = screen.getByTestId("sales-footer-actions").locator("button").filter({ hasText: label });
+    return { box: await button.boundingBox(), background: await button.evaluate((element) => getComputedStyle(element).backgroundColor) };
+  }));
+  expect(footerActionStyles.map((style) => style.box?.width)).toEqual([160, 160, 160]);
+  expect(footerActionStyles.map((style) => style.background)).toEqual(["rgb(1, 19, 39)", "rgb(1, 19, 39)", "rgb(9, 88, 217)"]);
 
   const paneWidths = await modal.locator("[data-testid='statement-modal-body'] > section").evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().width));
   expect(paneWidths).toEqual([650, 650]);
@@ -866,6 +876,12 @@ test("판매관리 거래명세서는 원본 목록과 1300px 출력 팝업 계�
   await expect(page).toHaveScreenshot("sales-transaction-statement.png");
   await modal.getByRole("button", { name: "출력", exact: true }).click();
   await expect(modal).toBeHidden();
+
+  await page.getByRole("button", { name: "빠른 조회 설정", exact: true }).click();
+  const quickQueryDialog = page.getByRole("dialog", { name: "조회 조건 프리셋" });
+  await expect(quickQueryDialog).toBeVisible();
+  await quickQueryDialog.getByRole("button", { name: "취소", exact: true }).click();
+  await expect(quickQueryDialog).toBeHidden();
 });
 
 test("사용자 정보와 비밀번호 초기화는 원본 패널·확인 팝업 계약을 유지한다", async ({ page }) => {
