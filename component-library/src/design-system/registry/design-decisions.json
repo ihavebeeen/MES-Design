@@ -300,6 +300,39 @@
       "status": "confirmed",
       "scope": ["pattern:measurement-heatmap-analysis"],
       "evidence": "공정검사 경향관리 Figma 11751:102972의 행 축 슬롯 22px과 열 간격 4px의 합이다. 상단 열 번호를 첫 CAVITY 셀 x좌표와 맞추는 분석 패턴 전용 구조값이다."
+    },
+    {
+      "id": "spacing.user-password-login-account-inline",
+      "category": "spacing",
+      "property": "padding-inline",
+      "observedValue": "17px",
+      "canonicalValue": "17px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["screen:user-password-settings"],
+      "evidence": "최초 로그인 비밀번호 재설정 Figma 17687:46350의 계정 정보 블록은 464×50px이며 내부 텍스트가 좌측에서 17px 떨어져 있다. 입력 컨트롤이 아니라 읽기 전용 사용자 식별 영역이므로 일반 폼 필드의 12px inset으로 정규화하지 않는다."
+    },
+    {
+      "id": "spacing.user-password-login-top",
+      "category": "spacing",
+      "property": "padding-top",
+      "observedValue": "60px",
+      "canonicalValue": "60px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["screen:user-password-settings"],
+      "evidence": "최초 로그인 비밀번호 재설정 Figma 17687:46350에서 560×960px 로그인 폼의 브랜드 로고가 y=60px에서 시작한다. 로그인 전용 세로 구성을 재현하는 화면 고유 기준값이다."
+    },
+    {
+      "id": "radius.user-password-login-account",
+      "category": "radius",
+      "property": "border-radius",
+      "observedValue": "6px",
+      "canonicalValue": "6px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["screen:user-password-settings"],
+      "evidence": "최초 로그인 비밀번호 재설정 Figma 17687:46350의 계정 정보 블록은 radius 6px이다. 조작 가능한 4px 입력 필드와 구별되는 읽기 전용 사용자 식별 블록이므로 원본의 6px을 유지한다."
     }
   ]
 }

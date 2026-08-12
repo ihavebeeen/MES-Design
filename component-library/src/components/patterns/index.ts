@@ -6,3 +6,4 @@ export * from "./inspection-trend-analysis-pattern";
 export * from "./master-detail-pattern";
 export * from "./original-mes-screen-assets";
 export * from "./table-column-settings";
+export * from "./user-password-settings-pattern";

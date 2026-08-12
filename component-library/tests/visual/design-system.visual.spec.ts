@@ -825,6 +825,67 @@ test("공정검사 경향관리는 원본 분석 배치와 품목·CAVITY 연동
   await expect(screen).toHaveScreenshot("process-inspection-trend.png");
 });
 
+test("사용자 정보와 비밀번호 초기화는 원본 패널·확인 팝업 계약을 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/visual-regression/user-password-settings");
+
+  const panel = page.getByRole("dialog", { name: "사용자 정보" });
+  await expect(panel).toBeVisible();
+  expect(await panel.boundingBox()).toEqual({ x: 680, y: 0, width: 760, height: 960 });
+  const sectionWidths = await panel.locator("[data-user-information-panel] > section").evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().width));
+  expect(sectionWidths).toEqual([360, 400]);
+  expect(await panel.locator("[data-user-information-panel]").evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+  await hideDevelopmentOverlay(page);
+  await expect(panel).toHaveScreenshot("user-information-side-panel.png");
+
+  await panel.getByRole("button", { name: "비밀번호 초기화", exact: true }).click();
+  const confirmation = page.getByRole("dialog", { name: "비밀번호 초기화" });
+  await expect(confirmation).toBeVisible();
+  expect(await confirmation.boundingBox()).toEqual({ x: 507.5, y: 357, width: 425, height: 246 });
+  await expect(confirmation).toHaveScreenshot("user-password-reset-confirmation.png");
+  await confirmation.getByRole("button", { name: "취소", exact: true }).click();
+  await expect(confirmation).toBeHidden();
+
+  await panel.getByRole("textbox", { name: "사용자명" }).fill("변경 사용자");
+  await panel.getByRole("button", { name: "취소", exact: true }).click();
+  await page.getByRole("button", { name: "사용자 정보 열기", exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "사용자 정보" }).getByRole("textbox", { name: "사용자명" })).toHaveValue("");
+  await page.getByRole("dialog", { name: "사용자 정보" }).getByRole("button", { name: "취소", exact: true }).click();
+
+  await page.getByRole("button", { name: "초기화 비밀번호 설정", exact: true }).click();
+  const settings = page.getByRole("dialog", { name: "초기화 비밀번호 설정" });
+  await expect(settings).toBeVisible();
+  expect(await settings.boundingBox()).toEqual({ x: 512.5, y: 345, width: 415, height: 270 });
+  await expect(settings.getByRole("button", { name: "저장", exact: true })).toBeDisabled();
+  await expect(settings).toHaveScreenshot("user-initial-password-settings.png");
+  await settings.getByRole("textbox", { name: "초기화 비밀번호" }).fill("12345678");
+  await expect(settings.getByRole("button", { name: "저장", exact: true })).toBeEnabled();
+  await settings.getByRole("button", { name: "취소", exact: true }).click();
+  await page.getByRole("button", { name: "초기화 비밀번호 설정", exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "초기화 비밀번호 설정" }).getByRole("textbox", { name: "초기화 비밀번호" })).toHaveValue("");
+});
+
+test("최초 로그인 비밀번호 재설정은 불일치와 완료 상태를 검증한다", async ({ page }) => {
+  await page.setViewportSize({ width: 560, height: 960 });
+  await page.goto("/visual-regression/user-password-reset-login");
+  const screen = page.locator("[data-password-reset-login]");
+  expect(await screen.boundingBox()).toEqual({ x: 0, y: 0, width: 560, height: 960 });
+  await hideDevelopmentOverlay(page);
+  await expect(screen).toHaveScreenshot("user-password-reset-login.png");
+
+  const submit = screen.getByRole("button", { name: "비밀번호 변경", exact: true });
+  await expect(submit).toBeDisabled();
+  await screen.getByLabel("새 비밀번호", { exact: true }).fill("password123");
+  await screen.getByLabel("새 비밀번호 확인", { exact: true }).fill("password1234");
+  await expect(screen.getByRole("alert")).toHaveText("비밀번호가 일치하지 않습니다.");
+  await expect(submit).toBeDisabled();
+  await screen.getByLabel("새 비밀번호 확인", { exact: true }).fill("password123");
+  await expect(screen.getByRole("alert")).toHaveCount(0);
+  await expect(submit).toBeEnabled();
+  await submit.click();
+  await expect(page.getByRole("status")).toHaveText("비밀번호 변경 완료");
+});
+
 test("그룹화 리스트의 접기와 그룹 선택은 하위 행 상태에 반영된다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto("/patterns/grouped-list-screen");

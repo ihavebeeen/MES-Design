@@ -4,16 +4,16 @@
   "status": "observed-not-canonical",
   "scope": "src/components/patterns/*.tsx",
   "summary": {
-    "scannedFiles": 27,
-    "totalLines": 5214,
+    "scannedFiles": 28,
+    "totalLines": 5520,
     "shellInstances": {
-      "CenterModal": 4,
-      "SideSlidePanel": 8,
-      "ConfirmDialog": 1
+      "CenterModal": 5,
+      "SideSlidePanel": 9,
+      "ConfirmDialog": 2
     },
     "filesWithMixedSectionFrames": 2,
-    "filesWithNativeSectionOnly": 10,
-    "filesWithRoundedSectionCandidates": 14
+    "filesWithNativeSectionOnly": 11,
+    "filesWithRoundedSectionCandidates": 15
   },
   "sectionCandidateSignals": [
     {
@@ -60,12 +60,13 @@
     },
     {
       "id": "section.form-grid",
-      "fileCount": 4,
+      "fileCount": 5,
       "sources": [
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/exact-production-analytics-screen.tsx",
         "src/components/patterns/inspection-criteria-pattern.tsx",
-        "src/components/patterns/original-mes-screen-assets.tsx"
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/user-password-settings-pattern.tsx"
       ]
     },
     {
@@ -105,22 +106,24 @@
     },
     {
       "id": "dismiss.restore-committed",
-      "fileCount": 5,
+      "fileCount": 6,
       "sources": [
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/easy-mode-receiving-pattern.tsx",
         "src/components/patterns/inspection-criteria-pattern.tsx",
         "src/components/patterns/source-popup-gallery.tsx",
-        "src/components/patterns/table-column-settings.tsx"
+        "src/components/patterns/table-column-settings.tsx",
+        "src/components/patterns/user-password-settings-pattern.tsx"
       ]
     },
     {
       "id": "row.add-remove",
-      "fileCount": 3,
+      "fileCount": 4,
       "sources": [
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/easy-mode-receiving-pattern.tsx",
-        "src/components/patterns/original-mes-screen-assets.tsx"
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/user-password-settings-pattern.tsx"
       ]
     },
     {
@@ -250,6 +253,13 @@
     },
     {
       "source": "src/components/patterns/table-column-settings.tsx",
+      "flags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/user-password-settings-pattern.tsx",
       "flags": [
         "native-section-without-registered-frame",
         "rounded-wrapper-around-section-candidate"
@@ -1594,7 +1604,7 @@
       "source": "src/components/patterns/original-mes-screen-assets.tsx",
       "name": "original-mes-screen-assets.tsx",
       "observedRole": "evidence",
-      "lines": 272,
+      "lines": 274,
       "exportedSymbols": [],
       "shells": [
         {
@@ -1911,7 +1921,97 @@
         "native-section-without-registered-frame",
         "rounded-wrapper-around-section-candidate"
       ]
+    },
+    {
+      "source": "src/components/patterns/user-password-settings-pattern.tsx",
+      "name": "user-password-settings-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 304,
+      "exportedSymbols": [
+        "InitialPasswordSettingsDialog",
+        "PasswordResetLoginForm",
+        "UserInformationPanel",
+        "UserPasswordSettingsVisualFixture"
+      ],
+      "shells": [
+        {
+          "id": "CenterModal",
+          "count": 1
+        },
+        {
+          "id": "SideSlidePanel",
+          "count": 1
+        },
+        {
+          "id": "ConfirmDialog",
+          "count": 1
+        }
+      ],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 1,
+        "dividerContainer": 0,
+        "roundedContainer": 1,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "CenterModal",
+          "jsxCount": 1
+        },
+        {
+          "name": "ConfirmDialog",
+          "jsxCount": 1
+        },
+        {
+          "name": "FormFieldRow",
+          "jsxCount": 7
+        },
+        {
+          "name": "FormGrid",
+          "jsxCount": 2
+        },
+        {
+          "name": "IconExclamationCircle",
+          "jsxCount": 1
+        },
+        {
+          "name": "Input",
+          "jsxCount": 7
+        },
+        {
+          "name": "PasswordInput",
+          "jsxCount": 2
+        },
+        {
+          "name": "Radio",
+          "jsxCount": 1
+        },
+        {
+          "name": "SectionFrame",
+          "jsxCount": 2
+        },
+        {
+          "name": "SideSlidePanel",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 11,
+      "behaviorSignals": [
+        "dismiss.restore-committed",
+        "row.add-remove"
+      ],
+      "sectionCandidateSignals": [
+        "section.form-grid"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
     }
   ],
-  "fingerprint": "c240fc17c94c3ead"
+  "fingerprint": "452c64738615e3cc"
 }

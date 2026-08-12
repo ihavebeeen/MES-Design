@@ -15,6 +15,9 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `DatePicker` | `iconColor` | `muted \| default`, 기본 `muted` | 완성 화면에서 달력 아이콘이 기본 텍스트 색인 경우를 지원한다. | Figma `11210:50866` |
 | `DatePicker` | `size` | `default \| small`, 기본 `default` | 테이블 편집 셀의 22px 날짜 입력을 공용 DatePicker로 유지한다. | Figma `18813:62490` |
 | `Progress` | `labelTone` | `default \| danger`, 기본 `default` | 진행률 수치가 지연/오류 상태일 때 막대는 유지하고 라벨만 Danger-60으로 표시한다. | Figma `17503:85192` |
+| `Button` | `variant="loginPrimary"`, `size="login"` | 로그인 전용 48px·16px Bold 규격 | 최초 로그인 비밀번호 재설정의 전체 너비 버튼을 일반 MES 40px 액션 버튼과 구분한다. 비활성 배경은 원본 Gray-60을 유지한다. | Figma `17681:46566` |
+| `PasswordInput` | `size="login"` | 48px·16px, 기본 `default` | 로그인·비밀번호 재설정 문맥의 큰 입력 규격을 일반 MES 32px 입력과 구분한다. | Figma `17681:46541`, `17681:46551` |
+| `PasswordInput` | `visibilityToggle` | `boolean`, 기본 `true` | 원본에 보기/숨기기 아이콘이 없는 경우 입력 외형을 임의로 추가하지 않는다. | Figma `17681:46541`, `17681:46551` |
 | `Logo` | `brand` | `mes \| moncat-factory`, 기본 `mes` | 실제 MES 애플리케이션 원본 화면의 제품 워드마크를 표시한다. | Figma `17520:46628` |
 | `SearchInput` | `iconColor` | `muted \| default`, 기본 `muted` | 검색 아이콘의 화면별 명도 차이를 기존 컴포넌트 안에서 표현한다. | Figma `11210:50866` |
 | `SearchInput` | `size` | `default \| compact`, 기본 `default` | 상단 조회 툴바의 220×32, 14px, Gray-20 검색창을 페이지 CSS 덮어쓰기 없이 재사용한다. | 양식관리 목록, Figma `17309:158828` |

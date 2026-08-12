@@ -12,22 +12,27 @@ import { inputVariants } from "./input";
  */
 export interface PasswordInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
-  size?: "default" | "small";
+  size?: "default" | "small" | "login";
+  /** 로그인·비밀번호 재설정 원본처럼 보기/숨기기 아이콘이 없는 입력에서 false로 사용한다. */
+  visibilityToggle?: boolean;
 }
 
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ size = "default", className, disabled, ...props }, ref) => {
+  ({ size = "default", visibilityToggle = true, className, disabled, ...props }, ref) => {
     const [visible, setVisible] = React.useState(false);
+    const inputClassName = size === "login"
+      ? "h-12 w-full rounded-mes-control border border-mes-border-default bg-white px-[10px] text-[16px] text-mes-text-default outline-none placeholder:text-mes-text-placeholder focus:border-mes-border-strong disabled:cursor-not-allowed disabled:bg-mes-bg-disabled"
+      : inputVariants({ size });
     return (
       <div className={cn("relative inline-flex w-full items-center", className)}>
         <input
           ref={ref}
           type={visible ? "text" : "password"}
           disabled={disabled}
-          className={cn(inputVariants({ size }), "pr-8")}
+          className={cn(inputClassName, visibilityToggle && "pr-8")}
           {...props}
         />
-        <button
+        {visibilityToggle && <button
           type="button"
           disabled={disabled}
           onClick={() => setVisible((v) => !v)}
@@ -35,7 +40,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
           className="absolute right-2 flex items-center justify-center text-mes-gray-60 hover:text-mes-gray-90 disabled:pointer-events-none disabled:text-mes-gray-40"
         >
           {visible ? <EyeOff size={16} /> : <Eye size={16} />}
-        </button>
+        </button>}
       </div>
     );
   }

@@ -46,12 +46,14 @@ const buttonVariants = cva(
         opacityMain: "bg-mes-bg-brand-subtle-strong text-mes-text-brand hover:bg-[#d4eaff]",
         softMain: "border border-mes-primary-30 bg-mes-primary-10 text-mes-primary-60 hover:bg-mes-primary-20",
         softDanger: "border border-mes-danger-20 bg-mes-danger-10 text-mes-danger-60 hover:bg-mes-danger-20",
+        loginPrimary: "bg-mes-gray-130 text-white hover:bg-mes-gray-110 disabled:bg-mes-gray-60 disabled:text-white",
       },
       size: {
         basic: "h-10 px-4 text-[15px] rounded-mes-control",
         small: "h-8 px-2.5 text-[14px] rounded-mes-control",
         xsmall: "h-[22px] px-2 text-[12px] rounded-mes-control-xs",
         toolbar: "h-[30px] px-2.5 text-[14px] rounded-mes-control",
+        login: "h-12 px-4 text-[16px] font-bold rounded-mes-control",
       },
     },
     defaultVariants: {
