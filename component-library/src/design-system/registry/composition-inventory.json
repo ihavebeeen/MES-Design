@@ -4,16 +4,16 @@
   "status": "observed-not-canonical",
   "scope": "src/components/patterns/*.tsx",
   "summary": {
-    "scannedFiles": 26,
-    "totalLines": 4962,
+    "scannedFiles": 27,
+    "totalLines": 5192,
     "shellInstances": {
       "CenterModal": 4,
       "SideSlidePanel": 8,
       "ConfirmDialog": 1
     },
     "filesWithMixedSectionFrames": 2,
-    "filesWithNativeSectionOnly": 9,
-    "filesWithRoundedSectionCandidates": 13
+    "filesWithNativeSectionOnly": 10,
+    "filesWithRoundedSectionCandidates": 14
   },
   "sectionCandidateSignals": [
     {
@@ -33,6 +33,19 @@
       ]
     },
     {
+      "id": "section.inspection-items",
+      "fileCount": 7,
+      "sources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-inspection-records-modal.tsx",
+        "src/components/patterns/inspection-criteria-pattern.tsx",
+        "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/source-popup-gallery.tsx"
+      ]
+    },
+    {
       "id": "section.search-table",
       "fileCount": 7,
       "sources": [
@@ -43,18 +56,6 @@
         "src/components/patterns/exact-production-result-screen.tsx",
         "src/components/patterns/exact-purchase-modals.tsx",
         "src/components/patterns/mes-screen-fixtures.tsx"
-      ]
-    },
-    {
-      "id": "section.inspection-items",
-      "fileCount": 6,
-      "sources": [
-        "src/components/patterns/completed-popup-patterns.tsx",
-        "src/components/patterns/equipment-inspection-records-modal.tsx",
-        "src/components/patterns/inspection-criteria-pattern.tsx",
-        "src/components/patterns/original-mes-screen-assets.tsx",
-        "src/components/patterns/section-patterns.tsx",
-        "src/components/patterns/source-popup-gallery.tsx"
       ]
     },
     {
@@ -203,6 +204,13 @@
     },
     {
       "source": "src/components/patterns/inspection-criteria-pattern.tsx",
+      "flags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
       "flags": [
         "native-section-without-registered-frame",
         "rounded-wrapper-around-section-candidate"
@@ -1423,6 +1431,39 @@
       ]
     },
     {
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "name": "inspection-trend-analysis-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 228,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 3,
+        "dividerContainer": 2,
+        "roundedContainer": 5,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Table",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 3,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [
+        "section.inspection-items"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
       "source": "src/components/patterns/master-detail-pattern.tsx",
       "name": "master-detail-pattern.tsx",
       "observedRole": "composition-source",
@@ -1549,7 +1590,7 @@
       "source": "src/components/patterns/original-mes-screen-assets.tsx",
       "name": "original-mes-screen-assets.tsx",
       "observedRole": "evidence",
-      "lines": 270,
+      "lines": 272,
       "exportedSymbols": [],
       "shells": [
         {
@@ -1868,5 +1909,5 @@
       ]
     }
   ],
-  "fingerprint": "d17a1b680c243195"
+  "fingerprint": "bfe48de28170bd6f"
 }

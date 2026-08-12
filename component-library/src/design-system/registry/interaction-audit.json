@@ -22,6 +22,7 @@
     { "screenId": "inventory-edit", "status": "verified", "route": "/patterns/completed-popup-types", "contracts": ["선택 작업 bar", "이동 보조 팝업", "삭제 보조 팝업"], "tests": ["재고편집 선택 작업은 이동·삭제 보조 팝업으로 이어진다"] },
     { "screenId": "purchase-order-lookup", "status": "verified", "route": "/patterns/completed-popup-types", "contracts": ["품목 건수 링크", "품목 상세 팝업 전환"], "tests": ["발주 품목 건수 링크는 품목 상세 팝업으로 전환한다"] },
     { "screenId": "production-analytics-latest", "status": "verified", "route": "/patterns/completed-analytics-dashboard", "contracts": ["조회기간이 KPI·목록 문맥 변경", "조회기준이 표·차트 단위 변경", "계획 카드 설정 state"], "tests": ["생산분석 조회기간과 기준은 KPI·목록 단위를 함께 변경한다"] },
-    { "screenId": "equipment-inspection-records", "status": "verified", "route": "/visual-regression/equipment-inspection-records", "contracts": ["1400×680 중앙 팝업", "조회 toolbar 수직 중앙 정렬", "2단 헤더와 가로 overflow 없음", "회색 미선택·검정 선택·파란 행", "검색·필터·삭제"], "tests": ["냉각기 점검표 중앙 팝업"] }
+    { "screenId": "equipment-inspection-records", "status": "verified", "route": "/visual-regression/equipment-inspection-records", "contracts": ["1400×680 중앙 팝업", "조회 toolbar 수직 중앙 정렬", "2단 헤더와 가로 overflow 없음", "회색 미선택·검정 선택·파란 행", "검색·필터·삭제"], "tests": ["냉각기 점검표 중앙 팝업"] },
+    { "screenId": "process-inspection-trend", "status": "verified", "route": "/visual-regression/process-inspection-trend", "contracts": ["1920×960 전체 화면", "월별 비교 차트 800×305 두 개", "측정 목록·CAVITY·달성률 652/498/390 분할", "품목 활성 행과 히트맵 연동", "전체 분석 영역 가로 overflow 없음"], "tests": ["공정검사 경향관리는 원본 분석 배치와 품목·CAVITY 연동을 유지한다"] }
   ]
 }

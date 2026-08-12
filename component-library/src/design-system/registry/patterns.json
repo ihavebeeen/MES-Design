@@ -110,6 +110,33 @@
       "rules": ["요약 지표와 분석 패널의 정보 위계를 유지한다."]
     },
     {
+      "id": "section.monthly-comparison-chart",
+      "name": "월별 전년 비교 차트",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "requiredComponents": [],
+      "rules": ["현재 연도 실선과 이전 연도 점선을 같은 월 축에서 비교한다.", "차트 아래 월별 수치표는 차트의 동일한 두 시리즈를 그대로 사용한다."]
+    },
+    {
+      "id": "section.measurement-heatmap-analysis",
+      "name": "측정 목록·히트맵 분석",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "requiredComponents": ["table", "select"],
+      "rules": ["측정 목록의 active row와 CAVITY 히트맵을 master-detail 상태로 연결한다.", "표 선택은 체크박스가 아니라 Primary-60 활성 행으로 표시한다.", "10×10 빈 배열을 유지하고 실제 CAVITY 영역에만 측정값과 구간색을 표시한다."]
+    },
+    {
+      "id": "summary.inspection-achievement-stack",
+      "name": "검사 달성률 스택",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "requiredComponents": [],
+      "rules": ["입고·출하·공정 검사를 같은 달성률 구조로 반복한다.", "진행률과 예정·완료 건수를 같은 metric에서 파생한다."]
+    },
+    {
       "id": "table.grouped-list",
       "name": "그룹화 선택 테이블",
       "kind": "table",

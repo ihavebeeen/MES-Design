@@ -225,6 +225,17 @@
       "evidence": "운전일지 상단의 두 폼 열을 분리하는 Tailwind 4px 스케일 값이다. 54px 시간휠 그룹 간격도 이 값으로 정규화한다."
     },
     {
+      "id": "spacing.inspection-heatmap-inline-28",
+      "category": "spacing",
+      "property": "padding-inline",
+      "observedValue": "28px",
+      "canonicalValue": "28px",
+      "decision": "keep",
+      "status": "confirmed",
+      "scope": ["pattern:measurement-heatmap-analysis"],
+      "evidence": "공정검사 경향관리 Figma 11751:102698의 CAVITY 히트맵에서 10열 축과 셀을 498px 패널 안에 맞추는 좌우 28px 실측값이다. 4px 스케일 안의 분석 패턴 전용 값이며 일반 카드 padding으로 전파하지 않는다."
+    },
+    {
       "id": "radius.selection-action-pill",
       "category": "radius",
       "property": "border-radius",

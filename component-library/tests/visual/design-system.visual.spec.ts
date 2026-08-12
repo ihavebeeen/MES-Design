@@ -786,6 +786,37 @@ test("생산분석 조회기간과 기준은 KPI·목록 단위를 함께 변경
   await expect(screen.getByText("계획값 설정", { exact: true })).toBeVisible();
 });
 
+test("공정검사 경향관리는 원본 분석 배치와 품목·CAVITY 연동을 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/visual-regression/process-inspection-trend");
+  const screen = page.locator("[data-inspection-trend-screen]");
+  const charts = screen.locator("[data-monthly-comparison-panel]");
+  const analysis = screen.locator("[data-measurement-analysis-section]");
+  await expect(charts).toHaveCount(2);
+
+  const [screenBox, firstChartBox, secondChartBox, analysisBox] = await Promise.all([
+    screen.boundingBox(),
+    charts.nth(0).boundingBox(),
+    charts.nth(1).boundingBox(),
+    analysis.boundingBox(),
+  ]);
+  expect(screenBox).toEqual({ x: 0, y: 0, width: 1920, height: 960 });
+  expect(firstChartBox).toEqual({ x: 280, y: 100, width: 800, height: 305 });
+  expect(secondChartBox).toEqual({ x: 1100, y: 100, width: 800, height: 305 });
+  expect(analysisBox).toEqual({ x: 286, y: 425, width: 1620, height: 512 });
+
+  const overflows = await screen.locator("[data-monthly-comparison-panel], [data-measurement-analysis-section], [data-cavity-heatmap], [data-inspection-achievement-stack]").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
+  expect(overflows).toEqual([0, 0, 0, 0, 0]);
+
+  await screen.getByRole("row", { name: "팥빙수 35 32.4 27.5 35.5" }).first().click();
+  await expect(screen.locator('[data-cavity-heatmap][data-active-item="팥빙수"]')).toBeVisible();
+  await expect(screen.locator("[data-cavity-heatmap]").getByText("35", { exact: true }).first()).toBeVisible();
+  await screen.getByRole("row", { name: "비비빅 35 32.4 27.5 35.5" }).click();
+
+  await hideDevelopmentOverlay(page);
+  await expect(screen).toHaveScreenshot("process-inspection-trend.png");
+});
+
 test("그룹화 리스트의 접기와 그룹 선택은 하위 행 상태에 반영된다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto("/patterns/grouped-list-screen");

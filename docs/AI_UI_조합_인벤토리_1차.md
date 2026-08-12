@@ -6,12 +6,12 @@
 
 | 항목 | 결과 |
 |---|---:|
-| 검사 파일 | 26 |
-| 전체 줄 수 | 4,962 |
+| 검사 파일 | 27 |
+| 전체 줄 수 | 5,192 |
 | 혼합 Section Frame 파일 | 2 |
-| 표준 Frame 없이 native section만 사용 | 9 |
-| rounded wrapper가 있는 Section 후보 파일 | 13 |
-| fingerprint | `d17a1b680c243195` |
+| 표준 Frame 없이 native section만 사용 | 10 |
+| rounded wrapper가 있는 Section 후보 파일 | 14 |
+| fingerprint | `bfe48de28170bd6f` |
 
 ## Shell 사용
 
@@ -28,9 +28,9 @@
 | sectionBand | 14 |
 | sectionHeader | 7 |
 | patternGroupHeader | 0 |
-| nativeSection | 26 |
-| dividerContainer | 21 |
-| roundedContainer | 45 |
+| nativeSection | 29 |
+| dividerContainer | 23 |
+| roundedContainer | 50 |
 | gray20Container | 24 |
 
 ## 자동 탐지 Section 후보
@@ -38,8 +38,8 @@
 | 후보 | 파일 수 | 주요 소스 |
 |---|---:|---|
 | `section.summary` | 10 | `completed-application-patterns.tsx`, `completed-popup-expanded-content.tsx`, `completed-popup-patterns.tsx`, `exact-production-analytics-screen.tsx` |
+| `section.inspection-items` | 7 | `completed-popup-patterns.tsx`, `equipment-inspection-records-modal.tsx`, `inspection-criteria-pattern.tsx`, `inspection-trend-analysis-pattern.tsx` |
 | `section.search-table` | 7 | `equipment-inspection-records-modal.tsx`, `exact-form-management-screen.tsx`, `exact-inventory-add-modal.tsx`, `exact-inventory-edit-modal.tsx` |
-| `section.inspection-items` | 6 | `completed-popup-patterns.tsx`, `equipment-inspection-records-modal.tsx`, `inspection-criteria-pattern.tsx`, `original-mes-screen-assets.tsx` |
 | `section.form-grid` | 4 | `completed-popup-patterns.tsx`, `exact-production-analytics-screen.tsx`, `inspection-criteria-pattern.tsx`, `original-mes-screen-assets.tsx` |
 | `section.editable-row-list` | 3 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `original-mes-screen-assets.tsx` |
 | `section.before-after` | 1 | `production-quantity-reregistration-pattern.tsx` |
@@ -63,11 +63,11 @@
 | `completed-application-patterns.tsx` | 334 | - | section.summary | rounded-wrapper-around-section-candidate |
 | `mes-screen-fixtures.tsx` | 319 | - | section.search-table | rounded-wrapper-around-section-candidate |
 | `inspection-criteria-pattern.tsx` | 306 | CenterModal 1 | section.form-grid, section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
-| `original-mes-screen-assets.tsx` | 270 | SideSlidePanel 2 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
+| `original-mes-screen-assets.tsx` | 272 | SideSlidePanel 2 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
+| `inspection-trend-analysis-pattern.tsx` | 228 | - | section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 | `easy-mode-receiving-pattern.tsx` | 192 | SideSlidePanel 1 | section.editable-row-list | - |
 | `equipment-inspection-records-modal.tsx` | 192 | - | section.inspection-items, section.search-table | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 | `exact-form-management-screen.tsx` | 188 | - | section.search-table | - |
-| `section-patterns.tsx` | 181 | - | section.inspection-items, section.summary | native-section-without-registered-frame |
 
 ## 해석 제한
 

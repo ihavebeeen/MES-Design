@@ -215,6 +215,8 @@ export interface TableProps<T> {
   selectedIds?: string[];
   /** 체크 여부와 별개로 파란 활성 행을 지정한다. undefined면 기존처럼 선택 행이 활성 행이다. */
   activeId?: string | null;
+  /** 활성 행의 강조 강도. 경향관리 측정 데이터처럼 흰 글자/Primary-60 행은 solid를 사용한다. */
+  activeRowAppearance?: "subtle" | "solid";
   /** 표 안 체크박스의 기본 색. 활성 행은 원본 화면처럼 black을 우선한다. */
   selectionColor?: CheckboxColor;
   /** 미선택 체크박스 외형. MES 표에서는 회색 체크형을 사용한다. */
@@ -359,6 +361,7 @@ function DataRow<T>({
   columnDividers,
   disabledTextTone,
   unselectedTextTone,
+  activeRowAppearance,
 }: {
   row: TableRowData<T>;
   columns: TableColumn<T>[];
@@ -376,6 +379,7 @@ function DataRow<T>({
   columnDividers: boolean;
   disabledTextTone: "gray60" | "gray80";
   unselectedTextTone: "default" | "gray80";
+  activeRowAppearance: "subtle" | "solid";
 }) {
   const dividerColor = isActive || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
   return (
@@ -397,7 +401,11 @@ function DataRow<T>({
         "flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default",
         // 8차 후속: 담당자가 "비활성화는 텍스트 Gray-80, 배경 Gray-10"이라고 정확한 값을
         // 줘서 기존 opacity-50 판단값을 교체함. 배경은 선택 여부보다 disabled가 우선.
-        row.disabled ? "bg-mes-gray-10" : isActive ? "bg-mes-primary-20" : "bg-white",
+        row.disabled
+          ? "bg-mes-gray-10"
+          : isActive
+            ? activeRowAppearance === "solid" ? "bg-mes-primary-60" : "bg-mes-primary-20"
+            : "bg-white",
         row.disabled && "pointer-events-none",
         onActivate && !row.disabled && "cursor-pointer"
       )}
@@ -441,8 +449,10 @@ function DataRow<T>({
         >
           <span
             className={cn(
-              "w-full truncate text-[14px] leading-[1.3]",
-              row.disabled
+              "w-full truncate text-[14px] font-normal leading-[1.3]",
+              isActive && activeRowAppearance === "solid"
+                ? "text-white"
+                : row.disabled
                 ? disabledTextTone === "gray60" ? "text-mes-gray-60" : "text-mes-gray-80"
                 : !isActive && unselectedTextTone === "gray80"
                   ? "text-mes-gray-80"
@@ -642,6 +652,7 @@ function renderGroupNode<T>({
   columnDividers,
   disabledTextTone,
   unselectedTextTone,
+  activeRowAppearance,
 }: {
   group: TableGroup<T>;
   depth: number;
@@ -664,6 +675,7 @@ function renderGroupNode<T>({
   columnDividers: boolean;
   disabledTextTone: "gray60" | "gray80";
   unselectedTextTone: "default" | "gray80";
+  activeRowAppearance: "subtle" | "solid";
 }): React.ReactNode {
   const isCollapsed = collapsed[group.id] ?? group.defaultExpanded === false;
   const rowIds = collectGroupRowIds(group);
@@ -716,6 +728,7 @@ function renderGroupNode<T>({
                 columnDividers,
                 disabledTextTone,
                 unselectedTextTone,
+                activeRowAppearance,
               })
             )
           : (group.rows ?? []).map((row) => (
@@ -737,6 +750,7 @@ function renderGroupNode<T>({
                 columnDividers={columnDividers}
                 disabledTextTone={disabledTextTone}
                 unselectedTextTone={unselectedTextTone}
+                activeRowAppearance={activeRowAppearance}
               />
             )))}
     </React.Fragment>
@@ -749,6 +763,7 @@ function Table<T>({
   rows,
   selectedIds = [],
   activeId,
+  activeRowAppearance = "subtle",
   selectionColor = "black",
   unselectedCheckboxAppearance = "outline",
   selectionHeaderIndeterminate = true,
@@ -944,6 +959,7 @@ function Table<T>({
                 columnDividers: bodyColumnDividers,
                 disabledTextTone,
                 unselectedTextTone,
+                activeRowAppearance,
               })
             )
           : (rows ?? []).map((row) => (
@@ -965,6 +981,7 @@ function Table<T>({
                 columnDividers={bodyColumnDividers}
                 disabledTextTone={disabledTextTone}
                 unselectedTextTone={unselectedTextTone}
+                activeRowAppearance={activeRowAppearance}
               />
             ))}
 
