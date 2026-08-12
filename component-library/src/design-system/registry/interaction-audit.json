@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "auditedAt": "2026-08-12",
+  "screens": [
+    { "screenId": "material-input-settings", "status": "verified", "route": "/visual-regression/popup", "contracts": ["검색·필터 toolbar 중앙 정렬", "행 선택 시 수량 입력 노출", "가로 overflow 없음"], "tests": ["투입품목 설정/조회 작은 화면 정렬과 편집 상태"] },
+    { "screenId": "batch-work-order", "status": "verified", "route": "/visual-regression/batch-work-order-pilot", "contracts": ["행 선택 시 편집 입력 노출", "지시수량 숫자 입력", "취소 시 복원"], "tests": ["중앙 팝업 파일럿은 검색·테이블과 선택 행 편집 계약을 함께 사용한다", "팝업 취소와 X는 변경값을 버리고 닫는다"] },
+    { "screenId": "defect-quantity-input", "status": "verified", "route": "/visual-regression/defect", "contracts": ["가로 overflow 없음", "불량수량 합계 즉시 재계산"], "tests": ["불량수량 입력 팝업", "불량수량 입력은 값 변경 즉시 합계를 다시 계산한다"] },
+    { "screenId": "bom-copy", "status": "verified", "route": "/visual-regression/bom-copy", "contracts": ["원본·대상 비교 폭 유지", "두 표 가로 overflow 없음", "선택 열 중앙 정렬"], "tests": ["BOM 복사 원본 폭과 무가로스크롤"] },
+    { "screenId": "preissued-label", "status": "verified", "route": "/patterns/completed-popup-types", "contracts": ["선택 상태를 행 ID로 유지", "검색·삭제 뒤 선택 안정성", "수량 상태 즉시 계산"], "tests": ["선발행 라벨 선택은 검색과 삭제 뒤에도 행 ID 기준으로 유지된다"] },
+    { "screenId": "operation-log", "status": "verified", "route": "/patterns/completed-popup-types", "contracts": ["우측 SideSlidePanel", "시간 선택 확인 시 기록 반영", "품목·비가동유형 변경 반영", "합계 재계산"], "tests": ["운전일지 시간·품목 변경은 기록과 합계에 반영된다"] },
+    { "screenId": "production-result", "status": "verified", "route": "/visual-regression/production-result", "contracts": ["실적 추가 시 하단 목록 증가", "가로 overflow 없음"], "tests": ["생산실적 등록 슬라이드 팝업"] },
+    { "screenId": "receiving", "status": "verified", "route": "/visual-regression/receiving-pilot", "contracts": ["입고 추가 시 목록 증가", "저장 snapshot 갱신", "취소 시 저장 snapshot 복원"], "tests": ["입고등록은 승인된 SectionFrame·FormGrid·취소 복원 계약을 사용한다"] },
+    { "screenId": "custom-information", "status": "verified", "route": "/visual-regression/custom-information", "contracts": ["정보 편집기 열기·취소", "정보 저장 후 목록 반영", "가로 overflow 없음"], "tests": ["자주검사 커스텀 정보 등록 상태"] },
+    { "screenId": "self-inspection", "status": "verified", "route": "/visual-regression/inspection", "contracts": ["검사항목별 독립 판정", "항목 추가", "섹션 헤더 전체 폭"], "tests": ["자주검사 검사항목 헤더와 판정 영역", "자주검사 판정과 항목 추가는 독립 상태로 반영된다"] },
+    { "screenId": "grouped-production-list", "status": "verified", "route": "/patterns/grouped-list-screen", "contracts": ["그룹 접기·펼치기", "그룹 선택", "총계 열 정렬"], "tests": ["그룹화 리스트의 접기와 그룹 선택은 하위 행 상태에 반영된다", "그룹화 테이블 핵심 상태"] },
+    { "screenId": "form-inspection-criteria", "status": "verified", "route": "/visual-regression/form-inspection-criteria", "contracts": ["조건 유형 state 전환", "복합조건 추가·삭제", "판정값 선택", "취소 시 복원"], "tests": ["양식관리 숫자 검사 기준은 조건 유형별 원본 치수와 상태를 유지한다", "양식관리 판정형 검사 기준은 O·△·X 선택과 취소 복원을 지원한다"] },
+    { "screenId": "production-quantity-reregistration", "status": "verified", "route": "/visual-regression/production-quantity-reregistration", "contracts": ["변경 전후 비교", "닫기 시 유지", "재등록 후 다음 팝업 요청"], "tests": ["총 생산수량 변경 팝업은 원본 치수와 재등록 흐름을 유지한다"] },
+    { "screenId": "form-management", "status": "verified", "route": "/patterns/original-mes-screen-assets", "contracts": ["편집은 우측 패널", "기준 설정은 중앙 모달", "검사항목 empty·populated state"], "tests": ["양식 편집과 입고검사는 중앙 모달이 아니라 우측 전체 높이 패널이다"] },
+    { "screenId": "production-result-responsive", "status": "verified", "route": "/patterns/original-mes-screen-assets", "contracts": ["1280·768·375 breakpoint 전환", "좁은 화면 빠른 조회 설정"], "tests": ["생산실적 반응형 화면은 breakpoint와 빠른 조회 설정을 같은 상태로 유지한다"] },
+    { "screenId": "cavity-layout-settings", "status": "verified", "route": "/patterns/completed-popup-types", "contracts": ["배열 크기 제어 state", "자동·사용자 설정", "사용자 설정 번호 교환"], "tests": ["캐비티 배열 입력은 제어 상태로 동작하고 콘솔 오류를 만들지 않는다"] },
+    { "screenId": "inventory-add", "status": "verified", "route": "/visual-regression/source-inventory-add", "contracts": ["선택 행 상단 고정", "선택 행 입력 활성화", "취소·X 복원"], "tests": ["Figma 원본 재고 추가 팝업", "팝업 취소와 X는 변경값을 버리고 닫는다"] },
+    { "screenId": "inventory-edit", "status": "verified", "route": "/patterns/completed-popup-types", "contracts": ["선택 작업 bar", "이동 보조 팝업", "삭제 보조 팝업"], "tests": ["재고편집 선택 작업은 이동·삭제 보조 팝업으로 이어진다"] },
+    { "screenId": "purchase-order-lookup", "status": "verified", "route": "/patterns/completed-popup-types", "contracts": ["품목 건수 링크", "품목 상세 팝업 전환"], "tests": ["발주 품목 건수 링크는 품목 상세 팝업으로 전환한다"] },
+    { "screenId": "production-analytics-latest", "status": "verified", "route": "/patterns/completed-analytics-dashboard", "contracts": ["조회기간이 KPI·목록 문맥 변경", "조회기준이 표·차트 단위 변경", "계획 카드 설정 state"], "tests": ["생산분석 조회기간과 기준은 KPI·목록 단위를 함께 변경한다"] }
+  ]
+}

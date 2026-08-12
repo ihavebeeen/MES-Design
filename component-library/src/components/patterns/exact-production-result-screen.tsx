@@ -9,7 +9,7 @@ import { Link } from "@/components/ui/link";
 import { IconButton } from "@/components/ui/icon-button";
 import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
 import { QueryDateRange } from "@/components/ui/query-date-range";
-import { QuickQuery } from "@/components/ui/quick-query";
+import { QuickQuery, QuickQueryPresetDialog, type QuickQuerySlot } from "@/components/ui/quick-query";
 import { SearchInput } from "@/components/ui/search-input";
 import { Table, type TableColumn, type TableGroup, type TableRowData } from "@/components/ui/table";
 
@@ -67,6 +67,12 @@ function ExactProductionResultScreen({ viewport = 1280 }: ExactProductionResultS
   const [selectedIds, setSelectedIds] = React.useState(["p4"]);
   const [startDate, setStartDate] = React.useState<Date | null>(new Date(2025, 9, 30));
   const [endDate, setEndDate] = React.useState<Date | null>(new Date(2025, 9, 30));
+  const [quickSettingsOpen, setQuickSettingsOpen] = React.useState(false);
+  const [quickSlots, setQuickSlots] = React.useState<QuickQuerySlot[]>([
+    { id: "setting-1", name: "설정 1", detail: { grouping: "지시일 > 설비" } },
+    { id: "setting-2", name: "설정 2" },
+    { id: "setting-3", name: "설정 3" },
+  ]);
 
   const filteredRows = React.useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -95,10 +101,11 @@ function ExactProductionResultScreen({ viewport = 1280 }: ExactProductionResultS
   ];
 
   return (
+    <>
     <div className="flex flex-col overflow-hidden bg-white text-mes-text-default" style={{ width: viewport, height: mobile ? 812 : 960 }}>
       <div className="flex h-[38px] shrink-0 items-center justify-between bg-black pr-3"><div className="flex h-full"><PageTopTabItem label="생산실적" active bookmarked closable={!mobile} />{!mobile && <><PageTopTabItem label="거래처 등록" /><PageTopTabItem label="품목 등록" bookmarked /></>}</div><div className="flex gap-4 text-white"><IconBell size={20} /><IconUserMono size={20} /></div></div>
-      <div className="flex h-12 shrink-0 items-center border-b border-mes-border-default px-5"><IconButton icon={<IconMenu size={17} />} aria-label="메뉴" /><h2 className="ml-[10px] text-[20px] font-bold whitespace-nowrap">생산실적 리스트</h2><div className="ml-auto flex items-center gap-[10px]">{mobile ? <><IconButton icon={<IconCalendar size={16} />} aria-label="조회기준일자" variant="lineBlacktxt" /><IconButton icon={<IconSetting size={16} />} aria-label="설정" variant="lineBlacktxt" /></> : <><QueryDateRange start={startDate} end={endDate} onStartChange={setStartDate} onEndChange={setEndDate} /><Button size="small">조회</Button><Button size="small" variant="lineBlacktxt" startIcon={<IconSetting size={16} />}>설정</Button></>}</div></div>
-      <div className="flex h-12 shrink-0 items-center gap-[10px] border-b border-mes-border-default px-5"><GroupQuery options={GROUP_OPTIONS} levels={levels} onLevelChange={(index, value) => setLevels((current) => current.map((item, itemIndex) => itemIndex === index ? value : item))} compact={compact} compactLabel={mobile ? false : "그룹화"} /><Filter categories={FILTER_CATEGORIES} value={filters} onChange={(categoryId, optionIds) => setFilters((current) => ({ ...current, [categoryId]: optionIds }))} triggerLabel={compact ? (mobile ? false : "필터") : false} showTriggerArrow={compact} showActiveTags={!compact} />{mobile ? <QuickQuery presets={[]} activeId={null} onApply={() => {}} onClearActive={() => {}} onSettingsClick={() => {}} compact /> : <QuickQuery presets={[{ id: "setting-1", label: "설정 1" }, { id: "setting-2", label: "설정 2" }, { id: "setting-3", label: "설정 3" }]} activeId={quickId} onApply={setQuickId} onClearActive={() => setQuickId(null)} onSettingsClick={() => {}} triggerLabel={false} className="ml-auto" />}<SearchInput value={query} onChange={setQuery} placeholder={compact ? "검색" : ""} size="compact" background="white" className={mobile ? "ml-auto !w-[100px]" : tablet ? "!w-[160px]" : "!w-[120px]"} /></div>
+      <div className="flex h-12 shrink-0 items-center border-b border-mes-border-default px-5"><IconButton icon={<IconMenu size={17} />} aria-label="메뉴" /><h2 className="ml-[10px] text-[20px] font-bold whitespace-nowrap">생산실적 리스트</h2><div className="ml-auto flex items-center gap-[10px]">{mobile ? <><IconButton icon={<IconCalendar size={16} />} aria-label="조회기준일자" variant="lineBlacktxt" /><IconButton icon={<IconSetting size={16} />} aria-label="설정" variant="lineBlacktxt" onClick={() => setQuickSettingsOpen(true)} /></> : <><QueryDateRange start={startDate} end={endDate} onStartChange={setStartDate} onEndChange={setEndDate} /><Button size="small">조회</Button><Button size="small" variant="lineBlacktxt" startIcon={<IconSetting size={16} />} onClick={() => setQuickSettingsOpen(true)}>설정</Button></>}</div></div>
+      <div className="flex h-12 shrink-0 items-center gap-[10px] border-b border-mes-border-default px-5"><GroupQuery options={GROUP_OPTIONS} levels={levels} onLevelChange={(index, value) => setLevels((current) => current.map((item, itemIndex) => itemIndex === index ? value : item))} compact={compact} compactLabel={mobile ? false : "그룹화"} /><Filter categories={FILTER_CATEGORIES} value={filters} onChange={(categoryId, optionIds) => setFilters((current) => ({ ...current, [categoryId]: optionIds }))} triggerLabel={compact ? (mobile ? false : "필터") : false} showTriggerArrow={compact} showActiveTags={!compact} />{mobile ? <QuickQuery presets={[]} activeId={quickId} onApply={setQuickId} onClearActive={() => setQuickId(null)} onSettingsClick={() => setQuickSettingsOpen(true)} compact /> : <QuickQuery presets={quickSlots.filter((slot) => slot.name).map((slot) => ({ id: slot.id, label: slot.name! }))} activeId={quickId} onApply={setQuickId} onClearActive={() => setQuickId(null)} onSettingsClick={() => setQuickSettingsOpen(true)} triggerLabel={false} className="ml-auto" />}<SearchInput value={query} onChange={setQuery} placeholder={compact ? "검색" : ""} size="compact" background="white" className={mobile ? "ml-auto !w-[100px]" : tablet ? "!w-[160px]" : "!w-[120px]"} /></div>
       <div className="flex min-h-0 flex-1 overflow-x-auto overflow-y-hidden">
         <div className="flex h-full min-w-[1280px] flex-col">
           <Table<ProductionRow> columns={columns} groups={groups} selectedIds={selectedIds} onSelectedIdsChange={setSelectedIds} selectionColor="black" unselectedCheckboxAppearance="grayCheck" selectionHeaderIndeterminate={false} edgePadding={0} selectionColumnWidth={40} centerSelection columnDividers horizontalScroll={false} showMasterGroupToggles={false} groupLevelColors={["#fde9ea"]} className="rounded-none border-x-0 border-t-0" />
@@ -107,6 +114,15 @@ function ExactProductionResultScreen({ viewport = 1280 }: ExactProductionResultS
       </div>
       {mobile ? <div className="flex h-[121px] shrink-0 flex-col border-t border-mes-border-default px-5 py-2"><div className="flex gap-[10px]"><IconButton icon={<IconCopy size={16} />} aria-label="복사" variant="lineBlacktxt" /><IconButton icon={<IconDownload size={16} />} aria-label="다운로드" variant="lineBlacktxt" /></div><div className="mt-[10px] grid grid-cols-[77px_77px_77px_77px] gap-[9px]"><Button size="small" variant="fillBlack" className="px-0">삭제</Button><Button size="small" variant="fillBlack" className="px-0">출하지시 등록</Button><Button size="small" variant="fillBlack" className="px-0 text-[12px]">엑셀 일괄등록</Button><Button size="small" className="px-0">판매계획 등록</Button></div></div> : tablet ? <div className="flex h-[46px] shrink-0 items-center px-5"><div className="flex gap-[10px]"><IconButton icon={<IconCopy size={16} />} aria-label="복사" variant="lineBlacktxt" /><IconButton icon={<IconDownload size={16} />} aria-label="다운로드" variant="lineBlacktxt" /></div><div className="ml-auto grid grid-cols-4 gap-[10px]"><Button size="small" variant="fillBlack" className="w-[130px]">버튼1</Button><Button size="small" variant="fillBlack" className="w-[130px]">버튼2</Button><Button size="small" variant="fillBlack" className="w-[130px]">버튼3</Button><Button size="small" variant="fillBlack" className="w-[130px]">버튼4</Button></div></div> : <div className="flex h-[46px] shrink-0 items-center px-5"><div className="flex gap-[10px]"><Button size="small" variant="lineBlacktxt" startIcon={<IconCopy size={16} />}>복사</Button><Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button></div><div className="ml-auto flex gap-[10px]"><Button size="small" variant="fillBlack" className="w-[160px]">원료투입분석</Button><Button size="small" variant="fillBlack" className="w-[160px]">삭제</Button><Button size="small" variant="fillBlack" className="w-[160px]">생산실적등록</Button></div></div>}
     </div>
+    <QuickQueryPresetDialog
+      open={quickSettingsOpen}
+      onOpenChange={setQuickSettingsOpen}
+      slots={quickSlots}
+      onDelete={(id) => { setQuickSlots((current) => current.map((slot) => slot.id === id ? { ...slot, name: null } : slot)); if (quickId === id) setQuickId(null); }}
+      onSaveSlot={(id, name) => setQuickSlots((current) => current.map((slot) => slot.id === id ? { ...slot, name } : slot))}
+      currentPreview={{ grouping: levels.filter(Boolean).map((level) => GROUP_OPTIONS.find((option) => option.id === level)?.label).filter(Boolean).join(" > ") }}
+    />
+    </>
   );
 }
 

@@ -14,6 +14,7 @@ import compositionBehaviorLedgerData from "./composition-behavior-ledger.json";
 import sectionPatternProposalData from "./section-pattern-proposals.json";
 import behaviorPatternProposalData from "./behavior-pattern-proposals.json";
 import actionSetData from "./action-sets.json";
+import interactionAuditData from "./interaction-audit.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -30,6 +31,7 @@ import type {
   SectionPatternProposalRegistry,
   BehaviorPatternProposalRegistry,
   ActionSetRegistry,
+  InteractionAuditRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -49,6 +51,7 @@ export const compositionBehaviorLedgerRegistry = compositionBehaviorLedgerData a
 export const sectionPatternProposalRegistry = sectionPatternProposalData as SectionPatternProposalRegistry;
 export const behaviorPatternProposalRegistry = behaviorPatternProposalData as BehaviorPatternProposalRegistry;
 export const actionSetRegistry = actionSetData as ActionSetRegistry;
+export const interactionAuditRegistry = interactionAuditData as InteractionAuditRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);

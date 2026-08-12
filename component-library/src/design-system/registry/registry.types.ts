@@ -66,6 +66,20 @@ export interface ScreenRegistry {
   screens: ScreenRegistryEntry[];
 }
 
+export interface InteractionAuditEntry {
+  screenId: string;
+  status: "verified" | "needs-review";
+  route: string;
+  contracts: string[];
+  tests: string[];
+}
+
+export interface InteractionAuditRegistry {
+  schemaVersion: 1;
+  auditedAt: string;
+  screens: InteractionAuditEntry[];
+}
+
 export interface VisualRegressionCase {
   id: string;
   name: string;

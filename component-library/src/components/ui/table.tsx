@@ -517,6 +517,7 @@ function GroupHeaderRow<T>({
                   <button
                     type="button"
                     onClick={onToggleCollapse}
+                    aria-label={`${group.label} ${isCollapsed ? "펼치기" : "접기"}`}
                     className="flex size-[22px] shrink-0 items-center justify-center rounded-mes-control-sm border border-mes-gray-50 bg-mes-gray-0"
                   >
                     <IconArrow
@@ -540,18 +541,14 @@ function GroupHeaderRow<T>({
           // 길이에 따라 컬럼 중앙 기준으로 시작 위치가 매번 달라져 "정렬이 제멋대로"인
           // 것처럼 보임 — 실제 이 문제가 있었음).
           <Cell key={col.key} column={{ ...col, align: "left" }} className="overflow-visible">
-            <span
-              role="button"
-              tabIndex={0}
+            <button
+              type="button"
               onClick={onToggleCollapse}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") onToggleCollapse();
-              }}
-              className="cursor-pointer whitespace-nowrap text-[14px] font-medium leading-[1.5] text-mes-text-default"
+              className="relative z-10 cursor-pointer whitespace-nowrap text-[14px] font-medium leading-[1.5] text-mes-text-default"
               style={{ paddingLeft: depth * 12 }}
             >
               {group.label}
-            </span>
+            </button>
           </Cell>
         ) : (
           <Cell key={col.key} column={col}>

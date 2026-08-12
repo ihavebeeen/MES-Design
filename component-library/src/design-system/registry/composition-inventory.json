@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx",
   "summary": {
     "scannedFiles": 25,
-    "totalLines": 4697,
+    "totalLines": 4764,
     "shellInstances": {
       "CenterModal": 4,
       "SideSlidePanel": 8,
@@ -322,7 +322,7 @@
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
       "name": "completed-popup-expanded-content.tsx",
       "observedRole": "catalog-or-recipe",
-      "lines": 477,
+      "lines": 526,
       "exportedSymbols": [
         "BomCopyContent",
         "MaterialInputSetupContent",
@@ -384,7 +384,7 @@
           "jsxCount": 3
         }
       ],
-      "stateHookCount": 30,
+      "stateHookCount": 31,
       "behaviorSignals": [
         "selection.enable-editor"
       ],
@@ -937,7 +937,7 @@
       "source": "src/components/patterns/exact-production-analytics-screen.tsx",
       "name": "exact-production-analytics-screen.tsx",
       "observedRole": "evidence",
-      "lines": 81,
+      "lines": 82,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -1063,7 +1063,7 @@
       "source": "src/components/patterns/exact-production-result-screen.tsx",
       "name": "exact-production-result-screen.tsx",
       "observedRole": "evidence",
-      "lines": 114,
+      "lines": 130,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -1130,6 +1130,14 @@
           "jsxCount": 2
         },
         {
+          "name": "QuickQueryPresetDialog",
+          "jsxCount": 1
+        },
+        {
+          "name": "QuickQuerySlot",
+          "jsxCount": 1
+        },
+        {
           "name": "SearchInput",
           "jsxCount": 1
         },
@@ -1138,7 +1146,7 @@
           "jsxCount": 1
         }
       ],
-      "stateHookCount": 7,
+      "stateHookCount": 9,
       "behaviorSignals": [
         "selection.enable-editor"
       ],
@@ -1376,7 +1384,7 @@
       "source": "src/components/patterns/mes-screen-fixtures.tsx",
       "name": "mes-screen-fixtures.tsx",
       "observedRole": "composition-source",
-      "lines": 318,
+      "lines": 319,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -1792,5 +1800,5 @@
       ]
     }
   ],
-  "fingerprint": "604eabcfc405d636"
+  "fingerprint": "294e3a5f27092307"
 }

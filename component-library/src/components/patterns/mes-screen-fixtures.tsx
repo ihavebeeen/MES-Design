@@ -108,14 +108,15 @@ interface FixtureSelectProps {
   onValueChange?: (value: string) => void;
   className?: string;
   size?: "default" | "small";
+  ariaLabel?: string;
 }
 
-function FixtureSelect({ value, options, onValueChange, className, size = "default" }: FixtureSelectProps) {
+function FixtureSelect({ value, options, onValueChange, className, size = "default", ariaLabel }: FixtureSelectProps) {
   const resolvedOptions = Array.from(new Set([value, ...(options ?? [])]));
 
   return (
     <Select value={value} onValueChange={(nextValue) => onValueChange?.(nextValue)}>
-      <SelectTrigger size={size} className={className}><SelectValue /></SelectTrigger>
+      <SelectTrigger size={size} className={className} aria-label={ariaLabel}><SelectValue /></SelectTrigger>
       <SelectContent>
         {resolvedOptions.map((option) => <SelectItem key={option} value={option}>{option}</SelectItem>)}
       </SelectContent>

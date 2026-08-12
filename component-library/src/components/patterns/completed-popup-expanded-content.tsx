@@ -272,15 +272,22 @@ const initialLabelRows: LabelRow[] = [
 
 export function PreissuedLabelContent() {
   const [rows, setRows] = React.useState(initialLabelRows);
-  const [selectedRows, setSelectedRows] = React.useState([2, 3]);
+  const [selectedRowIds, setSelectedRowIds] = React.useState([3, 4]);
   const [search, setSearch] = React.useState("");
   const visibleRows = rows.filter((row) => !search || row.lot.includes(search));
   const allocated = rows.reduce((sum, row) => sum + (Number(row.allocation) || 0), 0);
   const performanceTotal = 82000;
   const remainder = Math.max(0, performanceTotal - allocated);
+  const visibleSelectedRows = visibleRows.flatMap((row, visibleIndex) => selectedRowIds.includes(row.id) ? [visibleIndex] : []);
+  const updateVisibleSelectedRows = (visibleIndexes: number[]) => {
+    const visibleIds = visibleRows.map((row) => row.id);
+    setSelectedRowIds((current) => [
+      ...current.filter((id) => !visibleIds.includes(id)),
+      ...visibleIndexes.map((visibleIndex) => visibleRows[visibleIndex].id),
+    ]);
+  };
 
   const tableRows = visibleRows.map((row) => {
-    const sourceIndex = rows.findIndex((item) => item.id === row.id);
     const result = row.registered + (Number(row.allocation) || 0);
     return [
       "1500 얼초트레이(PS)-SHEET",
@@ -292,7 +299,7 @@ export function PreissuedLabelContent() {
       result.toLocaleString(),
       "kg",
       <Tag key={`state-${row.id}`} color={row.temporary ? "main" : "gray"} size="compact">{row.temporary ? "임시" : "확정"}</Tag>,
-      <IconButton key={`delete-${row.id}`} aria-label={`${row.lot} 삭제`} size="xsmall" icon={<IconTrash size={14} />} onClick={() => { setRows((current) => current.filter((item) => item.id !== row.id)); setSelectedRows((current) => current.filter((index) => index !== sourceIndex)); }} />,
+      <IconButton key={`delete-${row.id}`} aria-label={`${row.lot} 삭제`} size="xsmall" icon={<IconTrash size={14} />} onClick={() => { setRows((current) => current.filter((item) => item.id !== row.id)); setSelectedRowIds((current) => current.filter((id) => id !== row.id)); }} />,
     ];
   });
 
@@ -305,8 +312,8 @@ export function PreissuedLabelContent() {
         rows={tableRows}
         widths={[150, 58, 188, 88, 88, 100, 88, 42, 58, 36]}
         aligns={["left", "center", "left", "right", "right", "right", "right", "center", "center", "center"]}
-        checkedRows={selectedRows}
-        onCheckedRowsChange={setSelectedRows}
+        checkedRows={visibleSelectedRows}
+        onCheckedRowsChange={updateVisibleSelectedRows}
         selectionColor="black"
         unselectedCheckboxAppearance="grayCheck"
         selectionColumnWidth={36}
@@ -370,23 +377,50 @@ function TimeWheel({ year, month, day, hour, minute, onYearChange, onMonthChange
   );
 }
 
-export function TimeSelectionContent({ mode = "operating" }: { mode?: "operating" | "downtime" }) {
+interface TimeRangeValue { start: string; end: string; }
+
+function parseClock(value: string, fallbackHour: number) {
+  const [hour, minute] = value.split(":").map(Number);
+  return {
+    hour: Number.isFinite(hour) ? hour : fallbackHour,
+    minute: Number.isFinite(minute) ? minute : 0,
+  };
+}
+
+export function TimeSelectionContent({
+  mode = "operating",
+  initialStart = "12:59",
+  initialEnd,
+  onRangeChange,
+}: {
+  mode?: "operating" | "downtime";
+  initialStart?: string;
+  initialEnd?: string;
+  onRangeChange?: (range: TimeRangeValue) => void;
+}) {
+  const initialStartClock = parseClock(initialStart, 12);
+  const initialEndClock = parseClock(initialEnd ?? (mode === "operating" ? "17:59" : "15:06"), mode === "operating" ? 17 : 15);
   const [startYear, setStartYear] = React.useState(2026);
   const [startMonth, setStartMonth] = React.useState(2);
   const [startDay, setStartDay] = React.useState(23);
-  const [startHour, setStartHour] = React.useState(12);
-  const [startMinute, setStartMinute] = React.useState(59);
+  const [startHour, setStartHour] = React.useState(initialStartClock.hour);
+  const [startMinute, setStartMinute] = React.useState(initialStartClock.minute);
   const [endYear, setEndYear] = React.useState(2026);
   const [endMonth, setEndMonth] = React.useState(2);
   const [endDay, setEndDay] = React.useState(23);
-  const [endHour, setEndHour] = React.useState(mode === "operating" ? 17 : 15);
-  const [endMinute, setEndMinute] = React.useState(mode === "operating" ? 59 : 6);
+  const [endHour, setEndHour] = React.useState(initialEndClock.hour);
+  const [endMinute, setEndMinute] = React.useState(initialEndClock.minute);
   const setCurrent = (target: "start" | "end") => {
     const current = new Date();
     if (target === "start") { setStartHour(current.getHours()); setStartMinute(current.getMinutes()); }
     else { setEndHour(current.getHours()); setEndMinute(current.getMinutes()); }
   };
   const totalMinutes = Math.max(0, (endHour * 60 + endMinute) - (startHour * 60 + startMinute));
+  const formatClock = (hour: number, minute: number) => `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+
+  React.useEffect(() => {
+    onRangeChange?.({ start: formatClock(startHour, startMinute), end: formatClock(endHour, endMinute) });
+  }, [endHour, endMinute, onRangeChange, startHour, startMinute]);
 
   return (
     <div className="flex h-full w-full flex-col gap-5">
@@ -401,6 +435,7 @@ export function TimeSelectionContent({ mode = "operating" }: { mode?: "operating
 
 interface OperationRecord { id: number; start: string; end: string; product: string; }
 interface DowntimeRecord extends OperationRecord { type: string; }
+interface TimePickerTarget { kind: "operating" | "downtime"; id: number; }
 
 export function UpdatedOperationLogContent() {
   const [date, setDate] = React.useState(new Date(2025, 9, 30));
@@ -413,7 +448,8 @@ export function UpdatedOperationLogContent() {
     { id: 2, start: "12:00", end: "19:00", product: "품목A" },
   ]);
   const [downtimeRecords, setDowntimeRecords] = React.useState<DowntimeRecord[]>([{ id: 1, start: "13:30", end: "14:25", product: "품목A", type: "선택" }]);
-  const [picker, setPicker] = React.useState<"operating" | "downtime" | null>(null);
+  const [picker, setPicker] = React.useState<TimePickerTarget | null>(null);
+  const [draftRange, setDraftRange] = React.useState<TimeRangeValue>({ start: "07:00", end: "08:00" });
   const hours = Array.from({ length: 13 }, (_, index) => `${String(index + 7).padStart(2, "0")}:00`);
   const duration = (start: string, end: string) => {
     const [startHour, startMinute] = start.split(":").map(Number);
@@ -422,6 +458,19 @@ export function UpdatedOperationLogContent() {
   };
   const totalOperating = operationRecords.reduce((sum, record) => sum + duration(record.start, record.end), 0);
   const totalDowntime = downtimeRecords.reduce((sum, record) => sum + duration(record.start, record.end), 0);
+  const openPicker = (kind: TimePickerTarget["kind"], record: OperationRecord) => {
+    setDraftRange({ start: record.start, end: record.end });
+    setPicker({ kind, id: record.id });
+  };
+  const applyDraftRange = () => {
+    if (!picker) return;
+    if (picker.kind === "operating") {
+      setOperationRecords((current) => current.map((record) => record.id === picker.id ? { ...record, ...draftRange } : record));
+    } else {
+      setDowntimeRecords((current) => current.map((record) => record.id === picker.id ? { ...record, ...draftRange } : record));
+    }
+    setPicker(null);
+  };
 
   return (
     <>
@@ -443,11 +492,11 @@ export function UpdatedOperationLogContent() {
             <div className="flex min-h-0 flex-1 flex-col gap-3 p-5">
               <SectionBand>품목별 가동기록</SectionBand>
               <RecordHeader downtime={false} />
-              {operationRecords.map((record) => <OperationRecordRow key={record.id} record={record} onOpen={() => setPicker("operating")} onDelete={() => setOperationRecords((current) => current.filter((item) => item.id !== record.id))} />)}
+              {operationRecords.map((record) => <OperationRecordRow key={record.id} record={record} duration={duration(record.start, record.end)} onOpen={() => openPicker("operating", record)} onProductChange={(product) => setOperationRecords((current) => current.map((item) => item.id === record.id ? { ...item, product } : item))} onDelete={() => setOperationRecords((current) => current.filter((item) => item.id !== record.id))} />)}
               <Button size="small" variant="lineMain" startIcon={<IconPlus size={15} />} onClick={() => setOperationRecords((current) => [...current, { id: Date.now(), start: "07:00", end: "08:00", product: "품목A" }])}>가동기록 추가</Button>
               <SectionBand className="mt-2">비가동시간</SectionBand>
               <RecordHeader downtime />
-              {downtimeRecords.map((record) => <DowntimeRecordRow key={record.id} record={record} onOpen={() => setPicker("downtime")} onDelete={() => setDowntimeRecords((current) => current.filter((item) => item.id !== record.id))} />)}
+              {downtimeRecords.map((record) => <DowntimeRecordRow key={record.id} record={record} duration={duration(record.start, record.end)} onOpen={() => openPicker("downtime", record)} onTypeChange={(type) => setDowntimeRecords((current) => current.map((item) => item.id === record.id ? { ...item, type } : item))} onProductChange={(product) => setDowntimeRecords((current) => current.map((item) => item.id === record.id ? { ...item, product } : item))} onDelete={() => setDowntimeRecords((current) => current.filter((item) => item.id !== record.id))} />)}
               <Button size="small" variant="lineMain" startIcon={<IconPlus size={15} />} onClick={() => setDowntimeRecords((current) => [...current, { id: Date.now(), start: "13:30", end: "14:00", product: "품목A", type: "선택" }])}>비가동 추가</Button>
             </div>
             <div className="grid shrink-0 grid-cols-3 gap-2 bg-mes-gray-20 p-4">
@@ -456,8 +505,8 @@ export function UpdatedOperationLogContent() {
           </div>
         </div>
       </div>
-      <CenterModal open={picker !== null} onOpenChange={(open) => { if (!open) setPicker(null); }} title={picker === "downtime" ? "비가동시간 선택" : "가동시간 선택"} size="medium-600" actions={createDialogActionSet("action-set.cancel-input", { onPrimary: () => setPicker(null), onDismiss: () => setPicker(null) })} exactHeight={666} maxHeight="calc(100vh - 32px)" bodyAlign="stretch" scrollMode="content">
-        <TimeSelectionContent mode={picker === "downtime" ? "downtime" : "operating"} />
+      <CenterModal open={picker !== null} onOpenChange={(open) => { if (!open) setPicker(null); }} title={picker?.kind === "downtime" ? "비가동시간 선택" : "가동시간 선택"} size="medium-600" actions={createDialogActionSet("action-set.cancel-input", { onPrimary: applyDraftRange, onDismiss: () => setPicker(null) })} exactHeight={666} maxHeight="calc(100vh - 32px)" bodyAlign="stretch" scrollMode="content">
+        {picker && <TimeSelectionContent key={`${picker.kind}-${picker.id}`} mode={picker.kind} initialStart={draftRange.start} initialEnd={draftRange.end} onRangeChange={setDraftRange} />}
       </CenterModal>
     </>
   );
@@ -467,10 +516,10 @@ function RecordHeader({ downtime }: { downtime: boolean }) {
   return <div className={`grid ${downtime ? "grid-cols-[136px_105px_68px_1fr_22px]" : "grid-cols-[136px_121px_68px_1fr_22px]"} gap-4 border-b border-mes-gray-30 pb-2 text-center text-[13px] font-semibold`}><span>시작시간　 종료시간</span>{downtime && <span>비가동유형</span>}<span>{downtime ? "비가동시간" : "가동시간"}</span><span>생산품목</span><span /></div>;
 }
 
-function OperationRecordRow({ record, onOpen, onDelete }: { record: OperationRecord; onOpen: () => void; onDelete: () => void }) {
-  return <div className="grid grid-cols-[136px_121px_68px_1fr_22px] items-center gap-4"><Button size="small" variant="lineBlacktxt" onClick={onOpen}>{record.start}　~　{record.end}</Button><span /><FixtureInput value={`${Math.max(0, Number(record.end.slice(0, 2)) - Number(record.start.slice(0, 2))) * 60}분`} muted /><FixtureSelect value={record.product} options={["품목A", "품목B"]} /><IconButton aria-label="가동기록 삭제" size="xsmall" icon={<IconX size={12} />} onClick={onDelete} /></div>;
+function OperationRecordRow({ record, duration, onOpen, onProductChange, onDelete }: { record: OperationRecord; duration: number; onOpen: () => void; onProductChange: (value: string) => void; onDelete: () => void }) {
+  return <div className="grid grid-cols-[136px_121px_68px_1fr_22px] items-center gap-4"><Button size="small" variant="lineBlacktxt" aria-label={`가동기록 ${record.id} 시간 편집`} onClick={onOpen}>{record.start}　~　{record.end}</Button><span /><FixtureInput value={`${duration}분`} muted /><FixtureSelect value={record.product} options={["품목A", "품목B"]} onValueChange={onProductChange} ariaLabel={`가동기록 ${record.id} 생산품목`} /><IconButton aria-label="가동기록 삭제" size="xsmall" icon={<IconX size={12} />} onClick={onDelete} /></div>;
 }
 
-function DowntimeRecordRow({ record, onOpen, onDelete }: { record: DowntimeRecord; onOpen: () => void; onDelete: () => void }) {
-  return <div className="grid grid-cols-[136px_105px_68px_1fr_22px] items-center gap-4"><Button size="small" variant="lineBlacktxt" onClick={onOpen}>{record.start}　~　{record.end}</Button><FixtureSelect value={record.type} options={["선택", "금형교체", "셋팅", "기계수리"]} /><FixtureInput value="55분" muted /><FixtureSelect value={record.product} options={["품목A", "품목B"]} /><IconButton aria-label="비가동기록 삭제" size="xsmall" icon={<IconX size={12} />} onClick={onDelete} /></div>;
+function DowntimeRecordRow({ record, duration, onOpen, onTypeChange, onProductChange, onDelete }: { record: DowntimeRecord; duration: number; onOpen: () => void; onTypeChange: (value: string) => void; onProductChange: (value: string) => void; onDelete: () => void }) {
+  return <div className="grid grid-cols-[136px_105px_68px_1fr_22px] items-center gap-4"><Button size="small" variant="lineBlacktxt" aria-label={`비가동기록 ${record.id} 시간 편집`} onClick={onOpen}>{record.start}　~　{record.end}</Button><FixtureSelect value={record.type} options={["선택", "금형교체", "셋팅", "기계수리"]} onValueChange={onTypeChange} ariaLabel={`비가동기록 ${record.id} 비가동유형`} /><FixtureInput value={`${duration}분`} muted /><FixtureSelect value={record.product} options={["품목A", "품목B"]} onValueChange={onProductChange} ariaLabel={`비가동기록 ${record.id} 생산품목`} /><IconButton aria-label="비가동기록 삭제" size="xsmall" icon={<IconX size={12} />} onClick={onDelete} /></div>;
 }

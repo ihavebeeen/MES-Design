@@ -636,3 +636,121 @@ test("테이블 행 선택 상호작용", async ({ page }) => {
   await hideDevelopmentOverlay(page);
   await expect(page.locator('[data-visual-test="table"]')).toHaveScreenshot("grouped-table-row-selected.png");
 });
+
+test("불량수량 입력은 값 변경 즉시 합계를 다시 계산한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/visual-regression/defect");
+  const dialog = page.getByRole("dialog", { name: "불량수량 입력" });
+  const quantityInputs = dialog.locator('input[inputmode="numeric"]');
+  await quantityInputs.first().fill("9");
+  await expect(dialog.getByText("11", { exact: true })).toBeVisible();
+});
+
+test("자주검사 판정과 항목 추가는 독립 상태로 반영된다", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/visual-regression/inspection");
+  const dialog = page.getByRole("dialog", { name: "자주검사" });
+  const judgementGroups = dialog.getByRole("radiogroup", { name: "검사 판정" });
+  await expect(judgementGroups).toHaveCount(4);
+  await judgementGroups.first().getByRole("radio", { name: "불합격", exact: true }).click();
+  await expect(judgementGroups.first().getByRole("radio", { name: "불합격", exact: true })).toHaveAttribute("aria-checked", "true");
+  await expect(judgementGroups.nth(1).getByRole("radio", { name: "합격", exact: true })).toHaveAttribute("aria-checked", "true");
+  await dialog.getByRole("button", { name: "항목 추가" }).click();
+  await expect(judgementGroups).toHaveCount(5);
+});
+
+test("선발행 라벨 선택은 검색과 삭제 뒤에도 행 ID 기준으로 유지된다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/patterns/completed-popup-types");
+  await page.getByRole("button", { name: "1024 · 선발행 라벨 수량 확정", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "선발행 라벨 수량 확정" });
+  const search = dialog.getByPlaceholder("검색어 입력..");
+  await search.fill("260511-EQ261-P0286-003");
+  await expect(dialog.locator('input[type="checkbox"]:checked')).toHaveCount(2);
+  await dialog.getByRole("button", { name: "260511-EQ261-P0286-003 삭제" }).click();
+  await search.fill("");
+  await expect(dialog.locator('input[type="checkbox"]:checked')).toHaveCount(1);
+  await expect(dialog.getByLabel("260511-EQ261-P0286-004 생산실적 배분")).toBeVisible();
+});
+
+test("운전일지 시간·품목 변경은 기록과 합계에 반영된다", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/patterns/completed-popup-types");
+  await page.getByRole("button", { name: "900 · 운전일지 등록", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "운전일지 등록" });
+  await dialog.getByRole("combobox", { name: "가동기록 1 생산품목", exact: true }).click();
+  await page.getByRole("option", { name: "품목B", exact: true }).click();
+  await expect(dialog.getByRole("combobox", { name: "가동기록 1 생산품목", exact: true })).toHaveText("품목B");
+
+  await dialog.getByRole("button", { name: "가동기록 1 시간 편집", exact: true }).click();
+  const timeDialog = page.getByRole("dialog", { name: "가동시간 선택" });
+  await timeDialog.getByRole("button", { name: "8시", exact: true }).click();
+  await timeDialog.getByRole("button", { name: "입력", exact: true }).click();
+  await expect(dialog.getByRole("button", { name: "가동기록 1 시간 편집", exact: true })).toHaveText(/08:00.*12:00/);
+  await expect(dialog.locator('input[readonly]').first()).toHaveValue("240분");
+  await expect(dialog.getByText("660분", { exact: true })).toBeVisible();
+});
+
+test("재고편집 선택 작업은 이동·삭제 보조 팝업으로 이어진다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/patterns/completed-popup-types");
+  const gallery = page.getByRole("region", { name: "Figma 원본 팝업" });
+  await gallery.getByRole("button", { name: "재고 편집", exact: true }).click();
+  await expect(gallery.getByText("5개 선택됨", { exact: true })).toBeVisible();
+  await gallery.getByRole("button", { name: "이동", exact: true }).click();
+  await expect(gallery.getByText("이동 설정", { exact: true }).first()).toBeVisible();
+
+  await gallery.getByRole("button", { name: "재고 편집", exact: true }).click();
+  await gallery.getByRole("button", { name: "삭제", exact: true }).click();
+  await expect(gallery.getByText("삭제 설정", { exact: true }).first()).toBeVisible();
+});
+
+test("발주 품목 건수 링크는 품목 상세 팝업으로 전환한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/patterns/completed-popup-types");
+  const gallery = page.getByRole("region", { name: "Figma 원본 팝업" });
+  await gallery.getByRole("button", { name: "발주 정보", exact: true }).click();
+  await gallery.getByRole("link", { name: "9", exact: true }).first().click();
+  await expect(gallery.getByText("품목 리스트", { exact: true }).first()).toBeVisible();
+});
+
+test("생산실적 반응형 화면은 breakpoint와 빠른 조회 설정을 같은 상태로 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/patterns/original-mes-screen-assets");
+  await page.getByRole("button", { name: /생산실적 반응형/ }).click();
+  await page.getByRole("button", { name: "375px", exact: true }).click();
+  const compactQuickQuery = page.getByRole("button", { name: "빠른 조회", exact: true });
+  await expect(compactQuickQuery).toBeVisible();
+  await compactQuickQuery.click();
+  await expect(page.getByRole("dialog", { name: "조회 조건 프리셋" })).toBeVisible();
+});
+
+test("생산분석 조회기간과 기준은 KPI·목록 단위를 함께 변경한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/patterns/completed-analytics-dashboard");
+  const screen = page.locator("#completed-analytics-dashboard");
+  await screen.getByRole("button", { name: "당일", exact: true }).click();
+  await expect(screen.getByText("당일 판매 계획", { exact: true })).toBeVisible();
+  await expect(screen.getByText("당일 재고 현황", { exact: true })).toBeVisible();
+  await expect(screen.getByText("당일 생산실적", { exact: true })).toBeVisible();
+  await screen.getByRole("button", { name: "수량", exact: true }).click();
+  await expect(screen.getByText("양품(수량)", { exact: true })).toBeVisible();
+  await expect(screen.getByText("생산실적(수량)", { exact: true })).toBeVisible();
+  await screen.getByRole("button", { name: "판매 계획 달성률 설정" }).click();
+  await expect(screen.getByText("계획값 설정", { exact: true })).toBeVisible();
+});
+
+test("그룹화 리스트의 접기와 그룹 선택은 하위 행 상태에 반영된다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/patterns/grouped-list-screen");
+  const screen = page.locator("#grouped-list-screen");
+  const itemLinks = screen.getByRole("link", { name: "더블비안코뚜껑", exact: true });
+  const expandedItemCount = await itemLinks.count();
+  expect(expandedItemCount).toBeGreaterThan(0);
+  await screen.getByRole("button", { name: "지시일: 2025-10-30 접기", exact: true }).click();
+  await expect(itemLinks).toHaveCount(expandedItemCount - 1);
+  await screen.getByRole("button", { name: "지시일: 2025-10-30 펼치기", exact: true }).click();
+  const checkboxes = screen.locator('input[type="checkbox"]');
+  await checkboxes.nth(1).check();
+  await expect(checkboxes.nth(1)).toBeChecked();
+});

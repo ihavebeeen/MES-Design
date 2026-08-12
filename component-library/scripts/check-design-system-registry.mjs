@@ -20,6 +20,7 @@ const compositionBehaviorLedgerRegistry = readJson("composition-behavior-ledger.
 const sectionPatternProposalRegistry = readJson("section-pattern-proposals.json");
 const behaviorPatternProposalRegistry = readJson("behavior-pattern-proposals.json");
 const actionSetRegistry = readJson("action-sets.json");
+const interactionAuditRegistry = readJson("interaction-audit.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -62,6 +63,7 @@ checkVersion("composition-behavior-ledger", compositionBehaviorLedgerRegistry);
 checkVersion("section-pattern-proposals", sectionPatternProposalRegistry);
 checkVersion("behavior-pattern-proposals", behaviorPatternProposalRegistry);
 checkVersion("action-sets", actionSetRegistry);
+checkVersion("interaction-audit", interactionAuditRegistry);
 
 const actionSets = mapByUniqueId("action-sets", actionSetRegistry.actionSets ?? []);
 for (const actionSet of actionSets.values()) {
@@ -209,6 +211,18 @@ const screens = mapByUniqueId("screens", screenRegistry.screens ?? []);
 const visualCases = mapByUniqueId("visual-regression", visualRegistry.cases ?? []);
 const sourceEvidence = mapByUniqueId("source-evidence", sourceEvidenceRegistry.sources ?? []);
 const generatedCandidates = mapByUniqueId("generated-screen-evaluations", generatedScreenRegistry.candidates ?? []);
+const interactionAudits = mapByUniqueId("interaction-audit", (interactionAuditRegistry.screens ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
+
+if (!/^\d{4}-\d{2}-\d{2}$/.test(interactionAuditRegistry.auditedAt ?? "")) errors.push("interaction-audit: auditedAt은 YYYY-MM-DD 형식이어야 합니다.");
+for (const screen of screens.values()) {
+  if (!interactionAudits.has(screen.id)) errors.push(`interaction-audit: screen '${screen.id}'의 감사 항목이 없습니다.`);
+}
+for (const audit of interactionAudits.values()) {
+  if (!screens.has(audit.screenId)) errors.push(`interaction-audit: 미등록 screen '${audit.screenId}'를 참조합니다.`);
+  if (!audit.route?.startsWith("/")) errors.push(`interaction-audit '${audit.screenId}': route는 '/'로 시작해야 합니다.`);
+  if (!Array.isArray(audit.contracts) || audit.contracts.length === 0) errors.push(`interaction-audit '${audit.screenId}': contracts가 필요합니다.`);
+  if (!Array.isArray(audit.tests) || audit.tests.length === 0) errors.push(`interaction-audit '${audit.screenId}': tests가 필요합니다.`);
+}
 
 for (const [name, registry] of proposalRegistries) {
   for (const id of registry.approval?.approvedProposalIds ?? []) {
