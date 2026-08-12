@@ -22,6 +22,7 @@
     { "id": "popup-user-information-side", "name": "사용자 정보 우측 슬라이드 팝업", "route": "/visual-regression/user-password-settings", "snapshot": "user-information-side-panel.png", "viewport": { "width": 1440, "height": 960 }, "screenId": "user-password-settings" },
     { "id": "popup-user-password-reset-confirmation", "name": "비밀번호 초기화 확인 팝업", "route": "/visual-regression/user-password-settings", "snapshot": "user-password-reset-confirmation.png", "viewport": { "width": 1440, "height": 960 }, "screenId": "user-password-settings" },
     { "id": "popup-user-initial-password-settings", "name": "초기화 비밀번호 설정 팝업", "route": "/visual-regression/user-password-settings", "snapshot": "user-initial-password-settings.png", "viewport": { "width": 1440, "height": 960 }, "screenId": "user-password-settings" },
-    { "id": "screen-user-password-reset-login", "name": "최초 로그인 비밀번호 재설정", "route": "/visual-regression/user-password-reset-login", "snapshot": "user-password-reset-login.png", "viewport": { "width": 560, "height": 960 }, "screenId": "user-password-settings" }
+    { "id": "screen-user-password-reset-login", "name": "최초 로그인 비밀번호 재설정", "route": "/visual-regression/user-password-reset-login", "snapshot": "user-password-reset-login.png", "viewport": { "width": 560, "height": 960 }, "screenId": "user-password-settings" },
+    { "id": "screen-sales-transaction-statement", "name": "판매관리 거래명세서 출력", "route": "/visual-regression/sales-transaction-statement", "snapshot": "sales-transaction-statement.png", "viewport": { "width": 1920, "height": 960 }, "screenId": "sales-transaction-statement" }
   ]
 }

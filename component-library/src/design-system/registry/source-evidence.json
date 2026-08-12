@@ -61,9 +61,10 @@
       "figmaNode": "17475:46145",
       "kind": "screen-bundle",
       "normalizedTarget": "screen.sales-transaction-statement",
-      "status": "queued",
-      "notes": ["판매 목록과 단가·공급가·부가세를 포함하는 거래명세서 출력 흐름을 연결한다."],
-      "qualityGates": { "designContext": false, "metadataLedger": false, "componentMapping": false, "browserMeasurement": false, "interactionTest": false, "visualBaseline": false }
+      "status": "verified",
+      "notes": ["문서 섹션 상위 node만으로 완료 처리하지 않고 실제 판매관리 화면 17554:181519와 거래명세서 출력 팝업 17554:182088을 각각 재조회했다.", "판매관리 목록은 1920×960 EntityListPattern과 그룹 Table로, 출력 화면은 1300×646 CenterModal과 650/650 목록·미리보기 분할로 매핑했다.", "거래명세서 문서는 Figma 원본 PNG를 그대로 등록했으며 설명용 빨간 강조 사각형은 제품 UI가 아니므로 구현에서 제외했다.", "선택 변경·검색·페이지 이동·다운로드·출력을 실제 state와 연결하고 취소·X에서 저장 전 선택을 복원하며, 610×240 선택 표와 전체 무가로 overflow를 브라우저에서 검증했다."],
+      "qualityGates": { "designContext": true, "metadataLedger": true, "componentMapping": true, "browserMeasurement": true, "interactionTest": true, "visualBaseline": true },
+      "visualCaseId": "screen-sales-transaction-statement"
     },
     {
       "id": "shipment-approval",

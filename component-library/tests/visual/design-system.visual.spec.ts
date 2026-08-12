@@ -825,6 +825,49 @@ test("공정검사 경향관리는 원본 분석 배치와 품목·CAVITY 연동
   await expect(screen).toHaveScreenshot("process-inspection-trend.png");
 });
 
+test("판매관리 거래명세서는 원본 목록과 1300px 출력 팝업 계약을 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/visual-regression/sales-transaction-statement");
+
+  const screen = page.locator("[data-sales-transaction-statement-screen]");
+  const modal = page.getByRole("dialog", { name: "거래명세서 출력" });
+  await expect(modal).toBeVisible();
+  expect(await screen.boundingBox()).toEqual({ x: 0, y: 0, width: 1920, height: 960 });
+  expect(await modal.boundingBox()).toEqual({ x: 310, y: 157, width: 1300, height: 646 });
+
+  const paneWidths = await modal.locator("[data-testid='statement-modal-body'] > section").evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().width));
+  expect(paneWidths).toEqual([650, 650]);
+  const paneOverflows = await modal.locator("[data-testid='statement-modal-body'], [data-testid='statement-list-pane'], [data-testid='statement-preview-pane']").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
+  expect(paneOverflows).toEqual([0, 0, 0]);
+  expect(await modal.getByTestId("statement-selection-table").boundingBox()).toEqual({ x: 330, y: 333, width: 610, height: 240 });
+
+  const checks = modal.getByRole("checkbox");
+  await expect(checks.nth(1)).toBeChecked();
+  await checks.nth(1).click();
+  await expect(checks.nth(1)).not.toBeChecked();
+  await modal.getByRole("button", { name: "취소", exact: true }).click();
+  await expect(modal).toBeHidden();
+  await page.getByRole("button", { name: "거래명세서 출력", exact: true }).click();
+  await expect(modal).toBeVisible();
+  await expect(modal.getByRole("checkbox").nth(1)).toBeChecked();
+
+  await modal.getByRole("button", { name: "다음 거래명세서" }).click();
+  await expect(modal.getByLabel("거래명세서 페이지")).toHaveText("2 / 15");
+  await modal.getByRole("button", { name: "이전 거래명세서" }).click();
+  await expect(modal.getByLabel("거래명세서 페이지")).toHaveText("1 / 15");
+
+  await modal.getByRole("checkbox").nth(1).click();
+  await modal.getByRole("button", { name: "닫기", exact: true }).click();
+  await expect(modal).toBeHidden();
+  await page.getByRole("button", { name: "거래명세서 출력", exact: true }).click();
+  await expect(modal.getByRole("checkbox").nth(1)).toBeChecked();
+  await expect(modal.getByRole("link", { name: "다운로드", exact: true })).toHaveAttribute("download", "");
+  await hideDevelopmentOverlay(page);
+  await expect(page).toHaveScreenshot("sales-transaction-statement.png");
+  await modal.getByRole("button", { name: "출력", exact: true }).click();
+  await expect(modal).toBeHidden();
+});
+
 test("사용자 정보와 비밀번호 초기화는 원본 패널·확인 팝업 계약을 유지한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto("/visual-regression/user-password-settings");
