@@ -41,7 +41,7 @@ export function GeneratedScreenReview() {
                   <span className="rounded-full bg-mes-yellow-10 px-2.5 py-1 text-[12px] font-semibold text-mes-yellow-70">{statusLabels[candidate.status] ?? candidate.status}</span>
                   <span className="rounded-full bg-mes-gray-20 px-2.5 py-1 text-[12px] text-mes-gray-70">표준 영향 차단</span>
                 </div>
-                <p className="mt-1 text-[13px] text-mes-gray-70">생성일 {candidate.createdAt} · Figma node {candidate.figmaNode}</p>
+                <p className="mt-1 text-[13px] text-mes-gray-70">생성일 {candidate.createdAt}{candidate.figmaNode ? ` · Figma node ${candidate.figmaNode}` : " · 탐색 시안(원본 없음)"}</p>
               </div>
               <div className="flex items-center gap-3">
                 <div className="text-right"><p className="text-[12px] text-mes-gray-70">사용자 평가</p><p className="text-[24px] font-bold">{candidate.score}<span className="text-[13px] font-normal text-mes-gray-70"> / 100</span></p></div>

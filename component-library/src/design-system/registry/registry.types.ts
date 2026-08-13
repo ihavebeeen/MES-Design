@@ -130,7 +130,7 @@ export interface GeneratedScreenEvaluationEntry {
   id: string;
   name: string;
   createdAt: string;
-  figmaNode: string;
+  figmaNode?: string;
   route: string;
   source: string;
   status: GeneratedScreenStatus;

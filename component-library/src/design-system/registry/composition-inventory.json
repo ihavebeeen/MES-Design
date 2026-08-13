@@ -4,27 +4,28 @@
   "status": "observed-not-canonical",
   "scope": "src/components/patterns/*.tsx",
   "summary": {
-    "scannedFiles": 30,
-    "totalLines": 6195,
+    "scannedFiles": 31,
+    "totalLines": 6358,
     "shellInstances": {
       "CenterModal": 8,
       "SideSlidePanel": 9,
       "ConfirmDialog": 2
     },
     "filesWithMixedSectionFrames": 2,
-    "filesWithNativeSectionOnly": 13,
-    "filesWithRoundedSectionCandidates": 16
+    "filesWithNativeSectionOnly": 14,
+    "filesWithRoundedSectionCandidates": 17
   },
   "sectionCandidateSignals": [
     {
       "id": "section.summary",
-      "fileCount": 11,
+      "fileCount": 12,
       "sources": [
         "src/components/patterns/completed-application-patterns.tsx",
         "src/components/patterns/completed-popup-expanded-content.tsx",
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/exact-production-analytics-screen.tsx",
         "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/kiosk-easy-receiving-pattern.tsx",
         "src/components/patterns/original-mes-screen-assets.tsx",
         "src/components/patterns/production-quantity-reregistration-pattern.tsx",
         "src/components/patterns/sales-transaction-statement-pattern.tsx",
@@ -63,11 +64,12 @@
     },
     {
       "id": "section.form-grid",
-      "fileCount": 5,
+      "fileCount": 6,
       "sources": [
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/exact-production-analytics-screen.tsx",
         "src/components/patterns/inspection-criteria-pattern.tsx",
+        "src/components/patterns/kiosk-easy-receiving-pattern.tsx",
         "src/components/patterns/original-mes-screen-assets.tsx",
         "src/components/patterns/user-password-settings-pattern.tsx"
       ]
@@ -221,6 +223,13 @@
     },
     {
       "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "flags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/kiosk-easy-receiving-pattern.tsx",
       "flags": [
         "native-section-without-registered-frame",
         "rounded-wrapper-around-section-candidate"
@@ -1499,6 +1508,88 @@
       ]
     },
     {
+      "source": "src/components/patterns/kiosk-easy-receiving-pattern.tsx",
+      "name": "kiosk-easy-receiving-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 163,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 1,
+        "dividerContainer": 3,
+        "roundedContainer": 2,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "EmptyState",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconBox",
+          "jsxCount": 2
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconCalendar",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconScan",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconSearch",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconTrash",
+          "jsxCount": 1
+        },
+        {
+          "name": "Input",
+          "jsxCount": 2
+        },
+        {
+          "name": "Select",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 7,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [
+        "section.form-grid",
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
       "source": "src/components/patterns/master-detail-pattern.tsx",
       "name": "master-detail-pattern.tsx",
       "observedRole": "composition-source",
@@ -2192,5 +2283,5 @@
       ]
     }
   ],
-  "fingerprint": "e4f9307f225e5693"
+  "fingerprint": "c0ab2f9bd52fb790"
 }

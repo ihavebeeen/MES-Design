@@ -32,6 +32,33 @@
         "사전에 합의한 시간 예산 안에서 생성과 검증을 완료한다.",
         "사용자 검토를 통과한 뒤에만 patterns.json과 screens.json에 승격한다."
       ]
+    },
+    {
+      "id": "kiosk-easy-receiving-2026-08-13",
+      "name": "키오스크 이지 입고",
+      "createdAt": "2026-08-13",
+      "route": "/visual-regression/kiosk-easy-receiving",
+      "source": "src/components/patterns/kiosk-easy-receiving-pattern.tsx",
+      "status": "review",
+      "score": 0,
+      "disposition": "prototype",
+      "influence": "quarantined",
+      "strengths": [
+        "MES Button, Input, Select와 확정 토큰만 사용해 현장 터치 작업용 전체 화면을 구성했다.",
+        "테이블 대신 품목 선택·수량 입력·현재 입고 목록을 한 화면에 두어 작업 전환을 줄였다.",
+        "주요 터치 액션을 48px 이상으로 구성하고 키보드 숫자 입력과 증감 버튼을 함께 지원한다."
+      ],
+      "issues": [
+        "Figma 원본과 실제 현장 사용자 검증 없이 만든 호기심 탐색 시안이다.",
+        "거래처·창고·품목 데이터와 저장 처리는 예시 상태이며 실제 MES API와 연결되지 않았다.",
+        "바코드 스캔 버튼은 시각 시안이며 장비 입력 이벤트는 아직 연결하지 않았다."
+      ],
+      "promotionCriteria": [
+        "현장 모니터 해상도와 작업 거리에서 터치 크기·정보량·오입력률을 검증한다.",
+        "실제 입고 업무의 필수 필드, LOT 정책, 창고 변경 규칙을 확정한다.",
+        "바코드 스캐너와 키보드 입력의 포커스 이동 규칙을 연결한다.",
+        "사용자 평가 후에만 키오스크 전용 Shell 또는 Section 패턴 등록을 제안한다."
+      ]
     }
   ]
 }

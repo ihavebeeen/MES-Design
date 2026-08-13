@@ -296,7 +296,7 @@ if (completionPolicyRegistry.projectState === "complete" && projectCompletionBlo
 for (const candidate of generatedCandidates.values()) {
   checkSource("generated candidate", candidate);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(candidate.createdAt ?? "")) errors.push(`generated candidate '${candidate.id}': createdAt은 YYYY-MM-DD 형식이어야 합니다.`);
-  if (!/^\d+:\d+$/.test(candidate.figmaNode ?? "")) errors.push(`generated candidate '${candidate.id}': figmaNode 형식이 잘못되었습니다.`);
+  if (candidate.figmaNode && !/^\d+:\d+$/.test(candidate.figmaNode)) errors.push(`generated candidate '${candidate.id}': figmaNode 형식이 잘못되었습니다.`);
   if (!candidate.route?.startsWith("/")) errors.push(`generated candidate '${candidate.id}': route는 '/'로 시작해야 합니다.`);
   if (!allowedCandidateStatuses.has(candidate.status)) errors.push(`generated candidate '${candidate.id}': 알 수 없는 status '${candidate.status}'`);
   if (!Number.isInteger(candidate.score) || candidate.score < 0 || candidate.score > 100) errors.push(`generated candidate '${candidate.id}': score는 0~100 정수여야 합니다.`);
