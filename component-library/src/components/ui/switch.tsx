@@ -20,12 +20,16 @@ import { cn } from "@/lib/utils";
 export type SwitchProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   "type" | "size"
->;
+> & {
+  /** 표준단가 카드의 단가 동기화처럼 조밀한 영역에서 쓰는 Figma 실측 26×18 규격. */
+  size?: "default" | "compact";
+};
 
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className, disabled, ...props }, ref) => {
+  ({ className, disabled, size = "default", ...props }, ref) => {
+    const compact = size === "compact";
     return (
-      <span className={cn("relative inline-flex h-5 w-10 shrink-0 items-center", className)}>
+      <span className={cn("relative inline-flex shrink-0 items-center", compact ? "h-[18px] w-[26px]" : "h-5 w-10", className)}>
         <input
           ref={ref}
           type="checkbox"
@@ -47,8 +51,8 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute left-0.5 size-4 translate-x-0 rounded-full bg-white shadow-mes-panel transition-transform",
-            "peer-checked:translate-x-5",
+            "pointer-events-none absolute translate-x-0 rounded-full bg-white shadow-mes-panel transition-transform",
+            compact ? "left-[1.5px] size-[15px] peer-checked:translate-x-[8px]" : "left-0.5 size-4 peer-checked:translate-x-5",
             "peer-disabled:opacity-40"
           )}
         />

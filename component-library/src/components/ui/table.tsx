@@ -215,8 +215,10 @@ export interface TableProps<T> {
   selectedIds?: string[];
   /** 체크 여부와 별개로 파란 활성 행을 지정한다. undefined면 기존처럼 선택 행이 활성 행이다. */
   activeId?: string | null;
-  /** 활성 행의 강조 강도. 경향관리 측정 데이터처럼 흰 글자/Primary-60 행은 solid를 사용한다. */
-  activeRowAppearance?: "subtle" | "solid";
+  /** 활성 행의 강조 강도. strong-subtle은 선택행과 독립적인 클릭 행을 Primary-30으로 표시한다. */
+  activeRowAppearance?: "subtle" | "strong-subtle" | "solid";
+  /** activeId가 별도로 있어도 체크된 행의 Primary-20 배경을 유지해야 하는 경우 사용한다. */
+  selectedRowAppearance?: "none" | "subtle";
   /** 표 안 체크박스의 기본 색. 활성 행은 원본 화면처럼 black을 우선한다. */
   selectionColor?: CheckboxColor;
   /** 미선택 체크박스 외형. MES 표에서는 회색 체크형을 사용한다. */
@@ -362,6 +364,7 @@ function DataRow<T>({
   disabledTextTone,
   unselectedTextTone,
   activeRowAppearance,
+  selectedRowAppearance,
 }: {
   row: TableRowData<T>;
   columns: TableColumn<T>[];
@@ -379,7 +382,8 @@ function DataRow<T>({
   columnDividers: boolean;
   disabledTextTone: "gray60" | "gray80";
   unselectedTextTone: "default" | "gray80";
-  activeRowAppearance: "subtle" | "solid";
+  activeRowAppearance: "subtle" | "strong-subtle" | "solid";
+  selectedRowAppearance: "none" | "subtle";
 }) {
   const dividerColor = isActive || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
   return (
@@ -404,7 +408,9 @@ function DataRow<T>({
         row.disabled
           ? "bg-mes-gray-10"
           : isActive
-            ? activeRowAppearance === "solid" ? "bg-mes-primary-60" : "bg-mes-primary-20"
+            ? activeRowAppearance === "solid" ? "bg-mes-primary-60" : activeRowAppearance === "strong-subtle" ? "bg-mes-primary-30" : "bg-mes-primary-20"
+            : isSelected && selectedRowAppearance === "subtle"
+              ? "bg-mes-primary-20"
             : "bg-white",
         row.disabled && "pointer-events-none",
         onActivate && !row.disabled && "cursor-pointer"
@@ -653,6 +659,7 @@ function renderGroupNode<T>({
   disabledTextTone,
   unselectedTextTone,
   activeRowAppearance,
+  selectedRowAppearance,
 }: {
   group: TableGroup<T>;
   depth: number;
@@ -675,7 +682,8 @@ function renderGroupNode<T>({
   columnDividers: boolean;
   disabledTextTone: "gray60" | "gray80";
   unselectedTextTone: "default" | "gray80";
-  activeRowAppearance: "subtle" | "solid";
+  activeRowAppearance: "subtle" | "strong-subtle" | "solid";
+  selectedRowAppearance: "none" | "subtle";
 }): React.ReactNode {
   const isCollapsed = collapsed[group.id] ?? group.defaultExpanded === false;
   const rowIds = collectGroupRowIds(group);
@@ -729,6 +737,7 @@ function renderGroupNode<T>({
                 disabledTextTone,
                 unselectedTextTone,
                 activeRowAppearance,
+                selectedRowAppearance,
               })
             )
           : (group.rows ?? []).map((row) => (
@@ -751,6 +760,7 @@ function renderGroupNode<T>({
                 disabledTextTone={disabledTextTone}
                 unselectedTextTone={unselectedTextTone}
                 activeRowAppearance={activeRowAppearance}
+                selectedRowAppearance={selectedRowAppearance}
               />
             )))}
     </React.Fragment>
@@ -764,6 +774,7 @@ function Table<T>({
   selectedIds = [],
   activeId,
   activeRowAppearance = "subtle",
+  selectedRowAppearance = "none",
   selectionColor = "black",
   unselectedCheckboxAppearance = "outline",
   selectionHeaderIndeterminate = true,
@@ -960,6 +971,7 @@ function Table<T>({
                 disabledTextTone,
                 unselectedTextTone,
                 activeRowAppearance,
+                selectedRowAppearance,
               })
             )
           : (rows ?? []).map((row) => (
@@ -982,6 +994,7 @@ function Table<T>({
                 disabledTextTone={disabledTextTone}
                 unselectedTextTone={unselectedTextTone}
                 activeRowAppearance={activeRowAppearance}
+                selectedRowAppearance={selectedRowAppearance}
               />
             ))}
 

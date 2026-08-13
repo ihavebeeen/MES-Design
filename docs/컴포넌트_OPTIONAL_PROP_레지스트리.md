@@ -23,6 +23,9 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `SearchInput` | `size` | `default \| compact`, 기본 `default` | 상단 조회 툴바의 220×32, 14px, Gray-20 검색창을 페이지 CSS 덮어쓰기 없이 재사용한다. | 양식관리 목록, Figma `17309:158828` |
 | `SearchInput` | `background` | `white \| subtle`, 기본은 size 규격에 따름 | 같은 14px compact 검색창이 흰 모달 표면과 Gray-20 조회 툴바 양쪽에 쓰이는 차이를 표현한다. | 입고검사, Figma `19768:100249` |
 | `Sidebar` | `productSwitcher` | `ReactNode`, 기본 없음 | 원본 화면에 존재하는 MES/FEMS 전환 컴포넌트를 내비게이션 순서 안에 조립한다. | 양식관리 목록, Figma `17309:158828` |
+| `Switch` | `size="compact"` | `26×18`, 기본 `40×20` | 단가 카드의 조밀한 헤더에서 실측된 동기화 스위치 규격을 재사용한다. | 표준단가 설정, Figma `18738:62309` |
+| `Table` | `activeRowAppearance="strong-subtle"` | `Primary-30`, 기본 `Primary-20` | 체크 선택과 별개인 이력 조회 활성 행을 더 진한 배경으로 구분한다. | 표준단가 설정, Figma `18738:61758` |
+| `Table` | `selectedRowAppearance="subtle"` | 선택 행 `Primary-20`, 기본 `none` | 별도 `activeId`가 있어도 체크된 복수 행의 선택 배경을 유지한다. | 표준단가 설정, Figma `18738:61758` |
 | `PageTopTabItem` | `closable` | `boolean`, 기본 `true` | 모바일에서 현재 탭 하나만 간결하게 표시할 때 닫기 버튼을 숨긴다. | 생산실적 375, Figma `18849:65980` |
 | `Filter` | `searchable` | `boolean`, 기본 `true` | 필터 패널 내부의 카테고리·옵션 검색창 표시 여부를 제어한다. | 담당자 확정, 일괄작업지시 화면은 `false` |
 | `Filter` | `triggerLabel` | `string \| false`, 기본 `필터 추가` | 1280px 생산실적 조회 툴바처럼 아이콘만 쓰는 트리거를 같은 Filter 동작으로 제공한다. | Figma `18849:62315` |

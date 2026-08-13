@@ -1109,3 +1109,68 @@ test("품목 생산량 설정은 원본 중앙 팝업 치수와 품목·설비 �
   await hideDevelopmentOverlay(page);
   await expect(page).toHaveScreenshot("equipment-discharge-settings.png");
 });
+
+test("표준단가 설정은 품목 선택·단가 입력·이력 상태를 독립적으로 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/visual-regression/standard-price-settings");
+
+  const dialog = page.getByRole("dialog", { name: "표준단가 설정", exact: true });
+  const itemTable = page.getByTestId("standard-price-item-table");
+  const editor = page.getByTestId("standard-price-editor");
+  const history = page.getByTestId("standard-price-history");
+  await expect(dialog).toBeVisible();
+  expect(await dialog.boundingBox()).toEqual({ x: 60, y: 80, width: 1320, height: 800 });
+  expect(await page.getByTestId("standard-price-body").boundingBox()).toEqual({ x: 60, y: 132, width: 1320, height: 676 });
+  expect(await itemTable.boundingBox()).toEqual({ x: 80, y: 196, width: 630, height: 386 });
+  expect(await editor.boundingBox()).toEqual({ x: 730, y: 196, width: 630, height: 386 });
+  expect(await history.boundingBox()).toEqual({ x: 80, y: 592, width: 1280, height: 216 });
+
+  const overflows = await dialog.locator("[data-testid='standard-price-body'], [data-testid='standard-price-item-table'], [data-testid='standard-price-editor'], [data-testid='standard-price-history']").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
+  expect(overflows).toEqual([0, 0, 0, 0]);
+
+  const dataRows = itemTable.getByRole("row");
+  await expect(dataRows.nth(0)).toContainText("P002");
+  await expect(dataRows.nth(1)).toContainText("P003");
+  await expect(dataRows.nth(2)).toContainText("P004");
+  await expect(dataRows.nth(0)).toHaveCSS("background-color", "rgb(232, 245, 255)");
+  await expect(dataRows.nth(1)).toHaveCSS("background-color", "rgb(199, 228, 255)");
+  await expect(itemTable.getByRole("checkbox").nth(1)).toBeChecked();
+  await expect(itemTable.getByRole("checkbox").nth(2)).toBeChecked();
+  await expect(itemTable.getByRole("checkbox").nth(3)).toBeChecked();
+
+  await hideDevelopmentOverlay(page);
+  await expect(page).toHaveScreenshot("standard-price-settings.png");
+
+  const sync = editor.getByRole("switch", { name: "초코칩쿠키 900 TRAY 단가 동기화" });
+  await expect(sync).toBeChecked();
+  expect(await sync.locator("..").boundingBox()).toMatchObject({ width: 26, height: 18 });
+  await expect(editor.getByLabel("초코칩쿠키 900 TRAY 판매단가")).toBeDisabled();
+  await sync.uncheck();
+  await expect(editor.getByLabel("초코칩쿠키 900 TRAY 판매단가")).toBeEnabled();
+  await editor.getByLabel("초코칩쿠키 900 TRAY 판매단가").fill("1250");
+  await expect(editor.getByLabel("초코칩쿠키 900 TRAY 판매단가")).toHaveValue("1250");
+
+  await itemTable.getByRole("checkbox").nth(1).uncheck();
+  await expect(editor.getByRole("switch", { name: "초코칩쿠키 1500 TRAY 단가 동기화" })).toHaveCount(0);
+  const search = dialog.getByPlaceholder("검색어 입력..", { exact: true }).first();
+  await search.fill("P001");
+  await expect(itemTable.getByText("P001", { exact: true })).toBeVisible();
+  await search.fill("");
+  await expect(itemTable.getByText("P003", { exact: true })).toBeVisible();
+
+  await history.getByRole("button", { name: "생산단가", exact: true }).click();
+  await expect(history.getByText("판매", { exact: true })).toHaveCount(0);
+  await history.getByRole("button", { name: "전체", exact: true }).click();
+  await history.getByRole("button", { name: "단가 이력 삭제", exact: true }).first().click();
+  const deleteDialog = page.getByRole("dialog", { name: "알림", exact: true });
+  await expect(deleteDialog).toBeVisible();
+  await expect(page.locator('[role="dialog"]').filter({ hasText: "표준단가 설정" }).first()).toBeVisible();
+  await deleteDialog.getByRole("button", { name: "취소", exact: true }).click();
+
+  await dialog.getByRole("button", { name: "취소", exact: true }).click();
+  await page.getByRole("button", { name: "표준단가 설정 다시 열기", exact: true }).click();
+  await expect(dialog).toBeVisible();
+  await expect(editor.getByRole("switch", { name: "초코칩쿠키 900 TRAY 단가 동기화" })).toBeChecked();
+  await expect(editor.getByLabel("초코칩쿠키 900 TRAY 판매단가")).toHaveValue("1000");
+  await expect(itemTable.getByRole("checkbox").nth(1)).toBeChecked();
+});

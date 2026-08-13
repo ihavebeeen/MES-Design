@@ -7,5 +7,6 @@ export * from "./inspection-trend-analysis-pattern";
 export * from "./master-detail-pattern";
 export * from "./original-mes-screen-assets";
 export * from "./sales-transaction-statement-pattern";
+export * from "./standard-price-settings-pattern";
 export * from "./table-column-settings";
 export * from "./user-password-settings-pattern";

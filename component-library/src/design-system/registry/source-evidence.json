@@ -93,10 +93,11 @@
       "name": "표준단가 설정",
       "figmaNode": "18753:60729",
       "kind": "state-bundle",
-      "normalizedTarget": "popup.side.item-registration",
-      "status": "queued",
-      "notes": ["품목 등록 슬라이드의 표준단가 필드와 세부 설정 진입 상태로 정규화한다."],
-      "qualityGates": { "designContext": false, "metadataLedger": false, "componentMapping": false, "browserMeasurement": false, "interactionTest": false, "visualBaseline": false }
+      "normalizedTarget": "popup.center.standard-price-settings",
+      "status": "verified",
+      "notes": ["품목 등록 우측 패널의 표준단가 설정 버튼은 진입점이며 실제 설정 UI는 1320×800 중앙 팝업이다.", "빈 상태 18746:59680과 3개 품목 선택 상태 18738:61758을 각각 원본 근거로 사용했다.", "체크 선택과 행 클릭을 분리해 우측 단가 카드와 하단 단가 이력을 독립적으로 갱신한다.", "공용 Table에 선택 배경 유지와 Primary-30 활성 행 옵션, Switch에 26×18 compact 실측 옵션을 추가하고 optional prop 근거를 기록했다.", "브라우저에서 630/630px 상단 분할, 1280×216 이력, 검색 후 선택 유지, 단가 동기화, 이력 탭·삭제 확인, 취소 복원과 무가로 overflow를 검증했다."],
+      "qualityGates": { "designContext": true, "metadataLedger": true, "componentMapping": true, "browserMeasurement": true, "interactionTest": true, "visualBaseline": true },
+      "visualCaseId": "popup-standard-price-settings"
     },
     {
       "id": "team-settings",

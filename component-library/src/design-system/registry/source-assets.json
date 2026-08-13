@@ -72,6 +72,15 @@
       "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx",
       "requiredComponents": ["center-modal", "confirm-dialog", "filter", "search-input", "table", "input", "button"],
       "rules": ["품목은 단일 선택이며 선택한 품목의 공정과 일치하는 설비만 우측에 표시한다.", "설비는 복수 선택하며 선택된 행만 시간당 생산량 입력을 활성화한다.", "일괄 변경은 현재 표시된 전체 설비에 적용하고 저장 완료 안내 중에도 주 팝업은 유지한다.", "취소·X·Esc·배경 클릭은 저장 전 변경을 폐기하고 마지막 저장 상태로 복원한다."]
+    },
+    {
+      "id": "popup.center.standard-price-settings",
+      "name": "표준단가 설정",
+      "kind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/standard-price-settings-pattern.tsx",
+      "requiredComponents": ["center-modal", "confirm-dialog", "search-input", "table", "date-picker", "input", "switch", "badge", "button", "icon-button"],
+      "rules": ["체크박스 선택은 우측 단가 카드 노출을 결정하고 행 클릭은 하단 이력 대상을 독립적으로 결정한다.", "선택 행은 Primary-20, 이력 조회 활성 행은 Primary-30으로 동시에 구분한다.", "단가 동기화가 켜지면 생산단가 값이 판매단가에 복사되고 판매단가 입력은 비활성화된다.", "선택 품목은 검색 후에도 유지하고 목록 상단에 고정한다."]
     }
   ],
   "screens": [
@@ -83,6 +92,7 @@
     { "id": "purchase-order-lookup", "name": "발주 정보", "patternRefs": ["popup.center.purchase-lookup", "shell.center-modal", "section.search-table-composition", "action-set.cancel-select"], "source": "src/components/patterns/exact-purchase-modals.tsx", "figmaNode": "17503:85601", "stateRules": ["품목 건수 링크가 품목 상세 목록을 연다."] },
     { "id": "production-analytics-latest", "name": "생산분석 현황", "patternRefs": ["screen.analytics-dashboard", "section.search-table-composition"], "source": "src/components/patterns/exact-production-analytics-screen.tsx", "figmaNode": "17520:46628", "stateRules": ["조회기간과 조회기준은 KPI·차트·목록 단위를 함께 바꾼다.", "판매계획·생산계획 설정은 카드 내부 설정 상태로 관리한다."] },
     { "id": "equipment-inspection-records", "name": "냉각기 점검표", "patternRefs": ["popup.center.inspection-records", "shell.center-modal", "section.search-table-composition", "selection.enable-actions"], "source": "src/components/patterns/equipment-inspection-records-modal.tsx", "figmaNode": "9873:112416", "stateRules": ["검색과 필터는 동일한 조회 목록을 갱신한다.", "선택된 점검 기록만 삭제·점검 결과 등록의 대상이 된다."] },
-    { "id": "equipment-discharge-settings", "name": "설비별 토출량 설정", "patternRefs": ["popup.center.equipment-discharge-settings", "shell.center-modal", "section.search-table-composition", "selection.master-detail", "selection.reveal-inline-editor", "dismiss.restore-committed", "action-set.cancel-save"], "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx", "figmaNode": "20302:68442", "stateRules": ["설비 정보 등록 슬라이드의 생산량 설정 액션에서 1257×680 중앙 팝업을 연다.", "품목 단일 선택이 우측 설비 목록의 공정 범위를 결정한다.", "설비 다중 선택이 행별 생산량 입력의 활성 상태를 결정한다.", "저장은 완료 안내만 열고 주 팝업을 닫지 않는다."] }
+    { "id": "equipment-discharge-settings", "name": "설비별 토출량 설정", "patternRefs": ["popup.center.equipment-discharge-settings", "shell.center-modal", "section.search-table-composition", "selection.master-detail", "selection.reveal-inline-editor", "dismiss.restore-committed", "action-set.cancel-save"], "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx", "figmaNode": "20302:68442", "stateRules": ["설비 정보 등록 슬라이드의 생산량 설정 액션에서 1257×680 중앙 팝업을 연다.", "품목 단일 선택이 우측 설비 목록의 공정 범위를 결정한다.", "설비 다중 선택이 행별 생산량 입력의 활성 상태를 결정한다.", "저장은 완료 안내만 열고 주 팝업을 닫지 않는다."] },
+    { "id": "standard-price-settings", "name": "표준단가 설정", "patternRefs": ["popup.center.standard-price-settings", "shell.center-modal", "section.search-table-composition", "selection.master-detail", "selection.reveal-inline-editor", "dismiss.restore-committed", "action-set.cancel-confirm"], "source": "src/components/patterns/standard-price-settings-pattern.tsx", "figmaNode": "18753:60729", "stateRules": ["1320×800 중앙 팝업 안에서 품목 선택, 단가 카드, 단가 이력을 조합한다.", "선택과 활성 행은 독립 상태다.", "생산·판매 단가 기간과 금액, 동기화, 일괄 기간 적용을 관리한다.", "이력 삭제는 경고 확인 팝업으로 이어진다."] }
   ]
 }

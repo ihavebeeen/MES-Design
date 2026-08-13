@@ -317,6 +317,15 @@
       "rules": ["취소는 dismiss 계약, 저장은 commit 계약에 연결한다."]
     },
     {
+      "id": "action-set.cancel-confirm",
+      "name": "취소·확인 동작 세트",
+      "kind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": ["button"],
+      "rules": ["취소는 dismiss 계약, 확인은 현재 편집 내용을 확정하는 commit 계약에 연결한다."]
+    },
+    {
       "id": "action-set.save-only",
       "name": "저장 동작 세트",
       "kind": "action-set",
