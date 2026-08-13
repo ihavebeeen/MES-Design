@@ -1,7 +1,12 @@
 import { readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { extname, join, relative } from "node:path";
 
-const patternDirectory = join(process.cwd(), "src", "components", "patterns");
+const root = process.cwd();
+const strictImplementationRoots = [
+  join(root, "src", "components", "patterns"),
+  join(root, "src", "components", "visual-tests"),
+];
+const routeImplementationRoots = [join(root, "src", "app")];
 const forbidden = [
   ["lucide-react", "패턴에서 Lucide를 직접 가져오지 말고 MES 아이콘 컴포넌트를 사용하세요."],
   ["<button", "패턴에서 raw button을 만들지 말고 Button/IconButton을 사용하세요."],
@@ -16,11 +21,28 @@ const forbidden = [
   ["DenseTable", "Table의 중복 구현은 허용되지 않습니다."],
 ];
 
+function collectTsxFiles(directory) {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) return collectTsxFiles(path);
+    return extname(entry.name) === ".tsx" ? [path] : [];
+  });
+}
+
+const rawElementRules = forbidden.filter(([needle]) => needle.startsWith("<"));
+const filesByRules = [
+  ...strictImplementationRoots.flatMap(collectTsxFiles).map((file) => ({ file, rules: forbidden })),
+  ...routeImplementationRoots.flatMap(collectTsxFiles).map((file) => ({ file, rules: rawElementRules })),
+];
+
 const violations = [];
-for (const file of readdirSync(patternDirectory).filter((name) => name.endsWith(".tsx"))) {
-  const source = readFileSync(join(patternDirectory, file), "utf8");
-  for (const [needle, message] of forbidden) {
-    if (source.includes(needle)) violations.push(`${file}: ${message} (${needle})`);
+for (const { file, rules } of filesByRules) {
+  const source = readFileSync(file, "utf8");
+  for (const [needle, message] of rules) {
+    if (source.includes(needle)) {
+      const displayPath = relative(root, file).replaceAll("\\", "/");
+      violations.push(`${displayPath}: ${message} (${needle})`);
+    }
   }
 }
 

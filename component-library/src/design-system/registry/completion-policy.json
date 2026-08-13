@@ -16,10 +16,10 @@
     "미검수 항목이 하나라도 있으면 전체 완료라고 표현하지 않는다."
   ],
   "projectCompletionBlockers": [
-    "source-evidence의 queued 또는 in-progress 항목",
+    "source-evidence의 queued 또는 in-progress 항목(사용자 결정으로 closed-unverified 종결한 격리 시안 제외)",
     "generated-screen-evaluations의 partial-success 또는 review 항목",
     "resolved가 아닌 section/behavior pattern proposal registry",
     "composition ledger의 migration-hold 또는 needs-review 항목",
-    "footer-action-audit의 queued 또는 implemented-unverified 항목"
+    "footer-action-audit의 queued 또는 implemented-unverified 항목(closed-unverified 격리 시안 제외)"
   ]
 }

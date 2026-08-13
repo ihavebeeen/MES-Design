@@ -55,7 +55,7 @@
     { "id": "standard-frame-repeat", "status": "candidate", "detail": "p-5 + section heading + optional bottom/column divider 조합이 여러 source recipe에서 반복된다." },
     { "id": "gray-entry-card-repeat", "status": "candidate", "detail": "gray-20 rounded entry form이 생산실적·입고등록·이지모드 후보에서 반복되지만 제목/하단 여백/버튼 배치가 서로 다르다." },
     { "id": "list-region-repeat", "status": "candidate", "detail": "제목/검색 + flex table list 영역이 반복되지만 아직 공통 Frame 계약이 없다." },
-    { "id": "collapsible-is-single-candidate", "status": "migration-hold", "detail": "collapsible 선택항목은 생성 후보 1건뿐이므로 표준 Frame으로 승격하지 않는다." },
+    { "id": "collapsible-is-single-candidate", "status": "closed-no-promotion", "detail": "생성 후보 1건뿐이고 해당 UI도 후보에서 제거했으므로 표준 Frame 승격 없이 종결한다." },
     { "id": "unwired-cavity-content", "status": "needs-review", "detail": "original-mes-screen-assets의 CavityContent는 현재 OriginalMesScreenAssets 렌더 경로에 연결되지 않았다." },
     { "id": "fixed-pixel-regions", "status": "needs-review", "detail": "일부 Frame이 고정 높이와 개별 padding을 소유해 Shell resize 및 scroll 책임과 충돌할 수 있다." }
   ]

@@ -361,20 +361,22 @@ function QaToggleGroup({
       {options.map((opt) => {
         const selected = value === opt.key;
         return (
-          <button
+          <Button
             key={opt.key}
             type="button"
+            variant="lineBlacktxt"
+            size="small"
             onClick={() => onChange(opt.key)}
             aria-pressed={selected}
             className={cn(
-              "flex h-8 w-[54px] shrink-0 items-center justify-center rounded-mes-control-sm border transition-colors",
+              "h-8 w-[54px] shrink-0 rounded-mes-control-sm px-0",
               selected
                 ? "border-mes-primary-60 bg-mes-bg-brand text-white"
                 : "border-mes-border-default bg-white text-mes-gray-40"
             )}
           >
             {opt.render(selected)}
-          </button>
+          </Button>
         );
       })}
     </div>
@@ -1549,7 +1551,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
             <PopoverTrigger asChild>
               <div className="relative mb-4 flex items-center px-2">
                 <Search className="pointer-events-none absolute left-4.5 size-3.5 text-mes-gray-50" />
-                <input
+                <Input
                   value={sidebarSearch}
                   onChange={(e) => setSidebarSearch(e.target.value)}
                   placeholder="컴포넌트 이름 검색"
@@ -3205,20 +3207,24 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
           2026-07-31: 담당자가 "테이블 합본이 하단에 있도록"이라고 요청 — 분리 데모
           (table-parts) 다음, 페이지 맨 아래로 순서 이동(내용 변경 없음). */}
       <section id="table-full" className={cn("flex w-full max-w-[960px] scroll-mt-20 flex-col gap-4 border-b border-mes-gray-30 pb-8", activeId !== "table-full" && "hidden")}>
-        <button
+        <Button
           type="button"
+          variant="lineBlacktxt"
+          size="small"
           onClick={() => setProductionTableOpen((prev) => !prev)}
-          className="flex items-center gap-1.5 text-left text-[15px] font-bold text-mes-gray-130"
+          className="h-auto justify-start border-0 bg-transparent p-0 text-left text-[15px] font-bold text-mes-gray-130 hover:bg-transparent"
+          startIcon={
+            <ChevronRight
+              size={16}
+              className={cn(
+                "shrink-0 text-mes-gray-70 transition-transform",
+                productionTableOpen && "rotate-90"
+              )}
+            />
+          }
         >
-          <ChevronRight
-            size={16}
-            className={cn(
-              "shrink-0 text-mes-gray-70 transition-transform",
-              productionTableOpen && "rotate-90"
-            )}
-          />
           테이블 · 합본 데모(Table — Full) — 클릭해서 접기/펼치기
-        </button>
+        </Button>
         {productionTableOpen && (
           <div className="w-full overflow-x-auto">
             <Table
@@ -3638,13 +3644,12 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                         <span className="text-[14px] leading-[1.3] text-mes-gray-130">{row.unit}</span>
                       </div>
                       <div className="flex flex-1 items-center justify-center p-[6px]">
-                        <button
-                          type="button"
+                        <IconButton
                           aria-label="삭제"
-                          className="inline-flex items-center justify-center rounded-[2px] px-2 py-1 text-mes-gray-70"
-                        >
-                          <IconTrash size={16} />
-                        </button>
+                          size="xsmall"
+                          icon={<IconTrash size={16} />}
+                          className="rounded-[2px] text-mes-gray-70 [&_svg]:size-4"
+                        />
                       </div>
                     </div>
                   ))}
@@ -3891,13 +3896,12 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                                   <Badge variant="gray">완료</Badge>
                                 )
                               ) : col.key === "delete" ? (
-                                <button
-                                  type="button"
+                                <IconButton
                                   aria-label="삭제"
-                                  className="inline-flex items-center justify-center rounded-[2px] px-2 py-1 text-mes-gray-70"
-                                >
-                                  <IconTrash size={16} />
-                                </button>
+                                  size="xsmall"
+                                  icon={<IconTrash size={16} />}
+                                  className="rounded-[2px] text-mes-gray-70 [&_svg]:size-4"
+                                />
                               ) : (
                                 <span className="whitespace-nowrap text-[14px] leading-[1.3] text-mes-gray-130">
                                   {(row as unknown as Record<string, string>)[col.key]}
@@ -4406,20 +4410,24 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
 
                 <div className="flex h-14 shrink-0 items-center justify-between border-t border-mes-gray-30 px-4">
                   <div className="flex items-center gap-4">
-                    <button
+                    <Button
                       type="button"
-                      className="flex items-center gap-1.5 text-[13px] text-mes-gray-70"
+                      variant="lineBlacktxt"
+                      size="xsmall"
+                      startIcon={<IconCopy size={16} />}
+                      className="h-auto border-0 bg-transparent p-0 text-[13px] font-normal text-mes-gray-70 hover:bg-transparent"
                     >
-                      <IconCopy size={16} />
                       복사
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       type="button"
-                      className="flex items-center gap-1.5 text-[13px] text-mes-gray-70"
+                      variant="lineBlacktxt"
+                      size="xsmall"
+                      startIcon={<IconDownload size={16} />}
+                      className="h-auto border-0 bg-transparent p-0 text-[13px] font-normal text-mes-gray-70 hover:bg-transparent"
                     >
-                      <IconDownload size={16} />
                       다운로드
-                    </button>
+                    </Button>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button variant="fillBlack" size="small" className="w-[160px]">

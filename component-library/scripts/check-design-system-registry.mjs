@@ -148,7 +148,7 @@ for (const subtype of summarySubtypeIds.values()) {
 if (compositionBehaviorLedgerRegistry.status !== "observed-not-canonical") errors.push("composition-behavior-ledger: status는 observed-not-canonical이어야 합니다.");
 const behaviorCandidates = mapByUniqueId("composition-behavior-ledger", compositionBehaviorLedgerRegistry.candidates ?? []);
 if (compositionBehaviorLedgerRegistry.summary?.candidateFamilies !== behaviorCandidates.size) errors.push("composition-behavior-ledger: summary.candidateFamilies와 실제 후보 수가 다릅니다.");
-const allowedBehaviorStatuses = new Set(["decomposed", "verified-with-boundary", "migration-hold"]);
+const allowedBehaviorStatuses = new Set(["decomposed", "verified-with-boundary", "migration-hold", "closed-local"]);
 let decomposedBehaviorFamilies = 0;
 let migrationHoldBehaviors = 0;
 for (const candidate of behaviorCandidates.values()) {
@@ -227,7 +227,7 @@ for (const term of requiredCompletionTerms) {
 if (!Array.isArray(completionPolicyRegistry.reportingRequirements) || completionPolicyRegistry.reportingRequirements.length === 0) errors.push("completion-policy: reportingRequirements가 필요합니다.");
 if (!Array.isArray(completionPolicyRegistry.projectCompletionBlockers) || completionPolicyRegistry.projectCompletionBlockers.length === 0) errors.push("completion-policy: projectCompletionBlockers가 필요합니다.");
 if (!["in-progress", "verified"].includes(footerActionAuditRegistry.auditState)) errors.push("footer-action-audit: auditState는 in-progress 또는 verified여야 합니다.");
-const allowedFooterAuditStatuses = new Set(["queued", "implemented-unverified", "verified", "not-applicable"]);
+const allowedFooterAuditStatuses = new Set(["queued", "implemented-unverified", "verified", "not-applicable", "closed-unverified"]);
 for (const source of sourceEvidence.values()) {
   if (!footerActionAudits.has(source.id)) errors.push(`footer-action-audit: source-evidence '${source.id}'의 하단 액션 판정이 없습니다.`);
 }
@@ -258,7 +258,7 @@ for (const [name, registry] of proposalRegistries) {
   }
 }
 
-const allowedEvidenceStatuses = new Set(["queued", "in-progress", "verified"]);
+const allowedEvidenceStatuses = new Set(["queued", "in-progress", "verified", "closed-unverified"]);
 const allowedCandidateStatuses = new Set(["partial-success", "review", "approved", "rejected", "archived"]);
 const requiredQualityGates = ["designContext", "metadataLedger", "componentMapping", "browserMeasurement", "interactionTest", "visualBaseline"];
 const figmaNodes = new Set();
@@ -280,7 +280,7 @@ for (const source of sourceEvidence.values()) {
   }
 }
 
-const openSourceEvidence = [...sourceEvidence.values()].filter((source) => source.status !== "verified");
+const openSourceEvidence = [...sourceEvidence.values()].filter((source) => ["queued", "in-progress"].includes(source.status));
 const openGeneratedCandidates = [...generatedCandidates.values()].filter((candidate) => ["partial-success", "review"].includes(candidate.status));
 const unresolvedProposalRegistries = proposalRegistries.filter(([, registry]) => registry.status !== "resolved");
 const openCompositionFindings = [

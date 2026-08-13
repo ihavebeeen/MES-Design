@@ -7,7 +7,7 @@
     "candidateFamilies": 4,
     "decomposedFamilies": 2,
     "verifiedShellDismissSources": 3,
-    "migrationHolds": 1
+    "migrationHolds": 0
   },
   "candidates": [
     {
@@ -62,13 +62,13 @@
     },
     {
       "id": "row.inherit-previous",
-      "status": "migration-hold",
+      "status": "closed-local",
       "detectedFileCount": 1,
       "sources": ["src/components/patterns/easy-mode-receiving-pattern.tsx"],
       "subtypes": ["inherit-selected-fields"],
       "stateContract": ["previous-row", "allowlisted-fields", "new-row-only", "no-retroactive-sync"],
       "differences": ["customer-only-in-current-candidate"],
-      "decision": "요구사항으로는 유효하지만 생성 후보 한 건뿐이다. 공통 Behavior 승격 전까지 ScreenSpec local rule로 격리한다."
+      "decision": "생성 후보 한 건의 유효한 로컬 요구사항으로 종결한다. 공통 Behavior로 승격하지 않고 해당 ScreenSpec 밖의 생성 근거로 사용하지 않는다."
     }
   ],
   "selectionSubtypes": [

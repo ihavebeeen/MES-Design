@@ -96,7 +96,7 @@ export interface VisualRegressionRegistry {
   cases: VisualRegressionCase[];
 }
 
-export type SourceEvidenceStatus = "queued" | "in-progress" | "verified";
+export type SourceEvidenceStatus = "queued" | "in-progress" | "verified" | "closed-unverified";
 
 export interface SourceEvidenceQualityGates {
   designContext: boolean;
@@ -289,7 +289,7 @@ export interface CompositionSectionFrameLedgerRegistry {
   };
   frames: CompositionSectionFrameLedgerEntry[];
   unframedBodies: Array<{ recipe: string; content: string; reason: string }>;
-  findings: Array<{ id: string; status: "confirmed" | "candidate" | "migration-hold" | "needs-review"; detail: string }>;
+  findings: Array<{ id: string; status: "confirmed" | "candidate" | "migration-hold" | "needs-review" | "closed-no-promotion"; detail: string }>;
 }
 
 export interface CompositionSectionPatternCandidate {
@@ -325,7 +325,7 @@ export interface CompositionSectionPatternLedgerRegistry {
 
 export interface CompositionBehaviorCandidate {
   id: string;
-  status: "decomposed" | "verified-with-boundary" | "migration-hold";
+  status: "decomposed" | "verified-with-boundary" | "migration-hold" | "closed-local";
   detectedFileCount: number;
   sources: string[];
   subtypes: string[];
@@ -420,7 +420,7 @@ export interface FooterActionAuditRegistry {
   auditState: "in-progress" | "verified";
   entries: Array<{
     sourceEvidenceId: string;
-    status: "queued" | "implemented-unverified" | "verified" | "not-applicable";
+    status: "queued" | "implemented-unverified" | "verified" | "not-applicable" | "closed-unverified";
     actionSet: string;
     note: string;
   }>;
