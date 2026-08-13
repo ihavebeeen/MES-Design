@@ -7,9 +7,9 @@
     "evidence": "exact-* 및 원본 재현 화면"
   },
   "summary": {
-    "scannedFiles": 111,
-    "totalOccurrences": 3283,
-    "arbitraryUtilities": 1216,
+    "scannedFiles": 112,
+    "totalOccurrences": 3287,
+    "arbitraryUtilities": 1220,
     "hardcodedColors": 68,
     "reviewCandidates": 0,
     "unregisteredCandidates": 0
@@ -22,15 +22,15 @@
       "hardcodedColors": 21
     },
     "pattern": {
-      "files": 24,
-      "occurrences": 1687,
-      "arbitraryUtilities": 597,
+      "files": 25,
+      "occurrences": 1689,
+      "arbitraryUtilities": 599,
       "hardcodedColors": 43
     },
     "evidence": {
       "files": 9,
-      "occurrences": 432,
-      "arbitraryUtilities": 211,
+      "occurrences": 434,
+      "arbitraryUtilities": 213,
       "hardcodedColors": 4
     }
   },
@@ -325,7 +325,7 @@
           "src/components/patterns/exact-inventory-action-modal.tsx:78",
           "src/components/patterns/exact-inventory-add-modal.tsx:130",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:147",
-          "src/components/patterns/original-mes-screen-assets.tsx:77"
+          "src/components/patterns/original-mes-screen-assets.tsx:78"
         ]
       },
       {
@@ -1276,6 +1276,26 @@
         ]
       },
       {
+        "value": "960px",
+        "count": 21,
+        "arbitraryCount": 21,
+        "layers": {
+          "canonical": 3,
+          "pattern": 11,
+          "evidence": 7
+        },
+        "examples": [
+          "src/components/ui/center-modal.tsx:31",
+          "src/components/ui/grid-container.tsx:13",
+          "src/components/ui/side-slide-panel.tsx:23",
+          "src/components/patterns/analytics-dashboard-pattern.tsx:40",
+          "src/components/patterns/cavity-settings-pattern.tsx:13",
+          "src/components/patterns/entity-list-pattern.tsx:28",
+          "src/components/patterns/exact-form-management-screen.tsx:119",
+          "src/components/patterns/exact-production-analytics-screen.tsx:45"
+        ]
+      },
+      {
         "value": "200px",
         "count": 19,
         "arbitraryCount": 19,
@@ -1313,26 +1333,6 @@
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:102",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:104",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:126"
-        ]
-      },
-      {
-        "value": "960px",
-        "count": 19,
-        "arbitraryCount": 19,
-        "layers": {
-          "canonical": 3,
-          "pattern": 10,
-          "evidence": 6
-        },
-        "examples": [
-          "src/components/ui/center-modal.tsx:31",
-          "src/components/ui/grid-container.tsx:13",
-          "src/components/ui/side-slide-panel.tsx:23",
-          "src/components/patterns/analytics-dashboard-pattern.tsx:40",
-          "src/components/patterns/entity-list-pattern.tsx:28",
-          "src/components/patterns/exact-form-management-screen.tsx:119",
-          "src/components/patterns/exact-production-analytics-screen.tsx:45",
-          "src/components/patterns/generated-screen-review.tsx:16"
         ]
       },
       {
@@ -1416,6 +1416,25 @@
         ]
       },
       {
+        "value": "1440px",
+        "count": 13,
+        "arbitraryCount": 13,
+        "layers": {
+          "pattern": 7,
+          "evidence": 6
+        },
+        "examples": [
+          "src/components/patterns/cavity-settings-pattern.tsx:13",
+          "src/components/patterns/equipment-discharge-settings-pattern.tsx:275",
+          "src/components/patterns/generated-screen-review.tsx:55",
+          "src/components/patterns/kiosk-easy-receiving-pattern.tsx:76",
+          "src/components/patterns/original-mes-screen-assets.tsx:275",
+          "src/components/patterns/original-mes-screen-assets.tsx:275",
+          "src/components/patterns/original-mes-screen-assets.tsx:275",
+          "src/components/patterns/original-mes-screen-assets.tsx:275"
+        ]
+      },
+      {
         "value": "52px",
         "count": 13,
         "arbitraryCount": 13,
@@ -1453,25 +1472,6 @@
           "src/components/patterns/completed-popup-expanded-content.tsx:224",
           "src/components/patterns/exact-production-analytics-screen.tsx:59",
           "src/components/patterns/exact-production-analytics-screen.tsx:59"
-        ]
-      },
-      {
-        "value": "1440px",
-        "count": 11,
-        "arbitraryCount": 11,
-        "layers": {
-          "pattern": 6,
-          "evidence": 5
-        },
-        "examples": [
-          "src/components/patterns/equipment-discharge-settings-pattern.tsx:275",
-          "src/components/patterns/generated-screen-review.tsx:55",
-          "src/components/patterns/kiosk-easy-receiving-pattern.tsx:76",
-          "src/components/patterns/original-mes-screen-assets.tsx:274",
-          "src/components/patterns/original-mes-screen-assets.tsx:274",
-          "src/components/patterns/original-mes-screen-assets.tsx:274",
-          "src/components/patterns/original-mes-screen-assets.tsx:274",
-          "src/components/patterns/original-mes-screen-assets.tsx:274"
         ]
       },
       {
@@ -1646,7 +1646,7 @@
           "src/components/patterns/exact-production-analytics-screen.tsx:45",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:49",
           "src/components/patterns/master-detail-pattern.tsx:29",
-          "src/components/patterns/original-mes-screen-assets.tsx:274",
+          "src/components/patterns/original-mes-screen-assets.tsx:275",
           "src/components/patterns/sales-transaction-statement-pattern.tsx:293"
         ]
       },
@@ -1704,8 +1704,8 @@
           "src/components/patterns/equipment-discharge-settings-pattern.tsx:227",
           "src/components/patterns/exact-inventory-action-modal.tsx:86",
           "src/components/patterns/exact-inventory-add-modal.tsx:135",
-          "src/components/patterns/original-mes-screen-assets.tsx:141",
-          "src/components/patterns/original-mes-screen-assets.tsx:141",
+          "src/components/patterns/original-mes-screen-assets.tsx:142",
+          "src/components/patterns/original-mes-screen-assets.tsx:142",
           "src/components/patterns/sales-transaction-statement-pattern.tsx:235"
         ]
       },
@@ -1724,7 +1724,7 @@
           "src/components/patterns/equipment-discharge-settings-pattern.tsx:153",
           "src/components/patterns/exact-production-result-screen.tsx:108",
           "src/components/patterns/exact-purchase-modals.tsx:68",
-          "src/components/patterns/original-mes-screen-assets.tsx:76",
+          "src/components/patterns/original-mes-screen-assets.tsx:77",
           "src/components/patterns/standard-price-settings-pattern.tsx:239",
           "src/components/patterns/standard-price-settings-pattern.tsx:239"
         ]
@@ -1836,8 +1836,8 @@
           "src/components/patterns/equipment-discharge-settings-pattern.tsx:275",
           "src/components/patterns/generated-screen-review.tsx:55",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:76",
-          "src/components/patterns/original-mes-screen-assets.tsx:274",
-          "src/components/patterns/original-mes-screen-assets.tsx:274",
+          "src/components/patterns/original-mes-screen-assets.tsx:275",
+          "src/components/patterns/original-mes-screen-assets.tsx:275",
           "src/components/patterns/shipment-approval-pattern.tsx:248"
         ]
       },
@@ -1988,7 +1988,7 @@
           "src/components/ui/descriptions.tsx:34",
           "src/components/patterns/completed-popup-expanded-content.tsx:118",
           "src/components/patterns/exact-production-result-screen.tsx:108",
-          "src/components/patterns/original-mes-screen-assets.tsx:138"
+          "src/components/patterns/original-mes-screen-assets.tsx:139"
         ]
       },
       {
@@ -2001,8 +2001,8 @@
         "examples": [
           "src/components/patterns/exact-production-result-screen.tsx:112",
           "src/components/patterns/exact-production-result-screen.tsx:112",
-          "src/components/patterns/original-mes-screen-assets.tsx:107",
-          "src/components/patterns/original-mes-screen-assets.tsx:107"
+          "src/components/patterns/original-mes-screen-assets.tsx:108",
+          "src/components/patterns/original-mes-screen-assets.tsx:108"
         ]
       },
       {
@@ -2062,7 +2062,7 @@
           "src/components/patterns/exact-form-management-screen.tsx:140",
           "src/components/patterns/exact-form-management-screen.tsx:149",
           "src/components/patterns/exact-form-management-screen.tsx:172",
-          "src/components/patterns/original-mes-screen-assets.tsx:143"
+          "src/components/patterns/original-mes-screen-assets.tsx:144"
         ]
       },
       {
@@ -2221,8 +2221,8 @@
           "evidence": 2
         },
         "examples": [
-          "src/components/patterns/original-mes-screen-assets.tsx:142",
-          "src/components/patterns/original-mes-screen-assets.tsx:142"
+          "src/components/patterns/original-mes-screen-assets.tsx:143",
+          "src/components/patterns/original-mes-screen-assets.tsx:143"
         ]
       },
       {
@@ -2526,8 +2526,8 @@
           "evidence": 2
         },
         "examples": [
-          "src/components/patterns/original-mes-screen-assets.tsx:75",
-          "src/components/patterns/original-mes-screen-assets.tsx:124"
+          "src/components/patterns/original-mes-screen-assets.tsx:76",
+          "src/components/patterns/original-mes-screen-assets.tsx:125"
         ]
       },
       {
@@ -3254,7 +3254,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/original-mes-screen-assets.tsx:249"
+          "src/components/patterns/original-mes-screen-assets.tsx:250"
         ]
       },
       {
@@ -3419,7 +3419,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/original-mes-screen-assets.tsx:219"
+          "src/components/patterns/original-mes-screen-assets.tsx:220"
         ]
       },
       {
@@ -4246,5 +4246,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "6f65ffaa22fde616"
+  "fingerprint": "383dece5e624dcff"
 }

@@ -308,7 +308,7 @@ test("이지모드 입고등록은 MES 우측 슬라이드 규격과 직접 입�
   await expect(dialog.getByRole("button", { name: "저장" })).toBeDisabled();
 });
 
-test("부분 성공 생성안은 표준 패턴과 분리된 검토함에 기록된다", async ({ page }) => {
+test("종결한 생성안은 표준 패턴과 분리된 검토함에 보관된다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   const generatedScreensLink = page.getByRole("link", { name: "Generated Screens", exact: true }).first();
@@ -321,7 +321,7 @@ test("부분 성공 생성안은 표준 패턴과 분리된 검토함에 기록�
   await expect(page.getByRole("heading", { name: "생성 시안 검토함" })).toBeVisible();
   const easyCandidate = page.getByRole("article").filter({ has: page.getByRole("heading", { name: "이지모드 입고등록" }) });
   await expect(easyCandidate).toBeVisible();
-  await expect(easyCandidate.getByText("부분 성공", { exact: true })).toBeVisible();
+  await expect(easyCandidate.getByText("보관", { exact: true })).toBeVisible();
   await expect(easyCandidate.getByText("표준 영향 차단", { exact: true })).toBeVisible();
   await expect(easyCandidate.getByText("50 / 100", { exact: true })).toBeVisible();
   await expect(easyCandidate.getByText("단일 화면 생성과 수정에 시간이 과도하게 걸렸다.", { exact: true })).toBeVisible();
@@ -329,7 +329,7 @@ test("부분 성공 생성안은 표준 패턴과 분리된 검토함에 기록�
 
   const kioskCandidate = page.getByRole("article").filter({ has: page.getByRole("heading", { name: "키오스크 이지 입고" }) });
   await expect(kioskCandidate).toBeVisible();
-  await expect(kioskCandidate.getByText("검토 대기", { exact: true })).toBeVisible();
+  await expect(kioskCandidate.getByText("보관", { exact: true })).toBeVisible();
   await expect(kioskCandidate.getByText("탐색 시안(원본 없음)", { exact: false })).toBeVisible();
   await expect(kioskCandidate.getByText("표준 영향 차단", { exact: true })).toBeVisible();
 
@@ -598,6 +598,32 @@ test("캐비티 배열 입력은 제어 상태로 동작하고 콘솔 오류를 
   await gallery.getByRole("button", { name: "교환", exact: true }).click();
   await expect(gallery.getByRole("textbox", { name: "선택한 셀" })).toHaveValue("12");
   expect(consoleErrors).toEqual([]);
+});
+
+test("캐비티 배열 설정은 고정 원본 크기와 단일 본문 스크롤 계약을 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/visual-regression/cavity-settings");
+
+  const dialog = page.getByRole("dialog", { name: "캐비티 배열 설정", exact: true });
+  await expect(dialog).toBeVisible();
+  expect(await dialog.boundingBox()).toEqual({ x: 240, y: 100, width: 960, height: 760 });
+  const body = dialog.locator(":scope > div").nth(1);
+  expect(await body.boundingBox()).toEqual({ x: 240, y: 152, width: 960, height: 636 });
+  const overflows = await dialog.locator(":scope, :scope > div").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
+  expect(overflows).toEqual([0, 0, 0, 0]);
+
+  const horizontalCount = dialog.getByRole("textbox", { name: "배열 가로" });
+  const verticalCount = dialog.getByRole("textbox", { name: "배열 세로" });
+  await horizontalCount.fill("4");
+  await verticalCount.fill("3");
+  await expect(dialog.locator('input[value="4*3"]')).toBeVisible();
+  await dialog.getByText("사용자 설정", { exact: true }).click();
+  await dialog.getByRole("textbox", { name: "교환할 번호 입력" }).fill("12");
+  await dialog.getByRole("button", { name: "교환", exact: true }).click();
+  await expect(dialog.getByRole("textbox", { name: "선택한 셀" })).toHaveValue("12");
+
+  await hideDevelopmentOverlay(page);
+  await expect(page).toHaveScreenshot("cavity-settings.png");
 });
 
 test("완성 팝업 16종은 데스크톱에서 가로 스크롤을 만들지 않는다", async ({ page }) => {

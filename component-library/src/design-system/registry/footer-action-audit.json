@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "auditState": "in-progress",
+  "auditState": "verified",
   "entries": [
     { "sourceEvidenceId": "easy-mode-receiving", "status": "closed-unverified", "actionSet": "action-set.cancel-save", "note": "사용자 결정으로 현재 부분 성공 시안을 그대로 보존하고 원본 개별 대조 없이 종결했다. 표준 근거에는 포함하지 않는다." },
     { "sourceEvidenceId": "form-management-inspection-criteria", "status": "verified", "actionSet": "action-set.cancel-save", "note": "취소·저장 배치와 취소 복원 동작을 시각·상호작용 회귀로 검증했다." },

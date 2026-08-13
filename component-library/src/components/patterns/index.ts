@@ -1,4 +1,5 @@
 export * from "./analytics-dashboard-pattern";
+export * from "./cavity-settings-pattern";
 export * from "./completed-screen-examples";
 export * from "./entity-list-pattern";
 export * from "./equipment-inspection-records-modal";
