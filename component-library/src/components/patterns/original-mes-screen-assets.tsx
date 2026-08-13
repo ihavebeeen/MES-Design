@@ -20,7 +20,7 @@ import { ExactProductionResultScreen } from "./exact-production-result-screen";
 import { InspectionCriteriaDialog } from "./inspection-criteria-pattern";
 import { InspectionTrendAnalysisScreen } from "./inspection-trend-analysis-pattern";
 
-type AssetId = "forms" | "responsive" | "trend" | "user-password-settings" | "sales-transaction-statement" | "shipment-approval";
+type AssetId = "forms" | "responsive" | "trend" | "user-password-settings" | "sales-transaction-statement" | "shipment-approval" | "equipment-discharge-settings";
 
 function RotateCcw({ className }: { className?: string }) { return <IconReload size={16} className={className} />; }
 function ArrowLeftRight({ className }: { className?: string }) { return <span className={className}>↔</span>; }
@@ -33,11 +33,12 @@ const ASSETS: Array<{ id: AssetId; label: string; node: string; summary: string 
   { id: "user-password-settings", label: "사용자 비밀번호 설정", node: "17489:80534", summary: "사용자 정보 · 초기화 확인 · 최초 로그인 재설정" },
   { id: "sales-transaction-statement", label: "판매관리 거래명세서", node: "17475:46145", summary: "그룹 판매 목록 · 거래명세서 선택 · 출력" },
   { id: "shipment-approval", label: "출하승인", node: "17370:46831", summary: "일괄 승인 · 상태 변경 · 품목 상세" },
+  { id: "equipment-discharge-settings", label: "설비별 토출량", node: "20302:68442", summary: "품목 단일 선택 · 설비별 생산량 설정" },
 ];
 
 function AssetHeader({ active, onChange }: { active: AssetId; onChange: (id: AssetId) => void }) {
   return (
-    <div className="mb-5 grid grid-cols-1 gap-2 md:grid-cols-6">
+    <div className="mb-5 grid grid-cols-1 gap-2 md:grid-cols-4 xl:grid-cols-7">
       {ASSETS.map((asset) => (
         <Button
           key={asset.id}
@@ -268,7 +269,7 @@ function Required() { return <span className="ml-1 font-bold text-mes-danger-60"
 
 function OriginalMesScreenAssets() {
   const [active,setActive]=React.useState<AssetId>("forms");
-  return <div><AssetHeader active={active} onChange={setActive} />{active === "forms" && <FormsAsset />}{active === "responsive" && <ProductionResultResponsiveAsset />}{active === "trend" && <FigmaScreenPreview><InspectionTrendAnalysisScreen /></FigmaScreenPreview>}{active === "user-password-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={960}><iframe title="사용자 비밀번호 설정 원본 구현" src="/visual-regression/user-password-settings" className="h-[960px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "sales-transaction-statement" && <FigmaScreenPreview><iframe title="판매관리 거래명세서 원본 구현" src="/visual-regression/sales-transaction-statement" className="h-[960px] w-[1920px] border-0" /></FigmaScreenPreview>}{active === "shipment-approval" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={900}><iframe title="출하승인 원본 구현" src="/visual-regression/shipment-approval" className="h-[900px] w-[1440px] border-0" /></FigmaScreenPreview>}</div>;
+  return <div><AssetHeader active={active} onChange={setActive} />{active === "forms" && <FormsAsset />}{active === "responsive" && <ProductionResultResponsiveAsset />}{active === "trend" && <FigmaScreenPreview><InspectionTrendAnalysisScreen /></FigmaScreenPreview>}{active === "user-password-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={960}><iframe title="사용자 비밀번호 설정 원본 구현" src="/visual-regression/user-password-settings" className="h-[960px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "sales-transaction-statement" && <FigmaScreenPreview><iframe title="판매관리 거래명세서 원본 구현" src="/visual-regression/sales-transaction-statement" className="h-[960px] w-[1920px] border-0" /></FigmaScreenPreview>}{active === "shipment-approval" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={900}><iframe title="출하승인 원본 구현" src="/visual-regression/shipment-approval" className="h-[900px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "equipment-discharge-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={900}><iframe title="설비별 토출량 설정 원본 구현" src="/visual-regression/equipment-discharge-settings" className="h-[900px] w-[1440px] border-0" /></FigmaScreenPreview>}</div>;
 }
 
 export { CavityContent, OriginalMesScreenAssets, ProductionResultResponsiveAsset };

@@ -25,6 +25,7 @@
     { "id": "screen-user-password-reset-login", "name": "최초 로그인 비밀번호 재설정", "route": "/visual-regression/user-password-reset-login", "snapshot": "user-password-reset-login.png", "viewport": { "width": 560, "height": 960 }, "screenId": "user-password-settings" },
     { "id": "screen-sales-transaction-statement", "name": "판매관리 거래명세서 출력", "route": "/visual-regression/sales-transaction-statement", "snapshot": "sales-transaction-statement.png", "viewport": { "width": 1920, "height": 960 }, "screenId": "sales-transaction-statement" },
     { "id": "popup-shipment-approval-bulk", "name": "일괄 출하승인", "route": "/visual-regression/shipment-approval", "snapshot": "shipment-approval-bulk.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "shipment-approval" },
-    { "id": "popup-shipment-approval-item-detail", "name": "출하실적 품목 상세", "route": "/visual-regression/shipment-approval", "snapshot": "shipment-approval-item-detail.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "shipment-approval" }
+    { "id": "popup-shipment-approval-item-detail", "name": "출하실적 품목 상세", "route": "/visual-regression/shipment-approval", "snapshot": "shipment-approval-item-detail.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "shipment-approval" },
+    { "id": "popup-equipment-discharge-settings", "name": "품목 생산량 설정", "route": "/visual-regression/equipment-discharge-settings", "snapshot": "equipment-discharge-settings.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "equipment-discharge-settings" }
   ]
 }

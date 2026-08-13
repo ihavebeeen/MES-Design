@@ -9,7 +9,7 @@
     { "sourceEvidenceId": "user-password-settings", "status": "verified", "actionSet": "action-set.cancel-save", "note": "우측 패널 취소·저장과 보조 확인 팝업의 액션 배치를 원본 상태별로 검증했다." },
     { "sourceEvidenceId": "sales-transaction-statement", "status": "verified", "actionSet": "action-set.contextual", "note": "판매관리 하단의 검정·검정·Primary-70 160px 액션과 거래명세서 팝업 푸터를 원본 노드로 재검수했다." },
     { "sourceEvidenceId": "shipment-approval", "status": "verified", "actionSet": "action-set.cancel-save", "note": "960×680 일괄 승인과 670×568 상세 팝업의 취소·저장·닫기 배치를 검증했다." },
-    { "sourceEvidenceId": "equipment-discharge-settings", "status": "queued", "actionSet": "unknown", "note": "화면 원본 코드화 큐와 함께 하단 액션 원본 검수가 남아 있다." },
+    { "sourceEvidenceId": "equipment-discharge-settings", "status": "verified", "actionSet": "action-set.cancel-save", "note": "1257×680 주 팝업의 취소·저장 160px 배치, 취소 복원, 저장 후 주 팝업 유지와 저장 완료 안내를 브라우저에서 검증했다." },
     { "sourceEvidenceId": "standard-price-settings", "status": "queued", "actionSet": "unknown", "note": "화면 원본 코드화 큐와 함께 하단 액션 원본 검수가 남아 있다." },
     { "sourceEvidenceId": "team-settings", "status": "queued", "actionSet": "unknown", "note": "화면 원본 코드화 큐와 함께 하단 액션 원본 검수가 남아 있다." },
     { "sourceEvidenceId": "production-quantity-reregistration", "status": "verified", "actionSet": "action-set.close-reregister", "note": "닫기·투입품목 재등록 액션의 배치와 후속 팝업 전환을 검증했다." }

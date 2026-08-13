@@ -82,10 +82,11 @@
       "name": "설비별 토출량 설정",
       "figmaNode": "20302:68442",
       "kind": "popup-bundle",
-      "normalizedTarget": "popup.side.equipment-discharge-settings",
-      "status": "queued",
-      "notes": ["설비 기본정보와 설비별 반복 설정을 좌우 분할 슬라이드 상태로 관리한다."],
-      "qualityGates": { "designContext": false, "metadataLedger": false, "componentMapping": false, "browserMeasurement": false, "interactionTest": false, "visualBaseline": false }
+      "normalizedTarget": "popup.center.equipment-discharge-settings",
+      "status": "verified",
+      "notes": ["상위 node는 설비 정보 등록 우측 슬라이드의 진입 상태이며 실제 생산량 설정 UI는 하위 node 20264:68492의 1257×680 중앙 팝업이다.", "좌측 품목 단일 선택과 우측 설비 다중 선택·행별 입력 활성화를 master-detail과 reveal-inline-editor 조합으로 구현했다.", "저장은 주 팝업을 유지한 채 400px 저장 완료 안내를 열고 취소·X는 저장 전 변경을 복원한다.", "브라우저에서 1257×680 팝업, 591/606px 양쪽 영역, 48px toolbar, 무가로 overflow, 소수 둘째 자리 입력, 일괄 변경과 저장 완료 흐름을 검증했다."],
+      "qualityGates": { "designContext": true, "metadataLedger": true, "componentMapping": true, "browserMeasurement": true, "interactionTest": true, "visualBaseline": true },
+      "visualCaseId": "popup-equipment-discharge-settings"
     },
     {
       "id": "standard-price-settings",

@@ -1045,3 +1045,67 @@ test("그룹화 리스트의 접기와 그룹 선택은 하위 행 상태에 반
   await checkboxes.nth(1).check();
   await expect(checkboxes.nth(1)).toBeChecked();
 });
+
+test("품목 생산량 설정은 원본 중앙 팝업 치수와 품목·설비 편집 계약을 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/visual-regression/equipment-discharge-settings");
+
+  const dialog = page.getByRole("dialog", { name: "품목 생산량 설정", exact: true });
+  const itemPanel = page.getByTestId("item-list-panel");
+  const equipmentPanel = page.getByTestId("equipment-list-panel");
+  await expect(dialog).toBeVisible();
+  expect(await dialog.boundingBox()).toEqual({ x: 91.5, y: 110, width: 1257, height: 680 });
+  expect(await page.getByTestId("equipment-discharge-modal-body").boundingBox()).toEqual({ x: 91.5, y: 162, width: 1257, height: 556 });
+  expect(await page.getByTestId("item-toolbar").boundingBox()).toEqual({ x: 111.5, y: 214, width: 591, height: 48 });
+  expect(await page.getByTestId("equipment-batch-toolbar").boundingBox()).toEqual({ x: 722.5, y: 214, width: 606, height: 48 });
+
+  const panelOverflows = await dialog.locator("[data-testid='equipment-discharge-modal-body'], [data-testid='item-list-panel'], [data-testid='equipment-list-panel'], [data-testid='item-toolbar'], [data-testid='equipment-batch-toolbar']").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
+  expect(panelOverflows).toEqual([0, 0, 0, 0, 0]);
+
+  const itemChecks = itemPanel.getByRole("checkbox");
+  const equipmentChecks = equipmentPanel.getByRole("checkbox");
+  await expect(itemChecks.nth(1)).toBeChecked();
+  await expect(itemChecks.nth(2)).not.toBeChecked();
+  await expect(equipmentChecks.nth(1)).toBeChecked();
+  await expect(equipmentChecks.nth(2)).toBeChecked();
+  await expect(equipmentChecks.nth(3)).not.toBeChecked();
+  await expect(equipmentPanel.getByLabel("EQ001 시간당 생산량")).toBeEnabled();
+  await expect(equipmentPanel.getByLabel("EQ003 시간당 생산량")).toBeDisabled();
+
+  await equipmentChecks.nth(3).check();
+  await expect(equipmentPanel.getByLabel("EQ003 시간당 생산량")).toBeEnabled();
+  await equipmentPanel.getByLabel("EQ003 시간당 생산량").fill("123.456");
+  await expect(equipmentPanel.getByLabel("EQ003 시간당 생산량")).toHaveValue("123.45");
+
+  const batch = equipmentPanel.getByLabel("전체 시간당 생산량");
+  await batch.fill("42000");
+  await equipmentPanel.getByRole("button", { name: "적용", exact: true }).click();
+  await expect(equipmentPanel.getByLabel("EQ001 시간당 생산량")).toHaveValue("42000");
+  await expect(equipmentPanel.getByLabel("EQ009 시간당 생산량")).toHaveValue("42000");
+
+  await dialog.getByRole("button", { name: "취소", exact: true }).click();
+  await expect(dialog).toBeHidden();
+  await page.getByRole("button", { name: "품목 생산량 설정 다시 열기", exact: true }).click();
+  await expect(dialog).toBeVisible();
+  await expect(equipmentPanel.getByLabel("EQ001 시간당 생산량")).toHaveValue("37500");
+  await expect(equipmentPanel.getByLabel("EQ003 시간당 생산량")).toHaveValue("36000");
+
+  await equipmentPanel.getByLabel("EQ001 시간당 생산량").fill("99999");
+  await dialog.getByRole("button", { name: "닫기", exact: true }).click();
+  await expect(dialog).toBeHidden();
+  await page.getByRole("button", { name: "품목 생산량 설정 다시 열기", exact: true }).click();
+  await expect(dialog).toBeVisible();
+  await expect(equipmentPanel.getByLabel("EQ001 시간당 생산량")).toHaveValue("37500");
+
+  await dialog.getByRole("button", { name: "저장", exact: true }).click();
+  const savedDialog = page.getByRole("dialog", { name: "알림", exact: true });
+  await expect(savedDialog).toBeVisible();
+  await expect(page.locator('[role="dialog"]').filter({ hasText: "품목 생산량 설정" }).first()).toBeVisible();
+  await expect(savedDialog.getByText("저장 완료", { exact: true })).toBeVisible();
+  await savedDialog.getByRole("button", { name: "확인", exact: true }).click();
+  await expect(savedDialog).toBeHidden();
+  await expect(dialog).toBeVisible();
+
+  await hideDevelopmentOverlay(page);
+  await expect(page).toHaveScreenshot("equipment-discharge-settings.png");
+});
