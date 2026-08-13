@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx",
   "summary": {
     "scannedFiles": 36,
-    "totalLines": 7375,
+    "totalLines": 7377,
     "shellInstances": {
       "CenterModal": 13,
       "SideSlidePanel": 9,
@@ -1776,7 +1776,7 @@
       "source": "src/components/patterns/material-input-information-pattern.tsx",
       "name": "material-input-information-pattern.tsx",
       "observedRole": "composition-source",
-      "lines": 179,
+      "lines": 181,
       "exportedSymbols": [],
       "shells": [
         {
@@ -1790,7 +1790,7 @@
         "patternGroupHeader": 0,
         "nativeSection": 0,
         "dividerContainer": 0,
-        "roundedContainer": 2,
+        "roundedContainer": 1,
         "gray20Container": 1
       },
       "sectionTitles": [],
@@ -2666,5 +2666,5 @@
       ]
     }
   ],
-  "fingerprint": "ea3a76849d946490"
+  "fingerprint": "c07ec48a4ce08da7"
 }

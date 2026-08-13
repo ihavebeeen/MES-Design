@@ -13,14 +13,20 @@ test("투입정보는 부산물을 투입품과 동급으로 합치지 않고 �
   const tableRegion = page.getByTestId("material-input-info-table-region");
   const byproductSection = dialog.locator('[data-candidate-pattern="section.nested-related-table"]');
   await expect(dialog).toBeVisible();
-  expect(await dialog.boundingBox()).toEqual({ x: 24, y: 24, width: 1536, height: 680 });
-  expect(await toolbar.boundingBox()).toEqual({ x: 44, y: 136, width: 1496, height: 48 });
-  expect(await tableRegion.boundingBox()).toEqual({ x: 44, y: 200, width: 1496, height: 432 });
-  expect(await byproductSection.boundingBox()).toEqual({ x: 45, y: 351, width: 1494, height: 280 });
+  expect(await dialog.boundingBox()).toEqual({ x: 24, y: 114, width: 1536, height: 500 });
+  expect(await toolbar.boundingBox()).toEqual({ x: 44, y: 226, width: 1496, height: 48 });
+  expect(await tableRegion.boundingBox()).toEqual({ x: 44, y: 290, width: 1496, height: 252 });
+  expect(await byproductSection.boundingBox()).toEqual({ x: 45, y: 411, width: 1494, height: 130 });
 
   const overflows = await dialog.locator('[data-testid="material-input-info-toolbar"], [data-testid="material-input-info-table-region"], [data-candidate-pattern="section.nested-related-table"]').evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
   expect(overflows).toEqual([0, 0, 0]);
-  await expect(byproductSection.getByText("부산물 정보", { exact: true })).toBeVisible();
+  const byproductTitle = byproductSection.getByText("부산물 정보", { exact: true });
+  await expect(byproductTitle).toBeVisible();
+  expect(await byproductSection.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe("rgb(255, 255, 255)");
+  expect(await byproductTitle.evaluate((element) => ({ background: getComputedStyle(element).backgroundColor, fontSize: getComputedStyle(element).fontSize, fontWeight: getComputedStyle(element).fontWeight }))).toEqual({ background: "rgba(0, 0, 0, 0)", fontSize: "14px", fontWeight: "600" });
+  const footer = dialog.locator("footer");
+  const [sectionBox, footerBox] = await Promise.all([byproductSection.boundingBox(), footer.boundingBox()]);
+  expect(footerBox!.y - (sectionBox!.y + sectionBox!.height)).toBe(1);
   await expect(byproductSection.getByText("PP 분쇄재", { exact: true })).toBeVisible();
   await expect(byproductSection.getByText("250825-A1-GR-001", { exact: true })).toBeVisible();
 

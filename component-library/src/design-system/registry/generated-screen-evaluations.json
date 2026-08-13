@@ -72,14 +72,14 @@
       "disposition": "prototype",
       "influence": "quarantined",
       "strengths": [
-        "Figma 원본의 1536×680 CenterModal, 52px 헤더, 108px 조회부, 432px 표 영역, 72px 하단 액션 좌표를 유지했다.",
+        "Figma 원본의 1536px CenterModal, 52px 헤더, 108px 조회부, 72px 하단 액션 규격을 유지하고 사용자 교정에 따라 내용 높이로 축소했다.",
         "CenterModal, SearchTableSection, QueryDateRange, Filter, SearchInput, Table, SectionFrame, SectionHeader, Button, Link만 사용했다.",
         "부산물을 투입품과 동급 행으로 합치지 않고 기존 투입표 아래의 내부 SectionFrame으로 내려 정보 위계를 표현했다."
       ],
       "issues": [
         "사용자 검토 전이므로 section.nested-related-table 조합은 화면 로컬 후보이며 표준 패턴 레지스트리에 등록하지 않았다.",
         "부산물 수량·LOT 예시는 업무 설명을 검증하기 위한 fixture이며 실제 API 필드 계약은 아직 연결되지 않았다.",
-        "부산물 영역의 최종 높이와 컬럼 집합은 사용자 시각 검토 및 실제 데이터 건수 검증이 필요하다."
+        "부산물 컬럼 집합은 사용자 시각 검토 및 실제 데이터 건수 검증이 필요하다."
       ],
       "promotionCriteria": [
         "투입품과 부산물이 서로 다른 위계로 읽히는지 사용자 확인을 받는다.",

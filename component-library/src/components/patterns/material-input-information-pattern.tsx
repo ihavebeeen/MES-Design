@@ -117,6 +117,7 @@ function MaterialInputInformationModal({ open, onOpenChange }: MaterialInputInfo
   const [search, setSearch] = React.useState("");
   const [inputRows, setInputRows] = React.useState(INITIAL_INPUT_ROWS);
   const [status, setStatus] = React.useState("");
+  const hasAddedInputRow = inputRows.length > INITIAL_INPUT_ROWS.length;
 
   const visibleRows = React.useMemo(() => {
     const query = search.trim().toLocaleLowerCase("ko-KR");
@@ -151,18 +152,19 @@ function MaterialInputInformationModal({ open, onOpenChange }: MaterialInputInfo
   );
 
   return (
-    <CenterModal open={open} onOpenChange={onOpenChange} title="투입정보" exactWidth={1536} exactHeight={680} maxHeight={680} bodyPadding="none" bodyAlign="stretch" scrollMode="content" footer={footer}>
+    <CenterModal open={open} onOpenChange={onOpenChange} title="투입정보" exactWidth={1536} maxHeight={680} bodyPadding="none" bodyAlign="stretch" scrollMode="content" footer={footer}>
       <SearchTableSection
         aria-label="투입정보 목록"
         title="투입정보 리스트"
         query={<div className="flex items-center gap-[10px]"><QueryDateRange label="일자" start={startDate} end={endDate} onStartChange={setStartDate} onEndChange={setEndDate} /><Button size="small" className="w-[50px] px-0" onClick={() => setStatus(`${visibleRows.length}건을 조회했습니다.`)}>조회</Button></div>}
         toolbar={<div data-testid="material-input-info-toolbar" className="mt-3 flex h-12 shrink-0 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3 py-2"><Filter categories={FILTER_CATEGORIES} value={filters} onChange={(categoryId, optionIds) => setFilters((current) => ({ ...current, [categoryId]: optionIds }))} /><SearchInput value={search} onChange={setSearch} placeholder="검색어 입력.." size="compact" background="white" className="!w-[200px]" /></div>}
-        tableClassName="mt-4"
-        className="h-full px-5 pt-4"
-        table={<div data-testid="material-input-info-table-region" className="h-[432px] overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white">
-          <Table className="h-[150px] rounded-none border-0" columns={INPUT_COLUMNS} rows={visibleRows} selectable={false} edgePadding={0} headerBackground="white" columnDividerMode="none" horizontalScroll={false} showMasterGroupToggles={false} />
-          <SectionFrame data-candidate-pattern="section.nested-related-table" title="부산물 정보" padding="standard" background="subtle" className="h-[280px] border-t border-mes-gray-30" contentClassName="min-h-0">
-            <Table className="h-[60px] bg-white" columns={BYPRODUCT_COLUMNS} rows={BYPRODUCT_ROWS} selectable={false} edgePadding={0} headerBackground="white" columnDividerMode="none" horizontalScroll={false} showMasterGroupToggles={false} />
+        tableClassName={hasAddedInputRow ? "mt-4 h-[282px] flex-none" : "mt-4 h-[252px] flex-none"}
+        className="px-5 pt-4"
+        table={<div data-testid="material-input-info-table-region" className={`${hasAddedInputRow ? "h-[282px]" : "h-[252px]"} overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white`}>
+          <Table className={`${hasAddedInputRow ? "h-[150px]" : "h-[120px]"} rounded-none border-0`} columns={INPUT_COLUMNS} rows={visibleRows} selectable={false} edgePadding={0} headerBackground="white" columnDividerMode="none" horizontalScroll={false} showMasterGroupToggles={false} />
+          <SectionFrame data-candidate-pattern="section.nested-related-table" aria-label="부산물 정보" padding="standard" background="surface" className="border-t border-mes-gray-30" contentClassName="min-h-0">
+            <h4 className="text-[14px] font-semibold leading-[1.5] text-mes-gray-130">부산물 정보</h4>
+            <Table className="mt-2 h-[60px] bg-white" columns={BYPRODUCT_COLUMNS} rows={BYPRODUCT_ROWS} selectable={false} edgePadding={0} headerBackground="white" columnDividerMode="none" horizontalScroll={false} showMasterGroupToggles={false} />
           </SectionFrame>
         </div>}
       />
