@@ -5,6 +5,7 @@ export * from "./entity-list-pattern";
 export * from "./equipment-inspection-records-modal";
 export * from "./equipment-discharge-settings-pattern";
 export * from "./inspection-trend-analysis-pattern";
+export * from "./material-input-information-pattern";
 export * from "./master-detail-pattern";
 export * from "./original-mes-screen-assets";
 export * from "./sales-transaction-statement-pattern";

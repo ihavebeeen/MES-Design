@@ -6,20 +6,20 @@
 
 | 항목 | 결과 |
 |---|---:|
-| 검사 파일 | 31 |
-| 전체 줄 수 | 6,358 |
+| 검사 파일 | 36 |
+| 전체 줄 수 | 7,375 |
 | 혼합 Section Frame 파일 | 2 |
-| 표준 Frame 없이 native section만 사용 | 14 |
-| rounded wrapper가 있는 Section 후보 파일 | 17 |
-| fingerprint | `c0ab2f9bd52fb790` |
+| 표준 Frame 없이 native section만 사용 | 17 |
+| rounded wrapper가 있는 Section 후보 파일 | 21 |
+| fingerprint | `ea3a76849d946490` |
 
 ## Shell 사용
 
 | Shell | 인스턴스 |
 |---|---:|
-| CenterModal | 8 |
+| CenterModal | 13 |
 | SideSlidePanel | 9 |
-| ConfirmDialog | 2 |
+| ConfirmDialog | 4 |
 
 ## Section Frame 관찰값
 
@@ -28,19 +28,19 @@
 | sectionBand | 14 |
 | sectionHeader | 7 |
 | patternGroupHeader | 0 |
-| nativeSection | 35 |
+| nativeSection | 41 |
 | dividerContainer | 27 |
-| roundedContainer | 54 |
-| gray20Container | 27 |
+| roundedContainer | 64 |
+| gray20Container | 32 |
 
 ## 자동 탐지 Section 후보
 
 | 후보 | 파일 수 | 주요 소스 |
 |---|---:|---|
+| `section.search-table` | 13 | `equipment-discharge-settings-pattern.tsx`, `equipment-inspection-records-modal.tsx`, `exact-form-management-screen.tsx`, `exact-inventory-add-modal.tsx` |
 | `section.summary` | 12 | `completed-application-patterns.tsx`, `completed-popup-expanded-content.tsx`, `completed-popup-patterns.tsx`, `exact-production-analytics-screen.tsx` |
-| `section.search-table` | 9 | `equipment-inspection-records-modal.tsx`, `exact-form-management-screen.tsx`, `exact-inventory-add-modal.tsx`, `exact-inventory-edit-modal.tsx` |
+| `section.form-grid` | 9 | `completed-popup-patterns.tsx`, `equipment-discharge-settings-pattern.tsx`, `exact-production-analytics-screen.tsx`, `inspection-criteria-pattern.tsx` |
 | `section.inspection-items` | 7 | `completed-popup-patterns.tsx`, `equipment-inspection-records-modal.tsx`, `inspection-criteria-pattern.tsx`, `inspection-trend-analysis-pattern.tsx` |
-| `section.form-grid` | 6 | `completed-popup-patterns.tsx`, `exact-production-analytics-screen.tsx`, `inspection-criteria-pattern.tsx`, `kiosk-easy-receiving-pattern.tsx` |
 | `section.editable-row-list` | 3 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `original-mes-screen-assets.tsx` |
 | `section.before-after` | 1 | `production-quantity-reregistration-pattern.tsx` |
 
@@ -48,8 +48,8 @@
 
 | 후보 | 파일 수 | 주요 소스 |
 |---|---:|---|
-| `selection.enable-editor` | 13 | `completed-application-patterns.tsx`, `completed-popup-expanded-content.tsx`, `completed-popup-patterns.tsx`, `equipment-inspection-records-modal.tsx` |
-| `dismiss.restore-committed` | 8 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `inspection-criteria-pattern.tsx`, `sales-transaction-statement-pattern.tsx` |
+| `selection.enable-editor` | 16 | `completed-application-patterns.tsx`, `completed-popup-expanded-content.tsx`, `completed-popup-patterns.tsx`, `equipment-discharge-settings-pattern.tsx` |
+| `dismiss.restore-committed` | 12 | `cavity-settings-pattern.tsx`, `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `equipment-discharge-settings-pattern.tsx` |
 | `row.add-remove` | 4 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `original-mes-screen-assets.tsx`, `user-password-settings-pattern.tsx` |
 | `row.inherit-previous` | 1 | `easy-mode-receiving-pattern.tsx` |
 | `selection.master-detail` | 1 | `completed-application-patterns.tsx` |
@@ -65,9 +65,9 @@
 | `mes-screen-fixtures.tsx` | 328 | - | section.search-table | rounded-wrapper-around-section-candidate |
 | `inspection-criteria-pattern.tsx` | 306 | CenterModal 1 | section.form-grid, section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 | `user-password-settings-pattern.tsx` | 304 | CenterModal 1, SideSlidePanel 1, ConfirmDialog 1 | section.form-grid | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
-| `original-mes-screen-assets.tsx` | 275 | SideSlidePanel 2 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
-| `shipment-approval-pattern.tsx` | 258 | CenterModal 2 | section.search-table | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
-| `inspection-trend-analysis-pattern.tsx` | 241 | - | section.inspection-items | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
+| `equipment-discharge-settings-pattern.tsx` | 283 | CenterModal 1, ConfirmDialog 1 | section.form-grid, section.search-table | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
+| `original-mes-screen-assets.tsx` | 279 | SideSlidePanel 2 | section.editable-row-list, section.form-grid, section.inspection-items, section.summary | mixed-section-frame-mechanisms, rounded-wrapper-around-section-candidate |
+| `standard-price-settings-pattern.tsx` | 266 | CenterModal 1, ConfirmDialog 1 | section.form-grid, section.search-table | native-section-without-registered-frame, rounded-wrapper-around-section-candidate |
 
 ## 해석 제한
 

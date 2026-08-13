@@ -4,6 +4,41 @@ test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
 });
 
+test("투입정보는 부산물을 투입품과 동급으로 합치지 않고 내부 하위 영역으로 표시한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1584, height: 728 });
+  await page.goto("/visual-regression/material-input-information");
+
+  const dialog = page.getByRole("dialog", { name: "투입정보", exact: true });
+  const toolbar = page.getByTestId("material-input-info-toolbar");
+  const tableRegion = page.getByTestId("material-input-info-table-region");
+  const byproductSection = dialog.locator('[data-candidate-pattern="section.nested-related-table"]');
+  await expect(dialog).toBeVisible();
+  expect(await dialog.boundingBox()).toEqual({ x: 24, y: 24, width: 1536, height: 680 });
+  expect(await toolbar.boundingBox()).toEqual({ x: 44, y: 136, width: 1496, height: 48 });
+  expect(await tableRegion.boundingBox()).toEqual({ x: 44, y: 200, width: 1496, height: 432 });
+  expect(await byproductSection.boundingBox()).toEqual({ x: 45, y: 351, width: 1494, height: 280 });
+
+  const overflows = await dialog.locator('[data-testid="material-input-info-toolbar"], [data-testid="material-input-info-table-region"], [data-candidate-pattern="section.nested-related-table"]').evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
+  expect(overflows).toEqual([0, 0, 0]);
+  await expect(byproductSection.getByText("부산물 정보", { exact: true })).toBeVisible();
+  await expect(byproductSection.getByText("PP 분쇄재", { exact: true })).toBeVisible();
+  await expect(byproductSection.getByText("250825-A1-GR-001", { exact: true })).toBeVisible();
+
+  await hideDevelopmentOverlay(page);
+  await expect(page).toHaveScreenshot("material-input-information-byproduct.png");
+
+  const search = toolbar.getByPlaceholder("검색어 입력..", { exact: true });
+  await search.fill("QB516");
+  await expect(tableRegion.getByText("QB516", { exact: true })).toBeVisible();
+  await expect(tableRegion.getByText("F171B", { exact: true })).toHaveCount(0);
+  await search.fill("");
+  await dialog.getByRole("button", { name: "투입품목 추가", exact: true }).click();
+  await expect(tableRegion.getByText("추가 투입품 4", { exact: true })).toBeVisible();
+
+  await dialog.getByText("닫기", { exact: true }).click();
+  await expect(dialog).toBeHidden();
+});
+
 async function hideDevelopmentOverlay(page: Page) {
   await page.addStyleTag({ content: "nextjs-portal { display: none !important; }" });
 }
