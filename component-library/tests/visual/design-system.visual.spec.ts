@@ -1174,3 +1174,56 @@ test("표준단가 설정은 품목 선택·단가 입력·이력 상태를 독�
   await expect(editor.getByLabel("초코칩쿠키 900 TRAY 판매단가")).toHaveValue("1000");
   await expect(itemTable.getByRole("checkbox").nth(1)).toBeChecked();
 });
+
+test("조 설정은 권한 그룹·구성원 선택·조 변경 상태를 원본 좌표에서 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/visual-regression/team-settings");
+
+  const dialog = page.getByRole("dialog", { name: "조 설정", exact: true });
+  const groupPanel = page.getByTestId("permission-group-panel");
+  const memberPanel = page.getByTestId("group-member-panel");
+  const toolbar = page.getByTestId("team-bulk-toolbar");
+  const content = page.getByTestId("team-member-content");
+
+  await expect(dialog).toBeVisible();
+  expect(await dialog.boundingBox()).toEqual({ x: 80, y: 96, width: 1280, height: 768 });
+  expect(await page.getByTestId("team-settings-body").boundingBox()).toEqual({ x: 80, y: 148, width: 1280, height: 644 });
+  expect(await groupPanel.boundingBox()).toEqual({ x: 80, y: 148, width: 240, height: 644 });
+  expect(await memberPanel.boundingBox()).toEqual({ x: 320, y: 148, width: 1040, height: 644 });
+  expect(await toolbar.boundingBox()).toEqual({ x: 340, y: 212, width: 1000, height: 44 });
+  expect(await content.boundingBox()).toEqual({ x: 340, y: 276, width: 1000, height: 496 });
+
+  const overflows = await dialog.locator("[data-testid='team-settings-body'], [data-testid='permission-group-panel'], [data-testid='group-member-panel'], [data-testid='team-bulk-toolbar'], [data-testid='team-member-content']").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
+  expect(overflows).toEqual([0, 0, 0, 0, 0]);
+
+  const checks = content.getByRole("checkbox");
+  await expect(checks.nth(1)).toBeChecked();
+  await expect(checks.nth(2)).toBeChecked();
+  await expect(checks.nth(3)).not.toBeChecked();
+  await expect(content.getByLabel("김성형 변경 조")).toHaveText("A조");
+  await expect(content.getByLabel("박성형 변경 조")).toHaveText("B조");
+  await expect(content.getByLabel("이해빈 변경 조")).toHaveCount(0);
+
+  await checks.nth(3).check();
+  await expect(content.getByLabel("이해빈 변경 조")).toBeVisible();
+  await page.getByLabel("일괄 변경 조").click();
+  await page.getByRole("option", { name: "C조", exact: true }).click();
+  await toolbar.getByRole("button", { name: "적용", exact: true }).click();
+  await expect(content.getByLabel("김성형 변경 조")).toHaveText("C조");
+  await expect(content.getByLabel("이해빈 변경 조")).toHaveText("C조");
+
+  await groupPanel.getByRole("button", { name: "연구소", exact: true }).click();
+  await expect(content.getByText(/해당 그룹에 구성원이 없습니다/)).toBeVisible();
+  await content.getByRole("link", { name: "구성원 선택 바로가기", exact: true }).click();
+  await expect(content.getByText("김성형", { exact: true })).toBeVisible();
+
+  await dialog.getByRole("button", { name: "취소", exact: true }).click();
+  await page.getByRole("button", { name: "조 설정 다시 열기", exact: true }).click();
+  await expect(dialog).toBeVisible();
+  await expect(content.getByLabel("김성형 변경 조")).toHaveText("A조");
+  await expect(content.getByLabel("박성형 변경 조")).toHaveText("B조");
+  await expect(checks.nth(3)).not.toBeChecked();
+
+  await hideDevelopmentOverlay(page);
+  await expect(page).toHaveScreenshot("team-settings.png");
+});

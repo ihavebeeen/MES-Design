@@ -27,6 +27,7 @@
     { "id": "popup-shipment-approval-bulk", "name": "일괄 출하승인", "route": "/visual-regression/shipment-approval", "snapshot": "shipment-approval-bulk.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "shipment-approval" },
     { "id": "popup-shipment-approval-item-detail", "name": "출하실적 품목 상세", "route": "/visual-regression/shipment-approval", "snapshot": "shipment-approval-item-detail.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "shipment-approval" },
     { "id": "popup-equipment-discharge-settings", "name": "품목 생산량 설정", "route": "/visual-regression/equipment-discharge-settings", "snapshot": "equipment-discharge-settings.png", "viewport": { "width": 1440, "height": 900 }, "screenId": "equipment-discharge-settings" },
-    { "id": "popup-standard-price-settings", "name": "표준단가 설정", "route": "/visual-regression/standard-price-settings", "snapshot": "standard-price-settings.png", "viewport": { "width": 1440, "height": 960 }, "screenId": "standard-price-settings" }
+    { "id": "popup-standard-price-settings", "name": "표준단가 설정", "route": "/visual-regression/standard-price-settings", "snapshot": "standard-price-settings.png", "viewport": { "width": 1440, "height": 960 }, "screenId": "standard-price-settings" },
+    { "id": "popup-team-settings", "name": "조 설정", "route": "/visual-regression/team-settings", "snapshot": "team-settings.png", "viewport": { "width": 1440, "height": 960 }, "screenId": "team-settings" }
   ]
 }

@@ -9,4 +9,5 @@ export * from "./original-mes-screen-assets";
 export * from "./sales-transaction-statement-pattern";
 export * from "./standard-price-settings-pattern";
 export * from "./table-column-settings";
+export * from "./team-settings-pattern";
 export * from "./user-password-settings-pattern";

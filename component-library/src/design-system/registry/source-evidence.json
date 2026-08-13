@@ -105,9 +105,10 @@
       "figmaNode": "18531:57637",
       "kind": "popup-bundle",
       "normalizedTarget": "popup.center.multi-panel-settings",
-      "status": "queued",
-      "notes": ["1280×768 대형 팝업의 권한 그룹 탐색과 설정 영역을 다중 패널 설정 패턴으로 검토한다."],
-      "qualityGates": { "designContext": false, "metadataLedger": false, "componentMapping": false, "browserMeasurement": false, "interactionTest": false, "visualBaseline": false }
+      "status": "verified",
+      "notes": ["상위 섹션 18531:57637 안의 실제 조 설정 상태 18559:57750과 빈 그룹 상태 18788:60637을 각각 재조회했다.", "1280×768 중앙 팝업의 240/1040px 분할, 1000×44 일괄 변경 바, 1000×496 구성원 영역을 원본 좌표대로 구현했다.", "권한 그룹 선택, 구성원 검색·선택, 선택 행의 변경 조 Select, 일괄 변경, 빈 그룹 바로가기, 저장과 취소 복원을 state로 연결했다.", "공용 CenterModal·Button·Badge·SearchInput·Table·Checkbox·Select·Link만 조합했으며 새 원시 UI 요소를 만들지 않았다.", "브라우저에서 전체 좌표, 회색 미선택·검정 선택·파란 행, 무가로 overflow, 상호작용과 기준 PNG를 검증했다."],
+      "qualityGates": { "designContext": true, "metadataLedger": true, "componentMapping": true, "browserMeasurement": true, "interactionTest": true, "visualBaseline": true },
+      "visualCaseId": "popup-team-settings"
     },
     {
       "id": "production-quantity-reregistration",

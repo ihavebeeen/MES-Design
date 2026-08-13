@@ -20,7 +20,7 @@ import { ExactProductionResultScreen } from "./exact-production-result-screen";
 import { InspectionCriteriaDialog } from "./inspection-criteria-pattern";
 import { InspectionTrendAnalysisScreen } from "./inspection-trend-analysis-pattern";
 
-type AssetId = "forms" | "responsive" | "trend" | "user-password-settings" | "sales-transaction-statement" | "shipment-approval" | "equipment-discharge-settings" | "standard-price-settings";
+type AssetId = "forms" | "responsive" | "trend" | "user-password-settings" | "sales-transaction-statement" | "shipment-approval" | "equipment-discharge-settings" | "standard-price-settings" | "team-settings";
 
 function RotateCcw({ className }: { className?: string }) { return <IconReload size={16} className={className} />; }
 function ArrowLeftRight({ className }: { className?: string }) { return <span className={className}>↔</span>; }
@@ -35,6 +35,7 @@ const ASSETS: Array<{ id: AssetId; label: string; node: string; summary: string 
   { id: "shipment-approval", label: "출하승인", node: "17370:46831", summary: "일괄 승인 · 상태 변경 · 품목 상세" },
   { id: "equipment-discharge-settings", label: "설비별 토출량", node: "20302:68442", summary: "품목 단일 선택 · 설비별 생산량 설정" },
   { id: "standard-price-settings", label: "표준단가 설정", node: "18753:60729", summary: "품목 선택 · 단가 카드 · 단가 이력" },
+  { id: "team-settings", label: "조 설정", node: "18531:57637", summary: "권한 그룹 · 구성원 선택 · 조 일괄 변경" },
 ];
 
 function AssetHeader({ active, onChange }: { active: AssetId; onChange: (id: AssetId) => void }) {
@@ -270,7 +271,7 @@ function Required() { return <span className="ml-1 font-bold text-mes-danger-60"
 
 function OriginalMesScreenAssets() {
   const [active,setActive]=React.useState<AssetId>("forms");
-  return <div><AssetHeader active={active} onChange={setActive} />{active === "forms" && <FormsAsset />}{active === "responsive" && <ProductionResultResponsiveAsset />}{active === "trend" && <FigmaScreenPreview><InspectionTrendAnalysisScreen /></FigmaScreenPreview>}{active === "user-password-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={960}><iframe title="사용자 비밀번호 설정 원본 구현" src="/visual-regression/user-password-settings" className="h-[960px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "sales-transaction-statement" && <FigmaScreenPreview><iframe title="판매관리 거래명세서 원본 구현" src="/visual-regression/sales-transaction-statement" className="h-[960px] w-[1920px] border-0" /></FigmaScreenPreview>}{active === "shipment-approval" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={900}><iframe title="출하승인 원본 구현" src="/visual-regression/shipment-approval" className="h-[900px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "equipment-discharge-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={900}><iframe title="설비별 토출량 설정 원본 구현" src="/visual-regression/equipment-discharge-settings" className="h-[900px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "standard-price-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={960}><iframe title="표준단가 설정 원본 구현" src="/visual-regression/standard-price-settings" className="h-[960px] w-[1440px] border-0" /></FigmaScreenPreview>}</div>;
+  return <div><AssetHeader active={active} onChange={setActive} />{active === "forms" && <FormsAsset />}{active === "responsive" && <ProductionResultResponsiveAsset />}{active === "trend" && <FigmaScreenPreview><InspectionTrendAnalysisScreen /></FigmaScreenPreview>}{active === "user-password-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={960}><iframe title="사용자 비밀번호 설정 원본 구현" src="/visual-regression/user-password-settings" className="h-[960px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "sales-transaction-statement" && <FigmaScreenPreview><iframe title="판매관리 거래명세서 원본 구현" src="/visual-regression/sales-transaction-statement" className="h-[960px] w-[1920px] border-0" /></FigmaScreenPreview>}{active === "shipment-approval" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={900}><iframe title="출하승인 원본 구현" src="/visual-regression/shipment-approval" className="h-[900px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "equipment-discharge-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={900}><iframe title="설비별 토출량 설정 원본 구현" src="/visual-regression/equipment-discharge-settings" className="h-[900px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "standard-price-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={960}><iframe title="표준단가 설정 원본 구현" src="/visual-regression/standard-price-settings" className="h-[960px] w-[1440px] border-0" /></FigmaScreenPreview>}{active === "team-settings" && <FigmaScreenPreview sourceWidth={1440} sourceHeight={960}><iframe title="조 설정 원본 구현" src="/visual-regression/team-settings" className="h-[960px] w-[1440px] border-0" /></FigmaScreenPreview>}</div>;
 }
 
 export { CavityContent, OriginalMesScreenAssets, ProductionResultResponsiveAsset };
