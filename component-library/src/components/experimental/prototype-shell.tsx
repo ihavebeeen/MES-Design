@@ -6,7 +6,7 @@ export function ExperimentalNotice() {
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-mes-control border border-dashed border-mes-gray-50 bg-mes-gray-10 px-3 py-2 text-[12px] text-mes-gray-80">
       <Badge variant="gray">임시</Badge>
-      <span>실제 MES 원본이 없는 격리 프로토타입입니다. 표준 화면 생성에는 자동 사용되지 않습니다.</span>
+      <span>정식 MES 근거와 승인이 없는 격리 프로토타입입니다. 표준 화면 생성에는 자동 사용되지 않습니다.</span>
     </div>
   );
 }
@@ -20,7 +20,7 @@ export function PrototypeCard({
 }: {
   title: string;
   code: string;
-  kind: "컴포넌트" | "패턴" | "템플릿";
+  kind: "컴포넌트" | "패턴" | "템플릿" | "유틸리티";
   children: ReactNode;
   className?: string;
 }) {

@@ -148,6 +148,16 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
     label: "Tier 3 실험 후보",
     labelEn: "Tier 3 Experimental",
   },
+  {
+    id: "experimental-tier-4",
+    label: "Tier 4 실험 후보",
+    labelEn: "Tier 4 Experimental",
+  },
+  {
+    id: "experimental-tier-5",
+    label: "Tier 5 실험 후보",
+    labelEn: "Tier 5 Experimental",
+  },
 ];
 
 /**
@@ -263,7 +273,7 @@ export const PATTERN_NODES: SidebarNode[] = [
 export const GENERATED_SCREEN_ID_LIST = ["generated-screen-review"];
 export const GENERATED_SCREEN_NODES: SidebarNode[] = GENERATED_SCREEN_ID_LIST.map((id) => leaf(id));
 
-export const EXPERIMENTAL_ID_LIST = ["experimental-tier-3"];
+export const EXPERIMENTAL_ID_LIST = ["experimental-tier-3", "experimental-tier-4", "experimental-tier-5"];
 export const EXPERIMENTAL_NODES: SidebarNode[] = EXPERIMENTAL_ID_LIST.map((id) => leaf(id));
 
 export const COMPONENT_NODES: SidebarNode[] = [
@@ -384,6 +394,8 @@ export const TEMP_BADGE_IDS = new Set([
   "user-account-menu",
   "loading-overlay",
   "experimental-tier-3",
+  "experimental-tier-4",
+  "experimental-tier-5",
 ]);
 
 /**
@@ -465,6 +477,8 @@ export const TIER_BY_ID: Record<string, number> = {
   "table-parts": 1,
   "table-full": 1,
   "experimental-tier-3": 3,
+  "experimental-tier-4": 4,
+  "experimental-tier-5": 5,
 };
 
 export const TIER_COLOR: Record<number, string> = {

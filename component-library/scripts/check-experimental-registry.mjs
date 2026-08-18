@@ -9,6 +9,7 @@ const allowedKinds = new Set(["component", "pattern", "template", "foundation", 
 const ids = new Set();
 const checklistItems = new Set();
 const errors = [];
+const countsByTier = { 3: 0, 4: 0, 5: 0 };
 
 if (registry.policyId !== "mes.experimental-candidates") errors.push("policyId가 잘못되었습니다.");
 if (registry.defaultInfluence !== "quarantined") errors.push("defaultInfluence는 quarantined여야 합니다.");
@@ -19,7 +20,8 @@ for (const candidate of registry.candidates ?? []) {
   ids.add(candidate.id);
   if (checklistItems.has(candidate.checklistItem)) errors.push(`중복 checklistItem: ${candidate.checklistItem}`);
   checklistItems.add(candidate.checklistItem);
-  if (candidate.tier !== 3) errors.push(`${candidate.id}: 이번 레지스트리는 Tier 3만 허용합니다.`);
+  if (![3, 4, 5].includes(candidate.tier)) errors.push(`${candidate.id}: 실험 레지스트리는 Tier 3~5만 허용합니다.`);
+  else countsByTier[candidate.tier] += 1;
   if (candidate.status !== "prototype") errors.push(`${candidate.id}: status는 prototype이어야 합니다.`);
   if (candidate.influence !== "quarantined") errors.push(`${candidate.id}: influence는 quarantined여야 합니다.`);
   if (!allowedKinds.has(candidate.kind)) errors.push(`${candidate.id}: 알 수 없는 kind ${candidate.kind}`);
@@ -36,11 +38,14 @@ for (const candidate of registry.candidates ?? []) {
   }
 }
 
-if ((registry.candidates ?? []).length !== 38) errors.push(`Tier 3 후보는 38개여야 합니다 (현재 ${(registry.candidates ?? []).length}).`);
+const expectedCounts = { 3: 38, 4: 41, 5: 28 };
+for (const [tier, expected] of Object.entries(expectedCounts)) {
+  if (countsByTier[tier] !== expected) errors.push(`Tier ${tier} 후보는 ${expected}개여야 합니다 (현재 ${countsByTier[tier]}).`);
+}
 
 if (errors.length > 0) {
   console.error(errors.map((error) => `- ${error}`).join("\n"));
   process.exit(1);
 }
 
-console.log(`Experimental registry check passed: ${ids.size} quarantined Tier 3 prototypes.`);
+console.log(`Experimental registry check passed: ${ids.size} quarantined prototypes (T3 ${countsByTier[3]}, T4 ${countsByTier[4]}, T5 ${countsByTier[5]}).`);

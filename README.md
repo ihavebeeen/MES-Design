@@ -35,10 +35,10 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 | UI 컴포넌트 | 76 |
 | Shell·Section·Behavior·Recipe 패턴 | 51 |
 | AI 조회용 화면 정의 | 28 |
-| 격리된 Tier 3 실험 후보 | 38 |
+| 격리된 Tier 3~5 실험 후보 | 107 |
 | 시각 회귀 기준 케이스 | 31 |
-| Playwright 시각·상호작용 테스트 | 46 |
-| 정적 생성 페이지 | 115 |
+| Playwright 시각·상호작용 테스트 | 47 |
+| 정적 생성 페이지 | 117 |
 
 대표 구현 범위:
 
@@ -50,7 +50,7 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 - 양식관리, 생산실적 반응형, 캐비티 배열, 재고 추가·편집, 발주 정보
 - 설비별 토출량 설정, 표준단가 설정, 조 설정의 원본 상태·상호작용
 - 생산분석 최신 화면과 카드 설정 상태
-- 실제 업무 원본 승인 전까지 표준 생성에서 격리되는 Tier 3 기능 프로토타입 38종
+- 실제 업무 원본 승인 전까지 표준 생성에서 격리되는 Tier 3~5 기능 프로토타입 107종
 
 ## 원본에서 표준 규칙으로 가는 과정
 
@@ -189,6 +189,8 @@ npm run dev
 - `/components/`: 개별 UI 컴포넌트와 상태
 - `/generated-screens/`: 표준 화면과 격리된 AI 생성 시안 검토함
 - `/experimental/experimental-tier-3/`: 표준 AI 생성에서 격리된 Tier 3 기능 후보 38종
+- `/experimental/experimental-tier-4/`: 표준 AI 생성에서 격리된 Tier 4 기능 후보 41종
+- `/experimental/experimental-tier-5/`: 표준 AI 생성에서 격리된 Tier 5 기능 후보 28종
 - `/patterns/`: MES 업무 화면과 조합 패턴
 - `/patterns/original-mes-screen-assets/`: 정규화된 원본 화면 자산
 
@@ -201,7 +203,7 @@ npm exec tsc -- --noEmit
 # 패턴의 공용 컴포넌트 재사용 + 레지스트리 무결성
 npm run check:design-system
 
-# 실험 후보 38종의 격리 정책·코드 연결 무결성
+# 실험 후보 107종의 격리 정책·코드 연결 무결성
 npm run check:experimental
 
 # 현재 코드의 디자인 값 분포와 검토 후보 갱신

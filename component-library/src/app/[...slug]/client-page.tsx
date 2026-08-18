@@ -107,7 +107,7 @@ import {
   OriginalMesScreenAssets,
 } from "@/components/patterns";
 import { GeneratedScreenReview } from "@/components/patterns/generated-screen-review";
-import { Tier3ExperimentalGallery } from "@/components/experimental";
+import { Tier3ExperimentalGallery, Tier4ExperimentalGallery, Tier5ExperimentalGallery } from "@/components/experimental";
 import {
   IconArrow,
   IconArrowDownRight,
@@ -212,6 +212,71 @@ function TierBadge({ id }: { id: string }) {
     >
       T{tier}
     </span>
+  );
+}
+
+type SidebarTierSection = { tier?: number; nodes: SidebarNode[]; itemCount: number };
+
+function splitSidebarNodesByTier(nodes: SidebarNode[]): SidebarTierSection[] {
+  const buckets = new Map<number | "unclassified", SidebarNode[]>();
+  const add = (tier: number | undefined, node: SidebarNode) => {
+    const key = tier ?? "unclassified";
+    buckets.set(key, [...(buckets.get(key) ?? []), node]);
+  };
+
+  for (const node of nodes) {
+    if (node.kind === "leaf") {
+      add(TIER_BY_ID[node.id], node);
+      continue;
+    }
+    const childrenByTier = new Map<number | "unclassified", typeof node.children>();
+    for (const child of node.children) {
+      const key = TIER_BY_ID[child.id] ?? "unclassified";
+      childrenByTier.set(key, [...(childrenByTier.get(key) ?? []), child]);
+    }
+    for (const [key, children] of childrenByTier) {
+      add(key === "unclassified" ? undefined : key, { ...node, children });
+    }
+  }
+
+  return [...buckets.entries()]
+    .sort(([a], [b]) => a === "unclassified" ? 1 : b === "unclassified" ? -1 : a - b)
+    .map(([key, sectionNodes]) => ({
+      tier: key === "unclassified" ? undefined : key,
+      nodes: sectionNodes,
+      itemCount: sectionNodes.reduce((count, node) => count + (node.kind === "leaf" ? 1 : node.children.length), 0),
+    }));
+}
+
+function SidebarTreeNode({ node, activeId }: { node: SidebarNode; activeId?: string }) {
+  if (node.kind === "leaf") {
+    return (
+      <NextLink
+        href={idToHref(node.id)}
+        className={cn(
+          "flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[13px] transition-colors",
+          activeId === node.id
+            ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
+            : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-gray-130"
+        )}
+      >
+        <TierBadge id={node.id} />
+        <span className="flex min-w-0 flex-1 flex-col"><span className="truncate">{node.label}</span>{node.labelEn && <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">{node.labelEn}</span>}</span>
+        {TEMP_BADGE_IDS.has(node.id) && <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">임시</span>}
+      </NextLink>
+    );
+  }
+  return (
+    <div className="flex flex-col gap-0.5">
+      <div className="flex flex-col px-2 py-1.5"><span className={cn("truncate text-[13px] font-semibold", node.children.some((child) => child.id === activeId) ? "text-mes-text-brand" : "text-mes-gray-100")}>{node.label}</span>{node.labelEn && <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">{node.labelEn}</span>}</div>
+      {node.children.map((child) => (
+        <NextLink key={child.id} href={idToHref(child.id)} className={cn("ml-3 flex items-center gap-1.5 rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors", activeId === child.id ? "border-mes-primary-60 font-semibold text-mes-text-brand" : "text-mes-gray-70 hover:text-mes-gray-130")}>
+          <TierBadge id={child.id} />
+          <span className="flex min-w-0 flex-1 flex-col"><span className="truncate">{child.label}</span>{child.labelEn && <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">{child.labelEn}</span>}</span>
+          {TEMP_BADGE_IDS.has(child.id) && <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">임시</span>}
+        </NextLink>
+      ))}
+    </div>
   );
 }
 
@@ -1597,6 +1662,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                   : group.title === "Generated Screens"
                     ? Sparkles
                     : Hammer;
+            const tierSections = splitSidebarNodesByTier(group.nodes);
             return (
             <div key={group.title} className="mb-7">
               <div className="mb-2 flex items-center gap-2 border-b-2 border-mes-gray-90 px-2 pb-2 text-[18px] font-extrabold tracking-tight text-mes-gray-130">
@@ -1608,83 +1674,15 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                   티어3(59)·티어4(41) 미착수 — 자리만 미리 만들어둠
                 </p>
               )}
-              <nav className="flex flex-col gap-0.5">
-                {group.nodes.map((node) =>
-                  node.kind === "leaf" ? (
-                    <NextLink
-                      key={node.id}
-                      href={idToHref(node.id)}
-                      className={cn(
-                        "flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[13px] transition-colors",
-                        activeId === node.id
-                          ? "bg-mes-bg-subtle font-semibold text-mes-text-brand"
-                          : "text-mes-gray-90 hover:bg-mes-bg-subtle hover:text-mes-gray-130"
-                      )}
-                    >
-                      <TierBadge id={node.id} />
-                      <span className="flex min-w-0 flex-1 flex-col">
-                        <span className="truncate">{node.label}</span>
-                        {node.labelEn && (
-                          <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">
-                            {node.labelEn}
-                          </span>
-                        )}
-                      </span>
-                      {TEMP_BADGE_IDS.has(node.id) && (
-                        <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
-                          임시
-                        </span>
-                      )}
-                    </NextLink>
-                  ) : (
-                    <div key={node.label} className="flex flex-col gap-0.5">
-                      <div className="flex flex-col px-2 py-1.5">
-                        <span
-                          className={cn(
-                            "truncate text-[13px] font-semibold",
-                            node.children.some((c) => c.id === activeId)
-                              ? "text-mes-text-brand"
-                              : "text-mes-gray-100"
-                          )}
-                        >
-                          {node.label}
-                        </span>
-                        {node.labelEn && (
-                          <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">
-                            {node.labelEn}
-                          </span>
-                        )}
-                      </div>
-                      {node.children.map((child) => (
-                        <NextLink
-                          key={child.id}
-                          href={idToHref(child.id)}
-                          className={cn(
-                            "ml-3 flex items-center gap-1.5 rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors",
-                            activeId === child.id
-                              ? "border-mes-primary-60 font-semibold text-mes-text-brand"
-                              : "text-mes-gray-70 hover:text-mes-gray-130"
-                          )}
-                        >
-                          <TierBadge id={child.id} />
-                          <span className="flex min-w-0 flex-1 flex-col">
-                            <span className="truncate">{child.label}</span>
-                            {child.labelEn && (
-                              <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">
-                                {child.labelEn}
-                              </span>
-                            )}
-                          </span>
-                          {TEMP_BADGE_IDS.has(child.id) && (
-                            <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
-                              임시
-                            </span>
-                          )}
-                        </NextLink>
-                      ))}
+              <nav className="flex flex-col gap-3">
+                {tierSections.map((section) => (
+                  <section key={`${group.title}-${section.tier ?? "common"}`} aria-label={section.tier ? `Tier ${section.tier}` : "공통·미분류"}>
+                    <div className="mb-1 flex items-center justify-between border-b border-mes-gray-30 px-2 pb-1 text-[11px] font-semibold uppercase tracking-wide text-mes-gray-60">
+                      <span>{section.tier ? `Tier ${section.tier}` : "공통·미분류"}</span><span>{section.itemCount}</span>
                     </div>
-                  )
-                )}
+                    <div className="flex flex-col gap-0.5">{section.nodes.map((node) => <SidebarTreeNode key={node.kind === "leaf" ? node.id : `${node.label}-${node.children.map((child) => child.id).join("-")}`} node={node} activeId={activeId} />)}</div>
+                  </section>
+                ))}
               </nav>
             </div>
             );
@@ -2093,6 +2091,8 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
               </div>
               {activeGroup === "home" && <OverviewGrid nodes={EXPERIMENTAL_NODES} />}
               {activeGroup === "experimental" && activeId === "experimental-tier-3" && <Tier3ExperimentalGallery />}
+              {activeGroup === "experimental" && activeId === "experimental-tier-4" && <Tier4ExperimentalGallery />}
+              {activeGroup === "experimental" && activeId === "experimental-tier-5" && <Tier5ExperimentalGallery />}
             </>
           )}
 

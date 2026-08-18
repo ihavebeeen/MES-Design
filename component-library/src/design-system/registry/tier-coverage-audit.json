@@ -32,22 +32,18 @@
       },
       "4": {
         "total": 41,
-        "deferred-evidence": 20,
-        "excluded-scope": 20,
-        "intentional-composition": 1
+        "experimental-prototype": 41
       },
       "5": {
         "total": 28,
-        "excluded-scope": 28
+        "experimental-prototype": 28
       }
     },
     "byDisposition": {
       "implemented-foundation": 9,
-      "deferred-evidence": 20,
+      "experimental-prototype": 107,
       "implemented-component": 81,
-      "excluded-scope": 48,
-      "experimental-prototype": 38,
-      "intentional-composition": 14,
+      "intentional-composition": 13,
       "implemented-pattern": 6
     }
   },
@@ -139,9 +135,12 @@
       "layer": "토큰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.breakpoint-scale",
+        "src/components/experimental/tier4-general-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Button (Primary)",
@@ -208,22 +207,24 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.split-button",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Floating Action Button (FAB)",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.fab",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Checkbox",
@@ -266,11 +267,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.segmented-control",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Slider (Range)",
@@ -289,22 +291,24 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.rating",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Chip Selector",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.chip-selector",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Text Input",
@@ -479,33 +483,36 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.otp-pin-input",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Color Picker",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.color-picker",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Rich Text Editor",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.rich-text-editor",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Navbar / Top Nav",
@@ -596,31 +603,36 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.context-menu",
+        "src/components/experimental/tier4-general-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Command Palette",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.command-palette",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Back to Top",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.back-to-top",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Table",
@@ -676,22 +688,24 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.avatar",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Avatar Group",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.avatar-group",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Badge",
@@ -746,11 +760,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.progress-circle",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Skeleton",
@@ -829,11 +844,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.carousel",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Alert / Banner",
@@ -983,12 +999,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "intentional-composition",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "accordion",
-        "collapsible"
+        "experimental.disclosure-panel",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "동일 동작을 Accordion 또는 Collapsible로 해결한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Divider / Separator",
@@ -1115,11 +1131,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.video-player",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Logo / Brandmark",
@@ -1138,88 +1155,96 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.empty-illustration",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Chat Bubble / Message",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.chat-message",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "AI Prompt Input Box",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.ai-prompt-input",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Streaming Text Indicator",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.streaming-text",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Code Block",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.code-block",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Markdown Renderer",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.markdown-renderer",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Suggestion Chip",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.suggestion-chip",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Source / Citation Badge",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.citation-badge",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Filter Bar / Filter Panel",
@@ -1321,11 +1346,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.sortable-list",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "User / Account Menu",
@@ -1356,22 +1382,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.product-tour",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Onboarding Checklist",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.onboarding-checklist",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Settings List",
@@ -1390,132 +1418,144 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.activity-feed",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Kanban Board",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.kanban-board",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Global Top Loading Bar",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.top-loading-bar",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Cookie Consent Banner",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.cookie-consent",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Feedback Widget",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.feedback-widget",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Live Chat Widget",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.live-chat-widget",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Dark Mode Toggle",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.dark-mode",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Language / Locale Selector",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.locale-selector",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Pricing Table",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.pricing-table",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Upgrade / Paywall Prompt",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.paywall",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Kbd (Keyboard Key)",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.kbd",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Aspect Ratio",
       "layer": "레이아웃 유틸",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.aspect-ratio",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Cascader",
@@ -1534,11 +1574,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.mentions",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Transfer (Dual List)",
@@ -1605,33 +1646,36 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.watermark",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Masonry Grid",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.masonry-grid",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Anchor / Scroll Spy",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.anchor-scroll-spy",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Mask Input",
@@ -1723,33 +1767,36 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.overflow-list",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Spoiler (더보기/접기 텍스트)",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.spoiler",
+        "src/components/experimental/tier4-general-prototypes.tsx"
       ],
-      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Blockquote",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.blockquote",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Search Highlight Text",
@@ -1768,11 +1815,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.marquee",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Frozen Column Grid",
@@ -2009,9 +2057,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.full-screen-modal",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Resizable / Draggable Popup",
@@ -2078,9 +2129,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.process-flow",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Real-time Trend Chart",
@@ -2099,18 +2153,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.utilization-heatmap",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Factory Layout View",
       "layer": "템플릿",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.factory-layout",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Alarm List/Table",
@@ -2165,9 +2225,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.escalation-timeline",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Work Order Form",
@@ -2186,27 +2249,36 @@
       "layer": "템플릿",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.work-order-kanban",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Production Gantt Chart",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.production-gantt",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Shift Schedule Calendar",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.shift-calendar",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Routing/BOM Tree",
@@ -2283,18 +2355,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.sampling-plan",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Defect Pareto Chart",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.defect-pareto",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Barcode/QR Scan Input",
@@ -2325,9 +2403,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.genealogy-tree",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Inventory Level Indicator",
@@ -2346,20 +2427,24 @@
       "layer": "템플릿",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.warehouse-map",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Label Print Preview",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.label-print-preview",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Approval Workflow Stepper",
@@ -2378,18 +2463,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.e-signature",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Document Version History",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.document-version-history",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Attachment List",
@@ -2408,9 +2499,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.maintenance-calendar",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Downtime Reason Selector",
@@ -2441,9 +2535,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.pm-checklist",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Link",
@@ -2510,29 +2607,36 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "excluded-scope",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "desktop MES scope policy"
+        "experimental.hero",
+        "src/components/experimental/tier5-prototypes.tsx"
       ],
-      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Skip Link",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.skip-link",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Visually Hidden",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.visually-hidden",
+        "src/components/experimental/tier4-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     }
   ]
 }

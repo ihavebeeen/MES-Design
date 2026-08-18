@@ -48,6 +48,42 @@ test("Tier 3 실험 후보는 38개를 격리하고 기본 상호작용과 페�
   await expect(inventory).toContainText("24%");
 });
 
+test("Tier 4·5 실험 후보와 좌측 티어 구획은 격리 수량과 기본 동작을 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/experimental/experimental-tier-4");
+
+  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(41);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+
+  const splitButton = page.locator('[data-experimental-prototype="ExperimentalSplitButton"]');
+  await splitButton.getByRole("button", { name: "추가 저장 방식" }).click();
+  await splitButton.getByRole("button", { name: "임시저장", exact: true }).click();
+  await expect(splitButton).toContainText("임시저장");
+
+  const pmChecklist = page.locator('[data-experimental-prototype="ExperimentalPmChecklist"]');
+  await pmChecklist.getByText("안전센서 동작", { exact: true }).click();
+  await expect(pmChecklist).toContainText("50%");
+
+  await page.goto("/experimental/experimental-tier-5");
+  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(28);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+
+  const rating = page.locator('[data-experimental-prototype="ExperimentalRating"]');
+  await rating.getByRole("button", { name: "5점", exact: true }).click();
+  await expect(rating).toContainText("5점");
+
+  const warehouseMap = page.locator('[data-experimental-prototype="ExperimentalWarehouseLocationMap"]');
+  await warehouseMap.getByRole("button", { name: "B-03", exact: true }).click();
+  await expect(warehouseMap).toContainText("선택 위치: B-03");
+
+  const sidebar = page.getByRole("complementary");
+  await expect(sidebar.locator('section[aria-label="Tier 1"]')).toHaveCount(2);
+  await expect(sidebar.locator('section[aria-label="Tier 2"]')).toHaveCount(2);
+  await expect(sidebar.locator('section[aria-label="Tier 3"]')).toHaveCount(1);
+  await expect(sidebar.locator('section[aria-label="Tier 4"]')).toHaveCount(1);
+  await expect(sidebar.locator('section[aria-label="Tier 5"]')).toHaveCount(1);
+});
+
 test("투입정보는 부산물을 투입품과 동급으로 합치지 않고 내부 하위 영역으로 표시한다", async ({ page }) => {
   await page.setViewportSize({ width: 1584, height: 728 });
   await page.goto("/visual-regression/material-input-information");
