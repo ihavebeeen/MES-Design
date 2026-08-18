@@ -109,27 +109,6 @@
       ]
     },
     {
-      "id": "heading.page-section",
-      "category": "heading",
-      "status": "hold",
-      "semanticRole": "page-section-identity",
-      "scope": "single-page-section",
-      "requirement": "optional-zero-to-many",
-      "allowedParents": ["screen.entity-list", "screen.master-detail", "screen.analytics-dashboard"],
-      "implementationRefs": [],
-      "useWhen": [
-        "페이지 안에서 서로 다른 설정·분석·관리 영역을 구분해야 한다."
-      ],
-      "doNotUseWhen": [
-        "모달용 SectionHeader의 회색 밴드를 배치 근거 없이 가져오려 한다.",
-        "페이지 전체 제목 또는 단일 콘텐츠 제목으로 충분하다."
-      ],
-      "relationships": [
-        "현재 페이지 전용 표준 구현이 없으므로 자동 선택하지 않는다.",
-        "필요하면 일반 제목·얇은 divider·간격을 사용하는 최소 로컬 후보를 만들고 사용자 승인 전까지 격리한다."
-      ]
-    },
-    {
       "id": "overlay.center-modal",
       "category": "overlay-shell",
       "status": "active",
@@ -900,13 +879,13 @@
       "id": "select.heading-context",
       "category": "heading",
       "questionOrder": [
-        "무엇의 제목인가: 전체 오버레이, 논리 섹션, 단일 콘텐츠, 페이지 섹션인가?",
+        "무엇의 제목인가: 전체 오버레이, 논리 섹션, 단일 콘텐츠인가?",
         "부모가 페이지인가, 중앙 모달인가, 우측 슬라이드인가?",
         "제목이 필수인가, 구분 필요가 있을 때만 선택적으로 쓰는가?",
         "같은 문구나 범위를 상위 제목이 이미 설명하고 있는가?",
         "선택한 구현의 원본 사용 위치가 현재 부모 맥락과 일치하는가?"
       ],
-      "optionRuleIds": ["heading.overlay-root", "heading.section", "heading.content-region", "heading.page-section"],
+      "optionRuleIds": ["heading.overlay-root", "heading.section", "heading.content-region"],
       "fallback": "일치하는 active 규칙이 없으면 장식이 가장 적은 로컬 후보로 propose-new하고 generated-screen quarantine에 둔다."
     },
     {
@@ -986,13 +965,5 @@
       "fallback": "세로 소유자를 하나로 정하지 못하거나 가로 overflow 근거가 없으면 구현을 중단하고 외곽부터 크기 장부를 다시 계산한다."
     }
   ],
-  "holds": [
-    {
-      "id": "page-section-heading-implementation",
-      "ruleId": "heading.page-section",
-      "status": "needs-evidence",
-      "reason": "페이지형 설정·관리 화면의 섹션 제목은 반복 원본과 정식 컴포넌트 계약이 아직 없다.",
-      "temporaryRule": "모달용 SectionHeader를 페이지에 자동 재사용하지 않는다."
-    }
-  ]
+  "holds": []
 }

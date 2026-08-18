@@ -67,7 +67,7 @@
       "figmaNode": "18813:64859",
       "route": "/visual-regression/material-input-information",
       "source": "src/components/patterns/material-input-information-pattern.tsx",
-      "status": "review",
+      "status": "archived",
       "score": 0,
       "disposition": "prototype",
       "influence": "quarantined",

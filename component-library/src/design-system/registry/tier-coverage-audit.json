@@ -1,0 +1,2425 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "2026-08-18",
+  "source": "docs/UI_컴포넌트_총망라_체크리스트.md",
+  "policy": {
+    "currentGoal": "desktop MES AI screen generation",
+    "tier1And2BlockingGaps": 0,
+    "addScreensForCoverage": false,
+    "mobileTrackedSeparately": true
+  },
+  "summary": {
+    "total": 216,
+    "byTier": {
+      "1": {
+        "total": 45,
+        "implemented-foundation": 5,
+        "implemented-component": 39,
+        "implemented-pattern": 1
+      },
+      "2": {
+        "total": 45,
+        "implemented-foundation": 4,
+        "implemented-component": 40,
+        "intentional-composition": 1
+      },
+      "3": {
+        "total": 57,
+        "deferred-evidence": 38,
+        "intentional-composition": 12,
+        "implemented-component": 2,
+        "implemented-pattern": 5
+      },
+      "4": {
+        "total": 41,
+        "deferred-evidence": 20,
+        "excluded-scope": 20,
+        "intentional-composition": 1
+      },
+      "5": {
+        "total": 28,
+        "excluded-scope": 28
+      }
+    },
+    "byDisposition": {
+      "implemented-foundation": 9,
+      "deferred-evidence": 58,
+      "implemented-component": 81,
+      "excluded-scope": 48,
+      "intentional-composition": 14,
+      "implemented-pattern": 6
+    }
+  },
+  "items": [
+    {
+      "item": "Color Palette",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-foundation",
+      "evidence": [
+        "legacy-checklist",
+        "globals.css"
+      ],
+      "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
+    },
+    {
+      "item": "Typography Scale",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-foundation",
+      "evidence": [
+        "legacy-checklist",
+        "globals.css"
+      ],
+      "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
+    },
+    {
+      "item": "Spacing Scale",
+      "layer": "토큰",
+      "sourceStatus": "부분",
+      "tier": 2,
+      "disposition": "implemented-foundation",
+      "evidence": [
+        "component-specific token policy"
+      ],
+      "note": "전역 배수 하나로 강제하지 않고 원본 실측과 반복값을 컴포넌트별 규칙으로 관리한다."
+    },
+    {
+      "item": "Radius Scale",
+      "layer": "토큰",
+      "sourceStatus": "부분",
+      "tier": 2,
+      "disposition": "implemented-foundation",
+      "evidence": [
+        "component-specific token policy"
+      ],
+      "note": "전역 배수 하나로 강제하지 않고 원본 실측과 반복값을 컴포넌트별 규칙으로 관리한다."
+    },
+    {
+      "item": "Shadow/Elevation Scale",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-foundation",
+      "evidence": [
+        "legacy-checklist",
+        "globals.css"
+      ],
+      "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
+    },
+    {
+      "item": "Icon Set",
+      "layer": "토큰",
+      "sourceStatus": "부분",
+      "tier": 2,
+      "disposition": "implemented-foundation",
+      "evidence": [
+        "src/components/icons",
+        "icon/mes"
+      ],
+      "note": "실제 SVG 에셋 33종을 코드화했다. 닫힌 아이콘 총집합을 선제 제작하지 않고 실제 원본이 생길 때 추가한다."
+    },
+    {
+      "item": "Z-index Scale",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-foundation",
+      "evidence": [
+        "legacy-checklist",
+        "globals.css"
+      ],
+      "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
+    },
+    {
+      "item": "Breakpoint Scale",
+      "layer": "토큰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Button (Primary)",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Button (Secondary/Outline/Ghost)",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Icon Button",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Button Group",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Toggle Button",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Split Button",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Floating Action Button (FAB)",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Checkbox",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Radio Button",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Switch / Toggle",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Segmented Control",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Slider (Range)",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Rating (별점)",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Chip Selector",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Text Input",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Textarea",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Number Input",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Search Input",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Password Input",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Select (Dropdown)",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Combobox",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Multi-select / Tag Input",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Filter (필터 추가 트리거 + 플라이아웃 패널 + 활성 태그, 통합)",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Date Picker",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Date Range Picker",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Time Picker",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "File Upload / Dropzone",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Form Field",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "OTP / PIN Input",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Color Picker",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Rich Text Editor",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Navbar / Top Nav",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Sidebar / Side Nav",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Breadcrumb",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Tabs",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Pagination",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Stepper / Wizard",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Dropdown Menu",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Context Menu",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Command Palette",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Back to Top",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Table",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Data Grid",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "table",
+        "table.grouped-list",
+        "selection.reveal-inline-editor"
+      ],
+      "note": "별도 DataGrid를 만들지 않고 Table에 검증된 그룹화·선택·편집 패턴을 조합한다."
+    },
+    {
+      "item": "List",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Card",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Avatar",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Avatar Group",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Badge",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Chip / Tag",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Tooltip",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Progress Bar",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Progress Circle",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Skeleton",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Stat / KPI Card",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Timeline",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Tree View",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Chart",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "implemented-component",
+      "evidence": [
+        "analytics-charts",
+        "section.monthly-comparison-chart"
+      ],
+      "note": "분석 화면의 공통 차트 규격과 월간 비교 패턴이 등록되어 있다."
+    },
+    {
+      "item": "Calendar (표시용)",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Carousel",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Alert / Banner",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Toast (스낵바 없음)",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Modal / Dialog",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Drawer / Sheet",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "side-slide-panel"
+      ],
+      "note": "MES의 우측 진입형 작업은 범용 Drawer 대신 SideSlidePanel 규칙으로 통일한다."
+    },
+    {
+      "item": "Popover",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Confirm Dialog",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Loading Spinner",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Empty State",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Error State",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Notification / Bell",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Accordion",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Collapsible",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Disclosure Panel",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "accordion",
+        "collapsible"
+      ],
+      "note": "동일 동작을 Accordion 또는 Collapsible로 해결한다."
+    },
+    {
+      "item": "Divider / Separator",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Grid / Container",
+      "layer": "레이아웃 유틸",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Panel",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Resizable Panel",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Scroll Area",
+      "layer": "레이아웃 유틸",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Sticky Header/Footer",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Split View",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "implemented-pattern",
+      "evidence": [
+        "screen.master-detail",
+        "selection.master-detail"
+      ],
+      "note": "좌우 분할 자체가 아니라 마스터 선택과 상세 갱신의 맥락 패턴으로 관리한다."
+    },
+    {
+      "item": "Heading Styles",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-foundation",
+      "evidence": [
+        "legacy-checklist",
+        "globals.css"
+      ],
+      "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
+    },
+    {
+      "item": "Body Text Styles",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-foundation",
+      "evidence": [
+        "legacy-checklist",
+        "globals.css"
+      ],
+      "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
+    },
+    {
+      "item": "Image / Thumbnail",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Video Player",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Logo / Brandmark",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Empty Illustration",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Chat Bubble / Message",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "AI Prompt Input Box",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Streaming Text Indicator",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Code Block",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Markdown Renderer",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Suggestion Chip",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Source / Citation Badge",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Filter Bar / Filter Panel",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "GroupQuery (그룹화 조회)",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "QuickQuery (빠른 조회)",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Bulk Action Toolbar",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "selection-action-bar"
+      ],
+      "note": "선택 건이 있을 때만 노출되는 MES용 SelectionActionBar로 구현되어 있다."
+    },
+    {
+      "item": "Table Bulk Selection",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Column Visibility Toggle",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Row Expand / Detail Drawer",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Inline Edit",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "implemented-pattern",
+      "evidence": [
+        "selection.reveal-inline-editor",
+        "table.grouped-list"
+      ],
+      "note": "Table 위에 선택·그룹 행 동작 규칙을 조합한다."
+    },
+    {
+      "item": "Drag Handle / Sortable List",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "User / Account Menu",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Global Search / Search Overlay",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Onboarding Tooltip / Product Tour",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Onboarding Checklist",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Settings List",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Comment / Activity Feed",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Kanban Board",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Global Top Loading Bar",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Cookie Consent Banner",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Feedback Widget",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Live Chat Widget",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Dark Mode Toggle",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Language / Locale Selector",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Pricing Table",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Upgrade / Paywall Prompt",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Kbd (Keyboard Key)",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Aspect Ratio",
+      "layer": "레이아웃 유틸",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Cascader",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Mentions",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Transfer (Dual List)",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Tree Select",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "QR Code",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Descriptions (Key-Value List)",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Result Page",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Watermark",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Masonry Grid",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Anchor / Scroll Spy",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Mask Input",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Close Button (X)",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Copy Button",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "button",
+        "icon-copy"
+      ],
+      "note": "Button 또는 IconButton에 복사 아이콘과 동작을 결합한다."
+    },
+    {
+      "item": "Burger (Hamburger Menu)",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "icon-button",
+        "icon-menu"
+      ],
+      "note": "IconButton과 실제 MES 메뉴 아이콘의 조합이다."
+    },
+    {
+      "item": "Loading Overlay",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Backdrop / Dim Overlay",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 2,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "center-modal",
+        "side-slide-panel",
+        "confirm-dialog"
+      ],
+      "note": "오버레이 셸 내부 책임이다. 독립 Backdrop API는 중복과 오사용을 만들기 때문에 두지 않는다."
+    },
+    {
+      "item": "Status Indicator (Dot)",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "badge",
+        "tag"
+      ],
+      "note": "새 원시 컴포넌트보다 기존 상태 표현 컴포넌트의 variant로 해결한다."
+    },
+    {
+      "item": "Overflow List (\"+N more\")",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Spoiler (더보기/접기 텍스트)",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "대체 가능한 기존 자산이 있거나 현재 업무 우선순위가 낮아 범위에서 제외한다."
+    },
+    {
+      "item": "Blockquote",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Search Highlight Text",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Marquee",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Frozen Column Grid",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Grouped Header Grid",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Row Grouping / Expandable Sub-row",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "implemented-pattern",
+      "evidence": [
+        "selection.reveal-inline-editor",
+        "table.grouped-list"
+      ],
+      "note": "Table 위에 선택·그룹 행 동작 규칙을 조합한다."
+    },
+    {
+      "item": "Master-Detail Grid (Nested Grid)",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "implemented-pattern",
+      "evidence": [
+        "screen.master-detail",
+        "selection.master-detail"
+      ],
+      "note": "마스터 행 선택과 상세 영역 갱신 규칙으로 구현한다."
+    },
+    {
+      "item": "Inline Cell Edit Grid",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Cell Status Color Grid",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "table",
+        "badge",
+        "tag"
+      ],
+      "note": "상태 의미는 Table 셀에 Badge 또는 Tag를 배치해 표현한다."
+    },
+    {
+      "item": "Text Link Cell",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "table",
+        "link"
+      ],
+      "note": "Table 셀 render slot 안에 Link를 사용한다. 별도 셀 컴포넌트는 만들지 않는다."
+    },
+    {
+      "item": "Icon Cell",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "table",
+        "src/components/icons"
+      ],
+      "note": "Table 셀 render slot과 등록 아이콘을 조합한다."
+    },
+    {
+      "item": "Bulk Selection + Action Toolbar Grid",
+      "layer": "오가니즘",
+      "sourceStatus": "부분",
+      "tier": 1,
+      "disposition": "implemented-pattern",
+      "evidence": [
+        "table",
+        "selection-action-bar",
+        "selection.enable-actions"
+      ],
+      "note": "Table 선택 상태와 SelectionActionBar의 조합 패턴으로 충족한다."
+    },
+    {
+      "item": "Column Resize / Reorder / Show-Hide",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [
+        "table.column-settings"
+      ],
+      "note": "Show/Hide는 구현됐지만 Resize/Reorder는 검증된 원본과 업무 요구가 없어 묶음 전체를 완료 처리하지 않는다."
+    },
+    {
+      "item": "Grid Export / Print",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Virtual Scroll Grid",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Real-time Update Indicator (Grid)",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Center Modal",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Side Slide Panel (Full)",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Side Slide Panel — 상하 분할",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Side Slide Panel — 좌우 분할",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Modal with Embedded Table",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Modal with Tabs",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Full-screen Modal",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Resizable / Draggable Popup",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Andon Board (설비 상태판)",
+      "layer": "템플릿",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Equipment Status Card/Tile",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Real-time Gauge/Meter",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "OEE Dashboard Widget",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Process Flow Diagram",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Real-time Trend Chart",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Utilization Heatmap",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Factory Layout View",
+      "layer": "템플릿",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Alarm List/Table",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Blinking Alarm Indicator",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Severity Level Tag",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "badge",
+        "tag"
+      ],
+      "note": "새 원시 컴포넌트보다 기존 상태 표현 컴포넌트의 variant로 해결한다."
+    },
+    {
+      "item": "Alarm Acknowledge Button",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "button",
+        "alarm-list-item"
+      ],
+      "note": "알람 행의 업무 액션으로 Button을 배치한다."
+    },
+    {
+      "item": "Escalation Timeline",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Work Order Form",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "implemented-pattern",
+      "evidence": [
+        "batch-work-order",
+        "section.form-grid"
+      ],
+      "note": "작업지시 화면과 공통 FormGrid 조합으로 충족한다."
+    },
+    {
+      "item": "Work Order Kanban",
+      "layer": "템플릿",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Production Gantt Chart",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Shift Schedule Calendar",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Routing/BOM Tree",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Lot Progress Bar",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "progress"
+      ],
+      "note": "기존 Progress에 LOT 문맥의 라벨과 값을 전달한다."
+    },
+    {
+      "item": "Defect Type Tag/Selector",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "tag",
+        "select"
+      ],
+      "note": "표시는 Tag, 변경은 Select를 사용한다."
+    },
+    {
+      "item": "SPC Control Chart",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Inspection Checklist Form",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "검사 판정 버튼 (○/△/✕/-)",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "implemented-component",
+      "evidence": [
+        "inspection-judgement"
+      ],
+      "note": "MES 검사 판정 전용 컴포넌트가 등록되어 있다."
+    },
+    {
+      "item": "Sampling Plan Table",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Defect Pareto Chart",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Barcode/QR Scan Input",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Lot/Serial Search",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "intentional-composition",
+      "evidence": [
+        "search-input",
+        "combobox"
+      ],
+      "note": "검색어 입력과 후보 선택을 기존 입력 컴포넌트로 조합한다."
+    },
+    {
+      "item": "Genealogy Tree",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Inventory Level Indicator",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Warehouse Location Map",
+      "layer": "템플릿",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Label Print Preview",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Approval Workflow Stepper",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "E-signature Pad",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Document Version History",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Attachment List",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Maintenance Schedule Calendar",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Downtime Reason Selector",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Equipment Detail Card",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "PM Checklist",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Link",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Fieldset",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Label",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "disposition": "implemented-component",
+      "evidence": [
+        "legacy-checklist",
+        "components registry/code"
+      ],
+      "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
+    },
+    {
+      "item": "Footer",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "File",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Hero",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "disposition": "excluded-scope",
+      "evidence": [
+        "desktop MES scope policy"
+      ],
+      "note": "현재 산업용 데스크톱 MES 자동 생성 목표와 직접 관련이 없어 선제 구현하지 않는다."
+    },
+    {
+      "item": "Skip Link",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    },
+    {
+      "item": "Visually Hidden",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "disposition": "deferred-evidence",
+      "evidence": [],
+      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+    }
+  ]
+}
