@@ -2107,7 +2107,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                   원본 근거가 아직 없는 기능 후보를 실제로 조작해 보는 격리 공간입니다. 이곳의 자산은 표준 AI 생성에 자동 사용되지 않습니다.
                 </p>
               </div>
-              {(activeGroup === "home" || (activeGroup === "experimental" && !activeId)) && (
+              {(activeGroup === "home" || activeGroup === "experimental") && (
                 <OverviewGrid nodes={EXPERIMENTAL_NODES} />
               )}
               {activeGroup === "experimental" && activeId === "experimental-tier-3" && <Tier3ExperimentalGallery />}

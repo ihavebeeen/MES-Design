@@ -38,7 +38,7 @@ for (const candidate of registry.candidates ?? []) {
   }
 }
 
-const expectedCounts = { 3: 38, 4: 41, 5: 28 };
+const expectedCounts = { 3: 37, 4: 41, 5: 28 };
 for (const [tier, expected] of Object.entries(expectedCounts)) {
   if (countsByTier[tier] !== expected) errors.push(`Tier ${tier} 후보는 ${expected}개여야 합니다 (현재 ${countsByTier[tier]}).`);
 }

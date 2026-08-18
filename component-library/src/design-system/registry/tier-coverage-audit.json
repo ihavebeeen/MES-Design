@@ -25,8 +25,8 @@
       },
       "3": {
         "total": 57,
-        "experimental-prototype": 38,
-        "intentional-composition": 12,
+        "experimental-prototype": 37,
+        "intentional-composition": 13,
         "implemented-component": 2,
         "implemented-pattern": 5
       },
@@ -41,9 +41,9 @@
     },
     "byDisposition": {
       "implemented-foundation": 9,
-      "experimental-prototype": 107,
+      "experimental-prototype": 106,
       "implemented-component": 81,
-      "intentional-composition": 13,
+      "intentional-composition": 14,
       "implemented-pattern": 6
     }
   },
@@ -2511,12 +2511,11 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.downtime-reason",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "select"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "비가동 사유는 독립 컴포넌트가 아니라 기존 Select에 업무별 사유 옵션을 주입하는 사용 사례다."
     },
     {
       "item": "Equipment Detail Card",

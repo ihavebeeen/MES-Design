@@ -4,12 +4,12 @@ test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
 });
 
-test("Tier 3 실험 후보는 38개를 격리하고 기본 상호작용과 페이지 폭을 유지한다", async ({ page }) => {
+test("Tier 3 실험 후보는 37개를 격리하고 기본 상호작용과 페이지 폭을 유지한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/experimental/experimental-tier-3");
 
   const prototypes = page.locator("[data-experimental-prototype]");
-  await expect(prototypes).toHaveCount(38);
+  await expect(prototypes).toHaveCount(37);
   await expect(page.getByRole("navigation", { name: "breadcrumb" })).toContainText("Experimental");
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
@@ -59,6 +59,9 @@ test("Tier 4·5 실험 후보와 좌측 티어 구획은 격리 수량과 기본
 
   await page.goto("/experimental/experimental-tier-4");
 
+  await expect(page.locator('main a[href="/experimental/experimental-tier-3/"]')).toBeVisible();
+  await expect(page.locator('main a[href="/experimental/experimental-tier-4/"]')).toBeVisible();
+  await expect(page.locator('main a[href="/experimental/experimental-tier-5/"]')).toBeVisible();
   await expect(page.locator("[data-experimental-prototype]")).toHaveCount(41);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 

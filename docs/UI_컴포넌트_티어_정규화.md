@@ -7,7 +7,7 @@
 ## 현재 결론
 
 - Tier 1·2는 현재 데스크톱 MES 화면 생성 기반을 막는 미충족 항목이 없다.
-- Tier 3의 기존 미구현 38개와 Tier 4·5 후보 69개는 모두 동작 가능한 격리 프로토타입으로 만들었다.
+- Tier 3의 독립 후보 37개와 Tier 4·5 후보 69개는 동작 가능한 격리 프로토타입으로 만들었다. 비가동 사유 선택은 기존 Select의 업무 옵션 조합으로 재분류했다.
 - Tier 4는 선택적 확장, Tier 5는 원칙적으로 핵심 MES 범위 밖이라는 우선순위를 유지한다. 코드가 존재해도 실제 업무 근거와 사용자 승인 전에는 표준으로 승격하지 않는다.
 - 새로운 전체 화면은 커버리지 숫자를 늘리기 위해 추가하지 않는다. 기존 조합 문법으로 설명되지 않는 실제 화면이 나타날 때만 근거로 사용한다.
 
@@ -29,7 +29,7 @@
 |---:|---:|---:|---:|---:|---:|
 | 1 | 45 | 45 | 0 | 0 | 0 |
 | 2 | 45 | 45 | 0 | 0 | 0 |
-| 3 | 57 | 19 | 38 | 0 | 0 |
+| 3 | 57 | 20 | 37 | 0 | 0 |
 | 4 | 41 | 0 | 41 | 0 | 0 |
 | 5 | 28 | 0 | 28 | 0 | 0 |
 
@@ -190,7 +190,7 @@
 | Inventory Level Indicator | 없음 | 격리 실험 후보 | experimental.inventory-level, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Approval Workflow Stepper | 없음 | 격리 실험 후보 | experimental.approval-stepper, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Attachment List | 없음 | 격리 실험 후보 | experimental.attachment-list, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Downtime Reason Selector | 없음 | 격리 실험 후보 | experimental.downtime-reason, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Downtime Reason Selector | 없음 | 독립 컴포넌트 불필요 | select | 비가동 사유는 독립 컴포넌트가 아니라 기존 Select에 업무별 사유 옵션을 주입하는 사용 사례다. |
 | Equipment Detail Card | 없음 | 격리 실험 후보 | experimental.equipment-detail-card, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Footer | 없음 | 격리 실험 후보 | experimental.footer, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | File | 없음 | 격리 실험 후보 | experimental.file-row, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |

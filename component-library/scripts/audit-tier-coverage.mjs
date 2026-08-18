@@ -177,6 +177,12 @@ set(
   "표시는 Tag, 변경은 Select를 사용한다.",
 );
 set(
+  ["Downtime Reason Selector"],
+  "intentional-composition",
+  ["select"],
+  "비가동 사유는 독립 컴포넌트가 아니라 기존 Select에 업무별 사유 옵션을 주입하는 사용 사례다.",
+);
+set(
   ["Lot/Serial Search"],
   "intentional-composition",
   ["search-input", "combobox"],
@@ -316,7 +322,7 @@ function renderMarkdown(audit) {
     "## 현재 결론",
     "",
     "- Tier 1·2는 현재 데스크톱 MES 화면 생성 기반을 막는 미충족 항목이 없다.",
-    "- Tier 3의 기존 미구현 38개와 Tier 4·5 후보 69개는 모두 동작 가능한 격리 프로토타입으로 만들었다.",
+    "- Tier 3의 독립 후보 37개와 Tier 4·5 후보 69개는 동작 가능한 격리 프로토타입으로 만들었다. 비가동 사유 선택은 기존 Select의 업무 옵션 조합으로 재분류했다.",
     "- Tier 4는 선택적 확장, Tier 5는 원칙적으로 핵심 MES 범위 밖이라는 우선순위를 유지한다. 코드가 존재해도 실제 업무 근거와 사용자 승인 전에는 표준으로 승격하지 않는다.",
     "- 새로운 전체 화면은 커버리지 숫자를 늘리기 위해 추가하지 않는다. 기존 조합 문법으로 설명되지 않는 실제 화면이 나타날 때만 근거로 사용한다.",
     "",

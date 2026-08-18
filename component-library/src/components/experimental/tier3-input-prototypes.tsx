@@ -4,8 +4,6 @@ import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { PrototypeCard } from "./prototype-shell";
 
 function CheckLine({ label, checked, onChange, className = "" }: { label: string; checked: boolean; onChange: () => void; className?: string }) {
@@ -227,24 +225,6 @@ export function ExperimentalAttachmentList() {
           <Input type="file" className="!absolute !h-px !w-px !overflow-hidden !border-0 !p-0 opacity-0" onChange={(event) => { const name = event.target.files?.[0]?.name; if (name) setItems((current) => [...current, name]); }} />
         </label>
       </div>
-    </PrototypeCard>
-  );
-}
-
-export function ExperimentalDowntimeReasonSelector() {
-  const [reason, setReason] = useState("maintenance");
-  return (
-    <PrototypeCard title="비가동 사유 선택" code="ExperimentalDowntimeReasonSelector" kind="컴포넌트">
-      <Select value={reason} onValueChange={setReason}>
-        <SelectTrigger><SelectValue /></SelectTrigger>
-        <SelectContent>
-          <SelectItem value="maintenance">예방 보전</SelectItem>
-          <SelectItem value="failure">설비 고장</SelectItem>
-          <SelectItem value="material">자재 대기</SelectItem>
-          <SelectItem value="other">기타</SelectItem>
-        </SelectContent>
-      </Select>
-      {reason === "other" && <Textarea className="mt-2" placeholder="비가동 사유를 입력하세요" />}
     </PrototypeCard>
   );
 }

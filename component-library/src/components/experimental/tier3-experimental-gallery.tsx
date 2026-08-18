@@ -5,7 +5,6 @@ import {
   ExperimentalApprovalStepper,
   ExperimentalAttachmentList,
   ExperimentalCascader,
-  ExperimentalDowntimeReasonSelector,
   ExperimentalFileRow,
   ExperimentalFileUpload,
   ExperimentalMaskInput,
@@ -62,16 +61,16 @@ export function Tier3ExperimentalGallery() {
     <div className="space-y-4">
       <div>
         <h1 className="text-[24px] font-extrabold tracking-tight text-mes-gray-130">Tier 3 실험 후보</h1>
-        <p className="mt-2 max-w-4xl text-[13px] leading-6 text-mes-gray-70">미구현으로 남아 있던 MES 특화 후보 38개를 기존 토큰과 표준 컴포넌트로 조립한 기능 프로토타입입니다. 모양을 확정하거나 Figma 원본과 동일하다고 주장하지 않으며, 실제 업무 근거가 들어오기 전까지 표준 AI 생성 문법에는 영향을 주지 않습니다.</p>
+        <p className="mt-2 max-w-4xl text-[13px] leading-6 text-mes-gray-70">미구현으로 남아 있던 MES 특화 후보 37개를 기존 토큰과 표준 컴포넌트로 조립한 기능 프로토타입입니다. 모양을 확정하거나 Figma 원본과 동일하다고 주장하지 않으며, 실제 업무 근거가 들어오기 전까지 표준 AI 생성 문법에는 영향을 주지 않습니다.</p>
       </div>
       <ExperimentalNotice />
 
       <section>
-        <GroupTitle title="입력·선택·파일" count={12} description="값 입력, 계층 선택, 파일과 결재 흐름 후보" />
+        <GroupTitle title="입력·선택·파일" count={11} description="값 입력, 계층 선택, 파일과 결재 흐름 후보" />
         <PrototypeGrid>
           <ExperimentalSlider /><ExperimentalFileUpload /><ExperimentalStepper /><ExperimentalCascader />
           <ExperimentalTransfer /><ExperimentalTreeSelect /><ExperimentalQrCode /><ExperimentalMaskInput />
-          <ExperimentalApprovalStepper /><ExperimentalAttachmentList /><ExperimentalDowntimeReasonSelector /><ExperimentalFileRow />
+          <ExperimentalApprovalStepper /><ExperimentalAttachmentList /><ExperimentalFileRow />
         </PrototypeGrid>
       </section>
 
