@@ -38,6 +38,7 @@ import type {
   CompletionPolicyRegistry,
   FooterActionAuditRegistry,
   ContextRuleRegistry,
+  ContextRuleCategory,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -90,6 +91,23 @@ export function getContextDecision(id: string) {
   return contextRuleRegistry.decisions.find((decision) => decision.id === id);
 }
 
+export function getContextRules(category?: ContextRuleCategory) {
+  return category
+    ? contextRuleRegistry.rules.filter((rule) => rule.category === category)
+    : contextRuleRegistry.rules;
+}
+
+/** 화면 ID가 아직 없는 신규 생성이 JSX 작성 전에 읽어야 할 전체 선택 계약이다. */
+export function getGenerationContext() {
+  return {
+    compositionPolicy: compositionPolicyRegistry,
+    globalGates: contextRuleRegistry.globalGates,
+    decisions: contextRuleRegistry.decisions,
+    rules: contextRuleRegistry.rules,
+    holds: contextRuleRegistry.holds,
+  };
+}
+
 /** AI나 생성 스크립트가 화면 하나를 구현하기 전에 읽어야 할 최소 컨텍스트를 반환한다. */
 export function getImplementationContext(screenId: string) {
   const screen = getScreen(screenId);
@@ -100,9 +118,11 @@ export function getImplementationContext(screenId: string) {
   const contextRules = contextRuleRegistry.rules.filter((rule) =>
     rule.allowedParents.some((parentId) => screen.patternRefs.includes(parentId))
       || rule.implementationRefs.some((reference) =>
-        reference.kind === "pattern"
+        reference.kind === "component"
+          ? componentIds.includes(reference.id)
+          : reference.kind === "pattern"
           ? screen.patternRefs.includes(reference.id)
-          : componentIds.includes(reference.id),
+          : screen.patternRefs.includes(reference.id),
       ),
   );
   const contextRuleIds = new Set(contextRules.map((rule) => rule.id));

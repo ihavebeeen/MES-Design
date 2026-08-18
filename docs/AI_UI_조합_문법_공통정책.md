@@ -1,7 +1,7 @@
 # AI UI 조합 문법 공통 정책
 
 > 정책 ID: `mes.ai-composition-grammar`
-> 버전: `1.2.0`
+> 버전: `1.3.0`
 > 상태: 공통 정책 확정
 > 최초 확정일: 2026-08-11
 > 현재 구현 동기화: 2026-08-18
@@ -29,7 +29,7 @@ MES 디자인 시스템은 다음을 모두 포함한다.
 |---|---|---|
 | Token / Asset | 시각적 원자값과 아이콘 | 색상, 간격, 타이포, MES 아이콘 |
 | Component | 독립적인 UI 부품 | Button, Input, Select, Table |
-| Context Rule | 의미 역할과 부모 맥락에 따른 선택·제외 조건 | 모달 전체 제목, 섹션 제목, 중앙/우측 팝업 선택 |
+| Context Rule | 의미 역할과 부모 맥락에 따른 선택·제외 조건 | 헤더, 팝업, 액션, 입력, 경계, 테이블, 스크롤 선택 |
 | Shell | 화면·팝업의 외곽과 고정 슬롯 | 중앙 모달, 우측 슬라이드, Header/Body/Footer |
 | Section Frame | 섹션의 공통 외형 | 제목 밴드, 패딩, 구분선, 접기/펼치기 |
 | Section Pattern | 컴포넌트의 재사용 가능한 본문 조합 | 폼 그리드, 반복 입력 행, 검색 테이블, 검사항목 |
@@ -64,6 +64,11 @@ SectionInstance
 - Section heading은 선택 요소이며 본문에 독립적인 논리 섹션이 있을 때만 사용한다.
 - 단일 테이블·리스트의 이름은 content region heading으로 처리하며 모달용 회색 SectionHeader를 자동 사용하지 않는다.
 - 중앙 모달, 우측 슬라이드, 확인 팝업은 외형이 아니라 업무 길이·배경 맥락 유지·정보 구조로 고른다.
+- Button·Link·Badge는 클릭 결과와 상태 의미로 구분한다.
+- Input·Select·Combobox·Radio·Checkbox·Switch는 값 범위, 선택 수와 commit 시점으로 구분한다.
+- Table은 반복 레코드의 공통 컬럼이 있을 때만 사용하고 반복 입력 Form의 정렬 도구로 사용하지 않는다.
+- SectionFrame과 결과 요약 Card는 의미 경계가 있을 때만 사용한다.
+- Shell과 내부 콘텐츠 중 같은 축의 스크롤 소유자는 하나만 선택한다.
 - 페이지용 섹션 제목은 반복 근거가 부족하므로 현재 자동 선택 금지 상태다.
 
 세부 규칙은 [AI UI 맥락 규칙](./AI_UI_맥락_규칙.md)을 따른다.
@@ -131,7 +136,7 @@ Behavior는 어떤 Section 또는 Action에 적용되는지 target을 가져야 
 AI는 JSX를 작성하기 전에 다음 순서를 지킨다.
 
 1. 요구사항을 ScreenSpec 후보로 정규화한다.
-2. `select.overlay-shell`과 `select.heading-context`로 의미 역할과 부모 맥락을 판정한다.
+2. `select.overlay-shell`, `select.heading-context`, `select.action-role`, `select.input-control`, `select.content-boundary`, `select.table-model`, `select.scroll-owner`로 의미 역할과 부모 맥락을 판정한다.
 3. Shell, Section, Behavior별 기존 후보를 조회한다.
 4. 각 차이를 `reuse`, `compose`, `extend`, `propose-new`, `normalize`로 판정한다.
 5. 선택 근거, 기존 후보, 차이와 승인 상태를 PatternDecision으로 기록한다.

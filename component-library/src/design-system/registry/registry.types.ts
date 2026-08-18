@@ -184,11 +184,18 @@ export interface CompositionPolicyRegistry {
   migrationHolds: CompositionPolicyMigrationHold[];
 }
 
-export type ContextRuleCategory = "heading" | "overlay-shell";
+export type ContextRuleCategory =
+  | "heading"
+  | "overlay-shell"
+  | "action"
+  | "input-control"
+  | "content-boundary"
+  | "data-table"
+  | "scroll-ownership";
 export type ContextRuleStatus = "active" | "hold";
 
 export interface ContextImplementationReference {
-  kind: "component" | "pattern";
+  kind: "component" | "pattern" | "action-set";
   id: string;
 }
 

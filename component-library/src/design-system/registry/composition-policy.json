@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "policyId": "mes.ai-composition-grammar",
-  "policyVersion": "1.2.0",
+  "policyVersion": "1.3.0",
   "status": "active",
   "authority": "common-policy",
   "layers": [
@@ -16,7 +16,7 @@
     { "id": "screen-spec", "role": "concrete-screen-definition" }
   ],
   "grammar": {
-    "contextDecision": ["semanticRole:1", "parentContext:1", "taskShape:1", "informationStructure:1", "sourceEvidence:1"],
+    "contextDecision": ["semanticRole:1", "parentContext:1", "taskShape:1", "informationStructure:1", "interactionEffect:1", "stateLifetime:1", "dataShape:1", "scrollOwner:1", "sourceEvidence:1"],
     "screenSpec": ["shell:1", "sections:1..n", "behaviors:0..n", "actionSet:1"],
     "sectionInstance": ["sectionFrame:1", "sectionPattern:1", "screenConfig:1"],
     "shellSlots": ["header", "body", "footer"],

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "policyId": "mes.ai-context-rules",
-  "policyVersion": "1.0.0",
+  "policyVersion": "1.1.0",
   "status": "active",
   "authority": "common-policy",
   "decisionAxes": [
@@ -9,6 +9,10 @@
     "parent-context",
     "task-shape",
     "information-structure",
+    "interaction-effect",
+    "state-lifetime",
+    "data-shape",
+    "overflow-cause",
     "requirement",
     "source-evidence"
   ],
@@ -17,7 +21,10 @@
     "stable 컴포넌트라도 허용된 부모 맥락이 다르면 자동 재사용하지 않는다.",
     "필수 요소와 선택 요소를 구분하고 선택 요소는 존재 이유를 설명할 수 있을 때만 추가한다.",
     "기존 규칙과 일치하는 후보가 없으면 가장 장식이 적은 로컬 조합으로 제안하고 승인 전까지 격리한다.",
-    "컴포넌트 상태가 stable이라는 사실만으로 화면 패턴 적합성을 판정하지 않는다."
+    "컴포넌트 상태가 stable이라는 사실만으로 화면 패턴 적합성을 판정하지 않는다.",
+    "상호작용 요소는 이동·명령·선택·상태표시 중 하나의 주 역할을 가져야 하며 외형으로 역할을 바꾸지 않는다.",
+    "Table은 같은 컬럼 구조를 공유하는 반복 레코드가 있을 때만 사용하고 폼 정렬을 위한 그리드로 사용하지 않는다.",
+    "각 축의 스크롤 소유자는 하나만 두며 Shell과 내부 콘텐츠가 같은 축의 스크롤을 동시에 소유하지 않는다."
   ],
   "rules": [
     {
@@ -200,6 +207,692 @@
         "overlay-root heading을 하나 가지며 section heading은 사용하지 않는다.",
         "중앙 배치라는 외형만 보고 CenterModal과 동일하게 취급하지 않는다."
       ]
+    },
+    {
+      "id": "action.command-button",
+      "category": "action",
+      "status": "active",
+      "semanticRole": "execute-command-or-commit",
+      "scope": "single-explicit-command",
+      "requirement": "optional-by-task",
+      "allowedParents": ["screen.entity-list", "screen.master-detail", "screen.analytics-dashboard", "shell.center-modal", "shell.side-slide-panel", "shell.confirm-dialog"],
+      "implementationRefs": [{ "kind": "component", "id": "button" }],
+      "useWhen": [
+        "저장·확인·삭제·조회·다운로드처럼 누르면 현재 작업 또는 데이터에 명령을 실행한다.",
+        "명확한 텍스트 라벨로 사용자가 실행 결과를 예측해야 한다."
+      ],
+      "doNotUseWhen": [
+        "다른 화면이나 상세 대상으로 이동하는 탐색이다.",
+        "현재 상태를 표시하기만 하며 클릭 동작이 없다.",
+        "아이콘만으로 충분한 반복적·관습적 보조 동작이다."
+      ],
+      "relationships": [
+        "한 영역의 가장 중요한 명령만 primary 위계를 가진다.",
+        "Footer에서는 개별 Button보다 먼저 action.footer-set의 의미 조합을 선택한다."
+      ]
+    },
+    {
+      "id": "action.navigation-link",
+      "category": "action",
+      "status": "active",
+      "semanticRole": "navigate-or-drill-down",
+      "scope": "single-navigation-target",
+      "requirement": "optional-by-content",
+      "allowedParents": ["screen.entity-list", "screen.master-detail", "screen.analytics-dashboard", "shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [{ "kind": "component", "id": "link" }],
+      "useWhen": [
+        "품목 건수·LOT·관련 정보처럼 다른 상세, 팝업 또는 위치로 이동한다.",
+        "테이블 셀 값 자체가 탐색 대상임을 밑줄과 링크 색으로 알려야 한다."
+      ],
+      "doNotUseWhen": [
+        "클릭이 현재 데이터를 저장·삭제·변경한다.",
+        "상태나 분류를 표시하기만 한다.",
+        "클릭할 수 없는 텍스트를 강조하려는 목적뿐이다."
+      ],
+      "relationships": [
+        "테이블 링크 셀은 별도 컴포넌트를 만들지 않고 Table render 슬롯 안에서 Link를 합성한다.",
+        "Button을 링크처럼 보이게 하거나 Badge에 클릭 동작을 숨기지 않는다."
+      ]
+    },
+    {
+      "id": "action.status-badge",
+      "category": "action",
+      "status": "active",
+      "semanticRole": "noninteractive-status-label",
+      "scope": "single-status-or-category",
+      "requirement": "optional-by-data",
+      "allowedParents": ["screen.entity-list", "screen.master-detail", "screen.analytics-dashboard", "shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [{ "kind": "component", "id": "badge" }],
+      "useWhen": [
+        "완료·승인중·출하중처럼 레코드의 상태나 짧은 분류를 표시한다.",
+        "사용자 입력이나 이동 동작 없이 읽기 전용 의미를 전달한다."
+      ],
+      "doNotUseWhen": [
+        "상세 이동이나 명령 실행이 필요하다.",
+        "필터 선택값을 제거하거나 토글해야 한다.",
+        "단순 강조를 위해 상태 의미가 없는 텍스트를 감싼다."
+      ],
+      "relationships": [
+        "Badge는 Button이나 Link의 대체 외형이 아니다.",
+        "색상 variant는 업무 상태 의미가 검증된 경우에만 선택한다."
+      ]
+    },
+    {
+      "id": "action.icon-button",
+      "category": "action",
+      "status": "active",
+      "semanticRole": "compact-recognizable-command",
+      "scope": "single-icon-command",
+      "requirement": "optional-by-density",
+      "allowedParents": ["screen.entity-list", "screen.master-detail", "screen.analytics-dashboard", "shell.center-modal", "shell.side-slide-panel", "shell.confirm-dialog"],
+      "implementationRefs": [{ "kind": "component", "id": "icon-button" }],
+      "useWhen": [
+        "닫기·삭제·펼치기처럼 반복 사용되어 의미가 분명한 보조 명령을 좁은 공간에 둔다.",
+        "접근 가능한 이름을 별도로 제공할 수 있다."
+      ],
+      "doNotUseWhen": [
+        "업무 핵심 명령이라 텍스트 라벨이 필요하다.",
+        "새 아이콘의 의미를 사용자가 추측해야 한다.",
+        "상태 표시나 단순 장식 아이콘이다."
+      ],
+      "relationships": [
+        "시각 아이콘이 아니라 실제 button 동작과 접근 가능한 이름을 함께 가진다.",
+        "Modal root의 X는 Shell dismiss 계약에 연결한다."
+      ]
+    },
+    {
+      "id": "action.footer-set",
+      "category": "action",
+      "status": "active",
+      "semanticRole": "overlay-terminal-actions",
+      "scope": "single-overlay-footer",
+      "requirement": "required-exactly-one-set",
+      "allowedParents": ["shell.center-modal", "shell.side-slide-panel", "shell.confirm-dialog"],
+      "implementationRefs": [
+        { "kind": "action-set", "id": "action-set.none" },
+        { "kind": "action-set", "id": "action-set.confirm-only" },
+        { "kind": "action-set", "id": "action-set.save-only" },
+        { "kind": "action-set", "id": "action-set.cancel-save" },
+        { "kind": "action-set", "id": "action-set.cancel-confirm" },
+        { "kind": "action-set", "id": "action-set.cancel-input" },
+        { "kind": "action-set", "id": "action-set.close-only" },
+        { "kind": "action-set", "id": "action-set.cancel-select" },
+        { "kind": "action-set", "id": "action-set.close-reregister" }
+      ],
+      "useWhen": [
+        "오버레이 작업의 종료·확정·선택·입력 의미를 Footer에 제공한다.",
+        "취소는 변경 폐기, 저장·확인·선택은 각 업무의 commit 계약과 연결한다."
+      ],
+      "doNotUseWhen": [
+        "본문의 행별 액션이나 툴바 명령을 배치한다.",
+        "기존 ActionSet과 같은 의미인데 화면마다 임의 문구·폭·색을 다시 조합한다."
+      ],
+      "relationships": [
+        "한 오버레이는 하나의 ActionSet만 선택한다.",
+        "취소와 X는 dismiss.restore-committed 계약을 공유한다."
+      ]
+    },
+    {
+      "id": "input.freeform-value",
+      "category": "input-control",
+      "status": "active",
+      "semanticRole": "enter-freeform-value",
+      "scope": "single-field-value",
+      "requirement": "optional-by-field",
+      "allowedParents": ["section.form-grid", "section.editable-row-list", "shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [
+        { "kind": "component", "id": "input" },
+        { "kind": "component", "id": "number-input" },
+        { "kind": "component", "id": "textarea" }
+      ],
+      "useWhen": [
+        "사용자가 문자열·수량·설명처럼 미리 정해지지 않은 값을 직접 입력한다.",
+        "값 형식에 따라 일반 Input, NumberInput, Textarea 중 가장 좁은 역할을 선택한다."
+      ],
+      "doNotUseWhen": [
+        "허용값 목록이 이미 정해져 있다.",
+        "검색어로 기존 목록을 필터링하는 조회 입력이다.",
+        "켜짐·꺼짐 또는 복수 선택 상태다."
+      ],
+      "relationships": [
+        "라벨·필수표시·정렬은 FormFieldRow가 소유하고 Input이 임의로 만들지 않는다.",
+        "테이블 셀 편집에서는 small 규격과 행 선택 상태를 함께 따른다."
+      ]
+    },
+    {
+      "id": "input.single-choice",
+      "category": "input-control",
+      "status": "active",
+      "semanticRole": "choose-one-known-option",
+      "scope": "single-field-selection",
+      "requirement": "optional-by-field",
+      "allowedParents": ["section.form-grid", "section.editable-row-list", "shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [{ "kind": "component", "id": "select" }],
+      "useWhen": [
+        "서로 배타적인 알려진 옵션 중 하나를 고르며 옵션을 항상 펼쳐둘 필요가 없다.",
+        "검색 없이 짧은 목록을 드롭다운에서 선택한다."
+      ],
+      "doNotUseWhen": [
+        "옵션이 많아 검색이 필요하다.",
+        "두세 옵션을 동시에 비교해야 한다.",
+        "여러 값을 동시에 선택한다."
+      ],
+      "relationships": [
+        "검색이 필요하면 input.searchable-choice를 사용한다.",
+        "선택 결과가 즉시 상태를 켜고 끄는 설정이면 Switch 여부를 먼저 검토한다."
+      ]
+    },
+    {
+      "id": "input.searchable-choice",
+      "category": "input-control",
+      "status": "active",
+      "semanticRole": "search-and-choose-one-option",
+      "scope": "single-large-option-set",
+      "requirement": "optional-by-field",
+      "allowedParents": ["section.form-grid", "section.editable-row-list", "shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [{ "kind": "component", "id": "combobox" }],
+      "useWhen": [
+        "거래처·품목·설비처럼 옵션이 많아 목록 안에서 검색한 뒤 하나를 선택한다.",
+        "검색어 자체가 아니라 선택된 도메인 값이 최종 필드 값이다."
+      ],
+      "doNotUseWhen": [
+        "검색어로 현재 테이블을 필터링할 뿐 값을 선택하지 않는다.",
+        "옵션이 적고 한눈에 비교하는 것이 더 중요하다.",
+        "복수 선택이 필요하다."
+      ],
+      "relationships": [
+        "일반 Select와 트리거 외형은 공유하지만 검색 가능한 옵션 패널 계약은 별도다.",
+        "조회 검색은 input.query-text를 사용한다."
+      ]
+    },
+    {
+      "id": "input.exclusive-visible-choice",
+      "category": "input-control",
+      "status": "active",
+      "semanticRole": "choose-one-visible-option",
+      "scope": "small-exclusive-option-set",
+      "requirement": "optional-by-field",
+      "allowedParents": ["section.form-grid", "shell.center-modal", "shell.side-slide-panel", "shell.confirm-dialog"],
+      "implementationRefs": [{ "kind": "component", "id": "radio" }],
+      "useWhen": [
+        "수기·자동처럼 소수의 배타적 옵션을 동시에 보여주고 즉시 비교해야 한다.",
+        "현재 선택과 다른 선택지를 숨기지 않는 것이 중요하다."
+      ],
+      "doNotUseWhen": [
+        "복수 선택이나 독립적인 동의 항목이다.",
+        "옵션이 많아 화면 밀도가 지나치게 커진다.",
+        "단순 기능 활성화·비활성화다."
+      ],
+      "relationships": [
+        "같은 name 그룹은 하나의 상태와 onChange를 공유한다.",
+        "읽기 전용 예시를 위해 no-op 핸들러를 두지 않는다."
+      ]
+    },
+    {
+      "id": "input.multiple-or-affirmative-choice",
+      "category": "input-control",
+      "status": "active",
+      "semanticRole": "select-many-or-affirm",
+      "scope": "independent-boolean-or-set-membership",
+      "requirement": "optional-by-field",
+      "allowedParents": ["section.form-grid", "section.search-table-composition", "shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [{ "kind": "component", "id": "checkbox" }],
+      "useWhen": [
+        "여러 옵션을 독립적으로 선택하거나 한 항목에 동의·포함 여부를 입력한다.",
+        "테이블에서 하나 이상의 행을 작업 대상으로 선택한다."
+      ],
+      "doNotUseWhen": [
+        "배타적인 옵션 중 하나만 선택한다.",
+        "지속적인 기능 설정의 켜짐·꺼짐 상태를 즉시 바꾼다.",
+        "행의 상세 탐색을 위한 단일 활성 상태다."
+      ],
+      "relationships": [
+        "테이블 선택은 Table의 checkedRows와 같은 state에서 행 배경·편집 가능 상태를 파생한다.",
+        "MES 표에서는 검증된 grayCheck 미선택과 black 선택 외형을 기본으로 한다."
+      ]
+    },
+    {
+      "id": "input.immediate-toggle",
+      "category": "input-control",
+      "status": "active",
+      "semanticRole": "toggle-persistent-setting",
+      "scope": "single-on-off-setting",
+      "requirement": "optional-by-setting",
+      "allowedParents": ["section.form-grid", "screen.entity-list", "screen.master-detail", "shell.side-slide-panel"],
+      "implementationRefs": [{ "kind": "component", "id": "switch" }],
+      "useWhen": [
+        "기능 사용 여부·동기화처럼 켜짐과 꺼짐이 지속되는 설정 상태다.",
+        "현재 상태를 항상 시각적으로 노출해야 한다."
+      ],
+      "doNotUseWhen": [
+        "폼 제출 시 함께 확정되는 복수 선택 항목이다.",
+        "예/아니오 문항의 라벨을 명시적으로 비교해야 한다.",
+        "행 선택이나 목록 필터다."
+      ],
+      "relationships": [
+        "설정 화면 기본 규격은 40×20이며 검증된 조밀한 카드에서만 compact를 사용한다.",
+        "변경이 저장 전 임시 상태라면 취소 복원 계약과 함께 사용한다."
+      ]
+    },
+    {
+      "id": "input.query-text",
+      "category": "input-control",
+      "status": "active",
+      "semanticRole": "filter-current-dataset-by-text",
+      "scope": "single-query-target",
+      "requirement": "optional-by-query",
+      "allowedParents": ["section.search-table-composition", "screen.entity-list", "screen.master-detail", "shell.center-modal"],
+      "implementationRefs": [{ "kind": "component", "id": "search-input" }],
+      "useWhen": [
+        "검색어가 현재 목록·테이블의 결과를 좁힌다.",
+        "최종 업무 데이터가 아니라 일시적인 조회 조건이다."
+      ],
+      "doNotUseWhen": [
+        "필터 카테고리와 여러 옵션을 조합해야 한다.",
+        "검색 후 하나의 도메인 값을 필드에 저장한다.",
+        "자유 입력 업무 필드다."
+      ],
+      "relationships": [
+        "툴바가 위치와 수직 정렬을 소유하고 SearchInput은 크기와 입력 상태를 소유한다.",
+        "필터 추가 영역을 검색창으로 대체하지 않는다."
+      ]
+    },
+    {
+      "id": "input.structured-filter",
+      "category": "input-control",
+      "status": "active",
+      "semanticRole": "compose-structured-query-conditions",
+      "scope": "multi-field-query-builder",
+      "requirement": "optional-by-query",
+      "allowedParents": ["section.search-table-composition", "screen.entity-list", "screen.master-detail", "shell.center-modal"],
+      "implementationRefs": [{ "kind": "component", "id": "filter" }],
+      "useWhen": [
+        "카테고리별 옵션을 추가해 복수의 구조화된 조회 조건을 만든다.",
+        "선택된 조건을 태그로 유지·제거해야 한다."
+      ],
+      "doNotUseWhen": [
+        "한 개의 검색어만 입력하면 충분하다.",
+        "업무 데이터 필드 값을 입력하거나 선택한다.",
+        "단순 버튼을 누르면 검색창이 나타나는 임의 동작으로 바꾸려 한다."
+      ],
+      "relationships": [
+        "SearchInput과 나란히 있을 수 있지만 서로 다른 조회 상태를 소유한다.",
+        "Filter 트리거·패널·활성 태그를 하나의 컴포넌트 계약으로 유지한다."
+      ]
+    },
+    {
+      "id": "input.temporal-value",
+      "category": "input-control",
+      "status": "active",
+      "semanticRole": "enter-date-time-or-range",
+      "scope": "single-temporal-field-or-query",
+      "requirement": "optional-by-field",
+      "allowedParents": ["section.form-grid", "section.search-table-composition", "section.editable-row-list", "shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [
+        { "kind": "component", "id": "date-picker" },
+        { "kind": "component", "id": "date-range-picker" },
+        { "kind": "component", "id": "time-picker" },
+        { "kind": "component", "id": "query-date-range" }
+      ],
+      "useWhen": [
+        "날짜·시간·조회 기간처럼 형식과 선택 단위가 정해진 시간 값을 입력한다.",
+        "단일 값과 기간 조회를 구분해 가장 좁은 컴포넌트를 선택한다."
+      ],
+      "doNotUseWhen": [
+        "일반 텍스트 입력으로 시간 문자열을 임의 저장한다.",
+        "테이블 편집 셀에서 default 크기를 사용한다.",
+        "날짜가 아닌 단순 숫자 범위다."
+      ],
+      "relationships": [
+        "조회 기간은 QueryDateRange 또는 DateRangePicker를 사용하고 두 Input을 임의 조합하지 않는다.",
+        "테이블 셀에서는 검증된 small 규격을 사용한다."
+      ]
+    },
+    {
+      "id": "boundary.standard-section",
+      "category": "content-boundary",
+      "status": "active",
+      "semanticRole": "frame-independent-logical-section",
+      "scope": "single-logical-section",
+      "requirement": "optional-zero-to-many",
+      "allowedParents": ["shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [
+        { "kind": "pattern", "id": "frame.standard-section" },
+        { "kind": "component", "id": "section-frame" }
+      ],
+      "useWhen": [
+        "본문 안의 독립적인 논리 묶음이 padding·divider·background 경계를 함께 가져야 한다.",
+        "여러 SectionInstance가 한 오버레이의 세로 흐름을 구성한다."
+      ],
+      "doNotUseWhen": [
+        "단일 콘텐츠를 보기 좋게 감싸려는 목적뿐이다.",
+        "카드처럼 보이게 하려고 임의 radius·배경·테두리를 추가한다.",
+        "페이지 영역에 모달용 SectionFrame을 그대로 가져온다."
+      ],
+      "relationships": [
+        "SectionFrame은 padding·divider·background만 소유한다.",
+        "제목 필요 여부는 heading.section 규칙이 별도로 판정한다."
+      ]
+    },
+    {
+      "id": "boundary.unframed-single-region",
+      "category": "content-boundary",
+      "status": "active",
+      "semanticRole": "single-unframed-content-region",
+      "scope": "single-content-workspace",
+      "requirement": "default-for-single-region",
+      "allowedParents": ["screen.entity-list", "screen.master-detail", "screen.analytics-dashboard", "shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [
+        { "kind": "pattern", "id": "section.search-table-composition" },
+        { "kind": "pattern", "id": "section.form-grid" },
+        { "kind": "pattern", "id": "section.editable-row-list" }
+      ],
+      "useWhen": [
+        "본문이 하나의 목록·폼·반복 입력 작업으로 충분히 설명된다.",
+        "부모 Shell과 콘텐츠 자체가 이미 경계를 제공한다."
+      ],
+      "doNotUseWhen": [
+        "서로 다른 의미의 복수 묶음을 하나로 합쳐 구분이 사라진다.",
+        "단일 영역인데도 큰 회색 카드나 추가 박스로 위계를 만든다."
+      ],
+      "relationships": [
+        "새 wrapper 컴포넌트를 만들지 않고 승인된 Section Pattern을 Shell body에 직접 배치한다.",
+        "필요한 제목은 heading.content-region으로 별도 판정한다."
+      ]
+    },
+    {
+      "id": "boundary.table-total-row",
+      "category": "content-boundary",
+      "status": "active",
+      "semanticRole": "summary-aligned-to-table-columns",
+      "scope": "single-table-summary",
+      "requirement": "optional-by-table",
+      "allowedParents": ["section.search-table-composition", "screen.entity-list", "shell.center-modal"],
+      "implementationRefs": [{ "kind": "pattern", "id": "summary.table-total-row" }],
+      "useWhen": [
+        "합계가 특정 테이블 컬럼과 같은 좌표에서 읽혀야 한다.",
+        "요약 값이 표 데이터의 직접 집계다."
+      ],
+      "doNotUseWhen": [
+        "표와 독립적인 업무 결과나 KPI를 강조한다.",
+        "표 아래 임의 카드에 같은 합계를 중복 표시한다."
+      ],
+      "relationships": [
+        "Table header·row와 동일한 컬럼 폭 배열을 공유한다.",
+        "독립 결과는 boundary.result-summary-card를 사용한다."
+      ]
+    },
+    {
+      "id": "boundary.result-summary-card",
+      "category": "content-boundary",
+      "status": "active",
+      "semanticRole": "standalone-result-summary",
+      "scope": "single-independent-result",
+      "requirement": "optional-by-result",
+      "allowedParents": ["screen.entity-list", "screen.master-detail", "screen.analytics-dashboard", "shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [{ "kind": "pattern", "id": "summary.result-total-card" }],
+      "useWhen": [
+        "총 수량·결과처럼 테이블 컬럼과 무관한 독립적인 업무 결과를 요약한다.",
+        "주변 레코드보다 결과 한 묶음의 강조가 필요하다."
+      ],
+      "doNotUseWhen": [
+        "단순히 콘텐츠 영역을 감싸는 박스가 필요하다.",
+        "값이 테이블 특정 컬럼의 합계다.",
+        "원본이나 업무상 강조 이유가 없다."
+      ],
+      "relationships": [
+        "범용 레이아웃 카드가 아니라 결과 요약이라는 의미를 가진다.",
+        "일반 Form이나 Table을 담는 컨테이너로 재사용하지 않는다."
+      ]
+    },
+    {
+      "id": "table.readonly-record-list",
+      "category": "data-table",
+      "status": "active",
+      "semanticRole": "scan-homogeneous-records",
+      "scope": "single-record-collection",
+      "requirement": "select-one-table-model",
+      "allowedParents": ["section.search-table-composition", "screen.entity-list", "shell.center-modal"],
+      "implementationRefs": [{ "kind": "component", "id": "table" }],
+      "useWhen": [
+        "같은 컬럼 구조를 공유하는 복수 레코드를 행 단위로 조회·비교한다.",
+        "정렬된 컬럼 좌표가 정보 이해의 핵심이다."
+      ],
+      "doNotUseWhen": [
+        "서로 다른 필드의 폼 배치를 맞추기 위한 그리드다.",
+        "행마다 구조가 다른 카드형 정보다.",
+        "한두 개의 직접 입력 행만 필요하다."
+      ],
+      "relationships": [
+        "행 동작이 없으면 선택 Checkbox와 선택 배경을 추가하지 않는다.",
+        "링크·상태·값 셀은 각 의미 컴포넌트를 Table render 슬롯에서 합성한다."
+      ]
+    },
+    {
+      "id": "table.multi-select-actions",
+      "category": "data-table",
+      "status": "active",
+      "semanticRole": "select-record-set-for-bulk-action",
+      "scope": "single-selectable-record-collection",
+      "requirement": "optional-table-behavior",
+      "allowedParents": ["section.search-table-composition", "screen.entity-list", "shell.center-modal"],
+      "implementationRefs": [
+        { "kind": "component", "id": "table" },
+        { "kind": "component", "id": "selection-action-bar" },
+        { "kind": "pattern", "id": "selection.enable-actions" }
+      ],
+      "useWhen": [
+        "여러 행을 선택해 삭제·이동·일괄 처리한다.",
+        "선택 수에 따라 보조 액션이 활성화되거나 SelectionActionBar가 나타난다."
+      ],
+      "doNotUseWhen": [
+        "행 하나의 상세를 탐색하기 위한 활성 상태다.",
+        "선택 후 편집 셀을 드러내는 것이 목적이다.",
+        "행 단위 작업 자체가 없다."
+      ],
+      "relationships": [
+        "Checkbox, 선택 행 배경과 액션 활성 상태는 동일한 selectedIds에서 파생한다.",
+        "일부 선택은 indeterminate 정책을 화면 원본에 따라 명시한다."
+      ]
+    },
+    {
+      "id": "table.selection-inline-edit",
+      "category": "data-table",
+      "status": "active",
+      "semanticRole": "reveal-edit-controls-for-selected-row",
+      "scope": "single-editable-record-collection",
+      "requirement": "optional-table-behavior",
+      "allowedParents": ["section.search-table-composition", "shell.center-modal"],
+      "implementationRefs": [
+        { "kind": "component", "id": "table" },
+        { "kind": "pattern", "id": "selection.reveal-inline-editor" }
+      ],
+      "useWhen": [
+        "선택된 행에서만 Input·Select·DatePicker가 나타나거나 활성화된다.",
+        "행 선택 상태가 편집 가능 상태를 직접 결정한다."
+      ],
+      "doNotUseWhen": [
+        "특정 첫 번째 행만 항상 편집 상태로 고정한다.",
+        "모든 행을 동시에 직접 입력하는 반복 폼이다.",
+        "단순 다중 선택 후 일괄 액션만 수행한다."
+      ],
+      "relationships": [
+        "편집 컨트롤은 selectedIds에서 파생하고 행 index에 하드코딩하지 않는다.",
+        "선택 해제·재선택 후에도 행별 입력값 유지 정책을 ScreenSpec에 명시한다."
+      ]
+    },
+    {
+      "id": "table.master-detail",
+      "category": "data-table",
+      "status": "active",
+      "semanticRole": "select-one-master-to-drive-detail",
+      "scope": "linked-master-detail-regions",
+      "requirement": "optional-table-behavior",
+      "allowedParents": ["screen.master-detail", "shell.center-modal"],
+      "implementationRefs": [
+        { "kind": "component", "id": "table" },
+        { "kind": "pattern", "id": "selection.master-detail" }
+      ],
+      "useWhen": [
+        "왼쪽 또는 상단의 활성 행 하나가 다른 영역의 상세 데이터 범위를 결정한다.",
+        "체크 선택과 별개인 activeId가 필요하다."
+      ],
+      "doNotUseWhen": [
+        "복수 행을 작업 대상으로 선택한다.",
+        "선택한 행 자체를 인라인 편집한다.",
+        "상세 영역이 선택과 무관한 고정 정보다."
+      ],
+      "relationships": [
+        "activeId와 checkedRows를 같은 의미로 합치지 않는다.",
+        "행 본문 클릭과 키보드로 activeId를 변경하고 내부 입력 클릭은 전파하지 않는다."
+      ]
+    },
+    {
+      "id": "table.grouped-hierarchy",
+      "category": "data-table",
+      "status": "active",
+      "semanticRole": "browse-grouped-record-hierarchy",
+      "scope": "single-hierarchical-record-collection",
+      "requirement": "optional-table-structure",
+      "allowedParents": ["screen.entity-list", "section.search-table-composition"],
+      "implementationRefs": [
+        { "kind": "component", "id": "table" },
+        { "kind": "pattern", "id": "table.grouped-list" }
+      ],
+      "useWhen": [
+        "동일 레코드를 생산일·설비·담당자처럼 하나 이상의 기준으로 그룹화해 접고 펼친다.",
+        "그룹 행과 합계가 데이터 행의 컬럼 좌표를 공유해야 한다."
+      ],
+      "doNotUseWhen": [
+        "단순 정렬이나 필터만으로 충분하다.",
+        "그룹처럼 보이는 시각 배경만 필요하고 계층 상태가 없다.",
+        "서로 다른 폼 섹션을 표 그룹으로 표현한다."
+      ],
+      "relationships": [
+        "header·group·row·totals는 선택열·토글열·컬럼 폭을 동일하게 예약한다.",
+        "그룹 기준 선택은 GroupQuery, 그룹 접기 상태는 Table이 소유한다."
+      ]
+    },
+    {
+      "id": "table.repeating-input-not-table",
+      "category": "data-table",
+      "status": "active",
+      "semanticRole": "repeat-form-rows-without-data-grid",
+      "scope": "single-repeating-input-collection",
+      "requirement": "prefer-non-table-composition",
+      "allowedParents": ["shell.center-modal", "shell.side-slide-panel", "section.editable-row-list"],
+      "implementationRefs": [{ "kind": "pattern", "id": "section.editable-row-list" }],
+      "useWhen": [
+        "사용자가 소수의 품목·수량 행을 직접 추가·삭제하며 각 행이 하나의 입력 묶음이다.",
+        "컬럼 비교보다 입력 흐름과 행 추가가 더 중요하다."
+      ],
+      "doNotUseWhen": [
+        "복수 레코드를 컬럼 기준으로 조회·정렬·선택해야 한다.",
+        "Table을 박스 안의 폼 정렬 도구로 사용하려 한다."
+      ],
+      "relationships": [
+        "Input·Select·IconButton을 editable-row-list 슬롯에 합성하며 Table을 사용하지 않는다.",
+        "행 추가·삭제·초기값 계승은 row.mutation-policy가 소유한다."
+      ]
+    },
+    {
+      "id": "scroll.shell-owned-vertical",
+      "category": "scroll-ownership",
+      "status": "active",
+      "semanticRole": "shell-body-owns-vertical-scroll",
+      "scope": "single-overlay-body-axis",
+      "requirement": "select-one-vertical-owner",
+      "allowedParents": ["shell.center-modal", "shell.side-slide-panel"],
+      "implementationRefs": [
+        { "kind": "component", "id": "center-modal" },
+        { "kind": "component", "id": "side-slide-panel" }
+      ],
+      "useWhen": [
+        "본문 전체가 하나의 연속 문서·폼 흐름이며 내부에 별도 고정 헤더가 없다.",
+        "Shell header와 footer를 고정하고 Body 전체를 세로 스크롤한다."
+      ],
+      "doNotUseWhen": [
+        "본문 내부 테이블·리스트가 자체 고정 헤더와 스크롤을 가져야 한다.",
+        "Shell과 내부 콘텐츠에 overflow-y-auto를 동시에 둔다."
+      ],
+      "relationships": [
+        "Shell scrollMode=shell을 사용하고 내부 Section은 같은 축 overflow를 소유하지 않는다.",
+        "가로 overflow는 기본적으로 hidden이다."
+      ]
+    },
+    {
+      "id": "scroll.content-owned",
+      "category": "scroll-ownership",
+      "status": "active",
+      "semanticRole": "inner-content-owns-scroll",
+      "scope": "single-bounded-content-region",
+      "requirement": "select-one-vertical-owner",
+      "allowedParents": ["shell.center-modal", "shell.side-slide-panel", "section.search-table-composition"],
+      "implementationRefs": [
+        { "kind": "component", "id": "table" },
+        { "kind": "pattern", "id": "section.search-table-composition" }
+      ],
+      "useWhen": [
+        "조회 툴바·요약·footer는 고정하고 특정 목록·테이블 본문만 스크롤한다.",
+        "콘텐츠가 명시적 높이와 내부 고정 요소를 가진다."
+      ],
+      "doNotUseWhen": [
+        "본문 전체가 하나의 연속 폼이다.",
+        "높이 경계 없이 overflow-auto를 추가한다.",
+        "Shell도 같은 축 스크롤을 유지한다."
+      ],
+      "relationships": [
+        "Shell scrollMode=content를 사용해 Body overflow를 숨긴다.",
+        "내부 콘텐츠는 flex min-height 0과 명시된 높이 계약을 함께 가져야 한다."
+      ]
+    },
+    {
+      "id": "scroll.none",
+      "category": "scroll-ownership",
+      "status": "active",
+      "semanticRole": "no-scroll-needed",
+      "scope": "single-bounded-overlay",
+      "requirement": "select-one-vertical-owner",
+      "allowedParents": ["shell.center-modal", "shell.confirm-dialog"],
+      "implementationRefs": [
+        { "kind": "component", "id": "confirm-dialog" },
+        { "kind": "pattern", "id": "shell.confirm-dialog" }
+      ],
+      "useWhen": [
+        "짧은 메시지·결정 또는 고정 크기 본문이 viewport 안에 항상 들어간다.",
+        "본문 스크롤이 정보 이해를 방해한다."
+      ],
+      "doNotUseWhen": [
+        "작은 viewport에서 콘텐츠가 잘릴 가능성이 있다.",
+        "긴 폼·목록·테이블이다."
+      ],
+      "relationships": [
+        "내용이 늘어나면 overflow를 숨겨 잘라내지 말고 Shell 유형과 소유권을 다시 판정한다.",
+        "ConfirmDialog는 기본적으로 이 규칙을 사용한다."
+      ]
+    },
+    {
+      "id": "scroll.horizontal-exception",
+      "category": "scroll-ownership",
+      "status": "active",
+      "semanticRole": "allow-evidenced-horizontal-data-overflow",
+      "scope": "single-wide-data-region",
+      "requirement": "exception-only",
+      "allowedParents": ["section.search-table-composition", "screen.entity-list", "shell.center-modal"],
+      "implementationRefs": [{ "kind": "component", "id": "table" }],
+      "useWhen": [
+        "필수 컬럼을 줄이거나 반응형으로 만들 수 없고 원본에서도 넓은 데이터 탐색이 확인됐다.",
+        "스크롤 영역이 Table 내부로 한정되고 주변 Footer와 Shell은 고정된다."
+      ],
+      "doNotUseWhen": [
+        "컬럼 폭 합계가 컨테이너 안에 들어가는데도 가로 스크롤이 생긴다.",
+        "padding·고정폭·중첩 wrapper 오류를 스크롤로 숨긴다.",
+        "팝업 전체가 좌우로 움직인다."
+      ],
+      "relationships": [
+        "가로 스크롤 금지가 기본이며 이 규칙은 원본 근거가 있는 예외다.",
+        "적용 전 clientWidth와 scrollWidth를 실측해 overflow 원인을 기록한다."
+      ]
     }
   ],
   "decisions": [
@@ -228,6 +921,69 @@
       ],
       "optionRuleIds": ["overlay.center-modal", "overlay.side-slide-panel", "overlay.confirm-dialog"],
       "fallback": "어느 Shell도 설명하지 못하면 기존 Shell을 시각적으로 변형하지 말고 새 Shell 필요성을 propose-new로 격리한다."
+    },
+    {
+      "id": "select.action-role",
+      "category": "action",
+      "questionOrder": [
+        "클릭 결과가 명령 실행인가, 위치 이동인가, 아니면 클릭 없는 상태 표시인가?",
+        "텍스트 라벨이 필요한 핵심 액션인가, 의미가 관습적인 아이콘 보조 액션인가?",
+        "Footer 종료 액션이라면 어떤 commit·dismiss 의미 조합인가?",
+        "같은 영역에 primary 액션이 둘 이상 생기지는 않는가?"
+      ],
+      "optionRuleIds": ["action.command-button", "action.navigation-link", "action.status-badge", "action.icon-button", "action.footer-set"],
+      "fallback": "역할을 하나로 설명하지 못하면 시각 스타일을 고르지 말고 interaction contract를 먼저 명확히 한다."
+    },
+    {
+      "id": "select.input-control",
+      "category": "input-control",
+      "questionOrder": [
+        "자유 입력인가, 알려진 값 하나 선택인가, 복수 선택인가, 지속 설정 토글인가?",
+        "선택지를 항상 보여줘야 하는가, 검색해서 찾아야 하는가?",
+        "검색어 자체가 조회 조건인가, 검색 후 선택한 값이 업무 필드인가?",
+        "날짜·시간처럼 전용 형식과 단위가 있는가?",
+        "변경이 즉시 반영되는가, 저장 전 임시 상태인가?"
+      ],
+      "optionRuleIds": ["input.freeform-value", "input.single-choice", "input.searchable-choice", "input.exclusive-visible-choice", "input.multiple-or-affirmative-choice", "input.immediate-toggle", "input.query-text", "input.structured-filter", "input.temporal-value"],
+      "fallback": "기존 입력 역할로 설명되지 않으면 raw input을 만들지 말고 상태·값 범위·commit 시점을 포함한 신규 후보로 격리한다."
+    },
+    {
+      "id": "select.content-boundary",
+      "category": "content-boundary",
+      "questionOrder": [
+        "본문이 하나의 콘텐츠인가, 서로 다른 논리 섹션이 여러 개인가?",
+        "경계가 의미 구분을 제공하는가, 단지 보기 좋은 박스를 만드는가?",
+        "요약이 테이블 컬럼 집계인가, 독립적인 업무 결과인가?",
+        "부모 Shell이 이미 충분한 외곽 경계를 제공하는가?"
+      ],
+      "optionRuleIds": ["boundary.standard-section", "boundary.unframed-single-region", "boundary.table-total-row", "boundary.result-summary-card"],
+      "fallback": "의미 경계를 설명할 수 없으면 wrapper·배경·radius를 추가하지 않고 unframed 구성을 우선한다."
+    },
+    {
+      "id": "select.table-model",
+      "category": "data-table",
+      "questionOrder": [
+        "같은 컬럼을 공유하는 반복 레코드인가, 소수의 반복 입력 폼인가?",
+        "행은 읽기 전용인가, 다중 작업 대상인가, 선택 시 편집되는가?",
+        "단일 active 행이 다른 상세 영역을 제어하는가?",
+        "접고 펼칠 실제 그룹 계층과 그룹 합계가 존재하는가?",
+        "선택·활성·편집 상태를 하나의 source of truth에서 파생할 수 있는가?"
+      ],
+      "optionRuleIds": ["table.readonly-record-list", "table.multi-select-actions", "table.selection-inline-edit", "table.master-detail", "table.grouped-hierarchy", "table.repeating-input-not-table"],
+      "fallback": "Table 적합성을 설명하지 못하면 Table을 레이아웃 도구로 사용하지 말고 List·FormGrid·editable-row-list 후보를 비교한다."
+    },
+    {
+      "id": "select.scroll-owner",
+      "category": "scroll-ownership",
+      "questionOrder": [
+        "세로 스크롤을 Shell Body가 소유하는가, 내부 콘텐츠 한 영역이 소유하는가, 필요 없는가?",
+        "같은 축에 overflow 컨테이너가 둘 이상 생기지는 않는가?",
+        "내부 스크롤이라면 명시된 높이와 고정 요소가 있는가?",
+        "가로 overflow는 필수 데이터 폭 때문인가, 레이아웃 오류 때문인가?",
+        "clientWidth·scrollWidth·clientHeight·scrollHeight를 실측했는가?"
+      ],
+      "optionRuleIds": ["scroll.shell-owned-vertical", "scroll.content-owned", "scroll.none", "scroll.horizontal-exception"],
+      "fallback": "세로 소유자를 하나로 정하지 못하거나 가로 overflow 근거가 없으면 구현을 중단하고 외곽부터 크기 장부를 다시 계산한다."
     }
   ],
   "holds": [

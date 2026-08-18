@@ -226,7 +226,7 @@ if (!Array.isArray(contextRuleRegistry.decisionAxes) || contextRuleRegistry.deci
 if (!Array.isArray(contextRuleRegistry.globalGates) || contextRuleRegistry.globalGates.length === 0) errors.push("context-rules: globalGates가 필요합니다.");
 const contextRules = mapByUniqueId("context-rules", contextRuleRegistry.rules ?? []);
 const contextDecisions = mapByUniqueId("context-rules decisions", contextRuleRegistry.decisions ?? []);
-const allowedContextCategories = new Set(["heading", "overlay-shell"]);
+const allowedContextCategories = new Set(["heading", "overlay-shell", "action", "input-control", "content-boundary", "data-table", "scroll-ownership"]);
 const allowedContextStatuses = new Set(["active", "hold"]);
 for (const rule of contextRules.values()) {
   if (!allowedContextCategories.has(rule.category)) errors.push(`context-rule '${rule.id}': 알 수 없는 category '${rule.category}'`);
@@ -244,7 +244,8 @@ for (const rule of contextRules.values()) {
   for (const reference of rule.implementationRefs ?? []) {
     if (reference.kind === "component" && !components.has(reference.id)) errors.push(`context-rule '${rule.id}': 미등록 component '${reference.id}'를 참조합니다.`);
     else if (reference.kind === "pattern" && !patterns.has(reference.id)) errors.push(`context-rule '${rule.id}': 미등록 pattern '${reference.id}'를 참조합니다.`);
-    else if (!["component", "pattern"].includes(reference.kind)) errors.push(`context-rule '${rule.id}': 알 수 없는 implementation kind '${reference.kind}'`);
+    else if (reference.kind === "action-set" && !actionSets.has(reference.id)) errors.push(`context-rule '${rule.id}': 미등록 action-set '${reference.id}'를 참조합니다.`);
+    else if (!["component", "pattern", "action-set"].includes(reference.kind)) errors.push(`context-rule '${rule.id}': 알 수 없는 implementation kind '${reference.kind}'`);
   }
 }
 for (const decision of contextDecisions.values()) {
@@ -257,10 +258,33 @@ for (const decision of contextDecisions.values()) {
     else if (rule.category !== decision.category) errors.push(`context decision '${decision.id}': rule '${ruleId}'의 category가 다릅니다.`);
   }
 }
+const requiredContextDecisions = [
+  "select.heading-context",
+  "select.overlay-shell",
+  "select.action-role",
+  "select.input-control",
+  "select.content-boundary",
+  "select.table-model",
+  "select.scroll-owner",
+];
+for (const decisionId of requiredContextDecisions) {
+  if (!contextDecisions.has(decisionId)) errors.push(`context-rules: 필수 decision '${decisionId}'가 없습니다.`);
+}
+for (const rule of contextRules.values()) {
+  const owningDecisions = [...contextDecisions.values()].filter((decision) => decision.optionRuleIds?.includes(rule.id));
+  if (owningDecisions.length !== 1) errors.push(`context-rule '${rule.id}': 정확히 하나의 decision에 연결되어야 합니다 (현재 ${owningDecisions.length}개).`);
+}
 const contextHolds = mapByUniqueId("context-rules holds", contextRuleRegistry.holds ?? []);
 for (const hold of contextHolds.values()) {
   if (hold.status !== "needs-evidence" || !hold.reason || !hold.temporaryRule) errors.push(`context hold '${hold.id}': needs-evidence 상태와 reason, temporaryRule이 필요합니다.`);
-  if (!contextRules.has(hold.ruleId)) errors.push(`context hold '${hold.id}': 미등록 rule '${hold.ruleId ?? ""}'를 참조합니다.`);
+  const rule = contextRules.get(hold.ruleId);
+  if (!rule) errors.push(`context hold '${hold.id}': 미등록 rule '${hold.ruleId ?? ""}'를 참조합니다.`);
+  else if (rule.status !== "hold") errors.push(`context hold '${hold.id}': rule '${hold.ruleId}'는 hold 상태여야 합니다.`);
+}
+for (const rule of contextRules.values()) {
+  if (rule.status === "hold" && ![...contextHolds.values()].some((hold) => hold.ruleId === rule.id)) {
+    errors.push(`context-rule '${rule.id}': hold 상태에는 연결된 hold 항목이 필요합니다.`);
+  }
 }
 
 if (completionPolicyRegistry.policyId !== "mes.completion-claims") errors.push("completion-policy: policyId가 잘못되었습니다.");
