@@ -7,7 +7,7 @@
 ## 현재 결론
 
 - Tier 1·2는 현재 데스크톱 MES 화면 생성 기반을 막는 미충족 항목이 없다.
-- Tier 3은 전체 선제 구현 대상이 아니다. 이미 확보된 패턴은 완료로 전환하고, 나머지는 실제 업무 근거가 들어올 때만 승격한다.
+- Tier 3의 기존 미구현 38개는 모두 동작 가능한 격리 프로토타입으로 만들었으며 실제 업무 근거가 들어올 때만 표준으로 승격한다.
 - Tier 4는 선택적 확장, Tier 5는 원칙적으로 현재 범위 제외다.
 - 새로운 전체 화면은 커버리지 숫자를 늘리기 위해 추가하지 않는다. 기존 조합 문법으로 설명되지 않는 실제 화면이 나타날 때만 근거로 사용한다.
 
@@ -19,18 +19,19 @@
 | 컴포넌트 구현 | `implemented-component` |
 | 패턴·화면 조합 구현 | `implemented-pattern` |
 | 독립 컴포넌트 불필요 | `intentional-composition` |
+| 격리 실험 후보 | `experimental-prototype` |
 | 실제 근거 발생 시 검토 | `deferred-evidence` |
 | 현재 범위 제외 | `excluded-scope` |
 
 ## 티어별 요약
 
-| Tier | 전체 | 구현·조합 충족 | 근거 대기 | 범위 제외 |
-|---:|---:|---:|---:|---:|
-| 1 | 45 | 45 | 0 | 0 |
-| 2 | 45 | 45 | 0 | 0 |
-| 3 | 57 | 19 | 38 | 0 |
-| 4 | 41 | 1 | 20 | 20 |
-| 5 | 28 | 0 | 0 | 28 |
+| Tier | 전체 | 구현·조합 충족 | 격리 실험 후보 | 근거 대기 | 범위 제외 |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 45 | 45 | 0 | 0 | 0 |
+| 2 | 45 | 45 | 0 | 0 | 0 |
+| 3 | 57 | 19 | 38 | 0 | 0 |
+| 4 | 41 | 1 | 0 | 20 | 20 |
+| 5 | 28 | 0 | 0 | 0 | 28 |
 
 ## Tier 1
 
@@ -136,63 +137,63 @@
 
 | 항목 | 최초 상태 | 현재 판정 | 근거 | 비고 |
 |---|---|---|---|---|
-| Slider (Range) | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| File Upload / Dropzone | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Stepper / Wizard | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
+| Slider (Range) | 없음 | 격리 실험 후보 | experimental.slider, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| File Upload / Dropzone | 없음 | 격리 실험 후보 | experimental.file-upload, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Stepper / Wizard | 없음 | 격리 실험 후보 | experimental.stepper, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Data Grid | 없음 | 독립 컴포넌트 불필요 | table, table.grouped-list, selection.reveal-inline-editor | 별도 DataGrid를 만들지 않고 Table에 검증된 그룹화·선택·편집 패턴을 조합한다. |
-| Timeline | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Tree View | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
+| Timeline | 없음 | 격리 실험 후보 | experimental.timeline, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Tree View | 없음 | 격리 실험 후보 | experimental.tree-view, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Chart | 없음 | 컴포넌트 구현 | analytics-charts, section.monthly-comparison-chart | 분석 화면의 공통 차트 규격과 월간 비교 패턴이 등록되어 있다. |
-| Resizable Panel | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
+| Resizable Panel | 없음 | 격리 실험 후보 | experimental.resizable-panel, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Split View | 없음 | 패턴·화면 조합 구현 | screen.master-detail, selection.master-detail | 좌우 분할 자체가 아니라 마스터 선택과 상세 갱신의 맥락 패턴으로 관리한다. |
-| Image / Thumbnail | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Row Expand / Detail Drawer | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
+| Image / Thumbnail | 없음 | 격리 실험 후보 | experimental.image-thumbnail, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Row Expand / Detail Drawer | 없음 | 격리 실험 후보 | experimental.row-expand-detail, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Inline Edit | 없음 | 패턴·화면 조합 구현 | selection.reveal-inline-editor, table.grouped-list | Table 위에 선택·그룹 행 동작 규칙을 조합한다. |
-| Global Search / Search Overlay | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Settings List | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Cascader | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Transfer (Dual List) | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Tree Select | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| QR Code | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Result Page | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Mask Input | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
+| Global Search / Search Overlay | 없음 | 격리 실험 후보 | experimental.global-search, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Settings List | 없음 | 격리 실험 후보 | experimental.settings-list, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Cascader | 없음 | 격리 실험 후보 | experimental.cascader, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Transfer (Dual List) | 없음 | 격리 실험 후보 | experimental.transfer, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Tree Select | 없음 | 격리 실험 후보 | experimental.tree-select, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| QR Code | 없음 | 격리 실험 후보 | experimental.qr-code, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Result Page | 없음 | 격리 실험 후보 | experimental.result-page, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Mask Input | 없음 | 격리 실험 후보 | experimental.mask-input, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Copy Button | 없음 | 독립 컴포넌트 불필요 | button, icon-copy | Button 또는 IconButton에 복사 아이콘과 동작을 결합한다. |
 | Burger (Hamburger Menu) | 없음 | 독립 컴포넌트 불필요 | icon-button, icon-menu | IconButton과 실제 MES 메뉴 아이콘의 조합이다. |
 | Status Indicator (Dot) | 없음 | 독립 컴포넌트 불필요 | badge, tag | 새 원시 컴포넌트보다 기존 상태 표현 컴포넌트의 variant로 해결한다. |
-| Search Highlight Text | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Frozen Column Grid | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Grouped Header Grid | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
+| Search Highlight Text | 없음 | 격리 실험 후보 | experimental.search-highlight, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Frozen Column Grid | 없음 | 격리 실험 후보 | experimental.frozen-column-grid, src/components/experimental/tier3-grid-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Grouped Header Grid | 없음 | 격리 실험 후보 | experimental.grouped-header-grid, src/components/experimental/tier3-grid-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Row Grouping / Expandable Sub-row | 없음 | 패턴·화면 조합 구현 | selection.reveal-inline-editor, table.grouped-list | Table 위에 선택·그룹 행 동작 규칙을 조합한다. |
 | Master-Detail Grid (Nested Grid) | 없음 | 패턴·화면 조합 구현 | screen.master-detail, selection.master-detail | 마스터 행 선택과 상세 영역 갱신 규칙으로 구현한다. |
 | Cell Status Color Grid | 없음 | 독립 컴포넌트 불필요 | table, badge, tag | 상태 의미는 Table 셀에 Badge 또는 Tag를 배치해 표현한다. |
 | Text Link Cell | 없음 | 독립 컴포넌트 불필요 | table, link | Table 셀 render slot 안에 Link를 사용한다. 별도 셀 컴포넌트는 만들지 않는다. |
 | Icon Cell | 없음 | 독립 컴포넌트 불필요 | table, src/components/icons | Table 셀 render slot과 등록 아이콘을 조합한다. |
-| Column Resize / Reorder / Show-Hide | 없음 | 실제 근거 발생 시 검토 | table.column-settings | Show/Hide는 구현됐지만 Resize/Reorder는 검증된 원본과 업무 요구가 없어 묶음 전체를 완료 처리하지 않는다. |
-| Virtual Scroll Grid | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Real-time Update Indicator (Grid) | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Resizable / Draggable Popup | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Andon Board (설비 상태판) | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Equipment Status Card/Tile | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Real-time Gauge/Meter | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| OEE Dashboard Widget | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Real-time Trend Chart | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Blinking Alarm Indicator | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
+| Column Resize / Reorder / Show-Hide | 없음 | 격리 실험 후보 | experimental.column-controls, src/components/experimental/tier3-grid-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Virtual Scroll Grid | 없음 | 격리 실험 후보 | experimental.virtual-scroll-grid, src/components/experimental/tier3-grid-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Real-time Update Indicator (Grid) | 없음 | 격리 실험 후보 | experimental.realtime-grid-indicator, src/components/experimental/tier3-grid-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Resizable / Draggable Popup | 없음 | 격리 실험 후보 | experimental.resizable-popup, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Andon Board (설비 상태판) | 없음 | 격리 실험 후보 | experimental.andon-board, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Equipment Status Card/Tile | 없음 | 격리 실험 후보 | experimental.equipment-status-card, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Real-time Gauge/Meter | 없음 | 격리 실험 후보 | experimental.gauge, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| OEE Dashboard Widget | 없음 | 격리 실험 후보 | experimental.oee-widget, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Real-time Trend Chart | 없음 | 격리 실험 후보 | experimental.realtime-trend, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Blinking Alarm Indicator | 없음 | 격리 실험 후보 | experimental.blinking-alarm, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Severity Level Tag | 없음 | 독립 컴포넌트 불필요 | badge, tag | 새 원시 컴포넌트보다 기존 상태 표현 컴포넌트의 variant로 해결한다. |
 | Alarm Acknowledge Button | 없음 | 독립 컴포넌트 불필요 | button, alarm-list-item | 알람 행의 업무 액션으로 Button을 배치한다. |
 | Work Order Form | 없음 | 패턴·화면 조합 구현 | batch-work-order, section.form-grid | 작업지시 화면과 공통 FormGrid 조합으로 충족한다. |
-| Routing/BOM Tree | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
+| Routing/BOM Tree | 없음 | 격리 실험 후보 | experimental.bom-tree, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Lot Progress Bar | 없음 | 독립 컴포넌트 불필요 | progress | 기존 Progress에 LOT 문맥의 라벨과 값을 전달한다. |
 | Defect Type Tag/Selector | 없음 | 독립 컴포넌트 불필요 | tag, select | 표시는 Tag, 변경은 Select를 사용한다. |
-| SPC Control Chart | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
+| SPC Control Chart | 없음 | 격리 실험 후보 | experimental.spc-chart, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | 검사 판정 버튼 (○/△/✕/-) | 없음 | 컴포넌트 구현 | inspection-judgement | MES 검사 판정 전용 컴포넌트가 등록되어 있다. |
 | Lot/Serial Search | 없음 | 독립 컴포넌트 불필요 | search-input, combobox | 검색어 입력과 후보 선택을 기존 입력 컴포넌트로 조합한다. |
-| Inventory Level Indicator | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Approval Workflow Stepper | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Attachment List | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Downtime Reason Selector | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Equipment Detail Card | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| Footer | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
-| File | 없음 | 실제 근거 발생 시 검토 | - | 실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다. |
+| Inventory Level Indicator | 없음 | 격리 실험 후보 | experimental.inventory-level, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Approval Workflow Stepper | 없음 | 격리 실험 후보 | experimental.approval-stepper, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Attachment List | 없음 | 격리 실험 후보 | experimental.attachment-list, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Downtime Reason Selector | 없음 | 격리 실험 후보 | experimental.downtime-reason, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Equipment Detail Card | 없음 | 격리 실험 후보 | experimental.equipment-detail-card, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Footer | 없음 | 격리 실험 후보 | experimental.footer, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| File | 없음 | 격리 실험 후보 | experimental.file-row, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 
 ## Tier 4
 

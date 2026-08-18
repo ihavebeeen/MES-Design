@@ -25,7 +25,7 @@
       },
       "3": {
         "total": 57,
-        "deferred-evidence": 38,
+        "experimental-prototype": 38,
         "intentional-composition": 12,
         "implemented-component": 2,
         "implemented-pattern": 5
@@ -43,9 +43,10 @@
     },
     "byDisposition": {
       "implemented-foundation": 9,
-      "deferred-evidence": 58,
+      "deferred-evidence": 20,
       "implemented-component": 81,
       "excluded-scope": 48,
+      "experimental-prototype": 38,
       "intentional-composition": 14,
       "implemented-pattern": 6
     }
@@ -276,9 +277,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.slider",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Rating (별점)",
@@ -451,9 +455,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.file-upload",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Form Field",
@@ -565,9 +572,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.stepper",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Dropdown Menu",
@@ -771,18 +781,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.timeline",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Tree View",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.tree-view",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Chart",
@@ -1015,9 +1031,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.resizable-panel",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Scroll Area",
@@ -1084,9 +1103,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.image-thumbnail",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Video Player",
@@ -1275,9 +1297,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.row-expand-detail",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Inline Edit",
@@ -1319,9 +1344,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.global-search",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Onboarding Tooltip / Product Tour",
@@ -1350,9 +1378,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.settings-list",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Comment / Activity Feed",
@@ -1491,9 +1522,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.cascader",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Mentions",
@@ -1511,27 +1545,36 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.transfer",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Tree Select",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.tree-select",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "QR Code",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.qr-code",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Descriptions (Key-Value List)",
@@ -1550,9 +1593,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.result-page",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Watermark",
@@ -1592,9 +1638,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.mask-input",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Close Button (X)",
@@ -1707,9 +1756,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.search-highlight",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Marquee",
@@ -1727,18 +1779,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.frozen-column-grid",
+        "src/components/experimental/tier3-grid-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Grouped Header Grid",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.grouped-header-grid",
+        "src/components/experimental/tier3-grid-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Row Grouping / Expandable Sub-row",
@@ -1831,11 +1889,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
+      "disposition": "experimental-prototype",
       "evidence": [
-        "table.column-settings"
+        "experimental.column-controls",
+        "src/components/experimental/tier3-grid-prototypes.tsx"
       ],
-      "note": "Show/Hide는 구현됐지만 Resize/Reorder는 검증된 원본과 업무 요구가 없어 묶음 전체를 완료 처리하지 않는다."
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Grid Export / Print",
@@ -1854,18 +1913,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.virtual-scroll-grid",
+        "src/components/experimental/tier3-grid-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Real-time Update Indicator (Grid)",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.realtime-grid-indicator",
+        "src/components/experimental/tier3-grid-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Center Modal",
@@ -1953,45 +2018,60 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.resizable-popup",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Andon Board (설비 상태판)",
       "layer": "템플릿",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.andon-board",
+        "src/components/experimental/tier3-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Equipment Status Card/Tile",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.equipment-status-card",
+        "src/components/experimental/tier3-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Real-time Gauge/Meter",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.gauge",
+        "src/components/experimental/tier3-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "OEE Dashboard Widget",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.oee-widget",
+        "src/components/experimental/tier3-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Process Flow Diagram",
@@ -2007,9 +2087,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.realtime-trend",
+        "src/components/experimental/tier3-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Utilization Heatmap",
@@ -2046,9 +2129,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.blinking-alarm",
+        "src/components/experimental/tier3-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Severity Level Tag",
@@ -2127,9 +2213,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.bom-tree",
+        "src/components/experimental/tier3-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Lot Progress Bar",
@@ -2159,9 +2248,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.spc-chart",
+        "src/components/experimental/tier3-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Inspection Checklist Form",
@@ -2242,9 +2334,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.inventory-level",
+        "src/components/experimental/tier3-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Warehouse Location Map",
@@ -2271,9 +2366,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.approval-stepper",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "E-signature Pad",
@@ -2298,9 +2396,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.attachment-list",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Maintenance Schedule Calendar",
@@ -2316,18 +2417,24 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.downtime-reason",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Equipment Detail Card",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.equipment-detail-card",
+        "src/components/experimental/tier3-mes-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "PM Checklist",
@@ -2379,18 +2486,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.footer",
+        "src/components/experimental/tier3-content-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "File",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "deferred-evidence",
-      "evidence": [],
-      "note": "실제 MES 화면, 업무 명세 또는 반복 사용 근거가 확인될 때 패턴 적합성을 먼저 판정한다."
+      "disposition": "experimental-prototype",
+      "evidence": [
+        "experimental.file-row",
+        "src/components/experimental/tier3-input-prototypes.tsx"
+      ],
+      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
     },
     {
       "item": "Hero",

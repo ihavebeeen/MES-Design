@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "lint:design-system": "eslint src/design-system src/components/visual-tests src/app/visual-regression tests/visual playwright.config.ts scripts/check-design-system-registry.mjs scripts/audit-design-values.mjs scripts/audit-composition-inventory.mjs scripts/audit-tier-coverage.mjs",
+    "lint:design-system": "eslint src/design-system src/components/experimental src/components/visual-tests src/app/visual-regression tests/visual playwright.config.ts scripts/check-design-system-registry.mjs scripts/check-experimental-registry.mjs scripts/audit-design-values.mjs scripts/audit-composition-inventory.mjs scripts/audit-tier-coverage.mjs",
     "check:patterns": "node scripts/check-pattern-component-reuse.mjs",
     "check:registry": "node scripts/check-design-system-registry.mjs",
     "audit:design-values": "node scripts/audit-design-values.mjs --write",
@@ -16,7 +16,8 @@
     "check:composition-inventory": "node scripts/audit-composition-inventory.mjs --check",
     "audit:tier-coverage": "node scripts/audit-tier-coverage.mjs --write",
     "check:tier-coverage": "node scripts/audit-tier-coverage.mjs --check",
-    "check:design-system": "npm run check:patterns && npm run check:registry && npm run check:design-values && npm run check:composition-inventory && npm run check:tier-coverage",
+    "check:experimental": "node scripts/check-experimental-registry.mjs",
+    "check:design-system": "npm run check:patterns && npm run check:registry && npm run check:experimental && npm run check:design-values && npm run check:composition-inventory && npm run check:tier-coverage",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots"
   },

@@ -35,9 +35,10 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 | UI 컴포넌트 | 76 |
 | Shell·Section·Behavior·Recipe 패턴 | 51 |
 | AI 조회용 화면 정의 | 28 |
-| 시각 회귀 기준 케이스 | 29 |
-| Playwright 시각·상호작용 테스트 | 43 |
-| 정적 생성 페이지 | 111 |
+| 격리된 Tier 3 실험 후보 | 38 |
+| 시각 회귀 기준 케이스 | 31 |
+| Playwright 시각·상호작용 테스트 | 46 |
+| 정적 생성 페이지 | 115 |
 
 대표 구현 범위:
 
@@ -49,6 +50,7 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 - 양식관리, 생산실적 반응형, 캐비티 배열, 재고 추가·편집, 발주 정보
 - 설비별 토출량 설정, 표준단가 설정, 조 설정의 원본 상태·상호작용
 - 생산분석 최신 화면과 카드 설정 상태
+- 실제 업무 원본 승인 전까지 표준 생성에서 격리되는 Tier 3 기능 프로토타입 38종
 
 ## 원본에서 표준 규칙으로 가는 과정
 
@@ -141,6 +143,7 @@ MES-Design/
    └─ src/
       ├─ app/
       ├─ components/
+      │  ├─ experimental/
       │  ├─ icons/
       │  ├─ patterns/
       │  ├─ ui/
@@ -155,7 +158,9 @@ MES-Design/
 - `component-library/src/components/ui/`: 공용 UI 컴포넌트
 - `component-library/src/components/icons/`: MES 아이콘 컴포넌트
 - `component-library/src/components/patterns/`: 업무 화면과 팝업 조합 패턴
+- `component-library/src/components/experimental/`: 원본 근거가 아직 없는 조작 가능한 격리 프로토타입
 - `component-library/src/design-system/registry/`: AI 조회용 컴포넌트·패턴·화면 레지스트리
+- `component-library/src/design-system/registry/experimental-candidates.json`: 실험 후보의 상태·제약·승격 조건 레지스트리
 - `component-library/src/design-system/registry/composition-policy.json`: AI 조합 계층·판정·승인·마이그레이션 보류 공통 정책
 - `component-library/src/design-system/registry/composition-inventory.json`: 현재 패턴 코드의 Shell·Section·Behavior 관찰 인벤토리
 - `component-library/src/design-system/registry/composition-shell-ledger.json`: 28개 팝업 Recipe의 Shell·Body·ActionSet 관찰 장부
@@ -183,6 +188,7 @@ npm run dev
 - `/foundations/`: 디자인 토큰과 기초 규칙
 - `/components/`: 개별 UI 컴포넌트와 상태
 - `/generated-screens/`: 표준 화면과 격리된 AI 생성 시안 검토함
+- `/experimental/experimental-tier-3/`: 표준 AI 생성에서 격리된 Tier 3 기능 후보 38종
 - `/patterns/`: MES 업무 화면과 조합 패턴
 - `/patterns/original-mes-screen-assets/`: 정규화된 원본 화면 자산
 
@@ -194,6 +200,9 @@ npm exec tsc -- --noEmit
 
 # 패턴의 공용 컴포넌트 재사용 + 레지스트리 무결성
 npm run check:design-system
+
+# 실험 후보 38종의 격리 정책·코드 연결 무결성
+npm run check:experimental
 
 # 현재 코드의 디자인 값 분포와 검토 후보 갱신
 npm run audit:design-values

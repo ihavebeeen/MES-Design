@@ -4,6 +4,50 @@ test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
 });
 
+test("Tier 3 실험 후보는 38개를 격리하고 기본 상호작용과 페이지 폭을 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/experimental/experimental-tier-3");
+
+  const prototypes = page.locator("[data-experimental-prototype]");
+  await expect(prototypes).toHaveCount(38);
+  await expect(page.getByRole("navigation", { name: "breadcrumb" })).toContainText("Experimental");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+
+  const slider = page.locator('[data-experimental-prototype="ExperimentalSlider"]');
+  await slider.getByRole("slider", { name: "가동률 범위" }).press("End");
+  await expect(slider).toContainText("100%");
+
+  const stepper = page.locator('[data-experimental-prototype="ExperimentalStepper"]');
+  await stepper.getByRole("button", { name: "다음", exact: true }).click();
+  await expect(stepper.getByRole("button", { name: "이전", exact: true })).toBeEnabled();
+
+  const transfer = page.locator('[data-experimental-prototype="ExperimentalTransfer"]');
+  await transfer.getByRole("checkbox", { name: "압출 2호기", exact: true }).check();
+  await transfer.getByRole("button", { name: "→", exact: true }).click();
+  await expect(transfer).toContainText("배정됨 2");
+
+  const rowDetail = page.locator('[data-experimental-prototype="ExperimentalRowExpandDetail"]');
+  await rowDetail.getByRole("button", { name: "상세 펼치기", exact: true }).click();
+  await expect(rowDetail).toContainText("대한소재");
+
+  const globalSearch = page.locator('[data-experimental-prototype="ExperimentalGlobalSearch"]');
+  await globalSearch.getByRole("button", { name: /메뉴·LOT·품목 전체 검색/ }).click();
+  await expect(globalSearch.getByRole("textbox", { name: "검색어 입력" })).toBeVisible();
+
+  const realtime = page.locator('[data-experimental-prototype="ExperimentalRealtimeGridIndicator"]');
+  await realtime.getByRole("button", { name: "새 데이터 반영", exact: true }).click();
+  await expect(realtime).toContainText("갱신 2회");
+
+  const alarm = page.locator('[data-experimental-prototype="ExperimentalBlinkingAlarm"]');
+  await alarm.getByRole("button", { name: "알람 확인", exact: true }).click();
+  await expect(alarm.getByRole("button", { name: "확인됨", exact: true })).toBeDisabled();
+
+  const inventory = page.locator('[data-experimental-prototype="ExperimentalInventoryLevel"]');
+  await inventory.getByRole("button", { name: "사용", exact: true }).click();
+  await expect(inventory).toContainText("부족");
+  await expect(inventory).toContainText("24%");
+});
+
 test("투입정보는 부산물을 투입품과 동급으로 합치지 않고 내부 하위 영역으로 표시한다", async ({ page }) => {
   await page.setViewportSize({ width: 1584, height: 728 });
   await page.goto("/visual-regression/material-input-information");

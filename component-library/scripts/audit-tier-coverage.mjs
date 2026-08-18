@@ -10,12 +10,22 @@ const outputJsonPath = path.join(
 );
 const outputMarkdownPath = path.join(root, "docs/UI_컴포넌트_티어_정규화.md");
 const auditDate = "2026-08-18";
+const experimentalRegistry = JSON.parse(
+  fs.readFileSync(
+    path.join(root, "component-library/src/design-system/registry/experimental-candidates.json"),
+    "utf8",
+  ),
+);
+const experimentalByChecklistItem = new Map(
+  experimentalRegistry.candidates.map((candidate) => [candidate.checklistItem, candidate]),
+);
 
 const dispositionLabels = {
   "implemented-foundation": "파운데이션 구현",
   "implemented-component": "컴포넌트 구현",
   "implemented-pattern": "패턴·화면 조합 구현",
   "intentional-composition": "독립 컴포넌트 불필요",
+  "experimental-prototype": "격리 실험 후보",
   "deferred-evidence": "실제 근거 발생 시 검토",
   "excluded-scope": "현재 범위 제외",
 };
@@ -222,6 +232,14 @@ function parseChecklist(markdown) {
 }
 
 function classify(row) {
+  const experimental = experimentalByChecklistItem.get(row.item);
+  if (experimental) {
+    return {
+      disposition: "experimental-prototype",
+      evidence: [experimental.id, experimental.source],
+      note: "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다.",
+    };
+  }
   const override = explicit.get(row.item);
   if (override) return override;
 
@@ -298,7 +316,7 @@ function renderMarkdown(audit) {
     "## 현재 결론",
     "",
     "- Tier 1·2는 현재 데스크톱 MES 화면 생성 기반을 막는 미충족 항목이 없다.",
-    "- Tier 3은 전체 선제 구현 대상이 아니다. 이미 확보된 패턴은 완료로 전환하고, 나머지는 실제 업무 근거가 들어올 때만 승격한다.",
+    "- Tier 3의 기존 미구현 38개는 모두 동작 가능한 격리 프로토타입으로 만들었으며 실제 업무 근거가 들어올 때만 표준으로 승격한다.",
     "- Tier 4는 선택적 확장, Tier 5는 원칙적으로 현재 범위 제외다.",
     "- 새로운 전체 화면은 커버리지 숫자를 늘리기 위해 추가하지 않는다. 기존 조합 문법으로 설명되지 않는 실제 화면이 나타날 때만 근거로 사용한다.",
     "",
@@ -312,8 +330,8 @@ function renderMarkdown(audit) {
     "",
     "## 티어별 요약",
     "",
-    "| Tier | 전체 | 구현·조합 충족 | 근거 대기 | 범위 제외 |",
-    "|---:|---:|---:|---:|---:|",
+    "| Tier | 전체 | 구현·조합 충족 | 격리 실험 후보 | 근거 대기 | 범위 제외 |",
+    "|---:|---:|---:|---:|---:|---:|",
   ];
 
   for (const tier of [1, 2, 3, 4, 5]) {
@@ -324,7 +342,7 @@ function renderMarkdown(audit) {
       (row["implemented-pattern"] ?? 0) +
       (row["intentional-composition"] ?? 0);
     lines.push(
-      `| ${tier} | ${row.total} | ${satisfied} | ${row["deferred-evidence"] ?? 0} | ${row["excluded-scope"] ?? 0} |`,
+      `| ${tier} | ${row.total} | ${satisfied} | ${row["experimental-prototype"] ?? 0} | ${row["deferred-evidence"] ?? 0} | ${row["excluded-scope"] ?? 0} |`,
     );
   }
 

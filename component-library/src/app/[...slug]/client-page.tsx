@@ -107,6 +107,7 @@ import {
   OriginalMesScreenAssets,
 } from "@/components/patterns";
 import { GeneratedScreenReview } from "@/components/patterns/generated-screen-review";
+import { Tier3ExperimentalGallery } from "@/components/experimental";
 import {
   IconArrow,
   IconArrowDownRight,
@@ -153,6 +154,7 @@ import {
   COMPONENT_NODES,
   PATTERN_NODES,
   GENERATED_SCREEN_NODES,
+  EXPERIMENTAL_NODES,
   SIDEBAR_GROUPS,
   TEMP_BADGE_IDS,
   TIER_BY_ID,
@@ -1463,7 +1465,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
   const slug = routeOverride ?? routeParams.slug ?? [];
   // 2026-08-05 — Patterns 그룹 추가로 "components 아니면 무조건 foundations"이던
   // 이진 분기를 3분기로 확장.
-  const activeGroup: "home" | "foundations" | "components" | "patterns" | "generated-screens" =
+  const activeGroup: "home" | "foundations" | "components" | "patterns" | "generated-screens" | "experimental" =
     slug.length === 0
       ? "home"
       : slug[0] === "components"
@@ -1472,7 +1474,9 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
           ? "patterns"
           : slug[0] === "generated-screens"
             ? "generated-screens"
-            : "foundations";
+            : slug[0] === "experimental"
+              ? "experimental"
+              : "foundations";
   const activeId: string | undefined = slug[1];
   // 2026-08-03 — 우측 서브 내비(RightRail)용 Section→Sample 목록 레지스트리. Section이
   // 렌더링될 때마다 자기 목록을 여기 채워넣고, RightRail이 같은 렌더 패스에서 바로 읽음
@@ -1712,6 +1716,8 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                           ? "Foundations"
                           : activeGroup === "generated-screens"
                             ? "Generated Screens"
+                          : activeGroup === "experimental"
+                            ? "Experimental"
                           : activeGroup === "patterns"
                             ? "Patterns"
                             : "Components",
@@ -1731,6 +1737,8 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                           ? "Foundations"
                           : activeGroup === "generated-screens"
                             ? "Generated Screens"
+                          : activeGroup === "experimental"
+                            ? "Experimental"
                           : activeGroup === "patterns"
                             ? "Patterns"
                             : "Components",
@@ -2069,6 +2077,22 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
               </div>
               {activeGroup === "home" && <OverviewGrid nodes={GENERATED_SCREEN_NODES} />}
               {activeGroup === "generated-screens" && <GeneratedScreenReview />}
+            </>
+          )}
+
+          {(activeGroup === "experimental" || activeGroup === "home") && (
+            <>
+              <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-gray-100 pl-5">
+                <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+                  <Hammer className="size-7 shrink-0 text-mes-gray-100" />
+                  Experimental
+                </span>
+                <p className="text-[13px] leading-[1.5] text-mes-gray-70">
+                  원본 근거가 아직 없는 기능 후보를 실제로 조작해 보는 격리 공간입니다. 이곳의 자산은 표준 AI 생성에 자동 사용되지 않습니다.
+                </p>
+              </div>
+              {activeGroup === "home" && <OverviewGrid nodes={EXPERIMENTAL_NODES} />}
+              {activeGroup === "experimental" && activeId === "experimental-tier-3" && <Tier3ExperimentalGallery />}
             </>
           )}
 

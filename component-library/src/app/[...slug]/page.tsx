@@ -2,6 +2,7 @@ import {
   FOUNDATION_ID_LIST,
   COMPONENT_NODES,
   PATTERN_ID_LIST,
+  EXPERIMENTAL_ID_LIST,
   flattenSidebarNodes,
 } from "@/lib/sidebar-data";
 import ClientPage from "./client-page";
@@ -34,7 +35,11 @@ export function generateStaticParams() {
     { slug: ["patterns"] },
     ...PATTERN_ID_LIST.map((id) => ({ slug: ["patterns", id] })),
   ];
-  return [...foundationParams, ...componentParams, ...patternParams];
+  const experimentalParams = [
+    { slug: ["experimental"] },
+    ...EXPERIMENTAL_ID_LIST.map((id) => ({ slug: ["experimental", id] })),
+  ];
+  return [...foundationParams, ...componentParams, ...patternParams, ...experimentalParams];
 }
 
 export default function Page() {
