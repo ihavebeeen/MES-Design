@@ -23,6 +23,7 @@ const actionSetRegistry = readJson("action-sets.json");
 const interactionAuditRegistry = readJson("interaction-audit.json");
 const completionPolicyRegistry = readJson("completion-policy.json");
 const footerActionAuditRegistry = readJson("footer-action-audit.json");
+const contextRuleRegistry = readJson("context-rules.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -68,6 +69,7 @@ checkVersion("action-sets", actionSetRegistry);
 checkVersion("interaction-audit", interactionAuditRegistry);
 checkVersion("completion-policy", completionPolicyRegistry);
 checkVersion("footer-action-audit", footerActionAuditRegistry);
+checkVersion("context-rules", contextRuleRegistry);
 
 const actionSets = mapByUniqueId("action-sets", actionSetRegistry.actionSets ?? []);
 for (const actionSet of actionSets.values()) {
@@ -79,7 +81,7 @@ for (const actionSet of actionSets.values()) {
 
 if (compositionPolicyRegistry.policyId !== "mes.ai-composition-grammar") errors.push("composition-policy: policyId가 잘못되었습니다.");
 if (compositionPolicyRegistry.status !== "active") errors.push("composition-policy: status는 active여야 합니다.");
-const requiredCompositionLayers = ["component", "shell", "section-frame", "section-pattern", "behavior-pattern", "recipe-archetype", "screen-spec"];
+const requiredCompositionLayers = ["component", "context-rule", "shell", "section-frame", "section-pattern", "behavior-pattern", "recipe-archetype", "screen-spec"];
 const compositionLayers = new Set((compositionPolicyRegistry.layers ?? []).map((layer) => layer.id));
 for (const layer of requiredCompositionLayers) {
   if (!compositionLayers.has(layer)) errors.push(`composition-policy: 필수 layer '${layer}'가 없습니다.`);
@@ -218,6 +220,49 @@ const footerActionAudits = mapByUniqueId("footer-action-audit", (footerActionAud
 const generatedCandidates = mapByUniqueId("generated-screen-evaluations", generatedScreenRegistry.candidates ?? []);
 const interactionAudits = mapByUniqueId("interaction-audit", (interactionAuditRegistry.screens ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
 
+if (contextRuleRegistry.policyId !== "mes.ai-context-rules") errors.push("context-rules: policyId가 잘못되었습니다.");
+if (contextRuleRegistry.status !== "active") errors.push("context-rules: status는 active여야 합니다.");
+if (!Array.isArray(contextRuleRegistry.decisionAxes) || contextRuleRegistry.decisionAxes.length === 0) errors.push("context-rules: decisionAxes가 필요합니다.");
+if (!Array.isArray(contextRuleRegistry.globalGates) || contextRuleRegistry.globalGates.length === 0) errors.push("context-rules: globalGates가 필요합니다.");
+const contextRules = mapByUniqueId("context-rules", contextRuleRegistry.rules ?? []);
+const contextDecisions = mapByUniqueId("context-rules decisions", contextRuleRegistry.decisions ?? []);
+const allowedContextCategories = new Set(["heading", "overlay-shell"]);
+const allowedContextStatuses = new Set(["active", "hold"]);
+for (const rule of contextRules.values()) {
+  if (!allowedContextCategories.has(rule.category)) errors.push(`context-rule '${rule.id}': 알 수 없는 category '${rule.category}'`);
+  if (!allowedContextStatuses.has(rule.status)) errors.push(`context-rule '${rule.id}': 알 수 없는 status '${rule.status}'`);
+  if (!rule.semanticRole || !rule.scope || !rule.requirement) errors.push(`context-rule '${rule.id}': semanticRole, scope, requirement가 필요합니다.`);
+  for (const field of ["allowedParents", "useWhen", "doNotUseWhen", "relationships"]) {
+    if (!Array.isArray(rule[field]) || rule[field].length === 0) errors.push(`context-rule '${rule.id}': ${field}가 필요합니다.`);
+  }
+  if (rule.status === "active" && (!Array.isArray(rule.implementationRefs) || rule.implementationRefs.length === 0)) {
+    errors.push(`context-rule '${rule.id}': active 규칙에는 implementationRefs가 필요합니다.`);
+  }
+  for (const parentId of rule.allowedParents ?? []) {
+    if (!patterns.has(parentId)) errors.push(`context-rule '${rule.id}': 미등록 parent pattern '${parentId}'를 참조합니다.`);
+  }
+  for (const reference of rule.implementationRefs ?? []) {
+    if (reference.kind === "component" && !components.has(reference.id)) errors.push(`context-rule '${rule.id}': 미등록 component '${reference.id}'를 참조합니다.`);
+    else if (reference.kind === "pattern" && !patterns.has(reference.id)) errors.push(`context-rule '${rule.id}': 미등록 pattern '${reference.id}'를 참조합니다.`);
+    else if (!["component", "pattern"].includes(reference.kind)) errors.push(`context-rule '${rule.id}': 알 수 없는 implementation kind '${reference.kind}'`);
+  }
+}
+for (const decision of contextDecisions.values()) {
+  if (!allowedContextCategories.has(decision.category)) errors.push(`context decision '${decision.id}': 알 수 없는 category '${decision.category}'`);
+  if (!Array.isArray(decision.questionOrder) || decision.questionOrder.length === 0 || !decision.fallback) errors.push(`context decision '${decision.id}': questionOrder와 fallback이 필요합니다.`);
+  if (!Array.isArray(decision.optionRuleIds) || decision.optionRuleIds.length === 0) errors.push(`context decision '${decision.id}': optionRuleIds가 필요합니다.`);
+  for (const ruleId of decision.optionRuleIds ?? []) {
+    const rule = contextRules.get(ruleId);
+    if (!rule) errors.push(`context decision '${decision.id}': 미등록 rule '${ruleId}'를 참조합니다.`);
+    else if (rule.category !== decision.category) errors.push(`context decision '${decision.id}': rule '${ruleId}'의 category가 다릅니다.`);
+  }
+}
+const contextHolds = mapByUniqueId("context-rules holds", contextRuleRegistry.holds ?? []);
+for (const hold of contextHolds.values()) {
+  if (hold.status !== "needs-evidence" || !hold.reason || !hold.temporaryRule) errors.push(`context hold '${hold.id}': needs-evidence 상태와 reason, temporaryRule이 필요합니다.`);
+  if (!contextRules.has(hold.ruleId)) errors.push(`context hold '${hold.id}': 미등록 rule '${hold.ruleId ?? ""}'를 참조합니다.`);
+}
+
 if (completionPolicyRegistry.policyId !== "mes.completion-claims") errors.push("completion-policy: policyId가 잘못되었습니다.");
 if (!["in-progress", "complete"].includes(completionPolicyRegistry.projectState)) errors.push("completion-policy: projectState는 in-progress 또는 complete여야 합니다.");
 const requiredCompletionTerms = ["implemented", "verified", "batch-complete", "project-complete"];
@@ -288,7 +333,7 @@ const openCompositionFindings = [
   ...(compositionBehaviorLedgerRegistry.findings ?? []),
   ...Object.values(compositionBehaviorLedgerRegistry.candidates ?? {}),
 ].filter((finding) => ["migration-hold", "needs-review"].includes(finding.status));
-const projectCompletionBlockerCount = openSourceEvidence.length + openGeneratedCandidates.length + unresolvedProposalRegistries.length + openCompositionFindings.length + openFooterActionAudits.length;
+const projectCompletionBlockerCount = openSourceEvidence.length + openGeneratedCandidates.length + unresolvedProposalRegistries.length + openCompositionFindings.length + openFooterActionAudits.length + contextHolds.size;
 if (completionPolicyRegistry.projectState === "complete" && projectCompletionBlockerCount > 0) {
   errors.push(`completion-policy: 전체 완료로 선언했지만 미해결 근거가 ${projectCompletionBlockerCount}건 남아 있습니다.`);
 }

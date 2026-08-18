@@ -17,6 +17,7 @@ import actionSetData from "./action-sets.json";
 import interactionAuditData from "./interaction-audit.json";
 import completionPolicyData from "./completion-policy.json";
 import footerActionAuditData from "./footer-action-audit.json";
+import contextRuleData from "./context-rules.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -36,6 +37,7 @@ import type {
   InteractionAuditRegistry,
   CompletionPolicyRegistry,
   FooterActionAuditRegistry,
+  ContextRuleRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -58,6 +60,7 @@ export const actionSetRegistry = actionSetData as ActionSetRegistry;
 export const interactionAuditRegistry = interactionAuditData as InteractionAuditRegistry;
 export const completionPolicyRegistry = completionPolicyData as CompletionPolicyRegistry;
 export const footerActionAuditRegistry = footerActionAuditData as FooterActionAuditRegistry;
+export const contextRuleRegistry = contextRuleData as ContextRuleRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);
@@ -79,6 +82,14 @@ export function getGeneratedScreenCandidate(id: string) {
   return generatedScreenEvaluationRegistry.candidates.find((candidate) => candidate.id === id);
 }
 
+export function getContextRule(id: string) {
+  return contextRuleRegistry.rules.find((rule) => rule.id === id);
+}
+
+export function getContextDecision(id: string) {
+  return contextRuleRegistry.decisions.find((decision) => decision.id === id);
+}
+
 /** AI나 생성 스크립트가 화면 하나를 구현하기 전에 읽어야 할 최소 컨텍스트를 반환한다. */
 export function getImplementationContext(screenId: string) {
   const screen = getScreen(screenId);
@@ -86,9 +97,23 @@ export function getImplementationContext(screenId: string) {
   const patterns = screen.patternRefs.map(getPattern).filter((pattern): pattern is NonNullable<typeof pattern> => Boolean(pattern));
   if (patterns.length !== screen.patternRefs.length) return undefined;
   const componentIds = [...new Set(patterns.flatMap((pattern) => pattern.requiredComponents))];
+  const contextRules = contextRuleRegistry.rules.filter((rule) =>
+    rule.allowedParents.some((parentId) => screen.patternRefs.includes(parentId))
+      || rule.implementationRefs.some((reference) =>
+        reference.kind === "pattern"
+          ? screen.patternRefs.includes(reference.id)
+          : componentIds.includes(reference.id),
+      ),
+  );
+  const contextRuleIds = new Set(contextRules.map((rule) => rule.id));
   return {
     screen,
     patterns,
     components: componentIds.map(getComponent).filter(Boolean),
+    contextRules,
+    contextDecisions: contextRuleRegistry.decisions.filter((decision) =>
+      decision.optionRuleIds.some((ruleId) => contextRuleIds.has(ruleId)),
+    ),
+    contextGlobalGates: contextRuleRegistry.globalGates,
   };
 }

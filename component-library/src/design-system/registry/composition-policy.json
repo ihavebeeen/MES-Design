@@ -1,12 +1,13 @@
 {
   "schemaVersion": 1,
   "policyId": "mes.ai-composition-grammar",
-  "policyVersion": "1.1.0",
+  "policyVersion": "1.2.0",
   "status": "active",
   "authority": "common-policy",
   "layers": [
     { "id": "token-asset", "role": "visual-primitives" },
     { "id": "component", "role": "independent-ui-control" },
+    { "id": "context-rule", "role": "semantic-selection-and-exclusion-contract" },
     { "id": "shell", "role": "screen-or-overlay-slots" },
     { "id": "section-frame", "role": "section-visual-contract" },
     { "id": "section-pattern", "role": "reusable-content-composition" },
@@ -15,6 +16,7 @@
     { "id": "screen-spec", "role": "concrete-screen-definition" }
   ],
   "grammar": {
+    "contextDecision": ["semanticRole:1", "parentContext:1", "taskShape:1", "informationStructure:1", "sourceEvidence:1"],
     "screenSpec": ["shell:1", "sections:1..n", "behaviors:0..n", "actionSet:1"],
     "sectionInstance": ["sectionFrame:1", "sectionPattern:1", "screenConfig:1"],
     "shellSlots": ["header", "body", "footer"],
@@ -43,7 +45,7 @@
     { "id": "screen-single-pattern-id", "target": "screens.json.patternRefs", "status": "resolved", "decision": "모든 ScreenSpec을 복수 patternRefs로 이관했다." },
     { "id": "mixed-pattern-granularity", "target": "patterns.json", "status": "resolved", "decision": "Shell·Section·Behavior·ActionSet을 명시적으로 등록하고 기존 화면 단위 항목은 Recipe 호환 계층으로 유지한다." },
     { "id": "source-asset-pattern-boundary", "target": "source-assets.json.patterns", "status": "resolved", "decision": "원본 자산은 별도 증거 파일에 두되 런타임 레지스트리에서는 표준 패턴과 합성한다." },
-    { "id": "single-pattern-context-api", "target": "getImplementationContext", "status": "resolved", "decision": "복수 patterns와 중복 제거된 components를 반환한다." },
+    { "id": "single-pattern-context-api", "target": "getImplementationContext", "status": "resolved", "decision": "복수 patterns, 중복 제거된 components, 관련 contextRules와 contextDecisions를 반환한다." },
     { "id": "single-pattern-validator", "target": "check-design-system-registry", "status": "resolved", "decision": "빈 배열·중복·미등록 patternRefs를 검증한다." },
     { "id": "archetype-recipe-boundary", "target": "MES Archetype documentation", "status": "resolved", "decision": "화면 단위 구현은 Recipe, 재사용 문법은 Shell·Section·Behavior·ActionSet으로 구분한다." },
     { "id": "mixed-pattern-source-directory", "target": "src/components/patterns", "status": "closed-no-action", "decision": "대규모 파일 이동은 import churn만 만들므로 논리 레지스트리 분류를 우선하고 실제 이동은 하지 않는다." }

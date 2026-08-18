@@ -1,10 +1,10 @@
 # AI UI 조합 문법 공통 정책
 
 > 정책 ID: `mes.ai-composition-grammar`
-> 버전: `1.1.0`
+> 버전: `1.2.0`
 > 상태: 공통 정책 확정
 > 최초 확정일: 2026-08-11
-> 현재 구현 동기화: 2026-08-12
+> 현재 구현 동기화: 2026-08-18
 
 ## 1. 목적
 
@@ -14,6 +14,7 @@ MES 디자인 시스템은 다음을 모두 포함한다.
 
 - 토큰과 아이콘 등 기초 자산
 - 개별 UI 컴포넌트와 상태·variant
+- 의미 역할·부모·업무 구조에 따른 맥락 선택 규칙
 - 컴포넌트를 배치하는 Shell과 Section 구조
 - 반복 가능한 Section·Behavior 패턴
 - 패턴을 조합하는 문법과 사용 조건
@@ -28,6 +29,7 @@ MES 디자인 시스템은 다음을 모두 포함한다.
 |---|---|---|
 | Token / Asset | 시각적 원자값과 아이콘 | 색상, 간격, 타이포, MES 아이콘 |
 | Component | 독립적인 UI 부품 | Button, Input, Select, Table |
+| Context Rule | 의미 역할과 부모 맥락에 따른 선택·제외 조건 | 모달 전체 제목, 섹션 제목, 중앙/우측 팝업 선택 |
 | Shell | 화면·팝업의 외곽과 고정 슬롯 | 중앙 모달, 우측 슬라이드, Header/Body/Footer |
 | Section Frame | 섹션의 공통 외형 | 제목 밴드, 패딩, 구분선, 접기/펼치기 |
 | Section Pattern | 컴포넌트의 재사용 가능한 본문 조합 | 폼 그리드, 반복 입력 행, 검색 테이블, 검사항목 |
@@ -37,11 +39,14 @@ MES 디자인 시스템은 다음을 모두 포함한다.
 
 `Recipe / Archetype`은 패턴의 상위 조합 결과다. 화면을 구성하는 가장 작은 패턴 단위로 사용하지 않는다.
 
+Context Rule은 시각 계층이 아니라 선택 계층이다. 같은 Header 계열이거나 같은 회색 배경을 가진다는 사실보다 무엇을 설명하고 어느 부모 안에 놓이는지를 먼저 판정한다.
+
 ## 3. 조합 문법
 
 ```text
 ScreenSpec
-  = Shell
+  = ContextDecision
+  + Shell
   + SectionInstance[1..n]
   + BehaviorReference[0..n]
   + ActionSet
@@ -51,6 +56,17 @@ SectionInstance
   + SectionPattern
   + ScreenData/Copy/FieldConfig
 ```
+
+### 3.0 Context Decision
+
+- AI는 Shell과 컴포넌트를 고르기 전에 `context-rules.json`의 의미 역할, 부모 맥락, 업무 형태, 정보 구조와 원본 근거를 판정한다.
+- 모든 오버레이에는 전체 목적을 설명하는 root heading이 정확히 하나 필요하다.
+- Section heading은 선택 요소이며 본문에 독립적인 논리 섹션이 있을 때만 사용한다.
+- 단일 테이블·리스트의 이름은 content region heading으로 처리하며 모달용 회색 SectionHeader를 자동 사용하지 않는다.
+- 중앙 모달, 우측 슬라이드, 확인 팝업은 외형이 아니라 업무 길이·배경 맥락 유지·정보 구조로 고른다.
+- 페이지용 섹션 제목은 반복 근거가 부족하므로 현재 자동 선택 금지 상태다.
+
+세부 규칙은 [AI UI 맥락 규칙](./AI_UI_맥락_규칙.md)을 따른다.
 
 ### 3.1 Shell
 
@@ -115,12 +131,13 @@ Behavior는 어떤 Section 또는 Action에 적용되는지 target을 가져야 
 AI는 JSX를 작성하기 전에 다음 순서를 지킨다.
 
 1. 요구사항을 ScreenSpec 후보로 정규화한다.
-2. Shell, Section, Behavior별 기존 후보를 조회한다.
-3. 각 차이를 `reuse`, `compose`, `extend`, `propose-new`, `normalize`로 판정한다.
-4. 선택 근거, 기존 후보, 차이와 승인 상태를 PatternDecision으로 기록한다.
-5. 승인된 Shell과 Section Pattern의 슬롯 안에 컴포넌트를 배치한다.
-6. 임의 wrapper, 배경, radius, 안내 문구와 정보 위계를 추가하지 않는다.
-7. 정적·상호작용·시각 검증 후 GenerationReport를 남긴다.
+2. `select.overlay-shell`과 `select.heading-context`로 의미 역할과 부모 맥락을 판정한다.
+3. Shell, Section, Behavior별 기존 후보를 조회한다.
+4. 각 차이를 `reuse`, `compose`, `extend`, `propose-new`, `normalize`로 판정한다.
+5. 선택 근거, 기존 후보, 차이와 승인 상태를 PatternDecision으로 기록한다.
+6. 승인된 Shell과 Section Pattern의 슬롯 안에 컴포넌트를 배치한다.
+7. 임의 wrapper, 배경, radius, 안내 문구와 정보 위계를 추가하지 않는다.
+8. 정적·상호작용·시각 검증 후 GenerationReport를 남긴다.
 
 AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스스로 승인하지 않는다. 승인 전 코드는 생성 시안 검토함에 격리하며 후속 화면의 표준 근거로 사용하지 않는다.
 
@@ -158,7 +175,8 @@ AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스�
 | `screens.json.patternRefs` | 모든 화면이 Shell·Section·Behavior·ActionSet을 복수 참조한다. |
 | `patterns.json` | 기존 화면 단위 항목은 Recipe 호환 계층으로 유지하고 세분 패턴을 함께 등록한다. |
 | `source-assets.json.patterns` | 원본 증거와 런타임 표준의 역할을 분리하되 조회 시 합성한다. |
-| `getImplementationContext` | 화면의 모든 Pattern과 중복 제거된 Component를 반환한다. |
+| `context-rules.json` | 헤더와 오버레이의 의미 역할·사용 조건·제외 조건·부모 관계를 기계 판독 가능한 규칙으로 제공한다. |
+| `getImplementationContext` | 화면의 모든 Pattern, 중복 제거된 Component와 관련 Context Rule·Decision을 반환한다. |
 | `check-design-system-registry` | 빈 배열, 중복, 미등록 참조와 미해결 제안을 차단한다. |
 | MES Archetype 문서 | Archetype은 화면 단위 Recipe의 호환 명칭으로 사용한다. |
 | `src/components/patterns` | 물리 이동은 import 변경만 늘리므로 하지 않고 Registry가 논리 분류를 담당한다. |
@@ -181,6 +199,8 @@ AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스�
 1차 얕은 전수조사, 2차 수동 감사, 사용자 승인과 코드 이관을 완료했다.
 
 - 구조화 결과: `component-library/src/design-system/registry/composition-inventory.json`
+- 맥락 선택 규칙: `component-library/src/design-system/registry/context-rules.json`
+- 사람용 맥락 설명: [AI UI 맥락 규칙](./AI_UI_맥락_규칙.md)
 - 사람용 보고서: [AI UI 조합 인벤토리 1차](./AI_UI_조합_인벤토리_1차.md)
 - Shell 감사: [AI UI Shell·슬롯 감사 1차](./AI_UI_Shell_슬롯_감사_1차.md)
 - Section Frame 감사: [AI UI Section Frame 감사 1차](./AI_UI_Section_Frame_감사_1차.md)

@@ -167,6 +167,7 @@ export interface CompositionPolicyRegistry {
   authority: "common-policy";
   layers: CompositionPolicyLayer[];
   grammar: {
+    contextDecision: string[];
     screenSpec: string[];
     sectionInstance: string[];
     shellSlots: string[];
@@ -181,6 +182,55 @@ export interface CompositionPolicyRegistry {
   registrationQuestions: string[];
   forbiddenWithoutDecision: string[];
   migrationHolds: CompositionPolicyMigrationHold[];
+}
+
+export type ContextRuleCategory = "heading" | "overlay-shell";
+export type ContextRuleStatus = "active" | "hold";
+
+export interface ContextImplementationReference {
+  kind: "component" | "pattern";
+  id: string;
+}
+
+export interface ContextRuleEntry {
+  id: string;
+  category: ContextRuleCategory;
+  status: ContextRuleStatus;
+  semanticRole: string;
+  scope: string;
+  requirement: string;
+  allowedParents: string[];
+  implementationRefs: ContextImplementationReference[];
+  useWhen: string[];
+  doNotUseWhen: string[];
+  relationships: string[];
+}
+
+export interface ContextDecisionEntry {
+  id: string;
+  category: ContextRuleCategory;
+  questionOrder: string[];
+  optionRuleIds: string[];
+  fallback: string;
+}
+
+export interface ContextRuleRegistry {
+  schemaVersion: 1;
+  policyId: "mes.ai-context-rules";
+  policyVersion: string;
+  status: "active";
+  authority: "common-policy";
+  decisionAxes: string[];
+  globalGates: string[];
+  rules: ContextRuleEntry[];
+  decisions: ContextDecisionEntry[];
+  holds: Array<{
+    id: string;
+    ruleId: string;
+    status: "needs-evidence";
+    reason: string;
+    temporaryRule: string;
+  }>;
 }
 
 export interface CompositionInventorySignal {
