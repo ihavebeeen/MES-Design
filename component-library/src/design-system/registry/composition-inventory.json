@@ -4,15 +4,15 @@
   "status": "observed-not-canonical",
   "scope": "src/components/patterns/*.tsx",
   "summary": {
-    "scannedFiles": 36,
-    "totalLines": 7377,
+    "scannedFiles": 37,
+    "totalLines": 7826,
     "shellInstances": {
       "CenterModal": 13,
       "SideSlidePanel": 9,
       "ConfirmDialog": 4
     },
     "filesWithMixedSectionFrames": 2,
-    "filesWithNativeSectionOnly": 17,
+    "filesWithNativeSectionOnly": 18,
     "filesWithRoundedSectionCandidates": 21
   },
   "sectionCandidateSignals": [
@@ -37,8 +37,9 @@
     },
     {
       "id": "section.summary",
-      "fileCount": 12,
+      "fileCount": 13,
       "sources": [
+        "src/components/patterns/business-operation-settings-pattern.tsx",
         "src/components/patterns/completed-application-patterns.tsx",
         "src/components/patterns/completed-popup-expanded-content.tsx",
         "src/components/patterns/completed-popup-patterns.tsx",
@@ -55,8 +56,9 @@
     },
     {
       "id": "section.form-grid",
-      "fileCount": 9,
+      "fileCount": 10,
       "sources": [
+        "src/components/patterns/business-operation-settings-pattern.tsx",
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/equipment-discharge-settings-pattern.tsx",
         "src/components/patterns/exact-production-analytics-screen.tsx",
@@ -167,6 +169,12 @@
   "reviewQueue": [
     {
       "source": "src/components/patterns/analytics-dashboard-pattern.tsx",
+      "flags": [
+        "native-section-without-registered-frame"
+      ]
+    },
+    {
+      "source": "src/components/patterns/business-operation-settings-pattern.tsx",
       "flags": [
         "native-section-without-registered-frame"
       ]
@@ -364,6 +372,115 @@
       "stateHookCount": 0,
       "behaviorSignals": [],
       "sectionCandidateSignals": [],
+      "reviewFlags": [
+        "native-section-without-registered-frame"
+      ]
+    },
+    {
+      "source": "src/components/patterns/business-operation-settings-pattern.tsx",
+      "name": "business-operation-settings-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 449,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 1,
+        "dividerContainer": 4,
+        "roundedContainer": 0,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 4
+        },
+        {
+          "name": "FormFieldRow",
+          "jsxCount": 12
+        },
+        {
+          "name": "FormGrid",
+          "jsxCount": 3
+        },
+        {
+          "name": "IconBox",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconChartBar",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconCompany",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconGrid",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconMedalCheck",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconWrench",
+          "jsxCount": 1
+        },
+        {
+          "name": "Input",
+          "jsxCount": 1
+        },
+        {
+          "name": "Logo",
+          "jsxCount": 1
+        },
+        {
+          "name": "Radio",
+          "jsxCount": 1
+        },
+        {
+          "name": "SectionFrame",
+          "jsxCount": 8
+        },
+        {
+          "name": "Select",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 1
+        },
+        {
+          "name": "Sidebar",
+          "jsxCount": 1
+        },
+        {
+          "name": "Switch",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 5,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [
+        "section.form-grid",
+        "section.summary"
+      ],
       "reviewFlags": [
         "native-section-without-registered-frame"
       ]
@@ -2666,5 +2783,5 @@
       ]
     }
   ],
-  "fingerprint": "c07ec48a4ce08da7"
+  "fingerprint": "29b3a5a35b19234a"
 }

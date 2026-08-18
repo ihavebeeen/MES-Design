@@ -45,6 +45,50 @@ test("투입정보는 부산물을 투입품과 동급으로 합치지 않고 �
   await expect(dialog).toBeHidden();
 });
 
+test("업무 운영 설정은 4개 파트와 저장 전 편집 상태를 한 화면에서 유지한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/visual-regression/business-operation-settings");
+
+  const screen = page.locator('[data-visual-test="business-operation-settings"]');
+  await expect(screen).toBeVisible();
+  expect(await screen.boundingBox()).toEqual({ x: 0, y: 0, width: 1920, height: 960 });
+  expect(await screen.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+  await expect(page.getByText("선행정보 연계 방식", { exact: true })).toBeVisible();
+
+  await hideDevelopmentOverlay(page);
+  await expect(page).toHaveScreenshot("business-operation-settings.png");
+
+  await page.getByRole("button", { name: /필수 입력 항목/ }).click();
+  await expect(page.getByTestId("required-settings-tab")).toBeVisible();
+  await expect(page).toHaveScreenshot("business-operation-settings-required.png");
+  await page.getByRole("button", { name: /기본 창고/ }).click();
+  await expect(page.getByTestId("warehouse-settings-tab")).toBeVisible();
+  await expect(page).toHaveScreenshot("business-operation-settings-warehouse.png");
+  await page.getByRole("button", { name: /입력 기본값/ }).click();
+  await expect(page.getByTestId("default-settings-tab")).toBeVisible();
+  await expect(page).toHaveScreenshot("business-operation-settings-defaults.png");
+  await page.getByRole("button", { name: "등록 방식", exact: true }).click();
+
+  const registration = page.getByTestId("registration-settings-tab");
+  await registration.getByRole("radio", { name: "사용", exact: true }).check();
+  await expect(registration.getByRole("radio", { name: "연계 안 함", exact: true }).first()).toBeDisabled();
+  await expect(page.getByText("저장되지 않은 변경사항이 있습니다.", { exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: /필수 입력 항목/ }).click();
+  const required = page.getByTestId("required-settings-tab");
+  const receivingLot = required.getByRole("switch", { name: "입고등록 입고 LOT 필수" });
+  await expect(receivingLot).not.toBeChecked();
+  await receivingLot.check();
+  await page.getByRole("button", { name: "변경 취소", exact: true }).click();
+  await expect(receivingLot).not.toBeChecked();
+
+  await page.getByRole("button", { name: /입력 기본값/ }).click();
+  await page.getByRole("group", { name: "생산실적 담당자 기본값" }).getByRole("button", { name: "로그인 사용자", exact: true }).click();
+  await page.getByRole("button", { name: "저장", exact: true }).click();
+  await expect(page.getByText("업무 운영 설정을 저장했습니다. 새로 여는 등록 화면부터 적용됩니다.", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "저장", exact: true })).toBeDisabled();
+});
+
 async function hideDevelopmentOverlay(page: Page) {
   await page.addStyleTag({ content: "nextjs-portal { display: none !important; }" });
 }
