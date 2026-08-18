@@ -1543,6 +1543,24 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
               ? "experimental"
               : "foundations";
   const activeId: string | undefined = slug[1];
+  const activeSidebarGroupTitle =
+    activeGroup === "foundations"
+      ? "Foundations"
+      : activeGroup === "components"
+        ? "Components"
+        : activeGroup === "patterns"
+          ? "Patterns"
+          : activeGroup === "generated-screens"
+            ? "Generated Screens"
+            : activeGroup === "experimental"
+              ? "Experimental"
+              : undefined;
+  const orderedSidebarGroups = activeSidebarGroupTitle
+    ? [
+        ...SIDEBAR_GROUPS.filter((group) => group.title === activeSidebarGroupTitle),
+        ...SIDEBAR_GROUPS.filter((group) => group.title !== activeSidebarGroupTitle),
+      ]
+    : SIDEBAR_GROUPS;
   // 2026-08-03 — 우측 서브 내비(RightRail)용 Section→Sample 목록 레지스트리. Section이
   // 렌더링될 때마다 자기 목록을 여기 채워넣고, RightRail이 같은 렌더 패스에서 바로 읽음
   // (자세한 배선 이유는 Section/RightRail 정의 쪽 주석 참고).
@@ -1653,7 +1671,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
               ))}
             </PopoverContent>
           </Popover>
-          {SIDEBAR_GROUPS.map((group) => {
+          {orderedSidebarGroups.map((group) => {
             const GroupIcon =
               group.title === "Foundations"
                 ? Palette
@@ -1664,7 +1682,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                     : Hammer;
             const tierSections = splitSidebarNodesByTier(group.nodes);
             return (
-            <div key={group.title} className="mb-7">
+            <div key={group.title} data-sidebar-group={group.title} className="mb-7">
               <div className="mb-2 flex items-center gap-2 border-b-2 border-mes-gray-90 px-2 pb-2 text-[18px] font-extrabold tracking-tight text-mes-gray-130">
                 <GroupIcon className="size-[18px] shrink-0 text-mes-primary-60" />
                 {group.title}
@@ -2089,7 +2107,9 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                   원본 근거가 아직 없는 기능 후보를 실제로 조작해 보는 격리 공간입니다. 이곳의 자산은 표준 AI 생성에 자동 사용되지 않습니다.
                 </p>
               </div>
-              {activeGroup === "home" && <OverviewGrid nodes={EXPERIMENTAL_NODES} />}
+              {(activeGroup === "home" || (activeGroup === "experimental" && !activeId)) && (
+                <OverviewGrid nodes={EXPERIMENTAL_NODES} />
+              )}
               {activeGroup === "experimental" && activeId === "experimental-tier-3" && <Tier3ExperimentalGallery />}
               {activeGroup === "experimental" && activeId === "experimental-tier-4" && <Tier4ExperimentalGallery />}
               {activeGroup === "experimental" && activeId === "experimental-tier-5" && <Tier5ExperimentalGallery />}

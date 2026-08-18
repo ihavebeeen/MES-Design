@@ -50,6 +50,13 @@ test("Tier 3 실험 후보는 38개를 격리하고 기본 상호작용과 페�
 
 test("Tier 4·5 실험 후보와 좌측 티어 구획은 격리 수량과 기본 동작을 유지한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/experimental");
+
+  await expect(page.locator('main a[href="/experimental/experimental-tier-3/"]')).toBeVisible();
+  await expect(page.locator('main a[href="/experimental/experimental-tier-4/"]')).toBeVisible();
+  await expect(page.locator('main a[href="/experimental/experimental-tier-5/"]')).toBeVisible();
+  await expect(page.getByRole("complementary").locator("[data-sidebar-group]").first()).toContainText("Experimental");
+
   await page.goto("/experimental/experimental-tier-4");
 
   await expect(page.locator("[data-experimental-prototype]")).toHaveCount(41);
