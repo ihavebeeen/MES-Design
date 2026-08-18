@@ -94,7 +94,7 @@
       "createdAt": "2026-08-18",
       "route": "/visual-regression/business-operation-settings",
       "source": "src/components/patterns/business-operation-settings-pattern.tsx",
-      "status": "review",
+      "status": "archived",
       "score": 0,
       "disposition": "prototype",
       "influence": "quarantined",
@@ -106,7 +106,8 @@
       "issues": [
         "Figma Make 와이어프레임은 확정 디자인 원본이 아니므로 화면 단위 배치와 정보 밀도는 사용자 검토 전이다.",
         "설정 전용 페이지 셸과 내부 탭 조합은 기존 표준 패턴으로 설명되지 않아 화면 로컬 후보로 격리했다.",
-        "창고·공정·테넌트 설정은 fixture 데이터이며 실제 MES API와 권한 정책은 연결되지 않았다."
+        "창고·공정·테넌트 설정은 fixture 데이터이며 실제 MES API와 권한 정책은 연결되지 않았다.",
+        "슬라이드 팝업이 아닌 페이지에 긴 회색 섹션 헤더 배경을 사용한 것은 기존 MES 확정 패턴 근거가 없는 화면 로컬 판단이다. 결과는 어울리지만 다른 화면에 재사용할 근거로 삼지 않는다."
       ],
       "promotionCriteria": [
         "4개 탭의 정보 배치와 용어를 사용자 검토로 확정한다.",
