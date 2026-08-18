@@ -195,6 +195,53 @@ set(
   "동일 동작을 Accordion 또는 Collapsible로 해결한다.",
 );
 
+const reclassifiedCompositions = [
+  { items: ["Approval Workflow Stepper"], evidence: ["experimental.stepper", "badge"], note: "결재라는 업무명만 추가된 Stepper 사용 사례이므로 독립 후보로 유지하지 않는다." },
+  { items: ["Attachment List", "File", "Document Version History"], evidence: ["list", "button"], note: "목록 행과 파일·이력 데이터, 행 동작의 조합이며 별도 UI 해부 구조가 없다." },
+  { items: ["Settings List"], evidence: ["list", "switch", "select"], note: "설정 데이터 목록에 기존 Switch와 Select를 배치하는 사용 사례다." },
+  { items: ["Result Page", "Empty Illustration"], evidence: ["empty-state", "descriptions", "button"], note: "결과·빈 상태 콘텐츠만 달라지는 기존 피드백 자산 조합이다." },
+  { items: ["Footer"], evidence: ["grid-container", "link"], note: "페이지 하단 레이아웃과 Link 조합이며 독립 MES 패턴 근거가 없다." },
+  { items: ["Real-time Update Indicator (Grid)"], evidence: ["table", "badge"], note: "갱신 상태는 Table 주변에 Badge를 배치하는 상태 표현이다." },
+  { items: ["Equipment Status Card/Tile", "Inventory Level Indicator"], evidence: ["card", "badge", "progress"], note: "설비·재고라는 데이터 이름만 다르고 기존 Card·Badge·Progress 구조를 그대로 사용한다." },
+  { items: ["OEE Dashboard Widget", "Real-time Trend Chart"], evidence: ["analytics-charts", "card", "progress"], note: "OEE·실시간이라는 업무 데이터만 추가된 기존 분석 차트와 요약 카드 조합이다." },
+  { items: ["Blinking Alarm Indicator"], evidence: ["alarm-list-item", "badge"], note: "알람 표시 자산의 상태·모션 확장 문제이며 별도 컴포넌트가 아니다." },
+  { items: ["Routing/BOM Tree", "Genealogy Tree"], evidence: ["experimental.tree-view", "badge"], note: "BOM·계보 데이터가 들어간 Tree View 사용 사례로 통합한다." },
+  { items: ["Equipment Detail Card"], evidence: ["card", "descriptions", "badge"], note: "설비 상세 데이터의 Card·Descriptions·Badge 조합이다." },
+  { items: ["Chip Selector", "Suggestion Chip"], evidence: ["toggle-button", "tag"], note: "칩 모양의 선택은 ToggleButton과 Tag 표현으로 해결한다." },
+  { items: ["Back to Top", "Floating Action Button (FAB)"], evidence: ["button"], note: "위치와 클릭 후 동작이 다른 Button 사용 사례이며 별도 컴포넌트가 아니다." },
+  { items: ["AI Prompt Input Box", "Feedback Widget"], evidence: ["textarea", "button"], note: "입력 목적만 다르고 기존 Textarea와 Button 조합으로 충족한다." },
+  { items: ["Comment / Activity Feed"], evidence: ["list", "experimental.timeline"], note: "활동 데이터가 들어간 List 또는 Timeline 사용 사례로 통합한다." },
+  { items: ["Global Top Loading Bar"], evidence: ["progress"], note: "페이지 상단에 배치한 Progress 상태 표현이다." },
+  { items: ["Kbd (Keyboard Key)", "Blockquote"], evidence: ["typography"], note: "HTML 의미 요소와 타이포그래피 토큰으로 해결되는 콘텐츠 표현이다." },
+  { items: ["Aspect Ratio"], evidence: ["grid-container", "css.aspect-ratio"], note: "레이아웃 CSS 제약이며 독립 UI 자산으로 취급하지 않는다." },
+  { items: ["Spoiler (더보기/접기 텍스트)"], evidence: ["collapsible", "button"], note: "기존 Collapsible의 텍스트 콘텐츠 사용 사례다." },
+  { items: ["Full-screen Modal"], evidence: ["center-modal"], note: "전체 화면 크기는 CenterModal의 크기·레이아웃 확장 문제이며 별도 팝업 패턴이 아니다." },
+  { items: ["Utilization Heatmap"], evidence: ["section.measurement-heatmap-analysis", "analytics-charts"], note: "기존 히트맵 분석 섹션에 가동률 데이터를 주입하는 사용 사례다." },
+  { items: ["Escalation Timeline"], evidence: ["experimental.timeline", "badge"], note: "에스컬레이션 데이터가 들어간 Timeline 사용 사례다." },
+  { items: ["Work Order Kanban"], evidence: ["experimental.kanban-board", "card"], note: "작업지시 데이터가 들어간 Kanban 후보의 도메인 사용 사례다." },
+  { items: ["Sampling Plan Table", "PM Checklist", "Onboarding Checklist"], evidence: ["table", "checkbox", "progress"], note: "업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다." },
+  { items: ["Maintenance Schedule Calendar"], evidence: ["experimental.shift-calendar", "date-picker"], note: "정비 일정은 별도 달력이 아니라 일정 캘린더 후보의 데이터 사용 사례로 통합한다." },
+  { items: ["Command Palette"], evidence: ["experimental.global-search", "search-input"], note: "명령이라는 콘텐츠만 다른 전역 검색 오버레이 사용 사례로 통합한다." },
+  { items: ["Avatar Group"], evidence: ["experimental.avatar", "button"], note: "Avatar 반복과 초과 인원 Button 조합이다." },
+  { items: ["Streaming Text Indicator"], evidence: ["typography", "loading-spinner"], note: "텍스트 출력 상태를 나타내는 타이포그래피·로딩 표현이다." },
+  { items: ["Source / Citation Badge"], evidence: ["badge", "popover", "button"], note: "출처 데이터가 들어간 Badge와 Popover 조합이다." },
+  { items: ["Cookie Consent Banner", "Upgrade / Paywall Prompt"], evidence: ["notice-banner", "button"], note: "안내 내용과 후속 동작만 달라지는 NoticeBanner와 Button 조합이다." },
+  { items: ["Live Chat Widget"], evidence: ["experimental.chat-message", "input", "button"], note: "Chat Message 후보에 입력과 전송 동작을 붙인 제품 사용 사례다." },
+  { items: ["Dark Mode Toggle"], evidence: ["toggle-button", "semantic-tokens"], note: "테마 전환은 ToggleButton과 토큰 모드 정책의 조합이다." },
+  { items: ["Language / Locale Selector"], evidence: ["select"], note: "언어 목록을 제공하는 기존 Select 사용 사례다." },
+];
+
+for (const classification of reclassifiedCompositions) {
+  set(classification.items, "intentional-composition", classification.evidence, classification.note);
+}
+
+set(
+  ["Pricing Table", "Hero"],
+  "excluded-scope",
+  ["desktop MES scope policy"],
+  "마케팅·요금제 화면 템플릿은 현재 MES 업무 UI 자동 생성 범위에서 제외한다.",
+);
+
 const excludedTier4 = new Set([
   "Split Button",
   "Segmented Control",
@@ -322,7 +369,8 @@ function renderMarkdown(audit) {
     "## 현재 결론",
     "",
     "- Tier 1·2는 현재 데스크톱 MES 화면 생성 기반을 막는 미충족 항목이 없다.",
-    "- Tier 3의 독립 후보 37개와 Tier 4·5 후보 69개는 동작 가능한 격리 프로토타입으로 만들었다. 비가동 사유 선택은 기존 Select의 업무 옵션 조합으로 재분류했다.",
+    "- 107개로 시작한 격리 후보를 전수 재분류해, 기존 자산 사용 사례 48개와 MES 범위 제외 템플릿 2개를 후보에서 제거했다.",
+    "- 독립 구조·상호작용이 남는 실험 후보는 Tier 3 23개, Tier 4 22개, Tier 5 12개로 총 57개다.",
     "- Tier 4는 선택적 확장, Tier 5는 원칙적으로 핵심 MES 범위 밖이라는 우선순위를 유지한다. 코드가 존재해도 실제 업무 근거와 사용자 승인 전에는 표준으로 승격하지 않는다.",
     "- 새로운 전체 화면은 커버리지 숫자를 늘리기 위해 추가하지 않는다. 기존 조합 문법으로 설명되지 않는 실제 화면이 나타날 때만 근거로 사용한다.",
     "",

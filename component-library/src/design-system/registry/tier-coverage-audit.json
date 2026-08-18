@@ -25,26 +25,30 @@
       },
       "3": {
         "total": 57,
-        "experimental-prototype": 37,
-        "intentional-composition": 13,
+        "experimental-prototype": 23,
+        "intentional-composition": 27,
         "implemented-component": 2,
         "implemented-pattern": 5
       },
       "4": {
         "total": 41,
-        "experimental-prototype": 41
+        "experimental-prototype": 22,
+        "intentional-composition": 19
       },
       "5": {
         "total": 28,
-        "experimental-prototype": 28
+        "intentional-composition": 14,
+        "experimental-prototype": 12,
+        "excluded-scope": 2
       }
     },
     "byDisposition": {
       "implemented-foundation": 9,
-      "experimental-prototype": 106,
+      "experimental-prototype": 57,
       "implemented-component": 81,
-      "intentional-composition": 14,
-      "implemented-pattern": 6
+      "intentional-composition": 61,
+      "implemented-pattern": 6,
+      "excluded-scope": 2
     }
   },
   "items": [
@@ -219,12 +223,11 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.fab",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "위치와 클릭 후 동작이 다른 Button 사용 사례이며 별도 컴포넌트가 아니다."
     },
     {
       "item": "Checkbox",
@@ -303,12 +306,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.chip-selector",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "toggle-button",
+        "tag"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "칩 모양의 선택은 ToggleButton과 Tag 표현으로 해결한다."
     },
     {
       "item": "Text Input",
@@ -615,24 +618,23 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.command-palette",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "experimental.global-search",
+        "search-input"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "명령이라는 콘텐츠만 다른 전역 검색 오버레이 사용 사례로 통합한다."
     },
     {
       "item": "Back to Top",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.back-to-top",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "위치와 클릭 후 동작이 다른 Button 사용 사례이며 별도 컴포넌트가 아니다."
     },
     {
       "item": "Table",
@@ -700,12 +702,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.avatar-group",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "experimental.avatar",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "Avatar 반복과 초과 인원 Button 조합이다."
     },
     {
       "item": "Badge",
@@ -999,12 +1001,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.disclosure-panel",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "accordion",
+        "collapsible"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "동일 동작을 Accordion 또는 Collapsible로 해결한다."
     },
     {
       "item": "Divider / Separator",
@@ -1155,12 +1157,13 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.empty-illustration",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "empty-state",
+        "descriptions",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "결과·빈 상태 콘텐츠만 달라지는 기존 피드백 자산 조합이다."
     },
     {
       "item": "Chat Bubble / Message",
@@ -1179,24 +1182,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.ai-prompt-input",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "textarea",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "입력 목적만 다르고 기존 Textarea와 Button 조합으로 충족한다."
     },
     {
       "item": "Streaming Text Indicator",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.streaming-text",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "typography",
+        "loading-spinner"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "텍스트 출력 상태를 나타내는 타이포그래피·로딩 표현이다."
     },
     {
       "item": "Code Block",
@@ -1227,24 +1230,25 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.suggestion-chip",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "toggle-button",
+        "tag"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "칩 모양의 선택은 ToggleButton과 Tag 표현으로 해결한다."
     },
     {
       "item": "Source / Citation Badge",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.citation-badge",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "badge",
+        "popover",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "출처 데이터가 들어간 Badge와 Popover 조합이다."
     },
     {
       "item": "Filter Bar / Filter Panel",
@@ -1394,36 +1398,38 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.onboarding-checklist",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "table",
+        "checkbox",
+        "progress"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다."
     },
     {
       "item": "Settings List",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.settings-list",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "list",
+        "switch",
+        "select"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "설정 데이터 목록에 기존 Switch와 Select를 배치하는 사용 사례다."
     },
     {
       "item": "Comment / Activity Feed",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.activity-feed",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "list",
+        "experimental.timeline"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "활동 데이터가 들어간 List 또는 Timeline 사용 사례로 통합한다."
     },
     {
       "item": "Kanban Board",
@@ -1442,120 +1448,117 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.top-loading-bar",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "progress"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "페이지 상단에 배치한 Progress 상태 표현이다."
     },
     {
       "item": "Cookie Consent Banner",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.cookie-consent",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "notice-banner",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "안내 내용과 후속 동작만 달라지는 NoticeBanner와 Button 조합이다."
     },
     {
       "item": "Feedback Widget",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.feedback-widget",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "textarea",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "입력 목적만 다르고 기존 Textarea와 Button 조합으로 충족한다."
     },
     {
       "item": "Live Chat Widget",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.live-chat-widget",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "experimental.chat-message",
+        "input",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "Chat Message 후보에 입력과 전송 동작을 붙인 제품 사용 사례다."
     },
     {
       "item": "Dark Mode Toggle",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.dark-mode",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "toggle-button",
+        "semantic-tokens"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "테마 전환은 ToggleButton과 토큰 모드 정책의 조합이다."
     },
     {
       "item": "Language / Locale Selector",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.locale-selector",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "select"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "언어 목록을 제공하는 기존 Select 사용 사례다."
     },
     {
       "item": "Pricing Table",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.pricing-table",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "desktop MES scope policy"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "마케팅·요금제 화면 템플릿은 현재 MES 업무 UI 자동 생성 범위에서 제외한다."
     },
     {
       "item": "Upgrade / Paywall Prompt",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.paywall",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "notice-banner",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "안내 내용과 후속 동작만 달라지는 NoticeBanner와 Button 조합이다."
     },
     {
       "item": "Kbd (Keyboard Key)",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.kbd",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "typography"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "HTML 의미 요소와 타이포그래피 토큰으로 해결되는 콘텐츠 표현이다."
     },
     {
       "item": "Aspect Ratio",
       "layer": "레이아웃 유틸",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.aspect-ratio",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "grid-container",
+        "css.aspect-ratio"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "레이아웃 CSS 제약이며 독립 UI 자산으로 취급하지 않는다."
     },
     {
       "item": "Cascader",
@@ -1634,12 +1637,13 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.result-page",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "empty-state",
+        "descriptions",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "결과·빈 상태 콘텐츠만 달라지는 기존 피드백 자산 조합이다."
     },
     {
       "item": "Watermark",
@@ -1779,24 +1783,23 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.spoiler",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "collapsible",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "기존 Collapsible의 텍스트 콘텐츠 사용 사례다."
     },
     {
       "item": "Blockquote",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.blockquote",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "typography"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "HTML 의미 요소와 타이포그래피 토큰으로 해결되는 콘텐츠 표현이다."
     },
     {
       "item": "Search Highlight Text",
@@ -1973,12 +1976,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.realtime-grid-indicator",
-        "src/components/experimental/tier3-grid-prototypes.tsx"
+        "table",
+        "badge"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "갱신 상태는 Table 주변에 Badge를 배치하는 상태 표현이다."
     },
     {
       "item": "Center Modal",
@@ -2057,12 +2060,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.full-screen-modal",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "center-modal"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "전체 화면 크기는 CenterModal의 크기·레이아웃 확장 문제이며 별도 팝업 패턴이 아니다."
     },
     {
       "item": "Resizable / Draggable Popup",
@@ -2093,12 +2095,13 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.equipment-status-card",
-        "src/components/experimental/tier3-mes-prototypes.tsx"
+        "card",
+        "badge",
+        "progress"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "설비·재고라는 데이터 이름만 다르고 기존 Card·Badge·Progress 구조를 그대로 사용한다."
     },
     {
       "item": "Real-time Gauge/Meter",
@@ -2117,12 +2120,13 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.oee-widget",
-        "src/components/experimental/tier3-mes-prototypes.tsx"
+        "analytics-charts",
+        "card",
+        "progress"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "OEE·실시간이라는 업무 데이터만 추가된 기존 분석 차트와 요약 카드 조합이다."
     },
     {
       "item": "Process Flow Diagram",
@@ -2141,24 +2145,25 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.realtime-trend",
-        "src/components/experimental/tier3-mes-prototypes.tsx"
+        "analytics-charts",
+        "card",
+        "progress"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "OEE·실시간이라는 업무 데이터만 추가된 기존 분석 차트와 요약 카드 조합이다."
     },
     {
       "item": "Utilization Heatmap",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.utilization-heatmap",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "section.measurement-heatmap-analysis",
+        "analytics-charts"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "기존 히트맵 분석 섹션에 가동률 데이터를 주입하는 사용 사례다."
     },
     {
       "item": "Factory Layout View",
@@ -2189,12 +2194,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.blinking-alarm",
-        "src/components/experimental/tier3-mes-prototypes.tsx"
+        "alarm-list-item",
+        "badge"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "알람 표시 자산의 상태·모션 확장 문제이며 별도 컴포넌트가 아니다."
     },
     {
       "item": "Severity Level Tag",
@@ -2225,12 +2230,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.escalation-timeline",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "experimental.timeline",
+        "badge"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "에스컬레이션 데이터가 들어간 Timeline 사용 사례다."
     },
     {
       "item": "Work Order Form",
@@ -2249,12 +2254,12 @@
       "layer": "템플릿",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.work-order-kanban",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "experimental.kanban-board",
+        "card"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "작업지시 데이터가 들어간 Kanban 후보의 도메인 사용 사례다."
     },
     {
       "item": "Production Gantt Chart",
@@ -2285,12 +2290,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.bom-tree",
-        "src/components/experimental/tier3-mes-prototypes.tsx"
+        "experimental.tree-view",
+        "badge"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "BOM·계보 데이터가 들어간 Tree View 사용 사례로 통합한다."
     },
     {
       "item": "Lot Progress Bar",
@@ -2355,12 +2360,13 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.sampling-plan",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "table",
+        "checkbox",
+        "progress"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다."
     },
     {
       "item": "Defect Pareto Chart",
@@ -2403,24 +2409,25 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.genealogy-tree",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "experimental.tree-view",
+        "badge"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "BOM·계보 데이터가 들어간 Tree View 사용 사례로 통합한다."
     },
     {
       "item": "Inventory Level Indicator",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.inventory-level",
-        "src/components/experimental/tier3-mes-prototypes.tsx"
+        "card",
+        "badge",
+        "progress"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "설비·재고라는 데이터 이름만 다르고 기존 Card·Badge·Progress 구조를 그대로 사용한다."
     },
     {
       "item": "Warehouse Location Map",
@@ -2451,12 +2458,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.approval-stepper",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "experimental.stepper",
+        "badge"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "결재라는 업무명만 추가된 Stepper 사용 사례이므로 독립 후보로 유지하지 않는다."
     },
     {
       "item": "E-signature Pad",
@@ -2475,36 +2482,36 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.document-version-history",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "list",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "목록 행과 파일·이력 데이터, 행 동작의 조합이며 별도 UI 해부 구조가 없다."
     },
     {
       "item": "Attachment List",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.attachment-list",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "list",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "목록 행과 파일·이력 데이터, 행 동작의 조합이며 별도 UI 해부 구조가 없다."
     },
     {
       "item": "Maintenance Schedule Calendar",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.maintenance-calendar",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "experimental.shift-calendar",
+        "date-picker"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "정비 일정은 별도 달력이 아니라 일정 캘린더 후보의 데이터 사용 사례로 통합한다."
     },
     {
       "item": "Downtime Reason Selector",
@@ -2522,24 +2529,26 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.equipment-detail-card",
-        "src/components/experimental/tier3-mes-prototypes.tsx"
+        "card",
+        "descriptions",
+        "badge"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "설비 상세 데이터의 Card·Descriptions·Badge 조합이다."
     },
     {
       "item": "PM Checklist",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.pm-checklist",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "table",
+        "checkbox",
+        "progress"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다."
     },
     {
       "item": "Link",
@@ -2582,36 +2591,35 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.footer",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "grid-container",
+        "link"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "페이지 하단 레이아웃과 Link 조합이며 독립 MES 패턴 근거가 없다."
     },
     {
       "item": "File",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "intentional-composition",
       "evidence": [
-        "experimental.file-row",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "list",
+        "button"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "목록 행과 파일·이력 데이터, 행 동작의 조합이며 별도 UI 해부 구조가 없다."
     },
     {
       "item": "Hero",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.hero",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "desktop MES scope policy"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "마케팅·요금제 화면 템플릿은 현재 MES 업무 UI 자동 생성 범위에서 제외한다."
     },
     {
       "item": "Skip Link",

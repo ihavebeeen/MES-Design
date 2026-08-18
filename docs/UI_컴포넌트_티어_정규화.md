@@ -7,7 +7,8 @@
 ## 현재 결론
 
 - Tier 1·2는 현재 데스크톱 MES 화면 생성 기반을 막는 미충족 항목이 없다.
-- Tier 3의 독립 후보 37개와 Tier 4·5 후보 69개는 동작 가능한 격리 프로토타입으로 만들었다. 비가동 사유 선택은 기존 Select의 업무 옵션 조합으로 재분류했다.
+- 107개로 시작한 격리 후보를 전수 재분류해, 기존 자산 사용 사례 48개와 MES 범위 제외 템플릿 2개를 후보에서 제거했다.
+- 독립 구조·상호작용이 남는 실험 후보는 Tier 3 23개, Tier 4 22개, Tier 5 12개로 총 57개다.
 - Tier 4는 선택적 확장, Tier 5는 원칙적으로 핵심 MES 범위 밖이라는 우선순위를 유지한다. 코드가 존재해도 실제 업무 근거와 사용자 승인 전에는 표준으로 승격하지 않는다.
 - 새로운 전체 화면은 커버리지 숫자를 늘리기 위해 추가하지 않는다. 기존 조합 문법으로 설명되지 않는 실제 화면이 나타날 때만 근거로 사용한다.
 
@@ -29,9 +30,9 @@
 |---:|---:|---:|---:|---:|---:|
 | 1 | 45 | 45 | 0 | 0 | 0 |
 | 2 | 45 | 45 | 0 | 0 | 0 |
-| 3 | 57 | 20 | 37 | 0 | 0 |
-| 4 | 41 | 0 | 41 | 0 | 0 |
-| 5 | 28 | 0 | 28 | 0 | 0 |
+| 3 | 57 | 34 | 23 | 0 | 0 |
+| 4 | 41 | 19 | 22 | 0 | 0 |
+| 5 | 28 | 14 | 12 | 0 | 2 |
 
 ## Tier 1
 
@@ -150,12 +151,12 @@
 | Row Expand / Detail Drawer | 없음 | 격리 실험 후보 | experimental.row-expand-detail, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Inline Edit | 없음 | 패턴·화면 조합 구현 | selection.reveal-inline-editor, table.grouped-list | Table 위에 선택·그룹 행 동작 규칙을 조합한다. |
 | Global Search / Search Overlay | 없음 | 격리 실험 후보 | experimental.global-search, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Settings List | 없음 | 격리 실험 후보 | experimental.settings-list, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Settings List | 없음 | 독립 컴포넌트 불필요 | list, switch, select | 설정 데이터 목록에 기존 Switch와 Select를 배치하는 사용 사례다. |
 | Cascader | 없음 | 격리 실험 후보 | experimental.cascader, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Transfer (Dual List) | 없음 | 격리 실험 후보 | experimental.transfer, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Tree Select | 없음 | 격리 실험 후보 | experimental.tree-select, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | QR Code | 없음 | 격리 실험 후보 | experimental.qr-code, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Result Page | 없음 | 격리 실험 후보 | experimental.result-page, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Result Page | 없음 | 독립 컴포넌트 불필요 | empty-state, descriptions, button | 결과·빈 상태 콘텐츠만 달라지는 기존 피드백 자산 조합이다. |
 | Mask Input | 없음 | 격리 실험 후보 | experimental.mask-input, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Copy Button | 없음 | 독립 컴포넌트 불필요 | button, icon-copy | Button 또는 IconButton에 복사 아이콘과 동작을 결합한다. |
 | Burger (Hamburger Menu) | 없음 | 독립 컴포넌트 불필요 | icon-button, icon-menu | IconButton과 실제 MES 메뉴 아이콘의 조합이다. |
@@ -170,30 +171,30 @@
 | Icon Cell | 없음 | 독립 컴포넌트 불필요 | table, src/components/icons | Table 셀 render slot과 등록 아이콘을 조합한다. |
 | Column Resize / Reorder / Show-Hide | 없음 | 격리 실험 후보 | experimental.column-controls, src/components/experimental/tier3-grid-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Virtual Scroll Grid | 없음 | 격리 실험 후보 | experimental.virtual-scroll-grid, src/components/experimental/tier3-grid-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Real-time Update Indicator (Grid) | 없음 | 격리 실험 후보 | experimental.realtime-grid-indicator, src/components/experimental/tier3-grid-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Real-time Update Indicator (Grid) | 없음 | 독립 컴포넌트 불필요 | table, badge | 갱신 상태는 Table 주변에 Badge를 배치하는 상태 표현이다. |
 | Resizable / Draggable Popup | 없음 | 격리 실험 후보 | experimental.resizable-popup, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Andon Board (설비 상태판) | 없음 | 격리 실험 후보 | experimental.andon-board, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Equipment Status Card/Tile | 없음 | 격리 실험 후보 | experimental.equipment-status-card, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Equipment Status Card/Tile | 없음 | 독립 컴포넌트 불필요 | card, badge, progress | 설비·재고라는 데이터 이름만 다르고 기존 Card·Badge·Progress 구조를 그대로 사용한다. |
 | Real-time Gauge/Meter | 없음 | 격리 실험 후보 | experimental.gauge, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| OEE Dashboard Widget | 없음 | 격리 실험 후보 | experimental.oee-widget, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Real-time Trend Chart | 없음 | 격리 실험 후보 | experimental.realtime-trend, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Blinking Alarm Indicator | 없음 | 격리 실험 후보 | experimental.blinking-alarm, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| OEE Dashboard Widget | 없음 | 독립 컴포넌트 불필요 | analytics-charts, card, progress | OEE·실시간이라는 업무 데이터만 추가된 기존 분석 차트와 요약 카드 조합이다. |
+| Real-time Trend Chart | 없음 | 독립 컴포넌트 불필요 | analytics-charts, card, progress | OEE·실시간이라는 업무 데이터만 추가된 기존 분석 차트와 요약 카드 조합이다. |
+| Blinking Alarm Indicator | 없음 | 독립 컴포넌트 불필요 | alarm-list-item, badge | 알람 표시 자산의 상태·모션 확장 문제이며 별도 컴포넌트가 아니다. |
 | Severity Level Tag | 없음 | 독립 컴포넌트 불필요 | badge, tag | 새 원시 컴포넌트보다 기존 상태 표현 컴포넌트의 variant로 해결한다. |
 | Alarm Acknowledge Button | 없음 | 독립 컴포넌트 불필요 | button, alarm-list-item | 알람 행의 업무 액션으로 Button을 배치한다. |
 | Work Order Form | 없음 | 패턴·화면 조합 구현 | batch-work-order, section.form-grid | 작업지시 화면과 공통 FormGrid 조합으로 충족한다. |
-| Routing/BOM Tree | 없음 | 격리 실험 후보 | experimental.bom-tree, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Routing/BOM Tree | 없음 | 독립 컴포넌트 불필요 | experimental.tree-view, badge | BOM·계보 데이터가 들어간 Tree View 사용 사례로 통합한다. |
 | Lot Progress Bar | 없음 | 독립 컴포넌트 불필요 | progress | 기존 Progress에 LOT 문맥의 라벨과 값을 전달한다. |
 | Defect Type Tag/Selector | 없음 | 독립 컴포넌트 불필요 | tag, select | 표시는 Tag, 변경은 Select를 사용한다. |
 | SPC Control Chart | 없음 | 격리 실험 후보 | experimental.spc-chart, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | 검사 판정 버튼 (○/△/✕/-) | 없음 | 컴포넌트 구현 | inspection-judgement | MES 검사 판정 전용 컴포넌트가 등록되어 있다. |
 | Lot/Serial Search | 없음 | 독립 컴포넌트 불필요 | search-input, combobox | 검색어 입력과 후보 선택을 기존 입력 컴포넌트로 조합한다. |
-| Inventory Level Indicator | 없음 | 격리 실험 후보 | experimental.inventory-level, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Approval Workflow Stepper | 없음 | 격리 실험 후보 | experimental.approval-stepper, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Attachment List | 없음 | 격리 실험 후보 | experimental.attachment-list, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Inventory Level Indicator | 없음 | 독립 컴포넌트 불필요 | card, badge, progress | 설비·재고라는 데이터 이름만 다르고 기존 Card·Badge·Progress 구조를 그대로 사용한다. |
+| Approval Workflow Stepper | 없음 | 독립 컴포넌트 불필요 | experimental.stepper, badge | 결재라는 업무명만 추가된 Stepper 사용 사례이므로 독립 후보로 유지하지 않는다. |
+| Attachment List | 없음 | 독립 컴포넌트 불필요 | list, button | 목록 행과 파일·이력 데이터, 행 동작의 조합이며 별도 UI 해부 구조가 없다. |
 | Downtime Reason Selector | 없음 | 독립 컴포넌트 불필요 | select | 비가동 사유는 독립 컴포넌트가 아니라 기존 Select에 업무별 사유 옵션을 주입하는 사용 사례다. |
-| Equipment Detail Card | 없음 | 격리 실험 후보 | experimental.equipment-detail-card, src/components/experimental/tier3-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Footer | 없음 | 격리 실험 후보 | experimental.footer, src/components/experimental/tier3-content-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| File | 없음 | 격리 실험 후보 | experimental.file-row, src/components/experimental/tier3-input-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Equipment Detail Card | 없음 | 독립 컴포넌트 불필요 | card, descriptions, badge | 설비 상세 데이터의 Card·Descriptions·Badge 조합이다. |
+| Footer | 없음 | 독립 컴포넌트 불필요 | grid-container, link | 페이지 하단 레이아웃과 Link 조합이며 독립 MES 패턴 근거가 없다. |
+| File | 없음 | 독립 컴포넌트 불필요 | list, button | 목록 행과 파일·이력 데이터, 행 동작의 조합이며 별도 UI 해부 구조가 없다. |
 
 ## Tier 4
 
@@ -202,42 +203,42 @@
 | Breakpoint Scale | 없음 | 격리 실험 후보 | experimental.breakpoint-scale, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Split Button | 없음 | 격리 실험 후보 | experimental.split-button, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Segmented Control | 없음 | 격리 실험 후보 | experimental.segmented-control, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Chip Selector | 없음 | 격리 실험 후보 | experimental.chip-selector, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Chip Selector | 없음 | 독립 컴포넌트 불필요 | toggle-button, tag | 칩 모양의 선택은 ToggleButton과 Tag 표현으로 해결한다. |
 | OTP / PIN Input | 없음 | 격리 실험 후보 | experimental.otp-pin-input, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Rich Text Editor | 없음 | 격리 실험 후보 | experimental.rich-text-editor, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Context Menu | 없음 | 격리 실험 후보 | experimental.context-menu, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Back to Top | 없음 | 격리 실험 후보 | experimental.back-to-top, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Back to Top | 없음 | 독립 컴포넌트 불필요 | button | 위치와 클릭 후 동작이 다른 Button 사용 사례이며 별도 컴포넌트가 아니다. |
 | Avatar | 없음 | 격리 실험 후보 | experimental.avatar, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Progress Circle | 없음 | 격리 실험 후보 | experimental.progress-circle, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Disclosure Panel | 없음 | 격리 실험 후보 | experimental.disclosure-panel, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Empty Illustration | 없음 | 격리 실험 후보 | experimental.empty-illustration, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Disclosure Panel | 없음 | 독립 컴포넌트 불필요 | accordion, collapsible | 동일 동작을 Accordion 또는 Collapsible로 해결한다. |
+| Empty Illustration | 없음 | 독립 컴포넌트 불필요 | empty-state, descriptions, button | 결과·빈 상태 콘텐츠만 달라지는 기존 피드백 자산 조합이다. |
 | Chat Bubble / Message | 없음 | 격리 실험 후보 | experimental.chat-message, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| AI Prompt Input Box | 없음 | 격리 실험 후보 | experimental.ai-prompt-input, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| AI Prompt Input Box | 없음 | 독립 컴포넌트 불필요 | textarea, button | 입력 목적만 다르고 기존 Textarea와 Button 조합으로 충족한다. |
 | Drag Handle / Sortable List | 없음 | 격리 실험 후보 | experimental.sortable-list, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Comment / Activity Feed | 없음 | 격리 실험 후보 | experimental.activity-feed, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Comment / Activity Feed | 없음 | 독립 컴포넌트 불필요 | list, experimental.timeline | 활동 데이터가 들어간 List 또는 Timeline 사용 사례로 통합한다. |
 | Kanban Board | 없음 | 격리 실험 후보 | experimental.kanban-board, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Global Top Loading Bar | 없음 | 격리 실험 후보 | experimental.top-loading-bar, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Kbd (Keyboard Key) | 없음 | 격리 실험 후보 | experimental.kbd, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Aspect Ratio | 없음 | 격리 실험 후보 | experimental.aspect-ratio, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Global Top Loading Bar | 없음 | 독립 컴포넌트 불필요 | progress | 페이지 상단에 배치한 Progress 상태 표현이다. |
+| Kbd (Keyboard Key) | 없음 | 독립 컴포넌트 불필요 | typography | HTML 의미 요소와 타이포그래피 토큰으로 해결되는 콘텐츠 표현이다. |
+| Aspect Ratio | 없음 | 독립 컴포넌트 불필요 | grid-container, css.aspect-ratio | 레이아웃 CSS 제약이며 독립 UI 자산으로 취급하지 않는다. |
 | Anchor / Scroll Spy | 없음 | 격리 실험 후보 | experimental.anchor-scroll-spy, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Overflow List ("+N more") | 없음 | 격리 실험 후보 | experimental.overflow-list, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Spoiler (더보기/접기 텍스트) | 없음 | 격리 실험 후보 | experimental.spoiler, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Full-screen Modal | 없음 | 격리 실험 후보 | experimental.full-screen-modal, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Spoiler (더보기/접기 텍스트) | 없음 | 독립 컴포넌트 불필요 | collapsible, button | 기존 Collapsible의 텍스트 콘텐츠 사용 사례다. |
+| Full-screen Modal | 없음 | 독립 컴포넌트 불필요 | center-modal | 전체 화면 크기는 CenterModal의 크기·레이아웃 확장 문제이며 별도 팝업 패턴이 아니다. |
 | Process Flow Diagram | 없음 | 격리 실험 후보 | experimental.process-flow, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Utilization Heatmap | 없음 | 격리 실험 후보 | experimental.utilization-heatmap, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Utilization Heatmap | 없음 | 독립 컴포넌트 불필요 | section.measurement-heatmap-analysis, analytics-charts | 기존 히트맵 분석 섹션에 가동률 데이터를 주입하는 사용 사례다. |
 | Factory Layout View | 없음 | 격리 실험 후보 | experimental.factory-layout, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Escalation Timeline | 없음 | 격리 실험 후보 | experimental.escalation-timeline, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Work Order Kanban | 없음 | 격리 실험 후보 | experimental.work-order-kanban, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Escalation Timeline | 없음 | 독립 컴포넌트 불필요 | experimental.timeline, badge | 에스컬레이션 데이터가 들어간 Timeline 사용 사례다. |
+| Work Order Kanban | 없음 | 독립 컴포넌트 불필요 | experimental.kanban-board, card | 작업지시 데이터가 들어간 Kanban 후보의 도메인 사용 사례다. |
 | Production Gantt Chart | 없음 | 격리 실험 후보 | experimental.production-gantt, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Shift Schedule Calendar | 없음 | 격리 실험 후보 | experimental.shift-calendar, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Sampling Plan Table | 없음 | 격리 실험 후보 | experimental.sampling-plan, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Sampling Plan Table | 없음 | 독립 컴포넌트 불필요 | table, checkbox, progress | 업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다. |
 | Defect Pareto Chart | 없음 | 격리 실험 후보 | experimental.defect-pareto, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Genealogy Tree | 없음 | 격리 실험 후보 | experimental.genealogy-tree, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Genealogy Tree | 없음 | 독립 컴포넌트 불필요 | experimental.tree-view, badge | BOM·계보 데이터가 들어간 Tree View 사용 사례로 통합한다. |
 | Label Print Preview | 없음 | 격리 실험 후보 | experimental.label-print-preview, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | E-signature Pad | 없음 | 격리 실험 후보 | experimental.e-signature, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Document Version History | 없음 | 격리 실험 후보 | experimental.document-version-history, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Maintenance Schedule Calendar | 없음 | 격리 실험 후보 | experimental.maintenance-calendar, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| PM Checklist | 없음 | 격리 실험 후보 | experimental.pm-checklist, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Document Version History | 없음 | 독립 컴포넌트 불필요 | list, button | 목록 행과 파일·이력 데이터, 행 동작의 조합이며 별도 UI 해부 구조가 없다. |
+| Maintenance Schedule Calendar | 없음 | 독립 컴포넌트 불필요 | experimental.shift-calendar, date-picker | 정비 일정은 별도 달력이 아니라 일정 캘린더 후보의 데이터 사용 사례로 통합한다. |
+| PM Checklist | 없음 | 독립 컴포넌트 불필요 | table, checkbox, progress | 업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다. |
 | Skip Link | 없음 | 격리 실험 후보 | experimental.skip-link, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Visually Hidden | 없음 | 격리 실험 후보 | experimental.visually-hidden, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 
@@ -245,34 +246,34 @@
 
 | 항목 | 최초 상태 | 현재 판정 | 근거 | 비고 |
 |---|---|---|---|---|
-| Floating Action Button (FAB) | 없음 | 격리 실험 후보 | experimental.fab, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Floating Action Button (FAB) | 없음 | 독립 컴포넌트 불필요 | button | 위치와 클릭 후 동작이 다른 Button 사용 사례이며 별도 컴포넌트가 아니다. |
 | Rating (별점) | 없음 | 격리 실험 후보 | experimental.rating, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Color Picker | 없음 | 격리 실험 후보 | experimental.color-picker, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Command Palette | 없음 | 격리 실험 후보 | experimental.command-palette, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Avatar Group | 없음 | 격리 실험 후보 | experimental.avatar-group, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Command Palette | 없음 | 독립 컴포넌트 불필요 | experimental.global-search, search-input | 명령이라는 콘텐츠만 다른 전역 검색 오버레이 사용 사례로 통합한다. |
+| Avatar Group | 없음 | 독립 컴포넌트 불필요 | experimental.avatar, button | Avatar 반복과 초과 인원 Button 조합이다. |
 | Carousel | 없음 | 격리 실험 후보 | experimental.carousel, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Video Player | 없음 | 격리 실험 후보 | experimental.video-player, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Streaming Text Indicator | 없음 | 격리 실험 후보 | experimental.streaming-text, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Streaming Text Indicator | 없음 | 독립 컴포넌트 불필요 | typography, loading-spinner | 텍스트 출력 상태를 나타내는 타이포그래피·로딩 표현이다. |
 | Code Block | 없음 | 격리 실험 후보 | experimental.code-block, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Markdown Renderer | 없음 | 격리 실험 후보 | experimental.markdown-renderer, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Suggestion Chip | 없음 | 격리 실험 후보 | experimental.suggestion-chip, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Source / Citation Badge | 없음 | 격리 실험 후보 | experimental.citation-badge, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Suggestion Chip | 없음 | 독립 컴포넌트 불필요 | toggle-button, tag | 칩 모양의 선택은 ToggleButton과 Tag 표현으로 해결한다. |
+| Source / Citation Badge | 없음 | 독립 컴포넌트 불필요 | badge, popover, button | 출처 데이터가 들어간 Badge와 Popover 조합이다. |
 | Onboarding Tooltip / Product Tour | 없음 | 격리 실험 후보 | experimental.product-tour, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Onboarding Checklist | 없음 | 격리 실험 후보 | experimental.onboarding-checklist, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Cookie Consent Banner | 없음 | 격리 실험 후보 | experimental.cookie-consent, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Feedback Widget | 없음 | 격리 실험 후보 | experimental.feedback-widget, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Live Chat Widget | 없음 | 격리 실험 후보 | experimental.live-chat-widget, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Dark Mode Toggle | 없음 | 격리 실험 후보 | experimental.dark-mode, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Language / Locale Selector | 없음 | 격리 실험 후보 | experimental.locale-selector, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Pricing Table | 없음 | 격리 실험 후보 | experimental.pricing-table, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Upgrade / Paywall Prompt | 없음 | 격리 실험 후보 | experimental.paywall, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Onboarding Checklist | 없음 | 독립 컴포넌트 불필요 | table, checkbox, progress | 업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다. |
+| Cookie Consent Banner | 없음 | 독립 컴포넌트 불필요 | notice-banner, button | 안내 내용과 후속 동작만 달라지는 NoticeBanner와 Button 조합이다. |
+| Feedback Widget | 없음 | 독립 컴포넌트 불필요 | textarea, button | 입력 목적만 다르고 기존 Textarea와 Button 조합으로 충족한다. |
+| Live Chat Widget | 없음 | 독립 컴포넌트 불필요 | experimental.chat-message, input, button | Chat Message 후보에 입력과 전송 동작을 붙인 제품 사용 사례다. |
+| Dark Mode Toggle | 없음 | 독립 컴포넌트 불필요 | toggle-button, semantic-tokens | 테마 전환은 ToggleButton과 토큰 모드 정책의 조합이다. |
+| Language / Locale Selector | 없음 | 독립 컴포넌트 불필요 | select | 언어 목록을 제공하는 기존 Select 사용 사례다. |
+| Pricing Table | 없음 | 현재 범위 제외 | desktop MES scope policy | 마케팅·요금제 화면 템플릿은 현재 MES 업무 UI 자동 생성 범위에서 제외한다. |
+| Upgrade / Paywall Prompt | 없음 | 독립 컴포넌트 불필요 | notice-banner, button | 안내 내용과 후속 동작만 달라지는 NoticeBanner와 Button 조합이다. |
 | Mentions | 없음 | 격리 실험 후보 | experimental.mentions, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Watermark | 없음 | 격리 실험 후보 | experimental.watermark, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Masonry Grid | 없음 | 격리 실험 후보 | experimental.masonry-grid, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Blockquote | 없음 | 격리 실험 후보 | experimental.blockquote, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Blockquote | 없음 | 독립 컴포넌트 불필요 | typography | HTML 의미 요소와 타이포그래피 토큰으로 해결되는 콘텐츠 표현이다. |
 | Marquee | 없음 | 격리 실험 후보 | experimental.marquee, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Warehouse Location Map | 없음 | 격리 실험 후보 | experimental.warehouse-map, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Hero | 없음 | 격리 실험 후보 | experimental.hero, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Hero | 없음 | 현재 범위 제외 | desktop MES scope policy | 마케팅·요금제 화면 템플릿은 현재 MES 업무 UI 자동 생성 범위에서 제외한다. |
 
 ## 운영 규칙
 

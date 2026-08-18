@@ -4,12 +4,12 @@ test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
 });
 
-test("Tier 3 실험 후보는 37개를 격리하고 기본 상호작용과 페이지 폭을 유지한다", async ({ page }) => {
+test("Tier 3 실험 후보는 23개를 격리하고 기본 상호작용과 페이지 폭을 유지한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/experimental/experimental-tier-3");
 
   const prototypes = page.locator("[data-experimental-prototype]");
-  await expect(prototypes).toHaveCount(37);
+  await expect(prototypes).toHaveCount(23);
   await expect(page.getByRole("navigation", { name: "breadcrumb" })).toContainText("Experimental");
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
@@ -34,18 +34,6 @@ test("Tier 3 실험 후보는 37개를 격리하고 기본 상호작용과 페�
   await globalSearch.getByRole("button", { name: /메뉴·LOT·품목 전체 검색/ }).click();
   await expect(globalSearch.getByRole("textbox", { name: "검색어 입력" })).toBeVisible();
 
-  const realtime = page.locator('[data-experimental-prototype="ExperimentalRealtimeGridIndicator"]');
-  await realtime.getByRole("button", { name: "새 데이터 반영", exact: true }).click();
-  await expect(realtime).toContainText("갱신 2회");
-
-  const alarm = page.locator('[data-experimental-prototype="ExperimentalBlinkingAlarm"]');
-  await alarm.getByRole("button", { name: "알람 확인", exact: true }).click();
-  await expect(alarm.getByRole("button", { name: "확인됨", exact: true })).toBeDisabled();
-
-  const inventory = page.locator('[data-experimental-prototype="ExperimentalInventoryLevel"]');
-  await inventory.getByRole("button", { name: "사용", exact: true }).click();
-  await expect(inventory).toContainText("부족");
-  await expect(inventory).toContainText("24%");
 });
 
 test("Tier 4·5 실험 후보와 좌측 티어 구획은 격리 수량과 기본 동작을 유지한다", async ({ page }) => {
@@ -62,7 +50,7 @@ test("Tier 4·5 실험 후보와 좌측 티어 구획은 격리 수량과 기본
   await expect(page.locator('main a[href="/experimental/experimental-tier-3/"]')).toBeVisible();
   await expect(page.locator('main a[href="/experimental/experimental-tier-4/"]')).toBeVisible();
   await expect(page.locator('main a[href="/experimental/experimental-tier-5/"]')).toBeVisible();
-  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(41);
+  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(22);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
   const splitButton = page.locator('[data-experimental-prototype="ExperimentalSplitButton"]');
@@ -70,12 +58,12 @@ test("Tier 4·5 실험 후보와 좌측 티어 구획은 격리 수량과 기본
   await splitButton.getByRole("button", { name: "임시저장", exact: true }).click();
   await expect(splitButton).toContainText("임시저장");
 
-  const pmChecklist = page.locator('[data-experimental-prototype="ExperimentalPmChecklist"]');
-  await pmChecklist.getByText("안전센서 동작", { exact: true }).click();
-  await expect(pmChecklist).toContainText("50%");
+  const segmented = page.locator('[data-experimental-prototype="ExperimentalSegmentedControl"]');
+  await segmented.getByRole("button", { name: "비가동", exact: true }).click();
+  await expect(segmented).toContainText("선택: 비가동");
 
   await page.goto("/experimental/experimental-tier-5");
-  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(28);
+  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(12);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
   const rating = page.locator('[data-experimental-prototype="ExperimentalRating"]');

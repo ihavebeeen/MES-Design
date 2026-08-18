@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Descriptions } from "@/components/ui/descriptions";
 import { Input } from "@/components/ui/input";
-import { Link } from "@/components/ui/link";
 import { SearchInput } from "@/components/ui/search-input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { PrototypeCard } from "./prototype-shell";
 
 export function ExperimentalTimeline() {
@@ -96,34 +93,7 @@ export function ExperimentalGlobalSearch() {
   );
 }
 
-export function ExperimentalSettingsList() {
-  const [autoLot, setAutoLot] = useState(true);
-  const [alerts, setAlerts] = useState(false);
-  const [warehouse, setWarehouse] = useState("raw");
-  return (
-    <PrototypeCard title="설정 목록" code="ExperimentalSettingsList" kind="패턴">
-      <div className="divide-y divide-mes-gray-30 rounded-mes-control border border-mes-gray-30">
-        <div className="flex items-center justify-between gap-4 p-3"><div><p className="text-[13px] font-semibold">LOT 자동 생성</p><p className="text-[11px] text-mes-gray-60">입고 저장 시 LOT 번호를 생성합니다.</p></div><Switch checked={autoLot} onChange={(event) => setAutoLot(event.target.checked)} /></div>
-        <div className="flex items-center justify-between gap-4 p-3"><div><p className="text-[13px] font-semibold">이상 알림</p><p className="text-[11px] text-mes-gray-60">기준 이탈 시 담당자에게 알립니다.</p></div><Switch checked={alerts} onChange={(event) => setAlerts(event.target.checked)} /></div>
-        <div className="flex items-center justify-between gap-4 p-3"><p className="text-[13px] font-semibold">기본 창고</p><div className="w-40"><Select value={warehouse} onValueChange={setWarehouse}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="raw">원재료 창고</SelectItem><SelectItem value="product">제품 창고</SelectItem></SelectContent></Select></div></div>
-      </div>
-    </PrototypeCard>
-  );
-}
 
-export function ExperimentalResultPage() {
-  const [reset, setReset] = useState(false);
-  return (
-    <PrototypeCard title="처리 결과" code="ExperimentalResultPage" kind="패턴">
-      <div className="py-3 text-center">
-        <span className="mx-auto flex size-10 items-center justify-center rounded-full bg-mes-gray-130 text-[20px] text-white">✓</span>
-        <h4 className="mt-3 text-[16px] font-semibold text-mes-gray-130">{reset ? "새 작업을 시작합니다" : "입고실적 등록이 완료되었습니다"}</h4>
-        <p className="mt-1 text-[12px] text-mes-gray-60">처리번호 RC-20260818-0042</p>
-        <div className="mt-4 flex justify-center gap-2"><Button size="small" variant="fillGray">목록으로</Button><Button size="small" variant="fillBlack" onClick={() => setReset(true)}>계속 등록</Button></div>
-      </div>
-    </PrototypeCard>
-  );
-}
 
 function Highlight({ text, query }: { text: string; query: string }) {
   if (!query) return <>{text}</>;
@@ -143,16 +113,6 @@ export function ExperimentalSearchHighlight() {
   );
 }
 
-export function ExperimentalFooter() {
-  return (
-    <PrototypeCard title="페이지 푸터" code="ExperimentalFooter" kind="패턴">
-      <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-mes-gray-30 pt-3 text-[11px] text-mes-gray-60">
-        <span>© 2026 YOUHOST MES</span>
-        <span className="flex gap-3"><Link href="#" className="text-[11px]">이용안내</Link><Link href="#" className="text-[11px]">개인정보처리방침</Link><span>v0.1.0</span></span>
-      </footer>
-    </PrototypeCard>
-  );
-}
 
 export function ExperimentalResizablePanel() {
   return (

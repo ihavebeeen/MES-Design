@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -79,16 +78,6 @@ export function ExperimentalVirtualScrollGrid() {
           </div>
         </div>
       </div>
-    </PrototypeCard>
-  );
-}
-
-export function ExperimentalRealtimeGridIndicator() {
-  const [version, setVersion] = useState(1);
-  return (
-    <PrototypeCard title="실시간 갱신 표시" code="ExperimentalRealtimeGridIndicator" kind="패턴">
-      <div className="mb-2 flex items-center justify-between"><Badge variant="blueLight">● 연결됨 · 갱신 {version}회</Badge><Button size="xsmall" variant="lineBlacktxt" onClick={() => setVersion((current) => current + 1)}>새 데이터 반영</Button></div>
-      <div className="grid grid-cols-[1fr_100px_100px] rounded-mes-control border border-mes-gray-30 text-[12px]"><span className="bg-mes-gray-10 px-3 py-2 font-semibold">설비</span><span className="bg-mes-gray-10 px-3 py-2 font-semibold">현재 생산량</span><span className="bg-mes-gray-10 px-3 py-2 font-semibold">갱신</span><span className="border-t border-mes-gray-30 px-3 py-2">성형 1호기</span><span className="border-t border-mes-gray-30 px-3 py-2">{(12400 + version * 8).toLocaleString()}</span><span className="border-t border-mes-gray-30 px-3 py-2 text-mes-primary-60">방금 전</span></div>
     </PrototypeCard>
   );
 }

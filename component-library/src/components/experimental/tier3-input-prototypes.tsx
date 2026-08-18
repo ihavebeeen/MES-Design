@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -187,60 +187,6 @@ export function ExperimentalMaskInput() {
       <label className="block text-[13px] font-medium text-mes-gray-100">LOT 번호</label>
       <Input className="mt-2" value={value} onChange={(event) => setValue(format(event.target.value))} placeholder="LOT-2026-0001" />
       <p className="mt-1 text-[11px] text-mes-gray-60">형식: 영문 3자-연도 4자-일련번호 4자</p>
-    </PrototypeCard>
-  );
-}
-
-export function ExperimentalApprovalStepper() {
-  const [approved, setApproved] = useState(1);
-  const steps = ["작성", "생산팀장", "공장장", "완료"];
-  return (
-    <PrototypeCard title="결재 단계" code="ExperimentalApprovalStepper" kind="패턴">
-      <div className="flex items-start justify-between gap-2">
-        {steps.map((step, index) => (
-          <div key={step} className="flex flex-1 flex-col items-center text-center">
-            <span className={`flex size-7 items-center justify-center rounded-full border text-[12px] font-semibold ${index <= approved ? "border-mes-gray-130 bg-mes-gray-130 text-white" : "border-mes-gray-40 bg-white text-mes-gray-60"}`}>{index + 1}</span>
-            <span className="mt-1.5 text-[12px] text-mes-gray-90">{step}</span>
-          </div>
-        ))}
-      </div>
-      <div className="mt-4 flex justify-end"><Button size="small" variant="fillBlack" disabled={approved >= steps.length - 1} onClick={() => setApproved((current) => current + 1)}>다음 승인 처리</Button></div>
-    </PrototypeCard>
-  );
-}
-
-export function ExperimentalAttachmentList() {
-  const [items, setItems] = useState(["작업표준서.pdf", "검사성적서.xlsx"]);
-  return (
-    <PrototypeCard title="첨부파일 목록" code="ExperimentalAttachmentList" kind="패턴">
-      <div className="space-y-2">
-        {items.map((item) => (
-          <div key={item} className="flex items-center justify-between rounded-mes-control border border-mes-gray-30 px-3 py-2">
-            <span className="truncate text-[13px] text-mes-gray-100">{item}</span>
-            <Button size="xsmall" variant="lineBlacktxt" onClick={() => setItems((current) => current.filter((value) => value !== item))}>삭제</Button>
-          </div>
-        ))}
-        <label className="inline-flex cursor-pointer">
-          <span className="inline-flex h-8 items-center rounded-mes-control border border-mes-gray-30 bg-white px-2.5 text-[14px] font-semibold text-mes-gray-130">파일 추가</span>
-          <Input type="file" className="!absolute !h-px !w-px !overflow-hidden !border-0 !p-0 opacity-0" onChange={(event) => { const name = event.target.files?.[0]?.name; if (name) setItems((current) => [...current, name]); }} />
-        </label>
-      </div>
-    </PrototypeCard>
-  );
-}
-
-export function ExperimentalFileRow() {
-  const [downloaded, setDownloaded] = useState(false);
-  const size = useMemo(() => "2.4 MB", []);
-  return (
-    <PrototypeCard title="파일 행" code="ExperimentalFileRow" kind="컴포넌트">
-      <div className="flex items-center justify-between gap-3 rounded-mes-control border border-mes-gray-30 px-3 py-2.5">
-        <div className="min-w-0">
-          <p className="truncate text-[13px] font-medium text-mes-gray-110">생산실적_20260818.xlsx</p>
-          <p className="text-[11px] text-mes-gray-60">{size}</p>
-        </div>
-        <Button size="xsmall" variant={downloaded ? "fillGray" : "lineBlacktxt"} onClick={() => setDownloaded(true)}>{downloaded ? "완료" : "다운로드"}</Button>
-      </div>
     </PrototypeCard>
   );
 }
