@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/server";
-import { serveStdio } from "@modelcontextprotocol/server/stdio";
+import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 import { z } from "zod";
 import { auditScreenImplementation } from "./audit-screen-implementation.mjs";
 import { generateScreenTsx, generatedSourceFingerprint } from "./generate-screen-tsx.mjs";
@@ -195,7 +195,8 @@ export function createMesUiMcpServer() {
 }
 
 if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {
-  serveStdio(() => createMesUiMcpServer(), {
-    onerror: (error) => console.error(`[mes-ui-mcp] ${error.message}`),
-  });
+  const server = createMesUiMcpServer();
+  const transport = new StdioServerTransport();
+  transport.onerror = (error) => console.error(`[mes-ui-mcp] ${error.message}`);
+  await server.connect(transport);
 }
