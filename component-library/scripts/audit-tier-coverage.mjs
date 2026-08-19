@@ -218,15 +218,12 @@ const reclassifiedCompositions = [
   { items: ["Full-screen Modal"], evidence: ["center-modal"], note: "전체 화면 크기는 CenterModal의 크기·레이아웃 확장 문제이며 별도 팝업 패턴이 아니다." },
   { items: ["Utilization Heatmap"], evidence: ["section.measurement-heatmap-analysis", "analytics-charts"], note: "기존 히트맵 분석 섹션에 가동률 데이터를 주입하는 사용 사례다." },
   { items: ["Escalation Timeline"], evidence: ["timeline", "badge"], note: "에스컬레이션 데이터가 들어간 Timeline 사용 사례다." },
-  { items: ["Work Order Kanban"], evidence: ["experimental.kanban-board", "card"], note: "작업지시 데이터가 들어간 Kanban 후보의 도메인 사용 사례다." },
   { items: ["Sampling Plan Table", "PM Checklist", "Onboarding Checklist"], evidence: ["table", "checkbox", "progress"], note: "업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다." },
-  { items: ["Maintenance Schedule Calendar"], evidence: ["experimental.shift-calendar", "date-picker"], note: "정비 일정은 별도 달력이 아니라 일정 캘린더 후보의 데이터 사용 사례로 통합한다." },
   { items: ["Command Palette"], evidence: ["experimental.global-search", "search-input"], note: "명령이라는 콘텐츠만 다른 전역 검색 오버레이 사용 사례로 통합한다." },
   { items: ["Avatar Group"], evidence: ["experimental.avatar", "button"], note: "Avatar 반복과 초과 인원 Button 조합이다." },
   { items: ["Streaming Text Indicator"], evidence: ["typography", "loading-spinner"], note: "텍스트 출력 상태를 나타내는 타이포그래피·로딩 표현이다." },
   { items: ["Source / Citation Badge"], evidence: ["badge", "popover", "button"], note: "출처 데이터가 들어간 Badge와 Popover 조합이다." },
   { items: ["Cookie Consent Banner", "Upgrade / Paywall Prompt"], evidence: ["notice-banner", "button"], note: "안내 내용과 후속 동작만 달라지는 NoticeBanner와 Button 조합이다." },
-  { items: ["Live Chat Widget"], evidence: ["experimental.chat-message", "input", "button"], note: "Chat Message 후보에 입력과 전송 동작을 붙인 제품 사용 사례다." },
   { items: ["Dark Mode Toggle"], evidence: ["toggle-button", "semantic-tokens"], note: "테마 전환은 ToggleButton과 토큰 모드 정책의 조합이다." },
   { items: ["Language / Locale Selector"], evidence: ["select"], note: "언어 목록을 제공하는 기존 Select 사용 사례다." },
 ];
@@ -258,6 +255,18 @@ set(
   "deferred-evidence",
   ["tier3-user-review-2026-08-19"],
   "기반이던 전체 검색 후보가 제외되어 실제 업무 근거가 생길 때 별도 검토한다.",
+);
+set(
+  ["Breakpoint Scale", "Split Button", "OTP / PIN Input", "Rich Text Editor", "Context Menu", "Chat Bubble / Message", "Drag Handle / Sortable List", "Kanban Board", "Work Order Kanban", "Anchor / Scroll Spy", "Factory Layout View", "Shift Schedule Calendar", "Maintenance Schedule Calendar", "Defect Pareto Chart", "Label Print Preview", "E-signature Pad", "Skip Link", "Visually Hidden"],
+  "excluded-scope",
+  ["tier4-user-review-2026-08-19"],
+  "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다.",
+);
+set(
+  ["Rating (별점)", "Color Picker", "Carousel", "Video Player", "Code Block", "Markdown Renderer", "Mentions", "Watermark", "Masonry Grid", "Marquee", "Warehouse Location Map", "Live Chat Widget"],
+  "excluded-scope",
+  ["tier5-user-review-2026-08-19"],
+  "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다.",
 );
 
 set(
@@ -395,7 +404,7 @@ function renderMarkdown(audit) {
     "",
     "- Tier 1·2는 현재 데스크톱 MES 화면 생성 기반을 막는 미충족 항목이 없다.",
     "- 107개로 시작한 격리 후보를 전수 재분류해, 기존 자산 사용 사례 48개와 MES 범위 제외 템플릿 2개를 후보에서 제거했다.",
-    "- 2026-08-19 사용자 판정 후 격리 후보는 Tier 3 2개, Tier 4 22개, Tier 5 12개로 총 36개다. Tier 3의 11개는 provisional 표준으로 승격했고 10개는 제외했다.",
+    "- 2026-08-19 사용자 판정 후 격리 후보는 Tier 3 2개, Tier 4 6개, Tier 5 1개로 총 9개다. Tier 3의 11개는 provisional 표준으로 승격했고 Tier 3~5에서 37개를 제외했다.",
     "- Tier 4는 선택적 확장, Tier 5는 원칙적으로 핵심 MES 범위 밖이라는 우선순위를 유지한다. 코드가 존재해도 실제 업무 근거와 사용자 승인 전에는 표준으로 승격하지 않는다.",
     "- 새로운 전체 화면은 커버리지 숫자를 늘리기 위해 추가하지 않는다. 기존 조합 문법으로 설명되지 않는 실제 화면이 나타날 때만 근거로 사용한다.",
     "",

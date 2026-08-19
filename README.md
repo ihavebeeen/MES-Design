@@ -35,7 +35,7 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 | UI 컴포넌트 | 82 |
 | Shell·Section·Behavior·Recipe 패턴 | 57 |
 | AI 조회용 화면 정의 | 28 |
-| 격리된 Tier 3~5 실험 후보 | 36 |
+| 격리된 Tier 3~5 실험 후보 | 9 |
 | 시각 회귀 기준 케이스 | 31 |
 | Playwright 시각·상호작용 테스트 | 47 |
 | 정적 생성 페이지 | 117 |
@@ -196,8 +196,8 @@ npm run dev
 - `/components/`: 개별 UI 컴포넌트와 상태
 - `/generated-screens/`: 표준 화면과 격리된 AI 생성 시안 검토함
 - `/experimental/experimental-tier-3/`: 사용자 판정 후 유지된 Tier 3 기능 후보 2종
-- `/experimental/experimental-tier-4/`: 표준 AI 생성에서 격리된 Tier 4 기능 후보 22종
-- `/experimental/experimental-tier-5/`: 표준 AI 생성에서 격리된 Tier 5 기능 후보 12종
+- `/experimental/experimental-tier-4/`: 사용자 판정 후 유지된 Tier 4 기능 후보 6종
+- `/experimental/experimental-tier-5/`: 사용자 판정 후 유지된 Tier 5 기능 후보 1종
 - `/patterns/`: MES 업무 화면과 조합 패턴
 - `/patterns/original-mes-screen-assets/`: 정규화된 원본 화면 자산
 
@@ -225,7 +225,7 @@ npm run check:screen-contracts
 # 로컬 MCP를 실제 클라이언트로 연결하여 조회·생성·감사·경로 차단 검사
 npm run mcp:check
 
-# 실험 후보 36종의 격리 정책·코드 연결 및 Tier 3 판정 무결성
+# 실험 후보 9종의 격리 정책·코드 연결 및 Tier 3~5 판정 무결성
 npm run check:experimental
 
 # 현재 코드의 디자인 값 분포와 검토 후보 갱신

@@ -37,46 +37,74 @@
         "experimental.spc-chart"
       ],
       "notes": ["검색어 강조는 실험 후보로 유지하되 후속 수정이 필요하다.", "승격 자산은 사용자 승인 근거만 충족했으므로 시각·업무 검증 완료 전까지 provisional로 관리한다."]
+    },
+    {
+      "id": "tier4-user-review-2026-08-19",
+      "tier": 4,
+      "decidedAt": "2026-08-19",
+      "decisionAuthority": "design-system-owner",
+      "promotions": [],
+      "retainedCandidateIds": [
+        "experimental.production-gantt",
+        "experimental.process-flow",
+        "experimental.overflow-list",
+        "experimental.progress-circle",
+        "experimental.avatar",
+        "experimental.segmented-control"
+      ],
+      "rejectedCandidateIds": [
+        "experimental.breakpoint-scale",
+        "experimental.split-button",
+        "experimental.otp-pin-input",
+        "experimental.rich-text-editor",
+        "experimental.context-menu",
+        "experimental.chat-message",
+        "experimental.sortable-list",
+        "experimental.kanban-board",
+        "experimental.anchor-scroll-spy",
+        "experimental.factory-layout",
+        "experimental.shift-calendar",
+        "experimental.defect-pareto",
+        "experimental.label-print-preview",
+        "experimental.e-signature",
+        "experimental.skip-link",
+        "experimental.visually-hidden"
+      ],
+      "notes": ["세그먼트는 ButtonGroup의 무상태 레이아웃, ToggleButton의 독립 on/off와 달리 그룹 내 단일 선택 계약 후보로 유지한다.", "브레이크포인트는 UI 컴포넌트가 아니라 반응형 정책·토큰 성격이므로 버튼 프로토타입을 제거한다."]
+    },
+    {
+      "id": "tier5-user-review-2026-08-19",
+      "tier": 5,
+      "decidedAt": "2026-08-19",
+      "decisionAuthority": "design-system-owner",
+      "promotions": [],
+      "retainedCandidateIds": ["experimental.product-tour"],
+      "rejectedCandidateIds": [
+        "experimental.rating",
+        "experimental.color-picker",
+        "experimental.carousel",
+        "experimental.video-player",
+        "experimental.code-block",
+        "experimental.markdown-renderer",
+        "experimental.mentions",
+        "experimental.watermark",
+        "experimental.masonry-grid",
+        "experimental.marquee",
+        "experimental.warehouse-map"
+      ],
+      "notes": ["온보딩 툴팁·제품 투어만 실험 후보로 유지하고 나머지는 현재 MES 자동 생성 범위에서 제외한다."]
     }
   ],
   "candidates": [
     { "id": "experimental.image-thumbnail", "checklistItem": "Image / Thumbnail", "name": "이미지 썸네일", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalImageThumbnail", "standardRefs": ["button"], "limitations": ["실제 이미지 저장소 미연결"] },
     { "id": "experimental.search-highlight", "checklistItem": "Search Highlight Text", "name": "검색어 강조", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalSearchHighlight", "standardRefs": ["input"], "limitations": ["사용자 판정에 따라 후속 수정 필요", "한국어 형태소 검색 미지원"] },
 
-    { "id": "experimental.breakpoint-scale", "checklistItem": "Breakpoint Scale", "name": "브레이크포인트 스케일", "kind": "foundation", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalBreakpointScale", "standardRefs": ["grid-container"], "limitations": ["정식 반응형 토큰 미승인"] },
-    { "id": "experimental.split-button", "checklistItem": "Split Button", "name": "분할 버튼", "kind": "component", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalSplitButton", "standardRefs": ["button"], "limitations": ["MES 사용 근거 없음"] },
-    { "id": "experimental.segmented-control", "checklistItem": "Segmented Control", "name": "세그먼트 컨트롤", "kind": "component", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalSegmentedControl", "standardRefs": ["button-group"], "limitations": ["Radio·Tab과의 선택 기준 미승인"] },
-    { "id": "experimental.otp-pin-input", "checklistItem": "OTP / PIN Input", "name": "OTP·PIN 입력", "kind": "component", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalOtpPinInput", "standardRefs": ["input"], "limitations": ["인증 시스템 미연결"] },
-    { "id": "experimental.rich-text-editor", "checklistItem": "Rich Text Editor", "name": "서식 텍스트 편집기", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalRichTextEditor", "standardRefs": ["textarea", "button"], "limitations": ["HTML 저장·정제 미구현"] },
-    { "id": "experimental.context-menu", "checklistItem": "Context Menu", "name": "컨텍스트 메뉴", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalContextMenu", "standardRefs": ["button", "dropdown-menu"], "limitations": ["우클릭·키보드 정책 미승인"] },
+    { "id": "experimental.segmented-control", "checklistItem": "Segmented Control", "name": "세그먼트 컨트롤", "kind": "component", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalSegmentedControl", "standardRefs": ["button-group", "toggle-button", "radio"], "limitations": ["ButtonGroup과 달리 단일 선택 상태를 소유하고 ToggleButton과 달리 상호배타적이다.", "방향키 이동과 roving tabindex 계약 미구현"] },
     { "id": "experimental.avatar", "checklistItem": "Avatar", "name": "사용자 아바타", "kind": "component", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalAvatar", "standardRefs": ["badge"], "limitations": ["프로필 이미지 저장 미연결"] },
     { "id": "experimental.progress-circle", "checklistItem": "Progress Circle", "name": "원형 진행률", "kind": "component", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalProgressCircle", "standardRefs": ["progress"], "limitations": ["원형 표현 사용 맥락 미승인"] },
-    { "id": "experimental.chat-message", "checklistItem": "Chat Bubble / Message", "name": "메시지 버블", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalChatMessage", "standardRefs": ["input", "button"], "limitations": ["채팅 업무 근거·서버 미연결"] },
-    { "id": "experimental.sortable-list", "checklistItem": "Drag Handle / Sortable List", "name": "정렬 가능한 목록", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalSortableList", "standardRefs": ["list", "button"], "limitations": ["드래그 대신 키보드 호환 이동 버튼 사용"] },
-    { "id": "experimental.kanban-board", "checklistItem": "Kanban Board", "name": "칸반 보드", "kind": "template", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalKanbanBoard", "standardRefs": ["card", "button"], "limitations": ["범용 칸반의 MES 용례 미확정"] },
-    { "id": "experimental.anchor-scroll-spy", "checklistItem": "Anchor / Scroll Spy", "name": "앵커·스크롤 추적", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalAnchorScrollSpy", "standardRefs": ["button-group"], "limitations": ["실제 스크롤 컨테이너 미연결"] },
     { "id": "experimental.overflow-list", "checklistItem": "Overflow List (\"+N more\")", "name": "넘침 목록", "kind": "component", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalOverflowList", "standardRefs": ["badge", "button"], "limitations": ["컨테이너 실측 기반 자동 계산 미구현"] },
     { "id": "experimental.process-flow", "checklistItem": "Process Flow Diagram", "name": "공정 흐름도", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-mes-prototypes.tsx", "exportName": "ExperimentalProcessFlowDiagram", "standardRefs": ["button", "badge"], "limitations": ["실제 공정 라우팅 미연결"] },
-    { "id": "experimental.factory-layout", "checklistItem": "Factory Layout View", "name": "공장 배치도", "kind": "template", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-mes-prototypes.tsx", "exportName": "ExperimentalFactoryLayoutView", "standardRefs": ["button", "grid-container"], "limitations": ["실제 공장 도면 미연결"] },
     { "id": "experimental.production-gantt", "checklistItem": "Production Gantt Chart", "name": "생산 간트 차트", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-mes-prototypes.tsx", "exportName": "ExperimentalProductionGantt", "standardRefs": ["analytics-charts", "button"], "limitations": ["계획 변경·충돌 계산 미구현"] },
-    { "id": "experimental.shift-calendar", "checklistItem": "Shift Schedule Calendar", "name": "교대 일정 달력", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-mes-prototypes.tsx", "exportName": "ExperimentalShiftScheduleCalendar", "standardRefs": ["date-picker", "button"], "limitations": ["조·교대 규칙 미연결"] },
-    { "id": "experimental.defect-pareto", "checklistItem": "Defect Pareto Chart", "name": "불량 파레토 차트", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-mes-prototypes.tsx", "exportName": "ExperimentalDefectParetoChart", "standardRefs": ["analytics-charts", "button"], "limitations": ["누적 비율 계산·원본 미연결"] },
-    { "id": "experimental.label-print-preview", "checklistItem": "Label Print Preview", "name": "라벨 인쇄 미리보기", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-mes-prototypes.tsx", "exportName": "ExperimentalLabelPrintPreview", "standardRefs": ["input", "button"], "limitations": ["프린터·바코드 인코더 미연결"] },
-    { "id": "experimental.e-signature", "checklistItem": "E-signature Pad", "name": "전자서명 패드", "kind": "pattern", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-mes-prototypes.tsx", "exportName": "ExperimentalESignaturePad", "standardRefs": ["button"], "limitations": ["실제 필기 입력·법적 서명 요건 미구현"] },
-    { "id": "experimental.skip-link", "checklistItem": "Skip Link", "name": "본문 바로가기", "kind": "utility", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-mes-prototypes.tsx", "exportName": "ExperimentalSkipLink", "standardRefs": ["button"], "limitations": ["실제 페이지 포커스 대상 미연결"] },
-    { "id": "experimental.visually-hidden", "checklistItem": "Visually Hidden", "name": "시각적으로 숨김", "kind": "utility", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-mes-prototypes.tsx", "exportName": "ExperimentalVisuallyHidden", "standardRefs": ["sr-only"], "limitations": ["화면별 보조기기 문구 검토 필요"] },
-
-    { "id": "experimental.rating", "checklistItem": "Rating (별점)", "name": "별점 평가", "kind": "component", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalRating", "standardRefs": ["button"], "limitations": ["평가 업무 근거 없음"] },
-    { "id": "experimental.color-picker", "checklistItem": "Color Picker", "name": "색상 선택기", "kind": "component", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalColorPicker", "standardRefs": ["button", "color-palette"], "limitations": ["사용자 정의 색상 정책 없음"] },
-    { "id": "experimental.carousel", "checklistItem": "Carousel", "name": "캐러셀", "kind": "pattern", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalCarousel", "standardRefs": ["button", "card"], "limitations": ["MES 업무 화면 사용 근거 없음"] },
-    { "id": "experimental.video-player", "checklistItem": "Video Player", "name": "영상 플레이어", "kind": "pattern", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalVideoPlayer", "standardRefs": ["button", "progress"], "limitations": ["실제 영상·자막 미연결"] },
-    { "id": "experimental.code-block", "checklistItem": "Code Block", "name": "코드 블록", "kind": "component", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalCodeBlock", "standardRefs": ["button"], "limitations": ["구문 강조·클립보드 미연결"] },
-    { "id": "experimental.markdown-renderer", "checklistItem": "Markdown Renderer", "name": "마크다운 렌더러", "kind": "pattern", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalMarkdownRenderer", "standardRefs": ["button"], "limitations": ["파서·보안 정제 미연결"] },
-    { "id": "experimental.product-tour", "checklistItem": "Onboarding Tooltip / Product Tour", "name": "온보딩 툴팁·제품 투어", "kind": "pattern", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalProductTour", "standardRefs": ["tooltip", "button"], "limitations": ["대상 요소 포커스 미연결"] },
-    { "id": "experimental.mentions", "checklistItem": "Mentions", "name": "사용자 멘션", "kind": "pattern", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalMentions", "standardRefs": ["input", "badge"], "limitations": ["사용자 검색·알림 미연결"] },
-    { "id": "experimental.watermark", "checklistItem": "Watermark", "name": "워터마크", "kind": "component", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalWatermark", "standardRefs": ["panel"], "limitations": ["출력·캡처 정책 미연결"] },
-    { "id": "experimental.masonry-grid", "checklistItem": "Masonry Grid", "name": "메이슨리 그리드", "kind": "pattern", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalMasonryGrid", "standardRefs": ["grid-container", "card"], "limitations": ["MES 정보 구조 근거 없음"] },
-    { "id": "experimental.marquee", "checklistItem": "Marquee", "name": "흐르는 공지", "kind": "component", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalMarquee", "standardRefs": ["notice-banner", "button"], "limitations": ["실제 흐름 애니메이션·접근성 미승인"] },
-    { "id": "experimental.warehouse-map", "checklistItem": "Warehouse Location Map", "name": "창고 위치 지도", "kind": "template", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalWarehouseLocationMap", "standardRefs": ["button", "grid-container"], "limitations": ["실제 로케이션 도면 미연결"] }
+    { "id": "experimental.product-tour", "checklistItem": "Onboarding Tooltip / Product Tour", "name": "온보딩 툴팁·제품 투어", "kind": "pattern", "tier": 5, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier5-prototypes.tsx", "exportName": "ExperimentalProductTour", "standardRefs": ["tooltip", "button"], "limitations": ["대상 요소 포커스 미연결"] }
   ]
 }

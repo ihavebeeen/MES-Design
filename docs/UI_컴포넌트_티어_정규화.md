@@ -8,7 +8,7 @@
 
 - Tier 1·2는 현재 데스크톱 MES 화면 생성 기반을 막는 미충족 항목이 없다.
 - 107개로 시작한 격리 후보를 전수 재분류해, 기존 자산 사용 사례 48개와 MES 범위 제외 템플릿 2개를 후보에서 제거했다.
-- 2026-08-19 사용자 판정 후 격리 후보는 Tier 3 2개, Tier 4 22개, Tier 5 12개로 총 36개다. Tier 3의 11개는 provisional 표준으로 승격했고 10개는 제외했다.
+- 2026-08-19 사용자 판정 후 격리 후보는 Tier 3 2개, Tier 4 6개, Tier 5 1개로 총 9개다. Tier 3의 11개는 provisional 표준으로 승격했고 Tier 3~5에서 37개를 제외했다.
 - Tier 4는 선택적 확장, Tier 5는 원칙적으로 핵심 MES 범위 밖이라는 우선순위를 유지한다. 코드가 존재해도 실제 업무 근거와 사용자 승인 전에는 표준으로 승격하지 않는다.
 - 새로운 전체 화면은 커버리지 숫자를 늘리기 위해 추가하지 않는다. 기존 조합 문법으로 설명되지 않는 실제 화면이 나타날 때만 근거로 사용한다.
 
@@ -31,8 +31,8 @@
 | 1 | 45 | 45 | 0 | 0 | 0 |
 | 2 | 45 | 45 | 0 | 0 | 0 |
 | 3 | 57 | 45 | 2 | 0 | 10 |
-| 4 | 41 | 19 | 22 | 0 | 0 |
-| 5 | 28 | 13 | 12 | 1 | 2 |
+| 4 | 41 | 17 | 6 | 0 | 18 |
+| 5 | 28 | 12 | 1 | 1 | 14 |
 
 ## Tier 1
 
@@ -200,79 +200,79 @@
 
 | 항목 | 최초 상태 | 현재 판정 | 근거 | 비고 |
 |---|---|---|---|---|
-| Breakpoint Scale | 없음 | 격리 실험 후보 | experimental.breakpoint-scale, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Split Button | 없음 | 격리 실험 후보 | experimental.split-button, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Breakpoint Scale | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| Split Button | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Segmented Control | 없음 | 격리 실험 후보 | experimental.segmented-control, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Chip Selector | 없음 | 독립 컴포넌트 불필요 | toggle-button, tag | 칩 모양의 선택은 ToggleButton과 Tag 표현으로 해결한다. |
-| OTP / PIN Input | 없음 | 격리 실험 후보 | experimental.otp-pin-input, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Rich Text Editor | 없음 | 격리 실험 후보 | experimental.rich-text-editor, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Context Menu | 없음 | 격리 실험 후보 | experimental.context-menu, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| OTP / PIN Input | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| Rich Text Editor | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| Context Menu | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Back to Top | 없음 | 독립 컴포넌트 불필요 | button | 위치와 클릭 후 동작이 다른 Button 사용 사례이며 별도 컴포넌트가 아니다. |
 | Avatar | 없음 | 격리 실험 후보 | experimental.avatar, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Progress Circle | 없음 | 격리 실험 후보 | experimental.progress-circle, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Disclosure Panel | 없음 | 독립 컴포넌트 불필요 | accordion, collapsible | 동일 동작을 Accordion 또는 Collapsible로 해결한다. |
 | Empty Illustration | 없음 | 독립 컴포넌트 불필요 | empty-state, descriptions, button | 결과·빈 상태 콘텐츠만 달라지는 기존 피드백 자산 조합이다. |
-| Chat Bubble / Message | 없음 | 격리 실험 후보 | experimental.chat-message, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Chat Bubble / Message | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | AI Prompt Input Box | 없음 | 독립 컴포넌트 불필요 | textarea, button | 입력 목적만 다르고 기존 Textarea와 Button 조합으로 충족한다. |
-| Drag Handle / Sortable List | 없음 | 격리 실험 후보 | experimental.sortable-list, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Drag Handle / Sortable List | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Comment / Activity Feed | 없음 | 독립 컴포넌트 불필요 | list, timeline | 활동 데이터가 들어간 List 또는 Timeline 사용 사례로 통합한다. |
-| Kanban Board | 없음 | 격리 실험 후보 | experimental.kanban-board, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Kanban Board | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Global Top Loading Bar | 없음 | 독립 컴포넌트 불필요 | progress | 페이지 상단에 배치한 Progress 상태 표현이다. |
 | Kbd (Keyboard Key) | 없음 | 독립 컴포넌트 불필요 | typography | HTML 의미 요소와 타이포그래피 토큰으로 해결되는 콘텐츠 표현이다. |
 | Aspect Ratio | 없음 | 독립 컴포넌트 불필요 | grid-container, css.aspect-ratio | 레이아웃 CSS 제약이며 독립 UI 자산으로 취급하지 않는다. |
-| Anchor / Scroll Spy | 없음 | 격리 실험 후보 | experimental.anchor-scroll-spy, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Anchor / Scroll Spy | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Overflow List ("+N more") | 없음 | 격리 실험 후보 | experimental.overflow-list, src/components/experimental/tier4-general-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Spoiler (더보기/접기 텍스트) | 없음 | 독립 컴포넌트 불필요 | collapsible, button | 기존 Collapsible의 텍스트 콘텐츠 사용 사례다. |
 | Full-screen Modal | 없음 | 독립 컴포넌트 불필요 | center-modal | 전체 화면 크기는 CenterModal의 크기·레이아웃 확장 문제이며 별도 팝업 패턴이 아니다. |
 | Process Flow Diagram | 없음 | 격리 실험 후보 | experimental.process-flow, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Utilization Heatmap | 없음 | 독립 컴포넌트 불필요 | section.measurement-heatmap-analysis, analytics-charts | 기존 히트맵 분석 섹션에 가동률 데이터를 주입하는 사용 사례다. |
-| Factory Layout View | 없음 | 격리 실험 후보 | experimental.factory-layout, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Factory Layout View | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Escalation Timeline | 없음 | 독립 컴포넌트 불필요 | timeline, badge | 에스컬레이션 데이터가 들어간 Timeline 사용 사례다. |
-| Work Order Kanban | 없음 | 독립 컴포넌트 불필요 | experimental.kanban-board, card | 작업지시 데이터가 들어간 Kanban 후보의 도메인 사용 사례다. |
+| Work Order Kanban | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Production Gantt Chart | 없음 | 격리 실험 후보 | experimental.production-gantt, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Shift Schedule Calendar | 없음 | 격리 실험 후보 | experimental.shift-calendar, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Shift Schedule Calendar | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Sampling Plan Table | 없음 | 독립 컴포넌트 불필요 | table, checkbox, progress | 업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다. |
-| Defect Pareto Chart | 없음 | 격리 실험 후보 | experimental.defect-pareto, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Defect Pareto Chart | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Genealogy Tree | 없음 | 독립 컴포넌트 불필요 | tree-view, badge | BOM·계보 데이터가 들어간 TreeView 사용 사례로 통합한다. |
-| Label Print Preview | 없음 | 격리 실험 후보 | experimental.label-print-preview, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| E-signature Pad | 없음 | 격리 실험 후보 | experimental.e-signature, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Label Print Preview | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| E-signature Pad | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Document Version History | 없음 | 독립 컴포넌트 불필요 | list, button | 목록 행과 파일·이력 데이터, 행 동작의 조합이며 별도 UI 해부 구조가 없다. |
-| Maintenance Schedule Calendar | 없음 | 독립 컴포넌트 불필요 | experimental.shift-calendar, date-picker | 정비 일정은 별도 달력이 아니라 일정 캘린더 후보의 데이터 사용 사례로 통합한다. |
+| Maintenance Schedule Calendar | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | PM Checklist | 없음 | 독립 컴포넌트 불필요 | table, checkbox, progress | 업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다. |
-| Skip Link | 없음 | 격리 실험 후보 | experimental.skip-link, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Visually Hidden | 없음 | 격리 실험 후보 | experimental.visually-hidden, src/components/experimental/tier4-mes-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Skip Link | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| Visually Hidden | 없음 | 현재 범위 제외 | tier4-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 
 ## Tier 5
 
 | 항목 | 최초 상태 | 현재 판정 | 근거 | 비고 |
 |---|---|---|---|---|
 | Floating Action Button (FAB) | 없음 | 독립 컴포넌트 불필요 | button | 위치와 클릭 후 동작이 다른 Button 사용 사례이며 별도 컴포넌트가 아니다. |
-| Rating (별점) | 없음 | 격리 실험 후보 | experimental.rating, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Color Picker | 없음 | 격리 실험 후보 | experimental.color-picker, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Rating (별점) | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| Color Picker | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Command Palette | 없음 | 실제 근거 발생 시 검토 | tier3-user-review-2026-08-19 | 기반이던 전체 검색 후보가 제외되어 실제 업무 근거가 생길 때 별도 검토한다. |
 | Avatar Group | 없음 | 독립 컴포넌트 불필요 | experimental.avatar, button | Avatar 반복과 초과 인원 Button 조합이다. |
-| Carousel | 없음 | 격리 실험 후보 | experimental.carousel, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Video Player | 없음 | 격리 실험 후보 | experimental.video-player, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Carousel | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| Video Player | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Streaming Text Indicator | 없음 | 독립 컴포넌트 불필요 | typography, loading-spinner | 텍스트 출력 상태를 나타내는 타이포그래피·로딩 표현이다. |
-| Code Block | 없음 | 격리 실험 후보 | experimental.code-block, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Markdown Renderer | 없음 | 격리 실험 후보 | experimental.markdown-renderer, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Code Block | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| Markdown Renderer | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Suggestion Chip | 없음 | 독립 컴포넌트 불필요 | toggle-button, tag | 칩 모양의 선택은 ToggleButton과 Tag 표현으로 해결한다. |
 | Source / Citation Badge | 없음 | 독립 컴포넌트 불필요 | badge, popover, button | 출처 데이터가 들어간 Badge와 Popover 조합이다. |
 | Onboarding Tooltip / Product Tour | 없음 | 격리 실험 후보 | experimental.product-tour, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
 | Onboarding Checklist | 없음 | 독립 컴포넌트 불필요 | table, checkbox, progress | 업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다. |
 | Cookie Consent Banner | 없음 | 독립 컴포넌트 불필요 | notice-banner, button | 안내 내용과 후속 동작만 달라지는 NoticeBanner와 Button 조합이다. |
 | Feedback Widget | 없음 | 독립 컴포넌트 불필요 | textarea, button | 입력 목적만 다르고 기존 Textarea와 Button 조합으로 충족한다. |
-| Live Chat Widget | 없음 | 독립 컴포넌트 불필요 | experimental.chat-message, input, button | Chat Message 후보에 입력과 전송 동작을 붙인 제품 사용 사례다. |
+| Live Chat Widget | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Dark Mode Toggle | 없음 | 독립 컴포넌트 불필요 | toggle-button, semantic-tokens | 테마 전환은 ToggleButton과 토큰 모드 정책의 조합이다. |
 | Language / Locale Selector | 없음 | 독립 컴포넌트 불필요 | select | 언어 목록을 제공하는 기존 Select 사용 사례다. |
 | Pricing Table | 없음 | 현재 범위 제외 | desktop MES scope policy | 마케팅·요금제 화면 템플릿은 현재 MES 업무 UI 자동 생성 범위에서 제외한다. |
 | Upgrade / Paywall Prompt | 없음 | 독립 컴포넌트 불필요 | notice-banner, button | 안내 내용과 후속 동작만 달라지는 NoticeBanner와 Button 조합이다. |
-| Mentions | 없음 | 격리 실험 후보 | experimental.mentions, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Watermark | 없음 | 격리 실험 후보 | experimental.watermark, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Masonry Grid | 없음 | 격리 실험 후보 | experimental.masonry-grid, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Mentions | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| Watermark | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| Masonry Grid | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Blockquote | 없음 | 독립 컴포넌트 불필요 | typography | HTML 의미 요소와 타이포그래피 토큰으로 해결되는 콘텐츠 표현이다. |
-| Marquee | 없음 | 격리 실험 후보 | experimental.marquee, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
-| Warehouse Location Map | 없음 | 격리 실험 후보 | experimental.warehouse-map, src/components/experimental/tier5-prototypes.tsx | 기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다. |
+| Marquee | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
+| Warehouse Location Map | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Hero | 없음 | 현재 범위 제외 | desktop MES scope policy | 마케팅·요금제 화면 템플릿은 현재 MES 업무 UI 자동 생성 범위에서 제외한다. |
 
 ## 운영 규칙

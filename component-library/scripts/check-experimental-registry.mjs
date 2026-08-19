@@ -42,16 +42,20 @@ for (const candidate of registry.candidates ?? []) {
   }
 }
 
+const reviewedCandidateCounts = { 3: 23, 4: 22, 5: 12 };
+const reviewedTiers = new Set();
 for (const batch of registry.decisionBatches ?? []) {
   if (!batch.id || !/^\d{4}-\d{2}-\d{2}$/.test(batch.decidedAt ?? "")) errors.push("decision batch에는 id와 YYYY-MM-DD decidedAt이 필요합니다.");
   if (![3, 4, 5].includes(batch.tier)) errors.push(`${batch.id}: tier는 3~5여야 합니다.`);
+  if (reviewedTiers.has(batch.tier)) errors.push(`${batch.id}: Tier ${batch.tier} 판정 배치가 중복되었습니다.`);
+  reviewedTiers.add(batch.tier);
   if (!batch.decisionAuthority) errors.push(`${batch.id}: decisionAuthority가 필요합니다.`);
   const promotionCandidateIds = (batch.promotions ?? []).map((entry) => entry.candidateId);
   const retainedIds = batch.retainedCandidateIds ?? [];
   const rejectedIds = batch.rejectedCandidateIds ?? [];
   const decidedIds = [...promotionCandidateIds, ...retainedIds, ...rejectedIds];
   if (new Set(decidedIds).size !== decidedIds.length) errors.push(`${batch.id}: 후보가 여러 판정에 중복 포함되어 있습니다.`);
-  if (batch.tier === 3 && decidedIds.length !== 23) errors.push(`${batch.id}: Tier 3 최초 후보 23개의 판정이 모두 필요합니다 (현재 ${decidedIds.length}).`);
+  if (reviewedCandidateCounts[batch.tier] && decidedIds.length !== reviewedCandidateCounts[batch.tier]) errors.push(`${batch.id}: Tier ${batch.tier} 최초 후보 ${reviewedCandidateCounts[batch.tier]}개의 판정이 모두 필요합니다 (현재 ${decidedIds.length}).`);
   for (const promotion of batch.promotions ?? []) {
     if (ids.has(promotion.candidateId)) errors.push(`${batch.id}: 승격 후보 '${promotion.candidateId}'가 실험 레지스트리에 남아 있습니다.`);
     const targetIds = promotion.registry === "component" ? componentIds : promotion.registry === "pattern" ? patternIds : undefined;
@@ -65,8 +69,11 @@ for (const batch of registry.decisionBatches ?? []) {
     if (ids.has(rejectedId)) errors.push(`${batch.id}: 제외 후보 '${rejectedId}'가 실험 레지스트리에 남아 있습니다.`);
   }
 }
+for (const tier of [3, 4, 5]) {
+  if (!reviewedTiers.has(tier)) errors.push(`Tier ${tier} 사용자 판정 배치가 필요합니다.`);
+}
 
-const expectedCounts = { 3: 2, 4: 22, 5: 12 };
+const expectedCounts = { 3: 2, 4: 6, 5: 1 };
 for (const [tier, expected] of Object.entries(expectedCounts)) {
   if (countsByTier[tier] !== expected) errors.push(`Tier ${tier} 후보는 ${expected}개여야 합니다 (현재 ${countsByTier[tier]}).`);
 }

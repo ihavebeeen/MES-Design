@@ -33,25 +33,26 @@
       },
       "4": {
         "total": 41,
-        "experimental-prototype": 22,
-        "intentional-composition": 19
+        "excluded-scope": 18,
+        "experimental-prototype": 6,
+        "intentional-composition": 17
       },
       "5": {
         "total": 28,
-        "intentional-composition": 13,
-        "experimental-prototype": 12,
+        "intentional-composition": 12,
+        "excluded-scope": 14,
         "deferred-evidence": 1,
-        "excluded-scope": 2
+        "experimental-prototype": 1
       }
     },
     "byDisposition": {
       "implemented-foundation": 9,
-      "experimental-prototype": 36,
+      "excluded-scope": 42,
       "implemented-component": 87,
-      "intentional-composition": 60,
+      "intentional-composition": 57,
+      "experimental-prototype": 9,
       "implemented-pattern": 11,
-      "deferred-evidence": 1,
-      "excluded-scope": 12
+      "deferred-evidence": 1
     }
   },
   "items": [
@@ -142,12 +143,11 @@
       "layer": "토큰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.breakpoint-scale",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Button (Primary)",
@@ -214,12 +214,11 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.split-button",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Floating Action Button (FAB)",
@@ -297,12 +296,11 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.rating",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Chip Selector",
@@ -489,36 +487,33 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.otp-pin-input",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Color Picker",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.color-picker",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Rich Text Editor",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.rich-text-editor",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Navbar / Top Nav",
@@ -609,12 +604,11 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.context-menu",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Command Palette",
@@ -848,12 +842,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.carousel",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Alert / Banner",
@@ -1134,12 +1127,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.video-player",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Logo / Brandmark",
@@ -1171,12 +1163,11 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.chat-message",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "AI Prompt Input Box",
@@ -1207,24 +1198,22 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.code-block",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Markdown Renderer",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.markdown-renderer",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Suggestion Chip",
@@ -1351,12 +1340,11 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.sortable-list",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "User / Account Menu",
@@ -1436,12 +1424,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.kanban-board",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Global Top Loading Bar",
@@ -1483,13 +1470,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "intentional-composition",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.chat-message",
-        "input",
-        "button"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "Chat Message 후보에 입력과 전송 동작을 붙인 제품 사용 사례다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Dark Mode Toggle",
@@ -1577,12 +1562,11 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.mentions",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Transfer (Dual List)",
@@ -1649,36 +1633,33 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.watermark",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Masonry Grid",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.masonry-grid",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Anchor / Scroll Spy",
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.anchor-scroll-spy",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Mask Input",
@@ -1816,12 +1797,11 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.marquee",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Frozen Column Grid",
@@ -2163,12 +2143,11 @@
       "layer": "템플릿",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.factory-layout",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Alarm List/Table",
@@ -2247,12 +2226,11 @@
       "layer": "템플릿",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "intentional-composition",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.kanban-board",
-        "card"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "작업지시 데이터가 들어간 Kanban 후보의 도메인 사용 사례다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Production Gantt Chart",
@@ -2271,12 +2249,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.shift-calendar",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Routing/BOM Tree",
@@ -2365,12 +2342,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.defect-pareto",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Barcode/QR Scan Input",
@@ -2426,24 +2402,22 @@
       "layer": "템플릿",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.warehouse-map",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Label Print Preview",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.label-print-preview",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Approval Workflow Stepper",
@@ -2462,12 +2436,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.e-signature",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Document Version History",
@@ -2498,12 +2471,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "intentional-composition",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.shift-calendar",
-        "date-picker"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "정비 일정은 별도 달력이 아니라 일정 캘린더 후보의 데이터 사용 사례로 통합한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Downtime Reason Selector",
@@ -2618,24 +2590,22 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.skip-link",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Visually Hidden",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.visually-hidden",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "tier4-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     }
   ]
 }

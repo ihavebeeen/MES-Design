@@ -27,7 +27,7 @@ test("Tier 3 사용자 판정 후 유지 후보 2개만 격리하고 기본 상�
 
 });
 
-test("Tier 4·5 실험 후보와 좌측 티어 구획은 격리 수량과 기본 동작을 유지한다", async ({ page }) => {
+test("Tier 4·5 사용자 판정 후 유지 후보와 좌측 티어 구획은 격리 수량과 기본 동작을 유지한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/experimental");
 
@@ -41,29 +41,20 @@ test("Tier 4·5 실험 후보와 좌측 티어 구획은 격리 수량과 기본
   await expect(page.locator('main a[href="/experimental/experimental-tier-3/"]')).toBeVisible();
   await expect(page.locator('main a[href="/experimental/experimental-tier-4/"]')).toBeVisible();
   await expect(page.locator('main a[href="/experimental/experimental-tier-5/"]')).toBeVisible();
-  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(22);
+  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(6);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
-  const splitButton = page.locator('[data-experimental-prototype="ExperimentalSplitButton"]');
-  await splitButton.getByRole("button", { name: "추가 저장 방식" }).click();
-  await splitButton.getByRole("button", { name: "임시저장", exact: true }).click();
-  await expect(splitButton).toContainText("임시저장");
-
   const segmented = page.locator('[data-experimental-prototype="ExperimentalSegmentedControl"]');
-  await segmented.getByRole("button", { name: "비가동", exact: true }).click();
+  await segmented.getByRole("radio", { name: "비가동", exact: true }).click();
   await expect(segmented).toContainText("선택: 비가동");
 
   await page.goto("/experimental/experimental-tier-5");
-  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(12);
+  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
-  const rating = page.locator('[data-experimental-prototype="ExperimentalRating"]');
-  await rating.getByRole("button", { name: "5점", exact: true }).click();
-  await expect(rating).toContainText("5점");
-
-  const warehouseMap = page.locator('[data-experimental-prototype="ExperimentalWarehouseLocationMap"]');
-  await warehouseMap.getByRole("button", { name: "B-03", exact: true }).click();
-  await expect(warehouseMap).toContainText("선택 위치: B-03");
+  const productTour = page.locator('[data-experimental-prototype="ExperimentalProductTour"]');
+  await productTour.getByRole("button", { name: "다음", exact: true }).click();
+  await expect(productTour).toContainText("필터 추가");
 
   const sidebar = page.getByRole("complementary");
   await expect(sidebar.locator('section[aria-label="Tier 1"]')).toHaveCount(2);
