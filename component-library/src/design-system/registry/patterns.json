@@ -378,6 +378,51 @@
       "source": "src/design-system/action-sets.ts",
       "requiredComponents": ["button"],
       "rules": ["재등록 확인 recipe의 화면 로컬 의미를 명시한다."]
+    },
+    {
+      "id": "workflow.stepper",
+      "name": "단계 진행",
+      "kind": "workflow",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "requiredComponents": ["button", "progress"],
+      "rules": ["순서가 있고 이전 단계 완료 여부가 다음 단계에 영향을 주는 입력 흐름에 사용한다.", "단순 탭 전환이나 현재 상태 표시는 각각 PageTopTabItem과 Progress를 사용한다.", "사용자 승인으로 provisional 승격했으며 업무별 단계 계약은 화면에서 명시한다."]
+    },
+    {
+      "id": "selection.transfer-list",
+      "name": "이중 목록 이동",
+      "kind": "selection",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "requiredComponents": ["button", "checkbox"],
+      "rules": ["한정된 후보 집합을 두 상태 사이에서 명시적으로 이동할 때 사용한다.", "대량 데이터에서는 검색·페이지 처리 근거를 추가하기 전 자동 선택하지 않는다."]
+    },
+    {
+      "id": "table.row-expand-detail",
+      "name": "행 상세 펼침",
+      "kind": "table",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "requiredComponents": ["button", "descriptions", "table"],
+      "rules": ["행의 핵심 컬럼을 유지한 채 보조 상세를 바로 아래에서 확인할 때 사용한다.", "편집량이 많거나 독립 URL이 필요한 상세는 SideSlidePanel 또는 별도 화면을 사용한다."]
+    },
+    {
+      "id": "table.frozen-column-grid",
+      "name": "고정 컬럼 그리드",
+      "kind": "table",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "requiredComponents": ["table", "scroll-area"],
+      "rules": ["가로 스크롤 중 식별 기준 컬럼을 계속 보여야 할 때만 사용한다.", "고정 컬럼의 누적 너비와 헤더·본문 컬럼 배열은 같은 column 정의에서 계산한다.", "브라우저별 sticky 경계 시각 검증 전까지 provisional로 취급한다."]
+    },
+    {
+      "id": "table.grouped-header-grid",
+      "name": "그룹 헤더 그리드",
+      "kind": "table",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "requiredComponents": ["table"],
+      "rules": ["여러 하위 컬럼이 하나의 상위 의미를 공유할 때 사용한다.", "상위 colspan과 하위 leaf 컬럼 수는 같은 groups 정의에서 계산한다.", "가변 그룹 깊이는 검증되지 않았으므로 현재 2단 헤더에만 사용한다."]
     }
   ]
 }

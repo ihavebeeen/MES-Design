@@ -145,8 +145,8 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   },
   {
     id: "experimental-tier-3",
-    label: "Tier 3 실험 후보",
-    labelEn: "Tier 3 Experimental",
+    label: "Tier 3 유지 후보 (2)",
+    labelEn: "Tier 3 Retained",
   },
   {
     id: "experimental-tier-4",

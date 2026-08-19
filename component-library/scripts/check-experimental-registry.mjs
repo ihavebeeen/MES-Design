@@ -5,6 +5,10 @@ import { fileURLToPath } from "node:url";
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const registryPath = path.join(projectRoot, "src/design-system/registry/experimental-candidates.json");
 const registry = JSON.parse(fs.readFileSync(registryPath, "utf8"));
+const componentRegistry = JSON.parse(fs.readFileSync(path.join(projectRoot, "src/design-system/registry/components.json"), "utf8"));
+const patternRegistry = JSON.parse(fs.readFileSync(path.join(projectRoot, "src/design-system/registry/patterns.json"), "utf8"));
+const componentIds = new Set(componentRegistry.components?.map((entry) => entry.id));
+const patternIds = new Set(patternRegistry.patterns?.map((entry) => entry.id));
 const allowedKinds = new Set(["component", "pattern", "template", "foundation", "utility"]);
 const ids = new Set();
 const checklistItems = new Set();
@@ -38,7 +42,31 @@ for (const candidate of registry.candidates ?? []) {
   }
 }
 
-const expectedCounts = { 3: 23, 4: 22, 5: 12 };
+for (const batch of registry.decisionBatches ?? []) {
+  if (!batch.id || !/^\d{4}-\d{2}-\d{2}$/.test(batch.decidedAt ?? "")) errors.push("decision batch에는 id와 YYYY-MM-DD decidedAt이 필요합니다.");
+  if (![3, 4, 5].includes(batch.tier)) errors.push(`${batch.id}: tier는 3~5여야 합니다.`);
+  if (!batch.decisionAuthority) errors.push(`${batch.id}: decisionAuthority가 필요합니다.`);
+  const promotionCandidateIds = (batch.promotions ?? []).map((entry) => entry.candidateId);
+  const retainedIds = batch.retainedCandidateIds ?? [];
+  const rejectedIds = batch.rejectedCandidateIds ?? [];
+  const decidedIds = [...promotionCandidateIds, ...retainedIds, ...rejectedIds];
+  if (new Set(decidedIds).size !== decidedIds.length) errors.push(`${batch.id}: 후보가 여러 판정에 중복 포함되어 있습니다.`);
+  if (batch.tier === 3 && decidedIds.length !== 23) errors.push(`${batch.id}: Tier 3 최초 후보 23개의 판정이 모두 필요합니다 (현재 ${decidedIds.length}).`);
+  for (const promotion of batch.promotions ?? []) {
+    if (ids.has(promotion.candidateId)) errors.push(`${batch.id}: 승격 후보 '${promotion.candidateId}'가 실험 레지스트리에 남아 있습니다.`);
+    const targetIds = promotion.registry === "component" ? componentIds : promotion.registry === "pattern" ? patternIds : undefined;
+    if (!targetIds) errors.push(`${batch.id}: '${promotion.candidateId}'의 registry는 component 또는 pattern이어야 합니다.`);
+    else if (!targetIds.has(promotion.registryId)) errors.push(`${batch.id}: 승격 대상 '${promotion.registryId}'가 ${promotion.registry} 레지스트리에 없습니다.`);
+  }
+  for (const retainedId of retainedIds) {
+    if (!ids.has(retainedId)) errors.push(`${batch.id}: 유지 후보 '${retainedId}'가 실험 레지스트리에 없습니다.`);
+  }
+  for (const rejectedId of rejectedIds) {
+    if (ids.has(rejectedId)) errors.push(`${batch.id}: 제외 후보 '${rejectedId}'가 실험 레지스트리에 남아 있습니다.`);
+  }
+}
+
+const expectedCounts = { 3: 2, 4: 22, 5: 12 };
 for (const [tier, expected] of Object.entries(expectedCounts)) {
   if (countsByTier[tier] !== expected) errors.push(`Tier ${tier} 후보는 ${expected}개여야 합니다 (현재 ${countsByTier[tier]}).`);
 }

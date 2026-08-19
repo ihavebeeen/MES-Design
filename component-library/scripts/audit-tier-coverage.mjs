@@ -9,7 +9,7 @@ const outputJsonPath = path.join(
   "component-library/src/design-system/registry/tier-coverage-audit.json",
 );
 const outputMarkdownPath = path.join(root, "docs/UI_컴포넌트_티어_정규화.md");
-const auditDate = "2026-08-18";
+const auditDate = "2026-08-19";
 const experimentalRegistry = JSON.parse(
   fs.readFileSync(
     path.join(root, "component-library/src/design-system/registry/experimental-candidates.json"),
@@ -196,7 +196,7 @@ set(
 );
 
 const reclassifiedCompositions = [
-  { items: ["Approval Workflow Stepper"], evidence: ["experimental.stepper", "badge"], note: "결재라는 업무명만 추가된 Stepper 사용 사례이므로 독립 후보로 유지하지 않는다." },
+  { items: ["Approval Workflow Stepper"], evidence: ["workflow.stepper", "badge"], note: "결재라는 업무명만 추가된 Stepper 사용 사례이므로 별도 패턴을 만들지 않는다." },
   { items: ["Attachment List", "File", "Document Version History"], evidence: ["list", "button"], note: "목록 행과 파일·이력 데이터, 행 동작의 조합이며 별도 UI 해부 구조가 없다." },
   { items: ["Settings List"], evidence: ["list", "switch", "select"], note: "설정 데이터 목록에 기존 Switch와 Select를 배치하는 사용 사례다." },
   { items: ["Result Page", "Empty Illustration"], evidence: ["empty-state", "descriptions", "button"], note: "결과·빈 상태 콘텐츠만 달라지는 기존 피드백 자산 조합이다." },
@@ -205,19 +205,19 @@ const reclassifiedCompositions = [
   { items: ["Equipment Status Card/Tile", "Inventory Level Indicator"], evidence: ["card", "badge", "progress"], note: "설비·재고라는 데이터 이름만 다르고 기존 Card·Badge·Progress 구조를 그대로 사용한다." },
   { items: ["OEE Dashboard Widget", "Real-time Trend Chart"], evidence: ["analytics-charts", "card", "progress"], note: "OEE·실시간이라는 업무 데이터만 추가된 기존 분석 차트와 요약 카드 조합이다." },
   { items: ["Blinking Alarm Indicator"], evidence: ["alarm-list-item", "badge"], note: "알람 표시 자산의 상태·모션 확장 문제이며 별도 컴포넌트가 아니다." },
-  { items: ["Routing/BOM Tree", "Genealogy Tree"], evidence: ["experimental.tree-view", "badge"], note: "BOM·계보 데이터가 들어간 Tree View 사용 사례로 통합한다." },
+  { items: ["Routing/BOM Tree", "Genealogy Tree"], evidence: ["tree-view", "badge"], note: "BOM·계보 데이터가 들어간 TreeView 사용 사례로 통합한다." },
   { items: ["Equipment Detail Card"], evidence: ["card", "descriptions", "badge"], note: "설비 상세 데이터의 Card·Descriptions·Badge 조합이다." },
   { items: ["Chip Selector", "Suggestion Chip"], evidence: ["toggle-button", "tag"], note: "칩 모양의 선택은 ToggleButton과 Tag 표현으로 해결한다." },
   { items: ["Back to Top", "Floating Action Button (FAB)"], evidence: ["button"], note: "위치와 클릭 후 동작이 다른 Button 사용 사례이며 별도 컴포넌트가 아니다." },
   { items: ["AI Prompt Input Box", "Feedback Widget"], evidence: ["textarea", "button"], note: "입력 목적만 다르고 기존 Textarea와 Button 조합으로 충족한다." },
-  { items: ["Comment / Activity Feed"], evidence: ["list", "experimental.timeline"], note: "활동 데이터가 들어간 List 또는 Timeline 사용 사례로 통합한다." },
+  { items: ["Comment / Activity Feed"], evidence: ["list", "timeline"], note: "활동 데이터가 들어간 List 또는 Timeline 사용 사례로 통합한다." },
   { items: ["Global Top Loading Bar"], evidence: ["progress"], note: "페이지 상단에 배치한 Progress 상태 표현이다." },
   { items: ["Kbd (Keyboard Key)", "Blockquote"], evidence: ["typography"], note: "HTML 의미 요소와 타이포그래피 토큰으로 해결되는 콘텐츠 표현이다." },
   { items: ["Aspect Ratio"], evidence: ["grid-container", "css.aspect-ratio"], note: "레이아웃 CSS 제약이며 독립 UI 자산으로 취급하지 않는다." },
   { items: ["Spoiler (더보기/접기 텍스트)"], evidence: ["collapsible", "button"], note: "기존 Collapsible의 텍스트 콘텐츠 사용 사례다." },
   { items: ["Full-screen Modal"], evidence: ["center-modal"], note: "전체 화면 크기는 CenterModal의 크기·레이아웃 확장 문제이며 별도 팝업 패턴이 아니다." },
   { items: ["Utilization Heatmap"], evidence: ["section.measurement-heatmap-analysis", "analytics-charts"], note: "기존 히트맵 분석 섹션에 가동률 데이터를 주입하는 사용 사례다." },
-  { items: ["Escalation Timeline"], evidence: ["experimental.timeline", "badge"], note: "에스컬레이션 데이터가 들어간 Timeline 사용 사례다." },
+  { items: ["Escalation Timeline"], evidence: ["timeline", "badge"], note: "에스컬레이션 데이터가 들어간 Timeline 사용 사례다." },
   { items: ["Work Order Kanban"], evidence: ["experimental.kanban-board", "card"], note: "작업지시 데이터가 들어간 Kanban 후보의 도메인 사용 사례다." },
   { items: ["Sampling Plan Table", "PM Checklist", "Onboarding Checklist"], evidence: ["table", "checkbox", "progress"], note: "업무 데이터가 들어간 Table·Checkbox·Progress 조합이며 독립 패턴 해부 구조가 없다." },
   { items: ["Maintenance Schedule Calendar"], evidence: ["experimental.shift-calendar", "date-picker"], note: "정비 일정은 별도 달력이 아니라 일정 캘린더 후보의 데이터 사용 사례로 통합한다." },
@@ -234,6 +234,31 @@ const reclassifiedCompositions = [
 for (const classification of reclassifiedCompositions) {
   set(classification.items, "intentional-composition", classification.evidence, classification.note);
 }
+
+set(
+  ["Slider (Range)", "File Upload / Dropzone", "Timeline", "Tree View", "Cascader", "Tree Select"],
+  "implemented-component",
+  ["tier3-user-review-2026-08-19", "components registry/code"],
+  "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다.",
+);
+set(
+  ["Stepper / Wizard", "Transfer (Dual List)", "Row Expand / Detail Drawer", "Frozen Column Grid", "Grouped Header Grid"],
+  "implemented-pattern",
+  ["tier3-user-review-2026-08-19", "patterns registry/code"],
+  "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다.",
+);
+set(
+  ["QR Code", "Mask Input", "Global Search / Search Overlay", "Resizable Panel", "Resizable / Draggable Popup", "Column Resize / Reorder / Show-Hide", "Virtual Scroll Grid", "Andon Board (설비 상태판)", "Real-time Gauge/Meter", "SPC Control Chart"],
+  "excluded-scope",
+  ["tier3-user-review-2026-08-19"],
+  "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다.",
+);
+set(
+  ["Command Palette"],
+  "deferred-evidence",
+  ["tier3-user-review-2026-08-19"],
+  "기반이던 전체 검색 후보가 제외되어 실제 업무 근거가 생길 때 별도 검토한다.",
+);
 
 set(
   ["Pricing Table", "Hero"],
@@ -370,7 +395,7 @@ function renderMarkdown(audit) {
     "",
     "- Tier 1·2는 현재 데스크톱 MES 화면 생성 기반을 막는 미충족 항목이 없다.",
     "- 107개로 시작한 격리 후보를 전수 재분류해, 기존 자산 사용 사례 48개와 MES 범위 제외 템플릿 2개를 후보에서 제거했다.",
-    "- 독립 구조·상호작용이 남는 실험 후보는 Tier 3 23개, Tier 4 22개, Tier 5 12개로 총 57개다.",
+    "- 2026-08-19 사용자 판정 후 격리 후보는 Tier 3 2개, Tier 4 22개, Tier 5 12개로 총 36개다. Tier 3의 11개는 provisional 표준으로 승격했고 10개는 제외했다.",
     "- Tier 4는 선택적 확장, Tier 5는 원칙적으로 핵심 MES 범위 밖이라는 우선순위를 유지한다. 코드가 존재해도 실제 업무 근거와 사용자 승인 전에는 표준으로 승격하지 않는다.",
     "- 새로운 전체 화면은 커버리지 숫자를 늘리기 위해 추가하지 않는다. 기존 조합 문법으로 설명되지 않는 실제 화면이 나타날 때만 근거로 사용한다.",
     "",

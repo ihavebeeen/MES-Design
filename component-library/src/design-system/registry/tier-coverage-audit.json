@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "auditDate": "2026-08-18",
+  "auditDate": "2026-08-19",
   "source": "docs/UI_컴포넌트_총망라_체크리스트.md",
   "policy": {
     "currentGoal": "desktop MES AI screen generation",
@@ -25,10 +25,11 @@
       },
       "3": {
         "total": 57,
-        "experimental-prototype": 23,
+        "implemented-component": 8,
+        "implemented-pattern": 10,
         "intentional-composition": 27,
-        "implemented-component": 2,
-        "implemented-pattern": 5
+        "excluded-scope": 10,
+        "experimental-prototype": 2
       },
       "4": {
         "total": 41,
@@ -37,18 +38,20 @@
       },
       "5": {
         "total": 28,
-        "intentional-composition": 14,
+        "intentional-composition": 13,
         "experimental-prototype": 12,
+        "deferred-evidence": 1,
         "excluded-scope": 2
       }
     },
     "byDisposition": {
       "implemented-foundation": 9,
-      "experimental-prototype": 57,
-      "implemented-component": 81,
-      "intentional-composition": 61,
-      "implemented-pattern": 6,
-      "excluded-scope": 2
+      "experimental-prototype": 36,
+      "implemented-component": 87,
+      "intentional-composition": 60,
+      "implemented-pattern": 11,
+      "deferred-evidence": 1,
+      "excluded-scope": 12
     }
   },
   "items": [
@@ -282,12 +285,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.slider",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Rating (별점)",
@@ -462,12 +465,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.file-upload",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Form Field",
@@ -582,12 +585,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-pattern",
       "evidence": [
-        "experimental.stepper",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "patterns registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Dropdown Menu",
@@ -618,12 +621,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "intentional-composition",
+      "disposition": "deferred-evidence",
       "evidence": [
-        "experimental.global-search",
-        "search-input"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "명령이라는 콘텐츠만 다른 전역 검색 오버레이 사용 사례로 통합한다."
+      "note": "기반이던 전체 검색 후보가 제외되어 실제 업무 근거가 생길 때 별도 검토한다."
     },
     {
       "item": "Back to Top",
@@ -798,24 +800,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.timeline",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Tree View",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.tree-view",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Chart",
@@ -1049,12 +1051,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.resizable-panel",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Scroll Area",
@@ -1326,12 +1327,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-pattern",
       "evidence": [
-        "experimental.row-expand-detail",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "patterns registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Inline Edit",
@@ -1374,12 +1375,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.global-search",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Onboarding Tooltip / Product Tour",
@@ -1427,7 +1427,7 @@
       "disposition": "intentional-composition",
       "evidence": [
         "list",
-        "experimental.timeline"
+        "timeline"
       ],
       "note": "활동 데이터가 들어간 List 또는 Timeline 사용 사례로 통합한다."
     },
@@ -1565,12 +1565,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.cascader",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Mentions",
@@ -1589,36 +1589,35 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-pattern",
       "evidence": [
-        "experimental.transfer",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "patterns registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Tree Select",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.tree-select",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "QR Code",
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.qr-code",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Descriptions (Key-Value List)",
@@ -1686,12 +1685,11 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.mask-input",
-        "src/components/experimental/tier3-input-prototypes.tsx"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Close Button (X)",
@@ -1830,24 +1828,24 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-pattern",
       "evidence": [
-        "experimental.frozen-column-grid",
-        "src/components/experimental/tier3-grid-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "patterns registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Grouped Header Grid",
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-pattern",
       "evidence": [
-        "experimental.grouped-header-grid",
-        "src/components/experimental/tier3-grid-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "patterns registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Row Grouping / Expandable Sub-row",
@@ -1940,12 +1938,11 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.column-controls",
-        "src/components/experimental/tier3-grid-prototypes.tsx"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Grid Export / Print",
@@ -1964,12 +1961,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.virtual-scroll-grid",
-        "src/components/experimental/tier3-grid-prototypes.tsx"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Real-time Update Indicator (Grid)",
@@ -2071,24 +2067,22 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.resizable-popup",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Andon Board (설비 상태판)",
       "layer": "템플릿",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.andon-board",
-        "src/components/experimental/tier3-mes-prototypes.tsx"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Equipment Status Card/Tile",
@@ -2108,12 +2102,11 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.gauge",
-        "src/components/experimental/tier3-mes-prototypes.tsx"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "OEE Dashboard Widget",
@@ -2232,7 +2225,7 @@
       "tier": 4,
       "disposition": "intentional-composition",
       "evidence": [
-        "experimental.timeline",
+        "timeline",
         "badge"
       ],
       "note": "에스컬레이션 데이터가 들어간 Timeline 사용 사례다."
@@ -2292,10 +2285,10 @@
       "tier": 3,
       "disposition": "intentional-composition",
       "evidence": [
-        "experimental.tree-view",
+        "tree-view",
         "badge"
       ],
-      "note": "BOM·계보 데이터가 들어간 Tree View 사용 사례로 통합한다."
+      "note": "BOM·계보 데이터가 들어간 TreeView 사용 사례로 통합한다."
     },
     {
       "item": "Lot Progress Bar",
@@ -2325,12 +2318,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "excluded-scope",
       "evidence": [
-        "experimental.spc-chart",
-        "src/components/experimental/tier3-mes-prototypes.tsx"
+        "tier3-user-review-2026-08-19"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다."
     },
     {
       "item": "Inspection Checklist Form",
@@ -2411,10 +2403,10 @@
       "tier": 4,
       "disposition": "intentional-composition",
       "evidence": [
-        "experimental.tree-view",
+        "tree-view",
         "badge"
       ],
-      "note": "BOM·계보 데이터가 들어간 Tree View 사용 사례로 통합한다."
+      "note": "BOM·계보 데이터가 들어간 TreeView 사용 사례로 통합한다."
     },
     {
       "item": "Inventory Level Indicator",
@@ -2460,10 +2452,10 @@
       "tier": 3,
       "disposition": "intentional-composition",
       "evidence": [
-        "experimental.stepper",
+        "workflow.stepper",
         "badge"
       ],
-      "note": "결재라는 업무명만 추가된 Stepper 사용 사례이므로 독립 후보로 유지하지 않는다."
+      "note": "결재라는 업무명만 추가된 Stepper 사용 사례이므로 별도 패턴을 만들지 않는다."
     },
     {
       "item": "E-signature Pad",

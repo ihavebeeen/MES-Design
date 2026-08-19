@@ -4,35 +4,26 @@ test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
 });
 
-test("Tier 3 실험 후보는 23개를 격리하고 기본 상호작용과 페이지 폭을 유지한다", async ({ page }) => {
+test("Tier 3 사용자 판정 후 유지 후보 2개만 격리하고 기본 상호작용과 페이지 폭을 유지한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/experimental/experimental-tier-3");
 
   const prototypes = page.locator("[data-experimental-prototype]");
-  await expect(prototypes).toHaveCount(23);
+  await expect(prototypes).toHaveCount(2);
   await expect(page.getByRole("navigation", { name: "breadcrumb" })).toContainText("Experimental");
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
-  const slider = page.locator('[data-experimental-prototype="ExperimentalSlider"]');
-  await slider.getByRole("slider", { name: "가동률 범위" }).press("End");
-  await expect(slider).toContainText("100%");
+  await expect(page.locator('[data-experimental-prototype="ExperimentalImageThumbnail"]')).toHaveCount(1);
+  const imageThumbnail = page.locator('[data-experimental-prototype="ExperimentalImageThumbnail"]');
+  const labelThumbnail = imageThumbnail.getByRole("button", { name: /라벨/ });
+  await labelThumbnail.click();
+  await expect(labelThumbnail).toHaveClass(/border-mes-gray-130/);
 
-  const stepper = page.locator('[data-experimental-prototype="ExperimentalStepper"]');
-  await stepper.getByRole("button", { name: "다음", exact: true }).click();
-  await expect(stepper.getByRole("button", { name: "이전", exact: true })).toBeEnabled();
+  const searchHighlight = page.locator('[data-experimental-prototype="ExperimentalSearchHighlight"]');
+  await searchHighlight.getByRole("textbox").fill("재생");
+  await expect(searchHighlight.locator("mark")).toHaveText("재생");
 
-  const transfer = page.locator('[data-experimental-prototype="ExperimentalTransfer"]');
-  await transfer.getByRole("checkbox", { name: "압출 2호기", exact: true }).check();
-  await transfer.getByRole("button", { name: "→", exact: true }).click();
-  await expect(transfer).toContainText("배정됨 2");
-
-  const rowDetail = page.locator('[data-experimental-prototype="ExperimentalRowExpandDetail"]');
-  await rowDetail.getByRole("button", { name: "상세 펼치기", exact: true }).click();
-  await expect(rowDetail).toContainText("대한소재");
-
-  const globalSearch = page.locator('[data-experimental-prototype="ExperimentalGlobalSearch"]');
-  await globalSearch.getByRole("button", { name: /메뉴·LOT·품목 전체 검색/ }).click();
-  await expect(globalSearch.getByRole("textbox", { name: "검색어 입력" })).toBeVisible();
+  await expect(page.locator('[data-experimental-prototype="ExperimentalGlobalSearch"]')).toHaveCount(0);
 
 });
 

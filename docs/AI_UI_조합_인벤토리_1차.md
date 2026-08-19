@@ -6,12 +6,12 @@
 
 | 항목 | 결과 |
 |---|---:|
-| 검사 파일 | 37 |
-| 전체 줄 수 | 7,912 |
+| 검사 파일 | 38 |
+| 전체 줄 수 | 7,975 |
 | 혼합 Section Frame 파일 | 2 |
 | 표준 Frame 없이 native section만 사용 | 18 |
-| rounded wrapper가 있는 Section 후보 파일 | 21 |
-| fingerprint | `a43816b3d69ac1aa` |
+| rounded wrapper가 있는 Section 후보 파일 | 22 |
+| fingerprint | `cb73f2f2f55dda7f` |
 
 ## Shell 사용
 
@@ -29,8 +29,8 @@
 | sectionHeader | 7 |
 | patternGroupHeader | 0 |
 | nativeSection | 42 |
-| dividerContainer | 32 |
-| roundedContainer | 63 |
+| dividerContainer | 33 |
+| roundedContainer | 64 |
 | gray20Container | 33 |
 
 ## 자동 탐지 Section 후보
@@ -43,6 +43,7 @@
 | `section.inspection-items` | 7 | `completed-popup-patterns.tsx`, `equipment-inspection-records-modal.tsx`, `inspection-criteria-pattern.tsx`, `inspection-trend-analysis-pattern.tsx` |
 | `section.editable-row-list` | 3 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `original-mes-screen-assets.tsx` |
 | `section.before-after` | 1 | `production-quantity-reregistration-pattern.tsx` |
+| `section.collapsible-form` | 1 | `tier3-promoted-patterns.tsx` |
 
 ## 자동 탐지 Behavior 후보
 
@@ -52,6 +53,7 @@
 | `dismiss.restore-committed` | 12 | `cavity-settings-pattern.tsx`, `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `equipment-discharge-settings-pattern.tsx` |
 | `row.add-remove` | 4 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `original-mes-screen-assets.tsx`, `user-password-settings-pattern.tsx` |
 | `row.inherit-previous` | 1 | `easy-mode-receiving-pattern.tsx` |
+| `section.toggle-collapse` | 1 | `tier3-promoted-patterns.tsx` |
 | `selection.master-detail` | 1 | `completed-application-patterns.tsx` |
 
 ## 우선 검토 파일

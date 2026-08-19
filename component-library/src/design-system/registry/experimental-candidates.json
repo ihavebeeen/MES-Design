@@ -4,33 +4,44 @@
   "status": "active",
   "defaultInfluence": "quarantined",
   "promotionRule": "실제 MES 원본 또는 반복 업무 근거, 사용자 승인, 상호작용·시각 검증을 모두 통과해야 표준 레지스트리로 승격한다.",
+  "decisionBatches": [
+    {
+      "id": "tier3-user-review-2026-08-19",
+      "tier": 3,
+      "decidedAt": "2026-08-19",
+      "decisionAuthority": "design-system-owner",
+      "promotions": [
+        { "candidateId": "experimental.slider", "registry": "component", "registryId": "slider" },
+        { "candidateId": "experimental.file-upload", "registry": "component", "registryId": "file-upload" },
+        { "candidateId": "experimental.stepper", "registry": "pattern", "registryId": "workflow.stepper" },
+        { "candidateId": "experimental.cascader", "registry": "component", "registryId": "cascader" },
+        { "candidateId": "experimental.transfer", "registry": "pattern", "registryId": "selection.transfer-list" },
+        { "candidateId": "experimental.tree-select", "registry": "component", "registryId": "tree-select" },
+        { "candidateId": "experimental.timeline", "registry": "component", "registryId": "timeline" },
+        { "candidateId": "experimental.tree-view", "registry": "component", "registryId": "tree-view" },
+        { "candidateId": "experimental.row-expand-detail", "registry": "pattern", "registryId": "table.row-expand-detail" },
+        { "candidateId": "experimental.frozen-column-grid", "registry": "pattern", "registryId": "table.frozen-column-grid" },
+        { "candidateId": "experimental.grouped-header-grid", "registry": "pattern", "registryId": "table.grouped-header-grid" }
+      ],
+      "retainedCandidateIds": ["experimental.image-thumbnail", "experimental.search-highlight"],
+      "rejectedCandidateIds": [
+        "experimental.qr-code",
+        "experimental.mask-input",
+        "experimental.global-search",
+        "experimental.resizable-panel",
+        "experimental.resizable-popup",
+        "experimental.column-controls",
+        "experimental.virtual-scroll-grid",
+        "experimental.andon-board",
+        "experimental.gauge",
+        "experimental.spc-chart"
+      ],
+      "notes": ["검색어 강조는 실험 후보로 유지하되 후속 수정이 필요하다.", "승격 자산은 사용자 승인 근거만 충족했으므로 시각·업무 검증 완료 전까지 provisional로 관리한다."]
+    }
+  ],
   "candidates": [
-    { "id": "experimental.slider", "checklistItem": "Slider (Range)", "name": "범위 슬라이더", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-input-prototypes.tsx", "exportName": "ExperimentalSlider", "standardRefs": ["input"], "limitations": ["확정 Figma 원본 없음"] },
-    { "id": "experimental.file-upload", "checklistItem": "File Upload / Dropzone", "name": "파일 업로드·드롭존", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-input-prototypes.tsx", "exportName": "ExperimentalFileUpload", "standardRefs": ["button", "input"], "limitations": ["서버 업로드 연결 없음"] },
-    { "id": "experimental.stepper", "checklistItem": "Stepper / Wizard", "name": "단계 진행", "kind": "pattern", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-input-prototypes.tsx", "exportName": "ExperimentalStepper", "standardRefs": ["button", "progress"], "limitations": ["업무별 단계 계약 미확정"] },
-    { "id": "experimental.cascader", "checklistItem": "Cascader", "name": "계층 선택", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-input-prototypes.tsx", "exportName": "ExperimentalCascader", "standardRefs": ["button"], "limitations": ["실제 품목 분류 체계 미연결"] },
-    { "id": "experimental.transfer", "checklistItem": "Transfer (Dual List)", "name": "이중 목록 이동", "kind": "pattern", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-input-prototypes.tsx", "exportName": "ExperimentalTransfer", "standardRefs": ["button", "checkbox"], "limitations": ["대량 데이터 성능 미검증"] },
-    { "id": "experimental.tree-select", "checklistItem": "Tree Select", "name": "트리 선택", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-input-prototypes.tsx", "exportName": "ExperimentalTreeSelect", "standardRefs": ["checkbox"], "limitations": ["부모·자식 선택 전파 정책 미확정"] },
-    { "id": "experimental.qr-code", "checklistItem": "QR Code", "name": "QR 코드", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-input-prototypes.tsx", "exportName": "ExperimentalQrCode", "standardRefs": ["input"], "limitations": ["시각 프로토타입이며 스캔 가능한 인코더는 미연결"] },
-    { "id": "experimental.mask-input", "checklistItem": "Mask Input", "name": "형식 제한 입력", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-input-prototypes.tsx", "exportName": "ExperimentalMaskInput", "standardRefs": ["input"], "limitations": ["업무별 마스크 규칙 미확정"] },
-
-    { "id": "experimental.timeline", "checklistItem": "Timeline", "name": "이력 타임라인", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalTimeline", "standardRefs": ["badge"], "limitations": ["실제 이력 데이터 미연결"] },
-    { "id": "experimental.tree-view", "checklistItem": "Tree View", "name": "트리 보기", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalTreeView", "standardRefs": ["button"], "limitations": ["지연 로딩 미지원"] },
     { "id": "experimental.image-thumbnail", "checklistItem": "Image / Thumbnail", "name": "이미지 썸네일", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalImageThumbnail", "standardRefs": ["button"], "limitations": ["실제 이미지 저장소 미연결"] },
-    { "id": "experimental.row-expand-detail", "checklistItem": "Row Expand / Detail Drawer", "name": "행 상세 펼침", "kind": "pattern", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalRowExpandDetail", "standardRefs": ["button", "descriptions"], "limitations": ["상세 Drawer 전환 기준 미확정"] },
-    { "id": "experimental.global-search", "checklistItem": "Global Search / Search Overlay", "name": "전체 검색", "kind": "pattern", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalGlobalSearch", "standardRefs": ["search-input", "list"], "limitations": ["검색 인덱스·권한 필터 미연결"] },
-    { "id": "experimental.search-highlight", "checklistItem": "Search Highlight Text", "name": "검색어 강조", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalSearchHighlight", "standardRefs": ["input"], "limitations": ["한국어 형태소 검색 미지원"] },
-    { "id": "experimental.resizable-panel", "checklistItem": "Resizable Panel", "name": "크기 조절 패널", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalResizablePanel", "standardRefs": ["panel"], "limitations": ["키보드 크기 조절 미지원"] },
-    { "id": "experimental.resizable-popup", "checklistItem": "Resizable / Draggable Popup", "name": "이동·크기 조절 팝업", "kind": "pattern", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalResizablePopup", "standardRefs": ["center-modal", "button"], "limitations": ["표준 Modal 셸로 승격되지 않은 로컬 동작"] },
-
-    { "id": "experimental.frozen-column-grid", "checklistItem": "Frozen Column Grid", "name": "고정 컬럼 그리드", "kind": "pattern", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-grid-prototypes.tsx", "exportName": "ExperimentalFrozenColumnGrid", "standardRefs": ["table"], "limitations": ["브라우저별 sticky 경계 미검증"] },
-    { "id": "experimental.grouped-header-grid", "checklistItem": "Grouped Header Grid", "name": "그룹 헤더 그리드", "kind": "pattern", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-grid-prototypes.tsx", "exportName": "ExperimentalGroupedHeaderGrid", "standardRefs": ["table"], "limitations": ["가변 그룹 깊이 미지원"] },
-    { "id": "experimental.column-controls", "checklistItem": "Column Resize / Reorder / Show-Hide", "name": "컬럼 크기·순서·표시", "kind": "pattern", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-grid-prototypes.tsx", "exportName": "ExperimentalColumnControls", "standardRefs": ["table", "table.column-settings"], "limitations": ["드래그 순서 변경 대신 명시 버튼 사용"] },
-    { "id": "experimental.virtual-scroll-grid", "checklistItem": "Virtual Scroll Grid", "name": "가상 스크롤 그리드", "kind": "pattern", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-grid-prototypes.tsx", "exportName": "ExperimentalVirtualScrollGrid", "standardRefs": ["table", "scroll-area"], "limitations": ["고정 행 높이만 지원"] },
-
-    { "id": "experimental.andon-board", "checklistItem": "Andon Board (설비 상태판)", "name": "설비 상태판", "kind": "template", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-mes-prototypes.tsx", "exportName": "ExperimentalAndonBoard", "standardRefs": ["card", "badge"], "limitations": ["실시간 설비 신호 미연결"] },
-    { "id": "experimental.gauge", "checklistItem": "Real-time Gauge/Meter", "name": "실시간 게이지", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-mes-prototypes.tsx", "exportName": "ExperimentalGauge", "standardRefs": ["progress"], "limitations": ["센서 단위·경보 구간 미확정"] },
-    { "id": "experimental.spc-chart", "checklistItem": "SPC Control Chart", "name": "SPC 관리도", "kind": "pattern", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-mes-prototypes.tsx", "exportName": "ExperimentalSpcChart", "standardRefs": ["analytics-charts"], "limitations": ["관리한계 자동 산출 미지원"] },
+    { "id": "experimental.search-highlight", "checklistItem": "Search Highlight Text", "name": "검색어 강조", "kind": "component", "tier": 3, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier3-content-prototypes.tsx", "exportName": "ExperimentalSearchHighlight", "standardRefs": ["input"], "limitations": ["사용자 판정에 따라 후속 수정 필요", "한국어 형태소 검색 미지원"] },
 
     { "id": "experimental.breakpoint-scale", "checklistItem": "Breakpoint Scale", "name": "브레이크포인트 스케일", "kind": "foundation", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalBreakpointScale", "standardRefs": ["grid-container"], "limitations": ["정식 반응형 토큰 미승인"] },
     { "id": "experimental.split-button", "checklistItem": "Split Button", "name": "분할 버튼", "kind": "component", "tier": 4, "status": "prototype", "influence": "quarantined", "source": "src/components/experimental/tier4-general-prototypes.tsx", "exportName": "ExperimentalSplitButton", "standardRefs": ["button"], "limitations": ["MES 사용 근거 없음"] },

@@ -4,8 +4,8 @@
   "status": "observed-not-canonical",
   "scope": "src/components/patterns/*.tsx",
   "summary": {
-    "scannedFiles": 37,
-    "totalLines": 7912,
+    "scannedFiles": 38,
+    "totalLines": 7975,
     "shellInstances": {
       "CenterModal": 13,
       "SideSlidePanel": 9,
@@ -13,7 +13,7 @@
     },
     "filesWithMixedSectionFrames": 2,
     "filesWithNativeSectionOnly": 18,
-    "filesWithRoundedSectionCandidates": 21
+    "filesWithRoundedSectionCandidates": 22
   },
   "sectionCandidateSignals": [
     {
@@ -98,6 +98,13 @@
       "sources": [
         "src/components/patterns/production-quantity-reregistration-pattern.tsx"
       ]
+    },
+    {
+      "id": "section.collapsible-form",
+      "fileCount": 1,
+      "sources": [
+        "src/components/patterns/tier3-promoted-patterns.tsx"
+      ]
     }
   ],
   "behaviorSignals": [
@@ -156,6 +163,13 @@
       "fileCount": 1,
       "sources": [
         "src/components/patterns/easy-mode-receiving-pattern.tsx"
+      ]
+    },
+    {
+      "id": "section.toggle-collapse",
+      "fileCount": 1,
+      "sources": [
+        "src/components/patterns/tier3-promoted-patterns.tsx"
       ]
     },
     {
@@ -339,6 +353,12 @@
       "source": "src/components/patterns/team-settings-pattern.tsx",
       "flags": [
         "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "flags": [
         "rounded-wrapper-around-section-candidate"
       ]
     },
@@ -2694,6 +2714,50 @@
       ]
     },
     {
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "name": "tier3-promoted-patterns.tsx",
+      "observedRole": "composition-source",
+      "lines": 63,
+      "exportedSymbols": [
+        "ExpandableRowPattern",
+        "FrozenColumnGridPattern",
+        "GroupedHeaderGridPattern",
+        "StepperPattern",
+        "TransferListPattern"
+      ],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 1,
+        "roundedContainer": 1,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 4
+        },
+        {
+          "name": "Checkbox",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 2,
+      "behaviorSignals": [
+        "section.toggle-collapse"
+      ],
+      "sectionCandidateSignals": [
+        "section.collapsible-form"
+      ],
+      "reviewFlags": [
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
       "source": "src/components/patterns/user-password-settings-pattern.tsx",
       "name": "user-password-settings-pattern.tsx",
       "observedRole": "composition-source",
@@ -2784,5 +2848,5 @@
       ]
     }
   ],
-  "fingerprint": "a43816b3d69ac1aa"
+  "fingerprint": "cb73f2f2f55dda7f"
 }
