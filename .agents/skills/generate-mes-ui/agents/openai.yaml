@@ -1,0 +1,4 @@
+interface:
+  display_name: "MES UI Generator"
+  short_description: "Generate MES screens from registered composition contracts"
+  default_prompt: "Use the repository MES design-system registry to turn this request into a validated ScreenRequest and implementation."

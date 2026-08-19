@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mes-design.local/schemas/screen-request.schema.json",
+  "title": "MES ScreenRequest",
+  "description": "AI가 JSX를 작성하기 전에 확정해야 하는 MES 화면 생성 요청 계약",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "name", "intent", "lifecycle", "target", "composition", "requirements", "output"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "requestId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "intent": { "enum": ["reproduce", "new", "normalize", "audit"] },
+    "lifecycle": { "enum": ["draft", "release"] },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "title"],
+      "properties": {
+        "kind": { "enum": ["page", "center-modal", "side-slide-panel", "confirm-dialog"] },
+        "title": { "type": "string", "minLength": 1 },
+        "nearestScreenId": { "type": "string", "minLength": 1 },
+        "viewport": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["width", "height"],
+          "properties": {
+            "width": { "type": "integer", "minimum": 320 },
+            "height": { "type": "integer", "minimum": 320 }
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "figmaNode": { "type": "string", "pattern": "^\\d+:\\d+$" },
+        "sourceRoute": { "type": "string", "minLength": 1 },
+        "notes": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "recipeRefs": { "$ref": "#/$defs/refList" },
+        "shellRef": { "type": "string", "minLength": 1 },
+        "sectionRefs": { "$ref": "#/$defs/refList" },
+        "behaviorRefs": { "$ref": "#/$defs/refList" },
+        "actionSetRef": { "type": "string", "minLength": 1 }
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "normalizationDecisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["subject", "classification", "reason"],
+        "properties": {
+          "subject": { "type": "string", "minLength": 1 },
+          "classification": { "enum": ["source-error", "implementation-error", "intentional-exception", "normalization-candidate"] },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route", "componentName"],
+      "properties": {
+        "route": { "type": "string", "pattern": "^/" },
+        "componentName": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" }
+      }
+    }
+  },
+  "$defs": {
+    "refList": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    }
+  }
+}

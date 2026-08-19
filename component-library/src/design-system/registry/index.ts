@@ -97,6 +97,18 @@ export function getContextRules(category?: ContextRuleCategory) {
     : contextRuleRegistry.rules;
 }
 
+/** ScreenRequest를 작성할 때 임의 ID를 만들지 않도록 현재 선택지를 반환한다. */
+export function getScreenRequestOptions() {
+  return {
+    screens: screenRegistry.screens.map(({ id, name, patternRefs }) => ({ id, name, patternRefs })),
+    recipes: patternRegistry.patterns.filter(({ kind }) => ["popup", "screen", "recipe"].includes(kind)),
+    shells: patternRegistry.patterns.filter(({ kind }) => kind === "shell"),
+    sections: patternRegistry.patterns.filter(({ kind }) => ["section-frame", "section-pattern", "table"].includes(kind)),
+    behaviors: patternRegistry.patterns.filter(({ kind }) => kind === "behavior"),
+    actionSets: actionSetRegistry.actionSets,
+  };
+}
+
 /** 화면 ID가 아직 없는 신규 생성이 JSX 작성 전에 읽어야 할 전체 선택 계약이다. */
 export function getGenerationContext() {
   return {

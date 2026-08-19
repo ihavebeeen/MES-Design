@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "requestId": "receiving-side-panel-fixture",
+  "name": "입고등록 우측 슬라이드 기준 계약",
+  "intent": "reproduce",
+  "lifecycle": "release",
+  "target": {
+    "kind": "side-slide-panel",
+    "title": "입고등록",
+    "nearestScreenId": "receiving",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "evidence": {
+    "figmaNode": "17303:45841",
+    "notes": [
+      "우측 슬라이드 셸을 중앙 모달로 대체하지 않는다.",
+      "취소와 X는 미저장 변경을 폐기하고 닫는다."
+    ]
+  },
+  "composition": {},
+  "requirements": [
+    "기존 입고등록 화면의 셸과 섹션 순서를 유지한다.",
+    "행 추가 시 직전 거래처를 초기값으로 복사하되 창고는 행별로 편집한다."
+  ],
+  "output": {
+    "route": "/generated-screens/receiving-side-panel-fixture",
+    "componentName": "ReceivingSidePanelFixture"
+  }
+}

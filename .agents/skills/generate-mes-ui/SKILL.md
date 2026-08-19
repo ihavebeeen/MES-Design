@@ -1,0 +1,55 @@
+---
+name: generate-mes-ui
+description: Generate, reproduce, normalize, or audit MES screens in this repository using the registered components, composition patterns, context rules, and visual evidence. Use whenever a user asks to make or change a MES page, center modal, side slide panel, confirmation dialog, table workflow, or generated-screen prototype.
+---
+
+# Generate MES UI
+
+Create MES UI through the repository contract. Do not translate prose or Figma directly into free-form JSX.
+
+## Workflow
+
+1. Read `AGENTS.override.md`, then read `references/repository-contract.md`.
+2. Inspect the closest registered screen with `getImplementationContext(screenId)` in `component-library/src/design-system/registry/index.ts`.
+3. If a Figma node exists, inspect its metadata and design context before editing code. Treat unmeasured visual guesses as review notes, never facts.
+4. Write a `ScreenRequest` JSON that conforms to `component-library/src/design-system/registry/screen-request.schema.json`.
+5. Resolve it before JSX:
+
+   ```bash
+   cd component-library
+   npm run screen:resolve -- path/to/request.json --out path/to/contract.json
+   ```
+
+6. Stop on resolver blockers. Resolve warnings by evidence or record them in the generated-screen evaluation; a warning alone does not invalidate the whole screen.
+7. Implement only with resolved registry references. Use registered components and pattern sources. Do not use native interactive HTML when a MES component exists.
+8. Audit the implementation:
+
+   ```bash
+   npm run screen:audit -- path/to/contract.json path/to/implementation.tsx
+   npm run check:design-system
+   ```
+
+9. Verify at the target viewport: interactions, `clientWidth/scrollWidth`, `clientHeight/scrollHeight`, and the visual baseline. Do not call a screen verified without these checks.
+10. Register newly discovered semantics as quarantined proposals. Never promote a one-off visual fragment directly into the stable component or pattern registry.
+
+## Selection rules
+
+- Start from `nearestScreenId` whenever an applicable registered screen exists.
+- Reuse a shell, section pattern, behavior pattern, and action set before considering a new composition.
+- Preserve business hierarchy, information order, copy, and interaction semantics from the source.
+- Normalize accidental 3px, 9px, 13px, or isolated styling only after classifying it as an inconsistency with evidence. Do not silently normalize intentional exceptions.
+- A central modal, side slide panel, page, and confirmation dialog are different semantic shells. Never substitute one because its content happens to fit.
+- Repeating input rows are not automatically tables. Use table patterns only for tabular comparison, scanning, selection, sorting, or aligned columns.
+- Cancel and the top-right close action discard uncommitted changes and close when the registered dismissal policy requires it.
+
+## Output contract
+
+Return or commit all of the following for a new generated screen:
+
+- input `ScreenRequest` JSON;
+- resolved contract JSON with a stable fingerprint;
+- implementation source;
+- evaluation entry describing evidence, strengths, issues, and promotion criteria;
+- interaction and visual tests proportional to the requested fidelity.
+
+Use `구현됨`, `검증됨`, `배치 완료`, and `전체 완료` exactly as defined in `AGENTS.override.md`.

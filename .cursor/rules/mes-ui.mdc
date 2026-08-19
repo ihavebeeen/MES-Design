@@ -1,0 +1,6 @@
+---
+description: Shared MES UI generation contract
+alwaysApply: true
+---
+
+Read `AGENTS.override.md` and `.agents/skills/generate-mes-ui/SKILL.md` before creating, changing, or auditing an MES screen. Create and resolve a `ScreenRequest` before JSX. The registry and shared policy are authoritative; do not create separate Cursor-only design rules.

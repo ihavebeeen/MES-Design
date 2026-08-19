@@ -66,6 +66,46 @@ export interface ScreenRegistry {
   screens: ScreenRegistryEntry[];
 }
 
+export type ScreenRequestIntent = "reproduce" | "new" | "normalize" | "audit";
+export type ScreenTargetKind = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
+export type NormalizationClassification = "source-error" | "implementation-error" | "intentional-exception" | "normalization-candidate";
+
+export interface ScreenRequest {
+  schemaVersion: 1;
+  requestId: string;
+  name: string;
+  intent: ScreenRequestIntent;
+  lifecycle: "draft" | "release";
+  target: {
+    kind: ScreenTargetKind;
+    title: string;
+    nearestScreenId?: string;
+    viewport?: { width: number; height: number };
+  };
+  evidence?: {
+    figmaNode?: string;
+    sourceRoute?: string;
+    notes?: string[];
+  };
+  composition: {
+    recipeRefs?: string[];
+    shellRef?: string;
+    sectionRefs?: string[];
+    behaviorRefs?: string[];
+    actionSetRef?: string;
+  };
+  requirements: string[];
+  normalizationDecisions?: Array<{
+    subject: string;
+    classification: NormalizationClassification;
+    reason: string;
+  }>;
+  output: {
+    route: string;
+    componentName: string;
+  };
+}
+
 export interface InteractionAuditEntry {
   screenId: string;
   status: "verified" | "needs-review";
