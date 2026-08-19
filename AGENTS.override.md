@@ -28,6 +28,8 @@
 ```bash
 npm ci
 npm run screen:resolve -- <request.json> --out <contract.json>
+# generation template이 등록된 계약에서만 실행
+npm run screen:generate -- <contract.json> --out <implementation.tsx>
 npm run screen:audit -- <contract.json> <implementation.tsx>
 npm run check:design-system
 npm run lint:design-system

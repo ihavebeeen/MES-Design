@@ -83,6 +83,15 @@
       "rules": ["운전일지는 중앙 모달이 아니라 우측 슬라이드 팝업이다.", "시간대별 일지와 가동·비가동 기록을 좌우로 나눈다."]
     },
     {
+      "id": "recipe.side-slide-form-editable-list",
+      "name": "우측 슬라이드 · 폼 + 반복 입력 행 생성 Recipe",
+      "kind": "recipe",
+      "placement": "right-slide",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "requiredComponents": ["side-slide-panel", "section-frame", "form-grid", "button", "input", "select"],
+      "rules": ["ScreenRequest의 순서화된 form-grid와 editable-row-list section만 생성한다.", "헤더와 데이터 행은 EditableRowGrid의 단일 columns 계약을 공유한다.", "행 추가는 stable ID·필수값 guard·명시된 직전 행 계승 목록을 사용한다.", "취소·X는 committed draft를 복원한 뒤 닫는다."]
+    },
+    {
       "id": "screen.entity-list",
       "name": "엔티티 리스트 화면",
       "kind": "screen",
@@ -241,7 +250,7 @@
       "kind": "section-pattern",
       "placement": "section",
       "source": "src/components/patterns/section-patterns.tsx",
-      "requiredComponents": ["button"],
+      "requiredComponents": ["button", "input", "select"],
       "rules": ["헤더·행·추가 동작·빈 상태 슬롯을 제공하고 행 mutation은 Behavior에 위임한다."]
     },
     {

@@ -33,7 +33,7 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 | 자산 | 등록 수 |
 |---|---:|
 | UI 컴포넌트 | 76 |
-| Shell·Section·Behavior·Recipe 패턴 | 51 |
+| Shell·Section·Behavior·Recipe 패턴 | 52 |
 | AI 조회용 화면 정의 | 28 |
 | 격리된 Tier 3~5 실험 후보 | 57 |
 | 시각 회귀 기준 케이스 | 31 |
@@ -166,6 +166,7 @@ MES-Design/
 - `component-library/src/components/experimental/`: 원본 근거가 아직 없는 조작 가능한 격리 프로토타입
 - `component-library/src/design-system/registry/`: AI 조회용 컴포넌트·패턴·화면 레지스트리
 - `component-library/src/design-system/registry/screen-request.schema.json`: 자연어를 JSX보다 먼저 고정하는 화면 요청 계약
+- `component-library/src/design-system/registry/generation-templates.json`: 결정적 TSX를 지원하는 Recipe와 필수 조합 레지스트리
 - `component-library/src/design-system/registry/experimental-candidates.json`: 실험 후보의 상태·제약·승격 조건 레지스트리
 - `component-library/src/design-system/registry/composition-policy.json`: AI 조합 계층·판정·승인·마이그레이션 보류 공통 정책
 - `component-library/src/design-system/registry/composition-inventory.json`: 현재 패턴 코드의 Shell·Section·Behavior 관찰 인벤토리
@@ -211,6 +212,9 @@ npm run check:design-system
 
 # 화면 요청을 레지스트리 기반 결정적 계약으로 변환
 npm run screen:resolve -- tests/fixtures/screen-requests/receiving-side-panel.json
+
+# 지원 Recipe의 계약을 동일한 TSX로 생성
+npm run screen:generate -- path/to/contract.json --out path/to/implementation.tsx
 
 # 계약과 실제 화면 구현의 원시 HTML·셸·등록 import 감사
 npm run screen:audit -- path/to/contract.json path/to/implementation.tsx
@@ -265,7 +269,7 @@ Figma 원본과 기존 구현
 
 AI가 임의의 JSX를 바로 생성하거나 특정 Figma 프레임을 복사하는 대신, 화면 정의에서 필요한 표준 패턴과 컴포넌트를 먼저 찾도록 구성합니다. 생성 결과에 새로운 수치, 변형 또는 조합이 필요하면 화면 안에 즉시 하드코딩하지 않고, 기존 규칙의 재사용·조합·확장으로 설명할 수 있는지 먼저 판별합니다. AI는 신규 조합을 제안할 수 있지만 스스로 정식 패턴으로 승인할 수 없으며, 승인 전 결과는 생성 시안 검토함에 격리합니다.
 
-다른 컴퓨터와 다른 AI에서도 이 흐름을 반복할 수 있도록 저장소 전용 `.agents/skills/generate-mes-ui` Skill과 짧은 우선 지침 `AGENTS.override.md`를 함께 배포합니다. Claude Code, Cursor, GitHub Copilot용 파일은 별도 규칙을 복제하지 않고 이 공통 원본을 읽게 하는 얇은 진입점입니다. 동일한 `ScreenRequest`와 동일한 커밋은 같은 registry fingerprint, pattern refs, component refs와 quality 판정을 생성합니다. 다만 현재 보장하는 것은 **동일한 구현 계약**입니다. AI가 작성한 TSX와 최종 픽셀까지 동일하다는 보장은 아직 시각 회귀 테스트 통과로 확인해야 하며, 반복 Recipe를 코드 템플릿으로 전환하는 다음 단계에서 코드 생성의 결정성도 더 높입니다.
+다른 컴퓨터와 다른 AI에서도 이 흐름을 반복할 수 있도록 저장소 전용 `.agents/skills/generate-mes-ui` Skill과 짧은 우선 지침 `AGENTS.override.md`를 함께 배포합니다. Claude Code, Cursor, GitHub Copilot용 파일은 별도 규칙을 복제하지 않고 이 공통 원본을 읽게 하는 얇은 진입점입니다. 동일한 `ScreenRequest`와 동일한 커밋은 같은 registry fingerprint, pattern refs, component refs와 quality 판정을 생성합니다. `recipe.side-slide-form-editable-list`는 동일 계약에서 같은 TSX hash까지 생성합니다. 아직 지원 템플릿이 없는 Recipe의 TSX와 모든 화면의 최종 픽셀까지 같다는 보장은 없으며, 최종 시각 일치는 화면별 시각 회귀 테스트로 확인합니다.
 
 ### 패턴은 화면 템플릿이 아니라 조합 문법입니다
 
@@ -301,6 +305,7 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 - `design-value-audit.json`: 코드에서 자동 수집된 사용 빈도와 단발성 값 검토 대기열
 - `screen-request.schema.json`: AI가 작성하는 입력 계약
 - `screen:resolve`: 등록 ID와 target 셸을 검증하고 stable fingerprint를 가진 구현 계약 생성
+- `screen:generate`: 지원되는 Recipe 계약을 덮어쓰기 없이 결정적 TSX로 생성
 - `screen:audit`: 구현이 계약 셸과 공용 컴포넌트를 지키는지 severity별로 검사
 
 장기적으로 각 판단 기록에는 다음 정보가 연결되어야 합니다.
@@ -372,5 +377,5 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 2. 코드화된 화면에서 간격, 크기, 색상, 타이포그래피와 상태 사용 빈도를 수집해 이상값을 탐지합니다.
 3. `observedValue / canonicalValue / decision / evidence / scope` 판단 기록을 레지스트리 스키마에 추가합니다.
 4. 확인된 불일치를 표준 토큰·컴포넌트·패턴에 반영하고 대표 상태를 시각 회귀 테스트에 등록합니다.
-5. 반복 근거가 충분한 Recipe부터 ScreenRequest 계약을 TSX로 변환하는 결정적 템플릿을 연결합니다.
+5. 중앙 검색·선택 테이블처럼 반복 근거가 충분한 다음 Recipe를 결정적 TSX 템플릿으로 연결합니다.
 6. 생성 시간뿐 아니라 원본 컨셉 충실도, 표준 컴포넌트 재사용률, 임의 값 발생 수와 수정 횟수로 AI 생성 품질을 평가합니다.

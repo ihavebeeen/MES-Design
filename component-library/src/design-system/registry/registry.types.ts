@@ -69,6 +69,45 @@ export interface ScreenRegistry {
 export type ScreenRequestIntent = "reproduce" | "new" | "normalize" | "audit";
 export type ScreenTargetKind = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
 export type NormalizationClassification = "source-error" | "implementation-error" | "intentional-exception" | "normalization-candidate";
+export type ScreenTemplateControl = "input" | "select";
+
+export interface ScreenTemplateField {
+  key: string;
+  label: string;
+  control: ScreenTemplateControl;
+  defaultValue: string;
+  required?: boolean;
+  readOnly?: boolean;
+  placeholder?: string;
+  inputMode?: "text" | "numeric" | "decimal";
+  validation?: "non-empty" | "positive-number";
+  options?: string[];
+}
+
+export interface ScreenTemplateFormSection {
+  id: string;
+  title: string;
+  kind: "form-grid";
+  divider?: "none" | "bottom";
+  columns?: 1 | 2;
+  density?: "compact" | "comfortable";
+  fields: ScreenTemplateField[];
+}
+
+export interface ScreenTemplateEditableRowSection {
+  id: string;
+  title: string;
+  kind: "editable-row-list";
+  divider?: "none" | "bottom";
+  addLabel?: string;
+  minRows?: number;
+  insertPosition?: "start" | "end";
+  inheritOnAdd?: string[];
+  columns: Array<ScreenTemplateField & {
+    width?: "unit" | "compact" | "standard" | "wide" | "flex";
+    align?: "left" | "center" | "right";
+  }>;
+}
 
 export interface ScreenRequest {
   schemaVersion: 1;
@@ -100,10 +139,32 @@ export interface ScreenRequest {
     classification: NormalizationClassification;
     reason: string;
   }>;
+  generation?: {
+    templateId: "side-slide-form-editable-list.v1";
+    panelSize: "narrow-760" | "medium-849" | "standard-900" | "wide-960";
+    sections: Array<ScreenTemplateFormSection | ScreenTemplateEditableRowSection>;
+  };
   output: {
     route: string;
     componentName: string;
   };
+}
+
+export interface GenerationTemplateRegistryEntry {
+  id: string;
+  status: "stable" | "provisional";
+  targetKind: ScreenTargetKind;
+  recipeRef: string;
+  source: string;
+  requiredPatternRefs: string[];
+  supportedSectionKinds: Array<"form-grid" | "editable-row-list">;
+  output: "tsx";
+  overwrite: "forbid";
+}
+
+export interface GenerationTemplateRegistry {
+  schemaVersion: 1;
+  templates: GenerationTemplateRegistryEntry[];
 }
 
 export interface InteractionAuditEntry {

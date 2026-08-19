@@ -24,6 +24,7 @@ const interactionAuditRegistry = readJson("interaction-audit.json");
 const completionPolicyRegistry = readJson("completion-policy.json");
 const footerActionAuditRegistry = readJson("footer-action-audit.json");
 const contextRuleRegistry = readJson("context-rules.json");
+const generationTemplateRegistry = readJson("generation-templates.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -70,6 +71,7 @@ checkVersion("interaction-audit", interactionAuditRegistry);
 checkVersion("completion-policy", completionPolicyRegistry);
 checkVersion("footer-action-audit", footerActionAuditRegistry);
 checkVersion("context-rules", contextRuleRegistry);
+checkVersion("generation-templates", generationTemplateRegistry);
 
 const actionSets = mapByUniqueId("action-sets", actionSetRegistry.actionSets ?? []);
 for (const actionSet of actionSets.values()) {
@@ -214,11 +216,23 @@ for (const [name, registry] of proposalRegistries) {
 const components = mapByUniqueId("components", componentRegistry.components ?? []);
 const patterns = mapByUniqueId("patterns", patternRegistry.patterns ?? []);
 const screens = mapByUniqueId("screens", screenRegistry.screens ?? []);
+const generationTemplates = mapByUniqueId("generation-templates", generationTemplateRegistry.templates ?? []);
 const visualCases = mapByUniqueId("visual-regression", visualRegistry.cases ?? []);
 const sourceEvidence = mapByUniqueId("source-evidence", sourceEvidenceRegistry.sources ?? []);
 const footerActionAudits = mapByUniqueId("footer-action-audit", (footerActionAuditRegistry.entries ?? []).map((entry) => ({ ...entry, id: entry.sourceEvidenceId })));
 const generatedCandidates = mapByUniqueId("generated-screen-evaluations", generatedScreenRegistry.candidates ?? []);
 const interactionAudits = mapByUniqueId("interaction-audit", (interactionAuditRegistry.screens ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
+
+for (const template of generationTemplates.values()) {
+  checkSource("generation template", template);
+  if (!patterns.has(template.recipeRef)) errors.push(`generation template '${template.id}': 미등록 recipe '${template.recipeRef}'를 참조합니다.`);
+  else if (patterns.get(template.recipeRef).kind !== "recipe") errors.push(`generation template '${template.id}': '${template.recipeRef}'는 recipe가 아닙니다.`);
+  if (!Array.isArray(template.requiredPatternRefs) || template.requiredPatternRefs.length === 0) errors.push(`generation template '${template.id}': requiredPatternRefs가 필요합니다.`);
+  for (const patternRef of template.requiredPatternRefs ?? []) if (!patterns.has(patternRef)) errors.push(`generation template '${template.id}': 미등록 pattern '${patternRef}'를 참조합니다.`);
+  if (!template.requiredPatternRefs?.includes(template.recipeRef)) errors.push(`generation template '${template.id}': recipeRef가 requiredPatternRefs에 포함되어야 합니다.`);
+  if (!Array.isArray(template.supportedSectionKinds) || template.supportedSectionKinds.length === 0) errors.push(`generation template '${template.id}': supportedSectionKinds가 필요합니다.`);
+  if (template.output !== "tsx" || template.overwrite !== "forbid") errors.push(`generation template '${template.id}': output=tsx, overwrite=forbid 계약이 필요합니다.`);
+}
 
 if (contextRuleRegistry.policyId !== "mes.ai-context-rules") errors.push("context-rules: policyId가 잘못되었습니다.");
 if (contextRuleRegistry.status !== "active") errors.push("context-rules: status는 active여야 합니다.");
@@ -457,5 +471,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates. Project state: ${completionPolicyRegistry.projectState}, open completion blockers: ${projectCompletionBlockerCount}.`
+  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${generationTemplates.size} generation templates, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates. Project state: ${completionPolicyRegistry.projectState}, open completion blockers: ${projectCompletionBlockerCount}.`
 );

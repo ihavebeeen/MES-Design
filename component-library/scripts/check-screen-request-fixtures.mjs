@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { resolveScreenRequest } from "./resolve-screen-request.mjs";
+import { generateScreenTsx, generatedSourceFingerprint } from "./generate-screen-tsx.mjs";
 
 const projectRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixturePath = join(projectRoot, "tests", "fixtures", "screen-requests", "receiving-side-panel.json");
@@ -36,4 +37,20 @@ const unknownField = structuredClone(request);
 unknownField.composition.visualGuess = "gray-card";
 assert.ok(resolveScreenRequest(unknownField).quality.issues.some((entry) => entry.code === "request.unknown-field"));
 
-console.log(`[screen:fixtures] 정상 1개 + 차단 3개 통과 · receiving · ${first.fingerprint.slice(0, 12)}`);
+const generationFixturePath = join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json");
+const generationRequest = JSON.parse(readFileSync(generationFixturePath, "utf8"));
+const generationContract = resolveScreenRequest(generationRequest);
+const generatedFirst = generateScreenTsx(generationContract);
+const generatedSecond = generateScreenTsx(generationContract);
+assert.equal(generatedFirst, generatedSecond, "동일 계약에서 생성된 TSX가 달라졌습니다.");
+assert.equal(generatedSourceFingerprint(generatedFirst), "c255e456a13475fcbd527b435c4b04e0e5072d8434da0ed23af4e65c85fd6745", "승인된 TSX fixture hash가 달라졌습니다.");
+assert.match(generatedFirst, /<SideSlidePanel/);
+assert.match(generatedFirst, /<EditableRowGrid/);
+assert.doesNotMatch(generatedFirst, /<\s*(button|input|select|textarea|table)\b/);
+assert.match(generatedFirst, /previousRow\?\.customer/);
+
+const invalidGenerationRequest = structuredClone(generationRequest);
+invalidGenerationRequest.generation.panelSize = "mega";
+assert.ok(resolveScreenRequest(invalidGenerationRequest).quality.issues.some((entry) => entry.code === "request.generation"));
+
+console.log(`[screen:fixtures] 계약 정상 1개 + 차단 4개 + TSX 결정성 1개 통과 · ${generatedSourceFingerprint(generatedFirst).slice(0, 12)}`);

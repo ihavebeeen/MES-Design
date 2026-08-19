@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "id": "side-slide-form-editable-list.v1",
+      "status": "stable",
+      "targetKind": "side-slide-panel",
+      "recipeRef": "recipe.side-slide-form-editable-list",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "requiredPatternRefs": [
+        "recipe.side-slide-form-editable-list",
+        "shell.side-slide-panel",
+        "frame.standard-section",
+        "section.form-grid",
+        "section.editable-row-list",
+        "row.mutation-policy",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ],
+      "supportedSectionKinds": ["form-grid", "editable-row-list"],
+      "output": "tsx",
+      "overwrite": "forbid"
+    }
+  ]
+}

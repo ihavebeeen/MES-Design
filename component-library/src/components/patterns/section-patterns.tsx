@@ -61,6 +61,92 @@ export interface EditableRowListSectionProps extends React.HTMLAttributes<HTMLEl
   listClassName?: string;
 }
 
+export type EditableRowGridColumnWidth = "index" | "unit" | "action" | "compact" | "standard" | "wide" | "flex";
+
+export interface EditableRowGridColumn {
+  id: string;
+  label?: React.ReactNode;
+  required?: boolean;
+  width?: EditableRowGridColumnWidth;
+  align?: "left" | "center" | "right";
+}
+
+export interface EditableRowGridEntry {
+  id: React.Key;
+  cells: React.ReactNode[];
+}
+
+export interface EditableRowGridProps extends React.HTMLAttributes<HTMLDivElement> {
+  columns: EditableRowGridColumn[];
+  rows: EditableRowGridEntry[];
+}
+
+const editableRowColumnWidths: Record<EditableRowGridColumnWidth, string> = {
+  index: "24px",
+  unit: "54px",
+  action: "54px",
+  compact: "86px",
+  standard: "minmax(90px, 1fr)",
+  wide: "minmax(150px, 1.6fr)",
+  flex: "minmax(110px, 1.2fr)",
+};
+
+const editableRowAlignClasses = {
+  left: "text-left",
+  center: "text-center",
+  right: "text-right",
+};
+
+/** 헤더와 모든 데이터 행이 하나의 columns 계약을 공유하도록 강제한다. */
+export function EditableRowGrid({ columns, rows, className, ...props }: EditableRowGridProps) {
+  const gridTemplateColumns = columns.map((column) => editableRowColumnWidths[column.width ?? "standard"]).join(" ");
+
+  if (rows.some((row) => row.cells.length !== columns.length)) {
+    throw new Error("EditableRowGrid의 모든 행은 columns와 같은 수의 cell을 가져야 합니다.");
+  }
+
+  return (
+    <div role="table" className={cn("min-w-0", className)} {...props}>
+      <div
+        role="row"
+        className="grid h-8 items-center gap-1.5 border-b border-mes-gray-30 bg-mes-gray-10 px-2.5"
+        style={{ gridTemplateColumns }}
+      >
+        {columns.map((column) => (
+          <span
+            key={column.id}
+            role="columnheader"
+            className={cn("min-w-0 text-[13px] font-semibold text-mes-gray-130", editableRowAlignClasses[column.align ?? "left"])}
+          >
+            {column.label}
+            {column.required && <span aria-hidden="true" className="ml-[3px] text-mes-danger-60">*</span>}
+          </span>
+        ))}
+      </div>
+      <div role="rowgroup" className="divide-y divide-mes-gray-30">
+        {rows.map((row) => (
+          <div
+            key={row.id}
+            role="row"
+            className="grid min-h-12 items-center gap-1.5 px-2.5 py-2 text-[13px] font-normal text-mes-gray-130"
+            style={{ gridTemplateColumns }}
+          >
+            {row.cells.map((cell, index) => (
+              <div
+                key={columns[index].id}
+                role="cell"
+                className={cn("min-w-0", editableRowAlignClasses[columns[index].align ?? "left"])}
+              >
+                {cell}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /** 행의 표시 구조만 소유한다. 추가·삭제 가능 조건과 ID 정책은 row.mutation-policy가 주입한다. */
 export function EditableRowListSection({
   entryEditor,

@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { validateGenerationSpec } from "./screen-generation-contract.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -38,6 +39,7 @@ export function readRegistryBundle() {
   const sourceAssets = readJson(join(registryDirectory, "source-assets.json"));
   const actionSets = readJson(join(registryDirectory, "action-sets.json"));
   const contextRules = readJson(join(registryDirectory, "context-rules.json"));
+  const generationTemplates = readJson(join(registryDirectory, "generation-templates.json"));
 
   return {
     components: components.components,
@@ -45,6 +47,7 @@ export function readRegistryBundle() {
     screens: [...screens.screens, ...sourceAssets.screens],
     actionSets: actionSets.actionSets,
     contextRules,
+    generationTemplates: generationTemplates.templates,
   };
 }
 
@@ -67,6 +70,7 @@ function validateRequestShape(request) {
     "composition",
     "requirements",
     "normalizationDecisions",
+    "generation",
     "output",
   ]);
   for (const key of Object.keys(request ?? {})) {
@@ -100,6 +104,9 @@ function validateRequestShape(request) {
       checkKnownKeys(decision, new Set(["subject", "classification", "reason"]), `normalizationDecisions[${index}]`);
       if (!decision || typeof decision.subject !== "string" || decision.subject === "" || typeof decision.reason !== "string" || decision.reason === "" || !["source-error", "implementation-error", "intentional-exception", "normalization-candidate"].includes(decision.classification)) issues.push(issue("blocker", "request.normalization-decision", `normalizationDecisions[${index}] 값이 잘못되었습니다.`));
     }
+  }
+  for (const message of validateGenerationSpec(request?.generation)) {
+    issues.push(issue("blocker", "request.generation", message));
   }
 
   for (const key of ["recipeRefs", "sectionRefs", "behaviorRefs"]) {
@@ -144,6 +151,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const patternMap = new Map(registry.patterns.map((entry) => [entry.id, entry]));
   const screenMap = new Map(registry.screens.map((entry) => [entry.id, entry]));
   const actionSetMap = new Map(registry.actionSets.map((entry) => [entry.id, entry]));
+  const generationTemplateMap = new Map(registry.generationTemplates.map((entry) => [entry.id, entry]));
   const nearestScreen = request?.target?.nearestScreenId ? screenMap.get(request.target.nearestScreenId) : undefined;
 
   if (request?.target?.nearestScreenId && !nearestScreen) {
@@ -193,6 +201,9 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   if (request?.intent === "normalize" && (!Array.isArray(request.normalizationDecisions) || request.normalizationDecisions.length === 0)) {
     issues.push(issue("warning", "normalization.no-decisions", "normalize 요청에 명시적 normalizationDecisions가 없습니다."));
   }
+  const generationTemplate = request?.generation ? generationTemplateMap.get(request.generation.templateId) : undefined;
+  if (request?.generation && !generationTemplate) issues.push(issue("blocker", "registry.unknown-generation-template", `등록되지 않은 generation template '${request.generation.templateId}'입니다.`, request.generation.templateId));
+  if (generationTemplate && generationTemplate.targetKind !== request?.target?.kind) issues.push(issue("blocker", "generation.target-mismatch", `template '${generationTemplate.id}'는 target '${generationTemplate.targetKind}'만 지원합니다.`, generationTemplate.id));
 
   const resolvedPatterns = selectedPatternRefs.map((id) => patternMap.get(id)).filter(Boolean);
   const expectedShellComponent = expectedShellComponents[request?.target?.kind];
@@ -237,6 +248,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       screens: registry.screens,
       actionSets: registry.actionSets,
       contextRules: registry.contextRules,
+      generationTemplates: registry.generationTemplates,
     }),
     baseScreen: nearestScreen ?? null,
     composition: {
@@ -254,6 +266,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       contextRules: applicableContextRules,
       contextDecisions: applicableContextDecisions,
       globalGates: registry.contextRules.globalGates,
+      generationTemplate: generationTemplate ?? null,
     },
     quality: {
       status,

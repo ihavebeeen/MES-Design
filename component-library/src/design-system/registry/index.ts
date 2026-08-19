@@ -18,6 +18,7 @@ import interactionAuditData from "./interaction-audit.json";
 import completionPolicyData from "./completion-policy.json";
 import footerActionAuditData from "./footer-action-audit.json";
 import contextRuleData from "./context-rules.json";
+import generationTemplateData from "./generation-templates.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -39,6 +40,7 @@ import type {
   FooterActionAuditRegistry,
   ContextRuleRegistry,
   ContextRuleCategory,
+  GenerationTemplateRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -62,6 +64,7 @@ export const interactionAuditRegistry = interactionAuditData as InteractionAudit
 export const completionPolicyRegistry = completionPolicyData as CompletionPolicyRegistry;
 export const footerActionAuditRegistry = footerActionAuditData as FooterActionAuditRegistry;
 export const contextRuleRegistry = contextRuleData as ContextRuleRegistry;
+export const generationTemplateRegistry = generationTemplateData as GenerationTemplateRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);
@@ -106,6 +109,7 @@ export function getScreenRequestOptions() {
     sections: patternRegistry.patterns.filter(({ kind }) => ["section-frame", "section-pattern", "table"].includes(kind)),
     behaviors: patternRegistry.patterns.filter(({ kind }) => kind === "behavior"),
     actionSets: actionSetRegistry.actionSets,
+    templates: generationTemplateRegistry.templates,
   };
 }
 

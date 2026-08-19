@@ -9,7 +9,7 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
 
 ## Workflow
 
-1. Read `AGENTS.override.md`, then read `references/repository-contract.md`.
+1. Read `AGENTS.override.md`, then read `references/repository-contract.md`. For a deterministic template request, also read `references/templates.md`.
 2. Inspect the closest registered screen with `getImplementationContext(screenId)` in `component-library/src/design-system/registry/index.ts`.
 3. If a Figma node exists, inspect its metadata and design context before editing code. Treat unmeasured visual guesses as review notes, never facts.
 4. Write a `ScreenRequest` JSON that conforms to `component-library/src/design-system/registry/screen-request.schema.json`.
@@ -21,16 +21,22 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
    ```
 
 6. Stop on resolver blockers. Resolve warnings by evidence or record them in the generated-screen evaluation; a warning alone does not invalidate the whole screen.
-7. Implement only with resolved registry references. Use registered components and pattern sources. Do not use native interactive HTML when a MES component exists.
-8. Audit the implementation:
+7. When the resolved recipe has a supported deterministic template, generate TSX instead of writing it freely:
+
+   ```bash
+   npm run screen:generate -- path/to/contract.json --out path/to/screen.tsx
+   ```
+
+8. Otherwise implement only with resolved registry references. Use registered components and pattern sources. Do not use native interactive HTML when a MES component exists.
+9. Audit the implementation:
 
    ```bash
    npm run screen:audit -- path/to/contract.json path/to/implementation.tsx
    npm run check:design-system
    ```
 
-9. Verify at the target viewport: interactions, `clientWidth/scrollWidth`, `clientHeight/scrollHeight`, and the visual baseline. Do not call a screen verified without these checks.
-10. Register newly discovered semantics as quarantined proposals. Never promote a one-off visual fragment directly into the stable component or pattern registry.
+10. Verify at the target viewport: interactions, `clientWidth/scrollWidth`, `clientHeight/scrollHeight`, and the visual baseline. Do not call a screen verified without these checks.
+11. Register newly discovered semantics as quarantined proposals. Never promote a one-off visual fragment directly into the stable component or pattern registry.
 
 ## Selection rules
 

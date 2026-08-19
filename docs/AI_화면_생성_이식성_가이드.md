@@ -11,10 +11,10 @@
 | AI 작업 규칙 발견 | 구현됨 | `AGENTS.override.md`와 repo Skill을 Git으로 공유 |
 | 화면 조합 선택 | 검증됨 | 같은 요청·같은 커밋에서 같은 shell/section/behavior/action/component refs와 fingerprint 생성 |
 | 구현 위반 탐지 | 구현됨 | 원시 HTML 상호작용, 잘못된 셸, 미등록 UI import, no-op handler, 임의 px를 severity별 탐지 |
-| TSX 코드 동일성 | 미구현 | 현재 AI가 계약 안에서 코드를 작성하므로 표현 순서까지 byte 단위로 같지는 않음 |
+| TSX 코드 동일성 | 부분 검증됨 | `side-slide-form-editable-list.v1`은 동일 계약에서 같은 source hash 생성, 다른 Recipe는 아직 AI 구현 |
 | 최종 픽셀 동일성 | 화면별 검증 | Figma 실측과 Playwright 시각 회귀를 통과한 화면에만 주장 가능 |
 
-따라서 지금부터는 다른 AI가 엉뚱한 중앙 모달, 임의 카드, 원시 button을 선택하는 문제를 상당 부분 차단할 수 있습니다. 완전히 같은 소스 코드까지 필요하면 검증된 Recipe별 템플릿 생성기가 추가로 필요합니다.
+따라서 지금부터는 다른 AI가 엉뚱한 중앙 모달, 임의 카드, 원시 button을 선택하는 문제를 상당 부분 차단할 수 있습니다. 우측 슬라이드의 폼 + 반복 입력 행 Recipe는 완전히 같은 소스 코드를 만들 수 있고, 나머지 Recipe는 순차적인 템플릿 추가가 필요합니다.
 
 ## 다른 컴퓨터에서 시작하기
 
@@ -26,7 +26,8 @@
 
 ```bash
 cd component-library
-npm run screen:resolve -- tests/fixtures/screen-requests/receiving-side-panel.json --out receiving.contract.json
+npm run screen:resolve -- tests/fixtures/screen-requests/deterministic-side-slide.json --out deterministic-side-slide.contract.json
+npm run screen:generate -- deterministic-side-slide.contract.json --out src/path/to/generated-screen.tsx
 ```
 
 출력의 `fingerprint`가 다르면 두 컴퓨터의 요청 또는 레지스트리 커밋이 다른 것입니다. fingerprint가 같으면 AI가 읽어야 하는 구현 계약은 같습니다.
@@ -53,7 +54,7 @@ npm run screen:resolve -- tests/fixtures/screen-requests/receiving-side-panel.js
 ## 구현 후 감사
 
 ```bash
-npm run screen:audit -- receiving.contract.json src/path/to/screen.tsx
+npm run screen:audit -- deterministic-side-slide.contract.json src/path/to/screen.tsx
 ```
 
 감사기는 다음을 확인합니다.
@@ -71,8 +72,8 @@ npm run screen:audit -- receiving.contract.json src/path/to/screen.tsx
 
 코드까지 같은 결과를 만들기 위해 모든 화면을 하나의 거대한 생성기로 처리하지 않습니다. 먼저 반복되고 검증된 Recipe부터 템플릿화합니다.
 
-1. 우측 슬라이드 폼 + 반복 입력 행
-2. 중앙 검색·선택 테이블
+1. 우측 슬라이드 폼 + 반복 입력 행 — 구현·결정성·컴파일 감사 통과
+2. 중앙 검색·선택 테이블 — 다음 후보
 3. 중앙 비교/확인
 4. 페이지 엔티티 리스트
 

@@ -7,11 +7,11 @@
 | 항목 | 결과 |
 |---|---:|
 | 검사 파일 | 37 |
-| 전체 줄 수 | 7,826 |
+| 전체 줄 수 | 7,912 |
 | 혼합 Section Frame 파일 | 2 |
 | 표준 Frame 없이 native section만 사용 | 18 |
 | rounded wrapper가 있는 Section 후보 파일 | 21 |
-| fingerprint | `29b3a5a35b19234a` |
+| fingerprint | `a43816b3d69ac1aa` |
 
 ## Shell 사용
 
@@ -29,7 +29,7 @@
 | sectionHeader | 7 |
 | patternGroupHeader | 0 |
 | nativeSection | 42 |
-| dividerContainer | 31 |
+| dividerContainer | 32 |
 | roundedContainer | 63 |
 | gray20Container | 33 |
 

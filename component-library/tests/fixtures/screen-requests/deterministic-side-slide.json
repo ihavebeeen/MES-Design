@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "requestId": "deterministic-receiving-fixture",
+  "name": "결정적 입고 입력 생성 fixture",
+  "intent": "new",
+  "lifecycle": "draft",
+  "target": {
+    "kind": "side-slide-panel",
+    "title": "간편 입고등록",
+    "nearestScreenId": "receiving",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "evidence": {
+    "figmaNode": "20368:69523",
+    "notes": [
+      "기존 우측 슬라이드 셸과 반복 입력 행 조합만 사용한다.",
+      "테이블을 입력 행 정렬 용도로 사용하지 않는다."
+    ]
+  },
+  "composition": {
+    "recipeRefs": ["recipe.side-slide-form-editable-list"]
+  },
+  "requirements": [
+    "행 추가는 현재 마지막 행의 필수값이 유효할 때만 가능하다.",
+    "새 행은 직전 거래처만 계승하고 창고는 기본값을 사용한다.",
+    "취소와 X는 저장 전 상태를 복원하고 닫는다."
+  ],
+  "generation": {
+    "templateId": "side-slide-form-editable-list.v1",
+    "panelSize": "standard-900",
+    "sections": [
+      {
+        "id": "basicInformation",
+        "title": "기본정보",
+        "kind": "form-grid",
+        "divider": "bottom",
+        "columns": 2,
+        "density": "compact",
+        "fields": [
+          {
+            "key": "receivingDate",
+            "label": "입고일",
+            "control": "input",
+            "defaultValue": "",
+            "required": true,
+            "placeholder": "YYYY.MM.DD",
+            "validation": "non-empty"
+          }
+        ]
+      },
+      {
+        "id": "receivingItems",
+        "title": "품목/수량 직접 입력",
+        "kind": "editable-row-list",
+        "divider": "bottom",
+        "addLabel": "행 추가",
+        "minRows": 1,
+        "insertPosition": "end",
+        "inheritOnAdd": ["customer"],
+        "columns": [
+          {
+            "key": "customer",
+            "label": "거래처",
+            "control": "select",
+            "defaultValue": "",
+            "required": true,
+            "placeholder": "선택",
+            "options": ["A업체", "B업체"],
+            "width": "flex"
+          },
+          {
+            "key": "warehouse",
+            "label": "창고",
+            "control": "select",
+            "defaultValue": "본창고",
+            "required": true,
+            "options": ["본창고", "외주창고"],
+            "width": "standard"
+          },
+          {
+            "key": "item",
+            "label": "품목",
+            "control": "input",
+            "defaultValue": "",
+            "required": true,
+            "placeholder": "품목 입력",
+            "width": "wide"
+          },
+          {
+            "key": "quantity",
+            "label": "수량",
+            "control": "input",
+            "defaultValue": "0",
+            "required": true,
+            "inputMode": "numeric",
+            "validation": "positive-number",
+            "width": "compact",
+            "align": "right"
+          },
+          {
+            "key": "unit",
+            "label": "단위",
+            "control": "input",
+            "defaultValue": "kg",
+            "readOnly": true,
+            "width": "unit",
+            "align": "center"
+          },
+          {
+            "key": "lot",
+            "label": "입고 LOT",
+            "control": "input",
+            "defaultValue": "",
+            "placeholder": "LOT 입력",
+            "width": "flex"
+          }
+        ]
+      },
+      {
+        "id": "optionalInformation",
+        "title": "선택 항목",
+        "kind": "form-grid",
+        "columns": 2,
+        "density": "compact",
+        "fields": [
+          {
+            "key": "receivingType",
+            "label": "입고구분",
+            "control": "select",
+            "defaultValue": "일반입고",
+            "options": ["일반입고", "반품입고", "기타"]
+          },
+          {
+            "key": "memo",
+            "label": "비고",
+            "control": "input",
+            "defaultValue": "",
+            "placeholder": "내용 입력"
+          }
+        ]
+      }
+    ]
+  },
+  "output": {
+    "route": "/generated-screens/deterministic-receiving-fixture",
+    "componentName": "DeterministicReceivingDialog"
+  }
+}

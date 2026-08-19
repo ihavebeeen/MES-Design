@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx",
   "summary": {
     "scannedFiles": 37,
-    "totalLines": 7826,
+    "totalLines": 7912,
     "shellInstances": {
       "CenterModal": 13,
       "SideSlidePanel": 9,
@@ -2288,8 +2288,9 @@
       "source": "src/components/patterns/section-patterns.tsx",
       "name": "section-patterns.tsx",
       "observedRole": "composition-source",
-      "lines": 181,
+      "lines": 267,
       "exportedSymbols": [
+        "EditableRowGrid",
         "EditableRowListSection",
         "InspectionItemsSection",
         "ResultTotalCard",
@@ -2302,7 +2303,7 @@
         "sectionHeader": 0,
         "patternGroupHeader": 0,
         "nativeSection": 3,
-        "dividerContainer": 0,
+        "dividerContainer": 1,
         "roundedContainer": 0,
         "gray20Container": 0
       },
@@ -2783,5 +2784,5 @@
       ]
     }
   ],
-  "fingerprint": "29b3a5a35b19234a"
+  "fingerprint": "a43816b3d69ac1aa"
 }

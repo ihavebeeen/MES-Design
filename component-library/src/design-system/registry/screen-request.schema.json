@@ -70,6 +70,7 @@
         }
       }
     },
+    "generation": { "$ref": "#/$defs/generation" },
     "output": {
       "type": "object",
       "additionalProperties": false,
@@ -85,6 +86,95 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 },
       "uniqueItems": true
+    },
+    "generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["templateId", "panelSize", "sections"],
+      "properties": {
+        "templateId": { "const": "side-slide-form-editable-list.v1" },
+        "panelSize": { "enum": ["narrow-760", "medium-849", "standard-900", "wide-960"] },
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/formSection" },
+              { "$ref": "#/$defs/editableRowSection" }
+            ]
+          }
+        }
+      }
+    },
+    "formSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "kind", "fields"],
+      "properties": {
+        "id": { "$ref": "#/$defs/key" },
+        "title": { "type": "string", "minLength": 1 },
+        "kind": { "const": "form-grid" },
+        "divider": { "enum": ["none", "bottom"] },
+        "columns": { "enum": [1, 2] },
+        "density": { "enum": ["compact", "comfortable"] },
+        "fields": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/field" } }
+      }
+    },
+    "editableRowSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "kind", "columns"],
+      "properties": {
+        "id": { "$ref": "#/$defs/key" },
+        "title": { "type": "string", "minLength": 1 },
+        "kind": { "const": "editable-row-list" },
+        "divider": { "enum": ["none", "bottom"] },
+        "addLabel": { "type": "string", "minLength": 1 },
+        "minRows": { "type": "integer", "minimum": 1, "maximum": 20 },
+        "insertPosition": { "enum": ["start", "end"] },
+        "inheritOnAdd": { "type": "array", "items": { "$ref": "#/$defs/key" }, "uniqueItems": true },
+        "columns": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/rowColumn" } }
+      }
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "control", "defaultValue"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1 },
+        "control": { "enum": ["input", "select"] },
+        "defaultValue": { "type": "string" },
+        "required": { "type": "boolean" },
+        "readOnly": { "type": "boolean" },
+        "placeholder": { "type": "string" },
+        "inputMode": { "enum": ["text", "numeric", "decimal"] },
+        "validation": { "enum": ["non-empty", "positive-number"] },
+        "options": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "rowColumn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "control", "defaultValue"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1 },
+        "control": { "enum": ["input", "select"] },
+        "defaultValue": { "type": "string" },
+        "required": { "type": "boolean" },
+        "readOnly": { "type": "boolean" },
+        "placeholder": { "type": "string" },
+        "inputMode": { "enum": ["text", "numeric", "decimal"] },
+        "validation": { "enum": ["non-empty", "positive-number"] },
+        "options": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "width": { "enum": ["unit", "compact", "standard", "wide", "flex"] },
+        "align": { "enum": ["left", "center", "right"] }
+      }
+    },
+    "key": {
+      "type": "string",
+      "pattern": "^[a-z][A-Za-z0-9]*$"
     }
   }
 }

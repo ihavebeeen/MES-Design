@@ -8,8 +8,8 @@
   },
   "summary": {
     "scannedFiles": 114,
-    "totalOccurrences": 3427,
-    "arbitraryUtilities": 1267,
+    "totalOccurrences": 3443,
+    "arbitraryUtilities": 1270,
     "hardcodedColors": 68,
     "reviewCandidates": 0,
     "unregisteredCandidates": 0
@@ -23,8 +23,8 @@
     },
     "pattern": {
       "files": 27,
-      "occurrences": 1829,
-      "arbitraryUtilities": 646,
+      "occurrences": 1845,
+      "arbitraryUtilities": 649,
       "hardcodedColors": 43
     },
     "evidence": {
@@ -38,11 +38,11 @@
     "spacing": [
       {
         "value": "8px",
-        "count": 210,
+        "count": 211,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 74,
-          "pattern": 109,
+          "pattern": 110,
           "evidence": 27
         },
         "examples": [
@@ -118,11 +118,11 @@
       },
       {
         "value": "10px",
-        "count": 132,
+        "count": 134,
         "arbitraryCount": 67,
         "layers": {
           "canonical": 40,
-          "pattern": 69,
+          "pattern": 71,
           "evidence": 23
         },
         "examples": [
@@ -158,11 +158,11 @@
       },
       {
         "value": "6px",
-        "count": 63,
+        "count": 65,
         "arbitraryCount": 17,
         "layers": {
           "canonical": 37,
-          "pattern": 18,
+          "pattern": 20,
           "evidence": 8
         },
         "examples": [
@@ -198,11 +198,11 @@
       },
       {
         "value": "3px",
-        "count": 22,
-        "arbitraryCount": 22,
+        "count": 23,
+        "arbitraryCount": 23,
         "layers": {
           "canonical": 16,
-          "pattern": 5,
+          "pattern": 6,
           "evidence": 1
         },
         "examples": [
@@ -843,11 +843,11 @@
       },
       {
         "value": "13px",
-        "count": 96,
-        "arbitraryCount": 96,
+        "count": 98,
+        "arbitraryCount": 98,
         "layers": {
           "canonical": 50,
-          "pattern": 42,
+          "pattern": 44,
           "evidence": 4
         },
         "examples": [
@@ -1163,11 +1163,11 @@
     "size": [
       {
         "value": "0px",
-        "count": 129,
+        "count": 132,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 16,
-          "pattern": 103,
+          "pattern": 106,
           "evidence": 10
         },
         "examples": [
@@ -1183,11 +1183,11 @@
       },
       {
         "value": "32px",
-        "count": 69,
+        "count": 70,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 23,
-          "pattern": 37,
+          "pattern": 38,
           "evidence": 9
         },
         "examples": [
@@ -1203,11 +1203,11 @@
       },
       {
         "value": "48px",
-        "count": 38,
+        "count": 39,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 2,
-          "pattern": 29,
+          "pattern": 30,
           "evidence": 7
         },
         "examples": [
@@ -4306,5 +4306,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "5e707db2e45e8367"
+  "fingerprint": "7c641297918ffb1e"
 }
