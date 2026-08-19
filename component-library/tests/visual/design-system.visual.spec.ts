@@ -4,6 +4,25 @@ test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
 });
 
+test("Tier 3~5 최초 후보 57개의 승격·유지·제외 판정을 웹 원장에 빠짐없이 표시한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/experimental/experimental-decisions");
+
+  await expect(page.locator("[data-candidate-decision-ledger]")).toBeVisible();
+  await expect(page.locator("[data-candidate-decision]")).toHaveCount(57);
+  await expect(page.locator('[data-decision-status="promoted"]')).toHaveCount(11);
+  await expect(page.locator('[data-decision-status="retained"]')).toHaveCount(9);
+  await expect(page.locator('[data-decision-status="rejected"]')).toHaveCount(37);
+  await expect(page.locator('[data-decision-tier="3"]')).toHaveCount(23);
+  await expect(page.locator('[data-decision-tier="4"]')).toHaveCount(22);
+  await expect(page.locator('[data-decision-tier="5"]')).toHaveCount(12);
+  await expect(page.getByText("범위 슬라이더", { exact: true })).toBeVisible();
+  await expect(page.getByText("이미지 썸네일", { exact: true })).toBeVisible();
+  await expect(page.getByText("브레이크포인트 스케일", { exact: true })).toBeVisible();
+  await expect(page.getByText("온보딩 툴팁·제품 투어", { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+});
+
 test("Tier 3 사용자 판정 후 유지 후보 2개만 격리하고 기본 상호작용과 페이지 폭을 유지한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/experimental/experimental-tier-3");
@@ -31,6 +50,7 @@ test("Tier 4·5 사용자 판정 후 유지 후보와 좌측 티어 구획은 �
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/experimental");
 
+  await expect(page.locator('main a[href="/experimental/experimental-decisions/"]')).toBeVisible();
   await expect(page.locator('main a[href="/experimental/experimental-tier-3/"]')).toBeVisible();
   await expect(page.locator('main a[href="/experimental/experimental-tier-4/"]')).toBeVisible();
   await expect(page.locator('main a[href="/experimental/experimental-tier-5/"]')).toBeVisible();

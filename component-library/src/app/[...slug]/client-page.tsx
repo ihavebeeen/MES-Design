@@ -107,7 +107,7 @@ import {
   OriginalMesScreenAssets,
 } from "@/components/patterns";
 import { GeneratedScreenReview } from "@/components/patterns/generated-screen-review";
-import { Tier3ExperimentalGallery, Tier4ExperimentalGallery, Tier5ExperimentalGallery } from "@/components/experimental";
+import { CandidateDecisionGallery, Tier3ExperimentalGallery, Tier4ExperimentalGallery, Tier5ExperimentalGallery } from "@/components/experimental";
 import {
   IconArrow,
   IconArrowDownRight,
@@ -2110,6 +2110,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
               {(activeGroup === "home" || activeGroup === "experimental") && (
                 <OverviewGrid nodes={EXPERIMENTAL_NODES} />
               )}
+              {activeGroup === "experimental" && activeId === "experimental-decisions" && <CandidateDecisionGallery />}
               {activeGroup === "experimental" && activeId === "experimental-tier-3" && <Tier3ExperimentalGallery />}
               {activeGroup === "experimental" && activeId === "experimental-tier-4" && <Tier4ExperimentalGallery />}
               {activeGroup === "experimental" && activeId === "experimental-tier-5" && <Tier5ExperimentalGallery />}

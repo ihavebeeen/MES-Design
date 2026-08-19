@@ -195,6 +195,7 @@ npm run dev
 - `/foundations/`: 디자인 토큰과 기초 규칙
 - `/components/`: 개별 UI 컴포넌트와 상태
 - `/generated-screens/`: 표준 화면과 격리된 AI 생성 시안 검토함
+- `/experimental/experimental-decisions/`: Tier 3~5 최초 후보 57개의 승격·실험 유지·제외 판정 원장
 - `/experimental/experimental-tier-3/`: 사용자 판정 후 유지된 Tier 3 기능 후보 2종
 - `/experimental/experimental-tier-4/`: 사용자 판정 후 유지된 Tier 4 기능 후보 6종
 - `/experimental/experimental-tier-5/`: 사용자 판정 후 유지된 Tier 5 기능 후보 1종
@@ -209,6 +210,9 @@ npm exec tsc -- --noEmit
 
 # 패턴의 공용 컴포넌트 재사용 + 레지스트리 무결성
 npm run check:design-system
+
+# JSON 판정 원장에서 사람이 읽는 Markdown 원장을 다시 생성
+npm run audit:experimental-decisions
 
 # 화면 요청을 레지스트리 기반 결정적 계약으로 변환
 npm run screen:resolve -- tests/fixtures/screen-requests/receiving-side-panel.json

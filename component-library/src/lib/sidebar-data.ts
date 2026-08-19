@@ -144,6 +144,11 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
     labelEn: "Generated Screen Review",
   },
   {
+    id: "experimental-decisions",
+    label: "후보 판정 현황",
+    labelEn: "Candidate Decisions",
+  },
+  {
     id: "experimental-tier-3",
     label: "Tier 3 유지 후보 (2)",
     labelEn: "Tier 3 Retained",
@@ -273,7 +278,7 @@ export const PATTERN_NODES: SidebarNode[] = [
 export const GENERATED_SCREEN_ID_LIST = ["generated-screen-review"];
 export const GENERATED_SCREEN_NODES: SidebarNode[] = GENERATED_SCREEN_ID_LIST.map((id) => leaf(id));
 
-export const EXPERIMENTAL_ID_LIST = ["experimental-tier-3", "experimental-tier-4", "experimental-tier-5"];
+export const EXPERIMENTAL_ID_LIST = ["experimental-decisions", "experimental-tier-3", "experimental-tier-4", "experimental-tier-5"];
 export const EXPERIMENTAL_NODES: SidebarNode[] = EXPERIMENTAL_ID_LIST.map((id) => leaf(id));
 
 export const COMPONENT_NODES: SidebarNode[] = [

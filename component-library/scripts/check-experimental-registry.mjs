@@ -12,12 +12,27 @@ const patternIds = new Set(patternRegistry.patterns?.map((entry) => entry.id));
 const allowedKinds = new Set(["component", "pattern", "template", "foundation", "utility"]);
 const ids = new Set();
 const checklistItems = new Set();
+const catalogIds = new Set();
+const catalogChecklistItems = new Set();
+const catalogById = new Map();
 const errors = [];
 const countsByTier = { 3: 0, 4: 0, 5: 0 };
+const catalogCountsByTier = { 3: 0, 4: 0, 5: 0 };
 
 if (registry.policyId !== "mes.experimental-candidates") errors.push("policyId가 잘못되었습니다.");
 if (registry.defaultInfluence !== "quarantined") errors.push("defaultInfluence는 quarantined여야 합니다.");
 if (!registry.promotionRule) errors.push("promotionRule이 필요합니다.");
+
+for (const entry of registry.catalog ?? []) {
+  if (catalogIds.has(entry.id)) errors.push(`catalog 중복 id: ${entry.id}`);
+  catalogIds.add(entry.id);
+  catalogById.set(entry.id, entry);
+  if (catalogChecklistItems.has(entry.checklistItem)) errors.push(`catalog 중복 checklistItem: ${entry.checklistItem}`);
+  catalogChecklistItems.add(entry.checklistItem);
+  if (![3, 4, 5].includes(entry.tier)) errors.push(`${entry.id}: catalog tier는 3~5여야 합니다.`);
+  else catalogCountsByTier[entry.tier] += 1;
+  if (!entry.name || !entry.checklistItem) errors.push(`${entry.id}: catalog에는 name과 checklistItem이 필요합니다.`);
+}
 
 for (const candidate of registry.candidates ?? []) {
   if (ids.has(candidate.id)) errors.push(`중복 id: ${candidate.id}`);
@@ -32,6 +47,11 @@ for (const candidate of registry.candidates ?? []) {
   if (!candidate.exportName) errors.push(`${candidate.id}: exportName이 필요합니다.`);
   if (!Array.isArray(candidate.standardRefs) || candidate.standardRefs.length === 0) errors.push(`${candidate.id}: standardRefs가 필요합니다.`);
   if (!Array.isArray(candidate.limitations) || candidate.limitations.length === 0) errors.push(`${candidate.id}: limitations가 필요합니다.`);
+  const catalogEntry = catalogById.get(candidate.id);
+  if (!catalogEntry) errors.push(`${candidate.id}: 최초 후보 catalog에 없습니다.`);
+  else if (catalogEntry.tier !== candidate.tier || catalogEntry.name !== candidate.name || catalogEntry.checklistItem !== candidate.checklistItem) {
+    errors.push(`${candidate.id}: catalog와 현재 후보의 tier/name/checklistItem이 다릅니다.`);
+  }
   const sourcePath = path.join(projectRoot, candidate.source ?? "");
   if (!candidate.source || !fs.existsSync(sourcePath)) errors.push(`${candidate.id}: source 파일이 없습니다 (${candidate.source ?? ""}).`);
   else {
@@ -56,6 +76,11 @@ for (const batch of registry.decisionBatches ?? []) {
   const decidedIds = [...promotionCandidateIds, ...retainedIds, ...rejectedIds];
   if (new Set(decidedIds).size !== decidedIds.length) errors.push(`${batch.id}: 후보가 여러 판정에 중복 포함되어 있습니다.`);
   if (reviewedCandidateCounts[batch.tier] && decidedIds.length !== reviewedCandidateCounts[batch.tier]) errors.push(`${batch.id}: Tier ${batch.tier} 최초 후보 ${reviewedCandidateCounts[batch.tier]}개의 판정이 모두 필요합니다 (현재 ${decidedIds.length}).`);
+  for (const decidedId of decidedIds) {
+    const catalogEntry = catalogById.get(decidedId);
+    if (!catalogEntry) errors.push(`${batch.id}: 판정 후보 '${decidedId}'가 catalog에 없습니다.`);
+    else if (catalogEntry.tier !== batch.tier) errors.push(`${batch.id}: '${decidedId}'의 catalog tier가 ${catalogEntry.tier}입니다.`);
+  }
   for (const promotion of batch.promotions ?? []) {
     if (ids.has(promotion.candidateId)) errors.push(`${batch.id}: 승격 후보 '${promotion.candidateId}'가 실험 레지스트리에 남아 있습니다.`);
     const targetIds = promotion.registry === "component" ? componentIds : promotion.registry === "pattern" ? patternIds : undefined;
@@ -71,6 +96,7 @@ for (const batch of registry.decisionBatches ?? []) {
 }
 for (const tier of [3, 4, 5]) {
   if (!reviewedTiers.has(tier)) errors.push(`Tier ${tier} 사용자 판정 배치가 필요합니다.`);
+  if (catalogCountsByTier[tier] !== reviewedCandidateCounts[tier]) errors.push(`Tier ${tier} catalog는 최초 후보 ${reviewedCandidateCounts[tier]}개여야 합니다 (현재 ${catalogCountsByTier[tier]}).`);
 }
 
 const expectedCounts = { 3: 2, 4: 6, 5: 1 };
@@ -83,4 +109,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Experimental registry check passed: ${ids.size} quarantined prototypes (T3 ${countsByTier[3]}, T4 ${countsByTier[4]}, T5 ${countsByTier[5]}).`);
+console.log(`Experimental registry check passed: ${catalogIds.size} reviewed candidates, ${ids.size} quarantined prototypes (T3 ${countsByTier[3]}, T4 ${countsByTier[4]}, T5 ${countsByTier[5]}).`);
