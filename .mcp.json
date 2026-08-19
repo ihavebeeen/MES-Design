@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "mes-ui": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "${CLAUDE_PROJECT_DIR:-.}/component-library/scripts/mes-ui-mcp-server.mjs"
+      ]
+    }
+  }
+}

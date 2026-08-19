@@ -222,6 +222,9 @@ npm run screen:audit -- path/to/contract.json path/to/implementation.tsx
 # 화면 계약의 결정성 fixture 검사
 npm run check:screen-contracts
 
+# 로컬 MCP를 실제 클라이언트로 연결하여 조회·생성·감사·경로 차단 검사
+npm run mcp:check
+
 # 실험 후보 57종의 격리 정책·코드 연결 무결성
 npm run check:experimental
 
@@ -269,7 +272,7 @@ Figma 원본과 기존 구현
 
 AI가 임의의 JSX를 바로 생성하거나 특정 Figma 프레임을 복사하는 대신, 화면 정의에서 필요한 표준 패턴과 컴포넌트를 먼저 찾도록 구성합니다. 생성 결과에 새로운 수치, 변형 또는 조합이 필요하면 화면 안에 즉시 하드코딩하지 않고, 기존 규칙의 재사용·조합·확장으로 설명할 수 있는지 먼저 판별합니다. AI는 신규 조합을 제안할 수 있지만 스스로 정식 패턴으로 승인할 수 없으며, 승인 전 결과는 생성 시안 검토함에 격리합니다.
 
-다른 컴퓨터와 다른 AI에서도 이 흐름을 반복할 수 있도록 저장소 전용 `.agents/skills/generate-mes-ui` Skill과 짧은 우선 지침 `AGENTS.override.md`를 함께 배포합니다. Claude Code, Cursor, GitHub Copilot용 파일은 별도 규칙을 복제하지 않고 이 공통 원본을 읽게 하는 얇은 진입점입니다. 동일한 `ScreenRequest`와 동일한 커밋은 같은 registry fingerprint, pattern refs, component refs와 quality 판정을 생성합니다. `recipe.side-slide-form-editable-list`는 동일 계약에서 같은 TSX hash까지 생성합니다. 아직 지원 템플릿이 없는 Recipe의 TSX와 모든 화면의 최종 픽셀까지 같다는 보장은 없으며, 최종 시각 일치는 화면별 시각 회귀 테스트로 확인합니다.
+다른 컴퓨터와 다른 AI에서도 이 흐름을 반복할 수 있도록 저장소 전용 `.agents/skills/generate-mes-ui` Skill, 짧은 우선 지침 `AGENTS.override.md`, 로컬 STDIO MCP 서버를 함께 배포합니다. Codex는 `.codex/config.toml`, Claude Code는 `.mcp.json`을 통해 같은 `mes-ui` MCP를 실행합니다. 사용자는 clone 후 `component-library`에서 `npm ci`를 실행하고 프로젝트 MCP를 한 번 승인해야 합니다. 이후 AI는 `mes_list_design_system`, `mes_resolve_screen`, `mes_generate_screen`, `mes_audit_screen`을 공통 함수처럼 호출할 수 있습니다. 동일한 `ScreenRequest`와 동일한 커밋은 같은 registry fingerprint, pattern refs, component refs와 quality 판정을 생성합니다. `recipe.side-slide-form-editable-list`는 동일 계약에서 같은 TSX hash까지 생성합니다. 아직 지원 템플릿이 없는 Recipe의 TSX와 모든 화면의 최종 픽셀까지 같다는 보장은 없으며, 최종 시각 일치는 화면별 시각 회귀 테스트로 확인합니다.
 
 ### 패턴은 화면 템플릿이 아니라 조합 문법입니다
 
@@ -307,6 +310,7 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 - `screen:resolve`: 등록 ID와 target 셸을 검증하고 stable fingerprint를 가진 구현 계약 생성
 - `screen:generate`: 지원되는 Recipe 계약을 덮어쓰기 없이 결정적 TSX로 생성
 - `screen:audit`: 구현이 계약 셸과 공용 컴포넌트를 지키는지 severity별로 검사
+- `mes-ui` MCP: 위 조회·계약·생성·감사를 Codex와 Claude Code가 공통 호출하는 로컬 도구 인터페이스
 
 장기적으로 각 판단 기록에는 다음 정보가 연결되어야 합니다.
 

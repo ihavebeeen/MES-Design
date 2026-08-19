@@ -1,0 +1,9 @@
+[mcp_servers.mes-ui]
+command = "node"
+args = ["component-library/scripts/mes-ui-mcp-server.mjs"]
+cwd = "."
+required = true
+enabled_tools = ["mes_list_design_system", "mes_resolve_screen", "mes_generate_screen", "mes_audit_screen"]
+default_tools_approval_mode = "writes"
+startup_timeout_sec = 20
+tool_timeout_sec = 120

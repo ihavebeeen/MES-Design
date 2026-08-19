@@ -9,6 +9,7 @@
 | 단계 | 현재 상태 | 의미 |
 |---|---|---|
 | AI 작업 규칙 발견 | 구현됨 | `AGENTS.override.md`와 repo Skill을 Git으로 공유 |
+| AI 도구 인터페이스 | 구현됨 | Codex·Claude Code가 같은 로컬 `mes-ui` MCP 도구 4개를 호출 |
 | 화면 조합 선택 | 검증됨 | 같은 요청·같은 커밋에서 같은 shell/section/behavior/action/component refs와 fingerprint 생성 |
 | 구현 위반 탐지 | 구현됨 | 원시 HTML 상호작용, 잘못된 셸, 미등록 UI import, no-op handler, 임의 px를 severity별 탐지 |
 | TSX 코드 동일성 | 부분 검증됨 | `side-slide-form-editable-list.v1`은 동일 계약에서 같은 source hash 생성, 다른 Recipe는 아직 AI 구현 |
@@ -21,8 +22,9 @@
 1. 저장소의 같은 커밋을 checkout합니다.
 2. Node `24.18.0`을 사용합니다. 루트 `.nvmrc`가 기준입니다.
 3. `component-library`에서 `npm ci`를 실행합니다.
-4. Codex는 `.agents/skills/generate-mes-ui`를 저장소 Skill로 자동 발견합니다. Claude Code는 `CLAUDE.md`, Cursor는 `.cursor/rules/mes-ui.mdc`, GitHub Copilot은 `.github/copilot-instructions.md`를 통해 같은 공통 정책과 Skill로 진입합니다.
-5. 화면 요청 JSON을 작성하고 resolver를 먼저 실행합니다.
+4. Codex는 `.codex/config.toml`, Claude Code는 `.mcp.json`에 등록된 로컬 `mes-ui` MCP를 발견합니다. 복제한 프로젝트는 임의 코드를 실행하지 못하도록 최초 1회 신뢰 및 MCP 승인이 필요합니다.
+5. Codex는 `.agents/skills/generate-mes-ui`를 저장소 Skill로 자동 발견합니다. Claude Code는 `CLAUDE.md`, Cursor는 `.cursor/rules/mes-ui.mdc`, GitHub Copilot은 `.github/copilot-instructions.md`를 통해 같은 공통 정책과 Skill로 진입합니다.
+6. AI가 MCP의 `mes_list_design_system` → `mes_resolve_screen` → `mes_generate_screen` → `mes_audit_screen` 순서로 작업합니다. MCP가 없는 클라이언트에서는 아래 CLI가 같은 엔진을 실행합니다.
 
 ```bash
 cd component-library
@@ -31,6 +33,22 @@ npm run screen:generate -- deterministic-side-slide.contract.json --out src/path
 ```
 
 출력의 `fingerprint`가 다르면 두 컴퓨터의 요청 또는 레지스트리 커밋이 다른 것입니다. fingerprint가 같으면 AI가 읽어야 하는 구현 계약은 같습니다.
+
+## 로컬 MCP의 의미
+
+`component-library/scripts/mes-ui-mcp-server.mjs`는 별도 클라우드나 상시 웹 서버가 아닙니다. Codex 또는 Claude Code가 프로젝트에서 Node 프로세스로 시작하고, 표준 입출력으로만 호출한 뒤 클라이언트 종료 시 함께 종료되는 로컬 도구입니다.
+
+- `mes_list_design_system`: 등록 컴포넌트·패턴·화면·생성 템플릿 조회
+- `mes_resolve_screen`: ScreenRequest를 결정형 계약으로 해석
+- `mes_generate_screen`: 지원 템플릿의 TSX를 덮어쓰기 없이 `component-library/src/` 아래에 생성하고 즉시 감사
+- `mes_audit_screen`: 기존 TSX/JSX를 요청 계약과 레지스트리에 대조
+
+서버는 절대경로, `component-library` 외부 경로, `src/` 외부 출력, 기존 파일 덮어쓰기를 거부합니다. 연결과 실제 도구 호출은 다음 명령으로 검증합니다.
+
+```bash
+cd component-library
+npm run mcp:check
+```
 
 ## ScreenRequest 작성 순서
 

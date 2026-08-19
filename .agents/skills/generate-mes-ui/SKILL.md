@@ -10,10 +10,10 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
 ## Workflow
 
 1. Read `AGENTS.override.md`, then read `references/repository-contract.md`. For a deterministic template request, also read `references/templates.md`.
-2. Inspect the closest registered screen with `getImplementationContext(screenId)` in `component-library/src/design-system/registry/index.ts`.
+2. If the `mes-ui` MCP server is connected, call `mes_list_design_system` to inspect the closest registered assets. Otherwise inspect `getImplementationContext(screenId)` in `component-library/src/design-system/registry/index.ts`.
 3. If a Figma node exists, inspect its metadata and design context before editing code. Treat unmeasured visual guesses as review notes, never facts.
 4. Write a `ScreenRequest` JSON that conforms to `component-library/src/design-system/registry/screen-request.schema.json`.
-5. Resolve it before JSX:
+5. Resolve it before JSX. Prefer `mes_resolve_screen`; use the CLI only when MCP is unavailable:
 
    ```bash
    cd component-library
@@ -21,14 +21,14 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
    ```
 
 6. Stop on resolver blockers. Resolve warnings by evidence or record them in the generated-screen evaluation; a warning alone does not invalidate the whole screen.
-7. When the resolved recipe has a supported deterministic template, generate TSX instead of writing it freely:
+7. When the resolved recipe has a supported deterministic template, call `mes_generate_screen` instead of writing JSX freely. This tool resolves, generates, refuses overwrites, and audits in one call. Use the CLI fallback only when MCP is unavailable:
 
    ```bash
    npm run screen:generate -- path/to/contract.json --out path/to/screen.tsx
    ```
 
 8. Otherwise implement only with resolved registry references. Use registered components and pattern sources. Do not use native interactive HTML when a MES component exists.
-9. Audit the implementation:
+9. Audit the implementation with `mes_audit_screen`, or use the CLI fallback:
 
    ```bash
    npm run screen:audit -- path/to/contract.json path/to/implementation.tsx

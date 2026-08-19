@@ -1,0 +1,201 @@
+import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
+import { fileURLToPath } from "node:url";
+import { McpServer } from "@modelcontextprotocol/server";
+import { serveStdio } from "@modelcontextprotocol/server/stdio";
+import { z } from "zod";
+import { auditScreenImplementation } from "./audit-screen-implementation.mjs";
+import { generateScreenTsx, generatedSourceFingerprint } from "./generate-screen-tsx.mjs";
+import { readRegistryBundle, resolveScreenRequest } from "./resolve-screen-request.mjs";
+
+const scriptDirectory = dirname(fileURLToPath(import.meta.url));
+const projectRoot = resolve(scriptDirectory, "..");
+const requestSchema = z.record(z.string(), z.unknown()).describe("screen-request.schema.json을 따르는 ScreenRequest 객체");
+const sourcePathSchema = z.string().min(1).describe("component-library 기준 src/ 아래의 상대 TSX/JSX 경로");
+
+function toolResult(summary, data) {
+  return {
+    content: [{ type: "text", text: `${summary}\n${JSON.stringify(data, null, 2)}` }],
+    structuredContent: data,
+  };
+}
+
+function toolError(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  return {
+    isError: true,
+    content: [{ type: "text", text: message }],
+  };
+}
+
+function safeTool(handler) {
+  return async (input) => {
+    try {
+      return await handler(input);
+    } catch (error) {
+      return toolError(error);
+    }
+  };
+}
+
+function resolveRepositorySourcePath(input) {
+  if (isAbsolute(input)) throw new Error("절대경로는 허용하지 않습니다. component-library 기준 src/ 상대경로를 사용하세요.");
+  const absolutePath = resolve(projectRoot, input);
+  const relativePath = relative(projectRoot, absolutePath);
+  if (relativePath.startsWith(`..${sep}`) || relativePath === ".." || isAbsolute(relativePath)) {
+    throw new Error("component-library 밖의 경로에는 접근할 수 없습니다.");
+  }
+  const normalized = relativePath.split(sep).join("/");
+  if (!normalized.startsWith("src/")) throw new Error("화면 소스는 component-library/src/ 아래에만 둘 수 있습니다.");
+  if (!/\.(?:tsx|jsx)$/.test(normalized)) throw new Error("화면 소스 경로는 .tsx 또는 .jsx로 끝나야 합니다.");
+  const realProjectRoot = realpathSync(projectRoot);
+  let existingAncestor = existsSync(absolutePath) ? absolutePath : dirname(absolutePath);
+  while (!existsSync(existingAncestor) && existingAncestor !== projectRoot) existingAncestor = dirname(existingAncestor);
+  const realAncestor = realpathSync(existingAncestor);
+  const realRelative = relative(realProjectRoot, realAncestor);
+  if (realRelative.startsWith(`..${sep}`) || realRelative === ".." || isAbsolute(realRelative)) {
+    throw new Error("심볼릭 링크를 통한 component-library 외부 경로 접근은 허용하지 않습니다.");
+  }
+  return { absolutePath, relativePath: normalized };
+}
+
+function compactEntry(entry) {
+  return {
+    id: entry.id,
+    name: entry.name,
+    ...(entry.kind ? { kind: entry.kind } : {}),
+    ...(entry.category ? { category: entry.category } : {}),
+    ...(entry.status ? { status: entry.status } : {}),
+    ...(entry.placement ? { placement: entry.placement } : {}),
+    ...(entry.source ? { source: entry.source } : {}),
+  };
+}
+
+function filterEntries(entries, query, limit) {
+  if (!query) return entries.slice(0, limit).map(compactEntry);
+  const normalizedQuery = query.toLocaleLowerCase("ko-KR");
+  return entries
+    .filter((entry) => `${entry.id} ${entry.name ?? ""} ${entry.kind ?? ""} ${entry.category ?? ""}`.toLocaleLowerCase("ko-KR").includes(normalizedQuery))
+    .slice(0, limit)
+    .map(compactEntry);
+}
+
+export function createMesUiMcpServer() {
+  const server = new McpServer({ name: "mes-ui-generator", version: "0.1.0" }, { capabilities: { tools: {} } });
+
+  server.registerTool(
+    "mes_list_design_system",
+    {
+      title: "MES 디자인 시스템 조회",
+      description: "화면 설계 전에 등록된 MES 컴포넌트, 패턴, 화면, 결정형 생성 템플릿을 조회합니다.",
+      inputSchema: z.object({
+        query: z.string().trim().optional().describe("ID·이름·종류 검색어"),
+        limit: z.number().int().min(1).max(100).default(30),
+      }),
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    safeTool(async ({ query, limit }) => {
+      const registry = readRegistryBundle();
+      const result = {
+        counts: {
+          components: registry.components.length,
+          patterns: registry.patterns.length,
+          screens: registry.screens.length,
+          generationTemplates: registry.generationTemplates.length,
+        },
+        components: filterEntries(registry.components, query, limit),
+        patterns: filterEntries(registry.patterns, query, limit),
+        screens: filterEntries(registry.screens, query, limit),
+        generationTemplates: filterEntries(registry.generationTemplates, query, limit),
+      };
+      return toolResult("MES 디자인 시스템 조회 완료", result);
+    }),
+  );
+
+  server.registerTool(
+    "mes_resolve_screen",
+    {
+      title: "MES 화면 계약 해석",
+      description: "자연어를 바로 JSX로 만들지 않고 ScreenRequest를 등록 자산과 대조해 결정형 화면 계약으로 해석합니다.",
+      inputSchema: z.object({ request: requestSchema }),
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    safeTool(async ({ request }) => {
+      const contract = resolveScreenRequest(request);
+      return toolResult(
+        `화면 계약 ${contract.quality.status} · blockers ${contract.quality.blockerCount} · warnings ${contract.quality.warningCount}`,
+        contract,
+      );
+    }),
+  );
+
+  server.registerTool(
+    "mes_generate_screen",
+    {
+      title: "MES 화면 코드 생성",
+      description: "ScreenRequest를 해석하고 지원되는 결정형 템플릿으로 등록 컴포넌트 기반 TSX를 생성한 뒤 즉시 감사합니다. 기존 파일은 덮어쓰지 않습니다.",
+      inputSchema: z.object({
+        request: requestSchema,
+        outputPath: sourcePathSchema,
+      }),
+      annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
+    },
+    safeTool(async ({ request, outputPath }) => {
+      const target = resolveRepositorySourcePath(outputPath);
+      if (existsSync(target.absolutePath)) throw new Error(`기존 파일을 덮어쓰지 않습니다: ${target.relativePath}`);
+
+      const contract = resolveScreenRequest(request);
+      if (contract.quality.blockerCount > 0) {
+        throw new Error(`blocker가 있는 요청은 생성할 수 없습니다.\n${JSON.stringify(contract.quality.issues, null, 2)}`);
+      }
+      const source = generateScreenTsx(contract);
+      const audit = auditScreenImplementation(contract, source);
+      if (audit.blockerCount > 0) throw new Error(`생성 결과 감사에서 blocker가 발견됐습니다.\n${JSON.stringify(audit, null, 2)}`);
+
+      mkdirSync(dirname(target.absolutePath), { recursive: true });
+      writeFileSync(target.absolutePath, source, { encoding: "utf8", flag: "wx" });
+      const result = {
+        outputPath: target.relativePath,
+        contractStatus: contract.quality.status,
+        contractFingerprint: contract.fingerprint,
+        sourceFingerprint: generatedSourceFingerprint(source),
+        lineCount: source.split("\n").length - 1,
+        audit,
+      };
+      return toolResult("MES 화면 생성 및 감사 완료", result);
+    }),
+  );
+
+  server.registerTool(
+    "mes_audit_screen",
+    {
+      title: "MES 화면 구현 감사",
+      description: "기존 TSX/JSX가 ScreenRequest 계약, 등록 컴포넌트, 셸, 상호작용 금지 규칙을 지키는지 감사합니다.",
+      inputSchema: z.object({
+        request: requestSchema,
+        sourcePath: sourcePathSchema,
+      }),
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    safeTool(async ({ request, sourcePath }) => {
+      const target = resolveRepositorySourcePath(sourcePath);
+      if (!existsSync(target.absolutePath)) throw new Error(`화면 소스를 찾을 수 없습니다: ${target.relativePath}`);
+      const contract = resolveScreenRequest(request);
+      const source = readFileSync(target.absolutePath, "utf8");
+      const audit = auditScreenImplementation(contract, source);
+      return toolResult(`MES 화면 감사 ${audit.status} · blockers ${audit.blockerCount} · warnings ${audit.warningCount}`, {
+        sourcePath: target.relativePath,
+        contractFingerprint: contract.fingerprint,
+        ...audit,
+      });
+    }),
+  );
+
+  return server;
+}
+
+if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {
+  serveStdio(() => createMesUiMcpServer(), {
+    onerror: (error) => console.error(`[mes-ui-mcp] ${error.message}`),
+  });
+}
