@@ -655,8 +655,8 @@
           "pattern": 2
         },
         "examples": [
-          "src/components/ui/checkbox.tsx:95",
-          "src/components/ui/checkbox.tsx:102",
+          "src/components/ui/checkbox.tsx:97",
+          "src/components/ui/checkbox.tsx:105",
           "src/components/ui/filter-tag.tsx:48",
           "src/components/ui/group-query.tsx:120",
           "src/components/ui/input.tsx:28",
@@ -1269,7 +1269,7 @@
           "pattern": 7
         },
         "examples": [
-          "src/components/ui/checkbox.tsx:87",
+          "src/components/ui/checkbox.tsx:89",
           "src/components/ui/date-picker.tsx:101",
           "src/components/ui/date-picker.tsx:113",
           "src/components/ui/date-range-picker.tsx:88",
@@ -1447,7 +1447,7 @@
           "pattern": 5
         },
         "examples": [
-          "src/components/ui/checkbox.tsx:87",
+          "src/components/ui/checkbox.tsx:89",
           "src/components/ui/icon-button.tsx:36",
           "src/components/ui/logo.tsx:21",
           "src/components/ui/notification-panel.tsx:135",
@@ -1665,8 +1665,8 @@
           "pattern": 2
         },
         "examples": [
-          "src/components/ui/checkbox.tsx:117",
-          "src/components/ui/checkbox.tsx:130",
+          "src/components/ui/checkbox.tsx:120",
+          "src/components/ui/checkbox.tsx:133",
           "src/components/ui/filter-tag.tsx:54",
           "src/components/ui/filter-tag.tsx:54",
           "src/components/ui/filter.tsx:184",
@@ -1800,8 +1800,8 @@
           "pattern": 2
         },
         "examples": [
-          "src/components/ui/checkbox.tsx:117",
-          "src/components/ui/checkbox.tsx:130",
+          "src/components/ui/checkbox.tsx:120",
+          "src/components/ui/checkbox.tsx:133",
           "src/components/ui/combobox.tsx:148",
           "src/components/ui/filter.tsx:155",
           "src/components/ui/select.tsx:108",
@@ -4324,5 +4324,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "48858703c7707370"
+  "fingerprint": "4c60701ca7dcbee8"
 }

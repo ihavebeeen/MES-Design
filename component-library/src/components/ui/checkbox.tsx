@@ -70,10 +70,12 @@ export interface CheckboxProps
   size?: "small" | "default";
   /** 선택되지 않았을 때의 외형. grayCheck는 MES 표의 회색 체크 미선택 상태다. */
   uncheckedAppearance?: CheckboxUncheckedAppearance;
+  /** 모바일 자동계산처럼 원형 체크 컨트롤인 Figma variant. */
+  shape?: "square" | "circle";
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, color = "main", disabled, indeterminate = false, size = "default", uncheckedAppearance = "outline", ...props }, ref) => {
+  ({ className, color = "main", disabled, indeterminate = false, size = "default", uncheckedAppearance = "outline", shape = "square", ...props }, ref) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
     React.useEffect(() => {
@@ -92,14 +94,15 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           ref={inputRef}
           type="checkbox"
           disabled={disabled}
-          className="peer absolute inset-0 size-full cursor-pointer appearance-none rounded-mes-control-sm focus:outline-none disabled:cursor-not-allowed"
+          className={cn("peer absolute inset-0 size-full cursor-pointer appearance-none focus:outline-none disabled:cursor-not-allowed", shape === "circle" ? "rounded-full" : "rounded-mes-control-sm")}
           {...props}
         />
         {/* 박스 */}
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute inset-px rounded-mes-control-sm border transition-colors",
+            "pointer-events-none absolute inset-px border transition-colors",
+            shape === "circle" ? "rounded-full" : "rounded-mes-control-sm",
             uncheckedAppearance === "grayCheck"
               ? "border-mes-gray-50 bg-mes-gray-50"
               : "border-mes-gray-40 bg-white",

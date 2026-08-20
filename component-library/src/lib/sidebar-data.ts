@@ -166,7 +166,8 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   { id: "mobile-foundations", label: "파운데이션", labelEn: "Foundations" },
   { id: "mobile-components", label: "컴포넌트", labelEn: "Components" },
   { id: "mobile-patterns", label: "조합 패턴", labelEn: "Composition Patterns" },
-  { id: "mobile-screens", label: "화면 유형", labelEn: "Screen Types" },
+  { id: "mobile-screens", label: "원본 화면", labelEn: "Source Screens" },
+  { id: "mobile-popup-assets", label: "팝업 자산", labelEn: "Popup Assets" },
 ];
 
 /**
@@ -291,8 +292,15 @@ export const MOBILE_ID_LIST = [
   "mobile-components",
   "mobile-patterns",
   "mobile-screens",
+  "mobile-popup-assets",
 ];
-export const MOBILE_NODES: SidebarNode[] = MOBILE_ID_LIST.map((id) => leaf(id));
+export const MOBILE_NODES: SidebarNode[] = [
+  leaf("mobile-foundations"),
+  leaf("mobile-components"),
+  leaf("mobile-patterns"),
+  branch("화면", "Screens", ["mobile-screens"]),
+  branch("팝업", "Popups", ["mobile-popup-assets"]),
+];
 
 export const COMPONENT_NODES: SidebarNode[] = [
   branch("버튼", "Button", ["button-size", "button-icon", "button-color"]),

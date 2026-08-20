@@ -59,6 +59,47 @@
       "types": ["숫자 키패드", "메모", "날짜 선택", "인원 선택", "알람 내역", "사용자 설정", "입력내역", "검색", "품목 선택", "LOT 선택", "작업시간", "라벨 생성 설정", "확인·경고"]
     }
   },
+  "sourceFrames": {
+    "main": [
+      { "node": "10378:91938", "name": "홈", "status": "implemented-reviewing" },
+      { "node": "10378:91889", "name": "입고지시 리스트", "status": "implemented-reviewing" },
+      { "node": "10378:91789", "name": "생산실적 등록", "status": "implemented-reviewing" },
+      { "node": "10378:91977", "name": "일지작성", "status": "queued" },
+      { "node": "10378:91516", "name": "입고실적 등록", "status": "queued" },
+      { "node": "10378:93359", "name": "정비 스캔", "status": "queued" },
+      { "node": "10378:92529", "name": "외관검사", "status": "queued" },
+      { "node": "10378:92711", "name": "중량검사", "status": "queued" },
+      { "node": "10378:92896", "name": "특이사항", "status": "queued" },
+      { "node": "10378:92070", "name": "전체메뉴", "status": "queued" },
+      { "node": "10378:92192", "name": "사용자설정", "status": "queued" },
+      { "node": "10378:92237", "name": "로그인", "status": "queued" },
+      { "node": "10378:92470", "name": "성적서 기본정보", "status": "queued" },
+      { "node": "10378:93313", "name": "가동시간", "status": "queued" },
+      { "node": "10378:92956", "name": "입고검사", "status": "queued" },
+      { "node": "10378:93003", "name": "출하검사 세부사항", "status": "queued" },
+      { "node": "10378:93119", "name": "입고검사 세부사항 2", "status": "queued" },
+      { "node": "10378:93078", "name": "입고검사 세부사항 1", "status": "queued" },
+      { "node": "10378:93248", "name": "설비점검 목록", "status": "queued" }
+    ],
+    "popup": [
+      { "node": "10378:91087", "name": "스캔 키패드", "status": "queued" },
+      { "node": "10378:91697", "name": "작업인원 선택", "status": "implemented-reviewing" },
+      { "node": "10378:92107", "name": "알람 내역", "status": "queued" },
+      { "node": "10378:92247", "name": "입고실적 입력값", "status": "queued" },
+      { "node": "10378:92653", "name": "실적등록 입력내역", "status": "queued" },
+      { "node": "10378:93451", "name": "LOT 기준수량 확인", "status": "queued" },
+      { "node": "10378:93481", "name": "라벨 수동입력", "status": "queued" },
+      { "node": "10378:93516", "name": "LOT 분할", "status": "queued" },
+      { "node": "10378:93543", "name": "입력 오류", "status": "queued" },
+      { "node": "10378:91004", "name": "생산수량 입력", "status": "implemented-reviewing" },
+      { "node": "10378:91300", "name": "스캔 입력", "status": "queued" },
+      { "node": "10378:93886", "name": "작업시간 선택", "status": "queued" },
+      { "node": "10378:90976", "name": "수동·자동 계산", "status": "queued" },
+      { "node": "10378:93868", "name": "메모", "status": "implemented-reviewing" },
+      { "node": "10378:93567", "name": "출하 입력값", "status": "queued" },
+      { "node": "10378:90932", "name": "불량수량·유형", "status": "queued" }
+    ]
+  },
   "sourceFindings": [
     { "kind": "source-error", "detail": "출하 섹션 일부 프레임명이 입고지시·입고실적으로 남아 있어 업무 섹션과 화면 내용으로 판정한다." },
     { "kind": "intentional-exception", "detail": "라벨생성은 화면이 존재하지만 개발범위 제외 표기가 있어 활성 생성 근거로 사용하지 않는다." },

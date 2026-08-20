@@ -1,0 +1,15 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="shipment-check--shipping-parcel-shipment-check-approved" clip-path="url(#clip0_0_581)">
+<g id="shipment-check--shipping-parcel-shipment-check-approved_2">
+<path id="Vector" d="M28 8.61538V25.8462C28 26.4174 27.773 26.9652 27.3692 27.3692C26.9652 27.773 26.4174 28 25.8462 28H2.15384C1.58261 28 1.03477 27.773 0.630846 27.3692C0.226922 26.9652 0 26.4174 0 25.8462V8.61538L3.23076 2.39076C3.92736 0.98763 5.41244 0.0402516 6.97846 0H21.0216C22.6244 0.00085052 24.1636 0.955392 24.877 2.39076L28 8.61538Z" fill="#C2D6FF"/>
+<path id="Vector_2" d="M3.23076 2.39076L0 8.61538H28L24.877 2.39076C24.1636 0.955392 22.6244 0.00085052 21.0216 0H6.97846C5.41244 0.0402516 3.92736 0.98763 3.23076 2.39076Z" fill="#2859C5"/>
+<path id="Intersect" fill-rule="evenodd" clip-rule="evenodd" d="M12.75 8.61538V0H15.25V8.61538H12.75Z" fill="#C2D6FF"/>
+</g>
+<path id="Union" fill-rule="evenodd" clip-rule="evenodd" d="M15.3846 13.6844C15.3846 12.9197 14.7647 12.2998 14 12.2998C13.2353 12.2998 12.6154 12.9197 12.6154 13.6844V16.9152H9.38462C8.61992 16.9152 8 17.5351 8 18.2998C8 19.0645 8.61992 19.6844 9.38462 19.6844H12.6154V22.9152C12.6154 23.6799 13.2353 24.2998 14 24.2998C14.7647 24.2998 15.3846 23.6799 15.3846 22.9152V19.6844H18.6154C19.3801 19.6844 20 19.0645 20 18.2998C20 17.5351 19.3801 16.9152 18.6154 16.9152H15.3846V13.6844Z" fill="#2859C5"/>
+</g>
+<defs>
+<clipPath id="clip0_0_581">
+<rect width="28" height="28" fill="white"/>
+</clipPath>
+</defs>
+</svg>
