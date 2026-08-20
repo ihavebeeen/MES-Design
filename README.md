@@ -36,9 +36,9 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 | Shell·Section·Behavior·Recipe 패턴 | 57 |
 | AI 조회용 화면 정의 | 28 |
 | 격리된 Tier 3~5 실험 후보 | 9 |
-| 시각 회귀 기준 케이스 | 31 |
-| Playwright 시각·상호작용 테스트 | 47 |
-| 정적 생성 페이지 | 117 |
+| 시각 회귀 기준 케이스 | 33 |
+| Playwright 시각·상호작용 테스트 | 50 |
+| 정적 생성 페이지 | 123 |
 
 대표 구현 범위:
 
@@ -51,6 +51,18 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 - 설비별 토출량 설정, 표준단가 설정, 조 설정의 원본 상태·상호작용
 - 생산분석 최신 화면과 카드 설정 상태
 - 실제 업무 원본 승인 전까지 표준 생성에서 격리되는 Tier 3~5 기능 프로토타입 57종
+- 모바일 전용 파운데이션·컴포넌트·조합 패턴과 메인 12종·슬라이드 팝업 13종 화면 유형 인벤토리
+
+### 모바일 트랙
+
+모바일은 웹 컴포넌트를 작게 줄인 버전으로 취급하지 않습니다. 전용 Figma 컴포넌트 원형, 모바일 화면 유형 분류, 실제 업무 화면·공통 정책을 서로 다른 증거층으로 관리합니다.
+
+- `qEAQNTqXf76bYydyupti2V / 163:8929`: 모바일 토큰과 컴포넌트 variant 원형
+- `F4n5Zr04PAbiRjfIFQAo6v / 10378:90931`: 메인 화면 12종 44p·슬라이드 팝업 13종 19p 분류
+- `F4n5Zr04PAbiRjfIFQAo6v / 9082:31842`: 실제 업무 흐름·상호작용·최신 변경안
+- `F4n5Zr04PAbiRjfIFQAo6v / 9808:62079`: 웹 자산과 모바일의 의미·업무 대응 비교
+
+문서 사이트의 상단 `Mobile` 탭에서 파운데이션, 컴포넌트, 조합 패턴, 화면 유형과 대표 375×812 셸을 확인할 수 있습니다. 현재는 전체 구조와 대표 자산을 검증한 단계이며, 63개 개별 원본 페이지의 픽셀 대조 완료를 뜻하지는 않습니다.
 
 ## 원본에서 표준 규칙으로 가는 과정
 
@@ -164,7 +176,9 @@ MES-Design/
 - `component-library/src/components/icons/`: MES 아이콘 컴포넌트
 - `component-library/src/components/patterns/`: 업무 화면과 팝업 조합 패턴
 - `component-library/src/components/experimental/`: 원본 근거가 아직 없는 조작 가능한 격리 프로토타입
+- `component-library/src/components/mobile/`: 모바일 전용 공용 자산과 대표 셸
 - `component-library/src/design-system/registry/`: AI 조회용 컴포넌트·패턴·화면 레지스트리
+- `component-library/src/design-system/registry/mobile-assets.json`: 모바일 원본 근거·컴포넌트·패턴·화면 유형 레지스트리
 - `component-library/src/design-system/registry/screen-request.schema.json`: 자연어를 JSX보다 먼저 고정하는 화면 요청 계약
 - `component-library/src/design-system/registry/generation-templates.json`: 결정적 TSX를 지원하는 Recipe와 필수 조합 레지스트리
 - `component-library/src/design-system/registry/experimental-candidates.json`: 실험 후보의 상태·제약·승격 조건 레지스트리
@@ -194,6 +208,7 @@ npm run dev
 
 - `/foundations/`: 디자인 토큰과 기초 규칙
 - `/components/`: 개별 UI 컴포넌트와 상태
+- `/mobile/`: 모바일 파운데이션·컴포넌트·조합 패턴·화면 유형
 - `/generated-screens/`: 표준 화면과 격리된 AI 생성 시안 검토함
 - `/experimental/experimental-decisions/`: Tier 3~5 최초 후보 57개의 승격·실험 유지·제외 판정 원장
 - `/experimental/experimental-tier-3/`: 사용자 판정 후 유지된 Tier 3 기능 후보 2종

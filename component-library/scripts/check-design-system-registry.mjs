@@ -25,6 +25,7 @@ const completionPolicyRegistry = readJson("completion-policy.json");
 const footerActionAuditRegistry = readJson("footer-action-audit.json");
 const contextRuleRegistry = readJson("context-rules.json");
 const generationTemplateRegistry = readJson("generation-templates.json");
+const mobileAssetRegistry = readJson("mobile-assets.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -72,6 +73,15 @@ checkVersion("completion-policy", completionPolicyRegistry);
 checkVersion("footer-action-audit", footerActionAuditRegistry);
 checkVersion("context-rules", contextRuleRegistry);
 checkVersion("generation-templates", generationTemplateRegistry);
+checkVersion("mobile-assets", mobileAssetRegistry);
+
+const mobileAssets = new Set([
+  ...(mobileAssetRegistry.foundations ?? []).map((entry) => entry.id),
+  ...(mobileAssetRegistry.components ?? []).map((entry) => entry.id),
+  ...(mobileAssetRegistry.patterns ?? []).map((entry) => entry.id),
+  ...((mobileAssetRegistry.screenTypes?.main?.types ?? []).map((entry) => `mobile.screen.main.${entry.name}`)),
+  ...((mobileAssetRegistry.screenTypes?.slidePopup?.types ?? []).map((name) => `mobile.screen.slide-popup.${name}`)),
+]);
 
 const actionSets = mapByUniqueId("action-sets", actionSetRegistry.actionSets ?? []);
 for (const actionSet of actionSets.values()) {
@@ -422,8 +432,8 @@ for (const visualCase of visualRegistry.cases ?? []) {
   if (!visualCase.snapshot?.endsWith(".png")) {
     errors.push(`visual case '${visualCase.id}': snapshot은 png 파일이어야 합니다.`);
   }
-  if (!visualCase.screenId && !visualCase.patternId && !visualCase.candidateId) {
-    errors.push(`visual case '${visualCase.id}': screenId, patternId 또는 candidateId가 필요합니다.`);
+  if (!visualCase.screenId && !visualCase.patternId && !visualCase.candidateId && !visualCase.mobileAssetId) {
+    errors.push(`visual case '${visualCase.id}': screenId, patternId, candidateId 또는 mobileAssetId가 필요합니다.`);
   }
   if (visualCase.screenId && !screens.has(visualCase.screenId)) {
     errors.push(`visual case '${visualCase.id}': 미등록 screen '${visualCase.screenId}'를 참조합니다.`);
@@ -433,6 +443,9 @@ for (const visualCase of visualRegistry.cases ?? []) {
   }
   if (visualCase.candidateId && !generatedCandidates.has(visualCase.candidateId)) {
     errors.push(`visual case '${visualCase.id}': 미등록 candidate '${visualCase.candidateId}'를 참조합니다.`);
+  }
+  if (visualCase.mobileAssetId && !mobileAssets.has(visualCase.mobileAssetId)) {
+    errors.push(`visual case '${visualCase.id}': 미등록 mobile asset '${visualCase.mobileAssetId}'를 참조합니다.`);
   }
 }
 

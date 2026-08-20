@@ -163,6 +163,10 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
     label: "Tier 5 유지 후보 (1)",
     labelEn: "Tier 5 Retained",
   },
+  { id: "mobile-foundations", label: "파운데이션", labelEn: "Foundations" },
+  { id: "mobile-components", label: "컴포넌트", labelEn: "Components" },
+  { id: "mobile-patterns", label: "조합 패턴", labelEn: "Composition Patterns" },
+  { id: "mobile-screens", label: "화면 유형", labelEn: "Screen Types" },
 ];
 
 /**
@@ -281,6 +285,15 @@ export const GENERATED_SCREEN_NODES: SidebarNode[] = GENERATED_SCREEN_ID_LIST.ma
 export const EXPERIMENTAL_ID_LIST = ["experimental-decisions", "experimental-tier-3", "experimental-tier-4", "experimental-tier-5"];
 export const EXPERIMENTAL_NODES: SidebarNode[] = EXPERIMENTAL_ID_LIST.map((id) => leaf(id));
 
+/** 모바일은 웹 컴포넌트의 작은 사이즈 변형이 아니라 독립된 셸·조합 문법을 가진다. */
+export const MOBILE_ID_LIST = [
+  "mobile-foundations",
+  "mobile-components",
+  "mobile-patterns",
+  "mobile-screens",
+];
+export const MOBILE_NODES: SidebarNode[] = MOBILE_ID_LIST.map((id) => leaf(id));
+
 export const COMPONENT_NODES: SidebarNode[] = [
   branch("버튼", "Button", ["button-size", "button-icon", "button-color"]),
   leaf("icon-button"),
@@ -351,6 +364,7 @@ export const SIDEBAR_GROUPS: { title: string; nodes: SidebarNode[] }[] = [
   // 2026-08-05 신규 — 3층(합성 패턴 카탈로그) 실제 첫 콘텐츠. TOP_NAV의 "Patterns"
   // 탭이 지금까지 firstId 없이 비활성 상태로만 자리를 잡고 있었는데, 이걸로 활성화.
   { title: "Patterns", nodes: PATTERN_NODES },
+  { title: "Mobile", nodes: MOBILE_NODES },
   { title: "Generated Screens", nodes: GENERATED_SCREEN_NODES },
   { title: "Experimental", nodes: EXPERIMENTAL_NODES },
 ];
@@ -521,6 +535,7 @@ export const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
   // 둘 다 없어서 firstId 없이 비활성 상태로만 자리를 잡아뒀는데(클릭 불가),
   // 2026-08-05 실제 콘텐츠(PATTERN_NODES)가 생겨서 firstId를 채워 활성화.
   { key: "patterns", label: "Patterns", firstId: firstIdOfNode(PATTERN_NODES[0]) },
+  { key: "mobile", label: "Mobile", firstId: firstIdOfNode(MOBILE_NODES[0]) },
   { key: "generated-screens", label: "Generated Screens", firstId: firstIdOfNode(GENERATED_SCREEN_NODES[0]) },
   { key: "experimental", label: "Experimental", firstId: firstIdOfNode(EXPERIMENTAL_NODES[0]) },
 ];
@@ -530,6 +545,7 @@ export const TOP_NAV: { key: string; label: string; firstId?: string }[] = [
 export const FOUNDATION_IDS = new Set(FOUNDATION_ID_LIST);
 /** 2026-08-05 신규 — Patterns id 집합. FOUNDATION_IDS와 같은 방식(idToHref 판별용). */
 export const PATTERN_IDS = new Set(PATTERN_ID_LIST);
+export const MOBILE_IDS = new Set(MOBILE_ID_LIST);
 export const GENERATED_SCREEN_IDS = new Set(GENERATED_SCREEN_ID_LIST);
 export const EXPERIMENTAL_IDS = new Set(EXPERIMENTAL_ID_LIST);
 
@@ -543,6 +559,7 @@ export const EXPERIMENTAL_IDS = new Set(EXPERIMENTAL_ID_LIST);
 export function idToHref(id: string): string {
   if (FOUNDATION_IDS.has(id)) return `/foundations/${id}`;
   if (PATTERN_IDS.has(id)) return `/patterns/${id}`;
+  if (MOBILE_IDS.has(id)) return `/mobile/${id}`;
   if (GENERATED_SCREEN_IDS.has(id)) return "/generated-screens";
   if (EXPERIMENTAL_IDS.has(id)) return `/experimental/${id}`;
   return `/components/${id}`;
@@ -555,7 +572,7 @@ export function idToHref(id: string): string {
  * 만들어도 안전). 2026-08-05 — Patterns 그룹 추가.
  */
 export type BreadcrumbInfo = {
-  group: "foundations" | "components" | "patterns" | "generated-screens" | "experimental";
+  group: "foundations" | "components" | "patterns" | "mobile" | "generated-screens" | "experimental";
   groupLabel: string;
   branch?: { label: string; labelEn?: string };
   label: string;
@@ -563,15 +580,17 @@ export type BreadcrumbInfo = {
 };
 export const BREADCRUMB_MAP: Record<string, BreadcrumbInfo> = {};
 for (const group of SIDEBAR_GROUPS) {
-  if (group.title !== "Foundations" && group.title !== "Components" && group.title !== "Patterns" && group.title !== "Generated Screens" && group.title !== "Experimental")
+  if (group.title !== "Foundations" && group.title !== "Components" && group.title !== "Patterns" && group.title !== "Mobile" && group.title !== "Generated Screens" && group.title !== "Experimental")
     continue;
-  const groupKey: "foundations" | "components" | "patterns" | "generated-screens" | "experimental" =
+  const groupKey: "foundations" | "components" | "patterns" | "mobile" | "generated-screens" | "experimental" =
     group.title === "Foundations"
       ? "foundations"
       : group.title === "Components"
         ? "components"
         : group.title === "Patterns"
           ? "patterns"
+          : group.title === "Mobile"
+            ? "mobile"
           : group.title === "Generated Screens"
             ? "generated-screens"
             : "experimental";
@@ -615,6 +634,7 @@ export const ALL_SEARCHABLE_ITEMS = [
   ...flattenSidebarNodes(FOUNDATION_NODES),
   ...flattenSidebarNodes(COMPONENT_NODES),
   ...flattenSidebarNodes(PATTERN_NODES),
+  ...flattenSidebarNodes(MOBILE_NODES),
   ...flattenSidebarNodes(GENERATED_SCREEN_NODES),
   ...flattenSidebarNodes(EXPERIMENTAL_NODES),
 ];

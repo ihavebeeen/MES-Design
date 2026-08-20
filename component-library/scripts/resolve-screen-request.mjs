@@ -40,6 +40,7 @@ export function readRegistryBundle() {
   const actionSets = readJson(join(registryDirectory, "action-sets.json"));
   const contextRules = readJson(join(registryDirectory, "context-rules.json"));
   const generationTemplates = readJson(join(registryDirectory, "generation-templates.json"));
+  const mobileAssets = readJson(join(registryDirectory, "mobile-assets.json"));
 
   return {
     components: components.components,
@@ -48,6 +49,7 @@ export function readRegistryBundle() {
     actionSets: actionSets.actionSets,
     contextRules,
     generationTemplates: generationTemplates.templates,
+    mobileAssets,
   };
 }
 

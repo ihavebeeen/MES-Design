@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "status": "in-progress",
+  "evidence": {
+    "componentLibrary": { "fileKey": "qEAQNTqXf76bYydyupti2V", "node": "163:8929", "role": "모바일 전용 토큰·컴포넌트 variant 원형" },
+    "webSpecification": { "fileKey": "F4n5Zr04PAbiRjfIFQAo6v", "node": "9808:62079", "role": "웹 컴포넌트와 의미 계약 비교" },
+    "screenClassification": { "fileKey": "F4n5Zr04PAbiRjfIFQAo6v", "node": "10378:90931", "role": "메인 12종 44p·슬라이드 팝업 13종 19p의 조합 분류" },
+    "operationalScreens": { "fileKey": "F4n5Zr04PAbiRjfIFQAo6v", "node": "9082:31842", "role": "실제 업무 흐름·예외·최신 변경안" }
+  },
+  "foundations": [
+    { "id": "mobile.viewport", "name": "Viewport / Grid", "sourceNode": "185:38198", "values": ["mobile 375×812", "tablet portrait 768×1024", "tablet landscape 1024×768", "mobile side padding 16px"] },
+    { "id": "mobile.safe-area", "name": "Status Bar / Home Indicator", "sourceNode": "185:38198", "values": ["status bar 47px", "home indicator 30px", "light/dark"] },
+    { "id": "mobile.typography", "name": "Typography", "sourceNode": "179:34027", "values": ["Pretendard", "12–20px UI scale", "title 20px Bold", "body 15–16px Regular"] },
+    { "id": "mobile.icon", "name": "Mobile Icon", "sourceNode": "185:38387", "values": ["navigation 24px", "business quick menu 32px", "gray/black/white/primary states"] }
+  ],
+  "components": [
+    { "id": "mobile.button", "name": "MobileButton", "sourceNode": "185:38753", "states": ["primary", "gray", "black", "danger", "line", "subtle", "disabled"], "sizes": ["50px", "40px", "32px", "round"] },
+    { "id": "mobile.header", "name": "MobileHeader", "sourceNode": "185:40622", "states": ["white", "default", "logo", "modal", "bottom-sheet"] },
+    { "id": "mobile.tab-bar", "name": "MobileTabBar", "sourceNode": "185:40295", "states": ["home", "bell", "setting", "menu"] },
+    { "id": "mobile.input", "name": "MobileInput", "sourceNode": "185:40788", "states": ["default", "focus", "complete", "readonly", "disabled", "error", "with-icon"] },
+    { "id": "mobile.select", "name": "MobileSelect", "sourceNode": "185:40791", "states": ["default", "focus", "complete", "readonly", "disabled", "dropdown"] },
+    { "id": "mobile.toggle", "name": "MobileToggle", "sourceNode": "185:40775", "states": ["off", "on"] },
+    { "id": "mobile.tab", "name": "MobileTab", "sourceNode": "185:40778", "states": ["default", "active"] },
+    { "id": "mobile.step", "name": "MobileStep", "sourceNode": "185:47004", "states": ["none", "active", "complete"] },
+    { "id": "mobile.cta", "name": "MobileCTA", "sourceNode": "192:30753", "states": ["save", "cancel-save", "complete-cancel-save"] },
+    { "id": "mobile.inspection", "name": "MobileInspectionJudgement", "sourceNode": "185:45655", "states": ["○", "△", "✕"] },
+    { "id": "mobile.text-section", "name": "MobileTextSection", "sourceNode": "191:29273", "states": ["list-card", "time-value", "scan-value", "disabled"] }
+  ],
+  "patterns": [
+    { "id": "mobile.shell.main-list", "name": "날짜 기반 메인 리스트", "rules": ["status/header/date는 고정", "본문은 24px top-radius surface", "bottom tab 고정"] },
+    { "id": "mobile.shell.detail-form", "name": "등록·상세 폼", "rules": ["이전 화면 날짜 상속", "header 고정", "CTA 고정", "본문만 스크롤"] },
+    { "id": "mobile.shell.bottom-sheet", "name": "슬라이드 팝업", "rules": ["하단에서 노출", "bottom-sheet header", "bottom tab 숨김", "저장 또는 즉시선택으로 닫힘"] },
+    { "id": "mobile.flow.quality-step", "name": "품질검사 단계 흐름", "rules": ["기본정보→외관검사→중량검사→특이사항", "완료·현재·미진행 상태 분리"] },
+    { "id": "mobile.behavior.back-preserve", "name": "뒤로가기 임시저장", "rules": ["이전 화면으로 돌아가도 작성 내용을 임시 유지"] },
+    { "id": "mobile.behavior.toast", "name": "저장 피드백", "rules": ["저장 버튼 위 28px", "2.5–3초", "중복 억제 후 최신 1개"] }
+  ],
+  "screenTypes": {
+    "main": {
+      "count": 12,
+      "pages": 44,
+      "types": [
+        { "name": "홈", "usedBy": ["홈", "생산관리", "품질검사", "운전일지", "라벨관리", "정비이력"] },
+        { "name": "날짜 리스트", "usedBy": ["입고등록", "출하등록", "생산관리", "입고검사", "출하검사", "공정검사", "자주검사", "운전일지", "정비이력", "설비점검"] },
+        { "name": "스캔 키패드", "usedBy": ["생산관리", "정비이력"] },
+        { "name": "등록 폼", "usedBy": ["입고관리", "출하관리", "입고검사", "출하검사", "공정검사", "설비점검"] },
+        { "name": "라벨 발행", "usedBy": ["라벨관리"] },
+        { "name": "검사 기본정보", "usedBy": ["입고검사", "출하검사", "공정검사", "자주검사"] },
+        { "name": "검사 판정", "usedBy": ["입고검사", "출하검사", "공정검사", "자주검사"] },
+        { "name": "중량검사", "usedBy": ["공정검사", "자주검사"] },
+        { "name": "특이사항", "usedBy": ["공정검사", "자주검사"] },
+        { "name": "가동시간", "usedBy": ["운전일지"] },
+        { "name": "전체메뉴·설정", "usedBy": ["메뉴", "설정"] },
+        { "name": "로그인", "usedBy": ["로그인"] }
+      ]
+    },
+    "slidePopup": {
+      "count": 13,
+      "pages": 19,
+      "types": ["숫자 키패드", "메모", "날짜 선택", "인원 선택", "알람 내역", "사용자 설정", "입력내역", "검색", "품목 선택", "LOT 선택", "작업시간", "라벨 생성 설정", "확인·경고"]
+    }
+  },
+  "sourceFindings": [
+    { "kind": "source-error", "detail": "출하 섹션 일부 프레임명이 입고지시·입고실적으로 남아 있어 업무 섹션과 화면 내용으로 판정한다." },
+    { "kind": "intentional-exception", "detail": "라벨생성은 화면이 존재하지만 개발범위 제외 표기가 있어 활성 생성 근거로 사용하지 않는다." },
+    { "kind": "intentional-exception", "detail": "실적 LOT 모바일은 미진행 결정이 명시되어 활성 화면 목록에서 제외한다." },
+    { "kind": "normalization-candidate", "detail": "최신 수량입력 변경안 19649:98481을 구형 LOT 선택 화면보다 우선한다." }
+  ]
+}

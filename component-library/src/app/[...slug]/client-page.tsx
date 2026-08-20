@@ -22,6 +22,7 @@ import {
   LayoutTemplate,
   Sparkles,
   Settings,
+  Smartphone,
 } from "lucide-react";
 import NextLink from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -108,6 +109,7 @@ import {
 } from "@/components/patterns";
 import { GeneratedScreenReview } from "@/components/patterns/generated-screen-review";
 import { CandidateDecisionGallery, Tier3ExperimentalGallery, Tier4ExperimentalGallery, Tier5ExperimentalGallery } from "@/components/experimental";
+import { MobileCatalog } from "@/components/mobile/mobile-catalog";
 import {
   IconArrow,
   IconArrowDownRight,
@@ -153,6 +155,7 @@ import {
   FOUNDATION_NODES,
   COMPONENT_NODES,
   PATTERN_NODES,
+  MOBILE_NODES,
   GENERATED_SCREEN_NODES,
   EXPERIMENTAL_NODES,
   SIDEBAR_GROUPS,
@@ -1530,13 +1533,15 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
   const slug = routeOverride ?? routeParams.slug ?? [];
   // 2026-08-05 — Patterns 그룹 추가로 "components 아니면 무조건 foundations"이던
   // 이진 분기를 3분기로 확장.
-  const activeGroup: "home" | "foundations" | "components" | "patterns" | "generated-screens" | "experimental" =
+  const activeGroup: "home" | "foundations" | "components" | "patterns" | "mobile" | "generated-screens" | "experimental" =
     slug.length === 0
       ? "home"
       : slug[0] === "components"
         ? "components"
         : slug[0] === "patterns"
           ? "patterns"
+        : slug[0] === "mobile"
+          ? "mobile"
           : slug[0] === "generated-screens"
             ? "generated-screens"
             : slug[0] === "experimental"
@@ -1550,6 +1555,8 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         ? "Components"
         : activeGroup === "patterns"
           ? "Patterns"
+        : activeGroup === "mobile"
+          ? "Mobile"
           : activeGroup === "generated-screens"
             ? "Generated Screens"
             : activeGroup === "experimental"
@@ -1677,6 +1684,8 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                 ? Palette
                 : group.title === "Components"
                   ? Blocks
+                  : group.title === "Mobile"
+                    ? Smartphone
                   : group.title === "Generated Screens"
                     ? Sparkles
                     : Hammer;
@@ -1736,6 +1745,8 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                             ? "Experimental"
                           : activeGroup === "patterns"
                             ? "Patterns"
+                          : activeGroup === "mobile"
+                            ? "Mobile"
                             : "Components",
                       onClick: () => router.push(`/${activeGroup}`),
                     },
@@ -1757,6 +1768,8 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                             ? "Experimental"
                           : activeGroup === "patterns"
                             ? "Patterns"
+                          : activeGroup === "mobile"
+                            ? "Mobile"
                             : "Components",
                     },
                   ]
@@ -2077,6 +2090,22 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                 </p>
               </div>
               {!activeId && <OverviewGrid nodes={PATTERN_NODES} />}
+            </>
+          )}
+
+          {(activeGroup === "mobile" || activeGroup === "home") && (
+            <>
+              <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-primary-60 pl-5">
+                <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
+                  <Smartphone className="size-7 shrink-0 text-mes-primary-60" />
+                  Mobile
+                </span>
+                <p className="text-[13px] leading-[1.5] text-mes-gray-70">
+                  모바일 전용 파운데이션·컴포넌트·조합 패턴·화면 유형입니다. 웹 자산을 단순 축소하지 않고 실제 모바일 업무 화면을 근거로 관리합니다.
+                </p>
+              </div>
+              {activeGroup === "home" && <OverviewGrid nodes={MOBILE_NODES} />}
+              {activeGroup === "mobile" && <MobileCatalog activeId={activeId} />}
             </>
           )}
 

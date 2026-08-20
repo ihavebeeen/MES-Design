@@ -19,6 +19,7 @@ import completionPolicyData from "./completion-policy.json";
 import footerActionAuditData from "./footer-action-audit.json";
 import contextRuleData from "./context-rules.json";
 import generationTemplateData from "./generation-templates.json";
+import mobileAssetData from "./mobile-assets.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -41,6 +42,7 @@ import type {
   ContextRuleRegistry,
   ContextRuleCategory,
   GenerationTemplateRegistry,
+  MobileAssetRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -65,6 +67,7 @@ export const completionPolicyRegistry = completionPolicyData as CompletionPolicy
 export const footerActionAuditRegistry = footerActionAuditData as FooterActionAuditRegistry;
 export const contextRuleRegistry = contextRuleData as ContextRuleRegistry;
 export const generationTemplateRegistry = generationTemplateData as GenerationTemplateRegistry;
+export const mobileAssetRegistry = mobileAssetData as MobileAssetRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);
@@ -122,6 +125,11 @@ export function getGenerationContext() {
     rules: contextRuleRegistry.rules,
     holds: contextRuleRegistry.holds,
   };
+}
+
+/** 모바일 생성은 웹 registry를 축소하지 않고 전용 근거와 화면 유형을 먼저 조회한다. */
+export function getMobileGenerationContext() {
+  return mobileAssetRegistry;
 }
 
 /** AI나 생성 스크립트가 화면 하나를 구현하기 전에 읽어야 할 최소 컨텍스트를 반환한다. */

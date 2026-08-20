@@ -23,6 +23,20 @@ export interface ComponentRegistry {
   components: ComponentRegistryEntry[];
 }
 
+export interface MobileAssetRegistry {
+  schemaVersion: 1;
+  status: "in-progress" | "verified";
+  evidence: Record<string, { fileKey: string; node: string; role: string }>;
+  foundations: Array<{ id: string; name: string; sourceNode: string; values: string[] }>;
+  components: Array<{ id: string; name: string; sourceNode: string; states: string[]; sizes?: string[] }>;
+  patterns: Array<{ id: string; name: string; rules: string[] }>;
+  screenTypes: {
+    main: { count: number; pages: number; types: Array<{ name: string; usedBy: string[] }> };
+    slidePopup: { count: number; pages: number; types: string[] };
+  };
+  sourceFindings: Array<{ kind: NormalizationClassification; detail: string }>;
+}
+
 export interface PatternRegistryEntry {
   id: string;
   name: string;
@@ -190,6 +204,7 @@ export interface VisualRegressionCase {
   screenId?: string;
   patternId?: string;
   candidateId?: string;
+  mobileAssetId?: string;
 }
 
 export interface VisualRegressionRegistry {

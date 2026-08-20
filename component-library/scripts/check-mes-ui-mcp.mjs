@@ -14,6 +14,7 @@ const outputPath = join(projectRoot, ...outputRelativePath.split("/"));
 const expectedTools = [
   "mes_audit_screen",
   "mes_generate_screen",
+  "mes_get_mobile_context",
   "mes_list_design_system",
   "mes_resolve_screen",
 ];
@@ -54,6 +55,10 @@ try {
   const request = JSON.parse(readFileSync(fixturePath, "utf8"));
   const catalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "side-slide", limit: 10 } }));
   assert(catalog.counts.generationTemplates === 1, "생성 템플릿 개수가 예상과 다릅니다.");
+  assert(catalog.counts.mobileAssets > 0, "모바일 자산이 MCP 목록에 포함되지 않았습니다.");
+  const mobile = structured(await client.callTool({ name: "mes_get_mobile_context", arguments: { category: "screens" } }));
+  assert(mobile.screenTypes.main.count === 12, "모바일 메인 화면 유형 수가 예상과 다릅니다.");
+  assert(mobile.screenTypes.slidePopup.count === 13, "모바일 슬라이드 팝업 유형 수가 예상과 다릅니다.");
 
   const contract = structured(await client.callTool({ name: "mes_resolve_screen", arguments: { request } }));
   assert(contract.quality.status === "release-ready", `계약 상태가 release-ready가 아닙니다: ${contract.quality.status}`);

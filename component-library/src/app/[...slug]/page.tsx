@@ -2,6 +2,7 @@ import {
   FOUNDATION_ID_LIST,
   COMPONENT_NODES,
   PATTERN_ID_LIST,
+  MOBILE_ID_LIST,
   EXPERIMENTAL_ID_LIST,
   flattenSidebarNodes,
 } from "@/lib/sidebar-data";
@@ -35,11 +36,15 @@ export function generateStaticParams() {
     { slug: ["patterns"] },
     ...PATTERN_ID_LIST.map((id) => ({ slug: ["patterns", id] })),
   ];
+  const mobileParams = [
+    { slug: ["mobile"] },
+    ...MOBILE_ID_LIST.map((id) => ({ slug: ["mobile", id] })),
+  ];
   const experimentalParams = [
     { slug: ["experimental"] },
     ...EXPERIMENTAL_ID_LIST.map((id) => ({ slug: ["experimental", id] })),
   ];
-  return [...foundationParams, ...componentParams, ...patternParams, ...experimentalParams];
+  return [...foundationParams, ...componentParams, ...patternParams, ...mobileParams, ...experimentalParams];
 }
 
 export default function Page() {

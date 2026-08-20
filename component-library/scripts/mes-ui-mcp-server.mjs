@@ -80,6 +80,17 @@ function filterEntries(entries, query, limit) {
     .map(compactEntry);
 }
 
+function mobileEntries(registry) {
+  const assets = registry.mobileAssets;
+  return [
+    ...assets.foundations.map((entry) => ({ ...entry, kind: "mobile-foundation", status: assets.status })),
+    ...assets.components.map((entry) => ({ ...entry, kind: "mobile-component", status: assets.status })),
+    ...assets.patterns.map((entry) => ({ ...entry, kind: "mobile-pattern", status: assets.status })),
+    ...assets.screenTypes.main.types.map((entry, index) => ({ id: `mobile.screen.main.${index + 1}`, name: entry.name, kind: "mobile-screen-type", status: assets.status })),
+    ...assets.screenTypes.slidePopup.types.map((name, index) => ({ id: `mobile.screen.popup.${index + 1}`, name, kind: "mobile-popup-type", status: assets.status })),
+  ];
+}
+
 export function createMesUiMcpServer() {
   const server = new McpServer({ name: "mes-ui-generator", version: "0.1.0" }, { capabilities: { tools: {} } });
 
@@ -96,19 +107,52 @@ export function createMesUiMcpServer() {
     },
     safeTool(async ({ query, limit }) => {
       const registry = readRegistryBundle();
+      const mobile = mobileEntries(registry);
       const result = {
         counts: {
           components: registry.components.length,
           patterns: registry.patterns.length,
           screens: registry.screens.length,
           generationTemplates: registry.generationTemplates.length,
+          mobileAssets: mobile.length,
         },
         components: filterEntries(registry.components, query, limit),
         patterns: filterEntries(registry.patterns, query, limit),
         screens: filterEntries(registry.screens, query, limit),
         generationTemplates: filterEntries(registry.generationTemplates, query, limit),
+        mobile: filterEntries(mobile, query, limit),
       };
       return toolResult("MES 디자인 시스템 조회 완료", result);
+    }),
+  );
+
+  server.registerTool(
+    "mes_get_mobile_context",
+    {
+      title: "MES 모바일 생성 컨텍스트",
+      description: "모바일 화면 생성 전에 전용 파운데이션, 컴포넌트, 조합 패턴, 화면 유형, 원본 예외를 조회합니다. 웹 자산의 단순 축소를 방지합니다.",
+      inputSchema: z.object({
+        category: z.enum(["all", "foundations", "components", "patterns", "screens"]).default("all"),
+        query: z.string().trim().optional(),
+      }),
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    safeTool(async ({ category, query }) => {
+      const assets = readRegistryBundle().mobileAssets;
+      const normalized = query?.toLocaleLowerCase("ko-KR");
+      const matches = (entry) => !normalized || JSON.stringify(entry).toLocaleLowerCase("ko-KR").includes(normalized);
+      const selected = {
+        ...(category === "all" || category === "foundations" ? { foundations: assets.foundations.filter(matches) } : {}),
+        ...(category === "all" || category === "components" ? { components: assets.components.filter(matches) } : {}),
+        ...(category === "all" || category === "patterns" ? { patterns: assets.patterns.filter(matches) } : {}),
+        ...(category === "all" || category === "screens" ? { screenTypes: assets.screenTypes } : {}),
+      };
+      return toolResult("MES 모바일 생성 컨텍스트 조회 완료", {
+        status: assets.status,
+        evidence: assets.evidence,
+        ...selected,
+        sourceFindings: assets.sourceFindings,
+      });
     }),
   );
 

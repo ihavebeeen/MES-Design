@@ -31,6 +31,8 @@
     { "id": "popup-standard-price-settings", "name": "표준단가 설정", "route": "/visual-regression/standard-price-settings", "snapshot": "standard-price-settings.png", "viewport": { "width": 1440, "height": 960 }, "screenId": "standard-price-settings" },
     { "id": "popup-team-settings", "name": "조 설정", "route": "/visual-regression/team-settings", "snapshot": "team-settings.png", "viewport": { "width": 1440, "height": 960 }, "screenId": "team-settings" },
     { "id": "popup-material-input-information-byproduct", "name": "투입정보 · 부산물 하위 영역 생성 시안", "route": "/visual-regression/material-input-information", "snapshot": "material-input-information-byproduct.png", "viewport": { "width": 1584, "height": 728 }, "candidateId": "material-input-information-byproduct-2026-08-13" },
-    { "id": "screen-business-operation-settings", "name": "업무 운영 설정 생성 시안", "route": "/visual-regression/business-operation-settings", "snapshot": "business-operation-settings.png", "viewport": { "width": 1920, "height": 960 }, "candidateId": "business-operation-settings-2026-08-18" }
+    { "id": "screen-business-operation-settings", "name": "업무 운영 설정 생성 시안", "route": "/visual-regression/business-operation-settings", "snapshot": "business-operation-settings.png", "viewport": { "width": 1920, "height": 960 }, "candidateId": "business-operation-settings-2026-08-18" },
+    { "id": "mobile-components-catalog", "name": "모바일 컴포넌트 카탈로그", "route": "/mobile/mobile-components", "snapshot": "mobile-components-catalog-chromium-win32.png", "viewport": { "width": 1440, "height": 1000 }, "mobileAssetId": "mobile.button" },
+    { "id": "mobile-screen-types-catalog", "name": "모바일 화면 유형 카탈로그", "route": "/mobile/mobile-screens", "snapshot": "mobile-screen-types-catalog-chromium-win32.png", "viewport": { "width": 1440, "height": 1000 }, "mobileAssetId": "mobile.shell.main-list" }
   ]
 }
