@@ -99,7 +99,7 @@ for (const tier of [3, 4, 5]) {
   if (catalogCountsByTier[tier] !== reviewedCandidateCounts[tier]) errors.push(`Tier ${tier} catalog는 최초 후보 ${reviewedCandidateCounts[tier]}개여야 합니다 (현재 ${catalogCountsByTier[tier]}).`);
 }
 
-const expectedCounts = { 3: 2, 4: 6, 5: 1 };
+const expectedCounts = { 3: 0, 4: 0, 5: 0 };
 for (const [tier, expected] of Object.entries(expectedCounts)) {
   if (countsByTier[tier] !== expected) errors.push(`Tier ${tier} 후보는 ${expected}개여야 합니다 (현재 ${countsByTier[tier]}).`);
 }

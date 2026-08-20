@@ -4,8 +4,8 @@
   "status": "observed-not-canonical",
   "scope": "src/components/patterns/*.tsx",
   "summary": {
-    "scannedFiles": 38,
-    "totalLines": 7975,
+    "scannedFiles": 41,
+    "totalLines": 8100,
     "shellInstances": {
       "CenterModal": 13,
       "SideSlidePanel": 9,
@@ -2182,6 +2182,100 @@
       ]
     },
     {
+      "source": "src/components/patterns/process-flow-pattern.tsx",
+      "name": "process-flow-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 43,
+      "exportedSymbols": [
+        "ProcessFlowPattern"
+      ],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 1,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/product-tour-pattern.tsx",
+      "name": "product-tour-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 38,
+      "exportedSymbols": [
+        "ProductTourPattern"
+      ],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Badge",
+          "jsxCount": 1
+        },
+        {
+          "name": "Button",
+          "jsxCount": 2
+        }
+      ],
+      "stateHookCount": 1,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/patterns/production-gantt-pattern.tsx",
+      "name": "production-gantt-pattern.tsx",
+      "observedRole": "composition-source",
+      "lines": 44,
+      "exportedSymbols": [
+        "ProductionGanttPattern"
+      ],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 1,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "SegmentedControl",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 1,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": []
+    },
+    {
       "source": "src/components/patterns/production-quantity-reregistration-pattern.tsx",
       "name": "production-quantity-reregistration-pattern.tsx",
       "observedRole": "composition-source",
@@ -2848,5 +2942,5 @@
       ]
     }
   ],
-  "fingerprint": "cb73f2f2f55dda7f"
+  "fingerprint": "bd147b0a21c8b835"
 }

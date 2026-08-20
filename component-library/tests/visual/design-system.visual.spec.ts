@@ -4,84 +4,64 @@ test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
 });
 
-test("Tier 3~5 최초 후보 57개의 승격·유지·제외 판정을 웹 원장에 빠짐없이 표시한다", async ({ page }) => {
+test("Tier 3~5 최초 후보 57개의 승격·제외 판정을 웹 원장에 빠짐없이 표시한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/experimental/experimental-decisions");
 
   await expect(page.locator("[data-candidate-decision-ledger]")).toBeVisible();
   await expect(page.locator("[data-candidate-decision]")).toHaveCount(57);
-  await expect(page.locator('[data-decision-status="promoted"]')).toHaveCount(11);
-  await expect(page.locator('[data-decision-status="retained"]')).toHaveCount(9);
+  await expect(page.locator('[data-decision-status="promoted"]')).toHaveCount(20);
+  await expect(page.locator('[data-decision-status="retained"]')).toHaveCount(0);
   await expect(page.locator('[data-decision-status="rejected"]')).toHaveCount(37);
   await expect(page.locator('[data-decision-tier="3"]')).toHaveCount(23);
   await expect(page.locator('[data-decision-tier="4"]')).toHaveCount(22);
   await expect(page.locator('[data-decision-tier="5"]')).toHaveCount(12);
-  await expect(page.getByText("범위 슬라이더", { exact: true })).toBeVisible();
-  await expect(page.getByText("이미지 썸네일", { exact: true })).toBeVisible();
-  await expect(page.getByText("브레이크포인트 스케일", { exact: true })).toBeVisible();
-  await expect(page.getByText("온보딩 툴팁·제품 투어", { exact: true })).toBeVisible();
+  const ledger = page.locator("[data-candidate-decision-ledger]");
+  await expect(ledger.getByText("범위 슬라이더", { exact: true })).toBeVisible();
+  await expect(ledger.getByText("이미지 썸네일", { exact: true })).toBeVisible();
+  await expect(ledger.getByText("브레이크포인트 스케일", { exact: true })).toBeVisible();
+  await expect(ledger.getByText("온보딩 툴팁·제품 투어", { exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 });
 
-test("Tier 3 사용자 판정 후 유지 후보 2개만 격리하고 기본 상호작용과 페이지 폭을 유지한다", async ({ page }) => {
+test("Tier 3 승격 자산은 Components에서 정식 API로 확인한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/experimental/experimental-tier-3");
-
-  const prototypes = page.locator("[data-experimental-prototype]");
-  await expect(prototypes).toHaveCount(2);
-  await expect(page.getByRole("navigation", { name: "breadcrumb" })).toContainText("Experimental");
+  await page.goto("/components/image-thumbnail");
+  await expect(page.locator('[data-standard-asset="image-thumbnail"]')).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "breadcrumb" })).toContainText("Components");
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
-  await expect(page.locator('[data-experimental-prototype="ExperimentalImageThumbnail"]')).toHaveCount(1);
-  const imageThumbnail = page.locator('[data-experimental-prototype="ExperimentalImageThumbnail"]');
-  const labelThumbnail = imageThumbnail.getByRole("button", { name: /라벨/ });
+  const imageThumbnail = page.locator('[data-standard-asset="image-thumbnail"]');
+  const labelThumbnail = imageThumbnail.getByRole("option", { name: /라벨/ });
   await labelThumbnail.click();
-  await expect(labelThumbnail).toHaveClass(/border-mes-gray-130/);
+  await expect(labelThumbnail).toHaveAttribute("aria-selected", "true");
 
-  const searchHighlight = page.locator('[data-experimental-prototype="ExperimentalSearchHighlight"]');
-  await searchHighlight.getByRole("textbox").fill("재생");
-  await expect(searchHighlight.locator("mark")).toHaveText("재생");
-
-  await expect(page.locator('[data-experimental-prototype="ExperimentalGlobalSearch"]')).toHaveCount(0);
+  await page.goto("/components/search-highlight");
+  const searchHighlight = page.locator('[data-standard-asset="search-highlight"]');
+  await expect(searchHighlight.locator("mark")).toHaveCount(2);
 
 });
 
-test("Tier 4·5 사용자 판정 후 유지 후보와 좌측 티어 구획은 격리 수량과 기본 동작을 유지한다", async ({ page }) => {
+test("Tier 4·5 승격 자산은 Components·Patterns에 있고 Experimental 후보는 비어 있다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/experimental");
 
   await expect(page.locator('main a[href="/experimental/experimental-decisions/"]')).toBeVisible();
-  await expect(page.locator('main a[href="/experimental/experimental-tier-3/"]')).toBeVisible();
-  await expect(page.locator('main a[href="/experimental/experimental-tier-4/"]')).toBeVisible();
-  await expect(page.locator('main a[href="/experimental/experimental-tier-5/"]')).toBeVisible();
+  await expect(page.locator('main a[href*="experimental-tier-"]')).toHaveCount(0);
   await expect(page.getByRole("complementary").locator("[data-sidebar-group]").first()).toContainText("Experimental");
 
-  await page.goto("/experimental/experimental-tier-4");
-
-  await expect(page.locator('main a[href="/experimental/experimental-tier-3/"]')).toBeVisible();
-  await expect(page.locator('main a[href="/experimental/experimental-tier-4/"]')).toBeVisible();
-  await expect(page.locator('main a[href="/experimental/experimental-tier-5/"]')).toBeVisible();
-  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(6);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-
-  const segmented = page.locator('[data-experimental-prototype="ExperimentalSegmentedControl"]');
+  await page.goto("/components/segmented-control");
+  const segmented = page.locator('[data-standard-asset="segmented-control"]');
   await segmented.getByRole("radio", { name: "비가동", exact: true }).click();
-  await expect(segmented).toContainText("선택: 비가동");
-
-  await page.goto("/experimental/experimental-tier-5");
-  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(1);
+  await expect(segmented.getByRole("radio", { name: "비가동", exact: true })).toHaveAttribute("aria-checked", "true");
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
-  const productTour = page.locator('[data-experimental-prototype="ExperimentalProductTour"]');
+  await page.goto("/patterns/onboarding-product-tour");
+  const productTour = page.locator('[data-standard-asset="onboarding-product-tour"]');
   await productTour.getByRole("button", { name: "다음", exact: true }).click();
-  await expect(productTour).toContainText("필터 추가");
+  await expect(productTour).toContainText("행 선택");
 
-  const sidebar = page.getByRole("complementary");
-  await expect(sidebar.locator('section[aria-label="Tier 1"]')).toHaveCount(2);
-  await expect(sidebar.locator('section[aria-label="Tier 2"]')).toHaveCount(2);
-  await expect(sidebar.locator('section[aria-label="Tier 3"]')).toHaveCount(1);
-  await expect(sidebar.locator('section[aria-label="Tier 4"]')).toHaveCount(1);
-  await expect(sidebar.locator('section[aria-label="Tier 5"]')).toHaveCount(1);
+  await expect(page.locator("[data-experimental-prototype]")).toHaveCount(0);
 });
 
 test("투입정보는 부산물을 투입품과 동급으로 합치지 않고 내부 하위 영역으로 표시한다", async ({ page }) => {

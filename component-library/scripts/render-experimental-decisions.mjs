@@ -18,7 +18,7 @@ const escapeTable = (value) => String(value).replaceAll("|", "\\|").replaceAll("
 
 function decisionFor(entry, batch) {
   const promotion = (batch.promotions ?? []).find((item) => item.candidateId === entry.id);
-  if (promotion) return { status: "표준 승격", detail: `${promotion.registry}.${promotion.registryId} (provisional)` };
+  if (promotion) return { status: "표준 승격", detail: `${promotion.registry}.${promotion.registryId} (정식 레지스트리${promotion.registryId ? ", provisional 안정화" : ""})` };
   if ((batch.retainedCandidateIds ?? []).includes(entry.id)) return { status: "실험 유지", detail: "Experimental 격리 · 자동 생성 미사용" };
   return { status: "현재 제외", detail: "코드·자동 생성 후보에서 제외" };
 }
@@ -41,8 +41,8 @@ const lines = [
   "## 현재 요약",
   "",
   `- 최초 검토 후보: ${allDecisions.length}개`,
-  `- 표준 승격: ${statusCounts["표준 승격"]}개 — 사용자 분류 완료, 실제 화면 검증 전까지 provisional`,
-  `- 실험 유지: ${statusCounts["실험 유지"]}개 — Experimental에 격리, 표준 AI 생성에는 자동 사용하지 않음`,
+  `- 표준 승격: ${statusCounts["표준 승격"]}개 — 정식 컴포넌트·패턴 레지스트리에 등록`,
+  `- 실험 유지: ${statusCounts["실험 유지"]}개 — 현재 유지 후보 없음`,
   `- 현재 제외: ${statusCounts["현재 제외"]}개 — 현재 코드 및 자동 생성 후보에서 제외`,
   "",
   "## 판정 원칙",

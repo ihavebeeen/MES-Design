@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "auditDate": "2026-08-19",
+  "auditDate": "2026-08-20",
   "source": "docs/UI_컴포넌트_총망라_체크리스트.md",
   "policy": {
     "currentGoal": "desktop MES AI screen generation",
@@ -25,33 +25,32 @@
       },
       "3": {
         "total": 57,
-        "implemented-component": 8,
+        "implemented-component": 10,
         "implemented-pattern": 10,
         "intentional-composition": 27,
-        "excluded-scope": 10,
-        "experimental-prototype": 2
+        "excluded-scope": 10
       },
       "4": {
         "total": 41,
         "excluded-scope": 18,
-        "experimental-prototype": 6,
-        "intentional-composition": 17
+        "implemented-component": 4,
+        "intentional-composition": 17,
+        "implemented-pattern": 2
       },
       "5": {
         "total": 28,
         "intentional-composition": 12,
         "excluded-scope": 14,
         "deferred-evidence": 1,
-        "experimental-prototype": 1
+        "implemented-pattern": 1
       }
     },
     "byDisposition": {
       "implemented-foundation": 9,
       "excluded-scope": 42,
-      "implemented-component": 87,
+      "implemented-component": 93,
       "intentional-composition": 57,
-      "experimental-prototype": 9,
-      "implemented-pattern": 11,
+      "implemented-pattern": 14,
       "deferred-evidence": 1
     }
   },
@@ -272,12 +271,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.segmented-control",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인에 따라 Experimental 후보가 아닌 정식 provisional 컴포넌트로 승격했다."
     },
     {
       "item": "Slider (Range)",
@@ -686,12 +685,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.avatar",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인에 따라 Experimental 후보가 아닌 정식 provisional 컴포넌트로 승격했다."
     },
     {
       "item": "Avatar Group",
@@ -758,12 +757,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.progress-circle",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인에 따라 Experimental 후보가 아닌 정식 provisional 컴포넌트로 승격했다."
     },
     {
       "item": "Skeleton",
@@ -1115,12 +1114,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.image-thumbnail",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Video Player",
@@ -1374,12 +1373,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-pattern",
       "evidence": [
-        "experimental.product-tour",
-        "src/components/experimental/tier5-prototypes.tsx"
+        "tier5-user-review-2026-08-19",
+        "patterns registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인에 따라 정식 provisional 온보딩 패턴으로 승격했다."
     },
     {
       "item": "Onboarding Checklist",
@@ -1750,12 +1749,12 @@
       "layer": "몰큘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.overflow-list",
-        "src/components/experimental/tier4-general-prototypes.tsx"
+        "tier4-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인에 따라 Experimental 후보가 아닌 정식 provisional 컴포넌트로 승격했다."
     },
     {
       "item": "Spoiler (더보기/접기 텍스트)",
@@ -1785,12 +1784,12 @@
       "layer": "아톰",
       "sourceStatus": "없음",
       "tier": 3,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-component",
       "evidence": [
-        "experimental.search-highlight",
-        "src/components/experimental/tier3-content-prototypes.tsx"
+        "tier3-user-review-2026-08-19",
+        "components registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다."
     },
     {
       "item": "Marquee",
@@ -2106,12 +2105,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-pattern",
       "evidence": [
-        "experimental.process-flow",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "tier4-user-review-2026-08-19",
+        "patterns registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인에 따라 Experimental 후보가 아닌 정식 provisional 패턴으로 승격했다."
     },
     {
       "item": "Real-time Trend Chart",
@@ -2237,12 +2236,12 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 4,
-      "disposition": "experimental-prototype",
+      "disposition": "implemented-pattern",
       "evidence": [
-        "experimental.production-gantt",
-        "src/components/experimental/tier4-mes-prototypes.tsx"
+        "tier4-user-review-2026-08-19",
+        "patterns registry/code"
       ],
-      "note": "기본 상호작용이 있는 임시 프로토타입으로 구현했으며 실제 원본 승인 전까지 표준 AI 선택에서 격리한다."
+      "note": "사용자 승인에 따라 Experimental 후보가 아닌 정식 provisional 패턴으로 승격했다."
     },
     {
       "item": "Shift Schedule Calendar",

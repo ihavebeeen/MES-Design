@@ -423,6 +423,33 @@
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "requiredComponents": ["table"],
       "rules": ["여러 하위 컬럼이 하나의 상위 의미를 공유할 때 사용한다.", "상위 colspan과 하위 leaf 컬럼 수는 같은 groups 정의에서 계산한다.", "가변 그룹 깊이는 검증되지 않았으므로 현재 2단 헤더에만 사용한다."]
+    },
+    {
+      "id": "visualization.process-flow",
+      "name": "공정 흐름도",
+      "kind": "visualization",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/process-flow-pattern.tsx",
+      "requiredComponents": ["button"],
+      "rules": ["공정의 순서와 현재 위치가 업무 이해에 필요한 경우에 사용한다.", "임의의 장식용 플로우로 사용하지 않고 실제 공정 단계 데이터를 받는다."]
+    },
+    {
+      "id": "visualization.production-gantt",
+      "name": "생산 간트 차트",
+      "kind": "visualization",
+      "placement": "screen-content",
+      "source": "src/components/patterns/production-gantt-pattern.tsx",
+      "requiredComponents": ["segmented-control"],
+      "rules": ["설비·라인별 생산 계획의 시작과 종료를 동일 시간축에서 비교할 때 사용한다.", "업무 데이터의 start/end 비율을 전달하며 패턴 내부에서 임의 일정을 생성하지 않는다."]
+    },
+    {
+      "id": "onboarding.product-tour",
+      "name": "온보딩 툴팁·제품 투어",
+      "kind": "onboarding",
+      "placement": "overlay",
+      "source": "src/components/patterns/product-tour-pattern.tsx",
+      "requiredComponents": ["badge", "button"],
+      "rules": ["새 기능의 순차 안내가 실제로 필요할 때만 사용한다.", "단일 설명은 Tooltip 또는 NoticeBanner를 우선하고 강제 투어를 만들지 않는다."]
     }
   ]
 }

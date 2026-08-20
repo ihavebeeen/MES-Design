@@ -9,7 +9,7 @@ const outputJsonPath = path.join(
   "component-library/src/design-system/registry/tier-coverage-audit.json",
 );
 const outputMarkdownPath = path.join(root, "docs/UI_컴포넌트_티어_정규화.md");
-const auditDate = "2026-08-19";
+const auditDate = "2026-08-20";
 const experimentalRegistry = JSON.parse(
   fs.readFileSync(
     path.join(root, "component-library/src/design-system/registry/experimental-candidates.json"),
@@ -233,7 +233,7 @@ for (const classification of reclassifiedCompositions) {
 }
 
 set(
-  ["Slider (Range)", "File Upload / Dropzone", "Timeline", "Tree View", "Cascader", "Tree Select"],
+  ["Slider (Range)", "File Upload / Dropzone", "Timeline", "Tree View", "Cascader", "Tree Select", "Image / Thumbnail", "Search Highlight Text"],
   "implemented-component",
   ["tier3-user-review-2026-08-19", "components registry/code"],
   "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다.",
@@ -243,6 +243,24 @@ set(
   "implemented-pattern",
   ["tier3-user-review-2026-08-19", "patterns registry/code"],
   "사용자 승인으로 표준 레지스트리에 승격했으며 실제 원본·업무 검증 전까지 provisional로 관리한다.",
+);
+set(
+  ["Segmented Control", "Avatar", "Progress Circle", "Overflow List (\"+N more\")"],
+  "implemented-component",
+  ["tier4-user-review-2026-08-19", "components registry/code"],
+  "사용자 승인에 따라 Experimental 후보가 아닌 정식 provisional 컴포넌트로 승격했다.",
+);
+set(
+  ["Process Flow Diagram", "Production Gantt Chart"],
+  "implemented-pattern",
+  ["tier4-user-review-2026-08-19", "patterns registry/code"],
+  "사용자 승인에 따라 Experimental 후보가 아닌 정식 provisional 패턴으로 승격했다.",
+);
+set(
+  ["Onboarding Tooltip / Product Tour"],
+  "implemented-pattern",
+  ["tier5-user-review-2026-08-19", "patterns registry/code"],
+  "사용자 승인에 따라 정식 provisional 온보딩 패턴으로 승격했다.",
 );
 set(
   ["QR Code", "Mask Input", "Global Search / Search Overlay", "Resizable Panel", "Resizable / Draggable Popup", "Column Resize / Reorder / Show-Hide", "Virtual Scroll Grid", "Andon Board (설비 상태판)", "Real-time Gauge/Meter", "SPC Control Chart"],
@@ -404,8 +422,8 @@ function renderMarkdown(audit) {
     "",
     "- Tier 1·2는 현재 데스크톱 MES 화면 생성 기반을 막는 미충족 항목이 없다.",
     "- 107개로 시작한 격리 후보를 전수 재분류해, 기존 자산 사용 사례 48개와 MES 범위 제외 템플릿 2개를 후보에서 제거했다.",
-    "- 2026-08-19 사용자 판정 후 격리 후보는 Tier 3 2개, Tier 4 6개, Tier 5 1개로 총 9개다. Tier 3의 11개는 provisional 표준으로 승격했고 Tier 3~5에서 37개를 제외했다.",
-    "- Tier 4는 선택적 확장, Tier 5는 원칙적으로 핵심 MES 범위 밖이라는 우선순위를 유지한다. 코드가 존재해도 실제 업무 근거와 사용자 승인 전에는 표준으로 승격하지 않는다.",
+    "- 2026-08-20 사용자 정정에 따라 제외하지 않은 Tier 3~5 자산 20개를 정식 provisional 컴포넌트·패턴으로 승격했다. 현재 격리 후보는 0개이며 37개는 제외 상태다.",
+    "- `provisional`은 Experimental 후보가 아니라 정식 레지스트리의 안정화 상태다. 실제 원본·업무 검증이 추가되면 stable 여부를 별도로 판정한다.",
     "- 새로운 전체 화면은 커버리지 숫자를 늘리기 위해 추가하지 않는다. 기존 조합 문법으로 설명되지 않는 실제 화면이 나타날 때만 근거로 사용한다.",
     "",
     "## 판정 기준",

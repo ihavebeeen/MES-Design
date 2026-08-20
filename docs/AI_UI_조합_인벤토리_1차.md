@@ -6,12 +6,12 @@
 
 | 항목 | 결과 |
 |---|---:|
-| 검사 파일 | 38 |
-| 전체 줄 수 | 7,975 |
+| 검사 파일 | 41 |
+| 전체 줄 수 | 8,100 |
 | 혼합 Section Frame 파일 | 2 |
 | 표준 Frame 없이 native section만 사용 | 18 |
 | rounded wrapper가 있는 Section 후보 파일 | 22 |
-| fingerprint | `cb73f2f2f55dda7f` |
+| fingerprint | `bd147b0a21c8b835` |
 
 ## Shell 사용
 
@@ -30,8 +30,8 @@
 | patternGroupHeader | 0 |
 | nativeSection | 42 |
 | dividerContainer | 33 |
-| roundedContainer | 64 |
-| gray20Container | 33 |
+| roundedContainer | 65 |
+| gray20Container | 34 |
 
 ## 자동 탐지 Section 후보
 

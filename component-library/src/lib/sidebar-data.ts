@@ -55,6 +55,18 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   { id: "group-query", label: "그룹 조회", labelEn: "GroupQuery" },
   { id: "quick-query", label: "빠른 조회", labelEn: "QuickQuery" },
   { id: "search-input", label: "검색창", labelEn: "SearchInput" },
+  { id: "search-highlight", label: "검색어 강조", labelEn: "SearchHighlight" },
+  { id: "image-thumbnail", label: "이미지 썸네일", labelEn: "ImageThumbnail" },
+  { id: "segmented-control", label: "세그먼트 컨트롤", labelEn: "SegmentedControl" },
+  { id: "avatar", label: "사용자 아바타", labelEn: "Avatar" },
+  { id: "progress-circle", label: "원형 진행률", labelEn: "ProgressCircle" },
+  { id: "overflow-list", label: "넘침 목록", labelEn: "OverflowList" },
+  { id: "slider", label: "범위 슬라이더", labelEn: "Slider" },
+  { id: "file-upload", label: "파일 업로드", labelEn: "FileUpload" },
+  { id: "cascader", label: "계층 선택", labelEn: "Cascader" },
+  { id: "tree-select", label: "트리 선택", labelEn: "TreeSelect" },
+  { id: "timeline", label: "이력 타임라인", labelEn: "Timeline" },
+  { id: "tree-view", label: "트리 보기", labelEn: "TreeView" },
   { id: "tag", label: "태그", labelEn: "Tag" },
   { id: "combobox", label: "콤보박스", labelEn: "Combobox" },
   { id: "toast", label: "토스트", labelEn: "Toast" },
@@ -138,6 +150,14 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
     label: "테이블 컬럼 설정",
     labelEn: "Table Column Settings",
   },
+  { id: "workflow-stepper", label: "단계 진행", labelEn: "StepperPattern" },
+  { id: "selection-transfer-list", label: "이중 목록 이동", labelEn: "TransferListPattern" },
+  { id: "table-row-expand-detail", label: "행 상세 펼침", labelEn: "ExpandableRowPattern" },
+  { id: "table-frozen-column-grid", label: "고정 컬럼 그리드", labelEn: "FrozenColumnGridPattern" },
+  { id: "table-grouped-header-grid", label: "그룹 헤더 그리드", labelEn: "GroupedHeaderGridPattern" },
+  { id: "visualization-process-flow", label: "공정 흐름도", labelEn: "ProcessFlowPattern" },
+  { id: "visualization-production-gantt", label: "생산 간트 차트", labelEn: "ProductionGanttPattern" },
+  { id: "onboarding-product-tour", label: "온보딩 제품 투어", labelEn: "ProductTourPattern" },
   {
     id: "generated-screen-review",
     label: "생성 시안 검토함",
@@ -147,21 +167,6 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
     id: "experimental-decisions",
     label: "후보 판정 현황",
     labelEn: "Candidate Decisions",
-  },
-  {
-    id: "experimental-tier-3",
-    label: "Tier 3 유지 후보 (2)",
-    labelEn: "Tier 3 Retained",
-  },
-  {
-    id: "experimental-tier-4",
-    label: "Tier 4 유지 후보 (6)",
-    labelEn: "Tier 4 Retained",
-  },
-  {
-    id: "experimental-tier-5",
-    label: "Tier 5 유지 후보 (1)",
-    labelEn: "Tier 5 Retained",
   },
   { id: "mobile-foundations", label: "파운데이션", labelEn: "Foundations" },
   { id: "mobile-components", label: "컴포넌트", labelEn: "Components" },
@@ -267,6 +272,14 @@ export const PATTERN_ID_LIST = [
   "completed-analytics-dashboard",
   "completed-popup-types",
   "table-column-settings-pattern",
+  "workflow-stepper",
+  "selection-transfer-list",
+  "table-row-expand-detail",
+  "table-frozen-column-grid",
+  "table-grouped-header-grid",
+  "visualization-process-flow",
+  "visualization-production-gantt",
+  "onboarding-product-tour",
 ];
 export const PATTERN_NODES: SidebarNode[] = [
   branch("화면", "Screens", [
@@ -278,12 +291,17 @@ export const PATTERN_NODES: SidebarNode[] = [
   ]),
   branch("팝업", "Popups", ["completed-popup-types"]),
   branch("테이블", "Tables", ["table-column-settings-pattern"]),
+  branch("워크플로", "Workflow", ["workflow-stepper"]),
+  branch("선택", "Selection", ["selection-transfer-list"]),
+  branch("데이터 테이블", "Data tables", ["table-row-expand-detail", "table-frozen-column-grid", "table-grouped-header-grid"]),
+  branch("시각화", "Visualization", ["visualization-process-flow", "visualization-production-gantt"]),
+  branch("온보딩", "Onboarding", ["onboarding-product-tour"]),
 ];
 
 export const GENERATED_SCREEN_ID_LIST = ["generated-screen-review"];
 export const GENERATED_SCREEN_NODES: SidebarNode[] = GENERATED_SCREEN_ID_LIST.map((id) => leaf(id));
 
-export const EXPERIMENTAL_ID_LIST = ["experimental-decisions", "experimental-tier-3", "experimental-tier-4", "experimental-tier-5"];
+export const EXPERIMENTAL_ID_LIST = ["experimental-decisions"];
 export const EXPERIMENTAL_NODES: SidebarNode[] = EXPERIMENTAL_ID_LIST.map((id) => leaf(id));
 
 /** 모바일은 웹 컴포넌트의 작은 사이즈 변형이 아니라 독립된 셸·조합 문법을 가진다. */
@@ -323,6 +341,18 @@ export const COMPONENT_NODES: SidebarNode[] = [
   leaf("group-query"),
   leaf("quick-query"),
   leaf("search-input"),
+  leaf("search-highlight"),
+  leaf("image-thumbnail"),
+  leaf("segmented-control"),
+  leaf("avatar"),
+  leaf("progress-circle"),
+  leaf("overflow-list"),
+  leaf("slider"),
+  leaf("file-upload"),
+  leaf("cascader"),
+  leaf("tree-select"),
+  leaf("timeline"),
+  leaf("tree-view"),
   leaf("tag"),
   leaf("combobox"),
   leaf("toast"),
@@ -420,9 +450,6 @@ export const TEMP_BADGE_IDS = new Set([
   "logo",
   "user-account-menu",
   "loading-overlay",
-  "experimental-tier-3",
-  "experimental-tier-4",
-  "experimental-tier-5",
 ]);
 
 /**
@@ -503,9 +530,26 @@ export const TIER_BY_ID: Record<string, number> = {
   icons: 2,
   "table-parts": 1,
   "table-full": 1,
-  "experimental-tier-3": 3,
-  "experimental-tier-4": 4,
-  "experimental-tier-5": 5,
+  "slider": 3,
+  "file-upload": 3,
+  "cascader": 3,
+  "tree-select": 3,
+  "timeline": 3,
+  "tree-view": 3,
+  "image-thumbnail": 3,
+  "search-highlight": 3,
+  "segmented-control": 4,
+  "avatar": 4,
+  "progress-circle": 4,
+  "overflow-list": 4,
+  "workflow-stepper": 3,
+  "selection-transfer-list": 3,
+  "table-row-expand-detail": 3,
+  "table-frozen-column-grid": 3,
+  "table-grouped-header-grid": 3,
+  "visualization-process-flow": 4,
+  "visualization-production-gantt": 4,
+  "onboarding-product-tour": 5,
 };
 
 export const TIER_COLOR: Record<number, string> = {

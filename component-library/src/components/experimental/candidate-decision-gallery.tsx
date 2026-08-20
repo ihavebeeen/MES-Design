@@ -43,12 +43,12 @@ const registry = registryData as ExperimentalRegistry;
 const STATUS_META: Record<CandidateStatus, { label: string; description: string; badge: "blueLight" | "amber" | "grayFill" }> = {
   promoted: {
     label: "표준 승격",
-    description: "표준 레지스트리로 이동했지만 실제 화면 검증 전까지 provisional 상태입니다.",
+    description: "정식 컴포넌트·패턴 레지스트리로 이동했습니다. 안정화 전 자산은 provisional로 표시합니다.",
     badge: "blueLight",
   },
   retained: {
     label: "실험 유지",
-    description: "Experimental에서만 확인하며 표준 AI 화면 생성에는 자동 사용하지 않습니다.",
+    description: "현재 유지 중인 Experimental 후보는 없습니다.",
     badge: "amber",
   },
   rejected: {
@@ -187,7 +187,7 @@ export function CandidateDecisionGallery() {
       </section>
 
       <div className="rounded-mes-control border border-mes-primary-30 bg-mes-primary-10 px-4 py-3 text-[12px] leading-5 text-mes-gray-90">
-        <span className="font-semibold text-mes-gray-120">승격의 의미:</span> 사용자 분류가 끝났다는 뜻이며 완성 승인을 뜻하지 않습니다. 실제 MES 원본·업무 맥락·상호작용·시각 회귀를 모두 통과해야 표준 생성 자산으로 확정됩니다.
+        <span className="font-semibold text-mes-gray-120">승격의 의미:</span> 제외되지 않은 20개는 Experimental 후보가 아니라 정식 레지스트리 자산입니다. `provisional`은 후보 격리가 아니라 실제 화면 검증과 API 안정화가 남았다는 수명주기 상태입니다.
       </div>
 
       {registry.decisionBatches.map((batch) => <TierDecisionSection key={batch.id} batch={batch} />)}
