@@ -25,13 +25,19 @@ function DataCard({ title, node, children }: { title: string; node: string; chil
   return <article className="flex flex-col gap-3 rounded-lg border border-[#e4e7ee] bg-white p-4"><div><h3 className="text-[15px] font-bold text-[#011327]">{title}</h3><p className="text-[11px] text-[#8491a7]">Figma {node}</p></div>{children}</article>;
 }
 
+function FrameStatus({ status }: { status: string }) {
+  if (status === "verified") return <span className="rounded-full bg-[#eaf6ec] px-2 py-1 text-[11px] text-[#267337]">검증됨</span>;
+  if (status === "queued") return <span className="rounded-full bg-[#eff2f8] px-2 py-1 text-[11px] text-[#67738e]">대기</span>;
+  return <span className="rounded-full bg-[#e8f5ff] px-2 py-1 text-[11px] text-[#1573fb]">구현·검토 중</span>;
+}
+
 function MobileFrameQueue({ kind }: { kind: "main" | "popup" }) {
   const frames = mobileRegistry.sourceFrames[kind];
   return (
     <section className="mt-6 w-full rounded-lg border border-[#e4e7ee] bg-white p-4">
       <div className="mb-3 flex items-end justify-between"><div><h3 className="text-[15px] font-bold text-[#011327]">{kind === "main" ? "원본 화면 이관 큐" : "원본 팝업 이관 큐"}</h3><p className="text-[12px] text-[#8491a7]">Figma node 단위 · 유형 요약이 아닌 실제 375×812 프레임 목록</p></div><strong className="text-[13px] text-[#1573fb]">{frames.length} frames</strong></div>
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3">
-        {frames.map((frame) => <div key={frame.node} className="flex min-h-14 items-center justify-between gap-3 rounded-[6px] border border-[#e4e7ee] px-3 py-2"><span className="min-w-0"><strong className="block truncate text-[13px] text-[#011327]">{frame.name}</strong><span className="text-[11px] text-[#8491a7]">{frame.node}</span></span><span className={frame.status === "queued" ? "rounded-full bg-[#eff2f8] px-2 py-1 text-[11px] text-[#67738e]" : "rounded-full bg-[#e8f5ff] px-2 py-1 text-[11px] text-[#1573fb]"}>{frame.status === "queued" ? "대기" : "구현·검증 중"}</span></div>)}
+        {frames.map((frame) => <div key={frame.node} className="flex min-h-14 items-center justify-between gap-3 rounded-[6px] border border-[#e4e7ee] px-3 py-2"><span className="min-w-0"><strong className="block truncate text-[13px] text-[#011327]">{frame.name}</strong><span className="text-[11px] text-[#8491a7]">{frame.node}</span></span><FrameStatus status={frame.status} /></div>)}
       </div>
     </section>
   );

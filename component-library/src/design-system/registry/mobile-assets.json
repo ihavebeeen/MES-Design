@@ -61,7 +61,7 @@
   },
   "sourceFrames": {
     "main": [
-      { "node": "10378:91938", "name": "홈", "status": "implemented-reviewing" },
+      { "node": "10378:91938", "name": "홈", "status": "verified" },
       { "node": "10378:91889", "name": "입고지시 리스트", "status": "implemented-reviewing" },
       { "node": "10378:91789", "name": "생산실적 등록", "status": "implemented-reviewing" },
       { "node": "10378:91977", "name": "일지작성", "status": "queued" },

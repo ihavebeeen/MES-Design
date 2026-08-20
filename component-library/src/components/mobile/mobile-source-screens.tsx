@@ -5,13 +5,7 @@ import Image from "next/image";
 import {
   CalendarDays,
   CornerDownLeft,
-  ChevronLeft,
-  ChevronRight,
   Delete,
-  FilePenLine,
-  Maximize2,
-  ScanLine,
-  Search,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -70,7 +64,7 @@ function MobileSourceHeader({ title, home = false }: { title?: string; home?: bo
     <header className="flex h-[52px] shrink-0 items-center justify-between pl-[10px] pr-4 py-2 text-white" data-mobile-part="header">
       <div className="flex min-w-0 items-center gap-1">
         <Button variant="lineBlacktxt" size="small" aria-label="뒤로" className="size-9 border-0 bg-transparent p-0 text-white hover:bg-white/10">
-          <ChevronLeft className="size-6" strokeWidth={2} />
+          <Image src="/mobile-assets/arrow-back-white.svg" alt="" width={16} height={14} className="h-[14px] w-4" />
         </Button>
         <strong className="truncate text-[20px] font-bold leading-[30px] tracking-[-0.25px]">{title}</strong>
       </div>
@@ -80,10 +74,25 @@ function MobileSourceHeader({ title, home = false }: { title?: string; home?: bo
 }
 
 const tabItems = [
-  { id: "home", label: "홈", icon: "/mobile-assets/tab-home.svg" },
-  { id: "alarm", label: "알람", icon: "/mobile-assets/tab-bell-top.svg" },
-  { id: "settings", label: "설정", icon: "/mobile-assets/tab-setting.svg" },
+  { id: "home", label: "홈" },
+  { id: "alarm", label: "알람" },
+  { id: "settings", label: "설정" },
 ] as const;
+
+function MobileSourceTabIcon({ id, muted }: { id: (typeof tabItems)[number]["id"]; muted: boolean }) {
+  return (
+    <span className={cn("relative block size-6 shrink-0", muted && "opacity-45")} aria-hidden="true">
+      {id === "home" && <Image src="/mobile-assets/tab-home.svg" alt="" width={20.17} height={20.14} className="absolute left-[1.92px] top-[1.93px] h-[20.14px] w-[20.17px]" />}
+      {id === "alarm" && (
+        <>
+          <Image src="/mobile-assets/tab-bell-top.svg" alt="" width={19.48} height={17} className="absolute left-[2.26px] top-0.5 h-[17px] w-[19.48px]" />
+          <Image src="/mobile-assets/tab-bell-bottom.svg" alt="" width={7.29} height={3} className="absolute left-[8.35px] top-[21px] h-[3px] w-[7.29px]" />
+        </>
+      )}
+      {id === "settings" && <Image src="/mobile-assets/tab-setting.svg" alt="" width={21.49} height={20.36} className="absolute left-[1.25px] top-[1.82px] h-[20.36px] w-[21.49px]" />}
+    </span>
+  );
+}
 
 function MobileSourceTabBar({ active = "home" }: { active?: string }) {
   const [selected, setSelected] = React.useState(active);
@@ -92,7 +101,7 @@ function MobileSourceTabBar({ active = "home" }: { active?: string }) {
       <nav className="flex h-[54px] border-t border-[#e4e7ee] px-[10px]">
         {tabItems.map((item) => (
           <Button key={item.id} variant="lineBlacktxt" size="small" onClick={() => setSelected(item.id)} className="h-[54px] min-w-0 flex-1 flex-col gap-1 rounded-none border-0 bg-transparent px-3.5 py-2 hover:bg-transparent">
-            <AssetImage src={item.icon} className={cn("size-6 object-contain", selected !== item.id && "opacity-45")} />
+            <MobileSourceTabIcon id={item.id} muted={selected !== item.id} />
             <span className={cn("text-[10px] leading-none tracking-[-0.125px]", selected === item.id ? "font-semibold text-[#011327]" : "font-medium text-[#99a3b8]")}>{item.label}</span>
           </Button>
         ))}
@@ -141,9 +150,9 @@ export function MobileHomeSourceScreen() {
 function DateNavigator() {
   return (
     <div className="flex h-[68px] shrink-0 items-start justify-between px-4 pt-2">
-      <Button variant="lineBlacktxt" size="small" aria-label="이전 날짜" className="size-9 border-0 bg-white p-0 hover:bg-[#f8fafc]"><ChevronLeft className="size-6" /></Button>
-      <div className="flex h-9 items-center gap-2"><span className="flex h-5 items-center rounded-full bg-white px-2 text-[12px] font-semibold leading-[18px] text-[#1573fb]">오늘</span><strong className="text-[20px] font-bold leading-[30px] tracking-[-0.25px] text-white">2025.07.30</strong></div>
-      <Button variant="lineBlacktxt" size="small" aria-label="다음 날짜" className="size-9 border-0 bg-white p-0 hover:bg-[#f8fafc]"><ChevronRight className="size-6" /></Button>
+      <Button variant="lineBlacktxt" size="small" aria-label="이전 날짜" className="size-9 rounded-[6px] border-0 bg-white p-0 hover:bg-white"><Image src="/mobile-assets/arrow-date.svg" alt="" width={8.21} height={15.42} className="h-[15.42px] w-[8.21px] rotate-180" /></Button>
+      <div className="flex h-9 items-center gap-[10px]"><span className="flex items-center rounded-full bg-white px-[6px] py-[3px] text-[13px] font-semibold leading-none tracking-[-0.1625px] text-[#0958d9]">오늘</span><strong className="text-[20px] font-bold leading-none tracking-[-0.25px] text-white">2025.07.30</strong></div>
+      <Button variant="lineBlacktxt" size="small" aria-label="다음 날짜" className="size-9 rounded-[6px] border-0 bg-white p-0 hover:bg-white"><Image src="/mobile-assets/arrow-date.svg" alt="" width={8.21} height={15.42} className="h-[15.42px] w-[8.21px]" /></Button>
     </div>
   );
 }
@@ -154,20 +163,23 @@ export function MobileReceivingListSourceScreen() {
   const [activeRow, setActiveRow] = React.useState<number>();
   return (
     <div className="relative flex h-[812px] w-[375px] flex-col overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:91889" data-mobile-source-screen="receiving-list">
-      <div className="h-[180px] shrink-0 bg-[linear-gradient(180deg,#1573fb_0%,#3782f7_100%)]">
-        <MobileStatusBar />
-        <MobileSourceHeader title="입고등록" />
-        <DateNavigator />
+      <div className="relative h-[180px] shrink-0">
+        <div className="absolute inset-x-0 top-[47px] h-[180px] bg-[linear-gradient(180deg,#1573fb_0%,#4b8fff_102.25%)]" aria-hidden="true" />
+        <div className="relative z-10">
+          <MobileStatusBar />
+          <MobileSourceHeader title="입고등록" />
+          <DateNavigator />
+        </div>
       </div>
-      <main className="absolute inset-x-0 bottom-[84px] top-[167px] overflow-hidden rounded-t-[24px] bg-white px-4 pt-[25px]">
+      <main className="absolute inset-x-0 bottom-[84px] top-[167px] overflow-hidden rounded-t-[24px] bg-white px-4 pt-6 shadow-[0_4px_30px_rgba(0,0,0,0.24)]">
         <div className="flex flex-col gap-[10px]">
           {receivingRows.map((state, index) => (
-            <Button key={`${state}-${index}`} variant="lineBlacktxt" size="basic" onClick={() => setActiveRow(index)} className={cn("h-[79px] w-full justify-start rounded-[12px] border-0 px-5 py-3 text-left hover:bg-[#e8f5ff]", state === "대기" ? "bg-[#e8f5ff]" : "bg-[#eff2f8]", activeRow === index && "ring-2 ring-[#1573fb]") }>
-              <span className="flex min-w-0 flex-1 flex-col items-start gap-1.5">
-                <span className={cn("rounded-full px-2 py-0.5 text-[12px] font-semibold leading-[18px] text-white", state === "대기" ? "bg-[#1573fb]" : "bg-[#b4c0d3]")}>{state}</span>
-                <strong className="text-[16px] font-bold leading-6 tracking-[-0.2px] text-[#011327]">공급사 A (10건)</strong>
+            <Button key={`${state}-${index}`} variant="lineBlacktxt" size="basic" onClick={() => setActiveRow(index)} className={cn("h-[79px] w-full justify-start rounded-[12px] border-0 py-4 pl-5 pr-4 text-left hover:bg-[#e8f5ff]", state === "대기" ? "bg-[#e8f5ff]" : "bg-[#eff2f8]", activeRow === index && "ring-2 ring-[#1573fb]") }>
+              <span className="flex min-w-0 flex-1 flex-col items-start gap-[10px]">
+                <span className={cn("rounded-full px-[10px] py-1 text-[13px] font-semibold leading-none tracking-[-0.1625px] text-white", state === "대기" ? "bg-[#1573fb]" : "bg-[#99a3b8]")}>{state}</span>
+                <strong className="text-[16px] font-semibold leading-none tracking-[-0.2px] text-[#011327]">공급사 A (10건)</strong>
               </span>
-              <ChevronRight className="size-5 text-[#011327]" strokeWidth={1.7} />
+              <Image src="/mobile-assets/arrow-row.svg" alt="" width={6.57} height={12.33} className="h-[12.33px] w-[6.57px]" />
             </Button>
           ))}
         </div>
@@ -178,60 +190,76 @@ export function MobileReceivingListSourceScreen() {
 }
 
 function MobileFormRow({ label, value, link = false }: { label: string; value: string; link?: boolean }) {
-  return <div className="grid h-10 grid-cols-[74px_1fr] items-center"><span className="text-[15px] leading-[23px] text-[#67738e]">{label}</span><span className={cn("truncate text-[15px] leading-[23px] text-[#011327]", link && "text-[#1573fb] underline underline-offset-2")}>{value}</span></div>;
+  return <div className="grid h-8 grid-cols-[74px_1fr] items-center"><span className="text-[15px] leading-[22.5px] tracking-[-0.1875px] text-[#5c667b]">{label}</span><span className={cn("truncate text-[15px] font-medium leading-[22.5px] tracking-[-0.1875px] text-[#011327]", link && "text-[#1573fb] underline decoration-from-font underline-offset-2")}>{value}</span></div>;
 }
 
 function CompactEditableField({ label, value }: { label: string; value: string }) {
-  return <div className="grid grid-cols-[74px_80px] items-center"><span className="text-[15px] leading-[23px] text-[#67738e]">{label}</span><Input defaultValue={value} className="h-8 rounded-[4px] px-[10px] text-[15px]" /></div>;
+  return <div className="grid h-8 min-w-0 grid-cols-[74px_1fr] items-center"><span className="whitespace-nowrap text-[15px] leading-[22.5px] tracking-[-0.1875px] text-[#5c667b]">{label}</span><Input defaultValue={value} className="h-8 min-w-0 rounded-[4px] px-[10px] text-[15px] leading-[22.5px] tracking-[-0.1875px]" /></div>;
+}
+
+const productionShortcuts = [
+  { id: "label-create", label: "라벨생성", state: "완료", tone: "black", icon: "barcode-black" },
+  { id: "label-confirm", label: "라벨확정", state: "-", tone: "gray", icon: "barcode-gray" },
+  { id: "inspection", label: "자주검사", state: "2회", tone: "black", icon: "search" },
+  { id: "operation-log", label: "운전일지", state: "기록됨", tone: "black", icon: "calendar-pen" },
+] as const;
+
+function ProductionShortcutIcon({ icon }: { icon: (typeof productionShortcuts)[number]["icon"] }) {
+  return (
+    <span className="relative block size-6 shrink-0" aria-hidden="true">
+      {icon === "barcode-black" && <Image src="/mobile-assets/production-barcode-black.svg" alt="" width={20} height={20} className="absolute left-0.5 top-0.5 size-5" />}
+      {icon === "barcode-gray" && <Image src="/mobile-assets/production-barcode-gray.svg" alt="" width={20} height={20} className="absolute left-0.5 top-0.5 size-5" />}
+      {icon === "search" && <Image src="/mobile-assets/production-search-group.svg" alt="" width={19.49} height={19.48} className="absolute left-[2.25px] top-[2.25px] h-[19.48px] w-[19.49px]" />}
+      {icon === "calendar-pen" && <Image src="/mobile-assets/production-calendar-pen.svg" alt="" width={20.95} height={20.95} className="absolute left-[1.52px] top-[1.52px] h-[20.95px] w-[20.95px]" />}
+    </span>
+  );
 }
 
 export function MobileProductionEntrySourceScreen() {
   const [complete, setComplete] = React.useState(true);
   return (
-    <div className="flex h-[812px] w-[375px] flex-col overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:91789" data-mobile-source-screen="production-entry">
-      <div className="h-[99px] shrink-0 bg-[#1573fb]"><MobileStatusBar /><MobileSourceHeader title="성형기 1호" /></div>
-      <div className="mx-4 flex h-9 shrink-0 items-center justify-between rounded-[4px] border border-[#e4e7ee] bg-white px-3 text-[14px]">
-        <span className="flex items-center gap-1.5 font-semibold text-[#011327]"><CalendarDays className="size-4" />지시일 2025-07-01</span>
-        <Button variant="lineMain" size="xsmall" className="h-[22px] border-0 px-0 font-semibold">입력 4건 <ChevronRight className="size-4" /></Button>
+    <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:91789" data-mobile-source-screen="production-entry">
+      <div className="absolute inset-x-0 top-[47px] h-[69px] bg-[linear-gradient(180deg,#1573fb_0%,#4b8fff_102.25%)]" aria-hidden="true" />
+      <div className="absolute inset-x-0 top-0 z-20"><MobileStatusBar /><MobileSourceHeader title="성형기 1호" /></div>
+      <div className="absolute left-4 top-[99px] flex h-[37px] w-[343px] items-center gap-1.5 overflow-hidden rounded-[6px] border border-[#e4e7ee] bg-white px-3 py-2 text-[14px] tracking-[-0.175px]">
+        <CalendarDays className="size-4 shrink-0" strokeWidth={1.33} />
+        <strong className="font-semibold">지시일</strong>
+        <strong className="min-w-0 flex-1 font-semibold">2025-07-01</strong>
+        <Button variant="lineMain" size="xsmall" className="h-[21px] shrink-0 gap-[3px] border-0 px-0 text-[14px] font-semibold tracking-[-0.175px]">입력 4건 <Image src="/mobile-assets/production-date-arrow.svg" alt="" width={6.57} height={12.33} className="h-[12.33px] w-[6.57px]" /></Button>
       </div>
-      <main className="flex min-h-0 flex-1 flex-col gap-[10px] overflow-hidden px-4 pt-3">
-        <section className="h-[206px] shrink-0 rounded-[8px] border border-[#e4e7ee] p-3">
-          <h3 className="mb-[5px] text-[16px] font-bold leading-6 text-[#011327]">기본 정보</h3>
-          <div className="grid grid-cols-[74px_1fr] items-center gap-y-2">
-            <span className="text-[15px] text-[#67738e]">생산기사</span><Input defaultValue="김아무개" className="h-8 text-[15px]" />
-            <span className="text-[15px] text-[#67738e]">작업인원</span><Input defaultValue="신선미 외35" className="h-8 text-[15px]" />
+      <main className="absolute left-4 top-[146px] flex w-[343px] flex-col gap-[10px]">
+        <section className="flex h-[207px] shrink-0 flex-col gap-2 rounded-[8px] border border-[#e4e7ee] p-3">
+          <h3 className="text-[15px] font-bold leading-[22.5px] tracking-[-0.1875px] text-[#011327]">기본 정보</h3>
+          <div className="flex flex-col gap-2">
+            <div className="grid h-8 grid-cols-[74px_1fr] items-center"><span className="text-[15px] leading-[22.5px] tracking-[-0.1875px] text-[#5c667b]">생산기사</span><Input defaultValue="김아무개" className="h-8 rounded-[4px] px-[10px] text-[15px]" /></div>
+            <div className="grid h-8 grid-cols-[74px_1fr] items-center"><span className="text-[15px] leading-[22.5px] tracking-[-0.1875px] text-[#5c667b]">작업인원</span><Input defaultValue="신선미 외35" className="h-8 rounded-[4px] px-[10px] text-[15px]" /></div>
+            <MobileFormRow label="품목명" value="캐나다투칸두부배캣(신형/칼선)" link />
+            <MobileFormRow label="누적/지시" value="999,999 / 24,903" />
           </div>
-          <MobileFormRow label="품목명" value="캐나다투칸두부배캣(신형/칼선)" link />
-          <MobileFormRow label="누적/지시" value="999,999 / 24,903" />
         </section>
-        <section className="h-[128px] shrink-0 rounded-[8px] border border-[#e4e7ee] p-3">
-          <div className="mb-1 flex h-6 items-center justify-between"><h3 className="text-[16px] font-bold text-[#011327]">생산 실적</h3><Button variant="lineMain" size="xsmall" className="h-6 border-0 px-0 text-[14px]"><FilePenLine className="size-4" />메모</Button></div>
+        <section className="flex h-[127px] shrink-0 flex-col gap-2 rounded-[8px] border border-[#e4e7ee] p-3">
+          <div className="flex h-[22.5px] items-center justify-between"><h3 className="text-[15px] font-bold leading-[22.5px] tracking-[-0.1875px] text-[#011327]">생산 실적</h3><Button variant="lineMain" size="xsmall" className="h-[21px] gap-[5px] border-0 px-0 text-[14px] font-bold tracking-[-0.175px]"><Image src="/mobile-assets/production-memo.svg" alt="" width={13.72} height={13.72} className="h-[13.72px] w-[13.72px]" />메모</Button></div>
           <div className="grid grid-cols-2 gap-x-[10px] gap-y-2"><CompactEditableField label="시작시간" value="09:00" /><CompactEditableField label="종료시간" value="18:00" /><CompactEditableField label="생산수량" value="999,999" /><CompactEditableField label="불량수량" value="20" /></div>
         </section>
-        <section className="h-[86px] shrink-0 rounded-[8px] border border-[#e4e7ee] p-3">
-          <h3 className="mb-1 text-[16px] font-bold leading-6 text-[#011327]">투입 정보</h3>
+        <section className="flex h-[87px] shrink-0 flex-col gap-2 rounded-[8px] border border-[#e4e7ee] p-3">
+          <h3 className="text-[15px] font-bold leading-[22.5px] tracking-[-0.1875px] text-[#011327]">투입 정보</h3>
           <div className="grid grid-cols-2 gap-[10px]"><CompactEditableField label="자동 BOM" value="A type" /><CompactEditableField label="SCAN 품목" value="" /></div>
         </section>
-        <div className="mt-1 grid h-[66px] shrink-0 grid-cols-[99px_1fr_1fr] items-start gap-[10px] pb-0 pt-0.5">
-          <label className="flex h-[50px] items-center gap-1.5 text-[14px] font-semibold text-[#011327]"><Checkbox checked={complete} onChange={(event) => setComplete(event.target.checked)} color="black" shape="circle" />완료 처리</label>
-          <Button variant="fillGray" size="basic" className="h-[50px] rounded-[6px] text-[16px] font-bold">취소</Button>
-          <Button variant="fillMain" size="basic" className="h-[50px] rounded-[6px] text-[16px] font-bold">저장</Button>
-        </div>
       </main>
-      <div className="relative grid h-[142px] shrink-0 grid-cols-4 border-t border-[#e4e7ee] pt-2">
-        {[
-          ["라벨생성", "완료", ScanLine],
-          ["라벨확정", "-", Maximize2],
-          ["자주검사", "2회", Search],
-          ["운전일지", "기록됨", FilePenLine],
-        ].map(([label, state, Icon], index) => (
-          <Button key={String(label)} variant="lineBlacktxt" size="small" className="h-[76px] min-w-0 flex-col gap-1 rounded-none border-0 bg-white px-1 hover:bg-white">
-            <Icon className={cn("size-6", index === 0 ? "text-[#011327]" : index === 1 ? "text-[#99a3b8]" : "text-[#011327]")} />
-            <span className="text-[13px] font-bold text-[#011327]">{String(label)}</span>
-            <span className={cn("text-[12px] font-normal", index === 1 ? "text-[#99a3b8]" : "text-[#1573fb]")}>{String(state)}</span>
-          </Button>
+      <div className="absolute left-4 top-[603px] flex h-[50px] w-[343px] items-center gap-6">
+        <label className="flex shrink-0 items-center gap-1.5 text-[15px] font-semibold leading-[22.5px] tracking-[-0.1875px] text-black"><Checkbox checked={complete} onChange={(event) => setComplete(event.target.checked)} color="black" shape="circle" />완료 처리</label>
+        <div className="flex min-w-0 flex-1 gap-[10px]"><Button variant="fillGray" size="basic" className="h-[50px] min-w-0 flex-1 rounded-[6px] text-[16px] font-bold">취소</Button><Button variant="fillMain" size="basic" className="h-[50px] min-w-0 flex-1 rounded-[6px] text-[16px] font-bold">저장</Button></div>
+      </div>
+      <div className="absolute inset-x-0 top-[677px] flex items-center rounded-[8px]">
+        {productionShortcuts.map((item, index) => (
+          <React.Fragment key={item.id}>
+            {index > 0 && <span className="h-10 w-0 border-l border-[#e4e7ee]" aria-hidden="true" />}
+            <Button variant="lineBlacktxt" size="small" className="h-[71px] min-w-0 flex-1 flex-col gap-1.5 rounded-none border-0 bg-white px-1 hover:bg-white">
+              <ProductionShortcutIcon icon={item.icon} />
+              <span className={cn("flex flex-col items-center text-[14px] font-bold leading-[21px] tracking-[-0.175px]", item.tone === "gray" ? "text-[#8491a7]" : "text-[#011327]")}>{item.label}<span className={cn("text-[13px] font-normal leading-[19.5px] tracking-[-0.1625px]", item.tone === "gray" ? "text-[#8491a7]" : "text-[#1573fb]")}>{item.state}</span></span>
+            </Button>
+          </React.Fragment>
         ))}
-        <div className="absolute inset-x-0 bottom-0"><MobileHomeIndicator /></div>
       </div>
     </div>
   );

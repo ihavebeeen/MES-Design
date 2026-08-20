@@ -57,11 +57,31 @@ test("원본 화면은 Figma 대표 프레임 3종을 375×812로 재현한다",
   const cases = [
     { path: "/visual-regression/mobile-source/home", selector: '[data-mobile-source-screen="home"]', snapshot: "mobile-figma-home.png", currentGuard: 0.01 },
     { path: "/visual-regression/mobile-source/receiving-list", selector: '[data-mobile-source-screen="receiving-list"]', snapshot: "mobile-figma-receiving-list.png", currentGuard: 0.02 },
-    { path: "/visual-regression/mobile-source/production-entry", selector: '[data-mobile-source-screen="production-entry"]', snapshot: "mobile-figma-production-entry.png", currentGuard: 0.05 },
+    { path: "/visual-regression/mobile-source/production-entry", selector: '[data-mobile-source-screen="production-entry"]', snapshot: "mobile-figma-production-entry.png", currentGuard: 0.03 },
   ];
   for (const item of cases) {
     await expectFigmaFrame(page, item.path, item.selector, item.snapshot, item.currentGuard);
   }
+
+  await page.goto("/visual-regression/mobile-source/home");
+  const homeMenu = page.getByRole("button", { name: "생산관리", exact: true });
+  await homeMenu.click();
+  await expect(homeMenu).toHaveAttribute("aria-pressed", "true");
+
+  await page.goto("/visual-regression/mobile-source/receiving-list");
+  const receivingRows = page.locator('[data-mobile-source-screen="receiving-list"] main button');
+  await receivingRows.nth(1).click();
+  await expect(receivingRows.nth(1)).toHaveClass(/ring-2/);
+
+  await page.goto("/visual-regression/mobile-source/production-entry");
+  const production = page.locator('[data-mobile-source-screen="production-entry"]');
+  const completion = production.getByRole("checkbox");
+  await expect(completion).toBeChecked();
+  await completion.click();
+  await expect(completion).not.toBeChecked();
+  const quantity = production.locator('input[value="999,999"]');
+  await quantity.fill("1000000");
+  await expect(quantity).toHaveValue("1000000");
 
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 });
