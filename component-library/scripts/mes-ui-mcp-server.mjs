@@ -80,6 +80,14 @@ function filterEntries(entries, query, limit) {
     .map(compactEntry);
 }
 
+function filterDetailedEntries(entries, query, limit) {
+  if (!query) return entries.slice(0, limit);
+  const normalizedQuery = query.toLocaleLowerCase("ko-KR");
+  return entries
+    .filter((entry) => JSON.stringify(entry).toLocaleLowerCase("ko-KR").includes(normalizedQuery))
+    .slice(0, limit);
+}
+
 function mobileEntries(registry) {
   const assets = registry.mobileAssets;
   return [
@@ -91,6 +99,33 @@ function mobileEntries(registry) {
   ];
 }
 
+function componentContractEntries(registry) {
+  return registry.componentUsageContracts.map((entry) => ({
+    ...entry,
+    id: entry.componentId,
+    name: entry.componentId,
+    kind: "component-usage-contract",
+  }));
+}
+
+function patternContractEntries(registry) {
+  return registry.patternContracts.map((entry) => ({
+    ...entry,
+    id: entry.patternId,
+    name: entry.patternId,
+    kind: "pattern-usage-contract",
+  }));
+}
+
+function screenSpecEntries(registry) {
+  return registry.screenSpecs.map((entry) => ({
+    ...entry,
+    id: entry.screenId,
+    name: entry.screenId,
+    kind: "ordered-screen-spec",
+  }));
+}
+
 export function createMesUiMcpServer() {
   const server = new McpServer({ name: "mes-ui-generator", version: "0.1.0" }, { capabilities: { tools: {} } });
 
@@ -98,7 +133,7 @@ export function createMesUiMcpServer() {
     "mes_list_design_system",
     {
       title: "MES 디자인 시스템 조회",
-      description: "화면 설계 전에 등록된 MES 컴포넌트, 패턴, 화면, 결정형 생성 템플릿을 조회합니다.",
+      description: "화면 설계 전에 등록된 MES 컴포넌트, 패턴, 사용 계약, 순서형 화면 명세, 결정형 생성 템플릿을 조회합니다.",
       inputSchema: z.object({
         query: z.string().trim().optional().describe("ID·이름·종류 검색어"),
         limit: z.number().int().min(1).max(100).default(30),
@@ -108,17 +143,26 @@ export function createMesUiMcpServer() {
     safeTool(async ({ query, limit }) => {
       const registry = readRegistryBundle();
       const mobile = mobileEntries(registry);
+      const componentContracts = componentContractEntries(registry);
+      const patternContracts = patternContractEntries(registry);
+      const screenSpecs = screenSpecEntries(registry);
       const result = {
         counts: {
           components: registry.components.length,
           patterns: registry.patterns.length,
           screens: registry.screens.length,
+          componentUsageContracts: componentContracts.length,
+          patternContracts: patternContracts.length,
+          screenSpecs: screenSpecs.length,
           generationTemplates: registry.generationTemplates.length,
           mobileAssets: mobile.length,
         },
         components: filterEntries(registry.components, query, limit),
         patterns: filterEntries(registry.patterns, query, limit),
         screens: filterEntries(registry.screens, query, limit),
+        componentUsageContracts: filterDetailedEntries(componentContracts, query, limit),
+        patternContracts: filterDetailedEntries(patternContracts, query, limit),
+        screenSpecs: filterDetailedEntries(screenSpecs, query, limit),
         generationTemplates: filterEntries(registry.generationTemplates, query, limit),
         mobile: filterEntries(mobile, query, limit),
       };

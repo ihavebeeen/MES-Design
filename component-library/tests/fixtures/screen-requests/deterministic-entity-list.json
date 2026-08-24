@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "requestId": "deterministic-entity-list-fixture",
+  "name": "결정적 전체 페이지 조회 목록 fixture",
+  "intent": "new",
+  "lifecycle": "draft",
+  "target": {
+    "kind": "page",
+    "title": "입고실적 리스트",
+    "nearestScreenId": "production-result-responsive",
+    "viewport": { "width": 1920, "height": 960 }
+  },
+  "composition": {
+    "recipeRefs": ["recipe.page-entity-list", "screen.entity-list"],
+    "sections": [
+      {
+        "id": "receivingList",
+        "title": "입고실적 리스트",
+        "slot": "body",
+        "patternRef": "section.search-table-composition",
+        "supportingPatternRefs": [],
+        "componentRefs": ["sidebar", "page-top-tab-item", "filter", "search-input", "table", "pagination"],
+        "behaviorRefs": ["selection.enable-actions"],
+        "scrollOwner": "table"
+      }
+    ],
+    "behaviorRefs": ["selection.enable-actions"]
+  },
+  "requirements": [
+    "Navigation과 상단 탭 뒤에 조회 목록을 표시한다.",
+    "검색·필터·페이지 변경이 같은 행 데이터에서 파생된다.",
+    "page target에는 modal shell과 dialog footer를 만들지 않는다."
+  ],
+  "generation": {
+    "templateId": "page-entity-list.v1",
+    "pageTitle": "입고실적 리스트",
+    "navigationLabel": "자재관리",
+    "navigationItemLabel": "입고실적",
+    "tabLabel": "입고실적",
+    "pageSize": 10,
+    "sections": [
+      {
+        "id": "receivingList",
+        "title": "입고실적 리스트",
+        "kind": "search-table",
+        "searchPlaceholder": "LOT 또는 품목 검색",
+        "selectable": true,
+        "filters": [
+          { "id": "warehouse", "label": "창고", "options": [{ "id": "본창고", "label": "본창고" }, { "id": "외주창고", "label": "외주창고" }] }
+        ],
+        "columns": [
+          { "key": "date", "label": "입고일", "width": 140, "align": "center" },
+          { "key": "lot", "label": "입고 LOT", "width": 180 },
+          { "key": "item", "label": "품목", "width": 280 },
+          { "key": "warehouse", "label": "창고", "width": 160 },
+          { "key": "quantity", "label": "입고수량", "width": 140, "align": "right" }
+        ],
+        "rows": [
+          { "id": "REC-001", "values": { "date": "2026-08-24", "lot": "LOT-240824-01", "item": "햇반 용기", "warehouse": "본창고", "quantity": "3,000" } },
+          { "id": "REC-002", "values": { "date": "2026-08-24", "lot": "LOT-240824-02", "item": "성형 시트", "warehouse": "외주창고", "quantity": "1,500" } }
+        ]
+      }
+    ]
+  },
+  "output": {
+    "route": "/generated-screens/deterministic-entity-list-fixture",
+    "componentName": "DeterministicReceivingListPage"
+  }
+}

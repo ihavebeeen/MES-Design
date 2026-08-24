@@ -20,6 +20,9 @@ import footerActionAuditData from "./footer-action-audit.json";
 import contextRuleData from "./context-rules.json";
 import generationTemplateData from "./generation-templates.json";
 import mobileAssetData from "./mobile-assets.json";
+import componentUsageContractData from "./component-usage-contracts.json";
+import patternContractData from "./pattern-contracts.json";
+import screenSpecData from "./screen-specs.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -43,6 +46,9 @@ import type {
   ContextRuleCategory,
   GenerationTemplateRegistry,
   MobileAssetRegistry,
+  ComponentUsageContractRegistry,
+  PatternUsageContractRegistry,
+  ScreenSpecRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -68,6 +74,9 @@ export const footerActionAuditRegistry = footerActionAuditData as FooterActionAu
 export const contextRuleRegistry = contextRuleData as ContextRuleRegistry;
 export const generationTemplateRegistry = generationTemplateData as GenerationTemplateRegistry;
 export const mobileAssetRegistry = mobileAssetData as MobileAssetRegistry;
+export const componentUsageContractRegistry = componentUsageContractData as ComponentUsageContractRegistry;
+export const patternUsageContractRegistry = patternContractData as PatternUsageContractRegistry;
+export const screenSpecRegistry = screenSpecData as ScreenSpecRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);
@@ -97,6 +106,18 @@ export function getContextDecision(id: string) {
   return contextRuleRegistry.decisions.find((decision) => decision.id === id);
 }
 
+export function getComponentUsageContract(componentId: string) {
+  return componentUsageContractRegistry.contracts.find((contract) => contract.componentId === componentId);
+}
+
+export function getPatternUsageContract(patternId: string) {
+  return patternUsageContractRegistry.contracts.find((contract) => contract.patternId === patternId);
+}
+
+export function getScreenSpec(screenId: string) {
+  return screenSpecRegistry.specs.find((spec) => spec.screenId === screenId);
+}
+
 export function getContextRules(category?: ContextRuleCategory) {
   return category
     ? contextRuleRegistry.rules.filter((rule) => rule.category === category)
@@ -113,6 +134,13 @@ export function getScreenRequestOptions() {
     behaviors: patternRegistry.patterns.filter(({ kind }) => kind === "behavior"),
     actionSets: actionSetRegistry.actionSets,
     templates: generationTemplateRegistry.templates,
+    structuredScreenSpecs: screenSpecRegistry.specs.map(({ screenId, targetKind, shellRef, sections, actionSetRef }) => ({
+      screenId,
+      targetKind,
+      shellRef,
+      sections,
+      actionSetRef,
+    })),
   };
 }
 
@@ -150,10 +178,14 @@ export function getImplementationContext(screenId: string) {
       ),
   );
   const contextRuleIds = new Set(contextRules.map((rule) => rule.id));
+  const screenSpec = getScreenSpec(screenId) ?? null;
   return {
     screen,
+    screenSpec,
     patterns,
+    patternContracts: patterns.map(({ id }) => getPatternUsageContract(id)).filter(Boolean),
     components: componentIds.map(getComponent).filter(Boolean),
+    componentUsageContracts: componentIds.map(getComponentUsageContract).filter(Boolean),
     contextRules,
     contextDecisions: contextRuleRegistry.decisions.filter((decision) =>
       decision.optionRuleIds.some((ruleId) => contextRuleIds.has(ruleId)),

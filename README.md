@@ -32,13 +32,17 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 
 | 자산 | 등록 수 |
 |---|---:|
-| UI 컴포넌트 | 82 |
-| Shell·Section·Behavior·Recipe 패턴 | 57 |
+| UI 컴포넌트 | 88 |
+| Shell·Section·Behavior·Recipe 패턴 | 62 |
 | AI 조회용 화면 정의 | 28 |
+| 핵심 컴포넌트 사용 계약 | 20 |
+| 슬롯·상태·경계를 가진 패턴 계약 | 10 |
+| 순서형 대표 ScreenSpec | 3 |
+| 결정형 생성 템플릿 | 3 (stable 2, provisional 1) |
 | 격리된 Tier 3~5 실험 후보 | 9 |
-| 시각 회귀 기준 케이스 | 33 |
-| Playwright 시각·상호작용 테스트 | 50 |
-| 정적 생성 페이지 | 123 |
+| 시각 회귀 기준 케이스 | 40 |
+| Playwright 시각·상호작용 테스트 선언 | 57 |
+| 프로덕션 빌드 정적 페이지 | 176 |
 
 대표 구현 범위:
 
@@ -182,6 +186,9 @@ MES-Design/
 - `component-library/src/components/experimental/`: 원본 근거가 아직 없는 조작 가능한 격리 프로토타입
 - `component-library/src/components/mobile/`: 모바일 전용 공용 자산과 대표 셸
 - `component-library/src/design-system/registry/`: AI 조회용 컴포넌트·패턴·화면 레지스트리
+- `component-library/src/design-system/registry/component-usage-contracts.json`: 핵심 컴포넌트의 사용·금지·부모·상태·대안 계약
+- `component-library/src/design-system/registry/pattern-contracts.json`: 핵심 Shell·Section·Behavior의 슬롯·상태·스크롤·액션 계약
+- `component-library/src/design-system/registry/screen-specs.json`: 대표 화면의 순서형 SectionInstance와 동작 대상 명세
 - `component-library/src/design-system/registry/mobile-assets.json`: 모바일 원본 근거·컴포넌트·패턴·화면 유형 레지스트리
 - `component-library/src/design-system/registry/screen-request.schema.json`: 자연어를 JSX보다 먼저 고정하는 화면 요청 계약
 - `component-library/src/design-system/registry/generation-templates.json`: 결정적 TSX를 지원하는 Recipe와 필수 조합 레지스트리
@@ -283,19 +290,21 @@ Figma 원본과 기존 구현
 
 사용자 요구사항
   → 업무 목적·데이터·상태를 ScreenSpec으로 작성
+  → 가장 가까운 대표 ScreenSpec의 순서형 SectionInstance 상속·수정
   → Screen Registry 조회
   → 기존 Pattern 후보 조회
   → reuse / compose / extend / propose-new / normalize 판정
   → Pattern Decision 검증 및 필요한 경우 사람 승인
   → 필요한 Component Registry 조회
   → 승인된 조합 문법의 슬롯에 표준 컴포넌트를 배치
+  → 선택·제외 이유를 decision trace로 기록
   → 금지된 임의 값·미등록 컴포넌트·미승인 조합 검사
   → 상호작용·일관성·시각 회귀 검증
 ```
 
 AI가 임의의 JSX를 바로 생성하거나 특정 Figma 프레임을 복사하는 대신, 화면 정의에서 필요한 표준 패턴과 컴포넌트를 먼저 찾도록 구성합니다. 생성 결과에 새로운 수치, 변형 또는 조합이 필요하면 화면 안에 즉시 하드코딩하지 않고, 기존 규칙의 재사용·조합·확장으로 설명할 수 있는지 먼저 판별합니다. AI는 신규 조합을 제안할 수 있지만 스스로 정식 패턴으로 승인할 수 없으며, 승인 전 결과는 생성 시안 검토함에 격리합니다.
 
-다른 컴퓨터와 다른 AI에서도 이 흐름을 반복할 수 있도록 저장소 전용 `.agents/skills/generate-mes-ui` Skill, 짧은 우선 지침 `AGENTS.override.md`, 로컬 STDIO MCP 서버를 함께 배포합니다. Codex는 `.codex/config.toml`, Claude Code는 `.mcp.json`을 통해 같은 `mes-ui` MCP를 실행합니다. 사용자는 clone 후 `component-library`에서 `npm ci`를 실행하고 프로젝트 MCP를 한 번 승인해야 합니다. 이후 AI는 `mes_list_design_system`, `mes_resolve_screen`, `mes_generate_screen`, `mes_audit_screen`을 공통 함수처럼 호출할 수 있습니다. 동일한 `ScreenRequest`와 동일한 커밋은 같은 registry fingerprint, pattern refs, component refs와 quality 판정을 생성합니다. `recipe.side-slide-form-editable-list`는 동일 계약에서 같은 TSX hash까지 생성합니다. 아직 지원 템플릿이 없는 Recipe의 TSX와 모든 화면의 최종 픽셀까지 같다는 보장은 없으며, 최종 시각 일치는 화면별 시각 회귀 테스트로 확인합니다.
+다른 컴퓨터와 다른 AI에서도 이 흐름을 반복할 수 있도록 저장소 전용 `.agents/skills/generate-mes-ui` Skill, 짧은 우선 지침 `AGENTS.override.md`, 로컬 STDIO MCP 서버를 함께 배포합니다. Codex는 `.codex/config.toml`, Claude Code는 `.mcp.json`을 통해 같은 `mes-ui` MCP를 실행합니다. 사용자는 clone 후 `component-library`에서 `npm ci`를 실행하고 프로젝트 MCP를 한 번 승인해야 합니다. 이후 AI는 `mes_list_design_system`, `mes_resolve_screen`, `mes_generate_screen`, `mes_audit_screen`을 공통 함수처럼 호출할 수 있습니다. 동일한 `ScreenRequest`와 동일한 커밋은 같은 registry fingerprint, 순서형 section, pattern/component refs, decision trace와 quality 판정을 생성합니다. 현재 우측 슬라이드 폼·편집 목록과 중앙 검색 테이블은 stable 결정형 TSX를 생성하며, 페이지 엔티티 목록은 provisional 결정형 템플릿입니다. 아직 지원 템플릿이 없는 Recipe의 TSX와 모든 화면의 최종 픽셀까지 같다는 보장은 없으며, 최종 시각 일치는 화면별 시각 회귀 테스트로 확인합니다.
 
 ### 패턴은 화면 템플릿이 아니라 조합 문법입니다
 

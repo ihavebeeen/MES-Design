@@ -18,7 +18,7 @@ const expectedTools = [
   "mes_list_design_system",
   "mes_resolve_screen",
 ];
-const expectedSourceFingerprint = "c255e456a13475fcbd527b435c4b04e0e5072d8434da0ed23af4e65c85fd6745";
+const expectedSourceFingerprint = "cbf73874ac6cf26241cda1a23f0300796e79342552f5b4843162548e33180fb3";
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -54,7 +54,12 @@ try {
 
   const request = JSON.parse(readFileSync(fixturePath, "utf8"));
   const catalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "side-slide", limit: 10 } }));
-  assert(catalog.counts.generationTemplates === 1, "생성 템플릿 개수가 예상과 다릅니다.");
+  assert(catalog.counts.generationTemplates === 3, "생성 템플릿 개수가 예상과 다릅니다.");
+  assert(catalog.counts.componentUsageContracts === 20, "컴포넌트 사용 계약 개수가 예상과 다릅니다.");
+  assert(catalog.counts.patternContracts === 10, "패턴 계약 개수가 예상과 다릅니다.");
+  assert(catalog.counts.screenSpecs === 3, "순서형 ScreenSpec 개수가 예상과 다릅니다.");
+  assert(catalog.componentUsageContracts.some((entry) => entry.componentId === "side-slide-panel" && entry.useWhen.length > 0), "MCP 목록이 컴포넌트 사용 계약 상세를 반환하지 않았습니다.");
+  assert(catalog.patternContracts.some((entry) => entry.patternId === "shell.side-slide-panel" && entry.slots.length > 0), "MCP 목록이 패턴 슬롯 계약 상세를 반환하지 않았습니다.");
   assert(catalog.counts.mobileAssets > 0, "모바일 자산이 MCP 목록에 포함되지 않았습니다.");
   const mobile = structured(await client.callTool({ name: "mes_get_mobile_context", arguments: { category: "screens" } }));
   assert(mobile.screenTypes.main.count === 12, "모바일 메인 화면 유형 수가 예상과 다릅니다.");
@@ -62,6 +67,8 @@ try {
 
   const contract = structured(await client.callTool({ name: "mes_resolve_screen", arguments: { request } }));
   assert(contract.quality.status === "release-ready", `계약 상태가 release-ready가 아닙니다: ${contract.quality.status}`);
+  assert(contract.decisionTrace?.shell?.selectedId === "shell.side-slide-panel", "Resolver decision trace에 선택 셸이 없습니다.");
+  assert(contract.decisionTrace?.sections?.length === 3, "Resolver decision trace의 순서형 섹션이 예상과 다릅니다.");
 
   const generatedResult = await client.callTool({
     name: "mes_generate_screen",

@@ -27,6 +27,9 @@ const contextRuleRegistry = readJson("context-rules.json");
 const generationTemplateRegistry = readJson("generation-templates.json");
 const mobileAssetRegistry = readJson("mobile-assets.json");
 const mobileVerificationRegistry = readJson("mobile-verification-contracts.json");
+const componentUsageContractRegistry = readJson("component-usage-contracts.json");
+const patternContractRegistry = readJson("pattern-contracts.json");
+const screenSpecRegistry = readJson("screen-specs.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -76,6 +79,9 @@ checkVersion("context-rules", contextRuleRegistry);
 checkVersion("generation-templates", generationTemplateRegistry);
 checkVersion("mobile-assets", mobileAssetRegistry);
 checkVersion("mobile-verification-contracts", mobileVerificationRegistry);
+checkVersion("component-usage-contracts", componentUsageContractRegistry);
+checkVersion("pattern-contracts", patternContractRegistry);
+checkVersion("screen-specs", screenSpecRegistry);
 
 const mobileAssets = new Set([
   ...(mobileAssetRegistry.foundations ?? []).map((entry) => entry.id),
@@ -275,6 +281,73 @@ const sourceEvidence = mapByUniqueId("source-evidence", sourceEvidenceRegistry.s
 const footerActionAudits = mapByUniqueId("footer-action-audit", (footerActionAuditRegistry.entries ?? []).map((entry) => ({ ...entry, id: entry.sourceEvidenceId })));
 const generatedCandidates = mapByUniqueId("generated-screen-evaluations", generatedScreenRegistry.candidates ?? []);
 const interactionAudits = mapByUniqueId("interaction-audit", (interactionAuditRegistry.screens ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
+const componentUsageContracts = mapByUniqueId("component-usage-contracts", (componentUsageContractRegistry.contracts ?? []).map((entry) => ({ ...entry, id: entry.componentId })));
+const patternContracts = mapByUniqueId("pattern-contracts", (patternContractRegistry.contracts ?? []).map((entry) => ({ ...entry, id: entry.patternId })));
+const screenSpecs = mapByUniqueId("screen-specs", (screenSpecRegistry.specs ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
+
+for (const contract of componentUsageContracts.values()) {
+  if (!components.has(contract.componentId)) errors.push(`component-usage-contract '${contract.componentId}': 미등록 component를 참조합니다.`);
+  for (const field of ["capabilities", "variants", "requiredStates", "useWhen", "doNotUseWhen", "allowedParents", "constraints", "accessibility", "evidence"]) {
+    if (!Array.isArray(contract[field]) || contract[field].length === 0) errors.push(`component-usage-contract '${contract.componentId}': ${field}가 필요합니다.`);
+  }
+  for (const parentId of contract.allowedParents ?? []) {
+    if (!patterns.has(parentId)) errors.push(`component-usage-contract '${contract.componentId}': 미등록 parent pattern '${parentId}'를 참조합니다.`);
+  }
+  for (const screenId of contract.evidence ?? []) {
+    if (!screens.has(screenId)) errors.push(`component-usage-contract '${contract.componentId}': 미등록 evidence screen '${screenId}'를 참조합니다.`);
+  }
+  if (!Array.isArray(contract.alternatives)) errors.push(`component-usage-contract '${contract.componentId}': alternatives 배열이 필요합니다.`);
+  for (const alternative of contract.alternatives ?? []) {
+    if (!components.has(alternative.componentId) || !alternative.chooseInsteadWhen) errors.push(`component-usage-contract '${contract.componentId}': alternative '${alternative.componentId ?? ""}'가 잘못되었습니다.`);
+  }
+}
+
+const allowedContractScrollOwners = new Set(["shell-body", "section", "table", "none"]);
+for (const contract of patternContracts.values()) {
+  if (!patterns.has(contract.patternId)) errors.push(`pattern-contract '${contract.patternId}': 미등록 pattern을 참조합니다.`);
+  for (const field of ["slots", "stateModel", "behaviorTargets", "allowedActionSets", "useWhen", "doNotUseWhen", "constraints", "evidence", "goldenScreenIds", "implementationMarkers"]) {
+    if (!Array.isArray(contract[field])) errors.push(`pattern-contract '${contract.patternId}': ${field} 배열이 필요합니다.`);
+  }
+  if (!Array.isArray(contract.stateModel) || contract.stateModel.length === 0 || !Array.isArray(contract.useWhen) || contract.useWhen.length === 0 || !Array.isArray(contract.doNotUseWhen) || contract.doNotUseWhen.length === 0 || !Array.isArray(contract.constraints) || contract.constraints.length === 0 || !Array.isArray(contract.implementationMarkers) || contract.implementationMarkers.length === 0) {
+    errors.push(`pattern-contract '${contract.patternId}': 상태·사용/금지·제약·구현 marker가 필요합니다.`);
+  }
+  if (!allowedContractScrollOwners.has(contract.scrollOwner)) errors.push(`pattern-contract '${contract.patternId}': scrollOwner '${contract.scrollOwner}'가 잘못되었습니다.`);
+  const slotIds = new Set();
+  for (const slot of contract.slots ?? []) {
+    if (!slot.id || slotIds.has(slot.id) || typeof slot.required !== "boolean" || !Array.isArray(slot.accepts) || slot.accepts.length === 0) errors.push(`pattern-contract '${contract.patternId}': slot '${slot.id ?? ""}'가 잘못되었습니다.`);
+    slotIds.add(slot.id);
+  }
+  for (const actionSetId of contract.allowedActionSets ?? []) if (!actionSets.has(actionSetId)) errors.push(`pattern-contract '${contract.patternId}': 미등록 action-set '${actionSetId}'를 참조합니다.`);
+  for (const screenId of [...(contract.evidence ?? []), ...(contract.goldenScreenIds ?? [])]) if (!screens.has(screenId)) errors.push(`pattern-contract '${contract.patternId}': 미등록 screen '${screenId}'를 참조합니다.`);
+}
+
+const targetShells = { page: null, "center-modal": "shell.center-modal", "side-slide-panel": "shell.side-slide-panel", "confirm-dialog": "shell.confirm-dialog" };
+for (const spec of screenSpecs.values()) {
+  const screen = screens.get(spec.screenId);
+  if (!screen) {
+    errors.push(`screen-spec '${spec.screenId}': 미등록 screen을 참조합니다.`);
+    continue;
+  }
+  if (!Object.hasOwn(targetShells, spec.targetKind)) errors.push(`screen-spec '${spec.screenId}': targetKind '${spec.targetKind}'가 잘못되었습니다.`);
+  if (targetShells[spec.targetKind] !== spec.shellRef) errors.push(`screen-spec '${spec.screenId}': targetKind와 shellRef가 일치하지 않습니다.`);
+  if (spec.shellRef && !screen.patternRefs.includes(spec.shellRef)) errors.push(`screen-spec '${spec.screenId}': shellRef가 screen.patternRefs에 없습니다.`);
+  if (!Array.isArray(spec.sections) || spec.sections.length === 0) errors.push(`screen-spec '${spec.screenId}': ordered sections가 필요합니다.`);
+  const sectionIds = new Set();
+  for (const section of spec.sections ?? []) {
+    if (!section.id || sectionIds.has(section.id)) errors.push(`screen-spec '${spec.screenId}': section id '${section.id ?? ""}'가 없거나 중복입니다.`);
+    sectionIds.add(section.id);
+    if (section.slot !== "body") errors.push(`screen-spec '${spec.screenId}/${section.id}': slot은 body여야 합니다.`);
+    if (!patterns.has(section.patternRef) || !screen.patternRefs.includes(section.patternRef)) errors.push(`screen-spec '${spec.screenId}/${section.id}': patternRef '${section.patternRef}'가 등록 화면에 없습니다.`);
+    if (section.frameRef && (!patterns.has(section.frameRef) || !screen.patternRefs.includes(section.frameRef))) errors.push(`screen-spec '${spec.screenId}/${section.id}': frameRef '${section.frameRef}'가 등록 화면에 없습니다.`);
+    for (const supportingRef of section.supportingPatternRefs ?? []) if (!patterns.has(supportingRef) || !screen.patternRefs.includes(supportingRef)) errors.push(`screen-spec '${spec.screenId}/${section.id}': supporting pattern '${supportingRef}'가 등록 화면에 없습니다.`);
+    for (const componentId of section.componentRefs ?? []) if (!components.has(componentId)) errors.push(`screen-spec '${spec.screenId}/${section.id}': 미등록 component '${componentId}'를 참조합니다.`);
+    for (const behaviorRef of section.behaviorRefs ?? []) if (!patterns.has(behaviorRef) || !screen.patternRefs.includes(behaviorRef)) errors.push(`screen-spec '${spec.screenId}/${section.id}': behavior '${behaviorRef}'가 등록 화면에 없습니다.`);
+    if (!allowedContractScrollOwners.has(section.scrollOwner)) errors.push(`screen-spec '${spec.screenId}/${section.id}': scrollOwner '${section.scrollOwner}'가 잘못되었습니다.`);
+  }
+  for (const behaviorRef of spec.behaviorRefs ?? []) if (!patterns.has(behaviorRef) || !screen.patternRefs.includes(behaviorRef)) errors.push(`screen-spec '${spec.screenId}': behavior '${behaviorRef}'가 등록 화면에 없습니다.`);
+  if (spec.actionSetRef && (!actionSets.has(spec.actionSetRef) || !screen.patternRefs.includes(spec.actionSetRef))) errors.push(`screen-spec '${spec.screenId}': actionSetRef '${spec.actionSetRef}'가 등록 화면에 없습니다.`);
+  if (!Array.isArray(spec.constraints) || spec.constraints.length === 0 || !Array.isArray(spec.evidence) || spec.evidence.length === 0) errors.push(`screen-spec '${spec.screenId}': constraints와 evidence가 필요합니다.`);
+}
 
 for (const template of generationTemplates.values()) {
   checkSource("generation template", template);

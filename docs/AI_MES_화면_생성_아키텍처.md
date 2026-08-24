@@ -1,13 +1,26 @@
 # AI 기반 MES 화면 생성 아키텍처
 
-> 상태: 제안 확정, 기반 레지스트리와 검증 일부 구현
+> 상태: 제안 확정, 핵심 웹 계약과 결정형 생성 파일럿 구현
 > 작성일: 2026-08-07
 > 운영 원칙 보완: 2026-08-11
+> 현재 구현 동기화: 2026-08-24
 > 대상 저장소: `MES-Design/component-library`
 > Figma 원본: `F4n5Zr04PAbiRjfIFQAo6v` (`클라우드MES`)
 > 기준 화면설계서 노드: `8247:18600` (`웹 화면설계서 (최종)`)
 
 AI의 Shell·Section·Behavior·ActionSet 조합 단위와 승인 절차는 [AI UI 조합 문법 공통 정책](./AI_UI_조합_문법_공통정책.md)을 우선 적용한다. 이 문서의 Archetype은 현재 Registry에서 화면 단위 **Recipe**의 호환 명칭이며, 재사용의 최소 단위는 아니다. 화면 레지스트리의 복수 `patternRefs` 이관은 완료됐다.
+
+현재 코드에서 이 아키텍처는 다음 파일로 구체화되어 있다.
+
+- `component-usage-contracts.json`: 핵심 컴포넌트 20개의 선택·제외·부모·상태·대안 계약
+- `pattern-contracts.json`: 핵심 패턴 10개의 슬롯·상태·동작 대상·스크롤·action set 계약
+- `screen-specs.json`: 대표 화면 3개의 순서형 SectionInstance
+- `screen-request.schema.json`: 자연어 요구를 코드보다 먼저 고정하는 입력 계약
+- Resolver `decisionTrace`: 선택된 자산과 제외 후보의 이유
+- 구현 감사: 섹션 ID·순서, 패턴 marker, action set, 원시 control과 임의 값 검사
+- `generation-templates.json`: stable 2종, provisional 1종의 결정형 TSX 생성 경로
+
+아래의 일부 타입과 장기 디렉터리 구조는 목표 모델을 설명한다. 현재 구현 파일과 충돌할 때는 위 레지스트리와 [웹 UI 맥락 체계화 현황](./웹_UI_맥락_체계화_현황.md)을 우선한다.
 
 ## 1. 결정
 
@@ -80,8 +93,9 @@ User Intent
   -> Schema Validator
   -> Archetype Resolver
   -> Component Resolver
+  -> Decision Trace
   -> React Code Generator
-  -> Static Validation
+  -> Contract-aware Implementation Audit
   -> Runtime/Visual Validation
   -> Generated Screen + Validation Report
 ```

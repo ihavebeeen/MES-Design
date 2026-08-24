@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "contracts": [
+    {
+      "patternId": "shell.center-modal",
+      "slots": [
+        { "id": "header", "required": true, "accepts": ["title", "dismiss-action"] },
+        { "id": "body", "required": true, "accepts": ["section-instance"] },
+        { "id": "footer", "required": false, "accepts": ["action-set"] }
+      ],
+      "stateModel": ["closed", "open", "dismissing", "committing"],
+      "behaviorTargets": ["shell.dismiss", "shell.commit"],
+      "scrollOwner": "shell-body",
+      "allowedActionSets": ["action-set.cancel-save", "action-set.cancel-confirm", "action-set.save-only", "action-set.close-only", "action-set.cancel-select", "action-set.cancel-input"],
+      "useWhen": ["중앙 차단형 조회·선택·편집"],
+      "doNotUseWhen": ["우측에서 이어지는 긴 등록 흐름", "짧은 확인만 있는 confirm dialog"],
+      "constraints": ["본문만 스크롤하고 헤더와 푸터를 고정한다.", "원본 size 또는 승인 preset을 사용한다."],
+      "evidence": ["batch-work-order", "material-input-settings", "inventory-add"],
+      "goldenScreenIds": ["batch-work-order"],
+      "implementationMarkers": ["CenterModal"]
+    },
+    {
+      "patternId": "shell.side-slide-panel",
+      "slots": [
+        { "id": "header", "required": true, "accepts": ["title", "dismiss-action"] },
+        { "id": "body", "required": true, "accepts": ["ordered-section-instance"] },
+        { "id": "footer", "required": false, "accepts": ["action-set"] }
+      ],
+      "stateModel": ["closed", "open", "dismissing", "committing"],
+      "behaviorTargets": ["shell.dismiss", "shell.commit"],
+      "scrollOwner": "shell-body",
+      "allowedActionSets": ["action-set.cancel-save", "action-set.cancel-confirm", "action-set.save-only", "action-set.close-only"],
+      "useWhen": ["목록 맥락을 유지하는 우측 장문 등록·편집"],
+      "doNotUseWhen": ["중앙 조회 팝업", "전체 페이지"],
+      "constraints": ["우측 배치와 전체 높이를 유지한다.", "본문 섹션 순서를 ScreenSpec과 동일하게 렌더링한다."],
+      "evidence": ["receiving", "production-result", "operation-log"],
+      "goldenScreenIds": ["receiving"],
+      "implementationMarkers": ["SideSlidePanel"]
+    },
+    {
+      "patternId": "frame.standard-section",
+      "slots": [
+        { "id": "title", "required": false, "accepts": ["section-title"] },
+        { "id": "action", "required": false, "accepts": ["section-local-action"] },
+        { "id": "content", "required": true, "accepts": ["section-pattern"] }
+      ],
+      "stateModel": ["surface", "subtle", "divided"],
+      "behaviorTargets": [],
+      "scrollOwner": "none",
+      "allowedActionSets": [],
+      "useWhen": ["팝업 본문을 의미 있는 복수 섹션으로 나눔"],
+      "doNotUseWhen": ["화면 셸", "표 안의 임의 장식 박스"],
+      "constraints": ["padding·divider·background만 소유한다.", "고정 높이와 shell scroll을 소유하지 않는다."],
+      "evidence": ["receiving", "production-result", "custom-information"],
+      "goldenScreenIds": ["receiving"],
+      "implementationMarkers": ["SectionFrame"]
+    },
+    {
+      "patternId": "section.form-grid",
+      "slots": [
+        { "id": "fields", "required": true, "accepts": ["form-field-row"] }
+      ],
+      "stateModel": ["editable", "readonly", "disabled", "invalid"],
+      "behaviorTargets": ["field.change", "field.validation"],
+      "scrollOwner": "none",
+      "allowedActionSets": [],
+      "useWhen": ["label과 control의 반복 정렬이 필요한 입력 섹션"],
+      "doNotUseWhen": ["열 비교·정렬이 핵심인 데이터 목록", "반복 행 추가·삭제"],
+      "constraints": ["FormGrid가 열과 gap을 소유한다.", "FormFieldRow가 label·required marker·control 정렬을 소유한다."],
+      "evidence": ["receiving", "custom-information", "cavity-layout-settings"],
+      "goldenScreenIds": ["receiving"],
+      "implementationMarkers": ["FormGrid", "FormFieldRow"]
+    },
+    {
+      "patternId": "section.search-table-composition",
+      "slots": [
+        { "id": "title-query", "required": false, "accepts": ["section-title", "query-control"] },
+        { "id": "toolbar", "required": true, "accepts": ["filter", "search", "quick-query", "group-query"] },
+        { "id": "table", "required": true, "accepts": ["table-model"] },
+        { "id": "selection-action", "required": false, "accepts": ["selection-action-bar"] },
+        { "id": "footer-action", "required": false, "accepts": ["pagination", "local-action"] }
+      ],
+      "stateModel": ["idle", "querying", "empty", "selected", "editing"],
+      "behaviorTargets": ["query.change", "table.selection", "table.active-row", "table.inline-edit"],
+      "scrollOwner": "table",
+      "allowedActionSets": [],
+      "useWhen": ["검색·필터와 정렬된 데이터 표가 하나의 조회 영역을 이룸"],
+      "doNotUseWhen": ["반복 입력 행을 정렬만 하기 위한 경우", "검색이나 표가 없는 폼"],
+      "constraints": ["toolbar는 items-center를 소유한다.", "table만 가변 영역과 스크롤을 소유한다.", "존재하지 않는 slot을 장식 목적으로 만들지 않는다."],
+      "evidence": ["batch-work-order", "material-input-settings", "grouped-production-list"],
+      "goldenScreenIds": ["batch-work-order", "grouped-production-list"],
+      "implementationMarkers": ["SearchTableSection", "SearchInput", "Table"]
+    },
+    {
+      "patternId": "section.editable-row-list",
+      "slots": [
+        { "id": "entry-editor", "required": false, "accepts": ["form-grid"] },
+        { "id": "header", "required": false, "accepts": ["column-header"] },
+        { "id": "rows", "required": true, "accepts": ["editable-row"] },
+        { "id": "add-action", "required": false, "accepts": ["button"] },
+        { "id": "empty", "required": false, "accepts": ["empty-state"] }
+      ],
+      "stateModel": ["empty", "editing", "add-blocked", "add-enabled", "delete-blocked", "delete-enabled"],
+      "behaviorTargets": ["row.add", "row.update", "row.delete"],
+      "scrollOwner": "section",
+      "allowedActionSets": [],
+      "useWhen": ["사용자가 행을 직접 추가·수정·삭제하지만 표 탐색 기능은 필요 없음"],
+      "doNotUseWhen": ["정렬·그룹·전체 선택이 필요한 데이터 표"],
+      "constraints": ["헤더와 모든 행은 동일 columns 계약을 공유한다.", "stable ID와 추가 조건은 row.mutation-policy에 위임한다."],
+      "evidence": ["receiving", "production-result", "operation-log"],
+      "goldenScreenIds": ["receiving"],
+      "implementationMarkers": ["EditableRowListSection", "EditableRowGrid"]
+    },
+    {
+      "patternId": "section.inspection-items",
+      "slots": [
+        { "id": "search-sort", "required": false, "accepts": ["search", "sort"] },
+        { "id": "bulk-judgement", "required": false, "accepts": ["inspection-judgement"] },
+        { "id": "items", "required": true, "accepts": ["inspection-row"] },
+        { "id": "add-action", "required": false, "accepts": ["button"] },
+        { "id": "empty", "required": false, "accepts": ["empty-state"] }
+      ],
+      "stateModel": ["empty", "editable", "readonly", "bulk-selected"],
+      "behaviorTargets": ["inspection.item-change", "inspection.bulk-change"],
+      "scrollOwner": "section",
+      "allowedActionSets": [],
+      "useWhen": ["검사항목과 O·△·X 같은 판정값을 반복 입력"],
+      "doNotUseWhen": ["일반 데이터 목록", "단순 라디오 그룹"],
+      "constraints": ["섹션 헤더는 전체 폭을 사용한다.", "판정 상태와 입력 동작을 같은 state에서 관리한다."],
+      "evidence": ["self-inspection", "form-inspection-criteria"],
+      "goldenScreenIds": ["self-inspection"],
+      "implementationMarkers": ["InspectionItemsSection"]
+    },
+    {
+      "patternId": "table.grouped-list",
+      "slots": [
+        { "id": "columns", "required": true, "accepts": ["table-column-contract"] },
+        { "id": "groups", "required": true, "accepts": ["recursive-group"] },
+        { "id": "totals", "required": false, "accepts": ["table-total"] }
+      ],
+      "stateModel": ["expanded", "collapsed", "partially-selected", "selected"],
+      "behaviorTargets": ["group.toggle", "group.select", "row.select"],
+      "scrollOwner": "table",
+      "allowedActionSets": [],
+      "useWhen": ["하나 이상의 그룹 단계와 그룹별 집계가 필요한 표"],
+      "doNotUseWhen": ["평면 목록", "그룹화 기준이 없는 화면"],
+      "constraints": ["header·group·row·totals가 같은 컬럼 폭 배열을 사용한다.", "그룹 depth와 GroupQuery 상태를 연결한다."],
+      "evidence": ["grouped-production-list", "sales-transaction-statement"],
+      "goldenScreenIds": ["grouped-production-list"],
+      "implementationMarkers": ["Table"]
+    },
+    {
+      "patternId": "row.mutation-policy",
+      "slots": [],
+      "stateModel": ["add-blocked", "add-enabled", "delete-blocked", "delete-enabled"],
+      "behaviorTargets": ["row.add", "row.delete"],
+      "scrollOwner": "none",
+      "allowedActionSets": [],
+      "useWhen": ["반복 입력 행을 추가·삭제"],
+      "doNotUseWhen": ["조회 전용 표", "고정 행 목록"],
+      "constraints": ["stable ID, 최소 행 수, 삽입 위치, 추가 guard, 계승 필드를 명시한다."],
+      "evidence": ["receiving", "production-result", "operation-log"],
+      "goldenScreenIds": ["receiving"],
+      "implementationMarkers": ["useRowMutationPolicy"]
+    },
+    {
+      "patternId": "dismiss.restore-committed",
+      "slots": [],
+      "stateModel": ["committed", "draft", "restoring", "saved"],
+      "behaviorTargets": ["cancel", "close", "escape", "backdrop", "save"],
+      "scrollOwner": "none",
+      "allowedActionSets": ["action-set.cancel-save", "action-set.cancel-confirm"],
+      "useWhen": ["팝업에서 미저장 변경을 취소할 수 있음"],
+      "doNotUseWhen": ["조회 전용 닫기", "즉시 적용되어 되돌릴 draft가 없음"],
+      "constraints": ["취소·X·Esc·backdrop은 같은 restore 경로를 사용한다.", "저장은 committed snapshot을 갱신한 뒤 닫는다."],
+      "evidence": ["receiving", "batch-work-order", "team-settings"],
+      "goldenScreenIds": ["receiving", "batch-work-order"],
+      "implementationMarkers": ["useCommittedDraft"]
+    }
+  ]
+}

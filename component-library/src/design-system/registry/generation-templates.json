@@ -20,6 +20,28 @@
       "supportedSectionKinds": ["form-grid", "editable-row-list"],
       "output": "tsx",
       "overwrite": "forbid"
+    },
+    {
+      "id": "center-modal-search-table.v1",
+      "status": "stable",
+      "targetKind": "center-modal",
+      "recipeRef": "recipe.center-modal-search-table",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "requiredPatternRefs": ["recipe.center-modal-search-table", "shell.center-modal", "section.search-table-composition", "selection.enable-actions", "dismiss.restore-committed", "action-set.cancel-save"],
+      "supportedSectionKinds": ["search-table"],
+      "output": "tsx",
+      "overwrite": "forbid"
+    },
+    {
+      "id": "page-entity-list.v1",
+      "status": "provisional",
+      "targetKind": "page",
+      "recipeRef": "recipe.page-entity-list",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "requiredPatternRefs": ["recipe.page-entity-list", "screen.entity-list", "section.search-table-composition", "selection.enable-actions"],
+      "supportedSectionKinds": ["search-table"],
+      "output": "tsx",
+      "overwrite": "forbid"
     }
   ]
 }

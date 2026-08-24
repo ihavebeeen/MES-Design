@@ -1,10 +1,10 @@
 # AI UI 조합 문법 공통 정책
 
 > 정책 ID: `mes.ai-composition-grammar`
-> 버전: `1.3.0`
+> 버전: `1.4.0`
 > 상태: 공통 정책 확정
 > 최초 확정일: 2026-08-11
-> 현재 구현 동기화: 2026-08-18
+> 현재 구현 동기화: 2026-08-24
 
 ## 1. 목적
 
@@ -146,6 +146,17 @@ AI는 JSX를 작성하기 전에 다음 순서를 지킨다.
 
 AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스스로 승인하지 않는다. 승인 전 코드는 생성 시안 검토함에 격리하며 후속 화면의 표준 근거로 사용하지 않는다.
 
+### 5.1 기계 판독 계약과 결정 추적
+
+공통 정책을 자유문장 안내로만 두지 않는다. 현재 핵심 범위는 다음 레지스트리에서 기계 계약으로 강제한다.
+
+- `component-usage-contracts.json`: 컴포넌트의 사용·금지 조건, 허용 부모, 상태, 제약, 대안과 근거
+- `pattern-contracts.json`: Shell·Section·Behavior의 슬롯, 상태 모델, 동작 대상, 스크롤 소유자와 action set
+- `screen-specs.json`: 대표 화면의 순서형 SectionInstance, 슬롯, 컴포넌트, 동작 대상과 제약
+- `generation-templates.json`: 결정형 코드 생성이 허용된 조합과 안정 상태
+
+Resolver는 선택된 셸·섹션·동작·액션·컴포넌트뿐 아니라 제외된 대안의 이유까지 `decisionTrace`로 출력한다. 구현 감사는 구조화된 섹션 ID와 순서, 패턴별 구현 marker, action set, 허용 부모를 검사한다. 따라서 “등록 컴포넌트를 썼다”가 아니라 “해당 맥락에서 이 컴포넌트를 써야 하는 이유와 조합 결과가 계약과 일치한다”를 판정한다.
+
 ## 6. 예시: 이지모드 입고등록
 
 ```json
@@ -204,6 +215,9 @@ AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스�
 1차 얕은 전수조사, 2차 수동 감사, 사용자 승인과 코드 이관을 완료했다.
 
 - 구조화 결과: `component-library/src/design-system/registry/composition-inventory.json`
+- 핵심 컴포넌트 사용 계약: `component-library/src/design-system/registry/component-usage-contracts.json`
+- 핵심 패턴 계약: `component-library/src/design-system/registry/pattern-contracts.json`
+- 대표 순서형 화면 명세: `component-library/src/design-system/registry/screen-specs.json`
 - 맥락 선택 규칙: `component-library/src/design-system/registry/context-rules.json`
 - 사람용 맥락 설명: [AI UI 맥락 규칙](./AI_UI_맥락_규칙.md)
 - 사람용 보고서: [AI UI 조합 인벤토리 1차](./AI_UI_조합_인벤토리_1차.md)

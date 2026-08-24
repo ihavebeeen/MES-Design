@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { contractFingerprint } from "./resolve-screen-request.mjs";
-import { supportedScreenTemplate, validateGenerationSpec } from "./screen-generation-contract.mjs";
+import { validateGenerationSpec } from "./screen-generation-contract.mjs";
 
 function quote(value) {
   return JSON.stringify(value);
@@ -38,11 +38,9 @@ export function validateGenerationContract(contract) {
   const issues = validateGenerationSpec(contract?.request?.generation, { required: true });
   if (contract?.fingerprint !== contractFingerprint(contract)) issues.push("계약 fingerprint가 현재 내용과 일치하지 않습니다.");
   if (contract?.quality?.blockerCount > 0) issues.push("blocker가 있는 계약은 생성할 수 없습니다.");
-  if (contract?.request?.target?.kind !== "side-slide-panel") issues.push("이 템플릿은 side-slide-panel target만 지원합니다.");
-  if (contract?.request?.generation?.templateId !== supportedScreenTemplate) issues.push(`지원하지 않는 templateId입니다. 현재 지원: ${supportedScreenTemplate}`);
-  if (contract?.composition?.actionSetRef !== "action-set.cancel-save") issues.push("이 템플릿은 action-set.cancel-save만 지원합니다.");
   const template = contract?.implementation?.generationTemplate;
-  if (template?.id !== supportedScreenTemplate) issues.push("resolved contract에 등록된 generation template이 없습니다.");
+  if (!template || template.id !== contract?.request?.generation?.templateId) issues.push("resolved contract에 요청과 일치하는 generation template이 없습니다.");
+  if (template && template.targetKind !== contract?.request?.target?.kind) issues.push(`template '${template.id}'는 target '${template.targetKind}'만 지원합니다.`);
   const selectedRefs = new Set(contract?.composition?.selectedPatternRefs ?? []);
   for (const id of template?.requiredPatternRefs ?? []) if (!selectedRefs.has(id)) issues.push(`필수 pattern ref '${id}'가 없습니다.`);
 
@@ -100,14 +98,14 @@ function renderSection(componentName, section) {
   const divider = section.divider ?? "none";
   if (section.kind === "form-grid") {
     const fields = section.fields.map((field) => indent(renderFormField(componentName, field), 4)).join("\n");
-    return `<SectionFrame title=${quote(section.title)} divider=${quote(divider)}>\n  <FormGrid columns={${section.columns ?? 1}} density=${quote(section.density ?? "comfortable")}>\n${fields}\n  </FormGrid>\n</SectionFrame>`;
+    return `<SectionFrame data-section-id=${quote(section.id)} title=${quote(section.title)} divider=${quote(divider)}>\n  <FormGrid columns={${section.columns ?? 1}} density=${quote(section.density ?? "comfortable")}>\n${fields}\n  </FormGrid>\n</SectionFrame>`;
   }
 
   const gridRows = `rowMutation.rows.map((row, index) => ({\n  id: row.id,\n  cells: [\n    <span key=\"rowNumber\" className=\"text-mes-gray-60\">{index + 1}</span>,\n${section.columns.map((field) => `${indent(renderRowControl(componentName, field), 4)},`).join("\n")}\n    rowMutation.canDelete ? (\n      <Button key=\"delete\" size=\"xsmall\" variant=\"lineBlacktxt\" onClick={() => rowMutation.remove(row.id)}>삭제</Button>\n    ) : <span key=\"delete\" />,\n  ],\n}))`;
-  return `<SectionFrame title=${quote(section.title)} divider=${quote(divider)}>\n  <EditableRowListSection\n    addAction={\n      <div className=\"mt-3 flex justify-center\">\n        <Button size=\"small\" variant=\"lineMain\" disabled={!rowMutation.addAllowed} onClick={rowMutation.add}>${section.addLabel ?? "행 추가"}</Button>\n      </div>\n    }\n  >\n    <EditableRowGrid columns={ROW_COLUMNS} rows={${gridRows}} />\n  </EditableRowListSection>\n</SectionFrame>`;
+  return `<SectionFrame data-section-id=${quote(section.id)} title=${quote(section.title)} divider=${quote(divider)}>\n  <EditableRowListSection\n    addAction={\n      <div className=\"mt-3 flex justify-center\">\n        <Button size=\"small\" variant=\"lineMain\" disabled={!rowMutation.addAllowed} onClick={rowMutation.add}>${section.addLabel ?? "행 추가"}</Button>\n      </div>\n    }\n  >\n    <EditableRowGrid columns={ROW_COLUMNS} rows={${gridRows}} />\n  </EditableRowListSection>\n</SectionFrame>`;
 }
 
-export function generateScreenTsx(contract) {
+function generateSideSlideScreenTsx(contract) {
   const issues = validateGenerationContract(contract);
   if (issues.length > 0) throw new Error(`화면 생성 계약 오류:\n- ${issues.join("\n- ")}`);
 
@@ -159,6 +157,50 @@ export function generateScreenTsx(contract) {
   const rowValidator = `function isRowComplete(row: ${rowType}) {\n  return ${rowComplete};\n}`;
 
   return `"use client";\n\n${imports}\n\n${rowInterface}\n\n${dataInterface}\n\n${propsInterface}\n\n${initialDraft}\n\n${rowColumns}\n\n${cloneDraft}\n\n${rowValidator}${selectHelper ? `\n\n${selectHelper}` : ""}\n\n${component}\n`;
+}
+
+function createSearchTableModel(componentName, section) {
+  const rowType = `${componentName}Row`;
+  const rowInterface = `interface ${rowType} {\n${section.columns.map((column) => `  ${column.key}: string;`).join("\n")}\n}`;
+  const columns = `const COLUMNS: TableColumn<${rowType}>[] = [\n${section.columns.map((column) => `  { key: ${quote(column.key)}, label: ${quote(column.label)}, width: ${column.width}, align: ${quote(column.align ?? "left")} },`).join("\n")}\n];`;
+  const rows = `const INITIAL_ROWS: TableRowData<${rowType}>[] = [\n${section.rows.map((row) => `  { id: ${quote(row.id)}, data: ${JSON.stringify(row.values)} },`).join("\n")}\n];`;
+  const filters = `const FILTER_CATEGORIES = ${JSON.stringify(section.filters, null, 2)};`;
+  const helpers = `function matchesSearch(row: ${rowType}, query: string) {\n  const normalized = query.trim().toLocaleLowerCase(\"ko-KR\");\n  return !normalized || Object.values(row).some((value) => value.toLocaleLowerCase(\"ko-KR\").includes(normalized));\n}\n\nfunction matchesFilters(row: ${rowType}, filters: Record<string, string[]>) {\n  return Object.entries(filters).every(([key, values]) => values.length === 0 || values.includes(row[key as keyof ${rowType}]));\n}`;
+  return { rowType, source: `${rowInterface}\n\n${columns}\n\n${rows}\n\n${filters}\n\n${helpers}` };
+}
+
+function generateCenterModalSearchTable(contract) {
+  const request = contract.request;
+  const generation = request.generation;
+  const section = generation.sections[0];
+  const componentName = request.output.componentName;
+  const propsType = `${componentName}Props`;
+  const model = createSearchTableModel(componentName, section);
+  const initialDraft = `interface ${componentName}Draft {\n  query: string;\n  filters: Record<string, string[]>;\n  selectedIds: string[];\n}\n\nconst INITIAL_DRAFT: ${componentName}Draft = { query: \"\", filters: {}, selectedIds: [] };\n\nfunction cloneDraft(draft: ${componentName}Draft): ${componentName}Draft {\n  return { ...draft, filters: Object.fromEntries(Object.entries(draft.filters).map(([key, values]) => [key, [...values]])), selectedIds: [...draft.selectedIds] };\n}`;
+  const props = `export interface ${propsType} {\n  open: boolean;\n  onOpenChange: (open: boolean) => void;\n  onSave?: (selectedIds: string[]) => void;\n}`;
+  const component = `export function ${componentName}({ open, onOpenChange, onSave }: ${propsType}) {\n  const { draft, setDraft, commit, restore } = useCommittedDraft({ initialValue: INITIAL_DRAFT, clone: cloneDraft });\n  const visibleRows = React.useMemo(() => INITIAL_ROWS.filter(({ data }) => matchesSearch(data, draft.query) && matchesFilters(data, draft.filters)), [draft.query, draft.filters]);\n  const save = () => {\n    const saved = commit();\n    onSave?.(saved.selectedIds);\n    onOpenChange(false);\n  };\n\n  return (\n    <CenterModal\n      open={open}\n      onOpenChange={onOpenChange}\n      onCancel={restore}\n      title=${quote(request.target.title)}\n      size=${quote(generation.modalSize)}\n      bodyPadding=\"standard\"\n      bodyAlign=\"stretch\"\n      actions={createDialogActionSet(\"action-set.cancel-save\", { onDismiss: restore, onPrimary: save })}\n    >\n      <SearchTableSection\n        data-section-id=${quote(section.id)}\n        title=${quote(section.title)}\n        variant=\"modal\"\n        toolbar={\n          <div className=\"flex h-11 shrink-0 items-center justify-between gap-3 bg-mes-gray-20 px-3\">\n            <Filter\n              categories={FILTER_CATEGORIES}\n              value={draft.filters}\n              onChange={(categoryId, optionIds) => setDraft((current) => ({ ...current, filters: { ...current.filters, [categoryId]: optionIds } }))}\n            />\n            <SearchInput value={draft.query} onChange={(query) => setDraft((current) => ({ ...current, query }))} placeholder=${quote(section.searchPlaceholder ?? "검색어를 입력하세요")} size=\"compact\" />\n          </div>\n        }\n        table={\n          <Table\n            columns={COLUMNS}\n            rows={visibleRows}\n            selectable={${section.selectable !== false}}\n            selectedIds={draft.selectedIds}\n            activeId={draft.selectedIds[0] ?? null}\n            selectedRowAppearance=\"subtle\"\n            selectionColor=\"black\"\n            unselectedCheckboxAppearance=\"grayCheck\"\n            onSelectedIdsChange={(selectedIds) => setDraft((current) => ({ ...current, selectedIds }))}\n            horizontalScroll={false}\n          />\n        }\n      />\n    </CenterModal>\n  );\n}`;
+  const imports = `import * as React from \"react\";\nimport { CenterModal } from \"@/components/ui/center-modal\";\nimport { Filter } from \"@/components/ui/filter\";\nimport { SearchInput } from \"@/components/ui/search-input\";\nimport { Table, type TableColumn, type TableRowData } from \"@/components/ui/table\";\nimport { SearchTableSection } from \"@/components/patterns/section-patterns\";\nimport { createDialogActionSet } from \"@/design-system/action-sets\";\nimport { useCommittedDraft } from \"@/design-system/behavior-patterns\";`;
+  return `"use client";\n\n${imports}\n\n${model.source}\n\n${initialDraft}\n\n${props}\n\n${component}\n`;
+}
+
+function generatePageEntityList(contract) {
+  const request = contract.request;
+  const generation = request.generation;
+  const section = generation.sections[0];
+  const componentName = request.output.componentName;
+  const model = createSearchTableModel(componentName, section);
+  const component = `export function ${componentName}() {\n  const [query, setQuery] = React.useState(\"\");\n  const [filters, setFilters] = React.useState<Record<string, string[]>>({});\n  const [selectedIds, setSelectedIds] = React.useState<string[]>([]);\n  const [page, setPage] = React.useState(1);\n  const filteredRows = React.useMemo(() => INITIAL_ROWS.filter(({ data }) => matchesSearch(data, query) && matchesFilters(data, filters)), [query, filters]);\n  const totalPages = Math.max(1, Math.ceil(filteredRows.length / ${generation.pageSize}));\n  const pageRows = filteredRows.slice((page - 1) * ${generation.pageSize}, page * ${generation.pageSize});\n  React.useEffect(() => { if (page > totalPages) setPage(totalPages); }, [page, totalPages]);\n\n  return (\n    <EntityListPattern\n      navigation={\n        <Sidebar\n          items={[{ key: \"current\", label: ${quote(generation.navigationLabel)}, icon: <span aria-hidden=\"true\">•</span>, children: [{ key: \"list\", label: ${quote(generation.navigationItemLabel)} }] }]}\n          expandedKey=\"current\"\n          activeSubKey=\"list\"\n        />\n      }\n      tabs={<PageTopTabItem label=${quote(generation.tabLabel)} active closable={false} />}\n      header={<div className=\"flex h-full items-center border-b border-mes-gray-30 px-5 text-[20px] font-bold text-mes-gray-130\">${generation.pageTitle}</div>}\n      table={\n        <SearchTableSection\n          data-section-id=${quote(section.id)}\n          title=${quote(section.title)}\n          variant=\"page\"\n          className=\"px-5 pt-3\"\n          toolbar={\n            <div className=\"flex h-11 shrink-0 items-center justify-between gap-3 bg-mes-gray-20 px-3\">\n              <Filter categories={FILTER_CATEGORIES} value={filters} onChange={(categoryId, optionIds) => { setFilters((current) => ({ ...current, [categoryId]: optionIds })); setPage(1); }} />\n              <SearchInput value={query} onChange={(value) => { setQuery(value); setPage(1); }} placeholder=${quote(section.searchPlaceholder ?? "검색어를 입력하세요")} size=\"compact\" />\n            </div>\n          }\n          table={<Table columns={COLUMNS} rows={pageRows} selectable={${section.selectable !== false}} selectedIds={selectedIds} onSelectedIdsChange={setSelectedIds} selectionColor=\"black\" unselectedCheckboxAppearance=\"grayCheck\" horizontalScroll={false} />}\n        />\n      }\n      footer={<><span className=\"text-[13px] text-mes-gray-70\">총 {filteredRows.length}건</span><Pagination page={page} totalPages={totalPages} onPageChange={setPage} /></>}\n    />\n  );\n}`;
+  const imports = `import * as React from \"react\";\nimport { Filter } from \"@/components/ui/filter\";\nimport { PageTopTabItem } from \"@/components/ui/page-top-tab-item\";\nimport { Pagination } from \"@/components/ui/pagination\";\nimport { SearchInput } from \"@/components/ui/search-input\";\nimport { Sidebar } from \"@/components/ui/sidebar\";\nimport { Table, type TableColumn, type TableRowData } from \"@/components/ui/table\";\nimport { EntityListPattern } from \"@/components/patterns/entity-list-pattern\";\nimport { SearchTableSection } from \"@/components/patterns/section-patterns\";`;
+  return `"use client";\n\n${imports}\n\n${model.source}\n\n${component}\n`;
+}
+
+export function generateScreenTsx(contract) {
+  const issues = validateGenerationContract(contract);
+  if (issues.length > 0) throw new Error(`화면 생성 계약 오류:\n- ${issues.join("\n- ")}`);
+  const templateId = contract.request.generation.templateId;
+  if (templateId === "center-modal-search-table.v1") return generateCenterModalSearchTable(contract);
+  if (templateId === "page-entity-list.v1") return generatePageEntityList(contract);
+  return generateSideSlideScreenTsx(contract);
 }
 
 export function generatedSourceFingerprint(source) {

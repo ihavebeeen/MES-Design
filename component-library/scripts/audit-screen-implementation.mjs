@@ -16,6 +16,7 @@ export function auditScreenImplementation(contract, source, registry = readRegis
 
   if (contract.fingerprint !== contractFingerprint(contract)) findings.push(finding("blocker", "contract.fingerprint", "계약 내용과 fingerprint가 일치하지 않습니다. screen:resolve를 다시 실행하세요."));
   if (contract.quality?.blockerCount > 0) findings.push(finding("blocker", "contract.blocked", "blocker가 있는 계약은 구현 근거로 사용할 수 없습니다."));
+  if (!contract.decisionTrace) findings.push(finding("blocker", "contract.decision-trace", "선택·제외 근거가 없는 계약입니다. screen:resolve를 다시 실행하세요."));
 
   const nativeInteractive = [...source.matchAll(/<\s*(button|input|select|textarea|table)\b/g)].map((match) => match[1]);
   for (const tag of [...new Set(nativeInteractive)]) findings.push(finding("blocker", `native.${tag}`, `화면 구현에서 원시 <${tag}>를 직접 사용했습니다. 등록된 MES 컴포넌트로 교체하세요.`));
@@ -41,6 +42,30 @@ export function auditScreenImplementation(contract, source, registry = readRegis
   const expectedShellComponent = shellComponents[contract.request?.target?.kind];
   if (expectedShellComponent && !new RegExp(`\\b${expectedShellComponent}\\b`).test(source)) {
     findings.push(finding("blocker", "shell.missing", `계약된 셸 컴포넌트 ${expectedShellComponent}를 구현에서 찾지 못했습니다.`));
+  }
+
+  const sectionPositions = [];
+  for (const section of contract.composition?.sections ?? []) {
+    const literal = `data-section-id=${JSON.stringify(section.id)}`;
+    const position = source.indexOf(literal);
+    if (position < 0) findings.push(finding("blocker", "composition.section-missing", `ScreenSpec section '${section.id}'의 data-section-id marker를 구현에서 찾지 못했습니다.`));
+    else sectionPositions.push({ id: section.id, position });
+  }
+  for (let index = 1; index < sectionPositions.length; index += 1) {
+    if (sectionPositions[index - 1].position >= sectionPositions[index].position) {
+      findings.push(finding("blocker", "composition.section-order", `ScreenSpec section '${sectionPositions[index - 1].id}' 다음에 '${sectionPositions[index].id}'가 와야 합니다.`));
+    }
+  }
+
+  for (const patternContract of contract.implementation?.patternContracts ?? []) {
+    for (const marker of patternContract.implementationMarkers ?? []) {
+      if (!source.includes(marker)) findings.push(finding("blocker", "composition.pattern-marker", `pattern '${patternContract.patternId}'의 구현 marker '${marker}'를 찾지 못했습니다.`));
+    }
+  }
+
+  const actionSetRef = contract.composition?.actionSetRef;
+  if (actionSetRef && !source.includes(`createDialogActionSet(${JSON.stringify(actionSetRef)}`)) {
+    findings.push(finding("blocker", "composition.action-set", `action set '${actionSetRef}'가 createDialogActionSet을 통해 구현되지 않았습니다.`));
   }
 
   const arbitraryPixelValues = [...source.matchAll(/\[(\d+(?:\.\d+)?)px\]/g)].map((match) => match[0]);

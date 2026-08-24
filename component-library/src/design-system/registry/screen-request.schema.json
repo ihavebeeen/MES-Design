@@ -47,6 +47,7 @@
         "recipeRefs": { "$ref": "#/$defs/refList" },
         "shellRef": { "type": "string", "minLength": 1 },
         "sectionRefs": { "$ref": "#/$defs/refList" },
+        "sections": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sectionInstance" } },
         "behaviorRefs": { "$ref": "#/$defs/refList" },
         "actionSetRef": { "type": "string", "minLength": 1 }
       }
@@ -88,22 +89,60 @@
       "uniqueItems": true
     },
     "generation": {
+      "oneOf": [
+        { "$ref": "#/$defs/sideSlideGeneration" },
+        { "$ref": "#/$defs/centerModalGeneration" },
+        { "$ref": "#/$defs/pageEntityListGeneration" }
+      ]
+    },
+    "sectionInstance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "slot", "patternRef", "componentRefs", "behaviorRefs", "scrollOwner"],
+      "properties": {
+        "id": { "$ref": "#/$defs/key" },
+        "title": { "type": "string", "minLength": 1 },
+        "slot": { "const": "body" },
+        "frameRef": { "type": "string", "minLength": 1 },
+        "patternRef": { "type": "string", "minLength": 1 },
+        "supportingPatternRefs": { "$ref": "#/$defs/refList" },
+        "componentRefs": { "$ref": "#/$defs/refList" },
+        "behaviorRefs": { "$ref": "#/$defs/refList" },
+        "scrollOwner": { "enum": ["shell-body", "section", "table", "none"] }
+      }
+    },
+    "sideSlideGeneration": {
       "type": "object",
       "additionalProperties": false,
       "required": ["templateId", "panelSize", "sections"],
       "properties": {
         "templateId": { "const": "side-slide-form-editable-list.v1" },
         "panelSize": { "enum": ["narrow-760", "medium-849", "standard-900", "wide-960"] },
-        "sections": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "oneOf": [
-              { "$ref": "#/$defs/formSection" },
-              { "$ref": "#/$defs/editableRowSection" }
-            ]
-          }
-        }
+        "sections": { "type": "array", "minItems": 1, "items": { "oneOf": [{ "$ref": "#/$defs/formSection" }, { "$ref": "#/$defs/editableRowSection" }] } }
+      }
+    },
+    "centerModalGeneration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["templateId", "modalSize", "sections"],
+      "properties": {
+        "templateId": { "const": "center-modal-search-table.v1" },
+        "modalSize": { "enum": ["medium-600", "standard-960", "wide-1024", "large-1100", "wide-1142", "wide-1400"] },
+        "sections": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/searchTableSection" } }
+      }
+    },
+    "pageEntityListGeneration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["templateId", "pageTitle", "navigationLabel", "navigationItemLabel", "tabLabel", "pageSize", "sections"],
+      "properties": {
+        "templateId": { "const": "page-entity-list.v1" },
+        "pageTitle": { "type": "string", "minLength": 1 },
+        "navigationLabel": { "type": "string", "minLength": 1 },
+        "navigationItemLabel": { "type": "string", "minLength": 1 },
+        "tabLabel": { "type": "string", "minLength": 1 },
+        "pageSize": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "sections": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/searchTableSection" } }
       }
     },
     "formSection": {
@@ -134,6 +173,60 @@
         "insertPosition": { "enum": ["start", "end"] },
         "inheritOnAdd": { "type": "array", "items": { "$ref": "#/$defs/key" }, "uniqueItems": true },
         "columns": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/rowColumn" } }
+      }
+    },
+    "searchTableSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "kind", "filters", "columns", "rows"],
+      "properties": {
+        "id": { "$ref": "#/$defs/key" },
+        "title": { "type": "string", "minLength": 1 },
+        "kind": { "const": "search-table" },
+        "searchPlaceholder": { "type": "string" },
+        "selectable": { "type": "boolean" },
+        "filters": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/tableFilter" } },
+        "columns": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/tableColumn" } },
+        "rows": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/tableRow" } }
+      }
+    },
+    "tableFilter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "options"],
+      "properties": {
+        "id": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1 },
+        "options": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/tableFilterOption" } }
+      }
+    },
+    "tableFilterOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 }
+      }
+    },
+    "tableColumn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "width"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1 },
+        "width": { "type": "integer", "minimum": 40, "maximum": 800 },
+        "align": { "enum": ["left", "center", "right"] }
+      }
+    },
+    "tableRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "values"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "values": { "type": "object", "additionalProperties": { "type": "string" } }
       }
     },
     "field": {

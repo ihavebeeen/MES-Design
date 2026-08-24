@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "specs": [
+    {
+      "screenId": "receiving",
+      "targetKind": "side-slide-panel",
+      "shellRef": "shell.side-slide-panel",
+      "sections": [
+        {
+          "id": "basicInformation",
+          "title": "기본정보",
+          "slot": "body",
+          "frameRef": "frame.standard-section",
+          "patternRef": "section.form-grid",
+          "componentRefs": ["form-grid", "input", "select"],
+          "behaviorRefs": [],
+          "scrollOwner": "none"
+        },
+        {
+          "id": "receivingItems",
+          "title": "입고 품목",
+          "slot": "body",
+          "frameRef": "frame.standard-section",
+          "patternRef": "section.editable-row-list",
+          "componentRefs": ["button", "input", "select"],
+          "behaviorRefs": ["row.mutation-policy"],
+          "scrollOwner": "section"
+        },
+        {
+          "id": "optionalInformation",
+          "title": "선택 항목",
+          "slot": "body",
+          "frameRef": "frame.standard-section",
+          "patternRef": "section.form-grid",
+          "componentRefs": ["form-grid", "input", "select"],
+          "behaviorRefs": [],
+          "scrollOwner": "none"
+        }
+      ],
+      "behaviorRefs": ["row.mutation-policy", "dismiss.restore-committed"],
+      "actionSetRef": "action-set.cancel-save",
+      "constraints": ["섹션 순서는 기본정보→입고 품목→선택 항목이다.", "취소·X·Esc·backdrop은 저장 전 상태를 복원한다.", "반복 입력 행은 Table이 아니라 EditableRowGrid를 사용한다."],
+      "evidence": ["Figma 11210:49261", "visual-regression/receiving-pilot"]
+    },
+    {
+      "screenId": "batch-work-order",
+      "targetKind": "center-modal",
+      "shellRef": "shell.center-modal",
+      "sections": [
+        {
+          "id": "workOrderList",
+          "title": "생산계획 리스트",
+          "slot": "body",
+          "patternRef": "section.search-table-composition",
+          "componentRefs": ["filter", "search-input", "table", "checkbox", "input", "select"],
+          "behaviorRefs": ["selection.reveal-inline-editor"],
+          "scrollOwner": "table"
+        }
+      ],
+      "behaviorRefs": ["selection.reveal-inline-editor", "dismiss.restore-committed"],
+      "actionSetRef": "action-set.cancel-save",
+      "constraints": ["조회 toolbar와 table은 별도 고정 영역이다.", "선택된 행만 입력·선택 컨트롤로 전환한다.", "지시수량은 숫자 입력이 가능해야 한다.", "의도하지 않은 가로 스크롤은 0이다."],
+      "evidence": ["Figma 11210:50866", "visual-regression/batch-work-order-pilot"]
+    },
+    {
+      "screenId": "grouped-production-list",
+      "targetKind": "page",
+      "shellRef": null,
+      "sections": [
+        {
+          "id": "productionList",
+          "title": "생산실적 리스트",
+          "slot": "body",
+          "patternRef": "section.search-table-composition",
+          "supportingPatternRefs": ["table.grouped-list"],
+          "componentRefs": ["sidebar", "page-top-tab-item", "date-range-picker", "group-query", "filter", "quick-query", "search-input", "table", "pagination"],
+          "behaviorRefs": ["selection.master-detail"],
+          "scrollOwner": "table"
+        }
+      ],
+      "behaviorRefs": ["selection.master-detail"],
+      "actionSetRef": null,
+      "constraints": ["Navigation→상단 탭→조회 조건→그룹형 표→하단 영역 순서를 유지한다.", "GroupQuery 단계와 Table 그룹 depth는 같은 상태 모델을 사용한다.", "header·group·row·totals가 동일 컬럼 폭 배열을 사용한다."],
+      "evidence": ["Figma 17000:39999", "patterns/grouped-production-list"]
+    }
+  ]
+}

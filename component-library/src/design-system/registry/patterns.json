@@ -52,7 +52,7 @@
       "kind": "popup",
       "placement": "right-slide",
       "source": "src/components/patterns/completed-popup-patterns.tsx",
-      "requiredComponents": ["side-slide-panel", "button", "input", "select", "table"],
+      "requiredComponents": ["side-slide-panel", "button", "input", "select"],
       "rules": ["상단 입력값을 추가하면 하단 리스트 state에 실제 행이 생성되어야 한다."]
     },
     {
@@ -90,6 +90,24 @@
       "source": "scripts/generate-screen-tsx.mjs",
       "requiredComponents": ["side-slide-panel", "section-frame", "form-grid", "button", "input", "select"],
       "rules": ["ScreenRequest의 순서화된 form-grid와 editable-row-list section만 생성한다.", "헤더와 데이터 행은 EditableRowGrid의 단일 columns 계약을 공유한다.", "행 추가는 stable ID·필수값 guard·명시된 직전 행 계승 목록을 사용한다.", "취소·X는 committed draft를 복원한 뒤 닫는다."]
+    },
+    {
+      "id": "recipe.center-modal-search-table",
+      "name": "중앙 팝업 · 검색 + 선택 테이블 생성 Recipe",
+      "kind": "recipe",
+      "placement": "center",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "requiredComponents": ["center-modal", "filter", "search-input", "table", "button"],
+      "rules": ["ScreenRequest의 단일 search-table section과 명시된 컬럼·행·필터만 생성한다.", "필터와 검색은 같은 toolbar의 수직 중앙 정렬을 사용한다.", "선택 ID와 활성 행은 stable row ID에서 파생한다.", "취소·X는 committed draft를 복원한 뒤 닫는다."]
+    },
+    {
+      "id": "recipe.page-entity-list",
+      "name": "전체 페이지 · 조회 조건 + 엔티티 리스트 생성 Recipe",
+      "kind": "recipe",
+      "placement": "page",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "requiredComponents": ["sidebar", "page-top-tab-item", "filter", "search-input", "table", "pagination"],
+      "rules": ["Navigation→상단 탭→페이지 제목→조회 toolbar→표→페이지네이션 순서를 생성한다.", "조회 결과는 검색·필터·페이지 상태에서 결정적으로 파생한다.", "page target에는 overlay shell과 dialog action set을 만들지 않는다."]
     },
     {
       "id": "screen.entity-list",

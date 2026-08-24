@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "requestId": "deterministic-center-modal-fixture",
+  "name": "결정적 중앙 조회 팝업 fixture",
+  "intent": "new",
+  "lifecycle": "draft",
+  "target": {
+    "kind": "center-modal",
+    "title": "품목 선택",
+    "nearestScreenId": "batch-work-order",
+    "viewport": { "width": 1440, "height": 900 }
+  },
+  "composition": {
+    "recipeRefs": ["recipe.center-modal-search-table"],
+    "sections": [
+      {
+        "id": "itemList",
+        "title": "품목 리스트",
+        "slot": "body",
+        "patternRef": "section.search-table-composition",
+        "supportingPatternRefs": [],
+        "componentRefs": ["filter", "search-input", "table", "checkbox"],
+        "behaviorRefs": ["selection.enable-actions"],
+        "scrollOwner": "table"
+      }
+    ],
+    "behaviorRefs": ["selection.enable-actions", "dismiss.restore-committed"],
+    "actionSetRef": "action-set.cancel-save"
+  },
+  "requirements": [
+    "필터와 검색은 같은 toolbar에서 수직 중앙 정렬한다.",
+    "선택된 행은 black 체크박스와 선택 행 배경을 사용한다.",
+    "취소와 X는 선택 draft를 복원하고 닫는다."
+  ],
+  "generation": {
+    "templateId": "center-modal-search-table.v1",
+    "modalSize": "standard-960",
+    "sections": [
+      {
+        "id": "itemList",
+        "title": "품목 리스트",
+        "kind": "search-table",
+        "searchPlaceholder": "품목명 또는 품목코드 검색",
+        "selectable": true,
+        "filters": [
+          { "id": "category", "label": "품목구분", "options": [{ "id": "완제품", "label": "완제품" }, { "id": "반제품", "label": "반제품" }] }
+        ],
+        "columns": [
+          { "key": "code", "label": "품목코드", "width": 160, "align": "center" },
+          { "key": "name", "label": "품목", "width": 260 },
+          { "key": "category", "label": "품목구분", "width": 140, "align": "center" },
+          { "key": "unit", "label": "단위", "width": 80, "align": "center" }
+        ],
+        "rows": [
+          { "id": "ITEM-001", "values": { "code": "ITEM-001", "name": "햇반 용기", "category": "완제품", "unit": "EA" } },
+          { "id": "ITEM-002", "values": { "code": "ITEM-002", "name": "성형 시트", "category": "반제품", "unit": "kg" } }
+        ]
+      }
+    ]
+  },
+  "output": {
+    "route": "/generated-screens/deterministic-center-modal-fixture",
+    "componentName": "DeterministicItemLookupModal"
+  }
+}

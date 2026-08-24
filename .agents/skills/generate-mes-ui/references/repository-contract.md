@@ -5,11 +5,12 @@
 Read in this order:
 
 1. `component-library/src/design-system/registry/context-rules.json` for semantic choices.
-2. `component-library/src/design-system/registry/screens.json` and `source-assets.json` for nearest-screen compositions.
-3. `component-library/src/design-system/registry/patterns.json` for shell, section, behavior, and action-set references.
-4. `component-library/src/design-system/registry/components.json` for approved implementation sources and maturity.
+2. `component-library/src/design-system/registry/screens.json`, `screen-specs.json`, and `source-assets.json` for nearest-screen composition and ordered section instances.
+3. `component-library/src/design-system/registry/patterns.json` and `pattern-contracts.json` for shell, section, behavior, action-set, slots, state, and boundary contracts.
+4. `component-library/src/design-system/registry/components.json` and `component-usage-contracts.json` for approved implementation sources, maturity, use/exclusion conditions, parents, and alternatives.
 5. `component-library/src/design-system/registry/source-evidence.json` and `visual-regression.json` for fidelity claims.
-6. `component-library/src/design-system/registry/generated-screen-evaluations.json` only as quarantined prototype history unless `influence` is `approved`.
+6. `component-library/src/design-system/registry/generation-templates.json` for deterministic TSX support and maturity.
+7. `component-library/src/design-system/registry/generated-screen-evaluations.json` only as quarantined prototype history unless `influence` is `approved`.
 
 Experimental candidates are discovery material, not generation dependencies.
 
@@ -22,11 +23,13 @@ Choose in this order:
 3. `nearestScreenId`: the registered workflow with the closest semantic structure.
 4. `recipeRefs`: broad popup or page composition.
 5. `shellRef`: exactly one overlay shell, none for a page unless existing evidence says otherwise.
-6. `sectionRefs`: ordered content regions.
+6. `composition.sections`: ordered content regions, their slot, frame, primary/supporting patterns, component references, behavior targets, scroll owner, and constraints. `sectionRefs` is a compatibility summary derived from these structured sections when a ScreenSpec exists.
 7. `behaviorRefs`: selection, mutation, dismissal, and master-detail behavior.
 8. `actionSetRef`: footer action semantics.
 
 Do not select by visual resemblance alone. A gray rectangle, title, or repeated row is not sufficient evidence of a component or pattern identity.
+
+The resolved contract must include `decisionTrace`. It is the machine-readable answer to why a shell, section, behavior, action set, or component was selected and which alternatives were rejected. An implementation without this trace is not auditable.
 
 ## Fidelity and normalization
 

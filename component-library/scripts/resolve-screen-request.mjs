@@ -41,6 +41,9 @@ export function readRegistryBundle() {
   const contextRules = readJson(join(registryDirectory, "context-rules.json"));
   const generationTemplates = readJson(join(registryDirectory, "generation-templates.json"));
   const mobileAssets = readJson(join(registryDirectory, "mobile-assets.json"));
+  const componentUsageContracts = readJson(join(registryDirectory, "component-usage-contracts.json"));
+  const patternContracts = readJson(join(registryDirectory, "pattern-contracts.json"));
+  const screenSpecs = readJson(join(registryDirectory, "screen-specs.json"));
 
   return {
     components: components.components,
@@ -50,6 +53,9 @@ export function readRegistryBundle() {
     contextRules,
     generationTemplates: generationTemplates.templates,
     mobileAssets,
+    componentUsageContracts: componentUsageContracts.contracts,
+    patternContracts: patternContracts.contracts,
+    screenSpecs: screenSpecs.specs,
   };
 }
 
@@ -81,7 +87,7 @@ function validateRequestShape(request) {
   checkKnownKeys(request?.target, new Set(["kind", "title", "nearestScreenId", "viewport"]), "target");
   checkKnownKeys(request?.target?.viewport, new Set(["width", "height"]), "target.viewport");
   checkKnownKeys(request?.evidence, new Set(["figmaNode", "sourceRoute", "notes"]), "evidence");
-  checkKnownKeys(request?.composition, new Set(["recipeRefs", "shellRef", "sectionRefs", "behaviorRefs", "actionSetRef"]), "composition");
+  checkKnownKeys(request?.composition, new Set(["recipeRefs", "shellRef", "sectionRefs", "sections", "behaviorRefs", "actionSetRef"]), "composition");
   checkKnownKeys(request?.output, new Set(["route", "componentName"]), "output");
   if (request?.schemaVersion !== 1) issues.push(issue("blocker", "request.schema-version", "schemaVersion은 1이어야 합니다."));
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(request?.requestId ?? "")) issues.push(issue("blocker", "request.id", "requestId는 kebab-case여야 합니다."));
@@ -115,6 +121,26 @@ function validateRequestShape(request) {
     const values = request?.composition?.[key];
     if (values !== undefined && (!Array.isArray(values) || values.some((value) => typeof value !== "string" || value === "") || unique(values).length !== values.length)) {
       issues.push(issue("blocker", `request.${key}`, `composition.${key}는 중복 없는 문자열 배열이어야 합니다.`));
+    }
+  }
+  if (request?.composition?.sections !== undefined) {
+    if (!Array.isArray(request.composition.sections) || request.composition.sections.length === 0) issues.push(issue("blocker", "request.sections", "composition.sections는 한 개 이상의 순서화된 section 배열이어야 합니다."));
+    const sectionIds = new Set();
+    const allowedScrollOwners = new Set(["shell-body", "section", "table", "none"]);
+    for (const [index, section] of (request.composition.sections ?? []).entries()) {
+      const path = `composition.sections[${index}]`;
+      checkKnownKeys(section, new Set(["id", "title", "slot", "frameRef", "patternRef", "supportingPatternRefs", "componentRefs", "behaviorRefs", "scrollOwner"]), path);
+      if (!/^[a-z][A-Za-z0-9]*$/.test(section?.id ?? "") || sectionIds.has(section?.id)) issues.push(issue("blocker", "request.section-id", `${path}.id는 중복 없는 camelCase여야 합니다.`));
+      sectionIds.add(section?.id);
+      if (section?.title !== undefined && (typeof section.title !== "string" || section.title === "")) issues.push(issue("blocker", "request.section-title", `${path}.title은 비어 있지 않은 문자열이어야 합니다.`));
+      if (section?.slot !== "body") issues.push(issue("blocker", "request.section-slot", `${path}.slot은 body여야 합니다.`));
+      if (typeof section?.patternRef !== "string" || section.patternRef === "") issues.push(issue("blocker", "request.section-pattern", `${path}.patternRef가 필요합니다.`));
+      if (section?.frameRef !== undefined && (typeof section.frameRef !== "string" || section.frameRef === "")) issues.push(issue("blocker", "request.section-frame", `${path}.frameRef는 비어 있지 않은 문자열이어야 합니다.`));
+      for (const key of ["supportingPatternRefs", "componentRefs", "behaviorRefs"]) {
+        const values = section?.[key];
+        if (!Array.isArray(values) || values.some((value) => typeof value !== "string" || value === "") || unique(values).length !== values.length) issues.push(issue("blocker", `request.section-${key}`, `${path}.${key}는 중복 없는 문자열 배열이어야 합니다.`));
+      }
+      if (!allowedScrollOwners.has(section?.scrollOwner)) issues.push(issue("blocker", "request.section-scroll-owner", `${path}.scrollOwner가 잘못되었습니다.`));
     }
   }
   return issues;
@@ -154,7 +180,11 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const screenMap = new Map(registry.screens.map((entry) => [entry.id, entry]));
   const actionSetMap = new Map(registry.actionSets.map((entry) => [entry.id, entry]));
   const generationTemplateMap = new Map(registry.generationTemplates.map((entry) => [entry.id, entry]));
+  const componentUsageContractMap = new Map(registry.componentUsageContracts.map((entry) => [entry.componentId, entry]));
+  const patternContractMap = new Map(registry.patternContracts.map((entry) => [entry.patternId, entry]));
+  const screenSpecMap = new Map(registry.screenSpecs.map((entry) => [entry.screenId, entry]));
   const nearestScreen = request?.target?.nearestScreenId ? screenMap.get(request.target.nearestScreenId) : undefined;
+  const nearestScreenSpec = request?.target?.nearestScreenId ? screenSpecMap.get(request.target.nearestScreenId) : undefined;
 
   if (request?.target?.nearestScreenId && !nearestScreen) {
     issues.push(issue("blocker", "registry.unknown-screen", `등록되지 않은 nearestScreenId '${request.target.nearestScreenId}'입니다.`, request.target.nearestScreenId));
@@ -165,13 +195,15 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
 
   const inheritedRefs = nearestScreen?.patternRefs ?? [];
   const composition = request?.composition ?? {};
+  const sections = selectedOrInherited(composition.sections, nearestScreenSpec?.sections ?? []);
+  const structuredSectionRefs = unique(sections.flatMap((section) => [section.frameRef, section.patternRef, ...(section.supportingPatternRefs ?? [])]));
   const recipeRefs = unique(selectedOrInherited(composition.recipeRefs, refsByKind(inheritedRefs, patternMap, ["popup", "screen", "recipe"])));
   const inheritedShellRefs = refsByKind(inheritedRefs, patternMap, ["shell"]);
-  const shellRef = composition.shellRef === undefined ? inheritedShellRefs[0] ?? expectedShells[request?.target?.kind] : composition.shellRef;
-  const sectionRefs = unique(selectedOrInherited(composition.sectionRefs, refsByKind(inheritedRefs, patternMap, ["section-frame", "section-pattern", "table"])));
-  const behaviorRefs = unique(selectedOrInherited(composition.behaviorRefs, refsByKind(inheritedRefs, patternMap, ["behavior"])));
+  const shellRef = composition.shellRef === undefined ? nearestScreenSpec?.shellRef ?? inheritedShellRefs[0] ?? expectedShells[request?.target?.kind] : composition.shellRef;
+  const sectionRefs = unique(selectedOrInherited(composition.sectionRefs, structuredSectionRefs.length > 0 ? structuredSectionRefs : refsByKind(inheritedRefs, patternMap, ["section-frame", "section-pattern", "table"])));
+  const behaviorRefs = unique(selectedOrInherited(composition.behaviorRefs, nearestScreenSpec?.behaviorRefs ?? refsByKind(inheritedRefs, patternMap, ["behavior"])));
   const inheritedActionRefs = refsByKind(inheritedRefs, patternMap, ["action-set"]);
-  const actionSetRef = composition.actionSetRef === undefined ? inheritedActionRefs[0] : composition.actionSetRef;
+  const actionSetRef = composition.actionSetRef === undefined ? nearestScreenSpec?.actionSetRef ?? inheritedActionRefs[0] : composition.actionSetRef;
   const selectedPatternRefs = unique([...recipeRefs, shellRef, ...sectionRefs, ...behaviorRefs, actionSetRef]);
 
   const kindContracts = [
@@ -185,6 +217,20 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       if (!pattern) issues.push(issue("blocker", "registry.unknown-pattern", `등록되지 않은 ${label} 패턴 '${id}'입니다.`, id));
       else if (!allowedKinds.has(pattern.kind)) issues.push(issue("blocker", "registry.pattern-kind", `'${id}'는 ${label} 위치에 사용할 수 없는 ${pattern.kind} 패턴입니다.`, id));
     }
+  }
+
+  for (const section of sections) {
+    const primaryPattern = patternMap.get(section.patternRef);
+    if (!primaryPattern) issues.push(issue("blocker", "registry.unknown-section-pattern", `section '${section.id}'가 미등록 pattern '${section.patternRef}'를 참조합니다.`, section.patternRef));
+    else if (!["section-frame", "section-pattern", "table"].includes(primaryPattern.kind)) issues.push(issue("blocker", "registry.section-pattern-kind", `section '${section.id}'의 primary pattern '${section.patternRef}'는 section/table 종류여야 합니다.`, section.patternRef));
+    if (section.frameRef && patternMap.get(section.frameRef)?.kind !== "section-frame") issues.push(issue("blocker", "registry.section-frame-kind", `section '${section.id}'의 frameRef '${section.frameRef}'가 section-frame이 아닙니다.`, section.frameRef));
+    for (const supportingRef of section.supportingPatternRefs ?? []) {
+      const supporting = patternMap.get(supportingRef);
+      if (!supporting) issues.push(issue("blocker", "registry.unknown-supporting-pattern", `section '${section.id}'가 미등록 supporting pattern '${supportingRef}'를 참조합니다.`, supportingRef));
+      else if (!["section-pattern", "table"].includes(supporting.kind)) issues.push(issue("blocker", "registry.supporting-pattern-kind", `section '${section.id}'의 supporting pattern '${supportingRef}' 종류가 잘못되었습니다.`, supportingRef));
+    }
+    for (const behaviorRef of section.behaviorRefs ?? []) if (patternMap.get(behaviorRef)?.kind !== "behavior") issues.push(issue("blocker", "registry.section-behavior-kind", `section '${section.id}'의 behavior '${behaviorRef}'가 등록 behavior가 아닙니다.`, behaviorRef));
+    for (const componentId of section.componentRefs ?? []) if (!componentMap.has(componentId)) issues.push(issue("blocker", "registry.unknown-section-component", `section '${section.id}'가 미등록 component '${componentId}'를 참조합니다.`, componentId));
   }
 
   if (shellRef) {
@@ -206,11 +252,12 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const generationTemplate = request?.generation ? generationTemplateMap.get(request.generation.templateId) : undefined;
   if (request?.generation && !generationTemplate) issues.push(issue("blocker", "registry.unknown-generation-template", `등록되지 않은 generation template '${request.generation.templateId}'입니다.`, request.generation.templateId));
   if (generationTemplate && generationTemplate.targetKind !== request?.target?.kind) issues.push(issue("blocker", "generation.target-mismatch", `template '${generationTemplate.id}'는 target '${generationTemplate.targetKind}'만 지원합니다.`, generationTemplate.id));
+  if (generationTemplate?.status === "provisional") issues.push(issue("warning", "generation.template-provisional", `template '${generationTemplate.id}'는 provisional 상태입니다.`, generationTemplate.id));
 
   const resolvedPatterns = selectedPatternRefs.map((id) => patternMap.get(id)).filter(Boolean);
   const expectedShellComponent = expectedShellComponents[request?.target?.kind];
   const overlayComponentIds = new Set(Object.values(expectedShellComponents));
-  const requiredComponentIds = unique(resolvedPatterns.flatMap((pattern) => pattern.requiredComponents)).filter(
+  const requiredComponentIds = unique([...resolvedPatterns.flatMap((pattern) => pattern.requiredComponents), ...sections.flatMap((section) => section.componentRefs ?? [])]).filter(
     (id) => !expectedShellComponent || !overlayComponentIds.has(id) || id === expectedShellComponent,
   );
   const resolvedComponents = [];
@@ -238,6 +285,46 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     decision.optionRuleIds.some((id) => applicableContextRuleIds.has(id)),
   );
 
+  for (const component of resolvedComponents) {
+    const usageContract = componentUsageContractMap.get(component.id);
+    if (!usageContract) continue;
+    if (!usageContract.allowedParents.some((parentId) => selectedPatternSet.has(parentId))) {
+      issues.push(issue("blocker", "component.parent-context", `component '${component.id}'를 허용하는 parent pattern이 현재 조합에 없습니다.`, component.id));
+    }
+  }
+
+  const selectionSource = (explicit, structured, fallback) => explicit ? "request" : structured ? "screen-spec" : fallback;
+  const decisionTrace = {
+    nearestScreen: nearestScreen ? { selectedId: nearestScreen.id, reason: "요청의 nearestScreenId와 등록 업무 구조를 상속했습니다." } : { selectedId: null, reason: "가까운 등록 화면이 지정되지 않았습니다." },
+    shell: {
+      selectedId: shellRef ?? null,
+      source: selectionSource(composition.shellRef !== undefined, Boolean(nearestScreenSpec), "target-default"),
+      reason: shellRef ? `target.kind '${request?.target?.kind}'와 일치하는 셸입니다.` : "page target은 overlay shell을 사용하지 않습니다.",
+      excluded: Object.values(expectedShells).filter((id) => id && id !== shellRef).map((id) => ({ id, reason: `target.kind '${request?.target?.kind}'와 일치하지 않습니다.` })),
+    },
+    sections: sections.map((section, index) => ({
+      order: index + 1,
+      id: section.id,
+      frameRef: section.frameRef ?? null,
+      patternRef: section.patternRef,
+      supportingPatternRefs: section.supportingPatternRefs ?? [],
+      scrollOwner: section.scrollOwner,
+      reason: composition.sections !== undefined ? "요청이 순서와 슬롯을 명시했습니다." : "가까운 화면의 구조화된 ScreenSpec을 상속했습니다.",
+    })),
+    behaviors: behaviorRefs.map((id) => ({ id, reason: composition.behaviorRefs !== undefined ? "요청이 명시했습니다." : nearestScreenSpec ? "ScreenSpec의 상태·동작 계약을 상속했습니다." : "가까운 화면의 patternRefs를 상속했습니다." })),
+    actionSet: actionSetRef ? { selectedId: actionSetRef, reason: composition.actionSetRef !== undefined ? "요청이 명시했습니다." : nearestScreenSpec ? "ScreenSpec의 하단 동작 의미를 상속했습니다." : "가까운 화면의 action set을 상속했습니다." } : null,
+    components: resolvedComponents.map((component) => {
+      const usage = componentUsageContractMap.get(component.id);
+      return {
+        selectedId: component.id,
+        reason: usage?.useWhen ?? ["선택된 패턴의 requiredComponents에 포함됩니다."],
+        doNotUseWhen: usage?.doNotUseWhen ?? [],
+        alternatives: usage?.alternatives ?? [],
+        contractCoverage: usage ? "structured" : "registry-only",
+      };
+    }),
+  };
+
   const blockers = issues.filter((entry) => entry.severity === "blocker");
   const warnings = issues.filter((entry) => entry.severity === "warning");
   const status = blockers.length > 0 ? "blocked" : warnings.length > 0 ? "review-ready" : "release-ready";
@@ -251,25 +338,33 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       actionSets: registry.actionSets,
       contextRules: registry.contextRules,
       generationTemplates: registry.generationTemplates,
+      componentUsageContracts: registry.componentUsageContracts,
+      patternContracts: registry.patternContracts,
+      screenSpecs: registry.screenSpecs,
     }),
     baseScreen: nearestScreen ?? null,
+    baseScreenSpec: nearestScreenSpec ?? null,
     composition: {
       recipeRefs,
       shellRef: shellRef ?? null,
       sectionRefs,
       behaviorRefs,
       actionSetRef: actionSetRef ?? null,
+      sections,
       selectedPatternRefs,
     },
     implementation: {
       patterns: resolvedPatterns.map(({ id, name, kind, placement, source, rules }) => ({ id, name, kind, placement, source, rules })),
+      patternContracts: resolvedPatterns.map(({ id }) => patternContractMap.get(id)).filter(Boolean),
       components: resolvedComponents.map(({ id, name, category, source, status, rules }) => ({ id, name, category, source, status, rules: rules ?? [] })),
+      componentUsageContracts: resolvedComponents.map(({ id }) => componentUsageContractMap.get(id)).filter(Boolean),
       actionSet: actionSetRef ? actionSetMap.get(actionSetRef) ?? null : null,
       contextRules: applicableContextRules,
       contextDecisions: applicableContextDecisions,
       globalGates: registry.contextRules.globalGates,
       generationTemplate: generationTemplate ?? null,
     },
+    decisionTrace,
     quality: {
       status,
       blockerCount: blockers.length,

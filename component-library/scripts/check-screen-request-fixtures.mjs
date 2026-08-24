@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { resolveScreenRequest } from "./resolve-screen-request.mjs";
 import { generateScreenTsx, generatedSourceFingerprint } from "./generate-screen-tsx.mjs";
+import { auditScreenImplementation } from "./audit-screen-implementation.mjs";
 
 const projectRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixturePath = join(projectRoot, "tests", "fixtures", "screen-requests", "receiving-side-panel.json");
@@ -20,6 +21,9 @@ assert.equal(first.composition.shellRef, "shell.side-slide-panel");
 assert.deepEqual(first.composition.sectionRefs, ["frame.standard-section", "section.form-grid", "section.editable-row-list"]);
 assert.deepEqual(first.composition.behaviorRefs, ["row.mutation-policy", "dismiss.restore-committed"]);
 assert.equal(first.composition.actionSetRef, "action-set.cancel-save");
+assert.deepEqual(first.composition.sections.map(({ id }) => id), ["basicInformation", "receivingItems", "optionalInformation"]);
+assert.equal(first.decisionTrace.shell.source, "screen-spec");
+assert.equal(first.decisionTrace.components.find(({ selectedId }) => selectedId === "input")?.contractCoverage, "structured");
 assert.ok(first.implementation.components.some((entry) => entry.id === "side-slide-panel"));
 assert.ok(!first.implementation.components.some((entry) => entry.id === "center-modal"));
 assert.ok(first.implementation.contextRules.some((entry) => entry.id === "overlay.side-slide-panel"));
@@ -43,14 +47,48 @@ const generationContract = resolveScreenRequest(generationRequest);
 const generatedFirst = generateScreenTsx(generationContract);
 const generatedSecond = generateScreenTsx(generationContract);
 assert.equal(generatedFirst, generatedSecond, "동일 계약에서 생성된 TSX가 달라졌습니다.");
-assert.equal(generatedSourceFingerprint(generatedFirst), "c255e456a13475fcbd527b435c4b04e0e5072d8434da0ed23af4e65c85fd6745", "승인된 TSX fixture hash가 달라졌습니다.");
+assert.equal(generatedSourceFingerprint(generatedFirst), "cbf73874ac6cf26241cda1a23f0300796e79342552f5b4843162548e33180fb3", "승인된 TSX fixture hash가 달라졌습니다.");
 assert.match(generatedFirst, /<SideSlidePanel/);
 assert.match(generatedFirst, /<EditableRowGrid/);
 assert.doesNotMatch(generatedFirst, /<\s*(button|input|select|textarea|table)\b/);
 assert.match(generatedFirst, /previousRow\?\.customer/);
+assert.equal(auditScreenImplementation(generationContract, generatedFirst).status, "audit-ready");
+
+const wrongSectionOrder = generatedFirst
+  .replace('data-section-id="basicInformation"', 'data-section-id="__swap__"')
+  .replace('data-section-id="receivingItems"', 'data-section-id="basicInformation"')
+  .replace('data-section-id="__swap__"', 'data-section-id="receivingItems"');
+assert.ok(auditScreenImplementation(generationContract, wrongSectionOrder).findings.some((entry) => entry.code === "composition.section-order"));
 
 const invalidGenerationRequest = structuredClone(generationRequest);
 invalidGenerationRequest.generation.panelSize = "mega";
 assert.ok(resolveScreenRequest(invalidGenerationRequest).quality.issues.some((entry) => entry.code === "request.generation"));
 
-console.log(`[screen:fixtures] 계약 정상 1개 + 차단 4개 + TSX 결정성 1개 통과 · ${generatedSourceFingerprint(generatedFirst).slice(0, 12)}`);
+const centerRequest = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-center-modal.json"), "utf8"));
+const centerContract = resolveScreenRequest(centerRequest);
+const centerFirst = generateScreenTsx(centerContract);
+const centerSecond = generateScreenTsx(resolveScreenRequest(centerRequest));
+assert.equal(centerContract.quality.status, "release-ready");
+assert.equal(centerFirst, centerSecond, "중앙 팝업 템플릿이 결정적으로 생성되지 않았습니다.");
+assert.equal(generatedSourceFingerprint(centerFirst), "af94ccc69f5e1e0f6f7712c3410bbb2abf85648bacee1501f80716c3f28f34fb");
+assert.match(centerFirst, /<CenterModal/);
+assert.match(centerFirst, /<SearchTableSection/);
+assert.equal(auditScreenImplementation(centerContract, centerFirst).status, "audit-ready");
+
+const pageRequest = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-entity-list.json"), "utf8"));
+const pageContract = resolveScreenRequest(pageRequest);
+const pageFirst = generateScreenTsx(pageContract);
+const pageSecond = generateScreenTsx(resolveScreenRequest(pageRequest));
+assert.equal(pageContract.quality.status, "review-ready");
+assert.ok(pageContract.quality.issues.some((entry) => entry.code === "generation.template-provisional"));
+assert.equal(pageFirst, pageSecond, "전체 페이지 템플릿이 결정적으로 생성되지 않았습니다.");
+assert.equal(generatedSourceFingerprint(pageFirst), "6b4e78b9c46ebeaa4015bc2df87f62ade89cf5d29f9ca07a55d7b261cb0d287d");
+assert.match(pageFirst, /<EntityListPattern/);
+assert.match(pageFirst, /<SearchTableSection/);
+assert.equal(auditScreenImplementation(pageContract, pageFirst).blockerCount, 0);
+
+const invalidTableRequest = structuredClone(centerRequest);
+invalidTableRequest.generation.sections[0].rows[0].values.notAColumn = "오류";
+assert.ok(resolveScreenRequest(invalidTableRequest).quality.issues.some((entry) => entry.code === "request.generation"));
+
+console.log(`[screen:fixtures] 계약 정상 3개 + 차단 5개 + TSX 결정성 3개 통과 · ${generatedSourceFingerprint(generatedFirst).slice(0, 12)}/${generatedSourceFingerprint(centerFirst).slice(0, 12)}/${generatedSourceFingerprint(pageFirst).slice(0, 12)}`);

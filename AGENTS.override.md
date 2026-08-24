@@ -12,6 +12,7 @@
 - `mes-ui` MCP가 연결되어 있으면 등록 자산 조회, 계약 해석, 결정형 생성, 구현 감사에 해당 MCP 도구를 우선 사용한다. MCP가 없을 때만 동일 기능의 npm 명령을 사용한다.
 - 자연어 또는 Figma를 바로 JSX로 옮기지 않는다. 먼저 `ScreenRequest`를 만들고 `npm run screen:resolve`로 계약을 확정한다.
 - 가장 가까운 등록 화면의 `getImplementationContext(screenId)`를 기준으로 시작한다.
+- 가장 가까운 화면에 `screen-specs.json` 명세가 있으면 순서형 `composition.sections`를 보존한다. 평면 `sectionRefs`만 보고 섹션을 재배치하지 않는다.
 - 등록 컴포넌트와 패턴을 우선 사용한다. `<button>`, `<input>`, `<select>`, `<textarea>` 같은 원시 상호작용 요소를 화면 코드에 직접 만들지 않는다.
 - Experimental 후보와 `influence: quarantined` 생성 화면은 근거로 사용하지 않는다.
 
@@ -39,6 +40,7 @@ npm run build
 
 - 시각 검증은 대상 viewport에서 DOM 크기와 overflow를 먼저 측정한 뒤 스크린샷을 대조한다.
 - Checkbox/Radio/Input/Select/취소/X/행 추가·삭제는 실제 상태가 변해야 한다. no-op handler는 검증 통과가 아니다.
+- resolver의 `decisionTrace`가 선택·제외 근거를 설명해야 하며, 구조화된 각 섹션은 같은 순서의 `data-section-id`로 구현 감사에 노출한다.
 - 경고 한 건으로 화면 전체를 실패시키지 않는다. `blocker`, `warning`, `info`로 분리하고 blocker만 즉시 중단한다.
 - 요청 범위 밖 변경은 먼저 필요성을 설명하고 승인받는다.
 

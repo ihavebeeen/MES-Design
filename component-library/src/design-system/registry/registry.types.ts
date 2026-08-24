@@ -23,6 +23,25 @@ export interface ComponentRegistry {
   components: ComponentRegistryEntry[];
 }
 
+export interface ComponentUsageContractEntry {
+  componentId: string;
+  capabilities: string[];
+  variants: string[];
+  requiredStates: string[];
+  useWhen: string[];
+  doNotUseWhen: string[];
+  allowedParents: string[];
+  constraints: string[];
+  accessibility: string[];
+  evidence: string[];
+  alternatives: Array<{ componentId: string; chooseInsteadWhen: string }>;
+}
+
+export interface ComponentUsageContractRegistry {
+  schemaVersion: 1;
+  contracts: ComponentUsageContractEntry[];
+}
+
 export interface MobileAssetRegistry {
   schemaVersion: 1;
   status: "in-progress" | "verified" | "deferred";
@@ -54,6 +73,32 @@ export interface PatternRegistry {
   patterns: PatternRegistryEntry[];
 }
 
+export interface PatternContractSlot {
+  id: string;
+  required: boolean;
+  accepts: string[];
+}
+
+export interface PatternUsageContractEntry {
+  patternId: string;
+  slots: PatternContractSlot[];
+  stateModel: string[];
+  behaviorTargets: string[];
+  scrollOwner: "shell-body" | "section" | "table" | "none";
+  allowedActionSets: string[];
+  useWhen: string[];
+  doNotUseWhen: string[];
+  constraints: string[];
+  evidence: string[];
+  goldenScreenIds: string[];
+  implementationMarkers: string[];
+}
+
+export interface PatternUsageContractRegistry {
+  schemaVersion: 1;
+  contracts: PatternUsageContractEntry[];
+}
+
 export interface ActionSetRegistryEntry {
   id: string;
   labels: string[];
@@ -82,10 +127,41 @@ export interface ScreenRegistry {
   screens: ScreenRegistryEntry[];
 }
 
+export type ScreenSectionScrollOwner = "shell-body" | "section" | "table" | "none";
+
+export interface ScreenSectionInstance {
+  id: string;
+  title?: string;
+  slot: "body";
+  frameRef?: string;
+  patternRef: string;
+  supportingPatternRefs?: string[];
+  componentRefs: string[];
+  behaviorRefs: string[];
+  scrollOwner: ScreenSectionScrollOwner;
+}
+
+export interface ScreenSpecEntry {
+  screenId: string;
+  targetKind: ScreenTargetKind;
+  shellRef: string | null;
+  sections: ScreenSectionInstance[];
+  behaviorRefs: string[];
+  actionSetRef: string | null;
+  constraints: string[];
+  evidence: string[];
+}
+
+export interface ScreenSpecRegistry {
+  schemaVersion: 1;
+  specs: ScreenSpecEntry[];
+}
+
 export type ScreenRequestIntent = "reproduce" | "new" | "normalize" | "audit";
 export type ScreenTargetKind = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
 export type NormalizationClassification = "source-error" | "implementation-error" | "intentional-exception" | "normalization-candidate";
 export type ScreenTemplateControl = "input" | "select";
+export type ScreenGenerationTemplateId = "side-slide-form-editable-list.v1" | "center-modal-search-table.v1" | "page-entity-list.v1";
 
 export interface ScreenTemplateField {
   key: string;
@@ -125,6 +201,24 @@ export interface ScreenTemplateEditableRowSection {
   }>;
 }
 
+export interface ScreenTemplateTableColumn {
+  key: string;
+  label: string;
+  width: number;
+  align?: "left" | "center" | "right";
+}
+
+export interface ScreenTemplateSearchTableSection {
+  id: string;
+  title: string;
+  kind: "search-table";
+  searchPlaceholder?: string;
+  selectable?: boolean;
+  filters: Array<{ id: string; label: string; options: Array<{ id: string; label: string }> }>;
+  columns: ScreenTemplateTableColumn[];
+  rows: Array<{ id: string; values: Record<string, string> }>;
+}
+
 export interface ScreenRequest {
   schemaVersion: 1;
   requestId: string;
@@ -148,6 +242,7 @@ export interface ScreenRequest {
     sectionRefs?: string[];
     behaviorRefs?: string[];
     actionSetRef?: string;
+    sections?: ScreenSectionInstance[];
   };
   requirements: string[];
   normalizationDecisions?: Array<{
@@ -155,11 +250,26 @@ export interface ScreenRequest {
     classification: NormalizationClassification;
     reason: string;
   }>;
-  generation?: {
-    templateId: "side-slide-form-editable-list.v1";
-    panelSize: "narrow-760" | "medium-849" | "standard-900" | "wide-960";
-    sections: Array<ScreenTemplateFormSection | ScreenTemplateEditableRowSection>;
-  };
+  generation?:
+    | {
+        templateId: "side-slide-form-editable-list.v1";
+        panelSize: "narrow-760" | "medium-849" | "standard-900" | "wide-960";
+        sections: Array<ScreenTemplateFormSection | ScreenTemplateEditableRowSection>;
+      }
+    | {
+        templateId: "center-modal-search-table.v1";
+        modalSize: "medium-600" | "standard-960" | "wide-1024" | "large-1100" | "wide-1142" | "wide-1400";
+        sections: [ScreenTemplateSearchTableSection];
+      }
+    | {
+        templateId: "page-entity-list.v1";
+        pageTitle: string;
+        navigationLabel: string;
+        navigationItemLabel: string;
+        tabLabel: string;
+        pageSize: number;
+        sections: [ScreenTemplateSearchTableSection];
+      };
   output: {
     route: string;
     componentName: string;
@@ -173,7 +283,7 @@ export interface GenerationTemplateRegistryEntry {
   recipeRef: string;
   source: string;
   requiredPatternRefs: string[];
-  supportedSectionKinds: Array<"form-grid" | "editable-row-list">;
+  supportedSectionKinds: Array<"form-grid" | "editable-row-list" | "search-table">;
   output: "tsx";
   overwrite: "forbid";
 }
