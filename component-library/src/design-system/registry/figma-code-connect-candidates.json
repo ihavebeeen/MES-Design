@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "auditedAt": "2026-08-24",
+  "figmaFile": {
+    "fileKey": "qEAQNTqXf76bYydyupti2V",
+    "libraryName": "컴포넌트 라이브러리",
+    "libraryKey": "lk-b18394adafd4e66d689464bfdf113f4a6fe5462e042d2b47198f02b6ea9194a9f913571155b57296b8b8528c951ae291ce84df77fff7243305c1ddc3a7439632"
+  },
+  "capability": {
+    "codeConnect": "blocked-plan-or-seat",
+    "required": "Organization or Enterprise plan with a Dev or Full seat",
+    "figmaLibraryEditing": "available",
+    "screenCompositionFromInstances": "available"
+  },
+  "mappings": [
+    {
+      "id": "web.button",
+      "figmaNodeId": "163:8344",
+      "figmaName": "Button",
+      "source": "src/components/ui/button.tsx",
+      "componentName": "Button",
+      "framework": "React",
+      "status": "normalize-before-template",
+      "notes": [
+        "Figma type values must map from kebab-case to code variant camelCase.",
+        "Figma disable and hover are variant values while code uses native disabled and CSS hover.",
+        "Code-only variants and sizes need promotion review before adding to Figma."
+      ]
+    },
+    {
+      "id": "web.input-family",
+      "figmaNodeId": "163:6495",
+      "figmaName": "Input Textbox",
+      "source": null,
+      "componentName": null,
+      "framework": "React",
+      "status": "split-figma-component-set",
+      "candidateCodeComponents": ["Input", "Select", "SearchInput"],
+      "notes": ["A single Figma set combines multiple code component responsibilities."]
+    },
+    {
+      "id": "web.checkbox",
+      "figmaNodeId": "163:7154",
+      "figmaName": "checkbox",
+      "source": "src/components/ui/checkbox.tsx",
+      "componentName": "Checkbox",
+      "framework": "React",
+      "status": "normalize-property-api"
+    },
+    {
+      "id": "web.radio",
+      "figmaNodeId": "163:7143",
+      "figmaName": "mes/icon-radio",
+      "source": "src/components/ui/radio.tsx",
+      "componentName": "Radio",
+      "framework": "React",
+      "status": "normalize-property-api"
+    },
+    {
+      "id": "web.page-top-tab-item",
+      "figmaNodeId": "157:18051",
+      "figmaName": "page-top-tab-item",
+      "source": "src/components/ui/page-top-tab-item.tsx",
+      "componentName": "PageTopTabItem",
+      "framework": "React",
+      "status": "pilot-direct-map"
+    },
+    {
+      "id": "web.modal-header",
+      "figmaNodeId": "158:19454",
+      "figmaName": "modal-header",
+      "source": null,
+      "componentName": null,
+      "framework": "React",
+      "status": "code-component-missing",
+      "candidateComponentName": "DialogHeader"
+    },
+    {
+      "id": "mobile.button",
+      "figmaNodeId": "163:51128",
+      "figmaName": "Mobile Buttons",
+      "source": "src/components/mobile/mobile-ui.tsx",
+      "componentName": "MobileButton",
+      "framework": "React",
+      "status": "pilot-template-map"
+    },
+    {
+      "id": "mobile.tab-bar",
+      "figmaNodeId": "163:51332",
+      "figmaName": "Tab Bar - after login",
+      "source": "src/components/mobile/mobile-ui.tsx",
+      "componentName": "MobileTabBar",
+      "framework": "React",
+      "status": "pilot-map"
+    },
+    {
+      "id": "mobile.header",
+      "figmaNodeId": "163:51373",
+      "figmaName": "header",
+      "source": "src/components/mobile/mobile-ui.tsx",
+      "componentName": "MobileHeader",
+      "framework": "React",
+      "status": "pilot-map"
+    },
+    {
+      "id": "mobile.input",
+      "figmaNodeId": "163:51492",
+      "figmaName": "Input Textbox",
+      "source": "src/components/mobile/mobile-ui.tsx",
+      "componentName": "MobileInput",
+      "framework": "React",
+      "status": "pilot-map"
+    },
+    {
+      "id": "mobile.select",
+      "figmaNodeId": "163:51522",
+      "figmaName": "Selectbox",
+      "source": "src/components/mobile/mobile-ui.tsx",
+      "componentName": "MobileSelect",
+      "framework": "React",
+      "status": "extend-code-state-api"
+    },
+    {
+      "id": "mobile.toggle",
+      "figmaNodeId": "163:51463",
+      "figmaName": "Toggle",
+      "source": "src/components/mobile/mobile-ui.tsx",
+      "componentName": "MobileToggle",
+      "framework": "React",
+      "status": "pilot-direct-map"
+    },
+    {
+      "id": "mobile.tab",
+      "figmaNodeId": "163:51475",
+      "figmaName": "mobile-tab-item",
+      "source": null,
+      "componentName": null,
+      "framework": "React",
+      "status": "code-component-missing",
+      "candidateComponentName": "MobileTab"
+    },
+    {
+      "id": "mobile.step",
+      "figmaNodeId": "185:47116",
+      "figmaName": "Step List - Horizontal",
+      "source": "src/components/mobile/mobile-ui.tsx",
+      "componentName": "MobileStep",
+      "framework": "React",
+      "status": "pilot-map"
+    },
+    {
+      "id": "mobile.cta",
+      "figmaNodeId": "191:29305",
+      "figmaName": "mobile CTA",
+      "source": "src/components/mobile/mobile-ui.tsx",
+      "componentName": "MobileCta",
+      "framework": "React",
+      "status": "extend-code-state-api"
+    },
+    {
+      "id": "mobile.inspection-judgement",
+      "figmaNodeId": "185:45044",
+      "figmaName": "검사 버튼 리스트",
+      "source": "src/components/mobile/mobile-ui.tsx",
+      "componentName": "MobileQaGroup",
+      "framework": "React",
+      "status": "pilot-map"
+    }
+  ],
+  "codeOnlyReview": {
+    "componentCandidates": ["DialogHeader", "MobileTab", "MobileCompactField"],
+    "patternCandidates": ["MobileFormSection", "MobileInspectionQuestionList", "MobileTwoDepthMenu", "MobileDateNavigator"],
+    "excludedPreviewAssets": ["MobileDevice", "MobileHomePreview", "MobileReceivingListPreview", "MobileBottomSheetPreview"]
+  },
+  "nextCheckpoint": {
+    "requiresUserApproval": true,
+    "recommendedPath": "Create isolated MES v2 foundations and component pages in the existing Figma library, then add Code Connect after plan and seat eligibility is available."
+  }
+}
