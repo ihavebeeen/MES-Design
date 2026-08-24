@@ -26,6 +26,7 @@ const footerActionAuditRegistry = readJson("footer-action-audit.json");
 const contextRuleRegistry = readJson("context-rules.json");
 const generationTemplateRegistry = readJson("generation-templates.json");
 const mobileAssetRegistry = readJson("mobile-assets.json");
+const mobileVerificationRegistry = readJson("mobile-verification-contracts.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -74,6 +75,7 @@ checkVersion("footer-action-audit", footerActionAuditRegistry);
 checkVersion("context-rules", contextRuleRegistry);
 checkVersion("generation-templates", generationTemplateRegistry);
 checkVersion("mobile-assets", mobileAssetRegistry);
+checkVersion("mobile-verification-contracts", mobileVerificationRegistry);
 
 const mobileAssets = new Set([
   ...(mobileAssetRegistry.foundations ?? []).map((entry) => entry.id),
@@ -82,6 +84,47 @@ const mobileAssets = new Set([
   ...((mobileAssetRegistry.screenTypes?.main?.types ?? []).map((entry) => `mobile.screen.main.${entry.name}`)),
   ...((mobileAssetRegistry.screenTypes?.slidePopup?.types ?? []).map((name) => `mobile.screen.slide-popup.${name}`)),
 ]);
+
+const mobileVerificationFrames = mapByUniqueId("mobile-verification-contracts", mobileVerificationRegistry.frames ?? []);
+const mobileSnapshotDirectory = join(root, "tests", "visual", "mobile-design-system.spec.ts-snapshots");
+const mobileSnapshots = existsSync(mobileSnapshotDirectory) ? readdirSync(mobileSnapshotDirectory) : [];
+const allowedLayerStatuses = new Set(["verified", "reviewing"]);
+const approvalMaxDiffPixelRatio = mobileVerificationRegistry.policy?.raster?.approvalMaxDiffPixelRatio;
+
+if (mobileVerificationRegistry.policy?.raster?.figmaExportScale !== 2 || mobileVerificationRegistry.policy?.raster?.browserDeviceScaleFactor !== 2) {
+  errors.push("mobile-verification-contracts: Figma와 Chromium 비교 배율은 모두 2여야 합니다.");
+}
+if (typeof approvalMaxDiffPixelRatio !== "number" || approvalMaxDiffPixelRatio <= 0) {
+  errors.push("mobile-verification-contracts: raster 승인 상한이 필요합니다.");
+}
+for (const frame of mobileVerificationFrames.values()) {
+  if (!frame.node || !frame.path || !frame.frameSelector) errors.push(`mobile-verification '${frame.id}': node, path, frameSelector가 필요합니다.`);
+  if (!Array.isArray(frame.structure) || frame.structure.length === 0) errors.push(`mobile-verification '${frame.id}': 구조 계약이 필요합니다.`);
+  if (!Array.isArray(frame.interactions) || frame.interactions.length === 0) errors.push(`mobile-verification '${frame.id}': 동작 계약이 필요합니다.`);
+
+  const snapshotPrefix = frame.raster?.snapshot?.replace(/\.png$/, "");
+  if (!snapshotPrefix || !mobileSnapshots.some((file) => file.startsWith(snapshotPrefix) && file.endsWith(".png"))) {
+    errors.push(`mobile-verification '${frame.id}': 2x Figma snapshot '${frame.raster?.snapshot ?? ""}'이 없습니다.`);
+  }
+
+  for (const layer of ["structural", "raster", "interaction"]) {
+    if (!allowedLayerStatuses.has(frame.verification?.[layer])) errors.push(`mobile-verification '${frame.id}': ${layer} 상태가 잘못되었습니다.`);
+  }
+  if (frame.verification?.raster === "verified") {
+    if (typeof frame.raster?.measurementMaxDiffPixelRatio !== "number" || frame.raster.measurementMaxDiffPixelRatio > approvalMaxDiffPixelRatio || frame.verification?.overall !== "verified") {
+      errors.push(`mobile-verification '${frame.id}': raster 승인 프레임은 1% 상한과 overall verified를 만족해야 합니다.`);
+    }
+  } else if (typeof frame.raster?.diffPixelRatio !== "number" || frame.raster.diffPixelRatio <= approvalMaxDiffPixelRatio || frame.verification?.overall !== "implemented-reviewing") {
+    errors.push(`mobile-verification '${frame.id}': raster 검토 프레임은 측정값과 reviewing overall을 유지해야 합니다.`);
+  }
+}
+
+const mobileMainFrames = new Map((mobileAssetRegistry.sourceFrames?.main ?? []).map((frame) => [frame.verificationContract, frame]));
+for (const frame of mobileVerificationFrames.values()) {
+  const asset = mobileMainFrames.get(frame.id);
+  if (!asset) errors.push(`mobile-assets: verificationContract '${frame.id}' 연결이 없습니다.`);
+  else if (asset.status !== frame.verification.overall) errors.push(`mobile-assets '${frame.id}': 상태가 검증 계약과 다릅니다.`);
+}
 
 const actionSets = mapByUniqueId("action-sets", actionSetRegistry.actionSets ?? []);
 for (const actionSet of actionSets.values()) {

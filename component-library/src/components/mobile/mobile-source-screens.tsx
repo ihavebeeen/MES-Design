@@ -137,7 +137,7 @@ export function MobileHomeSourceScreen() {
       <section className="flex h-[728px] shrink-0 flex-col bg-[linear-gradient(179.96deg,#4891fc_0%,rgba(170,204,254,0.363)_47.98%,rgba(255,255,255,0)_95.93%)]">
         <MobileStatusBar transparent />
         <MobileSourceHeader home />
-        <div className="grid min-h-0 flex-1 grid-cols-2 grid-rows-4 gap-3 px-4 pb-6">
+        <div className="grid min-h-0 flex-1 grid-cols-2 grid-rows-4 gap-3 px-4 pb-6" data-mobile-part="home-menu-grid">
           {homeMenus.map(([label, icon]) => (
             <Button key={label} variant="lineBlacktxt" size="basic" aria-pressed={selected === label} onClick={() => setSelected(label)} className="h-full min-w-0 flex-col gap-3 rounded-[8px] border-0 bg-white px-5 text-[18px] font-bold tracking-[-0.225px] text-[#011327] shadow-[0_0_5px_rgba(54,135,252,0.2)] hover:bg-white aria-pressed:ring-2 aria-pressed:ring-[#1573fb]">
               <AssetImage src={icon} className="size-8 object-contain" />
@@ -153,7 +153,7 @@ export function MobileHomeSourceScreen() {
 
 function DateNavigator() {
   return (
-    <div className="flex h-[68px] shrink-0 items-start justify-between px-4 pt-2">
+    <div className="flex h-[68px] shrink-0 items-start justify-between px-4 pt-2" data-mobile-part="date-navigator">
       <MobileButton tone="line-black" size="small" aria-label="이전 날짜" className="size-9 min-w-0 border-0 bg-white p-0"><Image src="/mobile-assets/arrow-date.svg" alt="" width={8.21} height={15.42} className="h-[15.42px] w-[8.21px] rotate-180" /></MobileButton>
       <div className="flex h-9 items-center gap-[10px]"><span className="flex items-center rounded-full bg-white px-[6px] py-[3px] text-[13px] font-semibold leading-none tracking-[-0.1625px] text-[#0958d9]">오늘</span><strong className="text-[20px] font-bold leading-none tracking-[-0.25px] text-white">2025.07.30</strong></div>
       <MobileButton tone="line-black" size="small" aria-label="다음 날짜" className="size-9 min-w-0 border-0 bg-white p-0"><Image src="/mobile-assets/arrow-date.svg" alt="" width={8.21} height={15.42} className="h-[15.42px] w-[8.21px]" /></MobileButton>
@@ -175,10 +175,10 @@ export function MobileReceivingListSourceScreen() {
           <DateNavigator />
         </div>
       </div>
-      <main className="absolute inset-x-0 bottom-[84px] top-[167px] overflow-hidden rounded-t-[24px] bg-white px-4 pt-6 shadow-[0_4px_30px_rgba(0,0,0,0.24)]">
+      <main className="absolute inset-x-0 bottom-[84px] top-[167px] overflow-hidden rounded-t-[24px] bg-white px-4 pt-6 shadow-[0_4px_30px_rgba(0,0,0,0.24)]" data-mobile-part="content-surface">
         <div className="flex flex-col gap-[10px]">
           {receivingRows.map((state, index) => (
-            <MobileButton key={`${state}-${index}`} tone={state === "대기" ? "subtle" : "gray"} size="default" onClick={() => setActiveRow(index)} className={cn("h-[79px] w-full justify-start rounded-[12px] border-0 py-4 pl-5 pr-4 text-left", state === "대기" ? "bg-[#e8f5ff]" : "bg-[#eff2f8]", activeRow === index && "ring-2 ring-[#1573fb]") }>
+            <MobileButton key={`${state}-${index}`} tone={state === "대기" ? "subtle" : "gray"} size="default" onClick={() => setActiveRow(index)} className={cn("h-[79px] w-full justify-start rounded-[12px] border-0 py-4 pl-5 pr-4 text-left", state === "대기" ? "bg-[#e8f5ff]" : "bg-[#eff2f8]", activeRow === index && "ring-2 ring-[#1573fb]") } data-mobile-part="receiving-card">
               <span className="flex min-w-0 flex-1 flex-col items-start gap-[10px]">
                 <span className={cn("rounded-full px-[10px] py-1 text-[13px] font-semibold leading-none tracking-[-0.1625px] text-white", state === "대기" ? "bg-[#1573fb]" : "bg-[#99a3b8]")}>{state}</span>
                 <strong className="text-[16px] font-semibold leading-none tracking-[-0.2px] text-[#011327]">공급사 A (10건)</strong>
@@ -225,13 +225,13 @@ export function MobileProductionEntrySourceScreen() {
     <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:91789" data-mobile-source-screen="production-entry">
       <div className="absolute inset-x-0 top-[47px] h-[69px] bg-[linear-gradient(180deg,#1573fb_0%,#4b8fff_102.25%)]" aria-hidden="true" />
       <div className="absolute inset-x-0 top-0 z-20"><MobileStatusBar /><MobileSourceHeader title="성형기 1호" /></div>
-      <div className="absolute left-4 top-[99px] flex h-[37px] w-[343px] items-center gap-1.5 overflow-hidden rounded-[6px] border border-[#e4e7ee] bg-white px-3 py-2 text-[14px] tracking-[-0.175px]">
+      <div className="absolute left-4 top-[99px] flex h-[37px] w-[343px] items-center gap-1.5 overflow-hidden rounded-[6px] border border-[#e4e7ee] bg-white px-3 py-2 text-[14px] tracking-[-0.175px]" data-mobile-part="date-strip">
         <CalendarDays className="size-4 shrink-0" strokeWidth={1.33} />
         <strong className="font-semibold">지시일</strong>
         <strong className="min-w-0 flex-1 font-semibold">2025-07-01</strong>
         <Button variant="lineMain" size="xsmall" className="h-[21px] shrink-0 gap-[3px] border-0 px-0 text-[14px] font-semibold tracking-[-0.175px]">입력 4건 <Image src="/mobile-assets/production-date-arrow.svg" alt="" width={6.57} height={12.33} className="h-[12.33px] w-[6.57px]" /></Button>
       </div>
-      <main className="absolute left-4 top-[146px] flex w-[343px] flex-col gap-[10px]">
+      <main className="absolute left-4 top-[146px] flex w-[343px] flex-col gap-[10px]" data-mobile-part="production-sections">
         <section className="flex h-[207px] shrink-0 flex-col gap-2 rounded-[8px] border border-[#e4e7ee] p-3">
           <h3 className="text-[15px] font-bold leading-[22.5px] tracking-[-0.1875px] text-[#011327]">기본 정보</h3>
           <div className="flex flex-col gap-2">
@@ -250,11 +250,11 @@ export function MobileProductionEntrySourceScreen() {
           <div className="grid grid-cols-2 gap-[10px]"><CompactEditableField label="자동 BOM" value="A type" /><CompactEditableField label="SCAN 품목" value="" /></div>
         </section>
       </main>
-      <div className="absolute left-4 top-[603px] flex h-[50px] w-[343px] items-center gap-6">
+      <div className="absolute left-4 top-[603px] flex h-[50px] w-[343px] items-center gap-6" data-mobile-part="fixed-actions">
         <label className="flex shrink-0 items-center gap-1.5 text-[15px] font-semibold leading-[22.5px] tracking-[-0.1875px] text-black"><Checkbox checked={complete} onChange={(event) => setComplete(event.target.checked)} color="black" shape="circle" />완료 처리</label>
         <div className="flex min-w-0 flex-1 gap-[10px]"><MobileButton tone="gray" className="min-w-0 flex-1">취소</MobileButton><MobileButton className="min-w-0 flex-1">저장</MobileButton></div>
       </div>
-      <div className="absolute inset-x-0 top-[677px] flex items-center rounded-[8px]">
+      <div className="absolute inset-x-0 top-[677px] flex items-center rounded-[8px]" data-mobile-part="business-shortcuts">
         {productionShortcuts.map((item, index) => (
           <React.Fragment key={item.id}>
             {index > 0 && <span className="h-10 w-0 border-l border-[#e4e7ee]" aria-hidden="true" />}
@@ -284,7 +284,7 @@ export function MobileAllMenuSourceScreen() {
   return (
     <div className="flex h-[812px] w-[375px] flex-col overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:92070" data-mobile-source-screen="all-menu">
       <MobileStatusBar tone="white" />
-      <main className="h-[681px] shrink-0 overflow-hidden">
+      <main className="h-[681px] shrink-0 overflow-hidden" data-mobile-part="two-depth-container">
         <MobileTwoDepthMenu categories={mobileAllMenuCategories} initialCategoryId="production" initialItemId="extrusion" />
       </main>
       <MobileSourceTabBar />
@@ -315,16 +315,16 @@ export function MobileAppearanceInspectionSourceScreen() {
   return (
     <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:92529" data-mobile-source-screen="appearance-inspection">
       <div className="absolute inset-x-0 top-0 z-20 bg-white"><MobileStatusBar tone="white" /><MobileSourceHeader tone="white" /></div>
-      <h2 className="absolute left-[76px] top-[99px] h-[27px] w-[224px] truncate text-center text-[18px] font-bold leading-[27px] tracking-[-0.225px] text-[#011327]">캐나다 투칸두부배캣(신형/칼선)</h2>
-      <div className="absolute left-[52px] top-[142px] h-[34px] w-[272px]"><MobileStep labels={["기본정보", "외관검사", "중량검사", "특이사항"]} activeIndex={1} /></div>
-      <div className="absolute left-4 top-[200px] flex h-10 w-[343px] gap-[10px]">
+      <h2 className="absolute left-[76px] top-[99px] h-[27px] w-[224px] truncate text-center text-[18px] font-bold leading-[27px] tracking-[-0.225px] text-[#011327]" data-mobile-part="screen-title">캐나다 투칸두부배캣(신형/칼선)</h2>
+      <div className="absolute left-[52px] top-[142px] h-[34px] w-[272px]" data-mobile-part="stepper"><MobileStep labels={["기본정보", "외관검사", "중량검사", "특이사항"]} activeIndex={1} /></div>
+      <div className="absolute left-4 top-[200px] flex h-10 w-[343px] gap-[10px]" data-mobile-part="inspection-tools">
         <MobileButton tone="line-black" size="small" onClick={selectAll} className="min-w-0 flex-1 px-5"><Circle className="size-4 text-[#1573fb]" strokeWidth={2.5} />일괄 선택</MobileButton>
         <MobileButton tone="line-black" size="small" onClick={() => setValues({})} className="min-w-0 flex-1 px-5"><RotateCcw className="size-4" strokeWidth={2} />초기화</MobileButton>
       </div>
-      <main className="absolute left-4 top-[256px] h-[480px] w-[343px] overflow-hidden">
+      <main className="absolute left-4 top-[256px] h-[480px] w-[343px] overflow-hidden" data-mobile-part="inspection-list">
         <MobileInspectionQuestionList questions={[...appearanceQuestions]} values={values} onChange={(questionId, value) => setValues((current) => ({ ...current, [questionId]: value }))} />
       </main>
-      <footer className="absolute inset-x-0 top-[646px] z-30 h-[166px] bg-white shadow-[0_-12px_18px_rgba(255,255,255,0.96)]">
+      <footer className="absolute inset-x-0 top-[646px] z-30 h-[166px] bg-white shadow-[0_-12px_18px_rgba(255,255,255,0.96)]" data-mobile-part="fixed-footer">
         <div className="flex h-[82px] gap-[10px] p-4">
           <MobileButton tone="gray" className="min-w-0 flex-1"><Image src="/mobile-assets/arrow-back-white.svg" alt="" width={16} height={14} className="h-[14px] w-4 invert" />이전 페이지</MobileButton>
           <MobileButton className="min-w-0 flex-1">다음</MobileButton>
@@ -366,10 +366,10 @@ export function MobileDayLogSourceScreen() {
     <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:91977" data-mobile-source-screen="day-log">
       <div className="absolute inset-x-0 top-[47px] h-[69px] bg-[linear-gradient(180deg,#1573fb_0%,#4b8fff_102.25%)]" aria-hidden="true" />
       <div className="absolute inset-x-0 top-0 z-20"><MobileStatusBar /><MobileSourceHeader title="성형기 1호" /></div>
-      <div className="absolute left-4 top-[99px] z-20 flex h-[37px] w-[343px] items-center gap-1.5 overflow-hidden rounded-[6px] border border-[#e4e7ee] bg-white px-3 py-2 text-[14px] tracking-[-0.175px] text-[#011327]">
+      <div className="absolute left-4 top-[99px] z-20 flex h-[37px] w-[343px] items-center gap-1.5 overflow-hidden rounded-[6px] border border-[#e4e7ee] bg-white px-3 py-2 text-[14px] tracking-[-0.175px] text-[#011327]" data-mobile-part="date-strip">
         <CalendarDays className="size-4 shrink-0" strokeWidth={1.33} /><strong className="font-semibold">가동일</strong><strong className="font-semibold">2025-07-29</strong>
       </div>
-      <main className="absolute left-4 top-[146px] flex w-[343px] flex-col gap-[10px]">
+      <main className="absolute left-4 top-[146px] flex w-[343px] flex-col gap-[10px]" data-mobile-part="day-log-sections">
         <MobileFormSection title="기본 정보" className="h-[129px]">
           <div className="grid grid-cols-2 gap-[10px]"><MobileCompactField label="작성자" value={values.author} onChange={update("author")} /><MobileCompactField label="작성일자" value={values.writtenAt} onChange={update("writtenAt")} /></div>
           <div className="flex h-[34px] items-center"><span className="w-[74px] shrink-0 text-[15px] leading-[22.5px] tracking-[-0.1875px] text-[#5c667b]">일지구분</span><MobileRadioGroup label="일지구분" value={shift} onChange={setShift} options={[{ value: "day", label: "주간" }, { value: "night", label: "야간" }, { value: "disabled", label: "사용안함", disabled: true }]} /></div>
@@ -390,7 +390,7 @@ export function MobileDayLogSourceScreen() {
           <Button variant="lineMain" size="small" className="mt-1 h-8 w-full rounded-[4px] border-0 bg-[#e8f5ff] px-[10px] text-[14px] font-bold hover:bg-[#e8f5ff]">메모기록 <span aria-hidden="true">›</span></Button>
         </MobileFormSection>
       </main>
-      <div className="absolute left-4 top-[662px] z-30 flex h-[50px] w-[343px] gap-[10px] bg-white">
+      <div className="absolute left-4 top-[662px] z-30 flex h-[50px] w-[343px] gap-[10px] bg-white" data-mobile-part="fixed-actions">
         <MobileButton tone="gray" onClick={reset} className="min-w-0 flex-1">취소</MobileButton>
         <MobileButton onClick={() => setSaved(true)} className="min-w-0 flex-1">저장</MobileButton>
       </div>

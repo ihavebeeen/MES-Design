@@ -1,6 +1,61 @@
 import { expect, test } from "@playwright/test";
+import mobileVerification from "../../src/design-system/registry/mobile-verification-contracts.json";
 
 test.setTimeout(180_000);
+
+type ContractBox = { x: number; y: number; width: number; height: number };
+type ContractStyle = Partial<
+  Record<"backgroundColor" | "borderRadius" | "gap" | "fontSize" | "fontWeight" | "color", string>
+>;
+type StructuralContract = {
+  selector: string;
+  index?: number;
+  box: ContractBox;
+  style?: ContractStyle;
+};
+
+async function expectStructuralContract(
+  page: import("@playwright/test").Page,
+  frame: (typeof mobileVerification.frames)[number],
+) {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(frame.path);
+
+  const root = page.locator(frame.frameSelector);
+  expect(await root.boundingBox()).toEqual({ x: 0, y: 0, width: 375, height: 812 });
+  expect(await root.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+
+  const tolerance = mobileVerification.policy.structural.coordinateTolerancePx;
+  for (const contract of frame.structure as StructuralContract[]) {
+    const element = page.locator(contract.selector).nth(contract.index ?? 0);
+    const actualBox = await element.boundingBox();
+    expect(actualBox, `${frame.id}: ${contract.selector} 요소가 없습니다.`).not.toBeNull();
+
+    for (const key of ["x", "y", "width", "height"] as const) {
+      expect(
+        Math.abs(actualBox![key] - contract.box[key]),
+        `${frame.id}: ${contract.selector} ${key}`,
+      ).toBeLessThanOrEqual(tolerance);
+    }
+
+    if (contract.style) {
+      const actualStyle = await element.evaluate((node) => {
+        const style = getComputedStyle(node);
+        return {
+          backgroundColor: style.backgroundColor,
+          borderRadius: style.borderRadius,
+          gap: style.gap,
+          fontSize: style.fontSize,
+          fontWeight: style.fontWeight,
+          color: style.color,
+        };
+      });
+      for (const [property, value] of Object.entries(contract.style)) {
+        expect(actualStyle[property as keyof ContractStyle], `${frame.id}: ${contract.selector} ${property}`).toBe(value);
+      }
+    }
+  }
+}
 
 async function expectFigmaFrame(page: import("@playwright/test").Page, path: string, selector: string, snapshot: string, currentGuard: number) {
   await page.setViewportSize({ width: 375, height: 812 });
@@ -61,7 +116,7 @@ test("Mobile 탭은 전용 컴포넌트 상태와 정적 경로를 제공한다"
   await expect(page).toHaveScreenshot("mobile-components-catalog.png");
 });
 
-test("원본 화면은 Figma 대표 프레임을 375×812로 재현한다", async ({ page }) => {
+test("대표 원본 화면 목록과 기존 1× 호환 기준을 유지한다", async ({ page }) => {
   await page.goto("/mobile/mobile-screens");
 
   await expect(page.getByRole("link", { name: "원본 화면 Source Screens" }).first()).toBeVisible();
@@ -81,16 +136,44 @@ test("원본 화면은 Figma 대표 프레임을 375×812로 재현한다", asyn
   for (const item of cases) {
     await expectFigmaFrame(page, item.path, item.selector, item.snapshot, item.currentGuard);
   }
+});
+
+test("모바일 검증 1 · 대표 6종의 위치·크기·간격·색상·radius 계약", async ({ page }) => {
+  for (const frame of mobileVerification.frames) {
+    await expectStructuralContract(page, frame);
+  }
+});
+
+test.describe("모바일 검증 2 · Figma 2×와 Chromium 2× 렌더링 비교", () => {
+  test.use({ deviceScaleFactor: mobileVerification.policy.raster.browserDeviceScaleFactor });
+
+  for (const frame of mobileVerification.frames) {
+    test(`${frame.id} 텍스트·SVG 가장자리 포함 픽셀 차이`, async ({ page }) => {
+      await page.setViewportSize({ width: 375, height: 812 });
+      await page.goto(frame.path);
+      await expect(page).toHaveScreenshot(frame.raster.snapshot, {
+        scale: "device",
+        threshold: mobileVerification.policy.raster.comparisonThreshold,
+        maxDiffPixelRatio: frame.raster.measurementMaxDiffPixelRatio,
+      });
+    });
+  }
+});
+
+test("모바일 검증 3 · 대표 6종의 클릭·입력·선택 계약", async ({ page }) => {
+  const executed = new Set<string>();
 
   await page.goto("/visual-regression/mobile-source/home");
   const homeMenu = page.getByRole("button", { name: "생산관리", exact: true });
   await homeMenu.click();
   await expect(homeMenu).toHaveAttribute("aria-pressed", "true");
+  executed.add("home-menu-selection");
 
   await page.goto("/visual-regression/mobile-source/receiving-list");
   const receivingRows = page.locator('[data-mobile-source-screen="receiving-list"] main button');
   await receivingRows.nth(1).click();
   await expect(receivingRows.nth(1)).toHaveClass(/ring-2/);
+  executed.add("receiving-row-selection");
 
   await page.goto("/visual-regression/mobile-source/production-entry");
   const production = page.locator('[data-mobile-source-screen="production-entry"]');
@@ -98,36 +181,54 @@ test("원본 화면은 Figma 대표 프레임을 375×812로 재현한다", asyn
   await expect(completion).toBeChecked();
   await completion.click();
   await expect(completion).not.toBeChecked();
+  executed.add("completion-toggle");
   const quantity = production.locator('input[value="999,999"]');
   await quantity.fill("1000000");
   await expect(quantity).toHaveValue("1000000");
+  executed.add("production-quantity-edit");
 
   await page.goto("/visual-regression/mobile-source/all-menu");
   const allMenu = page.locator('[data-mobile-source-screen="all-menu"]');
   await expect(allMenu.getByRole("button", { name: "생산관리", exact: true })).toHaveAttribute("aria-pressed", "true");
   await allMenu.getByRole("button", { name: "품질검사", exact: true }).click();
   await expect(allMenu.getByRole("button", { name: "품질검사", exact: true })).toHaveAttribute("aria-pressed", "true");
+  executed.add("primary-menu-selection");
   await expect(allMenu.getByRole("navigation", { name: "세부 업무" })).toContainText("공정검사");
+  executed.add("secondary-menu-content-change");
 
   await page.goto("/visual-regression/mobile-source/appearance-inspection");
   const inspection = page.locator('[data-mobile-source-screen="appearance-inspection"]');
   await inspection.getByRole("button", { name: "초기화", exact: true }).click();
   await expect(inspection.getByRole("button", { name: "결로/플러그자국/밀착 양호", exact: true }).first()).toHaveAttribute("aria-pressed", "false");
+  executed.add("inspection-reset");
   await inspection.getByRole("button", { name: "일괄 선택", exact: true }).click();
-  await expect(inspection.getByRole("button", { name: "결로/플러그자국/밀착 양호", exact: true }).first()).toHaveAttribute("aria-pressed", "true");
+  const firstJudgement = inspection.getByRole("button", { name: "결로/플러그자국/밀착 양호", exact: true }).first();
+  await expect(firstJudgement).toHaveAttribute("aria-pressed", "true");
+  executed.add("inspection-select-all");
+  const firstCaution = inspection.getByRole("button", { name: "결로/플러그자국/밀착 주의", exact: true }).first();
+  await firstCaution.click();
+  await expect(firstCaution).toHaveAttribute("aria-pressed", "true");
+  await expect(firstJudgement).toHaveAttribute("aria-pressed", "false");
+  executed.add("single-judgement");
 
   await page.goto("/visual-regression/mobile-source/day-log");
   const dayLog = page.locator('[data-mobile-source-screen="day-log"]');
   await dayLog.getByRole("radio", { name: "야간", exact: true }).click();
   await expect(dayLog.getByRole("radio", { name: "야간", exact: true })).toHaveAttribute("aria-checked", "true");
+  executed.add("shift-selection");
   const moldChange = dayLog.getByRole("textbox", { name: "금형교체", exact: true });
   await moldChange.fill("120");
+  await expect(moldChange).toHaveValue("120");
+  executed.add("day-log-edit");
   await dayLog.getByRole("button", { name: "저장", exact: true }).click();
   await expect(dayLog.getByRole("status")).toHaveText("저장되었습니다.");
+  executed.add("day-log-save");
   await dayLog.getByRole("button", { name: "취소", exact: true }).click();
   await expect(moldChange).toHaveValue("100");
+  executed.add("day-log-cancel-restore");
 
-  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+  const declared = mobileVerification.frames.flatMap((frame) => frame.interactions).sort();
+  expect([...executed].sort()).toEqual(declared);
 });
 
 test("팝업 자산은 Figma 대표 프레임 3종을 375×812로 재현하고 상호작용한다", async ({ page }) => {

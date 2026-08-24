@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "structural": {
+      "coordinateTolerancePx": 0.5,
+      "requiredProperties": ["position", "size", "spacing", "color", "radius"]
+    },
+    "raster": {
+      "figmaExportScale": 2,
+      "browserDeviceScaleFactor": 2,
+      "comparisonThreshold": 0.2,
+      "approvalMaxDiffPixelRatio": 0.01
+    },
+    "interaction": {
+      "approvalRule": "all-declared-contracts-pass"
+    }
+  },
+  "frames": [
+    {
+      "id": "home",
+      "node": "10378:91938",
+      "path": "/visual-regression/mobile-source/home",
+      "frameSelector": "[data-mobile-source-screen='home']",
+      "structure": [
+        { "selector": "[data-mobile-part='status-bar']", "box": { "x": 0, "y": 0, "width": 375, "height": 47 } },
+        { "selector": "[data-mobile-part='header']", "box": { "x": 0, "y": 47, "width": 375, "height": 60 } },
+        { "selector": "[data-mobile-part='home-menu-grid']", "box": { "x": 0, "y": 107, "width": 375, "height": 621 }, "style": { "gap": "12px" } },
+        { "selector": "[data-mobile-part='bottom-tabbar']", "box": { "x": 0, "y": 728, "width": 375, "height": 84 }, "style": { "backgroundColor": "rgb(255, 255, 255)" } }
+      ],
+      "raster": { "snapshot": "mobile-figma-2x-home.png", "status": "verified", "diffPixelRatioUpperBound": 0.01, "measurementMaxDiffPixelRatio": 0.01 },
+      "verification": { "structural": "verified", "raster": "verified", "interaction": "verified", "overall": "verified" },
+      "interactions": ["home-menu-selection"]
+    },
+    {
+      "id": "receiving-list",
+      "node": "10378:91889",
+      "path": "/visual-regression/mobile-source/receiving-list",
+      "frameSelector": "[data-mobile-source-screen='receiving-list']",
+      "structure": [
+        { "selector": "[data-mobile-part='status-bar']", "box": { "x": 0, "y": 0, "width": 375, "height": 47 }, "style": { "backgroundColor": "rgb(21, 115, 251)" } },
+        { "selector": "[data-mobile-part='header']", "box": { "x": 0, "y": 47, "width": 375, "height": 52 } },
+        { "selector": "[data-mobile-part='date-navigator']", "box": { "x": 0, "y": 99, "width": 375, "height": 68 } },
+        { "selector": "[data-mobile-part='content-surface']", "box": { "x": 0, "y": 167, "width": 375, "height": 561 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "24px 24px 0px 0px" } },
+        { "selector": "[data-mobile-part='receiving-card']", "index": 0, "box": { "x": 16, "y": 191, "width": 343, "height": 79 }, "style": { "backgroundColor": "rgb(232, 245, 255)", "borderRadius": "12px" } },
+        { "selector": "[data-mobile-part='receiving-card']", "index": 3, "box": { "x": 16, "y": 458, "width": 343, "height": 79 }, "style": { "backgroundColor": "rgb(239, 242, 248)", "borderRadius": "12px" } }
+      ],
+      "raster": { "snapshot": "mobile-figma-2x-receiving-list.png", "status": "verified", "diffPixelRatioUpperBound": 0.01, "measurementMaxDiffPixelRatio": 0.01 },
+      "verification": { "structural": "verified", "raster": "verified", "interaction": "verified", "overall": "verified" },
+      "interactions": ["receiving-row-selection"]
+    },
+    {
+      "id": "production-entry",
+      "node": "10378:91789",
+      "path": "/visual-regression/mobile-source/production-entry",
+      "frameSelector": "[data-mobile-source-screen='production-entry']",
+      "structure": [
+        { "selector": "[data-mobile-part='date-strip']", "box": { "x": 16, "y": 99, "width": 343, "height": 37 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "6px", "gap": "6px" } },
+        { "selector": "[data-mobile-part='production-sections']", "box": { "x": 16, "y": 146, "width": 343, "height": 441 }, "style": { "gap": "10px" } },
+        { "selector": "[data-mobile-part='production-sections'] > section", "index": 0, "box": { "x": 16, "y": 146, "width": 343, "height": 207 }, "style": { "borderRadius": "8px", "gap": "8px" } },
+        { "selector": "[data-mobile-part='production-sections'] > section", "index": 1, "box": { "x": 16, "y": 363, "width": 343, "height": 127 }, "style": { "borderRadius": "8px", "gap": "8px" } },
+        { "selector": "[data-mobile-part='production-sections'] > section", "index": 2, "box": { "x": 16, "y": 500, "width": 343, "height": 87 }, "style": { "borderRadius": "8px", "gap": "8px" } },
+        { "selector": "[data-mobile-part='fixed-actions']", "box": { "x": 16, "y": 603, "width": 343, "height": 50 }, "style": { "gap": "24px" } },
+        { "selector": "[data-mobile-part='business-shortcuts']", "box": { "x": 0, "y": 677, "width": 375, "height": 71 } }
+      ],
+      "raster": { "snapshot": "mobile-figma-2x-production-entry.png", "status": "reviewing", "diffPixelRatio": 0.01647, "measurementMaxDiffPixelRatio": 0.018 },
+      "verification": { "structural": "verified", "raster": "reviewing", "interaction": "verified", "overall": "implemented-reviewing" },
+      "interactions": ["completion-toggle", "production-quantity-edit"]
+    },
+    {
+      "id": "all-menu",
+      "node": "10378:92070",
+      "path": "/visual-regression/mobile-source/all-menu",
+      "frameSelector": "[data-mobile-source-screen='all-menu']",
+      "structure": [
+        { "selector": "[data-mobile-part='two-depth-container']", "box": { "x": 0, "y": 47, "width": 375, "height": 681 } },
+        { "selector": "[data-mobile-part='primary-menu']", "box": { "x": 0, "y": 48, "width": 120, "height": 680 }, "style": { "backgroundColor": "rgb(239, 242, 248)", "gap": "2px" } },
+        { "selector": "[data-mobile-part='secondary-menu']", "box": { "x": 120, "y": 48, "width": 255, "height": 680 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "gap": "2px" } }
+      ],
+      "raster": { "snapshot": "mobile-figma-2x-all-menu.png", "status": "verified", "diffPixelRatioUpperBound": 0.01, "measurementMaxDiffPixelRatio": 0.01 },
+      "verification": { "structural": "verified", "raster": "verified", "interaction": "verified", "overall": "verified" },
+      "interactions": ["primary-menu-selection", "secondary-menu-content-change"]
+    },
+    {
+      "id": "appearance-inspection",
+      "node": "10378:92529",
+      "path": "/visual-regression/mobile-source/appearance-inspection",
+      "frameSelector": "[data-mobile-source-screen='appearance-inspection']",
+      "structure": [
+        { "selector": "[data-mobile-part='screen-title']", "box": { "x": 76, "y": 99, "width": 224, "height": 27 }, "style": { "fontSize": "18px", "fontWeight": "700", "color": "rgb(1, 19, 39)" } },
+        { "selector": "[data-mobile-part='stepper']", "box": { "x": 52, "y": 142, "width": 272, "height": 34 } },
+        { "selector": "[data-mobile-part='inspection-tools']", "box": { "x": 16, "y": 200, "width": 343, "height": 40 }, "style": { "gap": "10px" } },
+        { "selector": "[data-mobile-part='inspection-list']", "box": { "x": 16, "y": 256, "width": 343, "height": 480 } },
+        { "selector": "[data-mobile-part='fixed-footer']", "box": { "x": 0, "y": 646, "width": 375, "height": 166 }, "style": { "backgroundColor": "rgb(255, 255, 255)" } },
+        { "selector": "[data-mobile-pattern='inspection-question-list'] button", "index": 0, "box": { "x": 192.5, "y": 256, "width": 50.5, "height": 32 }, "style": { "backgroundColor": "rgb(21, 115, 251)", "borderRadius": "4px" } }
+      ],
+      "raster": { "snapshot": "mobile-figma-2x-appearance-inspection.png", "status": "verified", "diffPixelRatioUpperBound": 0.01, "measurementMaxDiffPixelRatio": 0.01 },
+      "verification": { "structural": "verified", "raster": "verified", "interaction": "verified", "overall": "verified" },
+      "interactions": ["inspection-reset", "inspection-select-all", "single-judgement"]
+    },
+    {
+      "id": "day-log",
+      "node": "10378:91977",
+      "path": "/visual-regression/mobile-source/day-log",
+      "frameSelector": "[data-mobile-source-screen='day-log']",
+      "structure": [
+        { "selector": "[data-mobile-part='date-strip']", "box": { "x": 16, "y": 99, "width": 343, "height": 37 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "6px", "gap": "6px" } },
+        { "selector": "[data-mobile-part='day-log-sections']", "box": { "x": 16, "y": 146, "width": 343, "height": 487 }, "style": { "gap": "10px" } },
+        { "selector": "[data-mobile-section='기본 정보']", "box": { "x": 16, "y": 146, "width": 343, "height": 129 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "8px", "gap": "8px" } },
+        { "selector": "[data-mobile-section='가동정보']", "box": { "x": 16, "y": 285, "width": 343, "height": 87 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "8px", "gap": "8px" } },
+        { "selector": "[data-mobile-section='비가동 시간 입력']", "box": { "x": 16, "y": 382, "width": 343, "height": 251 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "8px", "gap": "8px" } },
+        { "selector": "[data-mobile-part='fixed-actions']", "box": { "x": 16, "y": 662, "width": 343, "height": 50 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "gap": "10px" } }
+      ],
+      "raster": { "snapshot": "mobile-figma-2x-day-log.png", "status": "reviewing", "diffPixelRatio": 0.011802, "measurementMaxDiffPixelRatio": 0.013 },
+      "verification": { "structural": "verified", "raster": "reviewing", "interaction": "verified", "overall": "implemented-reviewing" },
+      "interactions": ["shift-selection", "day-log-edit", "day-log-save", "day-log-cancel-restore"]
+    }
+  ]
+}

@@ -57,7 +57,7 @@ export function MobileTwoDepthMenu({
 
   return (
     <div className="flex h-full w-full border-t border-[#e4e7ee] bg-white" data-mobile-pattern="two-depth-menu">
-      <nav className="flex h-full w-[120px] shrink-0 flex-col gap-0.5 bg-[#eff2f8] py-[10px]" aria-label="업무 분류">
+      <nav className="flex h-full w-[120px] shrink-0 flex-col gap-0.5 bg-[#eff2f8] py-[10px]" aria-label="업무 분류" data-mobile-part="primary-menu">
         {categories.map((category) => {
           const selected = category.id === activeCategory?.id;
           return (
@@ -78,7 +78,7 @@ export function MobileTwoDepthMenu({
           );
         })}
       </nav>
-      <nav className="flex h-full min-w-0 flex-1 flex-col gap-0.5 bg-white py-[10px]" aria-label="세부 업무">
+      <nav className="flex h-full min-w-0 flex-1 flex-col gap-0.5 bg-white py-[10px]" aria-label="세부 업무" data-mobile-part="secondary-menu">
         {activeCategory?.items.map((item) => (
           <Button
             key={item.id}
@@ -303,7 +303,7 @@ export function MobileRadioGroup({ value, options, onChange, label }: { value: s
 
 export function MobileFormSection({ title, suffix, children, className }: { title: string; suffix?: string; children: React.ReactNode; className?: string }) {
   return (
-    <section className={cn("flex w-full flex-col gap-2 rounded-[8px] border border-[#e4e7ee] bg-white p-3", className)} data-mobile-pattern="form-section">
+    <section className={cn("flex w-full flex-col gap-2 rounded-[8px] border border-[#e4e7ee] bg-white p-3", className)} data-mobile-pattern="form-section" data-mobile-section={title}>
       <h3 className="flex h-[22.5px] items-center gap-1 text-[15px] font-bold leading-[22.5px] tracking-[-0.1875px] text-[#011327]">{title}{suffix && <span className="text-[14px] font-normal tracking-[-0.175px] text-[#8491a7]">{suffix}</span>}</h3>
       {children}
     </section>

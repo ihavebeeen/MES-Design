@@ -27,6 +27,7 @@
     "check:screen-contracts": "node scripts/check-screen-request-fixtures.mjs",
     "check:design-system": "npm run check:patterns && npm run check:registry && npm run check:experimental && npm run check:experimental-decisions && npm run check:design-values && npm run check:composition-inventory && npm run check:tier-coverage && npm run check:screen-contracts && npm run mcp:check",
     "test:visual": "playwright test",
+    "test:mobile:verification": "playwright test tests/visual/mobile-design-system.spec.ts --grep \"모바일 검증\"",
     "test:visual:update": "playwright test --update-snapshots"
   },
   "dependencies": {
