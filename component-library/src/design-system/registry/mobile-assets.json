@@ -28,7 +28,12 @@
     { "id": "mobile.inspection", "name": "MobileInspectionJudgement", "sourceNode": "185:45655", "states": ["○", "△", "✕"] },
     { "id": "mobile.text-section", "name": "MobileTextSection", "sourceNode": "191:29273", "states": ["list-card", "time-value", "scan-value", "disabled"] },
     { "id": "mobile.radio", "name": "MobileRadioGroup", "sourceNode": "10378:91993", "states": ["selected", "unselected", "disabled"] },
-    { "id": "mobile.compact-field", "name": "MobileCompactField", "sourceNode": "10378:91985", "states": ["editable", "readonly", "empty"], "sizes": ["32px"] }
+    { "id": "mobile.compact-field", "name": "MobileCompactField", "sourceNode": "10378:91985", "states": ["editable", "readonly", "empty"], "sizes": ["32px"] },
+    { "id": "mobile.date-strip", "name": "MobileDateStrip", "sourceNode": "10378:91516 · 10378:93359 · 10378:93003 · 10378:93248", "states": ["date-only", "date-with-entry-count"] },
+    { "id": "mobile.fixed-actions", "name": "MobileFixedActions", "sourceNode": "10378:93359 · 10378:92711 · 10378:92896 · 10378:92470", "states": ["primary", "cancel-primary", "previous-next"] },
+    { "id": "mobile.sheet-header", "name": "MobileSheetHeader", "sourceNode": "10378:92107 · 10378:92247 · 10378:91300", "states": ["title", "title-subtitle", "close"] },
+    { "id": "mobile.sheet-actions", "name": "MobileSheetActions", "sourceNode": "10378:92247 · 10378:93516 · 10378:90976", "states": ["single-primary", "cancel-primary"] },
+    { "id": "mobile.center-dialog", "name": "MobileCenterDialogCard", "sourceNode": "10378:93451 · 10378:93543", "states": ["confirmation", "error"] }
   ],
   "patterns": [
     { "id": "mobile.shell.main-list", "name": "날짜 기반 메인 리스트", "rules": ["status/header/date는 고정", "본문은 24px top-radius surface", "bottom tab 고정"] },
@@ -38,6 +43,9 @@
     { "id": "mobile.inspection.question-list", "name": "검사항목 판정 목록", "rules": ["질문과 O·△·X 판정을 1:1 폭으로 배치", "행 높이 32px, 행 간격 16px", "행마다 단일 판정", "O는 primary, △는 dark neutral, X는 danger"] },
     { "id": "mobile.form.section", "name": "모바일 입력 섹션", "rules": ["343px 본문 폭", "8px radius와 12px padding", "제목 아래 8px 간격", "필드는 32px 높이와 74px label column"] },
     { "id": "mobile.flow.quality-step", "name": "품질검사 단계 흐름", "rules": ["기본정보→외관검사→중량검사→특이사항", "완료·현재·미진행 상태 분리"] },
+    { "id": "mobile.list.compact-operation-table", "name": "모바일 업무 목록 표", "rules": ["가로 스크롤 없이 343px 안에서 업무 핵심 열만 유지", "세부 입력은 행 또는 다음 화면으로 이동", "헤더와 본문 열 정렬을 동일 grid로 고정"] },
+    { "id": "mobile.form.hourly-entry", "name": "시간대별 입력 목록", "rules": ["시간 레이블 64px 고정", "32px compact field 반복", "화면 하단 저장 CTA 고정"] },
+    { "id": "mobile.dialog.feedback", "name": "확인·오류 중앙 대화상자", "rules": ["업무 흐름을 막아야 하는 짧은 확인·오류에만 사용", "제목·설명·한두 개 CTA 구성", "입력·선택 작업은 bottom sheet 사용"] },
     { "id": "mobile.behavior.back-preserve", "name": "뒤로가기 임시저장", "rules": ["이전 화면으로 돌아가도 작성 내용을 임시 유지"] },
     { "id": "mobile.behavior.toast", "name": "저장 피드백", "rules": ["저장 버튼 위 28px", "2.5–3초", "중복 억제 후 최신 1개"] }
   ],
@@ -72,39 +80,39 @@
       { "node": "10378:91889", "name": "입고지시 리스트", "status": "implemented-reviewing" },
       { "node": "10378:91789", "name": "생산실적 등록", "status": "implemented-reviewing" },
       { "node": "10378:91977", "name": "일지작성", "status": "implemented-reviewing" },
-      { "node": "10378:91516", "name": "입고실적 등록", "status": "queued" },
-      { "node": "10378:93359", "name": "정비 스캔", "status": "queued" },
+      { "node": "10378:91516", "name": "입고실적 등록", "status": "implemented-reviewing" },
+      { "node": "10378:93359", "name": "정비 스캔", "status": "implemented-reviewing" },
       { "node": "10378:92529", "name": "외관검사", "status": "implemented-reviewing" },
-      { "node": "10378:92711", "name": "중량검사", "status": "queued" },
-      { "node": "10378:92896", "name": "특이사항", "status": "queued" },
+      { "node": "10378:92711", "name": "중량검사", "status": "implemented-reviewing" },
+      { "node": "10378:92896", "name": "특이사항", "status": "implemented-reviewing" },
       { "node": "10378:92070", "name": "전체메뉴", "status": "implemented-reviewing" },
-      { "node": "10378:92192", "name": "사용자설정", "status": "queued" },
-      { "node": "10378:92237", "name": "로그인", "status": "queued" },
-      { "node": "10378:92470", "name": "성적서 기본정보", "status": "queued" },
-      { "node": "10378:93313", "name": "가동시간", "status": "queued" },
-      { "node": "10378:92956", "name": "입고검사", "status": "queued" },
-      { "node": "10378:93003", "name": "출하검사 세부사항", "status": "queued" },
-      { "node": "10378:93119", "name": "입고검사 세부사항 2", "status": "queued" },
-      { "node": "10378:93078", "name": "입고검사 세부사항 1", "status": "queued" },
-      { "node": "10378:93248", "name": "설비점검 목록", "status": "queued" }
+      { "node": "10378:92192", "name": "사용자설정", "status": "implemented-reviewing" },
+      { "node": "10378:92237", "name": "로그인 (원본 미정)", "status": "implemented-reviewing" },
+      { "node": "10378:92470", "name": "성적서 기본정보", "status": "implemented-reviewing" },
+      { "node": "10378:93313", "name": "시간대별 특이사항", "status": "implemented-reviewing" },
+      { "node": "10378:92956", "name": "입고검사", "status": "implemented-reviewing" },
+      { "node": "10378:93003", "name": "출하검사 세부사항", "status": "implemented-reviewing" },
+      { "node": "10378:93119", "name": "입고검사 외관검사", "status": "implemented-reviewing" },
+      { "node": "10378:93078", "name": "입고검사 기본정보", "status": "implemented-reviewing" },
+      { "node": "10378:93248", "name": "설비점검 목록", "status": "implemented-reviewing" }
     ],
     "popup": [
-      { "node": "10378:91087", "name": "스캔 키패드", "status": "queued" },
+      { "node": "10378:91087", "name": "BOM 선택", "status": "implemented-reviewing" },
       { "node": "10378:91697", "name": "작업인원 선택", "status": "implemented-reviewing" },
-      { "node": "10378:92107", "name": "알람 내역", "status": "queued" },
-      { "node": "10378:92247", "name": "입고실적 입력값", "status": "queued" },
-      { "node": "10378:92653", "name": "실적등록 입력내역", "status": "queued" },
-      { "node": "10378:93451", "name": "LOT 기준수량 확인", "status": "queued" },
-      { "node": "10378:93481", "name": "라벨 수동입력", "status": "queued" },
-      { "node": "10378:93516", "name": "LOT 분할", "status": "queued" },
-      { "node": "10378:93543", "name": "입력 오류", "status": "queued" },
+      { "node": "10378:92107", "name": "알람 내역", "status": "implemented-reviewing" },
+      { "node": "10378:92247", "name": "입고실적 입력값", "status": "implemented-reviewing" },
+      { "node": "10378:92653", "name": "실적등록 입력내역", "status": "implemented-reviewing" },
+      { "node": "10378:93451", "name": "LOT 기준수량 확인", "status": "implemented-reviewing" },
+      { "node": "10378:93481", "name": "품목 상세", "status": "implemented-reviewing" },
+      { "node": "10378:93516", "name": "LOT 분할", "status": "implemented-reviewing" },
+      { "node": "10378:93543", "name": "입력 오류", "status": "implemented-reviewing" },
       { "node": "10378:91004", "name": "생산수량 입력", "status": "implemented-reviewing" },
-      { "node": "10378:91300", "name": "스캔 입력", "status": "queued" },
-      { "node": "10378:93886", "name": "작업시간 선택", "status": "queued" },
-      { "node": "10378:90976", "name": "수동·자동 계산", "status": "queued" },
+      { "node": "10378:91300", "name": "스캔 입력", "status": "implemented-reviewing" },
+      { "node": "10378:93886", "name": "작업시간 선택", "status": "implemented-reviewing" },
+      { "node": "10378:90976", "name": "수동·자동 계산", "status": "implemented-reviewing" },
       { "node": "10378:93868", "name": "메모", "status": "implemented-reviewing" },
-      { "node": "10378:93567", "name": "출하 입력값", "status": "queued" },
-      { "node": "10378:90932", "name": "불량수량·유형", "status": "queued" }
+      { "node": "10378:93567", "name": "출하 입력값", "status": "implemented-reviewing" },
+      { "node": "10378:90932", "name": "불량수량·유형", "status": "implemented-reviewing" }
     ]
   },
   "sourceFindings": [
@@ -112,5 +120,8 @@
     { "kind": "intentional-exception", "detail": "라벨생성은 화면이 존재하지만 개발범위 제외 표기가 있어 활성 생성 근거로 사용하지 않는다." },
     { "kind": "intentional-exception", "detail": "실적 LOT 모바일은 미진행 결정이 명시되어 활성 화면 목록에서 제외한다." },
     { "kind": "normalization-candidate", "detail": "최신 수량입력 변경안 19649:98481을 구형 LOT 선택 화면보다 우선한다." }
+    ,{ "kind": "source-error", "detail": "10378:91087은 분류명과 달리 실제 화면이 스캔 키패드가 아니라 생산등록 위 BOM 선택 bottom sheet다." }
+    ,{ "kind": "source-error", "detail": "10378:93313은 분류명 '가동시간'과 달리 실제 화면 헤더와 내용이 시간대별 특이사항 입력이다." }
+    ,{ "kind": "source-error", "detail": "10378:92237 로그인 원본은 '미정' 표기만 존재하므로 새로운 로그인 UI를 추론 생성하지 않고 원본 미정 상태로 보존한다." }
   ]
 }

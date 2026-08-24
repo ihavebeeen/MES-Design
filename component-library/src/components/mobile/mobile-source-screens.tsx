@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import {
+  ArrowLeft,
   CalendarDays,
   Circle,
   CornerDownLeft,
@@ -25,7 +26,7 @@ function AssetImage({ src, alt = "", className }: { src: string; alt?: string; c
   return <Image src={src} alt={alt} width={32} height={32} className={className} />;
 }
 
-function MobileStatusBar({ tone = "blue", transparent = false }: { tone?: "blue" | "white"; transparent?: boolean }) {
+export function MobileStatusBar({ tone = "blue", transparent = false }: { tone?: "blue" | "white"; transparent?: boolean }) {
   const white = tone === "blue";
   return (
     <div className={cn("relative h-[47px] w-full shrink-0 overflow-hidden", white ? "text-white" : "bg-white text-[#011327]", white && !transparent && "bg-[#1573fb]")} data-mobile-part="status-bar">
@@ -54,7 +55,7 @@ function UhostMesLogo({ dark = false }: { dark?: boolean }) {
   );
 }
 
-function MobileSourceHeader({ title, home = false }: { title?: string; home?: boolean }) {
+export function MobileSourceHeader({ title, home = false, tone = "blue" }: { title?: string; home?: boolean; tone?: "blue" | "white" }) {
   if (home) {
     return (
       <header className="flex h-[60px] shrink-0 items-center justify-between px-4 pb-2 pt-0 text-white" data-mobile-part="header">
@@ -64,14 +65,14 @@ function MobileSourceHeader({ title, home = false }: { title?: string; home?: bo
     );
   }
   return (
-    <header className="flex h-[52px] shrink-0 items-center justify-between pl-[10px] pr-4 py-2 text-white" data-mobile-part="header">
+    <header className={cn("flex h-[52px] shrink-0 items-center justify-between pl-[10px] pr-4 py-2", tone === "white" ? "text-[#011327]" : "text-white")} data-mobile-part="header">
       <div className="flex min-w-0 items-center gap-1">
-        <Button variant="lineBlacktxt" size="small" aria-label="뒤로" className="size-9 border-0 bg-transparent p-0 text-white hover:bg-white/10">
-          <Image src="/mobile-assets/arrow-back-white.svg" alt="" width={16} height={14} className="h-[14px] w-4" />
+        <Button variant="lineBlacktxt" size="small" aria-label="뒤로" className={cn("size-9 border-0 bg-transparent p-0", tone === "white" ? "text-[#011327] hover:bg-[#eff2f8]" : "text-white hover:bg-white/10")}>
+          {tone === "white" ? <ArrowLeft className="size-5" /> : <Image src="/mobile-assets/arrow-back-white.svg" alt="" width={16} height={14} className="h-[14px] w-4" />}
         </Button>
         <strong className="truncate text-[20px] font-bold leading-[30px] tracking-[-0.25px]">{title}</strong>
       </div>
-      <UhostMesLogo />
+      <UhostMesLogo dark={tone === "white"} />
     </header>
   );
 }
@@ -97,7 +98,7 @@ function MobileSourceTabIcon({ id, muted }: { id: (typeof tabItems)[number]["id"
   );
 }
 
-function MobileSourceTabBar({ active = "home" }: { active?: string }) {
+export function MobileSourceTabBar({ active = "home" }: { active?: string }) {
   const [selected, setSelected] = React.useState(active);
   return (
     <div className="h-[84px] shrink-0 bg-white" data-mobile-part="bottom-tabbar">
@@ -313,7 +314,7 @@ export function MobileAppearanceInspectionSourceScreen() {
 
   return (
     <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:92529" data-mobile-source-screen="appearance-inspection">
-      <div className="absolute inset-x-0 top-0 z-20 bg-white"><MobileStatusBar tone="white" /><MobileSourceHeader /></div>
+      <div className="absolute inset-x-0 top-0 z-20 bg-white"><MobileStatusBar tone="white" /><MobileSourceHeader tone="white" /></div>
       <h2 className="absolute left-[76px] top-[99px] h-[27px] w-[224px] truncate text-center text-[18px] font-bold leading-[27px] tracking-[-0.225px] text-[#011327]">캐나다 투칸두부배캣(신형/칼선)</h2>
       <div className="absolute left-[52px] top-[142px] h-[34px] w-[272px]"><MobileStep labels={["기본정보", "외관검사", "중량검사", "특이사항"]} activeIndex={1} /></div>
       <div className="absolute left-4 top-[200px] flex h-10 w-[343px] gap-[10px]">
@@ -454,7 +455,7 @@ function DimmedMobileStatusBar() {
   );
 }
 
-function MobileHomeIndicator() {
+export function MobileHomeIndicator() {
   return <div className="relative h-[30px] shrink-0 bg-white"><span className="absolute bottom-2 left-1/2 h-[5px] w-[134px] -translate-x-1/2 rounded-full bg-black" /></div>;
 }
 

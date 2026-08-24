@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+test.setTimeout(180_000);
+
 async function expectFigmaFrame(page: import("@playwright/test").Page, path: string, selector: string, snapshot: string, currentGuard: number) {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto(path);
@@ -50,7 +52,7 @@ test("원본 화면은 Figma 대표 프레임을 375×812로 재현한다", asyn
 
   await expect(page.getByRole("link", { name: "원본 화면 Source Screens" }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "팝업 자산 Popup Assets" }).first()).toBeVisible();
-  await expect(page.getByRole("heading", { name: "원본 화면 이관 큐" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "원본 화면 검수 현황" })).toBeVisible();
   await expect(page.getByText("19 frames", { exact: true })).toBeVisible();
   await expect(page.getByText("실적 LOT 모바일은 미진행 결정이 명시되어 활성 화면 목록에서 제외한다.", { exact: false })).toBeVisible();
 
@@ -116,7 +118,7 @@ test("원본 화면은 Figma 대표 프레임을 375×812로 재현한다", asyn
 
 test("팝업 자산은 Figma 대표 프레임 3종을 375×812로 재현하고 상호작용한다", async ({ page }) => {
   await page.goto("/mobile/mobile-popup-assets");
-  await expect(page.getByRole("heading", { name: "원본 팝업 이관 큐" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "원본 팝업 검수 현황" })).toBeVisible();
   await expect(page.getByText("16 frames", { exact: true })).toBeVisible();
 
   const cases = [
@@ -132,4 +134,72 @@ test("팝업 자산은 Figma 대표 프레임 3종을 375×812로 재현하고 �
   const personnel = page.locator('[data-mobile-popup-screen="personnel"]');
   await personnel.getByRole("button", { name: "김수현", exact: true }).click();
   await expect(personnel.getByRole("button", { name: "김수현", exact: true })).toHaveClass(/bg-mes-bg-strong/);
+});
+
+test("남은 모바일 메인 원본 13종은 고정 viewport와 무가로스크롤 계약을 지킨다", async ({ page }) => {
+  const cases = [
+    ["receiving-result", "mobile-figma-receiving-result.png"],
+    ["maintenance-form", "mobile-figma-maintenance-form.png"],
+    ["weight-inspection", "mobile-figma-weight-inspection.png"],
+    ["special-notes", "mobile-figma-special-notes.png"],
+    ["user-settings", "mobile-figma-user-settings.png"],
+    ["login-placeholder", "mobile-figma-login-placeholder.png"],
+    ["report-basic-info", "mobile-figma-report-basic-info.png"],
+    ["hourly-notes", "mobile-figma-hourly-notes.png"],
+    ["incoming-inspection-list", "mobile-figma-incoming-inspection-list.png"],
+    ["shipping-inspection-list", "mobile-figma-shipping-inspection-list.png"],
+    ["incoming-inspection-basic", "mobile-figma-incoming-inspection-basic.png"],
+    ["incoming-inspection-appearance", "mobile-figma-incoming-inspection-appearance.png"],
+    ["equipment-inspection-list", "mobile-figma-equipment-inspection-list.png"],
+  ] as const;
+
+  for (const [id, snapshot] of cases) {
+    await expectFigmaFrame(page, `/visual-regression/mobile-source/${id}`, `[data-mobile-remaining-screen="${id}"]`, snapshot, 0.06);
+  }
+
+  await page.goto("/visual-regression/mobile-source/receiving-result");
+  const receiving = page.locator('[data-mobile-remaining-screen="receiving-result"]');
+  const receivingQuantity = receiving.getByRole("textbox").first();
+  await receivingQuantity.fill("320");
+  await expect(receivingQuantity).toHaveValue("320");
+  await expect(receiving.getByRole("checkbox")).toBeChecked();
+  await receiving.getByRole("checkbox").click();
+  await expect(receiving.getByRole("checkbox")).not.toBeChecked();
+
+  await page.goto("/visual-regression/mobile-source/hourly-notes");
+  const hourlyValue = page.locator('[data-mobile-remaining-screen="hourly-notes"] input').first();
+  await hourlyValue.fill("설비 점검");
+  await expect(hourlyValue).toHaveValue("설비 점검");
+});
+
+test("남은 모바일 팝업 원본 13종은 유형별 위치와 입력 계약을 지킨다", async ({ page }) => {
+  const cases = [
+    ["bom-select-popup", "mobile-figma-bom-select-popup.png"],
+    ["alarm-history-popup", "mobile-figma-alarm-history-popup.png"],
+    ["receiving-quantity-popup", "mobile-figma-receiving-quantity-popup.png"],
+    ["result-history-popup", "mobile-figma-input-history-popup.png"],
+    ["label-confirm-popup", "mobile-figma-lot-confirm-popup.png"],
+    ["item-detail-popup", "mobile-figma-item-detail-popup.png"],
+    ["lot-split-popup", "mobile-figma-lot-split-popup.png"],
+    ["input-error-popup", "mobile-figma-input-error-popup.png"],
+    ["scan-item-popup", "mobile-figma-scan-item-popup.png"],
+    ["work-time-popup", "mobile-figma-work-time-popup.png"],
+    ["production-quantity-mode-popup", "mobile-figma-production-quantity-mode-popup.png"],
+    ["shipping-quantity-popup", "mobile-figma-shipping-quantity-popup.png"],
+    ["defect-entry-popup", "mobile-figma-defect-quantity-popup.png"],
+  ] as const;
+
+  for (const [id, snapshot] of cases) {
+    const guard = id === "bom-select-popup" ? 0.07 : 0.06;
+    await expectFigmaFrame(page, `/visual-regression/mobile-source/${id}`, `[data-mobile-remaining-popup="${id}"]`, snapshot, guard);
+  }
+
+  await page.goto("/visual-regression/mobile-source/production-quantity-mode-popup");
+  const modePopup = page.locator('[data-mobile-remaining-popup="production-quantity-mode-popup"]');
+  await modePopup.getByText("자동계산", { exact: true }).click();
+  await expect(modePopup.getByRole("checkbox").nth(1)).toBeChecked();
+  await modePopup.getByText("수기입력", { exact: true }).click();
+  const manualValue = modePopup.getByRole("textbox", { name: "수기입력 값" });
+  await manualValue.fill("1200");
+  await expect(manualValue).toHaveValue("1200");
 });

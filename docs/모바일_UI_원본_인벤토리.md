@@ -69,7 +69,9 @@
 - 원본 화면 `전체메뉴(10378:92070)`: 구현됨·검토 중. 1depth 120px/2depth 255px 탐색 구조, 선택 상태에 따른 세부 업무 변경, overflow 0, 실제 Figma export 대비 1% 회귀선을 통과했다.
 - 원본 화면 `성적서 외관검사(10378:92529)`: 구현됨·검토 중. 단계 표시, 질문별 단일 판정, O·△·X 의미 색상, 일괄 선택·초기화를 구현했고 실제 Figma export 대비 3% 회귀선을 통과했다.
 - 원본 화면 `일지작성(10378:91977)`: 구현됨·검토 중. 기본정보·가동정보·비가동 입력 섹션, 근무조 라디오, 입력 수정·저장·취소 복원을 구현했고 실제 Figma export 대비 3% 회귀선을 통과했다.
-- 44개 메인 페이지·19개 팝업 전체 코드화: 진행 중. 대표 6개 메인 화면과 팝업 3개에 코드가 있으며 나머지는 `mobile-assets.json`의 이관 큐를 따른다.
+- 인벤토리에 등록된 대표 원본 프레임 35개 코드화: 완료. 메인 19개·팝업 16개 모두 개별 `/visual-regression/mobile-source/{asset}` 경로와 실제 Figma export 기준 이미지를 갖는다.
+- 이번에 추가한 26개는 viewport 375×812, 가로 overflow 0, 핵심 입력·선택 상호작용과 최대 6% 회귀선(BOM 선택만 7%)을 통과하는 `implemented-reviewing` 상태다. 1%를 넘으므로 `verified`로 승격하지 않는다.
+- 화면 유형 보드의 44개 메인 페이지·19개 팝업 페이지는 대표 프레임과 반복 변형을 합친 수량이다. 대표 프레임 코드화 완료를 63개 페이지 전체 픽셀 승인으로 표현하지 않는다.
 
 ### 2026-08-24 화면에서 추출한 공용 자산
 
@@ -79,9 +81,17 @@
 | Foundation | `mobile.spacing` | 홈·외관검사·일지작성 | 16px 화면 여백, 10px paired-control gap, 8px compact gap |
 | Component | `mobile.radio` / `MobileRadioGroup` | 일지작성 | 단일 선택·미선택·비활성 상태 |
 | Component | `mobile.compact-field` / `MobileCompactField` | 일지작성 | 74px label + 32px 입력 필드 |
+| Component | `mobile.date-strip` / `MobileDateStrip` | 입고실적·정비·검사·설비점검 | 날짜·입력 건수 요약 |
+| Component | `mobile.fixed-actions` / `MobileFixedActions` | 등록·품질 단계 화면 | 단일 저장·취소/저장·이전/다음 고정 액션 |
+| Component | `mobile.sheet-header` / `MobileSheetHeader` | BOM·알람·수량 입력 | 바텀시트 제목·보조 제목·닫기 |
+| Component | `mobile.sheet-actions` / `MobileSheetActions` | 수량·LOT·시간 입력 | 단일 저장 또는 취소/저장 |
+| Component | `mobile.center-dialog` / `MobileCenterDialogCard` | 라벨 확정·입력 오류 | 짧은 차단형 확인·오류 대화상자 |
 | Pattern | `mobile.navigation.two-depth-menu` | 전체메뉴 | 모바일 업무 분류와 세부 메뉴 탐색 |
 | Pattern | `mobile.inspection.question-list` | 외관검사 | 반복 질문과 행별 O·△·X 단일 판정 |
 | Pattern | `mobile.form.section` | 일지작성 | 제목·입력 필드를 담는 343px 카드 섹션 |
+| Pattern | `mobile.list.compact-operation-table` | 입고실적·검사·설비점검 | 343px 안에서 가로 스크롤 없이 핵심 열 유지 |
+| Pattern | `mobile.form.hourly-entry` | 시간대별 특이사항 | 64px 시간 레이블과 32px 입력 반복 |
+| Pattern | `mobile.dialog.feedback` | 라벨 확정·입력 오류 | 입력 작업과 분리된 짧은 확인·오류 처리 |
 
 이 자산들은 화면 하나를 통째로 재사용하는 대신, 이후 모바일 화면 생성기가 의미와 상호작용에 맞춰 조합할 수 있는 단위로 등록한다. 원본 한 곳에서만 발견된 장식 조각은 이 목록에 승격하지 않는다.
 
@@ -92,3 +102,5 @@
 - 생산실적 화면에 원본에 없는 하단 구분선·Home Indicator가 있었고 업무 바로가기에는 Lucide 대체 아이콘이 사용됐다. 원본 프레임 구조와 SVG로 교체했다.
 - `mobile-figma-*.png` 회귀 기준은 실제 Figma export임을 해시·픽셀 비교로 재확인했다. 스냅샷 갱신으로 차이를 숨기지 않고 화면 코드를 기준에 맞춘다.
 - 모바일 자산은 `getMobileGenerationContext()`로 별도 조회되지만 현재 공통 `ScreenRequest` resolver의 `nearestScreenId`에는 모바일 화면이 등록되지 않아 `composition.no-nearest-screen` 경고가 남는다. 모바일 화면 조합 문법을 공통 생성 계약에 연결하는 작업은 별도 후속 범위다.
+- `10378:91087`은 분류명과 실제 내용이 달라 `BOM 선택`, `10378:93313`은 `시간대별 특이사항`으로 실제 화면 내용 기준 이름을 사용한다.
+- `10378:92237` 로그인 프레임은 원본에 `미정`만 존재하므로 임의 로그인 UI를 새로 만들지 않고 source-error 상태를 그대로 코드화했다.
