@@ -1,4 +1,7 @@
 interface:
-  display_name: "MES UI Generator"
-  short_description: "Generate MES screens from registered composition contracts"
-  default_prompt: "Use the repository MES design-system registry to turn this request into a validated ScreenRequest and implementation."
+  display_name: "MES UI 생성"
+  short_description: "등록된 MES 규칙과 컴포넌트로 화면을 생성합니다"
+  default_prompt: "Use $generate-mes-ui to create an MES screen from my Korean requirements."
+
+policy:
+  allow_implicit_invocation: true
