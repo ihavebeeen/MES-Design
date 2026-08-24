@@ -1,10 +1,11 @@
-import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/server";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 import { z } from "zod";
 import { auditScreenImplementation } from "./audit-screen-implementation.mjs";
+import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-preview.mjs";
 import { generateScreenTsx, generatedSourceFingerprint } from "./generate-screen-tsx.mjs";
 import { readRegistryBundle, resolveScreenRequest } from "./resolve-screen-request.mjs";
 
@@ -221,7 +222,7 @@ export function createMesUiMcpServer() {
     "mes_generate_screen",
     {
       title: "MES 화면 코드 생성",
-      description: "ScreenRequest를 해석하고 지원되는 결정형 템플릿으로 등록 컴포넌트 기반 TSX를 생성한 뒤 즉시 감사합니다. 기존 파일은 덮어쓰지 않습니다.",
+      description: "ScreenRequest를 해석하고 등록 컴포넌트 기반 TSX와 localhost 미리보기 페이지를 생성한 뒤 즉시 감사합니다. 기존 파일은 덮어쓰지 않습니다.",
       inputSchema: z.object({
         request: requestSchema,
         outputPath: sourcePathSchema,
@@ -240,10 +241,22 @@ export function createMesUiMcpServer() {
       const audit = auditScreenImplementation(contract, source);
       if (audit.blockerCount > 0) throw new Error(`생성 결과 감사에서 blocker가 발견됐습니다.\n${JSON.stringify(audit, null, 2)}`);
 
+      const preview = createScreenPreviewPlan(contract, target.relativePath, { projectRoot });
       mkdirSync(dirname(target.absolutePath), { recursive: true });
       writeFileSync(target.absolutePath, source, { encoding: "utf8", flag: "wx" });
+      let previewResult;
+      try {
+        previewResult = writeScreenPreview(preview);
+      } catch (error) {
+        rmSync(target.absolutePath);
+        throw error;
+      }
       const result = {
         outputPath: target.relativePath,
+        previewPath: preview.relativePath,
+        previewRoute: preview.route,
+        previewUrl: preview.url,
+        previewCreated: previewResult.created,
         contractStatus: contract.quality.status,
         contractFingerprint: contract.fingerprint,
         sourceFingerprint: generatedSourceFingerprint(source),

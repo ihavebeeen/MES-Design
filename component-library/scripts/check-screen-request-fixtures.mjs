@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { resolveScreenRequest } from "./resolve-screen-request.mjs";
 import { generateScreenTsx, generatedSourceFingerprint } from "./generate-screen-tsx.mjs";
+import { createScreenPreviewPlan, generateScreenPreviewSource } from "./generate-screen-preview.mjs";
 import { auditScreenImplementation } from "./audit-screen-implementation.mjs";
 
 const projectRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -53,6 +54,11 @@ assert.match(generatedFirst, /<EditableRowGrid/);
 assert.doesNotMatch(generatedFirst, /<\s*(button|input|select|textarea|table)\b/);
 assert.match(generatedFirst, /previousRow\?\.customer/);
 assert.equal(auditScreenImplementation(generationContract, generatedFirst).status, "audit-ready");
+const sideSlidePreview = createScreenPreviewPlan(generationContract, "src/generated/deterministic-receiving-dialog.tsx", { projectRoot });
+assert.equal(sideSlidePreview.relativePath, "src/app/generated-screens/deterministic-receiving-fixture/page.tsx");
+assert.equal(sideSlidePreview.url, "http://localhost:3000/generated-screens/deterministic-receiving-fixture");
+assert.match(sideSlidePreview.source, /<DeterministicReceivingDialog open=\{open\} onOpenChange=\{setOpen\}/);
+assert.match(sideSlidePreview.source, /다시 열기/);
 
 const wrongSectionOrder = generatedFirst
   .replace('data-section-id="basicInformation"', 'data-section-id="__swap__"')
@@ -86,9 +92,19 @@ assert.equal(generatedSourceFingerprint(pageFirst), "6b4e78b9c46ebeaa4015bc2df87
 assert.match(pageFirst, /<EntityListPattern/);
 assert.match(pageFirst, /<SearchTableSection/);
 assert.equal(auditScreenImplementation(pageContract, pageFirst).blockerCount, 0);
+const pagePreview = generateScreenPreviewSource(pageContract, "@/generated/deterministic-receiving-list-page");
+assert.doesNotMatch(pagePreview, /"use client"/);
+assert.match(pagePreview, /return <DeterministicReceivingListPage \/>/);
+
+const invalidPreviewRoute = structuredClone(generationContract);
+invalidPreviewRoute.request.output.route = "/components/not-a-generated-preview";
+assert.throws(
+  () => createScreenPreviewPlan(invalidPreviewRoute, "src/generated/invalid.tsx", { projectRoot }),
+  /generated-screens/,
+);
 
 const invalidTableRequest = structuredClone(centerRequest);
 invalidTableRequest.generation.sections[0].rows[0].values.notAColumn = "오류";
 assert.ok(resolveScreenRequest(invalidTableRequest).quality.issues.some((entry) => entry.code === "request.generation"));
 
-console.log(`[screen:fixtures] 계약 정상 3개 + 차단 5개 + TSX 결정성 3개 통과 · ${generatedSourceFingerprint(generatedFirst).slice(0, 12)}/${generatedSourceFingerprint(centerFirst).slice(0, 12)}/${generatedSourceFingerprint(pageFirst).slice(0, 12)}`);
+console.log(`[screen:fixtures] 계약 정상 3개 + 차단 5개 + TSX 결정성 3개 + 미리보기 3개 통과 · ${generatedSourceFingerprint(generatedFirst).slice(0, 12)}/${generatedSourceFingerprint(centerFirst).slice(0, 12)}/${generatedSourceFingerprint(pageFirst).slice(0, 12)}`);

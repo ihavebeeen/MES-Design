@@ -48,3 +48,5 @@ Required pattern refs:
 This template is currently `provisional`, not stable. It is deterministic and audit-blocker free, but `Pagination` and the exact original-page evidence still require stabilization; arbitrary-pixel review warnings are therefore retained instead of being hidden. See `component-library/tests/fixtures/screen-requests/deterministic-entity-list.json`.
 
 For all templates, section order comes from the resolved structured ScreenSpec. Do not hand-edit generated TSX to reorder sections; update the request, resolve it again, and regenerate.
+
+Every generated request uses `/generated-screens/<request-id>` as `output.route`. `mes_generate_screen` creates a matching Next.js preview page and returns its `previewUrl`. The CLI fallback must include `--preview`. Modal and side-panel previews open the overlay immediately and provide a reopen action after dismissal; page previews render the generated page directly.

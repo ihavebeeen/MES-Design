@@ -77,7 +77,7 @@
       "additionalProperties": false,
       "required": ["route", "componentName"],
       "properties": {
-        "route": { "type": "string", "pattern": "^/" },
+        "route": { "type": "string", "pattern": "^/generated-screens/[a-z0-9]+(?:-[a-z0-9]+)*$" },
         "componentName": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" }
       }
     }

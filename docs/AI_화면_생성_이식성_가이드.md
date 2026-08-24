@@ -29,8 +29,10 @@
 ```bash
 cd component-library
 npm run screen:resolve -- tests/fixtures/screen-requests/deterministic-side-slide.json --out deterministic-side-slide.contract.json
-npm run screen:generate -- deterministic-side-slide.contract.json --out src/path/to/generated-screen.tsx
+npm run screen:generate -- deterministic-side-slide.contract.json --out src/path/to/generated-screen.tsx --preview
 ```
+
+생성기는 `ScreenRequest.output.route`에 맞는 `src/app/generated-screens/<request-id>/page.tsx`도 함께 만들고 `http://localhost:3000/generated-screens/<request-id>` 주소를 반환합니다. `npm run dev`가 실행 중이면 사용자는 생성 화면 검토 목록을 거치지 않고 이 개별 주소에서 결과를 바로 확인합니다.
 
 출력의 `fingerprint`가 다르면 두 컴퓨터의 요청 또는 레지스트리 커밋이 다른 것입니다. fingerprint가 같으면 AI가 읽어야 하는 구현 계약은 같습니다.
 
@@ -42,7 +44,7 @@ npm run screen:generate -- deterministic-side-slide.contract.json --out src/path
 
 - `mes_list_design_system`: 등록 컴포넌트·패턴·화면·생성 템플릿 조회
 - `mes_resolve_screen`: ScreenRequest를 결정형 계약으로 해석
-- `mes_generate_screen`: 지원 템플릿의 TSX를 덮어쓰기 없이 `component-library/src/` 아래에 생성하고 즉시 감사
+- `mes_generate_screen`: 지원 템플릿의 TSX와 개별 localhost 미리보기 페이지를 덮어쓰기 없이 `component-library/src/` 아래에 생성하고 즉시 감사
 - `mes_audit_screen`: 기존 TSX/JSX를 요청 계약과 레지스트리에 대조
 
 서버는 절대경로, `component-library` 외부 경로, `src/` 외부 출력, 기존 파일 덮어쓰기를 거부합니다. 연결과 실제 도구 호출은 다음 명령으로 검증합니다.

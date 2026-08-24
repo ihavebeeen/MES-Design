@@ -1,7 +1,8 @@
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-preview.mjs";
 import { contractFingerprint } from "./resolve-screen-request.mjs";
 import { validateGenerationSpec } from "./screen-generation-contract.mjs";
 
@@ -211,26 +212,39 @@ function parseArguments(argv) {
   const args = [...argv];
   const input = args.shift();
   let output;
+  let preview = false;
   while (args.length > 0) {
     const flag = args.shift();
     if (flag === "--out") output = args.shift();
+    else if (flag === "--preview") preview = true;
     else throw new Error(`알 수 없는 옵션 '${flag}'입니다.`);
   }
-  return { input, output };
+  return { input, output, preview };
 }
 
 function runCli() {
-  const { input, output } = parseArguments(process.argv.slice(2));
-  if (!input) throw new Error("사용법: npm run screen:generate -- <contract.json> [--out <screen.tsx>]");
+  const { input, output, preview } = parseArguments(process.argv.slice(2));
+  if (!input) throw new Error("사용법: npm run screen:generate -- <contract.json> [--out <screen.tsx>] [--preview]");
+  if (preview && !output) throw new Error("--preview는 --out <screen.tsx>와 함께 사용해야 합니다.");
   const inputPath = resolve(process.cwd(), input);
   if (!existsSync(inputPath)) throw new Error(`계약 파일을 찾을 수 없습니다: ${inputPath}`);
-  const source = generateScreenTsx(JSON.parse(readFileSync(inputPath, "utf8")));
+  const contract = JSON.parse(readFileSync(inputPath, "utf8"));
+  const source = generateScreenTsx(contract);
+  let previewPlan;
   if (output) {
     const outputPath = resolve(process.cwd(), output);
     if (existsSync(outputPath)) throw new Error(`기존 파일을 덮어쓰지 않습니다: ${outputPath}`);
-    writeFileSync(outputPath, source, "utf8");
+    if (preview) previewPlan = createScreenPreviewPlan(contract, outputPath);
+    writeFileSync(outputPath, source, { encoding: "utf8", flag: "wx" });
+    try {
+      if (previewPlan) writeScreenPreview(previewPlan);
+    } catch (error) {
+      rmSync(outputPath);
+      throw error;
+    }
   } else process.stdout.write(source);
   console.error(`[screen:generate] ${generatedSourceFingerprint(source).slice(0, 12)} · ${source.split("\n").length - 1} lines`);
+  if (previewPlan) console.error(`[screen:preview] ${previewPlan.relativePath} · ${previewPlan.url}`);
 }
 
 if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {

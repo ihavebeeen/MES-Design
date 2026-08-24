@@ -100,7 +100,9 @@ function validateRequestShape(request) {
   if (request?.target?.viewport !== undefined && (!Number.isInteger(request.target.viewport.width) || !Number.isInteger(request.target.viewport.height) || request.target.viewport.width < 320 || request.target.viewport.height < 320)) issues.push(issue("blocker", "request.viewport", "target.viewport의 width와 height는 320 이상의 정수여야 합니다."));
   if (!request?.composition || typeof request.composition !== "object" || Array.isArray(request.composition)) issues.push(issue("blocker", "request.composition", "composition 객체가 필요합니다."));
   if (!Array.isArray(request?.requirements) || request.requirements.length === 0 || request.requirements.some((value) => typeof value !== "string" || value.trim() === "") || unique(request.requirements).length !== request.requirements.length) issues.push(issue("blocker", "request.requirements", "requirements에는 중복 없는 한 개 이상의 문장이 필요합니다."));
-  if (typeof request?.output?.route !== "string" || !request.output.route.startsWith("/")) issues.push(issue("blocker", "request.output-route", "output.route는 /로 시작해야 합니다."));
+  if (typeof request?.output?.route !== "string" || !/^\/generated-screens\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(request.output.route)) {
+    issues.push(issue("blocker", "request.output-route", "output.route는 /generated-screens/<영문-소문자-ID> 형식이어야 합니다."));
+  }
   if (!/^[A-Z][A-Za-z0-9]*$/.test(request?.output?.componentName ?? "")) issues.push(issue("blocker", "request.component-name", "output.componentName은 PascalCase여야 합니다."));
   if (request?.evidence?.figmaNode && !/^\d+:\d+$/.test(request.evidence.figmaNode)) issues.push(issue("blocker", "request.figma-node", "evidence.figmaNode는 123:456 형식이어야 합니다."));
   if (request?.evidence?.notes !== undefined && (!Array.isArray(request.evidence.notes) || request.evidence.notes.some((value) => typeof value !== "string" || value === "") || unique(request.evidence.notes).length !== request.evidence.notes.length)) issues.push(issue("blocker", "request.evidence-notes", "evidence.notes는 중복 없는 문자열 배열이어야 합니다."));

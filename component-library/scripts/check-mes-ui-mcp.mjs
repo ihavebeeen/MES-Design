@@ -11,6 +11,9 @@ const serverPath = join(scriptDirectory, "mes-ui-mcp-server.mjs");
 const fixturePath = join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json");
 const outputRelativePath = "src/components/__mcp_smoke_generated.tsx";
 const outputPath = join(projectRoot, ...outputRelativePath.split("/"));
+const previewRelativePath = "src/app/generated-screens/deterministic-receiving-fixture/page.tsx";
+const previewPath = join(projectRoot, ...previewRelativePath.split("/"));
+const previewDirectory = dirname(previewPath);
 const expectedTools = [
   "mes_audit_screen",
   "mes_generate_screen",
@@ -30,6 +33,7 @@ function structured(result) {
 }
 
 if (existsSync(outputPath)) throw new Error(`검증용 출력 파일이 이미 존재합니다: ${outputRelativePath}`);
+if (existsSync(previewPath)) throw new Error(`검증용 미리보기 파일이 이미 존재합니다: ${previewRelativePath}`);
 
 const claudeConfig = JSON.parse(readFileSync(join(repositoryRoot, ".mcp.json"), "utf8"));
 assert(claudeConfig.mcpServers?.["mes-ui"]?.command === "node", "Claude Code의 mes-ui MCP 설정을 찾을 수 없습니다.");
@@ -79,6 +83,9 @@ try {
   assert(generated.sourceFingerprint === expectedSourceFingerprint, `생성 소스 fingerprint가 다릅니다: ${generated.sourceFingerprint}`);
   assert(generated.audit.blockerCount === 0, "생성 직후 감사에서 blocker가 발견됐습니다.");
   assert(existsSync(outputPath), "MCP가 출력 파일을 만들지 않았습니다.");
+  assert(generated.previewPath === previewRelativePath, `MCP 미리보기 경로가 다릅니다: ${generated.previewPath}`);
+  assert(generated.previewUrl === "http://localhost:3000/generated-screens/deterministic-receiving-fixture", `MCP 미리보기 URL이 다릅니다: ${generated.previewUrl}`);
+  assert(existsSync(previewPath), "MCP가 미리보기 페이지를 만들지 않았습니다.");
 
   const audited = structured(await client.callTool({
     name: "mes_audit_screen",
@@ -98,8 +105,9 @@ try {
   });
   assert(escapeResult.isError, "MCP가 component-library 외부 경로 쓰기를 차단하지 않았습니다.");
 
-  console.log(`[mcp:check] 도구 ${toolNames.length}개 · 생성 ${generated.sourceFingerprint.slice(0, 12)} · 감사 ${audited.status} · 안전 차단 2개 통과`);
+  console.log(`[mcp:check] 도구 ${toolNames.length}개 · 생성 ${generated.sourceFingerprint.slice(0, 12)} · 미리보기 ${generated.previewRoute} · 감사 ${audited.status} · 안전 차단 2개 통과`);
 } finally {
   await client.close();
   if (existsSync(outputPath)) rmSync(outputPath);
+  if (existsSync(previewDirectory)) rmSync(previewDirectory, { recursive: true });
 }

@@ -13,6 +13,7 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
 2. If the `mes-ui` MCP server is connected, call `mes_list_design_system` to inspect the closest registered assets. Otherwise inspect `getImplementationContext(screenId)` in `component-library/src/design-system/registry/index.ts`.
 3. If a Figma node exists, inspect its metadata and design context before editing code. Treat unmeasured visual guesses as review notes, never facts.
 4. Write a `ScreenRequest` JSON that conforms to `component-library/src/design-system/registry/screen-request.schema.json`. When the nearest screen has a registered ScreenSpec, preserve its ordered `composition.sections`; do not reduce it back to an unordered `sectionRefs` list.
+   Set `output.route` to `/generated-screens/<request-id>` so the generated screen receives its own preview URL.
 5. Resolve it before JSX. Prefer `mes_resolve_screen`; use the CLI only when MCP is unavailable:
 
    ```bash
@@ -21,13 +22,17 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
    ```
 
 6. Stop on resolver blockers. Inspect the resolver `decisionTrace` and confirm the selected shell, ordered sections, behaviors, action set, components, and excluded alternatives. Resolve warnings by evidence or record them in the generated-screen evaluation; a warning alone does not invalidate the whole screen.
-7. When the resolved recipe has a supported deterministic template, call `mes_generate_screen` instead of writing JSX freely. This tool resolves, generates, refuses overwrites, and audits in one call. Use the CLI fallback only when MCP is unavailable:
+7. When the resolved recipe has a supported deterministic template, call `mes_generate_screen` instead of writing JSX freely. This tool resolves, generates, creates the preview page, refuses overwrites, and audits in one call. Use the CLI fallback only when MCP is unavailable:
 
    ```bash
-   npm run screen:generate -- path/to/contract.json --out path/to/screen.tsx
+   npm run screen:generate -- path/to/contract.json --out src/path/to/screen.tsx --preview
    ```
 
-8. Otherwise implement only with resolved registry references. Use registered components and pattern sources. Do not use native interactive HTML when a MES component exists.
+8. Otherwise implement only with resolved registry references. Use registered components and pattern sources. Do not use native interactive HTML when a MES component exists. After implementation, create its preview page:
+
+   ```bash
+   npm run screen:preview -- path/to/contract.json src/path/to/screen.tsx
+   ```
 9. Audit the implementation with `mes_audit_screen`, or use the CLI fallback. Every structured section must expose its ScreenSpec ID through `data-section-id`, in the same order as the resolved contract:
 
    ```bash
@@ -35,8 +40,9 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
    npm run check:design-system
    ```
 
-10. Verify at the target viewport: interactions, `clientWidth/scrollWidth`, `clientHeight/scrollHeight`, and the visual baseline. Do not call a screen verified without these checks.
-11. Register newly discovered semantics as quarantined proposals. Never promote a one-off visual fragment directly into the stable component or pattern registry.
+10. Start or reuse the local preview server with `npm run dev`, wait until the generated `previewUrl` responds, and open that exact URL with the client's browser capability when available. Otherwise return the clickable URL. Do not make the user navigate through the `/generated-screens` review index.
+11. Verify at the target viewport: interactions, `clientWidth/scrollWidth`, `clientHeight/scrollHeight`, and the visual baseline. Do not call a screen verified without these checks.
+12. Register newly discovered semantics as quarantined proposals. Never promote a one-off visual fragment directly into the stable component or pattern registry.
 
 ## Selection rules
 
@@ -55,6 +61,7 @@ Return or commit all of the following for a new generated screen:
 - input `ScreenRequest` JSON;
 - resolved contract JSON with a stable fingerprint;
 - implementation source;
+- preview page, route, and localhost URL;
 - evaluation entry describing evidence, strengths, issues, and promotion criteria;
 - interaction and visual tests proportional to the requested fidelity.
 
