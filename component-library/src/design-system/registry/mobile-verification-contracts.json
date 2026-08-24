@@ -113,6 +113,67 @@
       "raster": { "snapshot": "mobile-figma-2x-day-log.png", "status": "reviewing", "diffPixelRatio": 0.011802, "measurementMaxDiffPixelRatio": 0.013 },
       "verification": { "structural": "verified", "raster": "reviewing", "interaction": "verified", "overall": "implemented-reviewing" },
       "interactions": ["shift-selection", "day-log-edit", "day-log-save", "day-log-cancel-restore"]
+    },
+    {
+      "id": "receiving-result",
+      "node": "10378:91516",
+      "path": "/visual-regression/mobile-source/receiving-result",
+      "frameSelector": "[data-mobile-remaining-screen='receiving-result']",
+      "structure": [
+        { "selector": "[data-mobile-part='blue-page-header']", "box": { "x": 0, "y": 0, "width": 375, "height": 116 } },
+        { "selector": "[data-mobile-part='date-strip']", "box": { "x": 16, "y": 99, "width": 343, "height": 37 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "6px", "gap": "6px" } },
+        { "selector": "[data-mobile-part='receiving-table']", "box": { "x": 0, "y": 144, "width": 375, "height": 502 } },
+        { "selector": "[data-mobile-part='receiving-table'] > div", "index": 0, "box": { "x": 0, "y": 144, "width": 375, "height": 40 }, "style": { "fontSize": "14px", "fontWeight": "600", "color": "rgb(132, 145, 167)" } },
+        { "selector": "[data-mobile-part='receiving-table'] > div", "index": 1, "box": { "x": 0, "y": 184, "width": 375, "height": 54 }, "style": { "fontSize": "14px", "fontWeight": "400", "color": "rgb(1, 19, 39)" } },
+        { "selector": "[data-mobile-part='receiving-table'] > div", "index": 2, "box": { "x": 0, "y": 238, "width": 375, "height": 44 }, "style": { "fontSize": "14px", "fontWeight": "400", "color": "rgb(1, 19, 39)" } },
+        { "selector": "[data-mobile-part='completion-actions']", "box": { "x": 0, "y": 646, "width": 375, "height": 82 }, "style": { "backgroundColor": "rgb(255, 255, 255)" } },
+        { "selector": "[data-mobile-part='bottom-tabbar']", "box": { "x": 0, "y": 728, "width": 375, "height": 84 }, "style": { "backgroundColor": "rgb(255, 255, 255)" } }
+      ],
+      "raster": { "snapshot": "mobile-figma-2x-receiving-result.png", "status": "reviewing", "diffPixelRatio": 0.013942, "measurementMaxDiffPixelRatio": 0.0155 },
+      "verification": { "structural": "verified", "raster": "reviewing", "interaction": "verified", "overall": "implemented-reviewing" },
+      "interactions": ["receiving-result-quantity-edit", "receiving-result-completion-toggle"]
+    },
+    {
+      "id": "maintenance-form",
+      "node": "10378:93359",
+      "path": "/visual-regression/mobile-source/maintenance-form",
+      "frameSelector": "[data-mobile-remaining-screen='maintenance-form']",
+      "structure": [
+        { "selector": "[data-mobile-part='blue-page-header']", "box": { "x": 0, "y": 0, "width": 375, "height": 116 } },
+        { "selector": "[data-mobile-part='date-strip']", "box": { "x": 16, "y": 99, "width": 343, "height": 37 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "6px", "gap": "6px" } },
+        { "selector": "[data-mobile-part='maintenance-sections']", "box": { "x": 16, "y": 146, "width": 343, "height": 420 }, "style": { "gap": "10px" } },
+        { "selector": "[data-mobile-section='기본 정보']", "box": { "x": 16, "y": 146, "width": 343, "height": 168 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "8px", "gap": "8px" } },
+        { "selector": "[data-mobile-section='정비 시간']", "box": { "x": 16, "y": 324, "width": 343, "height": 126 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "8px", "gap": "8px" } },
+        { "selector": "[data-mobile-maintenance-memo='원인분석']", "box": { "x": 16, "y": 460, "width": 343, "height": 48 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "8px", "fontSize": "15px", "fontWeight": "700" } },
+        { "selector": "[data-mobile-maintenance-memo='정비내용']", "box": { "x": 16, "y": 518, "width": 343, "height": 48 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "borderRadius": "8px", "fontSize": "15px", "fontWeight": "700" } },
+        { "selector": "[data-mobile-part='fixed-actions']", "box": { "x": 0, "y": 646, "width": 375, "height": 82 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "gap": "10px" } },
+        { "selector": "[data-mobile-part='bottom-tabbar']", "box": { "x": 0, "y": 728, "width": 375, "height": 84 }, "style": { "backgroundColor": "rgb(255, 255, 255)" } }
+      ],
+      "raster": { "snapshot": "mobile-figma-2x-maintenance-form.png", "status": "reviewing", "diffPixelRatio": 0.01194, "measurementMaxDiffPixelRatio": 0.0135 },
+      "verification": { "structural": "verified", "raster": "reviewing", "interaction": "verified", "overall": "implemented-reviewing" },
+      "interactions": ["maintenance-manager-edit", "maintenance-unit-select", "maintenance-kind-select", "maintenance-time-edit", "maintenance-memo-open"]
+    },
+    {
+      "id": "weight-inspection",
+      "node": "10378:92711",
+      "path": "/visual-regression/mobile-source/weight-inspection",
+      "frameSelector": "[data-mobile-remaining-screen='weight-inspection']",
+      "structure": [
+        { "selector": "[data-mobile-part='white-page-header']", "box": { "x": 0, "y": 0, "width": 375, "height": 99 }, "style": { "backgroundColor": "rgb(255, 255, 255)" } },
+        { "selector": "[data-mobile-part='screen-title']", "box": { "x": 16, "y": 99, "width": 343, "height": 27 }, "style": { "fontSize": "18px", "fontWeight": "700", "color": "rgb(1, 19, 39)" } },
+        { "selector": "[data-mobile-part='stepper']", "box": { "x": 52, "y": 136, "width": 272, "height": 34 } },
+        { "selector": "[data-mobile-part='weight-metrics']", "box": { "x": 16, "y": 190, "width": 343, "height": 39 }, "style": { "backgroundColor": "rgb(239, 242, 248)", "borderRadius": "6px", "fontSize": "14px" } },
+        { "selector": "[data-mobile-part='array-mode']", "box": { "x": 16, "y": 245, "width": 343, "height": 23 } },
+        { "selector": "[data-mobile-part='cavity-grid']", "box": { "x": 16, "y": 280, "width": 343, "height": 359 }, "style": { "borderRadius": "12px", "gap": "10px" } },
+        { "selector": "[data-mobile-part='cavity-heading']", "box": { "x": 28, "y": 292, "width": 319, "height": 21 } },
+        { "selector": "[data-mobile-part='cavity-cells']", "box": { "x": 28, "y": 323, "width": 319, "height": 262 }, "style": { "gap": "4px" } },
+        { "selector": "[data-mobile-part='cavity-values']", "box": { "x": 28, "y": 595, "width": 319, "height": 32 }, "style": { "gap": "10px" } },
+        { "selector": "[data-mobile-part='fixed-actions']", "box": { "x": 0, "y": 646, "width": 375, "height": 82 }, "style": { "backgroundColor": "rgb(255, 255, 255)", "gap": "10px" } },
+        { "selector": "[data-mobile-part='bottom-tabbar']", "box": { "x": 0, "y": 728, "width": 375, "height": 84 }, "style": { "backgroundColor": "rgb(255, 255, 255)" } }
+      ],
+      "raster": { "snapshot": "mobile-figma-2x-weight-inspection.png", "status": "reviewing", "diffPixelRatio": 0.011989, "measurementMaxDiffPixelRatio": 0.0135 },
+      "verification": { "structural": "verified", "raster": "reviewing", "interaction": "verified", "overall": "implemented-reviewing" },
+      "interactions": ["weight-array-mode-select", "weight-cavity-select", "weight-array-number-edit", "weight-result-value-edit"]
     }
   ]
 }

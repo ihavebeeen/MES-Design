@@ -13,6 +13,7 @@ import {
   MobileInput,
   MobileInspectionQuestionList,
   MobileRadioGroup,
+  MobileSelect,
   MobileStep,
   MobileToggle,
   type QaValue,
@@ -55,7 +56,7 @@ export const MOBILE_REMAINING_MAIN_ITEMS: Array<{ id: MobileRemainingMainScreenI
 
 function BluePageHeader({ title }: { title: string }) {
   return (
-    <div className="absolute inset-x-0 top-0 z-20 bg-[linear-gradient(180deg,#1573fb_0%,#4b8fff_102.25%)]">
+    <div className="absolute inset-x-0 top-0 z-20 h-[116px] bg-[linear-gradient(180deg,#1573fb_0%,#4b8fff_102.25%)]" data-mobile-part="blue-page-header">
       <MobileStatusBar />
       <MobileSourceHeader title={title} />
     </div>
@@ -63,12 +64,12 @@ function BluePageHeader({ title }: { title: string }) {
 }
 
 function WhitePageHeader({ title }: { title?: string }) {
-  return <div className="absolute inset-x-0 top-0 z-20 bg-white"><MobileStatusBar tone="white" /><MobileSourceHeader title={title} tone="white" /></div>;
+  return <div className="absolute inset-x-0 top-0 z-20 bg-white" data-mobile-part="white-page-header"><MobileStatusBar tone="white" /><MobileSourceHeader title={title} tone="white" /></div>;
 }
 
 export function MobileDateStrip({ label, value, action }: { label: string; value: string; action?: string }) {
   return (
-    <div className="flex h-[37px] w-full items-center gap-1.5 rounded-[6px] border border-[#e4e7ee] bg-white px-3 text-[14px] tracking-[-0.175px] text-[#011327]">
+    <div className="flex h-[37px] w-full items-center gap-1.5 rounded-[6px] border border-[#e4e7ee] bg-white px-3 text-[14px] tracking-[-0.175px] text-[#011327]" data-mobile-part="date-strip">
       <CalendarDays className="size-4 shrink-0" strokeWidth={1.33} /><strong className="font-semibold">{label}</strong><strong className="min-w-0 flex-1 font-semibold">{value}</strong>
       {action && <span className="font-bold text-[#1573fb]">{action} ›</span>}
     </div>
@@ -77,7 +78,7 @@ export function MobileDateStrip({ label, value, action }: { label: string; value
 
 export function MobileFixedActions({ primary = "저장", secondary, onPrimary, onSecondary }: { primary?: string; secondary?: string; onPrimary?: () => void; onSecondary?: () => void }) {
   return (
-    <div className="flex h-[82px] w-full gap-[10px] bg-white p-4">
+    <div className="flex h-[82px] w-full gap-[10px] bg-white p-4" data-mobile-part="fixed-actions">
       {secondary && <Button variant="fillGray" size="basic" onClick={onSecondary} className="h-[50px] min-w-0 flex-1 rounded-[6px] text-[16px] font-bold">{secondary}</Button>}
       <Button variant="fillMain" size="basic" onClick={onPrimary} className="h-[50px] min-w-0 flex-1 rounded-[6px] text-[16px] font-bold">{primary}</Button>
     </div>
@@ -96,16 +97,16 @@ export function MobileReceivingResultSourceScreen() {
     <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:91516" data-mobile-remaining-screen="receiving-result">
       <BluePageHeader title="공급사A" />
       <div className="absolute left-4 top-[99px] z-30 w-[343px]"><MobileDateStrip label="예정일" value="2025-07-30" action="입력 4건" /></div>
-      <main className="absolute inset-x-0 bottom-[166px] top-[146px] overflow-hidden">
-        <div className="grid h-[38px] grid-cols-[96px_76px_68px_80px_55px] items-center border-b border-[#e4e7ee] px-2 text-center text-[13px] font-semibold text-[#8491a7]"><span>품목명</span><span>발주수량</span><span>누적입고</span><span>입력값</span><span>단위</span></div>
+      <main className="absolute inset-x-0 bottom-[166px] top-[144px] overflow-hidden" data-mobile-part="receiving-table">
+        <div className="grid h-10 grid-cols-[97px_74px_74px_80px_50px] items-center border-b border-[#e4e7ee] text-center text-[14px] font-semibold leading-[21px] tracking-[-0.175px] text-[#8491a7]"><span>품목명</span><span>발주수량</span><span>누적입고</span><span>입력값</span><span>단위</span></div>
         {receivingNames.map((name, index) => (
-          <div key={`${name}-${index}`} className="grid h-[44px] grid-cols-[96px_76px_68px_80px_55px] items-center border-b border-[#e4e7ee] px-2 text-center text-[14px] text-[#011327]">
-            <span className="line-clamp-2 leading-[19px]">{name}</span><span>999,999</span><span>{index ? "999,999" : "1,000"}</span>
-            <Input aria-label={`${name} 입력값`} value={values[index] ?? ""} onChange={(event) => setValues((current) => ({ ...current, [index]: event.target.value }))} className="h-[34px] rounded-[4px] px-2 text-right text-[14px]" /><span>Kg</span>
+          <div key={`${name}-${index}`} className={cn("grid grid-cols-[97px_74px_74px_80px_50px] items-center border-b border-[#e4e7ee] text-center text-[14px] leading-[21px] tracking-[-0.175px] text-[#011327]", index === 0 ? "h-[54px]" : "h-[44px]")}>
+            <span className="line-clamp-2 px-[10px] leading-[21px]">{name}</span><span>999,999</span><span>{index ? "999,999" : "1,000"}</span>
+            <Input aria-label={`${name} 입력값`} value={values[index] ?? ""} onChange={(event) => setValues((current) => ({ ...current, [index]: event.target.value }))} className="h-8 rounded-[4px] px-[10px] text-right text-[14px]" /><span>Kg</span>
           </div>
         ))}
       </main>
-      <div className="absolute inset-x-0 bottom-[84px] z-30 flex h-[82px] items-start border-t border-[#e4e7ee] bg-white px-4 pt-[16px]">
+      <div className="absolute inset-x-0 bottom-[84px] z-30 flex h-[82px] items-start border-t border-[#e4e7ee] bg-white px-4 pt-[16px]" data-mobile-part="completion-actions">
         <label className="flex h-[50px] items-center gap-1.5 whitespace-nowrap text-[15px] font-semibold"><Checkbox checked={complete} onChange={(event) => setComplete(event.target.checked)} color="black" shape="circle" />완료 처리<CircleHelp className="size-4 text-[#8491a7]" /></label>
         <div className="ml-auto flex w-[226px] gap-[10px]"><Button variant="fillGray" size="basic" className="h-[50px] min-w-0 flex-1 rounded-[6px]">취소</Button><Button variant="fillMain" size="basic" className="h-[50px] min-w-0 flex-1 rounded-[6px]">저장</Button></div>
       </div><div className="absolute inset-x-0 bottom-0 z-30"><MobileSourceTabBar /></div>
@@ -113,8 +114,8 @@ export function MobileReceivingResultSourceScreen() {
   );
 }
 
-function CompactSelect({ label, value, onClick }: { label: string; value: string; onClick: () => void }) {
-  return <div className="grid h-8 grid-cols-[74px_1fr] items-center"><span className="text-[15px] text-[#5c667b]">{label}</span><Button variant="lineBlacktxt" size="xsmall" onClick={onClick} className="h-8 w-full min-w-0 justify-between rounded-[4px] px-[10px] text-[15px] font-normal">{value}<span>⌄</span></Button></div>;
+function CompactSelect({ label, value, options, onChange }: { label: string; value: string; options: string[]; onChange: (value: string) => void }) {
+  return <div className="grid h-8 grid-cols-[74px_1fr] items-center"><span className="text-[15px] text-[#5c667b]">{label}</span><MobileSelect value={value} options={options} onChange={onChange} mobileSize="small" label={label} /></div>;
 }
 
 export function MobileMaintenanceFormSourceScreen() {
@@ -128,10 +129,10 @@ export function MobileMaintenanceFormSourceScreen() {
     <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:93359" data-mobile-remaining-screen="maintenance-form">
       <BluePageHeader title="압출기 1호" />
       <div className="absolute left-4 top-[99px] z-30 w-[343px]"><MobileDateStrip label="정비일" value="2025-07-30" action="입력 2건" /></div>
-      <main className="absolute left-4 top-[146px] flex w-[343px] flex-col gap-[10px]">
-        <MobileFormSection title="기본 정보" className="h-[168px]"><MobileCompactField label="담당자" value={manager} onChange={setManager} /><CompactSelect label="UNIT" value={unit} onClick={() => setUnit(unit === "선택" ? "UNIT A" : "선택")} /><CompactSelect label="정비형태" value={kind} onClick={() => setKind(kind === "선택" ? "예방정비" : "선택")} /></MobileFormSection>
+      <main className="absolute left-4 top-[146px] flex w-[343px] flex-col gap-[10px]" data-mobile-part="maintenance-sections">
+        <MobileFormSection title="기본 정보" className="h-[168px]"><MobileCompactField label="담당자" value={manager} onChange={setManager} /><CompactSelect label="UNIT" value={unit} options={["UNIT A", "UNIT B"]} onChange={setUnit} /><CompactSelect label="정비형태" value={kind} options={["예방정비", "사후정비"]} onChange={setKind} /></MobileFormSection>
         <MobileFormSection title="정비 시간" className="h-[126px]"><div className="grid grid-cols-2 gap-[10px]"><MobileCompactField label="시작시간" value={startTime} onChange={setStartTime} /><MobileCompactField label="종료시간" value={endTime} onChange={setEndTime} /></div><div className="grid h-8 grid-cols-[74px_1fr_34px] items-center"><span className="text-[15px] text-[#5c667b]">총 정비시간</span><span className="flex h-8 items-center rounded-[4px] bg-[#e4e7ee] px-[10px] text-[#8491a7]">60</span><span className="text-right text-[12px] text-[#67738e]">Min</span></div></MobileFormSection>
-        {["원인분석", "정비내용"].map((title) => <Button key={title} variant="lineBlacktxt" size="small" onClick={() => setMemo(title)} className="h-[48px] w-full justify-between rounded-[8px] border border-[#e4e7ee] px-3 text-[15px] font-bold"><span>{title}</span><span className="flex items-center gap-1 text-[#1573fb]"><PenLine className="size-4" />메모</span></Button>)}
+        {["원인분석", "정비내용"].map((title) => <Button key={title} variant="lineBlacktxt" size="small" onClick={() => setMemo(title)} className="h-[48px] w-full justify-between !rounded-[8px] border border-[#e4e7ee] px-3 text-[15px] font-bold" data-mobile-maintenance-memo={title}><span>{title}</span><span className="flex items-center gap-1 text-[#1573fb]"><PenLine className="size-4" />메모</span></Button>)}
         {memo && <div role="status" className="rounded-[6px] bg-[#eff2f8] p-3 text-[13px]">{memo} 메모 입력 상태</div>}
       </main>
       <div className="absolute inset-x-0 bottom-[84px] z-30"><MobileFixedActions secondary="취소" /></div><div className="absolute inset-x-0 bottom-0 z-30"><MobileSourceTabBar /></div>
@@ -143,19 +144,19 @@ export function MobileWeightInspectionSourceScreen() {
   const [selected, setSelected] = React.useState(21);
   const [mode, setMode] = React.useState("auto");
   const [arrayNumber, setArrayNumber] = React.useState("12");
-  const [resultValue, setResultValue] = React.useState("0");
+  const [resultValue, setResultValue] = React.useState("");
   const cells = Array.from({ length: 100 }, (_, index) => index);
   return (
     <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:92711" data-mobile-remaining-screen="weight-inspection">
       <WhitePageHeader />
-      <h2 className="absolute left-4 top-[103px] w-[343px] truncate text-center text-[18px] font-bold">캐나다 투칸두부배캣(신형/칼선)</h2>
-      <div className="absolute left-[52px] top-[136px] h-[34px] w-[272px]"><MobileStep labels={["기본정보", "외관검사", "중량검사", "특이사항"]} activeIndex={2} /></div>
-      <div className="absolute left-4 top-[190px] grid h-[39px] w-[343px] grid-cols-3 rounded-[6px] bg-[#eff2f8] text-[14px]"><span className="flex items-center justify-center gap-2"><em className="not-italic text-[#1573fb]">하한값</em><strong>93.4</strong></span><span className="flex items-center justify-center gap-2 border-x border-[#d7dce5]"><em className="not-italic text-[#1573fb]">평균값</em><strong>99.3</strong></span><span className="flex items-center justify-center gap-2"><em className="not-italic text-[#1573fb]">상한값</em><strong>102.3</strong></span></div>
-      <div className="absolute left-4 top-[244px] flex h-8 w-[343px] items-center"><strong className="text-[15px]">TEST</strong><div className="ml-auto"><MobileRadioGroup label="배열 방식" value={mode} onChange={setMode} options={[{ value: "auto", label: "자동배열" }, { value: "manual", label: "사용자 설정" }]} /></div></div>
-      <section className="absolute left-4 top-[280px] h-[359px] w-[343px] rounded-[8px] border border-[#e4e7ee] p-[11px]">
-        <div className="mb-2 flex h-6 items-center text-[13px]"><span className="w-[102px] text-center text-[#67738e]">Cavity 배열</span><strong>5 X 5</strong><span className="ml-auto text-[#67738e]">진입방향</span><span className="ml-2 text-[22px]">→</span></div>
-        <div className="grid grid-cols-10 gap-[3px]">{cells.map((cell) => <Button key={cell} variant="lineBlacktxt" size="xsmall" aria-label={`배열 ${cell + 1}`} aria-pressed={selected === cell} onClick={() => setSelected(cell)} className={cn("h-[23px] min-w-0 rounded-[2px] border border-[#d7dce5] p-0 text-[12px]", selected === cell ? "bg-[#1573fb] text-white" : cell < 24 && cell % 10 < 5 ? "bg-[#d7dce5]" : "bg-white")}>{cell === 0 ? "1" : selected === cell ? "12" : ""}</Button>)}</div>
-        <div className="mt-[10px] grid grid-cols-2 gap-[10px]"><MobileCompactField label="배열넘버" value={arrayNumber} onChange={setArrayNumber} /><MobileCompactField label="결과값" value={resultValue} onChange={setResultValue} /></div>
+      <h2 className="absolute left-4 top-[99px] h-[27px] w-[343px] whitespace-nowrap text-center text-[18px] font-bold leading-[27px]" data-mobile-part="screen-title">캐나다 투칸두부배캣(신형/칼선)</h2>
+      <div className="absolute left-[52px] top-[136px] h-[34px] w-[272px]" data-mobile-part="stepper"><MobileStep labels={["기본정보", "외관검사", "중량검사", "특이사항"]} activeIndex={2} /></div>
+      <div className="absolute left-4 top-[190px] grid h-[39px] w-[343px] grid-cols-3 rounded-[6px] bg-[#eff2f8] text-[14px]" data-mobile-part="weight-metrics"><span className="flex items-center justify-center gap-2"><em className="not-italic text-[#1573fb]">하한값</em><strong>93.4</strong></span><span className="flex items-center justify-center gap-2 border-x border-[#d7dce5]"><em className="not-italic text-[#1573fb]">평균값</em><strong>99.3</strong></span><span className="flex items-center justify-center gap-2"><em className="not-italic text-[#1573fb]">상한값</em><strong>102.3</strong></span></div>
+      <div className="absolute left-4 top-[245px] flex h-[23px] w-[343px] items-center" data-mobile-part="array-mode"><strong className="text-[15px] leading-[23px]">TEST</strong><div className="ml-auto"><MobileRadioGroup label="배열 방식" value={mode} onChange={setMode} mobileSize="small" options={[{ value: "auto", label: "자동배열" }, { value: "manual", label: "사용자 설정" }]} /></div></div>
+      <section className="absolute left-4 top-[280px] flex h-[359px] w-[343px] flex-col gap-[10px] !rounded-[12px] border border-[#e4e7ee] p-[11px]" data-mobile-part="cavity-grid">
+        <div className="grid h-[21px] w-[319px] grid-cols-[1fr_1px_1fr] items-center text-[14px] leading-[21px] tracking-[-0.175px]" data-mobile-part="cavity-heading"><span className="flex items-center justify-center gap-3"><span className="text-[#67738e]">Cavity 배열</span><strong className="font-semibold">5 X 5</strong></span><span className="h-[15px] bg-[#d7dce5]" /><span className="flex items-center justify-center gap-3"><span className="text-[#67738e]">진입방향</span><span className="text-[20px]">→</span></span></div>
+        <div className="grid h-[262px] w-[319px] grid-cols-10 grid-rows-10 gap-1" data-mobile-part="cavity-cells">{cells.map((cell) => <Button key={cell} variant="lineBlacktxt" size="xsmall" aria-label={`배열 ${cell + 1}`} aria-pressed={selected === cell} onClick={() => setSelected(cell)} className={cn("h-auto min-w-0 rounded-[2px] border border-[#d7dce5] p-0 text-[14px] leading-[21px] tracking-[-0.175px]", selected === cell ? "bg-[#1573fb] text-white" : cell < 40 && cell % 10 < 5 ? "bg-[#d7dce5]" : "bg-white")}>{cell === 0 ? "1" : selected === cell ? "12" : ""}</Button>)}</div>
+        <div className="grid h-8 w-[319px] grid-cols-2 gap-[10px]" data-mobile-part="cavity-values"><label className="flex min-w-0 items-center"><span className="w-[60px] shrink-0 text-[15px] font-semibold tracking-[-0.1875px] text-[#1573fb]">배열넘버</span><MobileInput aria-label="배열넘버" mobileSize="compact" value={arrayNumber} onChange={(event) => setArrayNumber(event.target.value)} className="bg-[#eff2f8]" /></label><label className="flex min-w-0 items-center"><span className="w-[60px] shrink-0 text-[15px] font-semibold tracking-[-0.1875px] text-[#1573fb]">결과값</span><MobileInput aria-label="결과값" mobileSize="compact" placeholder="0" value={resultValue} onChange={(event) => setResultValue(event.target.value)} /></label></div>
       </section>
       <div className="absolute inset-x-0 bottom-[84px] z-30"><MobileFixedActions primary="다음" secondary="←  이전 페이지" /></div><div className="absolute inset-x-0 bottom-0 z-30"><MobileSourceTabBar /></div>
     </div>

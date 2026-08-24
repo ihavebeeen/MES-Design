@@ -81,6 +81,10 @@
 - 원본 화면 `전체메뉴(10378:92070)`: 1depth 120px/2depth 255px 구조, 2× 렌더링, 메뉴 전환 동작을 모두 통과해 `verified`다.
 - 원본 화면 `성적서 외관검사(10378:92529)`: 구조·2× 렌더링·일괄 선택·초기화·개별 O→△ 판정 계약을 모두 통과해 `verified`다.
 - 원본 화면 `일지작성(10378:91977)`: 구조와 근무조 선택·입력·저장·취소 복원은 검증됐다. 2× 직접 비교가 1.1802%로 승인선 1%를 넘으므로 전체 상태는 `implemented-reviewing`이다.
+- 원본 화면 `입고실적 등록(10378:91516)`: 파란 헤더 116px 겹침, 표 헤더 40px, 첫 행 54px·후속 행 44px, 고정 액션 구조와 수량 입력·완료 체크 동작은 검증됐다. 2× 직접 비교가 1.3942%로 승인선 1%를 넘으므로 전체 상태는 `implemented-reviewing`이다.
+- 원본 화면 `정비 등록(10378:93359)`: 날짜 스트립, 168px/126px 섹션, 48px 메모 행, Select 선택·시간 입력·메모 열기 동작은 검증됐다. 2× 직접 비교가 1.1940%로 승인선 1%를 넘으므로 전체 상태는 `implemented-reviewing`이다.
+- 원본 화면 `성적서 중량검사(10378:92711)`: 12px Cavity 컨테이너, 319×262 셀 그리드, 4px 셀 간격, 하단 입력 영역과 배열 방식·Cavity·값 입력 동작은 검증됐다. 2× 직접 비교가 1.1989%로 승인선 1%를 넘으므로 전체 상태는 `implemented-reviewing`이다.
+- 계층 검증 계약은 현재 대표 9종에 연결됐다. 9종 모두 구조·동작 계층은 통과했으며 렌더링 계층은 4종 `verified`, 5종 `reviewing`이다.
 - 인벤토리에 등록된 대표 원본 프레임 35개 코드화: 완료. 메인 19개·팝업 16개 모두 개별 `/visual-regression/mobile-source/{asset}` 경로와 실제 Figma export 기준 이미지를 갖는다.
 - 이번에 추가한 26개는 viewport 375×812, 가로 overflow 0, 핵심 입력·선택 상호작용과 최대 6% 회귀선(BOM 선택만 7%)을 통과하는 `implemented-reviewing` 상태다. 1%를 넘으므로 `verified`로 승격하지 않는다.
 - 화면 유형 보드의 44개 메인 페이지·19개 팝업 페이지는 대표 프레임과 반복 변형을 합친 수량이다. 대표 프레임 코드화 완료를 63개 페이지 전체 픽셀 승인으로 표현하지 않는다.
@@ -92,6 +96,8 @@
 | Foundation | `mobile.color` | 전체메뉴·외관검사·일지작성 | primary, strong/muted text, inactive control, danger 의미색 |
 | Foundation | `mobile.spacing` | 홈·외관검사·일지작성 | 16px 화면 여백, 10px paired-control gap, 8px compact gap |
 | Component | `mobile.radio` / `MobileRadioGroup` | 일지작성 | 단일 선택·미선택·비활성 상태 |
+| Component | `mobile.radio.small` / `MobileRadioGroup mobileSize="small"` | 성적서 중량검사 | 20px radio를 사용하는 23px 높이의 조밀한 단일 선택 행 |
+| Component | `mobile.select` / `MobileSelect` | 정비 등록 | 32px 선택 필드, 실제 옵션 선택과 방향 화살표 상태 |
 | Component | `mobile.compact-field` / `MobileCompactField` | 일지작성 | 74px label + 32px 입력 필드 |
 | Component | `mobile.date-strip` / `MobileDateStrip` | 입고실적·정비·검사·설비점검 | 날짜·입력 건수 요약 |
 | Component | `mobile.fixed-actions` / `MobileFixedActions` | 등록·품질 단계 화면 | 단일 저장·취소/저장·이전/다음 고정 액션 |
@@ -113,6 +119,8 @@
 - 하단 탭 아이콘을 모두 24×24로 늘리면서 원본 SVG의 내부 도형 크기와 알람 아이콘 하단 획이 손실됐다. 24px 슬롯과 실제 SVG 크기를 분리했다.
 - 생산실적 화면에 원본에 없는 하단 구분선·Home Indicator가 있었고 업무 바로가기에는 Lucide 대체 아이콘이 사용됐다. 원본 프레임 구조와 SVG로 교체했다.
 - `mobile-figma-*.png` 회귀 기준은 실제 Figma export임을 해시·픽셀 비교로 재확인했다. 스냅샷 갱신으로 차이를 숨기지 않고 화면 코드를 기준에 맞춘다.
+- 입고실적은 날짜 카드 좌표만 맞춘 채 파란 배경을 99px에서 잘라 원본의 116px 겹침을 놓쳤고, 첫 데이터 행을 후속 행과 같은 44px로 처리해 이후 모든 행이 10px 위로 밀렸다. 헤더 높이와 첫 행/반복 행을 별도 구조 계약으로 분리했다.
+- 중량검사는 Cavity 외곽 박스만 계약에 넣어 내부 구분선, 10×10 셀의 4px 간격·회색 범위, 60px 라벨과 94.5px 입력 폭 차이를 잡지 못했다. 헤더·셀 그리드·값 입력 행을 별도 구조 계약으로 확장했다.
 - 모바일 자산은 `getMobileGenerationContext()`로 별도 조회되지만 현재 공통 `ScreenRequest` resolver의 `nearestScreenId`에는 모바일 화면이 등록되지 않아 `composition.no-nearest-screen` 경고가 남는다. 모바일 화면 조합 문법을 공통 생성 계약에 연결하는 작업은 별도 후속 범위다.
 - `10378:91087`은 분류명과 실제 내용이 달라 `BOM 선택`, `10378:93313`은 `시간대별 특이사항`으로 실제 화면 내용 기준 이름을 사용한다.
 - `10378:92237` 로그인 프레임은 원본에 `미정`만 존재하므로 임의 로그인 UI를 새로 만들지 않고 source-error 상태를 그대로 코드화했다.

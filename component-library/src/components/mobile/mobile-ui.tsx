@@ -285,14 +285,14 @@ export function MobileCompactField({ label, value, onChange, readOnly = false, i
   );
 }
 
-export function MobileRadioGroup({ value, options, onChange, label }: { value: string; options: Array<{ value: string; label: string; disabled?: boolean }>; onChange: (value: string) => void; label: string }) {
+export function MobileRadioGroup({ value, options, onChange, label, mobileSize = "default" }: { value: string; options: Array<{ value: string; label: string; disabled?: boolean }>; onChange: (value: string) => void; label: string; mobileSize?: "default" | "small" }) {
   return (
-    <div role="radiogroup" aria-label={label} className="flex h-8 items-center gap-5">
+    <div role="radiogroup" aria-label={label} className={cn("flex items-center gap-5", mobileSize === "small" ? "h-[23px]" : "h-8")}>
       {options.map((option) => {
         const selected = option.value === value;
         return (
-          <Button key={option.value} type="button" role="radio" aria-checked={selected} disabled={option.disabled} variant="lineBlacktxt" size="xsmall" onClick={() => onChange(option.value)} className="h-8 min-w-0 gap-1.5 rounded-none border-0 bg-transparent p-0 text-[15px] font-medium tracking-[-0.1875px] text-[#011327] hover:bg-transparent disabled:bg-transparent disabled:text-[#99a3b8]">
-            <span className={cn("flex size-6 items-center justify-center rounded-full", option.disabled ? "bg-[#eff2f8]" : "border-2", selected ? "border-[#1573fb]" : "border-[#b4c0d3]")}>{selected && <span className="size-3 rounded-full bg-[#1573fb]" />}</span>
+          <Button key={option.value} type="button" role="radio" aria-checked={selected} disabled={option.disabled} variant="lineBlacktxt" size="xsmall" onClick={() => onChange(option.value)} className={cn("min-w-0 gap-1.5 rounded-none border-0 bg-transparent p-0 text-[15px] font-medium tracking-[-0.1875px] text-[#011327] hover:bg-transparent disabled:bg-transparent disabled:text-[#99a3b8]", mobileSize === "small" ? "h-[23px]" : "h-8")}>
+            <span className={cn("flex items-center justify-center rounded-full", mobileSize === "small" ? "size-5" : "size-6", option.disabled ? "bg-[#eff2f8]" : "border-2", selected ? "border-[#1573fb]" : "border-[#b4c0d3]")}>{selected && <span className={cn("rounded-full bg-[#1573fb]", mobileSize === "small" ? "size-[10px]" : "size-3")} />}</span>
             {option.label}
           </Button>
         );
@@ -361,7 +361,7 @@ export function MobileSelect({
           state === "complete" && "font-semibold",
         )}
       >
-        <span>{value || placeholder}</span><ChevronRight size={18} className={cn("transition-transform", open && "rotate-90")} />
+        <span>{value || placeholder}</span><Image src="/mobile-assets/arrow-row.svg" alt="" width={6.57} height={12.33} className={cn("h-[12.33px] w-[6.57px] rotate-90 transition-transform", open && "-rotate-90")} />
       </Button>
       {open && (
         <div role="listbox" aria-label={label ? `${label} 목록` : "선택 옵션 목록"} className="absolute left-0 right-0 top-full z-20 overflow-hidden rounded-b-[4px] border border-t-0 border-[#e4e7ee] bg-white shadow-lg">

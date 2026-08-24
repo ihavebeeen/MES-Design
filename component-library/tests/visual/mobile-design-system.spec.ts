@@ -138,7 +138,7 @@ test("대표 원본 화면 목록과 기존 1× 호환 기준을 유지한다", 
   }
 });
 
-test("모바일 검증 1 · 대표 6종의 위치·크기·간격·색상·radius 계약", async ({ page }) => {
+test("모바일 검증 1 · 계약 등록 화면의 위치·크기·간격·색상·radius 계약", async ({ page }) => {
   for (const frame of mobileVerification.frames) {
     await expectStructuralContract(page, frame);
   }
@@ -160,7 +160,7 @@ test.describe("모바일 검증 2 · Figma 2×와 Chromium 2× 렌더링 비교"
   }
 });
 
-test("모바일 검증 3 · 대표 6종의 클릭·입력·선택 계약", async ({ page }) => {
+test("모바일 검증 3 · 계약 등록 화면의 클릭·입력·선택 계약", async ({ page }) => {
   const executed = new Set<string>();
 
   await page.goto("/visual-regression/mobile-source/home");
@@ -226,6 +226,62 @@ test("모바일 검증 3 · 대표 6종의 클릭·입력·선택 계약", async
   await dayLog.getByRole("button", { name: "취소", exact: true }).click();
   await expect(moldChange).toHaveValue("100");
   executed.add("day-log-cancel-restore");
+
+  await page.goto("/visual-regression/mobile-source/receiving-result");
+  const receivingResult = page.locator('[data-mobile-remaining-screen="receiving-result"]');
+  const receivingQuantity = receivingResult.getByRole("textbox").first();
+  await receivingQuantity.fill("320");
+  await expect(receivingQuantity).toHaveValue("320");
+  executed.add("receiving-result-quantity-edit");
+  const receivingCompletion = receivingResult.getByRole("checkbox");
+  await expect(receivingCompletion).toBeChecked();
+  await receivingCompletion.click();
+  await expect(receivingCompletion).not.toBeChecked();
+  executed.add("receiving-result-completion-toggle");
+
+  await page.goto("/visual-regression/mobile-source/maintenance-form");
+  const maintenance = page.locator('[data-mobile-remaining-screen="maintenance-form"]');
+  const manager = maintenance.getByRole("textbox", { name: "담당자", exact: true });
+  await manager.fill("이수현");
+  await expect(manager).toHaveValue("이수현");
+  executed.add("maintenance-manager-edit");
+  await maintenance.getByRole("button", { name: "UNIT", exact: true }).click();
+  await maintenance.getByRole("option", { name: /UNIT A/ }).click();
+  await expect(maintenance.getByRole("button", { name: "UNIT", exact: true })).toContainText("UNIT A");
+  executed.add("maintenance-unit-select");
+  await maintenance.getByRole("button", { name: "정비형태", exact: true }).click();
+  await maintenance.getByRole("option", { name: /예방정비/ }).click();
+  await expect(maintenance.getByRole("button", { name: "정비형태", exact: true })).toContainText("예방정비");
+  executed.add("maintenance-kind-select");
+  const startTime = maintenance.getByRole("textbox", { name: "시작시간", exact: true });
+  const endTime = maintenance.getByRole("textbox", { name: "종료시간", exact: true });
+  await startTime.fill("09:00");
+  await endTime.fill("10:00");
+  await expect(startTime).toHaveValue("09:00");
+  await expect(endTime).toHaveValue("10:00");
+  executed.add("maintenance-time-edit");
+  await maintenance.getByRole("button", { name: /원인분석.*메모/ }).click();
+  await expect(maintenance.getByRole("status")).toHaveText("원인분석 메모 입력 상태");
+  executed.add("maintenance-memo-open");
+
+  await page.goto("/visual-regression/mobile-source/weight-inspection");
+  const weight = page.locator('[data-mobile-remaining-screen="weight-inspection"]');
+  const manualMode = weight.getByRole("radio", { name: "사용자 설정", exact: true });
+  await manualMode.click();
+  await expect(manualMode).toHaveAttribute("aria-checked", "true");
+  executed.add("weight-array-mode-select");
+  const cavity = weight.getByRole("button", { name: "배열 1", exact: true });
+  await cavity.click();
+  await expect(cavity).toHaveAttribute("aria-pressed", "true");
+  executed.add("weight-cavity-select");
+  const arrayNumber = weight.getByRole("textbox", { name: "배열넘버", exact: true });
+  await arrayNumber.fill("15");
+  await expect(arrayNumber).toHaveValue("15");
+  executed.add("weight-array-number-edit");
+  const resultValue = weight.getByRole("textbox", { name: "결과값", exact: true });
+  await resultValue.fill("98.7");
+  await expect(resultValue).toHaveValue("98.7");
+  executed.add("weight-result-value-edit");
 
   const declared = mobileVerification.frames.flatMap((frame) => frame.interactions).sort();
   expect([...executed].sort()).toEqual(declared);
