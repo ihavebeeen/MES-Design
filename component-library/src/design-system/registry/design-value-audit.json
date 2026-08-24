@@ -679,8 +679,8 @@
           "src/components/ui/quick-query.tsx:322",
           "src/components/ui/quick-query.tsx:330",
           "src/components/ui/quick-query.tsx:338",
-          "src/components/patterns/exact-production-analytics-screen.tsx:59",
-          "src/components/patterns/exact-production-analytics-screen.tsx:70",
+          "src/components/patterns/exact-production-analytics-screen.tsx:60",
+          "src/components/patterns/exact-production-analytics-screen.tsx:71",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:198"
         ]
       },
@@ -772,7 +772,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:78"
+          "src/components/patterns/exact-production-analytics-screen.tsx:79"
         ]
       },
       {
@@ -1096,7 +1096,7 @@
           "pattern": 3
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:70",
+          "src/components/patterns/exact-production-analytics-screen.tsx:71",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:224",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:79",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:153"
@@ -1317,7 +1317,7 @@
           "src/components/patterns/cavity-settings-pattern.tsx:13",
           "src/components/patterns/entity-list-pattern.tsx:28",
           "src/components/patterns/exact-form-management-screen.tsx:119",
-          "src/components/patterns/exact-production-analytics-screen.tsx:45"
+          "src/components/patterns/exact-production-analytics-screen.tsx:46"
         ]
       },
       {
@@ -1534,8 +1534,8 @@
           "src/components/patterns/completed-application-patterns.tsx:324",
           "src/components/patterns/completed-application-patterns.tsx:324",
           "src/components/patterns/completed-popup-expanded-content.tsx:224",
-          "src/components/patterns/exact-production-analytics-screen.tsx:59",
-          "src/components/patterns/exact-production-analytics-screen.tsx:59"
+          "src/components/patterns/exact-production-analytics-screen.tsx:60",
+          "src/components/patterns/exact-production-analytics-screen.tsx:60"
         ]
       },
       {
@@ -1672,7 +1672,7 @@
           "src/components/ui/filter-tag.tsx:54",
           "src/components/ui/filter.tsx:184",
           "src/components/ui/icon-button.tsx:38",
-          "src/components/patterns/exact-production-analytics-screen.tsx:49",
+          "src/components/patterns/exact-production-analytics-screen.tsx:50",
           "src/components/patterns/mes-screen-fixtures.tsx:88"
         ]
       },
@@ -1688,7 +1688,7 @@
           "src/components/patterns/analytics-dashboard-pattern.tsx:40",
           "src/components/patterns/entity-list-pattern.tsx:28",
           "src/components/patterns/exact-form-management-screen.tsx:119",
-          "src/components/patterns/exact-production-analytics-screen.tsx:45",
+          "src/components/patterns/exact-production-analytics-screen.tsx:46",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:49",
           "src/components/patterns/master-detail-pattern.tsx:29",
           "src/components/patterns/original-mes-screen-assets.tsx:275",
@@ -1708,10 +1708,10 @@
           "src/components/patterns/completed-application-patterns.tsx:309",
           "src/components/patterns/completed-application-patterns.tsx:313",
           "src/components/patterns/completed-application-patterns.tsx:317",
-          "src/components/patterns/exact-production-analytics-screen.tsx:51",
-          "src/components/patterns/exact-production-analytics-screen.tsx:70",
-          "src/components/patterns/exact-production-analytics-screen.tsx:70",
-          "src/components/patterns/exact-production-analytics-screen.tsx:73"
+          "src/components/patterns/exact-production-analytics-screen.tsx:52",
+          "src/components/patterns/exact-production-analytics-screen.tsx:71",
+          "src/components/patterns/exact-production-analytics-screen.tsx:71",
+          "src/components/patterns/exact-production-analytics-screen.tsx:74"
         ]
       },
       {
@@ -1749,7 +1749,7 @@
           "src/components/patterns/analytics-dashboard-pattern.tsx:46",
           "src/components/patterns/entity-list-pattern.tsx:34",
           "src/components/patterns/exact-form-management-screen.tsx:128",
-          "src/components/patterns/exact-production-analytics-screen.tsx:48",
+          "src/components/patterns/exact-production-analytics-screen.tsx:49",
           "src/components/patterns/exact-production-result-screen.tsx:106",
           "src/components/patterns/master-detail-pattern.tsx:35"
         ]
@@ -1879,7 +1879,7 @@
           "src/components/ui/quick-query.tsx:359",
           "src/components/ui/quick-query.tsx:376",
           "src/components/ui/quick-query.tsx:384",
-          "src/components/patterns/exact-production-analytics-screen.tsx:70",
+          "src/components/patterns/exact-production-analytics-screen.tsx:71",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:223"
         ]
       },
@@ -1893,10 +1893,10 @@
         },
         "examples": [
           "src/components/patterns/completed-application-patterns.tsx:206",
-          "src/components/patterns/exact-production-analytics-screen.tsx:70",
-          "src/components/patterns/exact-production-analytics-screen.tsx:73",
-          "src/components/patterns/exact-production-analytics-screen.tsx:75",
-          "src/components/patterns/exact-production-analytics-screen.tsx:79",
+          "src/components/patterns/exact-production-analytics-screen.tsx:71",
+          "src/components/patterns/exact-production-analytics-screen.tsx:74",
+          "src/components/patterns/exact-production-analytics-screen.tsx:76",
+          "src/components/patterns/exact-production-analytics-screen.tsx:80",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:176"
         ]
       },
@@ -1964,7 +1964,7 @@
         "examples": [
           "src/components/ui/switch.tsx:32",
           "src/components/ui/tag.tsx:59",
-          "src/components/patterns/exact-production-analytics-screen.tsx:78",
+          "src/components/patterns/exact-production-analytics-screen.tsx:79",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:187",
           "src/components/patterns/team-settings-pattern.tsx:180"
         ]
@@ -1996,8 +1996,8 @@
         "examples": [
           "src/components/patterns/completed-application-patterns.tsx:268",
           "src/components/patterns/completed-application-patterns.tsx:309",
-          "src/components/patterns/exact-production-analytics-screen.tsx:59",
-          "src/components/patterns/exact-production-analytics-screen.tsx:70",
+          "src/components/patterns/exact-production-analytics-screen.tsx:60",
+          "src/components/patterns/exact-production-analytics-screen.tsx:71",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:226"
         ]
       },
@@ -2103,7 +2103,7 @@
           "src/components/ui/alarm-list-item.tsx:63",
           "src/components/ui/number-input.tsx:67",
           "src/components/ui/number-input.tsx:76",
-          "src/components/patterns/exact-production-analytics-screen.tsx:78"
+          "src/components/patterns/exact-production-analytics-screen.tsx:79"
         ]
       },
       {
@@ -2185,7 +2185,7 @@
         },
         "examples": [
           "src/components/patterns/completed-popup-patterns.tsx:294",
-          "src/components/patterns/exact-production-analytics-screen.tsx:70",
+          "src/components/patterns/exact-production-analytics-screen.tsx:71",
           "src/components/patterns/table-column-settings.tsx:89"
         ]
       },
@@ -2251,7 +2251,7 @@
         },
         "examples": [
           "src/components/patterns/business-operation-settings-pattern.tsx:340",
-          "src/components/patterns/exact-production-analytics-screen.tsx:75"
+          "src/components/patterns/exact-production-analytics-screen.tsx:76"
         ]
       },
       {
@@ -2325,7 +2325,7 @@
         },
         "examples": [
           "src/components/ui/analytics-charts.tsx:14",
-          "src/components/patterns/exact-production-analytics-screen.tsx:79"
+          "src/components/patterns/exact-production-analytics-screen.tsx:80"
         ]
       },
       {
@@ -2337,7 +2337,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:60",
+          "src/components/patterns/exact-production-analytics-screen.tsx:61",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:98"
         ]
       },
@@ -2386,8 +2386,8 @@
           "evidence": 2
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:63",
-          "src/components/patterns/exact-production-analytics-screen.tsx:79"
+          "src/components/patterns/exact-production-analytics-screen.tsx:64",
+          "src/components/patterns/exact-production-analytics-screen.tsx:80"
         ]
       },
       {
@@ -2594,8 +2594,8 @@
           "evidence": 2
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:49",
-          "src/components/patterns/exact-production-analytics-screen.tsx:49"
+          "src/components/patterns/exact-production-analytics-screen.tsx:50",
+          "src/components/patterns/exact-production-analytics-screen.tsx:50"
         ]
       },
       {
@@ -2606,8 +2606,8 @@
           "evidence": 2
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:59",
-          "src/components/patterns/exact-production-analytics-screen.tsx:60"
+          "src/components/patterns/exact-production-analytics-screen.tsx:60",
+          "src/components/patterns/exact-production-analytics-screen.tsx:61"
         ]
       },
       {
@@ -2996,7 +2996,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:70"
+          "src/components/patterns/exact-production-analytics-screen.tsx:71"
         ]
       },
       {
@@ -3029,7 +3029,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:60"
+          "src/components/patterns/exact-production-analytics-screen.tsx:61"
         ]
       },
       {
@@ -3095,7 +3095,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:58"
+          "src/components/patterns/exact-production-analytics-screen.tsx:59"
         ]
       },
       {
@@ -3678,7 +3678,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:70"
+          "src/components/patterns/exact-production-analytics-screen.tsx:71"
         ]
       },
       {
@@ -3822,7 +3822,7 @@
           "src/components/ui/analytics-charts.tsx:32",
           "src/components/patterns/completed-application-patterns.tsx:249",
           "src/components/patterns/completed-application-patterns.tsx:250",
-          "src/components/patterns/exact-production-analytics-screen.tsx:60"
+          "src/components/patterns/exact-production-analytics-screen.tsx:61"
         ]
       },
       {
@@ -4035,7 +4035,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:79"
+          "src/components/patterns/exact-production-analytics-screen.tsx:80"
         ]
       },
       {
@@ -4057,7 +4057,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/patterns/exact-production-analytics-screen.tsx:60"
+          "src/components/patterns/exact-production-analytics-screen.tsx:61"
         ]
       },
       {
@@ -4340,5 +4340,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "e728ec98968c2044"
+  "fingerprint": "e1a556552d035d35"
 }

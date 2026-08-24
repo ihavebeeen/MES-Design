@@ -224,10 +224,7 @@ npm run dev
 - `/components/`: 개별 UI 컴포넌트와 상태
 - `/mobile/`: 모바일 파운데이션·컴포넌트·조합 패턴·화면 유형
 - `/generated-screens/`: 표준 화면과 격리된 AI 생성 시안 검토함
-- `/experimental/experimental-decisions/`: Tier 3~5 최초 후보 57개의 승격·실험 유지·제외 판정 원장
-- `/experimental/experimental-tier-3/`: 사용자 판정 후 유지된 Tier 3 기능 후보 2종
-- `/experimental/experimental-tier-4/`: 사용자 판정 후 유지된 Tier 4 기능 후보 6종
-- `/experimental/experimental-tier-5/`: 사용자 판정 후 유지된 Tier 5 기능 후보 1종
+- `/experimental/experimental-decisions/`: Tier 3~5 최초 후보 57개의 승격·제외 판정 기록. 승격 항목은 Components·Patterns에서 확인
 - `/patterns/`: MES 업무 화면과 조합 패턴
 - `/patterns/original-mes-screen-assets/`: 정규화된 원본 화면 자산
 
@@ -269,6 +266,9 @@ npm run audit:composition
 
 # 코드와 커밋된 감사 결과 사이의 drift 검사
 npm run check:design-values
+
+# 웹 컴포넌트·패턴·화면의 검증 현황 원장 갱신
+npm run audit:web-coverage
 
 # 디자인 시스템 관련 코드 린트
 npm run lint:design-system
@@ -391,6 +391,7 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 - [AI 기반 MES 화면 생성 아키텍처](./docs/AI_MES_화면_생성_아키텍처.md)
 - [AI UI 조합 문법 공통 정책](./docs/AI_UI_조합_문법_공통정책.md)
 - [웹 UI 맥락 체계화 현황](./docs/웹_UI_맥락_체계화_현황.md)
+- [웹 UI 전수검증 현황](./docs/웹_UI_전수검증_현황.md)
 - [AI UI 조합 인벤토리 1차](./docs/AI_UI_조합_인벤토리_1차.md)
 - [AI UI Shell·슬롯 감사 1차](./docs/AI_UI_Shell_슬롯_감사_1차.md)
 - [AI UI Section Frame 감사 1차](./docs/AI_UI_Section_Frame_감사_1차.md)

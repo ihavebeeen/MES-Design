@@ -153,6 +153,14 @@ async function hideDevelopmentOverlay(page: Page) {
   await page.addStyleTag({ content: "nextjs-portal { display: none !important; }" });
 }
 
+async function openFigmaPreviewAtActualSize(page: Page) {
+  await page.getByRole("button", { name: "전체화면으로 보기", exact: true }).click();
+  await page.getByRole("button", { name: "원본 1:1", exact: true }).click();
+  const canvas = page.locator('[data-figma-preview-fullscreen="true"] [data-figma-preview-canvas]');
+  await expect(canvas).toBeVisible();
+  return canvas;
+}
+
 test("투입품목 설정/조회 팝업", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/visual-regression/popup");
@@ -991,6 +999,75 @@ test("생산분석 조회기간과 기준은 KPI·목록 단위를 함께 변경
   await expect(screen.getByText("계획값 설정", { exact: true })).toBeVisible();
 });
 
+test("선발행 라벨 수량 확정 원본 화면", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/patterns/completed-popup-types");
+  await page.getByRole("button", { name: "1024 · 선발행 라벨 수량 확정", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "선발행 라벨 수량 확정" });
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("preissued-label.png");
+});
+
+test("운전일지 등록 원본 화면", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/patterns/completed-popup-types");
+  await page.getByRole("button", { name: "900 · 운전일지 등록", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "운전일지 등록" });
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("operation-log.png");
+});
+
+test("재고편집 원본 화면", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/patterns/completed-popup-types");
+  const gallery = page.getByRole("region", { name: "Figma 원본 팝업" });
+  await gallery.getByRole("button", { name: "재고 편집", exact: true }).click();
+  await gallery.getByRole("button", { name: "실제 팝업으로 열기", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "재고편집" });
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("inventory-edit.png");
+});
+
+test("발주 정보 원본 화면", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/patterns/completed-popup-types");
+  const gallery = page.getByRole("region", { name: "Figma 원본 팝업" });
+  await gallery.getByRole("button", { name: "발주 정보", exact: true }).click();
+  await gallery.getByRole("button", { name: "실제 팝업으로 열기", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "발주 정보" });
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("purchase-order-lookup.png");
+});
+
+test("그룹화 생산실적 원본 화면", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/patterns/grouped-list-screen");
+  const canvas = await openFigmaPreviewAtActualSize(page);
+  await hideDevelopmentOverlay(page);
+  await expect(canvas).toHaveScreenshot("grouped-production-list.png");
+});
+
+test("생산실적 반응형 원본 화면 3종", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  for (const width of [1280, 768, 375] as const) {
+    await page.goto("/patterns/original-mes-screen-assets");
+    await page.getByRole("button", { name: /생산실적 반응형/ }).click();
+    await page.getByRole("button", { name: `${width}px`, exact: true }).click();
+    const canvas = await openFigmaPreviewAtActualSize(page);
+    await hideDevelopmentOverlay(page);
+    await expect(canvas).toHaveScreenshot(`production-result-responsive-${width}.png`);
+  }
+});
+
+test("생산분석 현황 원본 화면", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 960 });
+  await page.goto("/patterns/completed-analytics-dashboard");
+  await expect(page.locator("#completed-analytics-dashboard").getByText("월별 생산실적", { exact: true })).toBeVisible();
+  const canvas = await openFigmaPreviewAtActualSize(page);
+  await hideDevelopmentOverlay(page);
+  await expect(canvas).toHaveScreenshot("production-analytics-latest.png");
+});
+
 test("공정검사 경향관리는 원본 분석 배치와 품목·CAVITY 연동을 유지한다", async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 960 });
   await page.goto("/visual-regression/process-inspection-trend");
@@ -1203,8 +1280,9 @@ test("최초 로그인 비밀번호 재설정은 불일치와 완료 상태를 �
 });
 
 test("그룹화 리스트의 접기와 그룹 선택은 하위 행 상태에 반영된다", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.setViewportSize({ width: 1920, height: 960 });
   await page.goto("/patterns/grouped-list-screen");
+  await openFigmaPreviewAtActualSize(page);
   const screen = page.locator("#grouped-list-screen");
   const itemLinks = screen.getByRole("link", { name: "더블비안코뚜껑", exact: true });
   const expandedItemCount = await itemLinks.count();

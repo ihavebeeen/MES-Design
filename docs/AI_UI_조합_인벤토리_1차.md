@@ -7,11 +7,11 @@
 | 항목 | 결과 |
 |---|---:|
 | 검사 파일 | 41 |
-| 전체 줄 수 | 8,100 |
+| 전체 줄 수 | 8,101 |
 | 혼합 Section Frame 파일 | 2 |
 | 표준 Frame 없이 native section만 사용 | 18 |
 | rounded wrapper가 있는 Section 후보 파일 | 22 |
-| fingerprint | `bd147b0a21c8b835` |
+| fingerprint | `7fbf47d1c6adc4ef` |
 
 ## Shell 사용
 

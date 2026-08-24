@@ -1,0 +1,3554 @@
+{
+  "schemaVersion": 1,
+  "auditedAt": "2026-08-24",
+  "sourceFingerprint": "233e1b7b482b60c32cdf073c1562980fc4def16725a6cb6fd5e47cb12c28b1ab",
+  "browserRun": {
+    "command": "npm run test:visual",
+    "result": "passed",
+    "passed": 71,
+    "failed": 0,
+    "duration": "3.4m",
+    "includesDeferredMobile": true
+  },
+  "summary": {
+    "components": {
+      "total": 88,
+      "stable": 40,
+      "provisional": 48,
+      "documented": 67,
+      "detailedUsageRules": 20,
+      "sourceMissing": 0
+    },
+    "patterns": {
+      "total": 62,
+      "usedByScreens": 46,
+      "unusedByScreens": 16,
+      "detailedCompositionRules": 10,
+      "withVisualEvidence": 46,
+      "sourceMissing": 0
+    },
+    "screens": {
+      "total": 28,
+      "interactionVerified": 28,
+      "directlyVisualLinked": 28,
+      "orderedDefinitions": 3,
+      "sourceMissing": 0
+    }
+  },
+  "components": [
+    {
+      "id": "accordion",
+      "name": "Accordion",
+      "category": "layout",
+      "status": "provisional",
+      "source": "src/components/ui/accordion.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/accordion",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "alarm-list-item",
+      "name": "AlarmListItem",
+      "category": "data-display",
+      "status": "stable",
+      "source": "src/components/ui/alarm-list-item.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/alarm-list-item",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "avatar",
+      "name": "Avatar",
+      "category": "data-display",
+      "status": "provisional",
+      "source": "src/components/ui/avatar.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/avatar",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "badge",
+      "name": "Badge",
+      "category": "data-display",
+      "status": "stable",
+      "source": "src/components/ui/badge.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/badge",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "onboarding.product-tour",
+        "popup.center.purchase-lookup",
+        "popup.center.standard-price-settings",
+        "popup.center.team-settings"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "before-after-comparison",
+      "name": "BeforeAfterComparison",
+      "category": "data-display",
+      "status": "stable",
+      "source": "src/components/ui/before-after-comparison.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.before-after-confirmation"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "breadcrumb",
+      "name": "Breadcrumb",
+      "category": "navigation",
+      "status": "provisional",
+      "source": "src/components/ui/breadcrumb.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/breadcrumb",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "button",
+      "name": "Button",
+      "category": "action",
+      "status": "stable",
+      "source": "src/components/ui/button.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/button-size",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "action-set.cancel-confirm",
+        "action-set.cancel-input",
+        "action-set.cancel-save",
+        "action-set.cancel-select",
+        "action-set.close-only",
+        "action-set.close-reregister",
+        "action-set.save-only",
+        "onboarding.product-tour",
+        "popup.center.before-after-confirmation",
+        "popup.center.cavity-layout",
+        "popup.center.dual-pane",
+        "popup.center.equipment-discharge-settings",
+        "popup.center.form",
+        "popup.center.inspection-criteria",
+        "popup.center.inspection-records",
+        "popup.center.navigation-detail",
+        "popup.center.standard-price-settings",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "popup.center.time-selector",
+        "popup.side.add-list",
+        "popup.side.custom-columns",
+        "popup.side.inspection-items",
+        "popup.side.time-records",
+        "recipe.center-modal-search-table",
+        "recipe.side-slide-form-editable-list",
+        "row.mutation-policy",
+        "screen.production-result-responsive",
+        "section.editable-row-list",
+        "section.inspection-items",
+        "selection.enable-actions",
+        "selection.transfer-list",
+        "table.column-settings",
+        "table.row-expand-detail",
+        "visualization.process-flow",
+        "workflow.stepper"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "button-group",
+      "name": "ButtonGroup",
+      "category": "action",
+      "status": "provisional",
+      "source": "src/components/ui/button-group.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/button-group",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "cascader",
+      "name": "Cascader",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/cascader.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "card",
+      "name": "Card",
+      "category": "layout",
+      "status": "provisional",
+      "source": "src/components/ui/card.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/card",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "screen.analytics-dashboard"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "center-modal",
+      "name": "CenterModal",
+      "category": "overlay",
+      "status": "stable",
+      "source": "src/components/ui/center-modal.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/center-modal",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "dismiss.restore-committed",
+        "popup.center.cavity-layout",
+        "popup.center.dual-pane",
+        "popup.center.equipment-discharge-settings",
+        "popup.center.form",
+        "popup.center.inspection-criteria",
+        "popup.center.inspection-records",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.purchase-lookup",
+        "popup.center.standard-price-settings",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "popup.center.time-selector",
+        "recipe.center-modal-search-table",
+        "screen.form-management-workflow",
+        "shell.center-modal"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "checkbox",
+      "name": "Checkbox",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/checkbox.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/checkbox",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "popup.center.dual-pane",
+        "popup.center.inspection-records",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "screen.production-result-responsive",
+        "selection.transfer-list",
+        "table.column-settings",
+        "table.grouped-list"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "collapsible",
+      "name": "Collapsible",
+      "category": "layout",
+      "status": "provisional",
+      "source": "src/components/ui/collapsible.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/collapsible",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "combobox",
+      "name": "Combobox",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/combobox.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/combobox",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "confirm-dialog",
+      "name": "ConfirmDialog",
+      "category": "overlay",
+      "status": "stable",
+      "source": "src/components/ui/confirm-dialog.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/confirm-dialog",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.before-after-confirmation",
+        "popup.center.equipment-discharge-settings",
+        "popup.center.standard-price-settings",
+        "shell.confirm-dialog"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "date-picker",
+      "name": "DatePicker",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/date-picker.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/date-picker",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.inventory-add",
+        "popup.center.standard-price-settings"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "labeled-select",
+      "name": "LabeledSelect",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/labeled-select.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "labeled-input",
+      "name": "LabeledInput",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/labeled-input.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.inventory-edit"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "selection-action-bar",
+      "name": "SelectionActionBar",
+      "category": "feedback",
+      "status": "stable",
+      "source": "src/components/ui/selection-action-bar.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.inventory-edit"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "analytics-charts",
+      "name": "AnalyticsCharts",
+      "category": "data-display",
+      "status": "stable",
+      "source": "src/components/ui/analytics-charts.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "date-range-picker",
+      "name": "DateRangePicker",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/date-range-picker.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/date-range-picker",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "screen.analytics-dashboard"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence"
+      ]
+    },
+    {
+      "id": "descriptions",
+      "name": "Descriptions",
+      "category": "data-display",
+      "status": "provisional",
+      "source": "src/components/ui/descriptions.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/descriptions",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "screen.master-detail",
+        "table.row-expand-detail"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "dialog-footer",
+      "name": "DialogFooter",
+      "category": "system",
+      "status": "stable",
+      "source": "src/components/ui/dialog-footer.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": [
+        "documentation-route-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "divider",
+      "name": "Divider",
+      "category": "layout",
+      "status": "provisional",
+      "source": "src/components/ui/divider.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/divider",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "dropdown-menu",
+      "name": "DropdownMenu",
+      "category": "overlay",
+      "status": "provisional",
+      "source": "src/components/ui/dropdown-menu.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/dropdown-menu",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "empty-state",
+      "name": "EmptyState",
+      "category": "feedback",
+      "status": "provisional",
+      "source": "src/components/ui/empty-state.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/empty-state",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "error-state",
+      "name": "ErrorState",
+      "category": "feedback",
+      "status": "provisional",
+      "source": "src/components/ui/error-state.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/error-state",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "fieldset",
+      "name": "Fieldset",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/fieldset.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/fieldset",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "filter",
+      "name": "Filter",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/filter.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/filter",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "popup.center.equipment-discharge-settings",
+        "popup.center.inspection-records",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.purchase-lookup",
+        "popup.center.table",
+        "recipe.center-modal-search-table",
+        "recipe.page-entity-list",
+        "screen.analytics-dashboard",
+        "screen.entity-list",
+        "screen.form-management-workflow",
+        "screen.production-result-responsive",
+        "section.search-table-composition"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "file-upload",
+      "name": "FileUpload",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/file-upload.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "filter-tag",
+      "name": "FilterTag",
+      "category": "system",
+      "status": "stable",
+      "source": "src/components/ui/filter-tag.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "form-grid",
+      "name": "FormGrid / FormFieldRow",
+      "category": "layout",
+      "status": "stable",
+      "source": "src/components/ui/form-grid.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "recipe.side-slide-form-editable-list",
+        "section.form-grid"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "grid-container",
+      "name": "Container / Grid",
+      "category": "layout",
+      "status": "provisional",
+      "source": "src/components/ui/grid-container.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/foundations/grid-container",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "group-query",
+      "name": "GroupQuery",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/group-query.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/group-query",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "screen.form-management-workflow",
+        "screen.production-result-responsive"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "icon-button",
+      "name": "IconButton / CloseButton",
+      "category": "action",
+      "status": "provisional",
+      "source": "src/components/ui/icon-button.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/icon-button",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.standard-price-settings"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "input",
+      "name": "Input",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/input.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/input",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "popup.center.cavity-layout",
+        "popup.center.dual-pane",
+        "popup.center.equipment-discharge-settings",
+        "popup.center.form",
+        "popup.center.inspection-criteria",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.standard-price-settings",
+        "popup.center.table",
+        "popup.side.add-list",
+        "popup.side.custom-columns",
+        "popup.side.inspection-items",
+        "popup.side.time-records",
+        "recipe.side-slide-form-editable-list",
+        "screen.form-management-workflow",
+        "section.editable-row-list",
+        "table.column-settings"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "image-thumbnail",
+      "name": "ImageThumbnail",
+      "category": "data-display",
+      "status": "provisional",
+      "source": "src/components/ui/image-thumbnail.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/image-thumbnail",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "inspection-judgement",
+      "name": "InspectionJudgement",
+      "category": "system",
+      "status": "stable",
+      "source": "src/components/ui/inspection-judgement.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.side.inspection-items",
+        "section.inspection-items"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/label.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/label",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "link",
+      "name": "Link",
+      "category": "action",
+      "status": "provisional",
+      "source": "src/components/ui/link.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/link",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "popup.center.purchase-lookup",
+        "popup.center.team-settings"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence"
+      ]
+    },
+    {
+      "id": "list",
+      "name": "List / ListItem",
+      "category": "data-display",
+      "status": "provisional",
+      "source": "src/components/ui/list.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/list",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "loading-overlay",
+      "name": "LoadingOverlay",
+      "category": "feedback",
+      "status": "provisional",
+      "source": "src/components/ui/loading-overlay.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/loading-overlay",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "loading-spinner",
+      "name": "LoadingSpinner",
+      "category": "feedback",
+      "status": "provisional",
+      "source": "src/components/ui/loading-spinner.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/loading-spinner",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "logo",
+      "name": "Logo",
+      "category": "navigation",
+      "status": "provisional",
+      "source": "src/components/ui/logo.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/logo",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "multi-select-input",
+      "name": "MultiSelectInput",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/multi-select-input.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/multi-select-input",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "navbar",
+      "name": "Navbar",
+      "category": "navigation",
+      "status": "provisional",
+      "source": "src/components/ui/navbar.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/navbar",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "notice-banner",
+      "name": "NoticeBanner",
+      "category": "feedback",
+      "status": "stable",
+      "source": "src/components/ui/notice-banner.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/notice-banner",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "notification-panel",
+      "name": "NotificationPanel",
+      "category": "overlay",
+      "status": "stable",
+      "source": "src/components/ui/notification-panel.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/notification-panel",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "number-input",
+      "name": "NumberInput",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/number-input.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/number-input",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "page-top-tab-item",
+      "name": "PageTopTabItem",
+      "category": "navigation",
+      "status": "stable",
+      "source": "src/components/ui/page-top-tab-item.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/page-top-tab-item",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "recipe.page-entity-list",
+        "screen.entity-list",
+        "screen.form-management-workflow"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "overflow-list",
+      "name": "OverflowList",
+      "category": "data-display",
+      "status": "provisional",
+      "source": "src/components/ui/overflow-list.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/overflow-list",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "pagination",
+      "name": "Pagination",
+      "category": "navigation",
+      "status": "provisional",
+      "source": "src/components/ui/pagination.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/pagination",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "recipe.page-entity-list",
+        "screen.entity-list"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "panel",
+      "name": "Panel",
+      "category": "layout",
+      "status": "provisional",
+      "source": "src/components/ui/panel.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/panel",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "screen.master-detail"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "password-input",
+      "name": "PasswordInput",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/password-input.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/password-input",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "popover",
+      "name": "Popover",
+      "category": "overlay",
+      "status": "provisional",
+      "source": "src/components/ui/popover.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/popover",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "progress",
+      "name": "Progress",
+      "category": "feedback",
+      "status": "stable",
+      "source": "src/components/ui/progress.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/progress",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.purchase-lookup",
+        "workflow.stepper"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "progress-circle",
+      "name": "ProgressCircle",
+      "category": "feedback",
+      "status": "provisional",
+      "source": "src/components/ui/progress-circle.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/progress-circle",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "quick-query",
+      "name": "QuickQuery",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/quick-query.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/quick-query",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": [
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Radio",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/radio.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/radio",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "popup.center.cavity-layout",
+        "popup.center.form",
+        "screen.form-management-workflow"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "radio-choice-dialog",
+      "name": "RadioChoiceDialog",
+      "category": "overlay",
+      "status": "stable",
+      "source": "src/components/ui/radio-choice-dialog.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/radio-choice-dialog",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "scroll-area",
+      "name": "ScrollArea",
+      "category": "layout",
+      "status": "provisional",
+      "source": "src/components/ui/scroll-area.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/scroll-area",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "table.frozen-column-grid"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "search-highlight",
+      "name": "SearchHighlight",
+      "category": "data-display",
+      "status": "provisional",
+      "source": "src/components/ui/search-highlight.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/search-highlight",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "search-input",
+      "name": "SearchInput",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/search-input.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/search-input",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "popup.center.equipment-discharge-settings",
+        "popup.center.inspection-records",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.purchase-lookup",
+        "popup.center.standard-price-settings",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "recipe.center-modal-search-table",
+        "recipe.page-entity-list",
+        "screen.entity-list",
+        "screen.form-management-workflow",
+        "screen.production-result-responsive",
+        "section.search-table-composition"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "segmented-control",
+      "name": "SegmentedControl",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/segmented-control.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/segmented-control",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "visualization.production-gantt"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "mes-product-switcher",
+      "name": "MesProductSwitcher",
+      "category": "navigation",
+      "status": "stable",
+      "source": "src/components/ui/mes-product-switcher.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "section-frame",
+      "name": "SectionFrame",
+      "category": "layout",
+      "status": "stable",
+      "source": "src/components/ui/section-frame.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "frame.standard-section",
+        "recipe.side-slide-form-editable-list"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": [
+        "documentation-route-missing"
+      ]
+    },
+    {
+      "id": "section-header",
+      "name": "SectionHeader",
+      "category": "layout",
+      "status": "stable",
+      "source": "src/components/ui/section-header.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "frame.standard-section"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": [
+        "documentation-route-missing"
+      ]
+    },
+    {
+      "id": "icon-menu",
+      "name": "IconMenu",
+      "category": "icon",
+      "status": "stable",
+      "source": "src/components/icons/icon-menu.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "query-date-range",
+      "name": "QueryDateRange",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/query-date-range.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.inspection-records",
+        "popup.center.purchase-lookup"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "cavity-cell",
+      "name": "CavityCell",
+      "category": "data-display",
+      "status": "stable",
+      "source": "src/components/ui/cavity-cell.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "select",
+      "name": "Select",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/select.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/select",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "popup.center.dual-pane",
+        "popup.center.form",
+        "popup.center.inspection-criteria",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "popup.side.add-list",
+        "popup.side.custom-columns",
+        "recipe.side-slide-form-editable-list",
+        "screen.form-management-workflow",
+        "section.editable-row-list",
+        "section.measurement-heatmap-analysis"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "sidebar",
+      "name": "Sidebar",
+      "category": "navigation",
+      "status": "stable",
+      "source": "src/components/ui/sidebar.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/sidebar",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "recipe.page-entity-list",
+        "screen.entity-list",
+        "screen.form-management-workflow"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "slider",
+      "name": "Slider",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/slider.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "side-slide-panel",
+      "name": "SideSlidePanel",
+      "category": "overlay",
+      "status": "stable",
+      "source": "src/components/ui/side-slide-panel.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/side-slide-panel",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "dismiss.restore-committed",
+        "popup.side.add-list",
+        "popup.side.custom-columns",
+        "popup.side.inspection-items",
+        "popup.side.time-records",
+        "recipe.side-slide-form-editable-list",
+        "screen.form-management-workflow",
+        "shell.side-slide-panel"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "category": "feedback",
+      "status": "provisional",
+      "source": "src/components/ui/skeleton.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/skeleton",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "sticky-header-footer",
+      "name": "StickyHeader / StickyFooter",
+      "category": "layout",
+      "status": "provisional",
+      "source": "src/components/ui/sticky-header-footer.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/sticky-header-footer",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "switch",
+      "name": "Switch",
+      "category": "form",
+      "status": "stable",
+      "source": "src/components/ui/switch.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/switch",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.standard-price-settings"
+      ],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "table",
+      "name": "Table",
+      "category": "data-display",
+      "status": "stable",
+      "source": "src/components/ui/table.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/table-full",
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": true,
+      "usedByPatternIds": [
+        "popup.center.dual-pane",
+        "popup.center.equipment-discharge-settings",
+        "popup.center.inspection-records",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.purchase-lookup",
+        "popup.center.standard-price-settings",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "popup.side.custom-columns",
+        "popup.side.time-records",
+        "recipe.center-modal-search-table",
+        "recipe.page-entity-list",
+        "screen.entity-list",
+        "screen.form-management-workflow",
+        "screen.master-detail",
+        "screen.production-result-responsive",
+        "section.measurement-heatmap-analysis",
+        "section.search-table-composition",
+        "selection.enable-actions",
+        "selection.master-detail",
+        "selection.reveal-inline-editor",
+        "summary.table-total-row",
+        "table.frozen-column-grid",
+        "table.grouped-header-grid",
+        "table.grouped-list",
+        "table.row-expand-detail"
+      ],
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
+    },
+    {
+      "id": "tag",
+      "name": "Tag",
+      "category": "data-display",
+      "status": "stable",
+      "source": "src/components/ui/tag.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/tag",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "textarea",
+      "name": "Textarea",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/textarea.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/textarea",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "time-picker",
+      "name": "TimePicker",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/time-picker.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/time-picker",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [
+        "popup.center.time-selector",
+        "popup.side.time-records"
+      ],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing"
+      ]
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "category": "data-display",
+      "status": "provisional",
+      "source": "src/components/ui/timeline.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "toast",
+      "name": "Toast",
+      "category": "feedback",
+      "status": "stable",
+      "source": "src/components/ui/toast.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/toast",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "approved-basic",
+      "outstanding": [
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "tree-select",
+      "name": "TreeSelect",
+      "category": "form",
+      "status": "provisional",
+      "source": "src/components/ui/tree-select.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "tree-view",
+      "name": "TreeView",
+      "category": "navigation",
+      "status": "provisional",
+      "source": "src/components/ui/tree-view.tsx",
+      "sourceExists": true,
+      "documentationRoute": null,
+      "hasFreeformRules": true,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "documentation-route-missing",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "toggle-button",
+      "name": "ToggleButton",
+      "category": "action",
+      "status": "provisional",
+      "source": "src/components/ui/toggle-button.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/toggle-button",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "tooltip",
+      "name": "Tooltip",
+      "category": "overlay",
+      "status": "provisional",
+      "source": "src/components/ui/tooltip.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/tooltip",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    },
+    {
+      "id": "user-account-menu",
+      "name": "UserAccountMenu",
+      "category": "navigation",
+      "status": "provisional",
+      "source": "src/components/ui/user-account-menu.tsx",
+      "sourceExists": true,
+      "documentationRoute": "/components/user-account-menu",
+      "hasFreeformRules": false,
+      "hasDetailedUsageRule": false,
+      "usedByPatternIds": [],
+      "reviewState": "needs-review",
+      "outstanding": [
+        "needs-approval-evidence",
+        "detailed-usage-rule-missing",
+        "no-registered-pattern-usage"
+      ]
+    }
+  ],
+  "patterns": [
+    {
+      "id": "popup.center.form",
+      "name": "중앙 · 폼/정보 중심",
+      "kind": "popup",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "popup.center.table",
+      "name": "중앙 · 단일 테이블 선택/편집",
+      "kind": "popup",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "batch-work-order",
+        "defect-quantity-input",
+        "preissued-label"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.dual-pane",
+      "name": "중앙 · 원본/대상 비교",
+      "kind": "popup",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "bom-copy"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.navigation-detail",
+      "name": "중앙 · 탐색 레일 + 상세",
+      "kind": "popup",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "material-input-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.time-selector",
+      "name": "중앙 · 시간 휠 + 계산",
+      "kind": "popup",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "popup.side.add-list",
+      "name": "우측 슬라이드 · 추가 + 하단 리스트",
+      "kind": "popup",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "production-result",
+        "receiving"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.side.custom-columns",
+      "name": "우측 슬라이드 · 커스텀 정보",
+      "kind": "popup",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "custom-information"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.side.inspection-items",
+      "name": "우측 슬라이드 · 검사항목",
+      "kind": "popup",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "self-inspection"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.side.time-records",
+      "name": "우측 슬라이드 · 시간 기록",
+      "kind": "popup",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "operation-log"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "recipe.side-slide-form-editable-list",
+      "name": "우측 슬라이드 · 폼 + 반복 입력 행 생성 Recipe",
+      "kind": "recipe",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [
+        "side-slide-form-editable-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "recipe.center-modal-search-table",
+      "name": "중앙 팝업 · 검색 + 선택 테이블 생성 Recipe",
+      "kind": "recipe",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [
+        "center-modal-search-table.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "recipe.page-entity-list",
+      "name": "전체 페이지 · 조회 조건 + 엔티티 리스트 생성 Recipe",
+      "kind": "recipe",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [
+        "page-entity-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "screen.entity-list",
+      "name": "엔티티 리스트 화면",
+      "kind": "screen",
+      "source": "src/components/patterns/entity-list-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "grouped-production-list"
+      ],
+      "generationTemplateIds": [
+        "page-entity-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "screen.master-detail",
+      "name": "마스터-디테일 화면",
+      "kind": "screen",
+      "source": "src/components/patterns/master-detail-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "screen.analytics-dashboard",
+      "name": "분석 대시보드",
+      "kind": "screen",
+      "source": "src/components/patterns/analytics-dashboard-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "process-inspection-trend",
+        "production-analytics-latest"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "section.monthly-comparison-chart",
+      "name": "월별 전년 비교 차트",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "process-inspection-trend"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "section.measurement-heatmap-analysis",
+      "name": "측정 목록·히트맵 분석",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "process-inspection-trend"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "summary.inspection-achievement-stack",
+      "name": "검사 달성률 스택",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "process-inspection-trend"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "table.grouped-list",
+      "name": "그룹화 선택 테이블",
+      "kind": "table",
+      "source": "src/components/ui/table.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "grouped-production-list",
+        "sales-transaction-statement"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [
+        "table-core-states"
+      ],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "table.column-settings",
+      "name": "테이블 컬럼 설정",
+      "kind": "table",
+      "source": "src/components/patterns/table-column-settings.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "popup.center.inspection-criteria",
+      "name": "중앙 · 검사 판정 기준 설정",
+      "kind": "popup",
+      "source": "src/components/patterns/inspection-criteria-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "form-inspection-criteria"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.before-after-confirmation",
+      "name": "중앙 · 변경 전후 비교 확인",
+      "kind": "popup",
+      "source": "src/components/patterns/production-quantity-reregistration-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "production-quantity-reregistration"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "frame.standard-section",
+      "name": "표준 섹션 프레임",
+      "kind": "section-frame",
+      "source": "src/components/ui/section-frame.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "custom-information",
+        "production-result",
+        "receiving"
+      ],
+      "generationTemplateIds": [
+        "side-slide-form-editable-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "section.form-grid",
+      "name": "폼 그리드",
+      "kind": "section-pattern",
+      "source": "src/components/ui/form-grid.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "cavity-layout-settings",
+        "custom-information",
+        "form-inspection-criteria",
+        "form-management",
+        "production-result",
+        "receiving",
+        "user-password-settings"
+      ],
+      "generationTemplateIds": [
+        "side-slide-form-editable-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "dismiss.restore-committed",
+      "name": "취소 시 저장 전 상태 복원",
+      "kind": "behavior",
+      "source": "src/components/ui/side-slide-panel.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "batch-work-order",
+        "equipment-discharge-settings",
+        "form-inspection-criteria",
+        "receiving",
+        "sales-transaction-statement",
+        "shipment-approval",
+        "standard-price-settings",
+        "team-settings",
+        "user-password-settings"
+      ],
+      "generationTemplateIds": [
+        "center-modal-search-table.v1",
+        "side-slide-form-editable-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "shell.center-modal",
+      "name": "중앙 팝업 셸",
+      "kind": "shell",
+      "source": "src/components/ui/center-modal.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "batch-work-order",
+        "bom-copy",
+        "cavity-layout-settings",
+        "defect-quantity-input",
+        "equipment-discharge-settings",
+        "equipment-inspection-records",
+        "form-inspection-criteria",
+        "form-management",
+        "inventory-add",
+        "inventory-edit",
+        "material-input-settings",
+        "preissued-label",
+        "purchase-order-lookup",
+        "sales-transaction-statement",
+        "shipment-approval",
+        "standard-price-settings",
+        "team-settings",
+        "user-password-settings"
+      ],
+      "generationTemplateIds": [
+        "center-modal-search-table.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "shell.side-slide-panel",
+      "name": "우측 슬라이드 팝업 셸",
+      "kind": "shell",
+      "source": "src/components/ui/side-slide-panel.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "custom-information",
+        "form-management",
+        "operation-log",
+        "production-result",
+        "receiving",
+        "self-inspection",
+        "user-password-settings"
+      ],
+      "generationTemplateIds": [
+        "side-slide-form-editable-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "shell.confirm-dialog",
+      "name": "확인 팝업 셸",
+      "kind": "shell",
+      "source": "src/components/ui/confirm-dialog.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "production-quantity-reregistration",
+        "user-password-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "section.search-table-composition",
+      "name": "검색·필터·테이블 조합",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "batch-work-order",
+        "equipment-discharge-settings",
+        "equipment-inspection-records",
+        "form-management",
+        "grouped-production-list",
+        "inventory-add",
+        "inventory-edit",
+        "material-input-settings",
+        "production-analytics-latest",
+        "production-result-responsive",
+        "purchase-order-lookup",
+        "sales-transaction-statement",
+        "shipment-approval",
+        "standard-price-settings",
+        "team-settings"
+      ],
+      "generationTemplateIds": [
+        "center-modal-search-table.v1",
+        "page-entity-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "section.editable-row-list",
+      "name": "편집 가능한 행 목록",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "operation-log",
+        "production-result",
+        "receiving"
+      ],
+      "generationTemplateIds": [
+        "side-slide-form-editable-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "section.inspection-items",
+      "name": "검사항목 목록",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "self-inspection"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "summary.table-total-row",
+      "name": "표 컬럼 정렬 합계행",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "bom-copy",
+        "production-result-responsive"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "summary.result-total-card",
+      "name": "결과 합계 카드",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "defect-quantity-input"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "selection.reveal-inline-editor",
+      "name": "행 선택 시 인라인 편집 노출",
+      "kind": "behavior",
+      "source": "src/design-system/behavior-patterns.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "batch-work-order",
+        "equipment-discharge-settings",
+        "inventory-add",
+        "material-input-settings",
+        "standard-price-settings",
+        "team-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "selection.enable-actions",
+      "name": "선택 기반 동작 활성화",
+      "kind": "behavior",
+      "source": "src/design-system/behavior-patterns.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "bom-copy",
+        "equipment-inspection-records",
+        "inventory-edit",
+        "preissued-label",
+        "production-result-responsive",
+        "sales-transaction-statement",
+        "shipment-approval"
+      ],
+      "generationTemplateIds": [
+        "center-modal-search-table.v1",
+        "page-entity-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "selection.master-detail",
+      "name": "마스터·상세 선택",
+      "kind": "behavior",
+      "source": "src/design-system/behavior-patterns.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "equipment-discharge-settings",
+        "grouped-production-list",
+        "process-inspection-trend",
+        "standard-price-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "row.mutation-policy",
+      "name": "행 추가·삭제 정책",
+      "kind": "behavior",
+      "source": "src/design-system/behavior-patterns.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "defect-quantity-input",
+        "operation-log",
+        "production-result",
+        "receiving",
+        "self-inspection"
+      ],
+      "generationTemplateIds": [
+        "side-slide-form-editable-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "action-set.cancel-save",
+      "name": "취소·저장 동작 세트",
+      "kind": "action-set",
+      "source": "src/design-system/action-sets.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "batch-work-order",
+        "bom-copy",
+        "cavity-layout-settings",
+        "custom-information",
+        "equipment-discharge-settings",
+        "form-inspection-criteria",
+        "form-management",
+        "inventory-add",
+        "material-input-settings",
+        "operation-log",
+        "preissued-label",
+        "production-result",
+        "receiving",
+        "sales-transaction-statement",
+        "self-inspection",
+        "shipment-approval",
+        "team-settings",
+        "user-password-settings"
+      ],
+      "generationTemplateIds": [
+        "center-modal-search-table.v1",
+        "side-slide-form-editable-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "action-set.cancel-confirm",
+      "name": "취소·확인 동작 세트",
+      "kind": "action-set",
+      "source": "src/design-system/action-sets.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "standard-price-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "action-set.save-only",
+      "name": "저장 동작 세트",
+      "kind": "action-set",
+      "source": "src/design-system/action-sets.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "defect-quantity-input"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "action-set.close-only",
+      "name": "닫기 동작 세트",
+      "kind": "action-set",
+      "source": "src/design-system/action-sets.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "inventory-edit"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "action-set.cancel-select",
+      "name": "취소·선택 동작 세트",
+      "kind": "action-set",
+      "source": "src/design-system/action-sets.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "purchase-order-lookup"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "action-set.cancel-input",
+      "name": "취소·입력 동작 세트",
+      "kind": "action-set",
+      "source": "src/design-system/action-sets.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "action-set.close-reregister",
+      "name": "닫기·재등록 동작 세트",
+      "kind": "action-set",
+      "source": "src/design-system/action-sets.ts",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "production-quantity-reregistration"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "workflow.stepper",
+      "name": "단계 진행",
+      "kind": "workflow",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "selection.transfer-list",
+      "name": "이중 목록 이동",
+      "kind": "selection",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "table.row-expand-detail",
+      "name": "행 상세 펼침",
+      "kind": "table",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "table.frozen-column-grid",
+      "name": "고정 컬럼 그리드",
+      "kind": "table",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "table.grouped-header-grid",
+      "name": "그룹 헤더 그리드",
+      "kind": "table",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "visualization.process-flow",
+      "name": "공정 흐름도",
+      "kind": "visualization",
+      "source": "src/components/patterns/process-flow-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "visualization.production-gantt",
+      "name": "생산 간트 차트",
+      "kind": "visualization",
+      "source": "src/components/patterns/production-gantt-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "onboarding.product-tour",
+      "name": "온보딩 툴팁·제품 투어",
+      "kind": "onboarding",
+      "source": "src/components/patterns/product-tour-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "screen.form-management-workflow",
+      "name": "양식관리 업무 흐름",
+      "kind": "screen",
+      "source": "src/components/patterns/original-mes-screen-assets.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "form-management"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "screen.production-result-responsive",
+      "name": "생산실적 반응형 리스트",
+      "kind": "screen",
+      "source": "src/components/patterns/exact-production-result-screen.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "production-result-responsive"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.cavity-layout",
+      "name": "캐비티 배열 설정",
+      "kind": "popup",
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "cavity-layout-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.inventory-add",
+      "name": "재고 추가",
+      "kind": "popup",
+      "source": "src/components/patterns/exact-inventory-add-modal.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "inventory-add"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.inventory-edit",
+      "name": "재고편집",
+      "kind": "popup",
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "inventory-edit"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.purchase-lookup",
+      "name": "발주 정보 조회",
+      "kind": "popup",
+      "source": "src/components/patterns/exact-purchase-modals.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "purchase-order-lookup"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.inspection-records",
+      "name": "설비 점검 기록 조회",
+      "kind": "popup",
+      "source": "src/components/patterns/equipment-inspection-records-modal.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "equipment-inspection-records"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.equipment-discharge-settings",
+      "name": "품목 생산량 설정",
+      "kind": "popup",
+      "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "equipment-discharge-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.standard-price-settings",
+      "name": "표준단가 설정",
+      "kind": "popup",
+      "source": "src/components/patterns/standard-price-settings-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "standard-price-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.center.team-settings",
+      "name": "조 설정",
+      "kind": "popup",
+      "source": "src/components/patterns/team-settings-pattern.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [
+        "team-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "id": "material-input-settings",
+      "name": "투입품목 설정/조회",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "sourceExists": true,
+      "figmaNode": "18826:60554",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "투입품목 설정/조회 작은 화면 정렬과 편집 상태"
+      ],
+      "visualCaseIds": [
+        "popup-material-input"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "batch-work-order",
+      "name": "생산계획(일) 연동 일괄작업지시",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "figmaNode": "11210:50866",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "중앙 팝업 파일럿은 검색·테이블과 선택 행 편집 계약을 함께 사용한다",
+        "팝업 취소와 X는 변경값을 버리고 닫는다"
+      ],
+      "visualCaseIds": [
+        "popup-batch-work-order-pilot"
+      ],
+      "hasOrderedDefinition": true,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": []
+    },
+    {
+      "id": "defect-quantity-input",
+      "name": "불량수량 입력",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "figmaNode": "11210:52919",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "불량수량 입력 팝업",
+        "불량수량 입력은 값 변경 즉시 합계를 다시 계산한다"
+      ],
+      "visualCaseIds": [
+        "popup-defect-quantity"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "bom-copy",
+      "name": "BOM 복사",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "sourceExists": true,
+      "figmaNode": "18962:67817",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "BOM 복사 원본 폭과 무가로스크롤"
+      ],
+      "visualCaseIds": [
+        "popup-bom-copy"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "preissued-label",
+      "name": "선발행 라벨 수량 확정",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "sourceExists": true,
+      "figmaNode": "18756:60803",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "선발행 라벨 선택은 검색과 삭제 뒤에도 행 ID 기준으로 유지된다"
+      ],
+      "visualCaseIds": [
+        "popup-preissued-label"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "operation-log",
+      "name": "운전일지 등록",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "sourceExists": true,
+      "figmaNode": "17303:45841",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "운전일지 시간·품목 변경은 기록과 합계에 반영된다"
+      ],
+      "visualCaseIds": [
+        "popup-operation-log"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "production-result",
+      "name": "생산실적 등록",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "figmaNode": "11210:48851",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "생산실적 등록 슬라이드 팝업"
+      ],
+      "visualCaseIds": [
+        "popup-production-result"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "receiving",
+      "name": "입고등록",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "figmaNode": "11210:49261",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "입고등록은 승인된 SectionFrame·FormGrid·취소 복원 계약을 사용한다"
+      ],
+      "visualCaseIds": [
+        "popup-receiving-pattern-pilot"
+      ],
+      "hasOrderedDefinition": true,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": []
+    },
+    {
+      "id": "custom-information",
+      "name": "자주검사 — 커스텀 정보 등록 상태",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "figmaNode": "11210:51570",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "자주검사 커스텀 정보 등록 상태"
+      ],
+      "visualCaseIds": [
+        "popup-custom-information"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "self-inspection",
+      "name": "자주검사",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "figmaNode": "11210:51420",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "자주검사 검사항목 헤더와 판정 영역",
+        "자주검사 판정과 항목 추가는 독립 상태로 반영된다"
+      ],
+      "visualCaseIds": [
+        "popup-self-inspection"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "grouped-production-list",
+      "name": "그룹화 리스트 관리 화면",
+      "source": "src/app/[...slug]/client-page.tsx",
+      "sourceExists": true,
+      "figmaNode": "17000:39999",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "그룹화 리스트의 접기와 그룹 선택은 하위 행 상태에 반영된다",
+        "그룹화 테이블 핵심 상태"
+      ],
+      "visualCaseIds": [
+        "screen-grouped-production-list"
+      ],
+      "hasOrderedDefinition": true,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": []
+    },
+    {
+      "id": "form-inspection-criteria",
+      "name": "양식관리 · 검사 판정 기준 설정",
+      "source": "src/components/patterns/inspection-criteria-pattern.tsx",
+      "sourceExists": true,
+      "figmaNode": "17309:159298",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "양식관리 숫자 검사 기준은 조건 유형별 원본 치수와 상태를 유지한다",
+        "양식관리 판정형 검사 기준은 O·△·X 선택과 취소 복원을 지원한다"
+      ],
+      "visualCaseIds": [
+        "popup-form-inspection-criteria",
+        "popup-form-inspection-criteria-judgement"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "production-quantity-reregistration",
+      "name": "총 생산수량 변경 · 투입품 재등록 확인",
+      "source": "src/components/patterns/production-quantity-reregistration-pattern.tsx",
+      "sourceExists": true,
+      "figmaNode": "19451:95617",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "총 생산수량 변경 팝업은 원본 치수와 재등록 흐름을 유지한다"
+      ],
+      "visualCaseIds": [
+        "popup-production-quantity-reregistration"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "process-inspection-trend",
+      "name": "공정검사 경향관리",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "sourceExists": true,
+      "figmaNode": "11751:102614",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "공정검사 경향관리는 원본 분석 배치와 품목·CAVITY 연동을 유지한다"
+      ],
+      "visualCaseIds": [
+        "screen-process-inspection-trend"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "user-password-settings",
+      "name": "사용자 정보 · 비밀번호 설정",
+      "source": "src/components/patterns/user-password-settings-pattern.tsx",
+      "sourceExists": true,
+      "figmaNode": "17489:80534",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "사용자 정보와 비밀번호 초기화는 원본 패널·확인 팝업 계약을 유지한다",
+        "최초 로그인 비밀번호 재설정은 불일치와 완료 상태를 검증한다"
+      ],
+      "visualCaseIds": [
+        "popup-user-information-side",
+        "popup-user-initial-password-settings",
+        "popup-user-password-reset-confirmation",
+        "screen-user-password-reset-login"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "sales-transaction-statement",
+      "name": "판매관리 · 거래명세서",
+      "source": "src/components/patterns/sales-transaction-statement-pattern.tsx",
+      "sourceExists": true,
+      "figmaNode": "17475:46145",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "판매관리 거래명세서는 원본 목록과 1300px 출력 팝업 계약을 유지한다"
+      ],
+      "visualCaseIds": [
+        "screen-sales-transaction-statement"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "shipment-approval",
+      "name": "출하승인",
+      "source": "src/components/patterns/shipment-approval-pattern.tsx",
+      "sourceExists": true,
+      "figmaNode": "17370:46831",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "일괄 출하승인은 원본 960px 선택·상태 변경과 670px 품목 상세 흐름을 유지한다"
+      ],
+      "visualCaseIds": [
+        "popup-shipment-approval-bulk",
+        "popup-shipment-approval-item-detail"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "form-management",
+      "name": "양식관리",
+      "source": "src/components/patterns/original-mes-screen-assets.tsx",
+      "sourceExists": true,
+      "figmaNode": "17377:50192",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "양식 편집과 입고검사는 중앙 모달이 아니라 우측 전체 높이 패널이다"
+      ],
+      "visualCaseIds": [
+        "popup-form-management-side",
+        "popup-receiving-inspection-side"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "production-result-responsive",
+      "name": "생산실적 반응형",
+      "source": "src/components/patterns/original-mes-screen-assets.tsx",
+      "sourceExists": true,
+      "figmaNode": "18849:62314",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "생산실적 반응형 화면은 breakpoint와 빠른 조회 설정을 같은 상태로 유지한다"
+      ],
+      "visualCaseIds": [
+        "screen-production-result-responsive-1280",
+        "screen-production-result-responsive-375",
+        "screen-production-result-responsive-768"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "cavity-layout-settings",
+      "name": "캐비티 배열 설정",
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "sourceExists": true,
+      "figmaNode": "18795:62149",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "캐비티 배열 입력은 제어 상태로 동작하고 콘솔 오류를 만들지 않는다",
+        "캐비티 배열 설정은 고정 원본 크기와 단일 본문 스크롤 계약을 유지한다"
+      ],
+      "visualCaseIds": [
+        "popup-cavity-settings"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "inventory-add",
+      "name": "재고 추가",
+      "source": "src/components/patterns/exact-inventory-add-modal.tsx",
+      "sourceExists": true,
+      "figmaNode": "18813:64179",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "Figma 원본 재고 추가 팝업",
+        "팝업 취소와 X는 변경값을 버리고 닫는다"
+      ],
+      "visualCaseIds": [
+        "popup-source-inventory-add"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "inventory-edit",
+      "name": "재고편집",
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "sourceExists": true,
+      "figmaNode": "17491:82304",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "재고편집 선택 작업은 이동·삭제 보조 팝업으로 이어진다"
+      ],
+      "visualCaseIds": [
+        "popup-inventory-edit"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "purchase-order-lookup",
+      "name": "발주 정보",
+      "source": "src/components/patterns/exact-purchase-modals.tsx",
+      "sourceExists": true,
+      "figmaNode": "17503:85601",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "발주 품목 건수 링크는 품목 상세 팝업으로 전환한다"
+      ],
+      "visualCaseIds": [
+        "popup-purchase-order-lookup"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "production-analytics-latest",
+      "name": "생산분석 현황",
+      "source": "src/components/patterns/exact-production-analytics-screen.tsx",
+      "sourceExists": true,
+      "figmaNode": "17520:46628",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "생산분석 조회기간과 기준은 KPI·목록 단위를 함께 변경한다"
+      ],
+      "visualCaseIds": [
+        "screen-production-analytics-latest"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "equipment-inspection-records",
+      "name": "냉각기 점검표",
+      "source": "src/components/patterns/equipment-inspection-records-modal.tsx",
+      "sourceExists": true,
+      "figmaNode": "9873:112416",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "냉각기 점검표 중앙 팝업"
+      ],
+      "visualCaseIds": [
+        "popup-equipment-inspection-records"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "equipment-discharge-settings",
+      "name": "설비별 토출량 설정",
+      "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+      "sourceExists": true,
+      "figmaNode": "20302:68442",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "품목 생산량 설정은 원본 중앙 팝업 치수와 품목·설비 편집 계약을 유지한다"
+      ],
+      "visualCaseIds": [
+        "popup-equipment-discharge-settings"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "standard-price-settings",
+      "name": "표준단가 설정",
+      "source": "src/components/patterns/standard-price-settings-pattern.tsx",
+      "sourceExists": true,
+      "figmaNode": "18753:60729",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "표준단가 설정은 품목 선택·단가 입력·이력 상태를 독립적으로 유지한다"
+      ],
+      "visualCaseIds": [
+        "popup-standard-price-settings"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "team-settings",
+      "name": "조 설정",
+      "source": "src/components/patterns/team-settings-pattern.tsx",
+      "sourceExists": true,
+      "figmaNode": "18531:57637",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "조 설정은 권한 그룹·구성원 선택·조 변경 상태를 원본 좌표에서 유지한다"
+      ],
+      "visualCaseIds": [
+        "popup-team-settings"
+      ],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    }
+  ]
+}

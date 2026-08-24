@@ -108,6 +108,7 @@ import {
   OriginalMesScreenAssets,
 } from "@/components/patterns";
 import { GeneratedScreenReview } from "@/components/patterns/generated-screen-review";
+import { FigmaScreenPreview } from "@/components/patterns/figma-screen-preview";
 import { CandidateDecisionGallery } from "@/components/experimental";
 import { PromotedStandardCatalog } from "@/components/catalog/promoted-standard-catalog";
 import { MobileCatalog } from "@/components/mobile/mobile-catalog";
@@ -4392,8 +4393,8 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
           <span className="font-mono text-[13px] font-semibold leading-none text-mes-gray-100">
             생산실적 리스트
           </span>
-          <div className="w-full overflow-x-auto rounded-lg border border-mes-gray-30">
-            <div className="flex h-[900px] w-full min-w-[1040px]">
+          <FigmaScreenPreview sourceWidth={1920} sourceHeight={960}>
+            <div className="flex h-[960px] w-[1920px]">
               <Sidebar
                 items={SIDEBAR_NAV_ITEMS}
                 collapsed={patternScreenSidebarCollapsed}
@@ -4517,7 +4518,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                 </div>
               </div>
             </div>
-          </div>
+          </FigmaScreenPreview>
           <div className="flex w-full flex-col gap-1.5 rounded-mes-control border border-mes-border-default bg-mes-bg-subtle px-3 py-2.5 text-[12px] leading-[1.5]">
             <div className="flex items-baseline justify-between gap-3">
               <span className="shrink-0 text-mes-gray-60">출처</span>

@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx",
   "summary": {
     "scannedFiles": 41,
-    "totalLines": 8100,
+    "totalLines": 8101,
     "shellInstances": {
       "CenterModal": 13,
       "SideSlidePanel": 9,
@@ -1346,7 +1346,7 @@
       "source": "src/components/patterns/exact-production-analytics-screen.tsx",
       "name": "exact-production-analytics-screen.tsx",
       "observedRole": "evidence",
-      "lines": 82,
+      "lines": 83,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -2942,5 +2942,5 @@
       ]
     }
   ],
-  "fingerprint": "bd147b0a21c8b835"
+  "fingerprint": "7fbf47d1c6adc4ef"
 }
