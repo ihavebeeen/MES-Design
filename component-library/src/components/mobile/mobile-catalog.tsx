@@ -15,6 +15,7 @@ import {
   MobileRadioGroup,
   MobileSelect,
   MobileStep,
+  MobileTab,
   MobileTabBar,
   MobileToggle,
   type QaValue,
@@ -55,7 +56,52 @@ export function MobileComponentsCatalog() {
   const [select, setSelect] = useState("옵션1");
   const [qa, setQa] = useState<QaValue>("o");
   const [tab, setTab] = useState("home");
-  return <div className="flex w-full flex-col items-center gap-8"><EvidenceNotice /><div className="grid w-full max-w-[960px] grid-cols-2 gap-4"><DataCard title="Button" node="185:38753"><div className="flex flex-wrap gap-2"><MobileButton>저장</MobileButton><MobileButton tone="gray">취소</MobileButton><MobileButton tone="black" size="small">확인</MobileButton><MobileButton tone="danger" size="small">삭제</MobileButton><MobileButton tone="line-primary" size="xsmall">조회</MobileButton><MobileButton disabled size="xsmall">비활성</MobileButton></div></DataCard><DataCard title="Toggle / 검사 판정" node="185:40775 · 185:45655"><div className="flex items-center gap-8"><MobileToggle checked={toggle} onCheckedChange={setToggle} /><MobileQaGroup value={qa} onChange={setQa} /></div></DataCard><DataCard title="Input Textbox" node="185:40788"><div className="flex flex-col gap-2"><MobileInput placeholder="내용 입력" /><MobileInput icon placeholder="검색어 입력" /><MobileInput state="error" defaultValue="필수값 오류" /></div></DataCard><DataCard title="Selectbox" node="185:40791"><MobileSelect value={select} options={["옵션1", "옵션2", "옵션3", "옵션4"]} onChange={setSelect} /></DataCard><DataCard title="Radio Group" node="10378:91993"><MobileRadioGroup label="근무조" value="day" onChange={() => undefined} options={[{ value: "day", label: "주간" }, { value: "night", label: "야간" }, { value: "disabled", label: "사용안함", disabled: true }]} /></DataCard><DataCard title="Header" node="185:40622"><div className="overflow-hidden rounded-lg border border-[#e4e7ee]"><MobileHeader title="입고등록" /><MobileHeader variant="logo" /><MobileHeader variant="modal" title="사용자 설정" /></div></DataCard><DataCard title="Bottom Tab Bar" node="185:40295"><MobileTabBar active={tab} onChange={setTab} /></DataCard><DataCard title="Step" node="185:47004"><MobileStep labels={["기본정보", "외관검사", "중량검사", "특이사항"]} activeIndex={1} /></DataCard><DataCard title="Call To Action" node="192:30753"><div className="overflow-hidden rounded-lg border border-[#e4e7ee]"><MobileCta mode="cancel-save" /></div></DataCard><DataCard title="Date Strip / Fixed Actions" node="10378:91516 · 10378:93359"><div className="flex flex-col gap-3"><MobileDateStrip label="예정일" value="2025-07-30" action="입력 4건" /><div className="overflow-hidden rounded-lg border border-[#e4e7ee]"><MobileFixedActions secondary="취소" /></div></div></DataCard><DataCard title="Bottom Sheet Header / Actions" node="10378:92107 · 10378:92247"><div className="overflow-hidden rounded-lg border border-[#e4e7ee]"><MobileSheetHeader title="수량 입력" subtitle="품목명" /><MobileSheetActions /></div></DataCard><DataCard title="Center Dialog Card" node="10378:93451 · 10378:93543"><div className="relative h-[280px] overflow-hidden rounded-lg bg-[#999]"><MobileCenterDialogCard height="180px"><MobileSheetHeader title="확인" /><p className="p-5 text-center text-[13px]">저장하시겠습니까?</p></MobileCenterDialogCard></div></DataCard></div></div>;
+  const [radio, setRadio] = useState("day");
+  const [inlineTab, setInlineTab] = useState("summary");
+  const [ctaChecked, setCtaChecked] = useState(false);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <EvidenceNotice />
+      <div className="grid w-full max-w-[960px] grid-cols-2 gap-4">
+        <DataCard title="Button" node="185:38753">
+          <div className="flex flex-wrap gap-2"><MobileButton>저장</MobileButton><MobileButton tone="gray">취소</MobileButton><MobileButton tone="black" size="small">확인</MobileButton><MobileButton tone="danger" size="small">삭제</MobileButton><MobileButton tone="line-primary" size="xsmall">조회</MobileButton><MobileButton disabled size="xsmall">비활성</MobileButton></div>
+        </DataCard>
+        <DataCard title="Toggle / 검사 판정" node="185:40775 · 185:45655">
+          <div className="flex items-center gap-8"><MobileToggle checked={toggle} onCheckedChange={setToggle} /><MobileQaGroup value={qa} onChange={setQa} /></div>
+        </DataCard>
+        <DataCard title="Input Textbox" node="185:40788">
+          <div className="flex flex-col gap-2"><MobileInput placeholder="내용 입력" /><MobileInput icon placeholder="검색어 입력" /><MobileInput state="error" defaultValue="필수값 오류" /></div>
+        </DataCard>
+        <DataCard title="Selectbox" node="185:40791">
+          <div className="flex flex-col gap-2"><MobileSelect value={select} options={["옵션1", "옵션2", "옵션3", "옵션4"]} onChange={setSelect} /><MobileSelect value="읽기 전용" options={[]} state="readonly" /><MobileSelect value="" options={[]} state="disabled" /></div>
+        </DataCard>
+        <DataCard title="Radio Group" node="10378:91993">
+          <MobileRadioGroup label="근무조" value={radio} onChange={setRadio} options={[{ value: "day", label: "주간" }, { value: "night", label: "야간" }, { value: "disabled", label: "사용안함", disabled: true }]} />
+        </DataCard>
+        <DataCard title="Header" node="185:40622">
+          <div className="overflow-hidden rounded-lg border border-[#e4e7ee]"><MobileHeader title="입고등록" /><MobileHeader variant="logo" /><MobileHeader variant="modal" title="사용자 설정" /></div>
+        </DataCard>
+        <DataCard title="Bottom Tab Bar" node="185:40295"><MobileTabBar active={tab} onChange={setTab} /></DataCard>
+        <DataCard title="Tab" node="185:40778">
+          <div role="tablist" aria-label="입고 정보 구분" className="flex border-b border-[#e4e7ee]"><MobileTab active={inlineTab === "summary"} onClick={() => setInlineTab("summary")}>요약</MobileTab><MobileTab active={inlineTab === "history"} onClick={() => setInlineTab("history")}>이력</MobileTab></div>
+        </DataCard>
+        <DataCard title="Step" node="185:47004"><MobileStep labels={["기본정보", "외관검사", "중량검사", "특이사항"]} activeIndex={1} /></DataCard>
+        <DataCard title="Call To Action" node="192:30753">
+          <div className="flex flex-col gap-2 overflow-hidden rounded-lg border border-[#e4e7ee]"><MobileCta mode="save" /><MobileCta mode="cancel-save" /><MobileCta mode="checkbox-save" checkboxLabel="입력 완료" checked={ctaChecked} onCheckedChange={setCtaChecked} /></div>
+        </DataCard>
+        <DataCard title="Date Strip / Fixed Actions" node="10378:91516 · 10378:93359">
+          <div className="flex flex-col gap-3"><MobileDateStrip label="예정일" value="2025-07-30" action="입력 4건" /><div className="overflow-hidden rounded-lg border border-[#e4e7ee]"><MobileFixedActions secondary="취소" /></div></div>
+        </DataCard>
+        <DataCard title="Bottom Sheet Header / Actions" node="10378:92107 · 10378:92247">
+          <div className="overflow-hidden rounded-lg border border-[#e4e7ee]"><MobileSheetHeader title="수량 입력" subtitle="품목명" /><MobileSheetActions /></div>
+        </DataCard>
+        <DataCard title="Center Dialog Card" node="10378:93451 · 10378:93543">
+          <div className="relative h-[280px] overflow-hidden rounded-lg bg-[#999]"><MobileCenterDialogCard height="180px"><MobileSheetHeader title="확인" /><p className="p-5 text-center text-[13px]">저장하시겠습니까?</p></MobileCenterDialogCard></div>
+        </DataCard>
+      </div>
+    </div>
+  );
 }
 
 export function MobilePatternsCatalog() {

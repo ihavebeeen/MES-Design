@@ -16,7 +16,9 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
 export type MobileMenuCategory = {
@@ -174,9 +176,9 @@ export function MobileHeader({
     return (
       <div className={cn("flex w-full items-center justify-between", variant === "modal" ? "py-2 pl-4 pr-2" : "py-3 pl-4 pr-2")}>
         <span className={cn("font-bold leading-[1.5] text-[#011327]", variant === "modal" ? "text-[20px]" : "text-[18px]")}>{title}</span>
-        <button type="button" aria-label="닫기" onClick={onClose} className="flex size-9 items-center justify-center rounded-full text-[#011327]">
+        <Button type="button" variant="lineBlacktxt" size="small" aria-label="닫기" onClick={onClose} className="size-9 min-w-0 rounded-full border-0 bg-transparent p-0 text-[#011327] hover:bg-[#eff2f8]">
           <X size={20} strokeWidth={1.8} />
-        </button>
+        </Button>
       </div>
     );
   }
@@ -185,9 +187,9 @@ export function MobileHeader({
   return (
     <div className={cn("flex h-[52px] w-full items-center justify-between border-b px-4 py-2", dark ? "border-transparent text-white" : "border-[#e4e7ee] bg-white text-[#011327]")}>
       <div className="flex min-w-0 items-center gap-1">
-        <button type="button" aria-label="뒤로" onClick={onBack} className="flex size-9 shrink-0 items-center justify-center rounded-full">
+        <Button type="button" variant="lineBlacktxt" size="small" aria-label="뒤로" onClick={onBack} className="size-9 min-w-0 shrink-0 rounded-full border-0 bg-transparent p-0 hover:bg-[#eff2f8]">
           <ChevronLeft size={24} />
-        </button>
+        </Button>
         <span className="truncate text-[20px] font-bold leading-[1.5] tracking-[-0.25px]">{title}</span>
       </div>
       <span className="shrink-0 text-[16px] font-extrabold tracking-[-0.2px]">YOUHOST MES</span>
@@ -208,13 +210,38 @@ export function MobileTabBar({ active = "home", onChange }: { active?: string; o
       {tabs.map(({ key, label, icon: Icon }) => {
         const selected = key === active;
         return (
-          <button key={key} type="button" onClick={() => onChange?.(key)} className="flex min-w-0 flex-1 flex-col items-center gap-1 px-3.5 py-2" aria-current={selected ? "page" : undefined}>
+          <Button key={key} type="button" variant="lineBlacktxt" size="small" onClick={() => onChange?.(key)} className="h-auto min-w-0 flex-1 flex-col gap-1 rounded-none border-0 bg-transparent px-3.5 py-2 hover:bg-transparent" aria-current={selected ? "page" : undefined}>
             <Icon size={24} className={selected ? "text-[#011327]" : "text-[#99a3b8]"} fill={key === "home" && selected ? "currentColor" : "none"} />
             <span className={cn("whitespace-nowrap text-[10px] tracking-[-0.125px]", selected ? "font-semibold text-[#011327]" : "font-medium text-[#99a3b8]")}>{label}</span>
-          </button>
+          </Button>
         );
       })}
     </nav>
+  );
+}
+
+export function MobileTab({
+  active = false,
+  className,
+  children,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean }) {
+  return (
+    <Button
+      {...props}
+      type="button"
+      role="tab"
+      aria-selected={active}
+      variant="lineBlacktxt"
+      size="small"
+      className={cn(
+        "h-12 min-w-[42px] rounded-none border-0 border-b-2 bg-transparent px-3 text-[15px] font-semibold tracking-[-0.1875px] hover:bg-transparent",
+        active ? "border-[#1573fb] text-[#1573fb]" : "border-transparent text-[#67738e]",
+        className,
+      )}
+    >
+      {children}
+    </Button>
   );
 }
 
@@ -283,19 +310,65 @@ export function MobileFormSection({ title, suffix, children, className }: { titl
   );
 }
 
-export function MobileSelect({ value, options, onChange }: { value: string; options: string[]; onChange: (value: string) => void }) {
-  const [open, setOpen] = useState(false);
+export type MobileSelectState = "default" | "focus" | "complete" | "readonly" | "disabled";
+
+export function MobileSelect({
+  value,
+  options,
+  onChange,
+  state = "default",
+  mobileSize = "default",
+  placeholder = "선택",
+  defaultOpen = false,
+  onOpenChange,
+  label,
+}: {
+  value: string;
+  options: string[];
+  onChange?: (value: string) => void;
+  state?: MobileSelectState;
+  mobileSize?: "default" | "small";
+  placeholder?: string;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  label?: string;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  const inactive = state === "readonly" || state === "disabled";
+
+  function setOpenState(next: boolean) {
+    setOpen(next);
+    onOpenChange?.(next);
+  }
+
   return (
-    <div className="relative w-full">
-      <button type="button" onClick={() => setOpen((current) => !current)} className="flex h-11 w-full items-center justify-between rounded-[4px] border border-[#e4e7ee] bg-white px-3 text-left text-[16px] text-[#011327]">
-        <span>{value || "선택"}</span><ChevronRight size={18} className={cn("transition-transform", open && "rotate-90")} />
-      </button>
+    <div className="relative w-full" data-mobile-select-state={open ? "dropdown" : state}>
+      <Button
+        type="button"
+        variant="lineBlacktxt"
+        size="small"
+        aria-label={label}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        disabled={inactive}
+        onClick={() => setOpenState(!open)}
+        className={cn(
+          "w-full justify-between rounded-[4px] px-3 text-left font-normal text-[#011327]",
+          mobileSize === "small" ? "h-8 text-[15px]" : "h-11 text-[16px]",
+          (state === "focus" || open) && "border-[#011327]",
+          state === "readonly" && "border-[#eff2f8] bg-[#eff2f8] text-[#67738e]",
+          state === "disabled" && "border-[#d7dce5] bg-[#d7dce5] text-[#99a3b8]",
+          state === "complete" && "font-semibold",
+        )}
+      >
+        <span>{value || placeholder}</span><ChevronRight size={18} className={cn("transition-transform", open && "rotate-90")} />
+      </Button>
       {open && (
-        <div className="absolute left-0 right-0 top-full z-20 overflow-hidden rounded-b-[4px] border border-t-0 border-[#e4e7ee] bg-white shadow-lg">
+        <div role="listbox" aria-label={label ? `${label} 목록` : "선택 옵션 목록"} className="absolute left-0 right-0 top-full z-20 overflow-hidden rounded-b-[4px] border border-t-0 border-[#e4e7ee] bg-white shadow-lg">
           {options.map((option) => (
-            <button key={option} type="button" onClick={() => { onChange(option); setOpen(false); }} className={cn("flex h-12 w-full items-center gap-2 border-b border-[#e4e7ee] px-3 text-[15px] last:border-b-0", option === value ? "bg-[#eff2f8] font-semibold" : "bg-white")}>
+            <Button key={option} type="button" role="option" aria-selected={option === value} variant="lineBlacktxt" size="small" onClick={() => { onChange?.(option); setOpenState(false); }} className={cn("h-12 w-full justify-start gap-2 rounded-none border-0 border-b border-[#e4e7ee] px-3 text-[15px] font-normal last:border-b-0", option === value ? "bg-[#eff2f8] font-semibold" : "bg-white")}>
               <span className={cn("flex size-4 items-center justify-center rounded-full", option === value ? "bg-[#011327] text-white" : "bg-[#d7dce5] text-white")}>✓</span>{option}
-            </button>
+            </Button>
           ))}
         </div>
       )}
@@ -354,10 +427,32 @@ export function MobileInspectionQuestionList({
   );
 }
 
-export function MobileCta({ mode = "save", onCancel, onSave }: { mode?: "save" | "cancel-save"; onCancel?: () => void; onSave?: () => void }) {
+export function MobileCta({
+  mode = "save",
+  onCancel,
+  onSave,
+  checked,
+  defaultChecked,
+  onCheckedChange,
+  checkboxLabel = "완료",
+}: {
+  mode?: "save" | "cancel-save" | "checkbox-save";
+  onCancel?: () => void;
+  onSave?: () => void;
+  checked?: boolean;
+  defaultChecked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  checkboxLabel?: React.ReactNode;
+}) {
   return (
-    <div className="flex w-full gap-2 bg-white px-4 py-5 shadow-[0_-8px_24px_rgba(1,19,39,0.06)]">
+    <div className="flex w-full items-center gap-2 bg-white px-4 py-5 shadow-[0_-8px_24px_rgba(1,19,39,0.06)]">
       {mode === "cancel-save" && <MobileButton tone="gray" className="min-w-0 flex-1" onClick={onCancel}>취소</MobileButton>}
+      {mode === "checkbox-save" && (
+        <label className="flex min-w-0 flex-1 items-center gap-2 text-[15px] font-semibold text-[#011327]">
+          <Checkbox checked={checked} defaultChecked={defaultChecked} color="black" onChange={(event) => onCheckedChange?.(event.target.checked)} />
+          <span className="truncate">{checkboxLabel}</span>
+        </label>
+      )}
       <MobileButton className="min-w-0 flex-1" onClick={onSave}>저장</MobileButton>
     </div>
   );
@@ -388,9 +483,9 @@ export function MobileDevice({ children, className }: { children: React.ReactNod
 export function MobileDateNavigator({ date = "2025.03.30" }: { date?: string }) {
   return (
     <div className="flex h-[68px] w-full items-center justify-between px-4">
-      <button type="button" aria-label="이전 날짜" className="flex size-9 items-center justify-center rounded-lg bg-white text-[#011327] shadow-sm"><ChevronLeft size={20} /></button>
+      <Button type="button" variant="lineBlacktxt" size="small" aria-label="이전 날짜" className="size-9 min-w-0 rounded-lg border-0 bg-white p-0 text-[#011327] shadow-sm"><ChevronLeft size={20} /></Button>
       <div className="flex items-center gap-2"><span className="rounded-full bg-[#1573fb] px-2.5 py-1 text-[12px] font-semibold text-white">오늘</span><strong className="text-[20px] leading-[1.5] text-white">{date}</strong></div>
-      <button type="button" aria-label="다음 날짜" className="flex size-9 items-center justify-center rounded-lg bg-white text-[#011327] shadow-sm"><ChevronRight size={20} /></button>
+      <Button type="button" variant="lineBlacktxt" size="small" aria-label="다음 날짜" className="size-9 min-w-0 rounded-lg border-0 bg-white p-0 text-[#011327] shadow-sm"><ChevronRight size={20} /></Button>
     </div>
   );
 }
@@ -404,7 +499,7 @@ export function MobileHomePreview() {
       <div className="h-[47px] shrink-0" />
       <MobileHeader variant="logo" />
       <div className="grid min-h-0 flex-1 grid-cols-2 gap-3 overflow-y-auto px-4 py-3">
-        {homeMenus.map((menu) => <button key={menu} type="button" className="flex min-h-[120px] items-center justify-center rounded-xl bg-white px-3 text-center text-[22px] font-bold text-[#011327] shadow-[0_5px_18px_rgba(1,19,39,0.16)]">{menu}</button>)}
+        {homeMenus.map((menu) => <Button key={menu} type="button" variant="lineBlacktxt" size="basic" className="min-h-[120px] rounded-xl border-0 bg-white px-3 text-center text-[22px] font-bold text-[#011327] shadow-[0_5px_18px_rgba(1,19,39,0.16)]">{menu}</Button>)}
       </div>
       <MobileTabBar active={active} onChange={setActive} />
       <div className="flex h-[30px] shrink-0 items-center justify-center bg-white"><span className="h-1 w-[134px] rounded-full bg-black" /></div>
@@ -427,9 +522,9 @@ export function MobileReceivingListPreview() {
       <MobileHeader variant="white" title="입고등록" />
       <MobileDateNavigator />
       <main className="min-h-0 flex-1 overflow-y-auto rounded-t-[24px] bg-white px-4 py-5 shadow-[0_-8px_30px_rgba(1,19,39,0.12)]">
-        <div className="mb-4 flex items-center gap-2"><MobileInput icon placeholder="품목 또는 LOT 검색" className="flex-1" /><button type="button" aria-label="달력" className="flex size-11 items-center justify-center rounded-[4px] border border-[#e4e7ee]"><CalendarDays size={20} /></button></div>
+        <div className="mb-4 flex items-center gap-2"><MobileInput icon placeholder="품목 또는 LOT 검색" className="flex-1" /><Button type="button" variant="lineBlacktxt" size="small" aria-label="달력" className="size-11 min-w-0 rounded-[4px] p-0"><CalendarDays size={20} /></Button></div>
         <div className="flex flex-col gap-3">
-          {receivingItems.map((item, index) => <button key={item.title} type="button" onClick={() => setActiveItem(index)} className={cn("flex min-h-[76px] w-full items-center gap-3 rounded-xl px-4 py-3 text-left", index === activeItem ? "ring-2 ring-[#1573fb]" : "", item.tone === "red" ? "bg-[#fbeff0]" : item.tone === "gray" ? "bg-[#eff2f8]" : "bg-[#e8f5ff]")}><span className={cn("rounded-full px-2 py-0.5 text-[12px] font-semibold text-white", item.tone === "red" ? "bg-[#f04452]" : item.tone === "gray" ? "bg-[#99a3b8]" : "bg-[#1573fb]")}>{item.state}</span><span className="min-w-0 flex-1 truncate text-[15px] font-semibold text-[#011327]">{item.title}</span><ChevronRight size={18} /></button>)}
+          {receivingItems.map((item, index) => <Button key={item.title} type="button" variant="lineBlacktxt" size="basic" onClick={() => setActiveItem(index)} className={cn("min-h-[76px] w-full justify-start gap-3 rounded-xl border-0 px-4 py-3 text-left", index === activeItem ? "ring-2 ring-[#1573fb]" : "", item.tone === "red" ? "bg-[#fbeff0]" : item.tone === "gray" ? "bg-[#eff2f8]" : "bg-[#e8f5ff]")}><span className={cn("rounded-full px-2 py-0.5 text-[12px] font-semibold text-white", item.tone === "red" ? "bg-[#f04452]" : item.tone === "gray" ? "bg-[#99a3b8]" : "bg-[#1573fb]")}>{item.state}</span><span className="min-w-0 flex-1 truncate text-[15px] font-semibold text-[#011327]">{item.title}</span><ChevronRight size={18} /></Button>)}
         </div>
       </main>
       <MobileTabBar />
@@ -445,7 +540,7 @@ export function MobileBottomSheetPreview() {
     <MobileDevice className="bg-[#eff2f8]">
       <div className="h-[47px]" /><MobileHeader title="생산실적 등록" />
       <div className="flex flex-1 items-center justify-center"><MobileButton onClick={() => setOpen(true)}>메모 입력</MobileButton></div>
-      {open && <><button type="button" aria-label="메모 닫기" className="absolute inset-0 z-10 bg-black/45" onClick={() => setOpen(false)} /><section className="absolute inset-x-0 bottom-0 z-20 rounded-t-[20px] bg-white"><MobileHeader variant="bottom-sheet" title="메모" onClose={() => setOpen(false)} /><div className="px-4 pb-4"><textarea value={memo} maxLength={100} onChange={(event) => setMemo(event.target.value)} placeholder="메모를 입력해 주세요." className="h-[132px] w-full resize-none rounded-[6px] border border-[#e4e7ee] p-3 text-[16px] outline-none focus:border-[#011327]" /><p className="mt-1 text-right text-[13px] text-[#8491a7]">{memo.length}/100</p></div><MobileCta onSave={() => setOpen(false)} /></section></>}
+      {open && <><Button type="button" variant="lineBlacktxt" size="small" aria-label="메모 닫기" className="absolute inset-0 z-10 h-auto w-full rounded-none border-0 bg-black/45 p-0 hover:bg-black/45" onClick={() => setOpen(false)} /><section className="absolute inset-x-0 bottom-0 z-20 rounded-t-[20px] bg-white"><MobileHeader variant="bottom-sheet" title="메모" onClose={() => setOpen(false)} /><div className="px-4 pb-4"><Textarea value={memo} maxLength={100} onChange={(event) => setMemo(event.target.value)} placeholder="메모를 입력해 주세요." className="h-[132px] resize-none rounded-[6px] border-[#e4e7ee] p-3 text-[16px] focus:border-[#011327]" /><p className="mt-1 text-right text-[13px] text-[#8491a7]">{memo.length}/100</p></div><MobileCta onSave={() => setOpen(false)} /></section></>}
       <div className="flex h-[30px] shrink-0 items-center justify-center bg-white"><span className="h-1 w-[134px] rounded-full bg-black" /></div>
     </MobileDevice>
   );

@@ -24,7 +24,7 @@
     { "id": "mobile.toggle", "name": "MobileToggle", "sourceNode": "185:40775", "states": ["off", "on"] },
     { "id": "mobile.tab", "name": "MobileTab", "sourceNode": "185:40778", "states": ["default", "active"] },
     { "id": "mobile.step", "name": "MobileStep", "sourceNode": "185:47004", "states": ["none", "active", "complete"] },
-    { "id": "mobile.cta", "name": "MobileCTA", "sourceNode": "192:30753", "states": ["save", "cancel-save", "complete-cancel-save"] },
+    { "id": "mobile.cta", "name": "MobileCTA", "sourceNode": "192:30753", "states": ["save", "cancel-save", "checkbox-save"] },
     { "id": "mobile.inspection", "name": "MobileInspectionJudgement", "sourceNode": "185:45655", "states": ["○", "△", "✕"] },
     { "id": "mobile.text-section", "name": "MobileTextSection", "sourceNode": "191:29273", "states": ["list-card", "time-value", "scan-value", "disabled"] },
     { "id": "mobile.radio", "name": "MobileRadioGroup", "sourceNode": "10378:91993", "states": ["selected", "unselected", "disabled"] },

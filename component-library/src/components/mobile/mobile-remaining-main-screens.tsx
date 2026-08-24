@@ -120,14 +120,17 @@ function CompactSelect({ label, value, onClick }: { label: string; value: string
 export function MobileMaintenanceFormSourceScreen() {
   const [unit, setUnit] = React.useState("선택");
   const [kind, setKind] = React.useState("선택");
+  const [manager, setManager] = React.useState("김아무개");
+  const [startTime, setStartTime] = React.useState("");
+  const [endTime, setEndTime] = React.useState("");
   const [memo, setMemo] = React.useState<string>();
   return (
     <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:93359" data-mobile-remaining-screen="maintenance-form">
       <BluePageHeader title="압출기 1호" />
       <div className="absolute left-4 top-[99px] z-30 w-[343px]"><MobileDateStrip label="정비일" value="2025-07-30" action="입력 2건" /></div>
       <main className="absolute left-4 top-[146px] flex w-[343px] flex-col gap-[10px]">
-        <MobileFormSection title="기본 정보" className="h-[168px]"><MobileCompactField label="담당자" value="김아무개" onChange={() => undefined} /><CompactSelect label="UNIT" value={unit} onClick={() => setUnit(unit === "선택" ? "UNIT A" : "선택")} /><CompactSelect label="정비형태" value={kind} onClick={() => setKind(kind === "선택" ? "예방정비" : "선택")} /></MobileFormSection>
-        <MobileFormSection title="정비 시간" className="h-[126px]"><div className="grid grid-cols-2 gap-[10px]"><MobileCompactField label="시작시간" value="" onChange={() => undefined} /><MobileCompactField label="종료시간" value="" onChange={() => undefined} /></div><div className="grid h-8 grid-cols-[74px_1fr_34px] items-center"><span className="text-[15px] text-[#5c667b]">총 정비시간</span><span className="flex h-8 items-center rounded-[4px] bg-[#e4e7ee] px-[10px] text-[#8491a7]">60</span><span className="text-right text-[12px] text-[#67738e]">Min</span></div></MobileFormSection>
+        <MobileFormSection title="기본 정보" className="h-[168px]"><MobileCompactField label="담당자" value={manager} onChange={setManager} /><CompactSelect label="UNIT" value={unit} onClick={() => setUnit(unit === "선택" ? "UNIT A" : "선택")} /><CompactSelect label="정비형태" value={kind} onClick={() => setKind(kind === "선택" ? "예방정비" : "선택")} /></MobileFormSection>
+        <MobileFormSection title="정비 시간" className="h-[126px]"><div className="grid grid-cols-2 gap-[10px]"><MobileCompactField label="시작시간" value={startTime} onChange={setStartTime} /><MobileCompactField label="종료시간" value={endTime} onChange={setEndTime} /></div><div className="grid h-8 grid-cols-[74px_1fr_34px] items-center"><span className="text-[15px] text-[#5c667b]">총 정비시간</span><span className="flex h-8 items-center rounded-[4px] bg-[#e4e7ee] px-[10px] text-[#8491a7]">60</span><span className="text-right text-[12px] text-[#67738e]">Min</span></div></MobileFormSection>
         {["원인분석", "정비내용"].map((title) => <Button key={title} variant="lineBlacktxt" size="small" onClick={() => setMemo(title)} className="h-[48px] w-full justify-between rounded-[8px] border border-[#e4e7ee] px-3 text-[15px] font-bold"><span>{title}</span><span className="flex items-center gap-1 text-[#1573fb]"><PenLine className="size-4" />메모</span></Button>)}
         {memo && <div role="status" className="rounded-[6px] bg-[#eff2f8] p-3 text-[13px]">{memo} 메모 입력 상태</div>}
       </main>
@@ -139,6 +142,8 @@ export function MobileMaintenanceFormSourceScreen() {
 export function MobileWeightInspectionSourceScreen() {
   const [selected, setSelected] = React.useState(21);
   const [mode, setMode] = React.useState("auto");
+  const [arrayNumber, setArrayNumber] = React.useState("12");
+  const [resultValue, setResultValue] = React.useState("0");
   const cells = Array.from({ length: 100 }, (_, index) => index);
   return (
     <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:92711" data-mobile-remaining-screen="weight-inspection">
@@ -150,7 +155,7 @@ export function MobileWeightInspectionSourceScreen() {
       <section className="absolute left-4 top-[280px] h-[359px] w-[343px] rounded-[8px] border border-[#e4e7ee] p-[11px]">
         <div className="mb-2 flex h-6 items-center text-[13px]"><span className="w-[102px] text-center text-[#67738e]">Cavity 배열</span><strong>5 X 5</strong><span className="ml-auto text-[#67738e]">진입방향</span><span className="ml-2 text-[22px]">→</span></div>
         <div className="grid grid-cols-10 gap-[3px]">{cells.map((cell) => <Button key={cell} variant="lineBlacktxt" size="xsmall" aria-label={`배열 ${cell + 1}`} aria-pressed={selected === cell} onClick={() => setSelected(cell)} className={cn("h-[23px] min-w-0 rounded-[2px] border border-[#d7dce5] p-0 text-[12px]", selected === cell ? "bg-[#1573fb] text-white" : cell < 24 && cell % 10 < 5 ? "bg-[#d7dce5]" : "bg-white")}>{cell === 0 ? "1" : selected === cell ? "12" : ""}</Button>)}</div>
-        <div className="mt-[10px] grid grid-cols-2 gap-[10px]"><MobileCompactField label="배열넘버" value="12" onChange={() => undefined} /><MobileCompactField label="결과값" value="0" onChange={() => undefined} /></div>
+        <div className="mt-[10px] grid grid-cols-2 gap-[10px]"><MobileCompactField label="배열넘버" value={arrayNumber} onChange={setArrayNumber} /><MobileCompactField label="결과값" value={resultValue} onChange={setResultValue} /></div>
       </section>
       <div className="absolute inset-x-0 bottom-[84px] z-30"><MobileFixedActions primary="다음" secondary="←  이전 페이지" /></div><div className="absolute inset-x-0 bottom-0 z-30"><MobileSourceTabBar /></div>
     </div>

@@ -118,7 +118,7 @@
       "source": "src/components/mobile/mobile-ui.tsx",
       "componentName": "MobileSelect",
       "framework": "React",
-      "status": "extend-code-state-api"
+      "status": "pilot-map"
     },
     {
       "id": "mobile.toggle",
@@ -133,11 +133,10 @@
       "id": "mobile.tab",
       "figmaNodeId": "163:51475",
       "figmaName": "mobile-tab-item",
-      "source": null,
-      "componentName": null,
+      "source": "src/components/mobile/mobile-ui.tsx",
+      "componentName": "MobileTab",
       "framework": "React",
-      "status": "code-component-missing",
-      "candidateComponentName": "MobileTab"
+      "status": "pilot-map"
     },
     {
       "id": "mobile.step",
@@ -155,7 +154,7 @@
       "source": "src/components/mobile/mobile-ui.tsx",
       "componentName": "MobileCta",
       "framework": "React",
-      "status": "extend-code-state-api"
+      "status": "pilot-map"
     },
     {
       "id": "mobile.inspection-judgement",
@@ -168,7 +167,7 @@
     }
   ],
   "codeOnlyReview": {
-    "componentCandidates": ["DialogHeader", "MobileTab", "MobileCompactField"],
+    "componentCandidates": ["DialogHeader", "MobileCompactField"],
     "patternCandidates": ["MobileFormSection", "MobileInspectionQuestionList", "MobileTwoDepthMenu", "MobileDateNavigator"],
     "excludedPreviewAssets": ["MobileDevice", "MobileHomePreview", "MobileReceivingListPreview", "MobileBottomSheetPreview"]
   },

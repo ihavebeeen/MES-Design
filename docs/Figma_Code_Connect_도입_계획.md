@@ -67,7 +67,7 @@ Figma API가 다음 조건 미충족을 반환했다.
 | Input Textbox (Mobile) | `163:51492` | `MobileInput` | 연결 후보 | state/size 명칭 정규화 필요 |
 | Selectbox (Mobile) | `163:51522` | `MobileSelect` | 코드 API 확장 후 연결 | 코드가 Figma의 readonly/disabled/focus 상태를 아직 표현하지 못함 |
 | Toggle | `163:51463` | `MobileToggle` | 직접 연결 후보 | on/off ↔ checked 대응이 명확함 |
-| mobile-tab-item | `163:51475` | 직접 대응 없음 | 코드 누락 | 레지스트리에는 `MobileTab`이 있으나 실제 export가 없음 |
+| mobile-tab-item | `163:51475` | `MobileTab` | 연결 후보 | default/active 상태와 `aria-selected`를 코드 API로 제공 |
 | Step List - Horizontal | `185:47116` | `MobileStep` | 연결 후보 | 리스트 단위 컴포넌트로 대응 |
 | mobile CTA | `191:29305` | `MobileCta` | 코드 API 확장 후 연결 | Figma의 세 번째 CTA 유형이 코드에 없음 |
 | 검사 버튼 리스트 | `185:45044` | `MobileQaGroup` | 연결 후보 | 선택값에 따른 ○/△/✕ 그룹 상태를 prop으로 연결 가능 |
@@ -84,7 +84,7 @@ Figma API가 다음 조건 미충족을 반환했다.
 
 현재 우선 검토 대상:
 
-- 컴포넌트 후보: `DialogHeader`, `MobileTab`, `MobileCompactField`
+- 컴포넌트 후보: `DialogHeader`, `MobileCompactField`
 - 패턴 후보: `MobileFormSection`, `MobileInspectionQuestionList`, `MobileTwoDepthMenu`, `MobileDateNavigator`
 - 이관 제외 후보: `MobileDevice`, `*Preview`, visual-test 전용 자산
 - Figma에 추가 검토할 Button 코드 전용값: `softMain`, `softDanger`, `loginPrimary`, `toolbar`, `login`

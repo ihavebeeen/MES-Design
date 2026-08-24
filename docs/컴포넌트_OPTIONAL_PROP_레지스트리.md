@@ -57,6 +57,12 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `Table` | `disabledTextTone` | `gray60 \| gray80`, 기본 `gray80` | 비활성 행 텍스트 명도를 화면 실측에 맞춘다. | Figma `11210:50866`은 `gray60` |
 | `Table` | `unselectedTextTone` | `default \| gray80`, 기본 `default` | 비활성이 아닌 미선택 행의 텍스트 명도를 낮추고 선택 행과 편집 가능 상태를 구분한다. | 발주 일괄등록, Figma `11210:52026` |
 | `TableRowData` | `hideSelection` | `boolean`, 기본 `false` | 선택 열 폭은 유지하면서 특정 행의 체크박스만 숨긴다. | 완료된 비활성 행, Figma `11210:50866` |
+| `MobileTab` | `active` | `boolean`, 기본 `false` | mobile-tab-item의 default/active 상태를 명시하고 `aria-selected`와 시각 상태를 함께 바꾼다. | Figma `185:40778` |
+| `MobileSelect` | `state` | `default \| focus \| complete \| readonly \| disabled`, 기본 `default` | Figma Selectbox 상태를 화면별 className 덮어쓰기 없이 같은 API로 표현한다. 열림 상태는 실제 dropdown 상호작용으로 관리한다. | Figma `185:40791` |
+| `MobileSelect` | `mobileSize` | `default \| small`, 기본 `default` | 모바일 Selectbox의 두 크기를 명시한다. | Figma `185:40791` |
+| `MobileSelect` | `placeholder`, `defaultOpen`, `onOpenChange`, `label` | `string`, `boolean`, `(open) => void`, `string` | 빈 값 문구, 드롭다운 초기/변경 상태, 접근성 이름을 호출부가 명시하도록 한다. | Figma `185:40791` 및 상호작용 검증 |
+| `MobileCta` | `mode` 확장 | `save \| cancel-save \| checkbox-save`, 기본 `save` | Figma mobile CTA의 저장/취소+저장/체크박스 변형을 동일 컴포넌트에서 제공한다. | Figma `192:30753` |
+| `MobileCta` | `checked`, `defaultChecked`, `onCheckedChange`, `checkboxLabel` | 체크 상태·변경 콜백·`ReactNode` | checkbox-save 변형을 정적 외형이 아닌 실제 체크 상태로 연결한다. | Figma `192:30753` |
 
 ## Pattern fixture / adapter
 

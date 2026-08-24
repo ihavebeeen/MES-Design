@@ -36,14 +36,27 @@ test("Mobile 탭은 전용 컴포넌트 상태와 정적 경로를 제공한다"
   await expect(caution).toHaveAttribute("aria-pressed", "true");
 
   await page.getByRole("button", { name: "옵션1", exact: true }).click();
-  await page.getByRole("button", { name: /옵션2/ }).click();
+  await page.getByRole("option", { name: /옵션2/ }).click();
   await expect(page.getByRole("button", { name: "옵션2", exact: true })).toBeVisible();
+
+  const nightShift = page.getByRole("radio", { name: "야간", exact: true });
+  await nightShift.click();
+  await expect(nightShift).toHaveAttribute("aria-checked", "true");
+
+  const historyTab = page.getByRole("tab", { name: "이력", exact: true });
+  await historyTab.click();
+  await expect(historyTab).toHaveAttribute("aria-selected", "true");
+
+  const completion = page.getByRole("checkbox", { name: "입력 완료", exact: true });
+  await completion.click();
+  await expect(completion).toBeChecked();
 
   const bottomNav = page.getByRole("navigation", { name: "모바일 하단 메뉴" });
   await bottomNav.getByRole("button", { name: "알람", exact: true }).click();
   await expect(bottomNav.getByRole("button", { name: "알람", exact: true })).toHaveAttribute("aria-current", "page");
 
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+  await page.evaluate(() => window.scrollTo(0, 0));
   await expect(page).toHaveScreenshot("mobile-components-catalog.png");
 });
 
@@ -170,6 +183,19 @@ test("남은 모바일 메인 원본 13종은 고정 viewport와 무가로스크
   const hourlyValue = page.locator('[data-mobile-remaining-screen="hourly-notes"] input').first();
   await hourlyValue.fill("설비 점검");
   await expect(hourlyValue).toHaveValue("설비 점검");
+
+  await page.goto("/visual-regression/mobile-source/maintenance-form");
+  const maintenance = page.locator('[data-mobile-remaining-screen="maintenance-form"]');
+  await maintenance.getByRole("textbox", { name: "담당자", exact: true }).fill("이수현");
+  await maintenance.getByRole("textbox", { name: "시작시간", exact: true }).fill("09:00");
+  await maintenance.getByRole("textbox", { name: "종료시간", exact: true }).fill("10:00");
+  await expect(maintenance.getByRole("textbox", { name: "담당자", exact: true })).toHaveValue("이수현");
+
+  await page.goto("/visual-regression/mobile-source/weight-inspection");
+  const weight = page.locator('[data-mobile-remaining-screen="weight-inspection"]');
+  await weight.getByRole("textbox", { name: "배열넘버", exact: true }).fill("15");
+  await weight.getByRole("textbox", { name: "결과값", exact: true }).fill("98.7");
+  await expect(weight.getByRole("textbox", { name: "결과값", exact: true })).toHaveValue("98.7");
 });
 
 test("남은 모바일 팝업 원본 13종은 유형별 위치와 입력 계약을 지킨다", async ({ page }) => {
