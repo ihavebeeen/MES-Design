@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "auditedAt": "2026-08-24",
-  "sourceFingerprint": "233e1b7b482b60c32cdf073c1562980fc4def16725a6cb6fd5e47cb12c28b1ab",
+  "sourceFingerprint": "1201779af6ed09b52c65d1614e3386353e9e858e04899b9eb06e319d1c611c2d",
   "browserRun": {
     "command": "npm run test:visual",
     "result": "passed",

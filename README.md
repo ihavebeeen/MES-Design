@@ -276,9 +276,20 @@ npm run lint:design-system
 # Playwright 시각 회귀 테스트
 npm run test:visual
 
+# 평소 작업: 변경 파일이 영향을 주는 화면만 검사
+npm run verify:changed
+
+# 기준 브랜치 이후 변경분만 미리 확인
+npm run test:visual:changed -- --base origin/main --plan
+
+# 배포·승격·대규모 공통 변경 때만 전체 검사
+npm run verify:full
+
 # 프로덕션 빌드
 npm run build
 ```
+
+평소 수정에서는 `verify:changed`를 사용합니다. 컴포넌트 → 패턴 → 화면 관계를 따라 영향을 받는 검사만 고릅니다. `test:visual`과 `verify:full`은 공통 토큰·공통 레이아웃 변경, 자산 승격, 배포 전 확인처럼 전체 재검사가 필요한 경우에만 사용합니다. 178개 등록 항목을 읽어 관계를 확인하는 작업은 빠른 메타데이터 검사이며, 시간이 오래 걸리는 브라우저 화면 검사는 변경 범위로 제한합니다.
 
 Windows PowerShell 실행 정책으로 `npx`가 막히는 환경에서는 `npm exec` 또는 `npm.cmd`를 사용합니다.
 
