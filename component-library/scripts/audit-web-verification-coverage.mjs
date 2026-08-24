@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { generatedTextMatches } from "./generated-text.mjs";
 import { readRegistryBundle } from "./resolve-screen-request.mjs";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -318,7 +319,7 @@ if (mode === "--write") {
 } else if (mode === "--check") {
   const currentJson = fs.existsSync(jsonOutputPath) ? fs.readFileSync(jsonOutputPath, "utf8") : "";
   const currentMarkdown = fs.existsSync(markdownOutputPath) ? fs.readFileSync(markdownOutputPath, "utf8") : "";
-  if (currentJson !== json || currentMarkdown !== markdown) {
+  if (!generatedTextMatches(currentJson, json) || !generatedTextMatches(currentMarkdown, markdown)) {
     console.error("웹 UI 전수검증 원장이 현재 코드와 다릅니다. npm run audit:web-coverage를 실행하세요.");
     process.exitCode = 1;
   } else {

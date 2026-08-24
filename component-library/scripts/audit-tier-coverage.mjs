@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { generatedTextMatches } from "./generated-text.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const checklistPath = path.join(root, "docs/UI_컴포넌트_총망라_체크리스트.md");
@@ -524,7 +525,7 @@ if (write) {
     [outputJsonPath, jsonOutput],
     [outputMarkdownPath, markdownOutput],
   ]) {
-    if (!fs.existsSync(target) || fs.readFileSync(target, "utf8") !== expected) {
+    if (!fs.existsSync(target) || !generatedTextMatches(fs.readFileSync(target, "utf8"), expected)) {
       throw new Error(
         `${path.relative(root, target)} is stale. Run npm run audit:tier-coverage.`,
       );

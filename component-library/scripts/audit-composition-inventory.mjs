@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { basename, join, relative } from "node:path";
+import { generatedTextMatches } from "./generated-text.mjs";
 
 const root = process.cwd();
 const patternDirectory = join(root, "src", "components", "patterns");
@@ -221,8 +222,8 @@ if (mode === "write") {
   console.log(`Composition inventory updated: ${inventory.summary.scannedFiles} files, ${inventory.summary.totalLines} lines, ${inventory.fingerprint}`);
 } else if (mode === "check") {
   const errors = [];
-  if (!existsSync(inventoryPath) || readFileSync(inventoryPath, "utf8") !== inventoryText) errors.push("composition-inventory.json이 현재 패턴 코드와 다릅니다. npm run audit:composition을 실행하세요.");
-  if (!existsSync(reportPath) || readFileSync(reportPath, "utf8") !== reportText) errors.push("AI UI 조합 인벤토리 보고서가 현재 패턴 코드와 다릅니다. npm run audit:composition을 실행하세요.");
+  if (!existsSync(inventoryPath) || !generatedTextMatches(readFileSync(inventoryPath, "utf8"), inventoryText)) errors.push("composition-inventory.json이 현재 패턴 코드와 다릅니다. npm run audit:composition을 실행하세요.");
+  if (!existsSync(reportPath) || !generatedTextMatches(readFileSync(reportPath, "utf8"), reportText)) errors.push("AI UI 조합 인벤토리 보고서가 현재 패턴 코드와 다릅니다. npm run audit:composition을 실행하세요.");
   if (errors.length) {
     console.error(["Composition inventory check failed:", ...errors.map((error) => `- ${error}`)].join("\n"));
     process.exit(1);

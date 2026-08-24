@@ -11,6 +11,7 @@ const registryDirectory = path.join(projectRoot, "src", "design-system", "regist
 const args = process.argv.slice(2);
 const planOnly = args.includes("--plan");
 const full = args.includes("--all");
+const installBrowser = args.includes("--install");
 const baseIndex = args.indexOf("--base");
 const base = baseIndex >= 0 ? args[baseIndex + 1] : null;
 const explicitFiles = args.flatMap((value, index) => value === "--file" && args[index + 1] ? [args[index + 1].replaceAll("\\", "/")] : []);
@@ -150,6 +151,9 @@ printPlan(plan);
 if (planOnly || files.length === 0) process.exit(0);
 
 const playwrightCli = path.join(projectRoot, "node_modules", "@playwright", "test", "cli.js");
+if (installBrowser && (plan.runAllWeb || plan.testNames.length > 0 || plan.runAllMobile)) {
+  run(process.execPath, [playwrightCli, "install", "chromium"], { capture: false, cwd: projectRoot });
+}
 if (plan.runAllWeb) {
   run(process.execPath, [playwrightCli, "test", "tests/visual/design-system.visual.spec.ts"], { capture: false, cwd: projectRoot });
 } else if (plan.testNames.length > 0) {

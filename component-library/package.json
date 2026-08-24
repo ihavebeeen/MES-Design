@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "lint:design-system": "eslint src/design-system src/components/experimental src/components/visual-tests src/app/visual-regression tests/visual playwright.config.ts scripts/check-design-system-registry.mjs scripts/check-experimental-registry.mjs scripts/render-experimental-decisions.mjs scripts/audit-design-values.mjs scripts/audit-composition-inventory.mjs scripts/audit-tier-coverage.mjs scripts/audit-web-verification-coverage.mjs scripts/run-affected-visual-tests.mjs scripts/screen-generation-contract.mjs scripts/resolve-screen-request.mjs scripts/generate-screen-tsx.mjs scripts/check-screen-request-fixtures.mjs scripts/audit-screen-implementation.mjs scripts/mes-ui-mcp-server.mjs scripts/check-mes-ui-mcp.mjs",
+    "lint:design-system": "eslint src/design-system src/components/experimental src/components/visual-tests src/app/visual-regression tests/visual playwright.config.ts scripts/check-design-system-registry.mjs scripts/check-experimental-registry.mjs scripts/render-experimental-decisions.mjs scripts/generated-text.mjs scripts/audit-design-values.mjs scripts/audit-composition-inventory.mjs scripts/audit-tier-coverage.mjs scripts/audit-web-verification-coverage.mjs scripts/run-affected-visual-tests.mjs scripts/screen-generation-contract.mjs scripts/resolve-screen-request.mjs scripts/generate-screen-tsx.mjs scripts/check-screen-request-fixtures.mjs scripts/audit-screen-implementation.mjs scripts/mes-ui-mcp-server.mjs scripts/check-mes-ui-mcp.mjs",
     "check:patterns": "node scripts/check-pattern-component-reuse.mjs",
     "check:registry": "node scripts/check-design-system-registry.mjs",
     "audit:design-values": "node scripts/audit-design-values.mjs --write",

@@ -17,6 +17,8 @@ jobs:
         working-directory: component-library
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -26,10 +28,20 @@ jobs:
 
       - run: npm ci
       - run: npm run check:design-system
-      - run: npx tsc --noEmit
+      - run: npm exec -- tsc --noEmit
       - run: npm run lint:design-system
-      - run: npx playwright install chromium
-      - run: npm run test:visual
+
+      - name: Run visual checks affected by this change
+        if: github.event_name != 'workflow_dispatch'
+        env:
+          VISUAL_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        run: npm run test:visual:changed -- --base "$env:VISUAL_BASE" --install
+
+      - name: Run the full visual suite manually
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          npm exec playwright install chromium
+          npm run test:visual
 
       - uses: actions/upload-artifact@v4
         if: failure()

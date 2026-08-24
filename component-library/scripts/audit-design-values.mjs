@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
+import { generatedTextMatches } from "./generated-text.mjs";
 
 const root = process.cwd();
 const registryDirectory = join(root, "src", "design-system", "registry");
@@ -282,8 +283,8 @@ if (mode === "write") {
 } else if (mode === "check") {
   const errors = [];
   if (audit.summary.unregisteredCandidates > 0) errors.push(`판단 레지스트리에 등록되지 않은 검토 후보가 ${audit.summary.unregisteredCandidates}개 있습니다.`);
-  if (!existsSync(auditPath) || readFileSync(auditPath, "utf8") !== auditText) errors.push("design-value-audit.json이 현재 코드와 다릅니다. npm run audit:design-values를 실행하세요.");
-  if (!existsSync(reportPath) || readFileSync(reportPath, "utf8") !== reportText) errors.push("디자인 값 자동감사 보고서가 현재 코드와 다릅니다. npm run audit:design-values를 실행하세요.");
+  if (!existsSync(auditPath) || !generatedTextMatches(readFileSync(auditPath, "utf8"), auditText)) errors.push("design-value-audit.json이 현재 코드와 다릅니다. npm run audit:design-values를 실행하세요.");
+  if (!existsSync(reportPath) || !generatedTextMatches(readFileSync(reportPath, "utf8"), reportText)) errors.push("디자인 값 자동감사 보고서가 현재 코드와 다릅니다. npm run audit:design-values를 실행하세요.");
   if (errors.length) {
     console.error(["Design value audit check failed:", ...errors.map((error) => `- ${error}`)].join("\n"));
     process.exit(1);

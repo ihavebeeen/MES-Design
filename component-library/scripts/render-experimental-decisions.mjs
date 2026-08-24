@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { generatedTextMatches } from "./generated-text.mjs";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(projectRoot, "..");
@@ -78,7 +79,7 @@ if (mode === "write") {
   fs.writeFileSync(outputPath, rendered, "utf8");
   console.log(`Experimental decision ledger updated: ${path.relative(repositoryRoot, outputPath)}`);
 } else {
-  if (!fs.existsSync(outputPath) || fs.readFileSync(outputPath, "utf8") !== rendered) {
+  if (!fs.existsSync(outputPath) || !generatedTextMatches(fs.readFileSync(outputPath, "utf8"), rendered)) {
     console.error("실험 후보 판정 원장이 JSON 원장과 다릅니다. npm run audit:experimental-decisions를 실행하세요.");
     process.exit(1);
   }
