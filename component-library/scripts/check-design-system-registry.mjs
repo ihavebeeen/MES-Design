@@ -394,7 +394,7 @@ for (const [name, registry] of proposalRegistries) {
   }
 }
 
-const allowedEvidenceStatuses = new Set(["queued", "in-progress", "verified", "closed-unverified"]);
+const allowedEvidenceStatuses = new Set(["queued", "in-progress", "verified", "deferred", "closed-unverified"]);
 const allowedCandidateStatuses = new Set(["partial-success", "review", "approved", "rejected", "archived"]);
 const requiredQualityGates = ["designContext", "metadataLedger", "componentMapping", "browserMeasurement", "interactionTest", "visualBaseline"];
 const figmaNodes = new Set();

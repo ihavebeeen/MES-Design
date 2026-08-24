@@ -1,6 +1,8 @@
 {
   "schemaVersion": 1,
-  "status": "in-progress",
+  "status": "deferred",
+  "deferredReason": "2026-08-24 사용자 결정: 모바일 디자인이 크게 변경될 가능성이 높아 현재 코드·원본 기준 이미지·검증 계약을 보존하고 추가 이관과 정교화를 중단한다.",
+  "resumeCondition": "모바일 원본 구조가 안정화되거나 사용자가 모바일 트랙 재개를 명시하면 source-evidence와 함께 in-progress로 되돌린다.",
   "evidence": {
     "componentLibrary": { "fileKey": "qEAQNTqXf76bYydyupti2V", "node": "163:8929", "role": "모바일 전용 토큰·컴포넌트 variant 원형" },
     "webSpecification": { "fileKey": "F4n5Zr04PAbiRjfIFQAo6v", "node": "9808:62079", "role": "웹 컴포넌트와 의미 계약 비교" },

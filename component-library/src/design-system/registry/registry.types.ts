@@ -25,7 +25,9 @@ export interface ComponentRegistry {
 
 export interface MobileAssetRegistry {
   schemaVersion: 1;
-  status: "in-progress" | "verified";
+  status: "in-progress" | "verified" | "deferred";
+  deferredReason?: string;
+  resumeCondition?: string;
   evidence: Record<string, { fileKey: string; node: string; role: string }>;
   foundations: Array<{ id: string; name: string; sourceNode: string; values: string[] }>;
   components: Array<{ id: string; name: string; sourceNode: string; states: string[]; sizes?: string[] }>;
@@ -212,7 +214,7 @@ export interface VisualRegressionRegistry {
   cases: VisualRegressionCase[];
 }
 
-export type SourceEvidenceStatus = "queued" | "in-progress" | "verified" | "closed-unverified";
+export type SourceEvidenceStatus = "queued" | "in-progress" | "verified" | "deferred" | "closed-unverified";
 
 export interface SourceEvidenceQualityGates {
   designContext: boolean;

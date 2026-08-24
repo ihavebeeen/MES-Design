@@ -7,8 +7,8 @@
       "figmaNode": "9082:31842",
       "kind": "screen-bundle",
       "normalizedTarget": "mobile.registry",
-      "status": "in-progress",
-      "notes": ["모바일 전용 컴포넌트 원형은 별도 Figma 파일 qEAQNTqXf76bYydyupti2V의 163:8929를 사용한다.", "10378:90931은 메인 12종 44p·슬라이드 팝업 13종 19p의 화면 유형 분류 근거이며, 9808:62079는 웹 컴포넌트와 의미 계약을 비교하는 혼합 보드다.", "9082:31842의 실제 업무 화면·공통 정책·예외를 함께 읽어 컴포넌트만 복사하지 않고 모바일 조합 맥락을 기록했다.", "현재는 전체 인벤토리와 대표 셸·상호작용·기준 이미지를 검증한 단계이며 63개 개별 페이지의 Figma 픽셀 대조는 아직 완료되지 않았다."],
+      "status": "deferred",
+      "notes": ["모바일 전용 컴포넌트 원형은 별도 Figma 파일 qEAQNTqXf76bYydyupti2V의 163:8929를 사용한다.", "10378:90931은 메인 12종 44p·슬라이드 팝업 13종 19p의 화면 유형 분류 근거이며, 9808:62079는 웹 컴포넌트와 의미 계약을 비교하는 혼합 보드다.", "9082:31842의 실제 업무 화면·공통 정책·예외를 함께 읽어 컴포넌트만 복사하지 않고 모바일 조합 맥락을 기록했다.", "전체 인벤토리와 대표 셸·상호작용·기준 이미지를 검증했지만 63개 개별 페이지의 Figma 픽셀 대조는 완료되지 않았다.", "2026-08-24 사용자 결정: 모바일 디자인이 크게 변경될 가능성이 높아 현재 코드·기준 이미지·9종 계층 검증 계약을 보존하고 추가 이관·승격·검증은 추후 진행으로 전환한다. 모바일 원본이 안정화되거나 사용자가 재개를 요청할 때 in-progress로 되돌린다."],
       "qualityGates": { "designContext": true, "metadataLedger": true, "componentMapping": true, "browserMeasurement": true, "interactionTest": true, "visualBaseline": true },
       "visualCaseId": "mobile-components-catalog"
     },
