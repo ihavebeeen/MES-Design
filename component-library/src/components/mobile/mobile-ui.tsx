@@ -395,9 +395,9 @@ export function MobileQaGroup({ value, onChange, className, labelPrefix }: { val
       {qaOptions.map(({ value: option, label, icon: Icon }) => {
         const active = option === value;
         return (
-          <Button key={option} type="button" variant="lineBlacktxt" size="xsmall" aria-label={labelPrefix ? `${labelPrefix} ${label}` : label} aria-pressed={active} onClick={() => onChange(option)} className={cn("h-8 min-w-0 flex-1 rounded-[4px] border-0 px-0", active ? qaSelectedTone[option] : "bg-[#e4e7ee] text-[#a7b2c6] hover:bg-[#e4e7ee]")}>
+          <MobileButton key={option} type="button" tone={active ? option === "o" ? "primary" : option === "triangle" ? "black" : "danger" : "gray"} size="xsmall" aria-label={labelPrefix ? `${labelPrefix} ${label}` : label} aria-pressed={active} onClick={() => onChange(option)} className={cn("min-w-0 flex-1 border-0 px-0", active ? qaSelectedTone[option] : "bg-[#e4e7ee] text-[#a7b2c6]")}>
             <Icon className="size-4" strokeWidth={2.25} />
-          </Button>
+          </MobileButton>
         );
       })}
     </div>

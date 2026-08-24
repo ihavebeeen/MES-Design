@@ -9,9 +9,10 @@ async function expectFigmaFrame(page: import("@playwright/test").Page, path: str
   const box = await frame.boundingBox();
   expect(box).toEqual({ x: 0, y: 0, width: 375, height: 812 });
   expect(await frame.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
-  // Figma PNG와 Chromium의 글리프 안티앨리어싱 차이를 포함한 현재 회귀 방지선이다.
+  // Figma의 2x export를 375×812로 축소한 이미지와 Chromium 1x 렌더는 글리프·벡터 가장자리의
+  // 래스터화가 다르다. threshold는 그 가장자리 노이즈만 완화하고, 허용 픽셀 비율은 별도로 제한한다.
   // 1%를 넘는 프레임은 registry에서 계속 reviewing이며, 이 값은 검증 완료 기준이 아니다.
-  await expect(page).toHaveScreenshot(snapshot, { maxDiffPixelRatio: currentGuard });
+  await expect(page).toHaveScreenshot(snapshot, { maxDiffPixelRatio: currentGuard, threshold: 0.3 });
 }
 
 test.beforeEach(async ({ page }) => {
@@ -74,8 +75,8 @@ test("원본 화면은 Figma 대표 프레임을 375×812로 재현한다", asyn
     { path: "/visual-regression/mobile-source/receiving-list", selector: '[data-mobile-source-screen="receiving-list"]', snapshot: "mobile-figma-receiving-list.png", currentGuard: 0.02 },
     { path: "/visual-regression/mobile-source/production-entry", selector: '[data-mobile-source-screen="production-entry"]', snapshot: "mobile-figma-production-entry.png", currentGuard: 0.03 },
     { path: "/visual-regression/mobile-source/all-menu", selector: '[data-mobile-source-screen="all-menu"]', snapshot: "mobile-figma-all-menu.png", currentGuard: 0.01 },
-    { path: "/visual-regression/mobile-source/appearance-inspection", selector: '[data-mobile-source-screen="appearance-inspection"]', snapshot: "mobile-figma-appearance-inspection.png", currentGuard: 0.03 },
-    { path: "/visual-regression/mobile-source/day-log", selector: '[data-mobile-source-screen="day-log"]', snapshot: "mobile-figma-day-log.png", currentGuard: 0.03 },
+    { path: "/visual-regression/mobile-source/appearance-inspection", selector: '[data-mobile-source-screen="appearance-inspection"]', snapshot: "mobile-figma-appearance-inspection.png", currentGuard: 0.02 },
+    { path: "/visual-regression/mobile-source/day-log", selector: '[data-mobile-source-screen="day-log"]', snapshot: "mobile-figma-day-log.png", currentGuard: 0.02 },
   ];
   for (const item of cases) {
     await expectFigmaFrame(page, item.path, item.selector, item.snapshot, item.currentGuard);
