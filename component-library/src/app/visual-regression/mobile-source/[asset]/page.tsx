@@ -6,7 +6,7 @@ import {
   type MobileSourceScreenId,
 } from "@/components/mobile/mobile-source-screens";
 
-const sourceIds: MobileSourceScreenId[] = ["home", "receiving-list", "production-entry"];
+const sourceIds: MobileSourceScreenId[] = ["home", "receiving-list", "production-entry", "all-menu", "appearance-inspection", "day-log"];
 const popupIds: Record<string, MobilePopupScreenId> = {
   "memo-popup": "memo",
   "numeric-popup": "numeric",

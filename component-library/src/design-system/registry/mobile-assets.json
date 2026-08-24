@@ -11,7 +11,9 @@
     { "id": "mobile.viewport", "name": "Viewport / Grid", "sourceNode": "185:38198", "values": ["mobile 375×812", "tablet portrait 768×1024", "tablet landscape 1024×768", "mobile side padding 16px"] },
     { "id": "mobile.safe-area", "name": "Status Bar / Home Indicator", "sourceNode": "185:38198", "values": ["status bar 47px", "home indicator 30px", "light/dark"] },
     { "id": "mobile.typography", "name": "Typography", "sourceNode": "179:34027", "values": ["Pretendard", "12–20px UI scale", "title 20px Bold", "body 15–16px Regular"] },
-    { "id": "mobile.icon", "name": "Mobile Icon", "sourceNode": "185:38387", "values": ["navigation 24px", "business quick menu 32px", "gray/black/white/primary states"] }
+    { "id": "mobile.icon", "name": "Mobile Icon", "sourceNode": "185:38387", "values": ["navigation 24px", "business quick menu 32px", "gray/black/white/primary states"] },
+    { "id": "mobile.color", "name": "Mobile Semantic Color", "sourceNode": "185:38198 · 10378:92529", "values": ["primary #1573FB", "text strong #011327", "text muted #67738E/#8491A7", "control inactive #E4E7EE", "danger #F04452"] },
+    { "id": "mobile.spacing", "name": "Mobile Spacing", "sourceNode": "10378:91938 · 10378:92529", "values": ["screen side padding 16px", "paired control gap 10px", "compact control gap 8px", "section rhythm 16px"] }
   ],
   "components": [
     { "id": "mobile.button", "name": "MobileButton", "sourceNode": "185:38753", "states": ["primary", "gray", "black", "danger", "line", "subtle", "disabled"], "sizes": ["50px", "40px", "32px", "round"] },
@@ -24,12 +26,17 @@
     { "id": "mobile.step", "name": "MobileStep", "sourceNode": "185:47004", "states": ["none", "active", "complete"] },
     { "id": "mobile.cta", "name": "MobileCTA", "sourceNode": "192:30753", "states": ["save", "cancel-save", "complete-cancel-save"] },
     { "id": "mobile.inspection", "name": "MobileInspectionJudgement", "sourceNode": "185:45655", "states": ["○", "△", "✕"] },
-    { "id": "mobile.text-section", "name": "MobileTextSection", "sourceNode": "191:29273", "states": ["list-card", "time-value", "scan-value", "disabled"] }
+    { "id": "mobile.text-section", "name": "MobileTextSection", "sourceNode": "191:29273", "states": ["list-card", "time-value", "scan-value", "disabled"] },
+    { "id": "mobile.radio", "name": "MobileRadioGroup", "sourceNode": "10378:91993", "states": ["selected", "unselected", "disabled"] },
+    { "id": "mobile.compact-field", "name": "MobileCompactField", "sourceNode": "10378:91985", "states": ["editable", "readonly", "empty"], "sizes": ["32px"] }
   ],
   "patterns": [
     { "id": "mobile.shell.main-list", "name": "날짜 기반 메인 리스트", "rules": ["status/header/date는 고정", "본문은 24px top-radius surface", "bottom tab 고정"] },
     { "id": "mobile.shell.detail-form", "name": "등록·상세 폼", "rules": ["이전 화면 날짜 상속", "header 고정", "CTA 고정", "본문만 스크롤"] },
     { "id": "mobile.shell.bottom-sheet", "name": "슬라이드 팝업", "rules": ["하단에서 노출", "bottom-sheet header", "bottom tab 숨김", "저장 또는 즉시선택으로 닫힘"] },
+    { "id": "mobile.navigation.two-depth-menu", "name": "2단 업무 메뉴", "rules": ["좌측 120px는 1depth 업무 분류", "우측은 선택된 분류의 2depth 업무 목록", "선택된 1depth만 흰 배경과 진한 텍스트", "상태바와 하단 탭 사이 본문 전체를 사용"] },
+    { "id": "mobile.inspection.question-list", "name": "검사항목 판정 목록", "rules": ["질문과 O·△·X 판정을 1:1 폭으로 배치", "행 높이 32px, 행 간격 16px", "행마다 단일 판정", "O는 primary, △는 dark neutral, X는 danger"] },
+    { "id": "mobile.form.section", "name": "모바일 입력 섹션", "rules": ["343px 본문 폭", "8px radius와 12px padding", "제목 아래 8px 간격", "필드는 32px 높이와 74px label column"] },
     { "id": "mobile.flow.quality-step", "name": "품질검사 단계 흐름", "rules": ["기본정보→외관검사→중량검사→특이사항", "완료·현재·미진행 상태 분리"] },
     { "id": "mobile.behavior.back-preserve", "name": "뒤로가기 임시저장", "rules": ["이전 화면으로 돌아가도 작성 내용을 임시 유지"] },
     { "id": "mobile.behavior.toast", "name": "저장 피드백", "rules": ["저장 버튼 위 28px", "2.5–3초", "중복 억제 후 최신 1개"] }
@@ -64,13 +71,13 @@
       { "node": "10378:91938", "name": "홈", "status": "verified" },
       { "node": "10378:91889", "name": "입고지시 리스트", "status": "implemented-reviewing" },
       { "node": "10378:91789", "name": "생산실적 등록", "status": "implemented-reviewing" },
-      { "node": "10378:91977", "name": "일지작성", "status": "queued" },
+      { "node": "10378:91977", "name": "일지작성", "status": "implemented-reviewing" },
       { "node": "10378:91516", "name": "입고실적 등록", "status": "queued" },
       { "node": "10378:93359", "name": "정비 스캔", "status": "queued" },
-      { "node": "10378:92529", "name": "외관검사", "status": "queued" },
+      { "node": "10378:92529", "name": "외관검사", "status": "implemented-reviewing" },
       { "node": "10378:92711", "name": "중량검사", "status": "queued" },
       { "node": "10378:92896", "name": "특이사항", "status": "queued" },
-      { "node": "10378:92070", "name": "전체메뉴", "status": "queued" },
+      { "node": "10378:92070", "name": "전체메뉴", "status": "implemented-reviewing" },
       { "node": "10378:92192", "name": "사용자설정", "status": "queued" },
       { "node": "10378:92237", "name": "로그인", "status": "queued" },
       { "node": "10378:92470", "name": "성적서 기본정보", "status": "queued" },

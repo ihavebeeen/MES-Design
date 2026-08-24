@@ -15,7 +15,85 @@ import {
   Triangle,
   X,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+
+export type MobileMenuCategory = {
+  id: string;
+  label: string;
+  items: Array<{ id: string; label: string }>;
+};
+
+export function MobileTwoDepthMenu({
+  categories,
+  initialCategoryId,
+  initialItemId,
+  onSelectionChange,
+}: {
+  categories: MobileMenuCategory[];
+  initialCategoryId?: string;
+  initialItemId?: string;
+  onSelectionChange?: (categoryId: string, itemId?: string) => void;
+}) {
+  const fallbackCategory = categories[0];
+  const [categoryId, setCategoryId] = useState(initialCategoryId ?? fallbackCategory?.id ?? "");
+  const activeCategory = categories.find((category) => category.id === categoryId) ?? fallbackCategory;
+  const [itemId, setItemId] = useState(initialItemId ?? activeCategory?.items[0]?.id ?? "");
+
+  function selectCategory(nextCategory: MobileMenuCategory) {
+    const nextItemId = nextCategory.items[0]?.id;
+    setCategoryId(nextCategory.id);
+    setItemId(nextItemId ?? "");
+    onSelectionChange?.(nextCategory.id, nextItemId);
+  }
+
+  function selectItem(nextItemId: string) {
+    setItemId(nextItemId);
+    onSelectionChange?.(activeCategory?.id ?? "", nextItemId);
+  }
+
+  return (
+    <div className="flex h-full w-full border-t border-[#e4e7ee] bg-white" data-mobile-pattern="two-depth-menu">
+      <nav className="flex h-full w-[120px] shrink-0 flex-col gap-0.5 bg-[#eff2f8] py-[10px]" aria-label="업무 분류">
+        {categories.map((category) => {
+          const selected = category.id === activeCategory?.id;
+          return (
+            <Button
+              key={category.id}
+              type="button"
+              variant="lineBlacktxt"
+              size="small"
+              aria-pressed={selected}
+              onClick={() => selectCategory(category)}
+              className={cn(
+                "h-[52px] w-full shrink-0 rounded-none border-0 px-4 text-[16px] font-semibold leading-[22px] tracking-[-0.408px] hover:bg-white",
+                selected ? "bg-white text-[#011327]" : "bg-transparent text-[#67738e] hover:bg-transparent",
+              )}
+            >
+              {category.label}
+            </Button>
+          );
+        })}
+      </nav>
+      <nav className="flex h-full min-w-0 flex-1 flex-col gap-0.5 bg-white py-[10px]" aria-label="세부 업무">
+        {activeCategory?.items.map((item) => (
+          <Button
+            key={item.id}
+            type="button"
+            variant="lineBlacktxt"
+            size="small"
+            aria-pressed={item.id === itemId}
+            onClick={() => selectItem(item.id)}
+            className="h-[52px] w-full shrink-0 justify-start rounded-none border-0 bg-white px-8 text-left text-[16px] font-semibold leading-[22px] tracking-[-0.408px] text-[#011327] hover:bg-white"
+          >
+            {item.label}
+          </Button>
+        ))}
+      </nav>
+    </div>
+  );
+}
 
 export type MobileButtonTone =
   | "primary"
@@ -148,15 +226,16 @@ export function MobileToggle({ checked, onCheckedChange }: { checked: boolean; o
   );
 }
 
-export function MobileInput({ state = "default", icon, className, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { state?: "default" | "focus" | "readonly" | "disabled" | "error"; icon?: boolean }) {
+export function MobileInput({ state = "default", mobileSize = "default", icon, className, ...props }: Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> & { state?: "default" | "focus" | "readonly" | "disabled" | "error"; mobileSize?: "default" | "compact"; icon?: boolean }) {
   return (
     <label className={cn("relative block w-full", className)}>
-      <input
+      <Input
         {...props}
         readOnly={state === "readonly" || props.readOnly}
         disabled={state === "disabled" || props.disabled}
         className={cn(
-          "h-11 w-full rounded-[4px] border bg-white px-3 text-[16px] leading-[1.5] text-[#011327] outline-none placeholder:text-[#99a3b8]",
+          "w-full rounded-[4px] border bg-white text-[#011327] outline-none placeholder:text-[#99a3b8]",
+          mobileSize === "compact" ? "h-8 px-[10px] text-[15px] leading-[22.5px] tracking-[-0.1875px]" : "h-11 px-3 text-[16px] leading-[1.5]",
           icon && "pr-10",
           state === "focus" && "border-[#011327]",
           state === "error" && "border-[#f04452] bg-[#fffafa] text-[#f04452]",
@@ -167,6 +246,40 @@ export function MobileInput({ state = "default", icon, className, ...props }: Re
       />
       {icon && <Search size={18} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#99a3b8]" />}
     </label>
+  );
+}
+
+export function MobileCompactField({ label, value, onChange, readOnly = false, inputLabel }: { label: string; value: string; onChange?: (value: string) => void; readOnly?: boolean; inputLabel?: string }) {
+  return (
+    <label className="flex h-8 min-w-0 items-center">
+      <span className="w-[74px] shrink-0 text-[15px] leading-[22.5px] tracking-[-0.1875px] text-[#5c667b]">{label}</span>
+      <MobileInput aria-label={inputLabel ?? label} mobileSize="compact" value={value} readOnly={readOnly || !onChange} onChange={(event) => onChange?.(event.target.value)} />
+    </label>
+  );
+}
+
+export function MobileRadioGroup({ value, options, onChange, label }: { value: string; options: Array<{ value: string; label: string; disabled?: boolean }>; onChange: (value: string) => void; label: string }) {
+  return (
+    <div role="radiogroup" aria-label={label} className="flex h-8 items-center gap-5">
+      {options.map((option) => {
+        const selected = option.value === value;
+        return (
+          <Button key={option.value} type="button" role="radio" aria-checked={selected} disabled={option.disabled} variant="lineBlacktxt" size="xsmall" onClick={() => onChange(option.value)} className="h-8 min-w-0 gap-1.5 rounded-none border-0 bg-transparent p-0 text-[15px] font-medium tracking-[-0.1875px] text-[#011327] hover:bg-transparent disabled:bg-transparent disabled:text-[#99a3b8]">
+            <span className={cn("flex size-6 items-center justify-center rounded-full", option.disabled ? "bg-[#eff2f8]" : "border-2", selected ? "border-[#1573fb]" : "border-[#b4c0d3]")}>{selected && <span className="size-3 rounded-full bg-[#1573fb]" />}</span>
+            {option.label}
+          </Button>
+        );
+      })}
+    </div>
+  );
+}
+
+export function MobileFormSection({ title, suffix, children, className }: { title: string; suffix?: string; children: React.ReactNode; className?: string }) {
+  return (
+    <section className={cn("flex w-full flex-col gap-2 rounded-[8px] border border-[#e4e7ee] bg-white p-3", className)} data-mobile-pattern="form-section">
+      <h3 className="flex h-[22.5px] items-center gap-1 text-[15px] font-bold leading-[22.5px] tracking-[-0.1875px] text-[#011327]">{title}{suffix && <span className="text-[14px] font-normal tracking-[-0.175px] text-[#8491a7]">{suffix}</span>}</h3>
+      {children}
+    </section>
   );
 }
 
@@ -197,17 +310,46 @@ const qaOptions: Array<{ value: QaValue; label: string; icon: typeof Circle }> =
   { value: "x", label: "불량", icon: X },
 ];
 
-export function MobileQaGroup({ value, onChange }: { value: QaValue; onChange: (next: QaValue) => void }) {
+const qaSelectedTone: Record<QaValue, string> = {
+  o: "border-[#1573fb] bg-[#1573fb] text-white",
+  triangle: "border-[#4f5b73] bg-[#4f5b73] text-white",
+  x: "border-[#f04452] bg-[#f04452] text-white",
+};
+
+export function MobileQaGroup({ value, onChange, className, labelPrefix }: { value?: QaValue; onChange: (next: QaValue) => void; className?: string; labelPrefix?: string }) {
   return (
-    <div className="flex w-[169px] items-center gap-2">
+    <div className={cn("flex w-[166.5px] items-center gap-2", className)}>
       {qaOptions.map(({ value: option, label, icon: Icon }) => {
         const active = option === value;
         return (
-          <button key={option} type="button" aria-label={label} aria-pressed={active} onClick={() => onChange(option)} className={cn("flex h-8 flex-1 items-center justify-center rounded-[4px] border", active ? "border-[#1573fb] bg-[#1573fb] text-white" : "border-[#e4e7ee] bg-white text-[#b4c0d3]")}>
-            <Icon size={17} />
-          </button>
+          <Button key={option} type="button" variant="lineBlacktxt" size="xsmall" aria-label={labelPrefix ? `${labelPrefix} ${label}` : label} aria-pressed={active} onClick={() => onChange(option)} className={cn("h-8 min-w-0 flex-1 rounded-[4px] border-0 px-0", active ? qaSelectedTone[option] : "bg-[#e4e7ee] text-[#a7b2c6] hover:bg-[#e4e7ee]")}>
+            <Icon className="size-4" strokeWidth={2.25} />
+          </Button>
         );
       })}
+    </div>
+  );
+}
+
+export function MobileInspectionQuestionList({
+  questions,
+  values,
+  onChange,
+  className,
+}: {
+  questions: Array<{ id: string; label: string }>;
+  values: Record<string, QaValue | undefined>;
+  onChange: (questionId: string, value: QaValue) => void;
+  className?: string;
+}) {
+  return (
+    <div className={cn("flex w-full flex-col gap-4", className)} data-mobile-pattern="inspection-question-list">
+      {questions.map((question) => (
+        <div key={question.id} className="grid h-8 w-full grid-cols-[1fr_1fr] items-center gap-[10px]">
+          <span className="truncate text-[15px] font-semibold leading-[22.5px] tracking-[-0.1875px] text-[#011327]">{question.label}</span>
+          <MobileQaGroup value={values[question.id]} onChange={(value) => onChange(question.id, value)} labelPrefix={question.label} className="w-full" />
+        </div>
+      ))}
     </div>
   );
 }
@@ -224,14 +366,14 @@ export function MobileCta({ mode = "save", onCancel, onSave }: { mode?: "save" |
 export function MobileStep({ labels, activeIndex }: { labels: string[]; activeIndex: number }) {
   return (
     <div className="relative flex w-full items-start">
-      <div className="absolute left-[12.5%] right-[12.5%] top-[8px] h-0.5 bg-[#d7dce5]" />
+      <div className="absolute left-[36px] right-[36px] top-[5px] h-0.5 bg-[#d7dce5]" />
       {labels.map((label, index) => {
         const done = index < activeIndex;
         const active = index === activeIndex;
         return (
-          <div key={label} className="relative flex min-w-0 flex-1 flex-col items-center gap-1.5">
-            <span className={cn("z-10 flex size-[18px] items-center justify-center rounded-full text-[10px] text-white", active ? "bg-[#1573fb]" : done ? "bg-[#99a3b8]" : "bg-[#d7dce5]")}>{done ? "✓" : index + 1}</span>
-            <span className={cn("text-center text-[13px] leading-[1.5]", active ? "font-bold text-[#1573fb]" : "text-[#8491a7]")}>{label}</span>
+          <div key={label} className="relative flex min-w-0 flex-1 flex-col items-center gap-0.5">
+            <span className={cn("z-10 flex size-3 items-center justify-center rounded-full", active ? "border-[3px] border-[#1573fb] bg-white" : done ? "bg-[#99a3b8] text-white" : "bg-[#d7dce5]")}>{done && <span className="text-[8px] font-bold leading-none">✓</span>}</span>
+            <span className={cn("text-center text-[13px] leading-[19.5px]", active ? "font-bold text-[#1573fb]" : done ? "text-[#67738e]" : "text-[#8491a7]")}>{label}</span>
           </div>
         );
       })}

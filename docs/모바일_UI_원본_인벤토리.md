@@ -66,7 +66,24 @@
 - 대표 원본 화면 `홈(10378:91938)`: 검증됨. 375×812 원본 시각 회귀 1% 이내, 퀵메뉴 선택 상태, overflow 0을 통과했다.
 - 대표 원본 화면 `입고지시 리스트(10378:91889)`: 구현됨·검토 중. 외곽·카드 좌표와 원본 SVG를 교정했고 목록 선택 상태와 overflow 0을 통과했지만 피그마 기준 픽셀 차이가 1%를 넘어 `verified`로 승격하지 않았다.
 - 대표 원본 화면 `생산실적 등록(10378:91789)`: 구현됨·검토 중. 섹션 좌표, CTA, 업무 바로가기, 원본 SVG를 교정하고 입력·완료 체크·overflow를 검증했다. 현재 시각 회귀 허용선은 3%이며 `verified` 기준은 아니다.
-- 44개 메인 페이지·19개 팝업 전체 코드화: 진행 중. 대표 3개 메인 화면과 팝업 3개만 코드가 있으며 나머지는 `mobile-assets.json`의 이관 큐를 따른다.
+- 원본 화면 `전체메뉴(10378:92070)`: 구현됨·검토 중. 1depth 120px/2depth 255px 탐색 구조, 선택 상태에 따른 세부 업무 변경, overflow 0, 실제 Figma export 대비 1% 회귀선을 통과했다.
+- 원본 화면 `성적서 외관검사(10378:92529)`: 구현됨·검토 중. 단계 표시, 질문별 단일 판정, O·△·X 의미 색상, 일괄 선택·초기화를 구현했고 실제 Figma export 대비 3% 회귀선을 통과했다.
+- 원본 화면 `일지작성(10378:91977)`: 구현됨·검토 중. 기본정보·가동정보·비가동 입력 섹션, 근무조 라디오, 입력 수정·저장·취소 복원을 구현했고 실제 Figma export 대비 3% 회귀선을 통과했다.
+- 44개 메인 페이지·19개 팝업 전체 코드화: 진행 중. 대표 6개 메인 화면과 팝업 3개에 코드가 있으며 나머지는 `mobile-assets.json`의 이관 큐를 따른다.
+
+### 2026-08-24 화면에서 추출한 공용 자산
+
+| 계층 | ID / 이름 | 근거 화면 | 재사용 맥락 |
+|---|---|---|---|
+| Foundation | `mobile.color` | 전체메뉴·외관검사·일지작성 | primary, strong/muted text, inactive control, danger 의미색 |
+| Foundation | `mobile.spacing` | 홈·외관검사·일지작성 | 16px 화면 여백, 10px paired-control gap, 8px compact gap |
+| Component | `mobile.radio` / `MobileRadioGroup` | 일지작성 | 단일 선택·미선택·비활성 상태 |
+| Component | `mobile.compact-field` / `MobileCompactField` | 일지작성 | 74px label + 32px 입력 필드 |
+| Pattern | `mobile.navigation.two-depth-menu` | 전체메뉴 | 모바일 업무 분류와 세부 메뉴 탐색 |
+| Pattern | `mobile.inspection.question-list` | 외관검사 | 반복 질문과 행별 O·△·X 단일 판정 |
+| Pattern | `mobile.form.section` | 일지작성 | 제목·입력 필드를 담는 343px 카드 섹션 |
+
+이 자산들은 화면 하나를 통째로 재사용하는 대신, 이후 모바일 화면 생성기가 의미와 상호작용에 맞춰 조합할 수 있는 단위로 등록한다. 원본 한 곳에서만 발견된 장식 조각은 이 목록에 승격하지 않는다.
 
 ### 2026-08-20 대표 프레임 재대조에서 확인한 재발 원인
 

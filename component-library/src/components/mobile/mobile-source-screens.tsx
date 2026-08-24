@@ -4,8 +4,10 @@ import * as React from "react";
 import Image from "next/image";
 import {
   CalendarDays,
+  Circle,
   CornerDownLeft,
   Delete,
+  RotateCcw,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FigmaScreenPreview } from "@/components/patterns/figma-screen-preview";
+import { MobileCompactField, MobileFormSection, MobileInspectionQuestionList, MobileRadioGroup, MobileStep, MobileTwoDepthMenu, type MobileMenuCategory, type QaValue } from "./mobile-ui";
 import { cn } from "@/lib/utils";
 
 const SOURCE_WIDTH = 375;
@@ -265,17 +268,154 @@ export function MobileProductionEntrySourceScreen() {
   );
 }
 
-export type MobileSourceScreenId = "home" | "receiving-list" | "production-entry";
+const mobileAllMenuCategories: MobileMenuCategory[] = [
+  { id: "receiving", label: "입고관리", items: [{ id: "receiving-entry", label: "입고등록" }, { id: "receiving-inspection", label: "입고검사" }] },
+  { id: "shipping", label: "출하관리", items: [{ id: "shipping-entry", label: "출하등록" }, { id: "shipping-inspection", label: "출하검사" }] },
+  { id: "production", label: "생산관리", items: [{ id: "extrusion", label: "압출실적" }, { id: "forming", label: "성형실적" }, { id: "assembly", label: "조립실적" }, { id: "printing", label: "인쇄실적" }, { id: "inline", label: "인라인실적" }, { id: "self-inspection", label: "자주검사" }] },
+  { id: "quality", label: "품질검사", items: [{ id: "incoming-quality", label: "입고검사" }, { id: "shipping-quality", label: "출하검사" }, { id: "process-quality", label: "공정검사" }, { id: "self-quality", label: "자주검사" }] },
+  { id: "operation-log", label: "운전일지", items: [{ id: "operation-log-entry", label: "운전일지 작성" }, { id: "operation-time", label: "가동시간" }] },
+  { id: "label", label: "라벨생성", items: [{ id: "label-create", label: "라벨 생성" }] },
+  { id: "maintenance", label: "정비이력", items: [{ id: "maintenance-scan", label: "정비 스캔" }, { id: "maintenance-list", label: "정비이력 조회" }] },
+  { id: "equipment", label: "설비점검", items: [{ id: "equipment-list", label: "설비점검 목록" }] },
+];
+
+export function MobileAllMenuSourceScreen() {
+  return (
+    <div className="flex h-[812px] w-[375px] flex-col overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:92070" data-mobile-source-screen="all-menu">
+      <MobileStatusBar tone="white" />
+      <main className="h-[681px] shrink-0 overflow-hidden">
+        <MobileTwoDepthMenu categories={mobileAllMenuCategories} initialCategoryId="production" initialItemId="extrusion" />
+      </main>
+      <MobileSourceTabBar />
+    </div>
+  );
+}
+
+const appearanceQuestions = [
+  { id: "q1", label: "결로/플러그자국/밀착" },
+  { id: "q2", label: "밀착" },
+  { id: "q3", label: "질문사항 텍스트" },
+  { id: "q4", label: "결로/플러그자국/밀착" },
+  { id: "q5", label: "플러그자국" },
+  { id: "q6", label: "질문사항 텍스트" },
+  { id: "q7", label: "결로" },
+  { id: "q8", label: "결로/플러그자국/밀착" },
+  { id: "q9", label: "블라블라블라" },
+  { id: "q10", label: "블라블라블라" },
+] as const;
+
+export function MobileAppearanceInspectionSourceScreen() {
+  const [values, setValues] = React.useState<Record<string, QaValue | undefined>>({ q1: "o", q2: "triangle", q3: "x" });
+
+  function selectAll() {
+    setValues(Object.fromEntries(appearanceQuestions.map((question) => [question.id, "o"])));
+  }
+
+  return (
+    <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:92529" data-mobile-source-screen="appearance-inspection">
+      <div className="absolute inset-x-0 top-0 z-20 bg-white"><MobileStatusBar tone="white" /><MobileSourceHeader /></div>
+      <h2 className="absolute left-[76px] top-[99px] h-[27px] w-[224px] truncate text-center text-[18px] font-bold leading-[27px] tracking-[-0.225px] text-[#011327]">캐나다 투칸두부배캣(신형/칼선)</h2>
+      <div className="absolute left-[52px] top-[142px] h-[34px] w-[272px]"><MobileStep labels={["기본정보", "외관검사", "중량검사", "특이사항"]} activeIndex={1} /></div>
+      <div className="absolute left-4 top-[200px] flex h-10 w-[343px] gap-[10px]">
+        <Button variant="lineBlacktxt" size="small" onClick={selectAll} className="h-10 min-w-0 flex-1 gap-2 rounded-[6px] border border-[#e4e7ee] bg-white px-5 text-[15px] font-bold hover:bg-white"><Circle className="size-4 text-[#1573fb]" strokeWidth={2.5} />일괄 선택</Button>
+        <Button variant="lineBlacktxt" size="small" onClick={() => setValues({})} className="h-10 min-w-0 flex-1 gap-2 rounded-[6px] border border-[#e4e7ee] bg-white px-5 text-[15px] font-bold hover:bg-white"><RotateCcw className="size-4" strokeWidth={2} />초기화</Button>
+      </div>
+      <main className="absolute left-4 top-[256px] h-[480px] w-[343px] overflow-hidden">
+        <MobileInspectionQuestionList questions={[...appearanceQuestions]} values={values} onChange={(questionId, value) => setValues((current) => ({ ...current, [questionId]: value }))} />
+      </main>
+      <footer className="absolute inset-x-0 top-[646px] z-30 h-[166px] bg-white shadow-[0_-12px_18px_rgba(255,255,255,0.96)]">
+        <div className="flex h-[82px] gap-[10px] p-4">
+          <Button variant="fillGray" size="basic" className="h-[50px] min-w-0 flex-1 gap-2 rounded-[6px] px-4 text-[16px] font-bold"><Image src="/mobile-assets/arrow-back-white.svg" alt="" width={16} height={14} className="h-[14px] w-4 invert" />이전 페이지</Button>
+          <Button variant="fillMain" size="basic" className="h-[50px] min-w-0 flex-1 rounded-[6px] px-4 text-[16px] font-bold">다음</Button>
+        </div>
+        <MobileSourceTabBar />
+      </footer>
+    </div>
+  );
+}
+
+const initialDayLogValues = {
+  author: "김아무개",
+  writtenAt: "25.07.29",
+  moldChange: "100",
+  setting: "",
+  adjustment: "",
+  cleanup: "",
+  repair: "",
+  etc: "40",
+  meal: "60",
+};
+
+export function MobileDayLogSourceScreen() {
+  const [shift, setShift] = React.useState("day");
+  const [values, setValues] = React.useState(initialDayLogValues);
+  const [saved, setSaved] = React.useState(false);
+  const update = (key: keyof typeof initialDayLogValues) => (value: string) => {
+    setSaved(false);
+    setValues((current) => ({ ...current, [key]: value }));
+  };
+
+  function reset() {
+    setShift("day");
+    setValues(initialDayLogValues);
+    setSaved(false);
+  }
+
+  return (
+    <div className="relative h-[812px] w-[375px] overflow-hidden bg-white font-[Pretendard]" data-figma-node-id="10378:91977" data-mobile-source-screen="day-log">
+      <div className="absolute inset-x-0 top-[47px] h-[69px] bg-[linear-gradient(180deg,#1573fb_0%,#4b8fff_102.25%)]" aria-hidden="true" />
+      <div className="absolute inset-x-0 top-0 z-20"><MobileStatusBar /><MobileSourceHeader title="성형기 1호" /></div>
+      <div className="absolute left-4 top-[99px] z-20 flex h-[37px] w-[343px] items-center gap-1.5 overflow-hidden rounded-[6px] border border-[#e4e7ee] bg-white px-3 py-2 text-[14px] tracking-[-0.175px] text-[#011327]">
+        <CalendarDays className="size-4 shrink-0" strokeWidth={1.33} /><strong className="font-semibold">가동일</strong><strong className="font-semibold">2025-07-29</strong>
+      </div>
+      <main className="absolute left-4 top-[146px] flex w-[343px] flex-col gap-[10px]">
+        <MobileFormSection title="기본 정보" className="h-[129px]">
+          <div className="grid grid-cols-2 gap-[10px]"><MobileCompactField label="작성자" value={values.author} onChange={update("author")} /><MobileCompactField label="작성일자" value={values.writtenAt} onChange={update("writtenAt")} /></div>
+          <div className="flex h-[34px] items-center"><span className="w-[74px] shrink-0 text-[15px] leading-[22.5px] tracking-[-0.1875px] text-[#5c667b]">일지구분</span><MobileRadioGroup label="일지구분" value={shift} onChange={setShift} options={[{ value: "day", label: "주간" }, { value: "night", label: "야간" }, { value: "disabled", label: "사용안함", disabled: true }]} /></div>
+        </MobileFormSection>
+        <MobileFormSection title="가동정보" suffix="(min)" className="h-[87px]">
+          <div className="grid grid-cols-2 gap-[10px]"><div className="flex h-8 items-center text-[15px]"><span className="w-[74px] text-[#5c667b]">가동시간</span><strong className="font-medium text-[#011327]">520</strong></div><div className="flex h-8 items-center text-[15px]"><span className="w-[74px] text-[#5c667b]">비가동시간</span><strong className="font-medium text-[#011327]">200</strong></div></div>
+        </MobileFormSection>
+        <MobileFormSection title="비가동 시간 입력" className="h-[251px]">
+          <div className="grid grid-cols-2 gap-x-[10px] gap-y-2">
+            <MobileCompactField label="금형교체" value={values.moldChange} onChange={update("moldChange")} />
+            <MobileCompactField label="셋팅" value={values.setting} onChange={update("setting")} />
+            <MobileCompactField label="짠짱이" value={values.adjustment} onChange={update("adjustment")} />
+            <MobileCompactField label="정리" value={values.cleanup} onChange={update("cleanup")} />
+            <MobileCompactField label="기계수리" value={values.repair} onChange={update("repair")} />
+            <MobileCompactField label="기타" value={values.etc} onChange={update("etc")} />
+            <MobileCompactField label="식사부동" value={values.meal} onChange={update("meal")} />
+          </div>
+          <Button variant="lineMain" size="small" className="mt-1 h-8 w-full rounded-[4px] border-0 bg-[#e8f5ff] px-[10px] text-[14px] font-bold hover:bg-[#e8f5ff]">메모기록 <span aria-hidden="true">›</span></Button>
+        </MobileFormSection>
+      </main>
+      <div className="absolute left-4 top-[662px] z-30 flex h-[50px] w-[343px] gap-[10px] bg-white">
+        <Button variant="fillGray" size="basic" onClick={reset} className="h-[50px] min-w-0 flex-1 rounded-[6px] text-[16px] font-bold">취소</Button>
+        <Button variant="fillMain" size="basic" onClick={() => setSaved(true)} className="h-[50px] min-w-0 flex-1 rounded-[6px] text-[16px] font-bold">저장</Button>
+      </div>
+      {saved && <div role="status" className="absolute bottom-[92px] left-1/2 z-40 -translate-x-1/2 rounded-full bg-[#011327] px-4 py-2 text-[13px] text-white">저장되었습니다.</div>}
+      <div className="absolute inset-x-0 bottom-0 z-30"><MobileSourceTabBar /></div>
+    </div>
+  );
+}
+
+export type MobileSourceScreenId = "home" | "receiving-list" | "production-entry" | "all-menu" | "appearance-inspection" | "day-log";
 
 export const MOBILE_SOURCE_SCREEN_ITEMS: Array<{ id: MobileSourceScreenId; label: string; node: string; description: string }> = [
   { id: "home", label: "홈", node: "10378:91938", description: "메인 퀵메뉴 2×4 · 하단 탭" },
   { id: "receiving-list", label: "입고등록 목록", node: "10378:91889", description: "날짜 이동 · 대기/완료 카드 목록" },
   { id: "production-entry", label: "생산실적 등록", node: "10378:91789", description: "기본 정보 · 생산실적 · 투입정보 · 업무 바로가기" },
+  { id: "all-menu", label: "전체메뉴", node: "10378:92070", description: "1depth 업무 분류 · 2depth 세부 업무 탐색" },
+  { id: "appearance-inspection", label: "성적서 외관검사", node: "10378:92529", description: "검사 단계 · 일괄 판정 · 질문별 O/△/X" },
+  { id: "day-log", label: "일지작성", node: "10378:91977", description: "기본정보 · 가동정보 · 비가동 시간 입력" },
 ];
 
 export function MobileSourceScreen({ id }: { id: MobileSourceScreenId }) {
   if (id === "receiving-list") return <MobileReceivingListSourceScreen />;
   if (id === "production-entry") return <MobileProductionEntrySourceScreen />;
+  if (id === "all-menu") return <MobileAllMenuSourceScreen />;
+  if (id === "appearance-inspection") return <MobileAppearanceInspectionSourceScreen />;
+  if (id === "day-log") return <MobileDayLogSourceScreen />;
   return <MobileHomeSourceScreen />;
 }
 

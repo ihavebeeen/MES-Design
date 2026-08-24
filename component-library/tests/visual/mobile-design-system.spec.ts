@@ -45,7 +45,7 @@ test("Mobile 탭은 전용 컴포넌트 상태와 정적 경로를 제공한다"
   await expect(page).toHaveScreenshot("mobile-components-catalog.png");
 });
 
-test("원본 화면은 Figma 대표 프레임 3종을 375×812로 재현한다", async ({ page }) => {
+test("원본 화면은 Figma 대표 프레임을 375×812로 재현한다", async ({ page }) => {
   await page.goto("/mobile/mobile-screens");
 
   await expect(page.getByRole("link", { name: "원본 화면 Source Screens" }).first()).toBeVisible();
@@ -58,6 +58,9 @@ test("원본 화면은 Figma 대표 프레임 3종을 375×812로 재현한다",
     { path: "/visual-regression/mobile-source/home", selector: '[data-mobile-source-screen="home"]', snapshot: "mobile-figma-home.png", currentGuard: 0.01 },
     { path: "/visual-regression/mobile-source/receiving-list", selector: '[data-mobile-source-screen="receiving-list"]', snapshot: "mobile-figma-receiving-list.png", currentGuard: 0.02 },
     { path: "/visual-regression/mobile-source/production-entry", selector: '[data-mobile-source-screen="production-entry"]', snapshot: "mobile-figma-production-entry.png", currentGuard: 0.03 },
+    { path: "/visual-regression/mobile-source/all-menu", selector: '[data-mobile-source-screen="all-menu"]', snapshot: "mobile-figma-all-menu.png", currentGuard: 0.01 },
+    { path: "/visual-regression/mobile-source/appearance-inspection", selector: '[data-mobile-source-screen="appearance-inspection"]', snapshot: "mobile-figma-appearance-inspection.png", currentGuard: 0.03 },
+    { path: "/visual-regression/mobile-source/day-log", selector: '[data-mobile-source-screen="day-log"]', snapshot: "mobile-figma-day-log.png", currentGuard: 0.03 },
   ];
   for (const item of cases) {
     await expectFigmaFrame(page, item.path, item.selector, item.snapshot, item.currentGuard);
@@ -82,6 +85,31 @@ test("원본 화면은 Figma 대표 프레임 3종을 375×812로 재현한다",
   const quantity = production.locator('input[value="999,999"]');
   await quantity.fill("1000000");
   await expect(quantity).toHaveValue("1000000");
+
+  await page.goto("/visual-regression/mobile-source/all-menu");
+  const allMenu = page.locator('[data-mobile-source-screen="all-menu"]');
+  await expect(allMenu.getByRole("button", { name: "생산관리", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await allMenu.getByRole("button", { name: "품질검사", exact: true }).click();
+  await expect(allMenu.getByRole("button", { name: "품질검사", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(allMenu.getByRole("navigation", { name: "세부 업무" })).toContainText("공정검사");
+
+  await page.goto("/visual-regression/mobile-source/appearance-inspection");
+  const inspection = page.locator('[data-mobile-source-screen="appearance-inspection"]');
+  await inspection.getByRole("button", { name: "초기화", exact: true }).click();
+  await expect(inspection.getByRole("button", { name: "결로/플러그자국/밀착 양호", exact: true }).first()).toHaveAttribute("aria-pressed", "false");
+  await inspection.getByRole("button", { name: "일괄 선택", exact: true }).click();
+  await expect(inspection.getByRole("button", { name: "결로/플러그자국/밀착 양호", exact: true }).first()).toHaveAttribute("aria-pressed", "true");
+
+  await page.goto("/visual-regression/mobile-source/day-log");
+  const dayLog = page.locator('[data-mobile-source-screen="day-log"]');
+  await dayLog.getByRole("radio", { name: "야간", exact: true }).click();
+  await expect(dayLog.getByRole("radio", { name: "야간", exact: true })).toHaveAttribute("aria-checked", "true");
+  const moldChange = dayLog.getByRole("textbox", { name: "금형교체", exact: true });
+  await moldChange.fill("120");
+  await dayLog.getByRole("button", { name: "저장", exact: true }).click();
+  await expect(dayLog.getByRole("status")).toHaveText("저장되었습니다.");
+  await dayLog.getByRole("button", { name: "취소", exact: true }).click();
+  await expect(moldChange).toHaveValue("100");
 
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 });
