@@ -16,6 +16,11 @@
 /playwright-report/
 /blob-report/
 
+# local MES UI prototypes
+/.mes-ui-preview/
+/src/generated-previews/
+/src/app/preview/
+
 # next.js
 /.next/
 /out/

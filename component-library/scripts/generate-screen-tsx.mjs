@@ -1,10 +1,13 @@
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-preview.mjs";
 import { contractFingerprint } from "./resolve-screen-request.mjs";
 import { validateGenerationSpec } from "./screen-generation-contract.mjs";
+
+const scriptDirectory = dirname(fileURLToPath(import.meta.url));
+const projectRoot = resolve(scriptDirectory, "..");
 
 function quote(value) {
   return JSON.stringify(value);
@@ -225,16 +228,21 @@ function parseArguments(argv) {
 function runCli() {
   const { input, output, preview } = parseArguments(process.argv.slice(2));
   if (!input) throw new Error("사용법: npm run screen:generate -- <contract.json> [--out <screen.tsx>] [--preview]");
-  if (preview && !output) throw new Error("--preview는 --out <screen.tsx>와 함께 사용해야 합니다.");
   const inputPath = resolve(process.cwd(), input);
   if (!existsSync(inputPath)) throw new Error(`계약 파일을 찾을 수 없습니다: ${inputPath}`);
   const contract = JSON.parse(readFileSync(inputPath, "utf8"));
   const source = generateScreenTsx(contract);
+  const resolvedOutput = output
+    ? resolve(process.cwd(), output)
+    : preview
+      ? resolve(projectRoot, "src", "generated-previews", `${contract.request.requestId}.tsx`)
+      : undefined;
   let previewPlan;
-  if (output) {
-    const outputPath = resolve(process.cwd(), output);
+  if (resolvedOutput) {
+    const outputPath = resolvedOutput;
     if (existsSync(outputPath)) throw new Error(`기존 파일을 덮어쓰지 않습니다: ${outputPath}`);
     if (preview) previewPlan = createScreenPreviewPlan(contract, outputPath);
+    mkdirSync(dirname(outputPath), { recursive: true });
     writeFileSync(outputPath, source, { encoding: "utf8", flag: "wx" });
     try {
       if (previewPlan) writeScreenPreview(previewPlan);

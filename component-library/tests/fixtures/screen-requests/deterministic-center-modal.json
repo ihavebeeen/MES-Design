@@ -59,7 +59,7 @@
     ]
   },
   "output": {
-    "route": "/generated-screens/deterministic-center-modal-fixture",
+    "route": "/preview/deterministic-center-modal-fixture",
     "componentName": "DeterministicItemLookupModal"
   }
 }

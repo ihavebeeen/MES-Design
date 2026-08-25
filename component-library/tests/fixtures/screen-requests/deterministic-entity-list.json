@@ -63,7 +63,7 @@
     ]
   },
   "output": {
-    "route": "/generated-screens/deterministic-entity-list-fixture",
+    "route": "/preview/deterministic-entity-list-fixture",
     "componentName": "DeterministicReceivingListPage"
   }
 }

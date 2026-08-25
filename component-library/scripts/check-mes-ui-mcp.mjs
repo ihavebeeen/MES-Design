@@ -9,9 +9,9 @@ const projectRoot = resolve(scriptDirectory, "..");
 const repositoryRoot = resolve(projectRoot, "..");
 const serverPath = join(scriptDirectory, "mes-ui-mcp-server.mjs");
 const fixturePath = join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json");
-const outputRelativePath = "src/components/__mcp_smoke_generated.tsx";
+const outputRelativePath = "src/generated-previews/deterministic-receiving-fixture.tsx";
 const outputPath = join(projectRoot, ...outputRelativePath.split("/"));
-const previewRelativePath = "src/app/generated-screens/deterministic-receiving-fixture/page.tsx";
+const previewRelativePath = "src/app/preview/deterministic-receiving-fixture/page.tsx";
 const previewPath = join(projectRoot, ...previewRelativePath.split("/"));
 const previewDirectory = dirname(previewPath);
 const expectedTools = [
@@ -76,7 +76,7 @@ try {
 
   const generatedResult = await client.callTool({
     name: "mes_generate_screen",
-    arguments: { request, outputPath: outputRelativePath },
+    arguments: { request },
   });
   assert(!generatedResult.isError, "정상 MCP 생성 호출이 실패했습니다.");
   const generated = structured(generatedResult);
@@ -84,7 +84,8 @@ try {
   assert(generated.audit.blockerCount === 0, "생성 직후 감사에서 blocker가 발견됐습니다.");
   assert(existsSync(outputPath), "MCP가 출력 파일을 만들지 않았습니다.");
   assert(generated.previewPath === previewRelativePath, `MCP 미리보기 경로가 다릅니다: ${generated.previewPath}`);
-  assert(generated.previewUrl === "http://localhost:3000/generated-screens/deterministic-receiving-fixture", `MCP 미리보기 URL이 다릅니다: ${generated.previewUrl}`);
+  assert(generated.outputPath === outputRelativePath, `MCP 기본 임시 출력 경로가 다릅니다: ${generated.outputPath}`);
+  assert(generated.previewUrl === "http://localhost:3000/preview/deterministic-receiving-fixture", `MCP 미리보기 URL이 다릅니다: ${generated.previewUrl}`);
   assert(existsSync(previewPath), "MCP가 미리보기 페이지를 만들지 않았습니다.");
 
   const audited = structured(await client.callTool({
@@ -95,7 +96,7 @@ try {
 
   const overwriteResult = await client.callTool({
     name: "mes_generate_screen",
-    arguments: { request, outputPath: outputRelativePath },
+    arguments: { request },
   });
   assert(overwriteResult.isError, "MCP가 기존 파일 덮어쓰기를 차단하지 않았습니다.");
 
@@ -105,7 +106,13 @@ try {
   });
   assert(escapeResult.isError, "MCP가 component-library 외부 경로 쓰기를 차단하지 않았습니다.");
 
-  console.log(`[mcp:check] 도구 ${toolNames.length}개 · 생성 ${generated.sourceFingerprint.slice(0, 12)} · 미리보기 ${generated.previewRoute} · 감사 ${audited.status} · 안전 차단 2개 통과`);
+  const trackedSourceResult = await client.callTool({
+    name: "mes_generate_screen",
+    arguments: { request, outputPath: "src/components/should-not-be-generated.tsx" },
+  });
+  assert(trackedSourceResult.isError, "MCP가 임시 생성 화면을 Git 추적 소스 경로에 쓰는 것을 차단하지 않았습니다.");
+
+  console.log(`[mcp:check] 도구 ${toolNames.length}개 · 생성 ${generated.sourceFingerprint.slice(0, 12)} · 미리보기 ${generated.previewRoute} · 감사 ${audited.status} · 안전 차단 3개 통과`);
 } finally {
   await client.close();
   if (existsSync(outputPath)) rmSync(outputPath);

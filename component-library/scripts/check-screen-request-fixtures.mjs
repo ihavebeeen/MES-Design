@@ -54,9 +54,9 @@ assert.match(generatedFirst, /<EditableRowGrid/);
 assert.doesNotMatch(generatedFirst, /<\s*(button|input|select|textarea|table)\b/);
 assert.match(generatedFirst, /previousRow\?\.customer/);
 assert.equal(auditScreenImplementation(generationContract, generatedFirst).status, "audit-ready");
-const sideSlidePreview = createScreenPreviewPlan(generationContract, "src/generated/deterministic-receiving-dialog.tsx", { projectRoot });
-assert.equal(sideSlidePreview.relativePath, "src/app/generated-screens/deterministic-receiving-fixture/page.tsx");
-assert.equal(sideSlidePreview.url, "http://localhost:3000/generated-screens/deterministic-receiving-fixture");
+const sideSlidePreview = createScreenPreviewPlan(generationContract, "src/generated-previews/deterministic-receiving-dialog.tsx", { projectRoot });
+assert.equal(sideSlidePreview.relativePath, "src/app/preview/deterministic-receiving-fixture/page.tsx");
+assert.equal(sideSlidePreview.url, "http://localhost:3000/preview/deterministic-receiving-fixture");
 assert.match(sideSlidePreview.source, /<DeterministicReceivingDialog open=\{open\} onOpenChange=\{setOpen\}/);
 assert.match(sideSlidePreview.source, /다시 열기/);
 
@@ -97,10 +97,10 @@ assert.doesNotMatch(pagePreview, /"use client"/);
 assert.match(pagePreview, /return <DeterministicReceivingListPage \/>/);
 
 const invalidPreviewRoute = structuredClone(generationContract);
-invalidPreviewRoute.request.output.route = "/components/not-a-generated-preview";
+invalidPreviewRoute.request.output.route = "/generated-screens/not-a-local-preview";
 assert.throws(
-  () => createScreenPreviewPlan(invalidPreviewRoute, "src/generated/invalid.tsx", { projectRoot }),
-  /generated-screens/,
+  () => createScreenPreviewPlan(invalidPreviewRoute, "src/generated-previews/invalid.tsx", { projectRoot }),
+  /\/preview/,
 );
 
 const invalidTableRequest = structuredClone(centerRequest);

@@ -145,7 +145,7 @@
     ]
   },
   "output": {
-    "route": "/generated-screens/deterministic-receiving-fixture",
+    "route": "/preview/deterministic-receiving-fixture",
     "componentName": "DeterministicReceivingDialog"
   }
 }

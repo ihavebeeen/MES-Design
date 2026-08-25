@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const defaultProjectRoot = resolve(scriptDirectory, "..");
-const previewRoutePattern = /^\/generated-screens\/([a-z0-9]+(?:-[a-z0-9]+)*)$/;
+const previewRoutePattern = /^\/preview\/([a-z0-9]+(?:-[a-z0-9]+)*)$/;
 
 function normalizeSourceImport(projectRoot, outputPath) {
   const absolutePath = isAbsolute(outputPath) ? outputPath : resolve(projectRoot, outputPath);
@@ -39,10 +39,10 @@ export function createScreenPreviewPlan(contract, outputPath, options = {}) {
   const route = contract?.request?.output?.route;
   const routeMatch = typeof route === "string" ? route.match(previewRoutePattern) : null;
   if (!routeMatch) {
-    throw new Error("미리보기 route는 '/generated-screens/<영문-소문자-ID>' 형식이어야 합니다.");
+    throw new Error("미리보기 route는 '/preview/<영문-소문자-ID>' 형식이어야 합니다.");
   }
 
-  const relativePath = `src/app/generated-screens/${routeMatch[1]}/page.tsx`;
+  const relativePath = `src/app/preview/${routeMatch[1]}/page.tsx`;
   const absolutePath = resolve(projectRoot, ...relativePath.split("/"));
   const componentImport = normalizeSourceImport(projectRoot, outputPath);
   const source = generateScreenPreviewSource(contract, componentImport);

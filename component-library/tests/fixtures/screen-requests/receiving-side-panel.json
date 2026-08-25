@@ -26,7 +26,7 @@
     "행 추가 시 직전 거래처를 초기값으로 복사하되 창고는 행별로 편집한다."
   ],
   "output": {
-    "route": "/generated-screens/receiving-side-panel-fixture",
+    "route": "/preview/receiving-side-panel-fixture",
     "componentName": "ReceivingSidePanelFixture"
   }
 }

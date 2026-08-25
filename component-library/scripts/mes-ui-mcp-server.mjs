@@ -13,6 +13,7 @@ const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
 const requestSchema = z.record(z.string(), z.unknown()).describe("screen-request.schema.json을 따르는 ScreenRequest 객체");
 const sourcePathSchema = z.string().min(1).describe("component-library 기준 src/ 아래의 상대 TSX/JSX 경로");
+const previewSourcePathSchema = sourcePathSchema.optional().describe("생략하면 src/generated-previews/<request-id>.tsx를 사용합니다.");
 
 function toolResult(summary, data) {
   return {
@@ -225,18 +226,20 @@ export function createMesUiMcpServer() {
       description: "ScreenRequest를 해석하고 등록 컴포넌트 기반 TSX와 localhost 미리보기 페이지를 생성한 뒤 즉시 감사합니다. 기존 파일은 덮어쓰지 않습니다.",
       inputSchema: z.object({
         request: requestSchema,
-        outputPath: sourcePathSchema,
+        outputPath: previewSourcePathSchema,
       }),
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
     },
     safeTool(async ({ request, outputPath }) => {
-      const target = resolveRepositorySourcePath(outputPath);
-      if (existsSync(target.absolutePath)) throw new Error(`기존 파일을 덮어쓰지 않습니다: ${target.relativePath}`);
-
       const contract = resolveScreenRequest(request);
       if (contract.quality.blockerCount > 0) {
         throw new Error(`blocker가 있는 요청은 생성할 수 없습니다.\n${JSON.stringify(contract.quality.issues, null, 2)}`);
       }
+      const target = resolveRepositorySourcePath(outputPath ?? `src/generated-previews/${contract.request.requestId}.tsx`);
+      if (!target.relativePath.startsWith("src/generated-previews/")) {
+        throw new Error("임시 생성 화면은 src/generated-previews/ 아래에만 만들 수 있습니다.");
+      }
+      if (existsSync(target.absolutePath)) throw new Error(`기존 파일을 덮어쓰지 않습니다: ${target.relativePath}`);
       const source = generateScreenTsx(contract);
       const audit = auditScreenImplementation(contract, source);
       if (audit.blockerCount > 0) throw new Error(`생성 결과 감사에서 blocker가 발견됐습니다.\n${JSON.stringify(audit, null, 2)}`);
