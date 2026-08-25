@@ -272,6 +272,82 @@ export interface WebFigmaReconciliationRegistry {
   remaining: string[];
 }
 
+export type WebGenerationConfidence = "repeated" | "single-case" | "system-rule";
+
+export interface WebGenerationPageArchetype {
+  id: string;
+  name: string;
+  confidence: Exclude<WebGenerationConfidence, "system-rule">;
+  evidenceCount: number;
+  observedArchetypeRef: string;
+  useWhen: string[];
+  doNotUseWhen: string[];
+  regionOrder: string[];
+  patternRefs: string[];
+  componentRefs: string[];
+}
+
+export interface WebGenerationOverlayGrammar {
+  id: string;
+  name: string;
+  confidence: Exclude<WebGenerationConfidence, "system-rule">;
+  evidenceCount: number;
+  surfaceSequence: WebObservedSurface[];
+  useWhen: string[];
+  doNotUseWhen: string[];
+  shellRef: string | null;
+  recipeRefs: string[];
+  requiredBehaviors: string[];
+  evidenceFlowIds: string[];
+}
+
+export interface WebGenerationSectionRecipe {
+  id: string;
+  name: string;
+  confidence: Exclude<WebGenerationConfidence, "system-rule">;
+  evidenceCount: number;
+  sectionOrder: string[];
+  patternRefs: string[];
+  useWhen: string[];
+  evidenceFlowIds: string[];
+}
+
+export interface WebGenerationContextRegistry {
+  schemaVersion: 1;
+  status: "generation-guidance";
+  derivedAt: string;
+  sourceInventory: "web-ui-usage-inventory.json";
+  purpose: string;
+  policy: {
+    authority: "observed-generation-guidance";
+    appliesTo: Array<"new">;
+    priority: string[];
+    rules: string[];
+    excludedFromGeneration: string[];
+  };
+  decisionOrder: string[];
+  pageArchetypes: WebGenerationPageArchetype[];
+  overlayGrammars: WebGenerationOverlayGrammar[];
+  sectionRecipes: WebGenerationSectionRecipe[];
+  behaviorRules: Array<{
+    id: string;
+    confidence: WebGenerationConfidence;
+    useWhen: string[];
+    behaviorRefs: string[];
+    rule: string;
+    evidenceConnectionIds?: string[];
+  }>;
+  coverage: {
+    observedPages: number;
+    observedPrimaryFlows: number;
+    repeatedPageArchetypes: number;
+    singleCasePageArchetypes: number;
+    repeatedOverlayGrammars: number;
+    singleCaseOverlayGrammars: number;
+    remainingObservation: string[];
+  };
+}
+
 export type ScreenRequestIntent = "reproduce" | "new" | "normalize" | "audit";
 export type ScreenTargetKind = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
 export type NormalizationClassification = "source-error" | "implementation-error" | "intentional-exception" | "normalization-candidate";
@@ -350,6 +426,11 @@ export interface ScreenRequest {
     figmaNode?: string;
     sourceRoute?: string;
     notes?: string[];
+  };
+  webContext?: {
+    pageArchetypeRef?: string;
+    overlayGrammarRef?: string;
+    sectionRecipeRefs?: string[];
   };
   composition: {
     recipeRefs?: string[];

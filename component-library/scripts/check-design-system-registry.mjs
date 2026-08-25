@@ -32,6 +32,7 @@ const patternContractRegistry = readJson("pattern-contracts.json");
 const screenSpecRegistry = readJson("screen-specs.json");
 const webUiUsageInventoryRegistry = readJson("web-ui-usage-inventory.json");
 const webFigmaReconciliationRegistry = readJson("web-figma-reconciliation.json");
+const webGenerationContextRegistry = readJson("web-generation-context.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -86,6 +87,7 @@ checkVersion("pattern-contracts", patternContractRegistry);
 checkVersion("screen-specs", screenSpecRegistry);
 checkVersion("web-ui-usage-inventory", webUiUsageInventoryRegistry);
 checkVersion("web-figma-reconciliation", webFigmaReconciliationRegistry);
+checkVersion("web-generation-context", webGenerationContextRegistry);
 
 const mobileAssets = new Set([
   ...(mobileAssetRegistry.foundations ?? []).map((entry) => entry.id),
@@ -333,6 +335,67 @@ if (webFigmaReconciliationRegistry.coverage?.sourceLocatedLatest !== figmaClassi
 if (webFigmaReconciliationRegistry.coverage?.sourceLocatedRevision !== figmaClassificationCounts["source-located-revision"]) errors.push("web-figma-reconciliation: coverage.sourceLocatedRevision이 분류 개수와 다릅니다.");
 if (webFigmaReconciliationRegistry.coverage?.sourceNotLocated !== figmaClassificationCounts["source-not-located"]) errors.push("web-figma-reconciliation: coverage.sourceNotLocated가 분류 개수와 다릅니다.");
 if (webFigmaReconciliationRegistry.coverage?.pixelVerified !== 0 || webFigmaReconciliationRegistry.coverage?.interactionVerifiedAgainstFigma !== 0) errors.push("web-figma-reconciliation: 이번 참고 대조에서는 픽셀·상호작용 검증을 0으로 유지해야 합니다.");
+
+const webGenerationPageArchetypes = mapByUniqueId("web-generation-context page archetypes", webGenerationContextRegistry.pageArchetypes ?? []);
+const webGenerationOverlayGrammars = mapByUniqueId("web-generation-context overlay grammars", webGenerationContextRegistry.overlayGrammars ?? []);
+const webGenerationSectionRecipes = mapByUniqueId("web-generation-context section recipes", webGenerationContextRegistry.sectionRecipes ?? []);
+const webGenerationBehaviorRules = mapByUniqueId("web-generation-context behavior rules", webGenerationContextRegistry.behaviorRules ?? []);
+const allowedGenerationSurfaces = new Set(["page", "center-modal", "side-slide-panel", "confirm-dialog"]);
+if (webGenerationContextRegistry.status !== "generation-guidance") errors.push("web-generation-context: status는 generation-guidance여야 합니다.");
+if (webGenerationContextRegistry.sourceInventory !== "web-ui-usage-inventory.json") errors.push("web-generation-context: sourceInventory가 실제 웹 관찰 원장을 가리켜야 합니다.");
+if (webGenerationContextRegistry.policy?.authority !== "observed-generation-guidance") errors.push("web-generation-context: authority는 observed-generation-guidance여야 합니다.");
+if (JSON.stringify(webGenerationContextRegistry.policy?.appliesTo) !== JSON.stringify(["new"])) errors.push("web-generation-context: 신규 UI 생성에만 적용되어야 합니다.");
+for (const field of ["priority", "rules", "excludedFromGeneration"]) {
+  if (!Array.isArray(webGenerationContextRegistry.policy?.[field]) || webGenerationContextRegistry.policy[field].length === 0) errors.push(`web-generation-context: policy.${field}가 필요합니다.`);
+}
+if (!Array.isArray(webGenerationContextRegistry.decisionOrder) || webGenerationContextRegistry.decisionOrder.length < 4) errors.push("web-generation-context: 생성 판단 순서가 필요합니다.");
+if ("figmaReconciliation" in webGenerationContextRegistry || "pixelVerified" in webGenerationContextRegistry) errors.push("web-generation-context: 재현·감사 전용 필드가 섞였습니다.");
+
+const checkGenerationConfidence = (entry, evidenceCount) => {
+  if (!['repeated', 'single-case'].includes(entry.confidence)) errors.push(`web-generation-context '${entry.id}': confidence가 잘못되었습니다.`);
+  if (entry.confidence === "repeated" && evidenceCount < 2) errors.push(`web-generation-context '${entry.id}': repeated에는 2건 이상의 근거가 필요합니다.`);
+  if (entry.confidence === "single-case" && evidenceCount !== 1) errors.push(`web-generation-context '${entry.id}': single-case는 근거가 정확히 1건이어야 합니다.`);
+  if (entry.evidenceCount !== evidenceCount) errors.push(`web-generation-context '${entry.id}': evidenceCount가 실제 근거 수와 다릅니다.`);
+};
+const checkGenerationPatternRefs = (entry, refs) => {
+  for (const patternId of refs ?? []) if (!patterns.has(patternId)) errors.push(`web-generation-context '${entry.id}': 미등록 pattern '${patternId}'를 참조합니다.`);
+};
+
+for (const entry of webGenerationPageArchetypes.values()) {
+  const evidenceCount = [...webUsagePages.values()].filter((page) => page.archetypeRef === entry.observedArchetypeRef).length;
+  checkGenerationConfidence(entry, evidenceCount);
+  if (!webUsageArchetypes.has(entry.observedArchetypeRef)) errors.push(`web-generation-context '${entry.id}': 미등록 observed archetype '${entry.observedArchetypeRef}'를 참조합니다.`);
+  for (const field of ["useWhen", "doNotUseWhen", "regionOrder"]) if (!Array.isArray(entry[field]) || entry[field].length === 0) errors.push(`web-generation-context '${entry.id}': ${field}가 필요합니다.`);
+  checkGenerationPatternRefs(entry, entry.patternRefs);
+  for (const componentId of entry.componentRefs ?? []) if (!components.has(componentId)) errors.push(`web-generation-context '${entry.id}': 미등록 component '${componentId}'를 참조합니다.`);
+}
+for (const entry of webGenerationOverlayGrammars.values()) {
+  checkGenerationConfidence(entry, entry.evidenceFlowIds?.length ?? 0);
+  if (!Array.isArray(entry.surfaceSequence) || entry.surfaceSequence.length === 0 || entry.surfaceSequence.some((surface) => !allowedGenerationSurfaces.has(surface))) errors.push(`web-generation-context '${entry.id}': surfaceSequence가 잘못되었습니다.`);
+  for (const field of ["useWhen", "doNotUseWhen"]) if (!Array.isArray(entry[field]) || entry[field].length === 0) errors.push(`web-generation-context '${entry.id}': ${field}가 필요합니다.`);
+  if (entry.shellRef && patterns.get(entry.shellRef)?.kind !== "shell") errors.push(`web-generation-context '${entry.id}': shellRef '${entry.shellRef}'가 shell이 아닙니다.`);
+  checkGenerationPatternRefs(entry, [...(entry.recipeRefs ?? []), ...(entry.requiredBehaviors ?? [])]);
+  for (const flowId of entry.evidenceFlowIds ?? []) if (!webUsageFlows.has(flowId)) errors.push(`web-generation-context '${entry.id}': 미등록 flow '${flowId}'를 참조합니다.`);
+}
+for (const entry of webGenerationSectionRecipes.values()) {
+  checkGenerationConfidence(entry, entry.evidenceFlowIds?.length ?? 0);
+  if (!Array.isArray(entry.sectionOrder) || entry.sectionOrder.length === 0 || !Array.isArray(entry.useWhen) || entry.useWhen.length === 0) errors.push(`web-generation-context '${entry.id}': sectionOrder와 useWhen이 필요합니다.`);
+  checkGenerationPatternRefs(entry, entry.patternRefs);
+  for (const flowId of entry.evidenceFlowIds ?? []) if (!webUsageFlows.has(flowId)) errors.push(`web-generation-context '${entry.id}': 미등록 flow '${flowId}'를 참조합니다.`);
+}
+for (const entry of webGenerationBehaviorRules.values()) {
+  if (!['system-rule', 'single-case'].includes(entry.confidence)) errors.push(`web-generation-context '${entry.id}': behavior confidence가 잘못되었습니다.`);
+  if (!Array.isArray(entry.useWhen) || entry.useWhen.length === 0 || !entry.rule) errors.push(`web-generation-context '${entry.id}': useWhen과 rule이 필요합니다.`);
+  checkGenerationPatternRefs(entry, entry.behaviorRefs);
+  for (const connectionId of entry.evidenceConnectionIds ?? []) if (!webUsageConnections.has(connectionId)) errors.push(`web-generation-context '${entry.id}': 미등록 connection '${connectionId}'를 참조합니다.`);
+}
+const generationCoverage = webGenerationContextRegistry.coverage ?? {};
+if (generationCoverage.observedPages !== webUsagePages.size || generationCoverage.observedPrimaryFlows !== webUsageFlows.size) errors.push("web-generation-context: 관찰 범위 수치가 원본 인벤토리와 다릅니다.");
+if (generationCoverage.repeatedPageArchetypes !== [...webGenerationPageArchetypes.values()].filter((entry) => entry.confidence === "repeated").length) errors.push("web-generation-context: repeated page archetype 수가 다릅니다.");
+if (generationCoverage.singleCasePageArchetypes !== [...webGenerationPageArchetypes.values()].filter((entry) => entry.confidence === "single-case").length) errors.push("web-generation-context: single-case page archetype 수가 다릅니다.");
+if (generationCoverage.repeatedOverlayGrammars !== [...webGenerationOverlayGrammars.values()].filter((entry) => entry.confidence === "repeated").length) errors.push("web-generation-context: repeated overlay grammar 수가 다릅니다.");
+if (generationCoverage.singleCaseOverlayGrammars !== [...webGenerationOverlayGrammars.values()].filter((entry) => entry.confidence === "single-case").length) errors.push("web-generation-context: single-case overlay grammar 수가 다릅니다.");
+if (!Array.isArray(generationCoverage.remainingObservation) || generationCoverage.remainingObservation.length === 0) errors.push("web-generation-context: 남은 웹 관찰 범위가 필요합니다.");
 
 for (const archetype of webUsageArchetypes.values()) {
   if (archetype.status !== "observed-not-canonical") errors.push(`web usage archetype '${archetype.id}': status가 잘못되었습니다.`);

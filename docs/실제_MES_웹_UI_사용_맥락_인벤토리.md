@@ -43,10 +43,11 @@
 
 ## AI가 사용하는 방법
 
-- `getImplementationContext(screenId)`는 등록 화면과 연결된 실제 웹 사용 근거를 함께 반환한다.
-- 화면 계약 resolver도 `implementation.observedWebUsage`에 같은 근거와 권한을 포함한다.
-- 로컬 MCP의 `mes_get_web_usage_context`로 메뉴명, 화면 ID, 버튼명 또는 팝업 제목을 검색할 수 있다.
-- 생성 AI는 관찰 근거를 후보 탐색에 사용하되, `observed-not-canonical` 값을 표준 수치로 복사하면 안 된다.
+- 이 파일은 실제 웹에서 관찰한 사실을 보존하는 원장이다. 신규 생성기가 직접 전부 읽지 않는다.
+- 반복된 구조는 `web-generation-context.json`에서 페이지·팝업·섹션·동작 문법으로 압축한다.
+- 신규 UI는 `mes_get_web_generation_context`로 압축된 문법을 조회한다.
+- 기존 화면 재현·감사는 `mes_get_reproduction_audit_context`로 이 원장과 Figma 대조 정보를 조회한다.
+- `getImplementationContext(screenId)`는 신규 생성용 문법을 반환하고 화면별 감사 정보는 섞지 않는다.
 
 ## 아직 확인하지 않은 범위
 

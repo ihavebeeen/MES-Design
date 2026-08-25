@@ -46,6 +46,7 @@ export function readRegistryBundle() {
   const screenSpecs = readJson(join(registryDirectory, "screen-specs.json"));
   const webUiUsageInventory = readJson(join(registryDirectory, "web-ui-usage-inventory.json"));
   const webFigmaReconciliation = readJson(join(registryDirectory, "web-figma-reconciliation.json"));
+  const webGenerationContext = readJson(join(registryDirectory, "web-generation-context.json"));
 
   return {
     components: components.components,
@@ -60,6 +61,7 @@ export function readRegistryBundle() {
     screenSpecs: screenSpecs.specs,
     webUiUsageInventory,
     webFigmaReconciliation,
+    webGenerationContext,
   };
 }
 
@@ -79,6 +81,7 @@ function validateRequestShape(request) {
     "lifecycle",
     "target",
     "evidence",
+    "webContext",
     "composition",
     "requirements",
     "normalizationDecisions",
@@ -91,6 +94,7 @@ function validateRequestShape(request) {
   checkKnownKeys(request?.target, new Set(["kind", "title", "nearestScreenId", "viewport"]), "target");
   checkKnownKeys(request?.target?.viewport, new Set(["width", "height"]), "target.viewport");
   checkKnownKeys(request?.evidence, new Set(["figmaNode", "sourceRoute", "notes"]), "evidence");
+  checkKnownKeys(request?.webContext, new Set(["pageArchetypeRef", "overlayGrammarRef", "sectionRecipeRefs"]), "webContext");
   checkKnownKeys(request?.composition, new Set(["recipeRefs", "shellRef", "sectionRefs", "sections", "behaviorRefs", "actionSetRef"]), "composition");
   checkKnownKeys(request?.output, new Set(["route", "componentName"]), "output");
   if (request?.schemaVersion !== 1) issues.push(issue("blocker", "request.schema-version", "schemaVersion은 1이어야 합니다."));
@@ -110,6 +114,9 @@ function validateRequestShape(request) {
   if (!/^[A-Z][A-Za-z0-9]*$/.test(request?.output?.componentName ?? "")) issues.push(issue("blocker", "request.component-name", "output.componentName은 PascalCase여야 합니다."));
   if (request?.evidence?.figmaNode && !/^\d+:\d+$/.test(request.evidence.figmaNode)) issues.push(issue("blocker", "request.figma-node", "evidence.figmaNode는 123:456 형식이어야 합니다."));
   if (request?.evidence?.notes !== undefined && (!Array.isArray(request.evidence.notes) || request.evidence.notes.some((value) => typeof value !== "string" || value === "") || unique(request.evidence.notes).length !== request.evidence.notes.length)) issues.push(issue("blocker", "request.evidence-notes", "evidence.notes는 중복 없는 문자열 배열이어야 합니다."));
+  if (request?.webContext?.pageArchetypeRef !== undefined && (typeof request.webContext.pageArchetypeRef !== "string" || request.webContext.pageArchetypeRef === "")) issues.push(issue("blocker", "request.web-page-archetype", "webContext.pageArchetypeRef는 비어 있지 않은 문자열이어야 합니다."));
+  if (request?.webContext?.overlayGrammarRef !== undefined && (typeof request.webContext.overlayGrammarRef !== "string" || request.webContext.overlayGrammarRef === "")) issues.push(issue("blocker", "request.web-overlay-grammar", "webContext.overlayGrammarRef는 비어 있지 않은 문자열이어야 합니다."));
+  if (request?.webContext?.sectionRecipeRefs !== undefined && (!Array.isArray(request.webContext.sectionRecipeRefs) || request.webContext.sectionRecipeRefs.some((value) => typeof value !== "string" || value === "") || unique(request.webContext.sectionRecipeRefs).length !== request.webContext.sectionRecipeRefs.length)) issues.push(issue("blocker", "request.web-section-recipes", "webContext.sectionRecipeRefs는 중복 없는 문자열 배열이어야 합니다."));
   if (request?.composition?.shellRef !== undefined && (typeof request.composition.shellRef !== "string" || request.composition.shellRef === "")) issues.push(issue("blocker", "request.shell-ref", "composition.shellRef는 비어 있지 않은 문자열이어야 합니다."));
   if (request?.composition?.actionSetRef !== undefined && (typeof request.composition.actionSetRef !== "string" || request.composition.actionSetRef === "")) issues.push(issue("blocker", "request.action-set-ref", "composition.actionSetRef는 비어 있지 않은 문자열이어야 합니다."));
   if (request?.normalizationDecisions !== undefined) {
@@ -189,6 +196,9 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const componentUsageContractMap = new Map(registry.componentUsageContracts.map((entry) => [entry.componentId, entry]));
   const patternContractMap = new Map(registry.patternContracts.map((entry) => [entry.patternId, entry]));
   const screenSpecMap = new Map(registry.screenSpecs.map((entry) => [entry.screenId, entry]));
+  const webPageArchetypeMap = new Map(registry.webGenerationContext.pageArchetypes.map((entry) => [entry.id, entry]));
+  const webOverlayGrammarMap = new Map(registry.webGenerationContext.overlayGrammars.map((entry) => [entry.id, entry]));
+  const webSectionRecipeMap = new Map(registry.webGenerationContext.sectionRecipes.map((entry) => [entry.id, entry]));
   const nearestScreen = request?.target?.nearestScreenId ? screenMap.get(request.target.nearestScreenId) : undefined;
   const nearestScreenSpec = request?.target?.nearestScreenId ? screenSpecMap.get(request.target.nearestScreenId) : undefined;
   const observedPages = request?.target?.nearestScreenId
@@ -207,6 +217,49 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     const serialized = JSON.stringify(entry).toLocaleLowerCase("ko-KR");
     return observedSearchTerms.some((term) => serialized.includes(term));
   });
+  const observedArchetypeRefs = new Set(observedPages.map((page) => page.archetypeRef));
+  const generationGuidance = {
+    status: registry.webGenerationContext.status,
+    purpose: registry.webGenerationContext.purpose,
+    policy: registry.webGenerationContext.policy,
+    decisionOrder: registry.webGenerationContext.decisionOrder,
+    pageArchetypes: observedArchetypeRefs.size > 0
+      ? registry.webGenerationContext.pageArchetypes.filter((entry) => observedArchetypeRefs.has(entry.observedArchetypeRef))
+      : registry.webGenerationContext.pageArchetypes,
+    overlayGrammars: observedFlowIds.size > 0
+      ? registry.webGenerationContext.overlayGrammars.filter((entry) => entry.evidenceFlowIds.some((id) => observedFlowIds.has(id)))
+      : registry.webGenerationContext.overlayGrammars,
+    sectionRecipes: observedFlowIds.size > 0
+      ? registry.webGenerationContext.sectionRecipes.filter((entry) => entry.evidenceFlowIds.some((id) => observedFlowIds.has(id)))
+      : registry.webGenerationContext.sectionRecipes,
+    behaviorRules: registry.webGenerationContext.behaviorRules,
+    nearestObservedExamples: { pages: observedPages, entryFlows: observedEntryFlows },
+    coverage: registry.webGenerationContext.coverage,
+  };
+  const includeReproductionAudit = ["reproduce", "audit", "normalize"].includes(request?.intent);
+  const selectedWebPageArchetype = request?.webContext?.pageArchetypeRef ? webPageArchetypeMap.get(request.webContext.pageArchetypeRef) : undefined;
+  const selectedWebOverlayGrammar = request?.webContext?.overlayGrammarRef ? webOverlayGrammarMap.get(request.webContext.overlayGrammarRef) : undefined;
+  const selectedWebSectionRecipes = (request?.webContext?.sectionRecipeRefs ?? []).map((id) => webSectionRecipeMap.get(id)).filter(Boolean);
+
+  if (request?.intent === "new" && !request?.webContext) {
+    issues.push(issue("blocker", "generation.web-context-required", "신규 UI는 JSX 전에 webContext 생성 문법을 선택해야 합니다."));
+  }
+  if (request?.webContext?.pageArchetypeRef && !selectedWebPageArchetype) issues.push(issue("blocker", "registry.unknown-web-page-archetype", `등록되지 않은 page archetype '${request.webContext.pageArchetypeRef}'입니다.`, request.webContext.pageArchetypeRef));
+  if (request?.webContext?.overlayGrammarRef && !selectedWebOverlayGrammar) issues.push(issue("blocker", "registry.unknown-web-overlay-grammar", `등록되지 않은 overlay grammar '${request.webContext.overlayGrammarRef}'입니다.`, request.webContext.overlayGrammarRef));
+  for (const id of request?.webContext?.sectionRecipeRefs ?? []) if (!webSectionRecipeMap.has(id)) issues.push(issue("blocker", "registry.unknown-web-section-recipe", `등록되지 않은 section recipe '${id}'입니다.`, id));
+  if (request?.intent === "new" && request?.target?.kind === "page" && !request?.webContext?.pageArchetypeRef) issues.push(issue("blocker", "generation.page-archetype-required", "신규 page에는 webContext.pageArchetypeRef가 필요합니다."));
+  if (request?.intent === "new" && ["center-modal", "side-slide-panel"].includes(request?.target?.kind) && !request?.webContext?.overlayGrammarRef) issues.push(issue("blocker", "generation.overlay-grammar-required", "신규 overlay에는 webContext.overlayGrammarRef가 필요합니다."));
+  if (request?.target?.kind === "page" && request?.webContext?.overlayGrammarRef) issues.push(issue("blocker", "generation.overlay-grammar-on-page", "page target에는 overlay grammar를 선택할 수 없습니다."));
+  if (request?.target?.kind !== "page" && request?.webContext?.pageArchetypeRef) issues.push(issue("blocker", "generation.page-archetype-on-overlay", "overlay target에는 page archetype을 선택할 수 없습니다."));
+  if (selectedWebOverlayGrammar && !selectedWebOverlayGrammar.surfaceSequence.includes(request?.target?.kind)) issues.push(issue("blocker", "generation.overlay-surface-mismatch", `overlay grammar '${selectedWebOverlayGrammar.id}'가 target '${request?.target?.kind}'를 포함하지 않습니다.`, selectedWebOverlayGrammar.id));
+  for (const entry of [selectedWebPageArchetype, selectedWebOverlayGrammar, ...selectedWebSectionRecipes].filter(Boolean)) {
+    if (entry.confidence === "single-case") issues.push(issue("warning", "generation.web-context-single-case", `web context '${entry.id}'는 단건 관찰 근거이므로 자동 기본값이 아닙니다.`, entry.id));
+  }
+  generationGuidance.selection = {
+    pageArchetype: selectedWebPageArchetype ?? null,
+    overlayGrammar: selectedWebOverlayGrammar ?? null,
+    sectionRecipes: selectedWebSectionRecipes,
+  };
 
   if (request?.target?.nearestScreenId && !nearestScreen) {
     issues.push(issue("blocker", "registry.unknown-screen", `등록되지 않은 nearestScreenId '${request.target.nearestScreenId}'입니다.`, request.target.nearestScreenId));
@@ -264,6 +317,9 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   if (expectedShell !== shellRef) {
     issues.push(issue("blocker", "composition.shell-mismatch", `target.kind '${request?.target?.kind}'에는 shell '${expectedShell ?? "없음"}'이 필요하지만 '${shellRef ?? "없음"}'이 선택됐습니다.`, shellRef));
   }
+  if (selectedWebOverlayGrammar?.shellRef && selectedWebOverlayGrammar.shellRef !== shellRef) {
+    issues.push(issue("blocker", "generation.web-shell-mismatch", `선택한 web overlay grammar '${selectedWebOverlayGrammar.id}'에는 shell '${selectedWebOverlayGrammar.shellRef}'가 필요하지만 '${shellRef ?? "없음"}'이 선택됐습니다.`, selectedWebOverlayGrammar.id));
+  }
 
   if (actionSetRef && !actionSetMap.has(actionSetRef)) issues.push(issue("blocker", "registry.unknown-action-set", `등록되지 않은 action set '${actionSetRef}'입니다.`, actionSetRef));
   if (request?.intent === "reproduce" && !request?.evidence?.figmaNode) issues.push(issue("blocker", "evidence.figma-required", "reproduce 요청에는 Figma node 근거가 필요합니다."));
@@ -317,6 +373,11 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
 
   const selectionSource = (explicit, structured, fallback) => explicit ? "request" : structured ? "screen-spec" : fallback;
   const decisionTrace = {
+    webContext: {
+      pageArchetype: selectedWebPageArchetype ? { selectedId: selectedWebPageArchetype.id, confidence: selectedWebPageArchetype.confidence, reason: "ScreenRequest가 신규 UI의 page 문법을 명시했습니다." } : null,
+      overlayGrammar: selectedWebOverlayGrammar ? { selectedId: selectedWebOverlayGrammar.id, confidence: selectedWebOverlayGrammar.confidence, reason: "ScreenRequest가 신규 UI의 overlay 흐름을 명시했습니다." } : null,
+      sectionRecipes: selectedWebSectionRecipes.map((entry) => ({ selectedId: entry.id, confidence: entry.confidence, reason: "ScreenRequest가 업무 순서에 맞는 section 문법을 명시했습니다." })),
+    },
     nearestScreen: nearestScreen ? { selectedId: nearestScreen.id, reason: "요청의 nearestScreenId와 등록 업무 구조를 상속했습니다." } : { selectedId: null, reason: "가까운 등록 화면이 지정되지 않았습니다." },
     shell: {
       selectedId: shellRef ?? null,
@@ -363,8 +424,11 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       componentUsageContracts: registry.componentUsageContracts,
       patternContracts: registry.patternContracts,
       screenSpecs: registry.screenSpecs,
-      webUiUsageInventory: registry.webUiUsageInventory,
-      webFigmaReconciliation: registry.webFigmaReconciliation,
+      webGenerationContext: registry.webGenerationContext,
+      ...(includeReproductionAudit ? {
+        webUiUsageInventory: registry.webUiUsageInventory,
+        webFigmaReconciliation: registry.webFigmaReconciliation,
+      } : {}),
     }),
     baseScreen: nearestScreen ?? null,
     baseScreenSpec: nearestScreenSpec ?? null,
@@ -387,7 +451,8 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       contextDecisions: applicableContextDecisions,
       globalGates: registry.contextRules.globalGates,
       generationTemplate: generationTemplate ?? null,
-      observedWebUsage: {
+      webGenerationContext: generationGuidance,
+      reproductionAuditContext: includeReproductionAudit ? {
         authority: registry.webUiUsageInventory.usagePolicy.authority,
         usageRules: registry.webUiUsageInventory.usagePolicy.rules,
         pages: observedPages,
@@ -401,7 +466,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
           structuralFindings: registry.webFigmaReconciliation.structuralFindings,
           coverage: registry.webFigmaReconciliation.coverage,
         },
-      },
+      } : null,
     },
     decisionTrace,
     quality: {

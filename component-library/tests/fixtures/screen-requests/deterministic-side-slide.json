@@ -13,6 +13,10 @@
       "height": 900
     }
   },
+  "webContext": {
+    "overlayGrammarRef": "generation.overlay.context-preserving-form",
+    "sectionRecipeRefs": ["generation.section.basic-detail-list"]
+  },
   "evidence": {
     "figmaNode": "20368:69523",
     "notes": [

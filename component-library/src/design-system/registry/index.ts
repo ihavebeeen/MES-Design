@@ -25,6 +25,7 @@ import patternContractData from "./pattern-contracts.json";
 import screenSpecData from "./screen-specs.json";
 import webUiUsageInventoryData from "./web-ui-usage-inventory.json";
 import webFigmaReconciliationData from "./web-figma-reconciliation.json";
+import webGenerationContextData from "./web-generation-context.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -53,6 +54,7 @@ import type {
   ScreenSpecRegistry,
   WebUiUsageInventoryRegistry,
   WebFigmaReconciliationRegistry,
+  WebGenerationContextRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -83,6 +85,7 @@ export const patternUsageContractRegistry = patternContractData as PatternUsageC
 export const screenSpecRegistry = screenSpecData as ScreenSpecRegistry;
 export const webUiUsageInventoryRegistry = webUiUsageInventoryData as WebUiUsageInventoryRegistry;
 export const webFigmaReconciliationRegistry = webFigmaReconciliationData as WebFigmaReconciliationRegistry;
+export const webGenerationContextRegistry = webGenerationContextData as WebGenerationContextRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);
@@ -124,8 +127,44 @@ export function getScreenSpec(screenId: string) {
   return screenSpecRegistry.specs.find((spec) => spec.screenId === screenId);
 }
 
-/** 실제 MES 웹에서 관찰한 사용 위치를 조회한다. 관찰값은 표준값이 아니며 Figma·정규화 규칙보다 우선하지 않는다. */
-export function getWebUsageContext(reference: string) {
+/** 원본 없는 신규 UI 생성에 사용할 실제 MES의 반복 조합 문법을 조회한다. */
+export function getWebGenerationContext(reference = "") {
+  const normalized = reference.trim().toLocaleLowerCase("ko-KR");
+  const matches = (value: unknown) => JSON.stringify(value).toLocaleLowerCase("ko-KR").includes(normalized);
+  const pages = webUiUsageInventoryRegistry.pages.filter((page) =>
+    page.id === reference || page.registeredScreenId === reference || (normalized !== "" && matches(page)),
+  );
+  const pageIds = new Set(pages.map((page) => page.id));
+  const flows = webUiUsageInventoryRegistry.entryFlows.filter((flow) =>
+    flow.id === reference
+      || flow.registeredScreenId === reference
+      || pageIds.has(flow.pageId)
+      || (normalized !== "" && matches(flow)),
+  );
+  const flowIds = new Set(flows.map((flow) => flow.id));
+  const observedArchetypeRefs = new Set(pages.map((page) => page.archetypeRef));
+  return {
+    status: webGenerationContextRegistry.status,
+    purpose: webGenerationContextRegistry.purpose,
+    policy: webGenerationContextRegistry.policy,
+    decisionOrder: webGenerationContextRegistry.decisionOrder,
+    pageArchetypes: webGenerationContextRegistry.pageArchetypes.filter((entry) =>
+      normalized === "" || observedArchetypeRefs.has(entry.observedArchetypeRef) || matches(entry),
+    ),
+    overlayGrammars: webGenerationContextRegistry.overlayGrammars.filter((entry) =>
+      normalized === "" || entry.evidenceFlowIds.some((id) => flowIds.has(id)) || matches(entry),
+    ),
+    sectionRecipes: webGenerationContextRegistry.sectionRecipes.filter((entry) =>
+      normalized === "" || entry.evidenceFlowIds.some((id) => flowIds.has(id)) || matches(entry),
+    ),
+    behaviorRules: webGenerationContextRegistry.behaviorRules.filter((entry) => normalized === "" || matches(entry)),
+    nearestObservedExamples: { pages, entryFlows: flows },
+    coverage: webGenerationContextRegistry.coverage,
+  };
+}
+
+/** 기존 화면 재현·감사 요청에서만 실제 웹 관찰과 Figma 대조 상태를 조회한다. */
+export function getReproductionAuditContext(reference: string) {
   const normalized = reference.trim().toLocaleLowerCase("ko-KR");
   const matches = (value: unknown) => JSON.stringify(value).toLocaleLowerCase("ko-KR").includes(normalized);
   const pages = webUiUsageInventoryRegistry.pages.filter((page) =>
@@ -197,8 +236,7 @@ export function getGenerationContext() {
     decisions: contextRuleRegistry.decisions,
     rules: contextRuleRegistry.rules,
     holds: contextRuleRegistry.holds,
-    observedWebUsage: webUiUsageInventoryRegistry,
-    webFigmaReconciliation: webFigmaReconciliationRegistry,
+    webGenerationContext: webGenerationContextRegistry,
   };
 }
 
@@ -238,6 +276,6 @@ export function getImplementationContext(screenId: string) {
       decision.optionRuleIds.some((ruleId) => contextRuleIds.has(ruleId)),
     ),
     contextGlobalGates: contextRuleRegistry.globalGates,
-    observedWebUsage: getWebUsageContext(screenId),
+    webGenerationContext: getWebGenerationContext(screenId),
   };
 }

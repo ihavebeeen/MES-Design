@@ -158,11 +158,9 @@ export function createMesUiMcpServer() {
           screenSpecs: screenSpecs.length,
           generationTemplates: registry.generationTemplates.length,
           mobileAssets: mobile.length,
-          observedWebPages: registry.webUiUsageInventory.pages.length,
-          observedWebEntryFlows: registry.webUiUsageInventory.entryFlows.length,
-          figmaSourceLocatedLatest: registry.webFigmaReconciliation.coverage.sourceLocatedLatest,
-          figmaSourceLocatedRevision: registry.webFigmaReconciliation.coverage.sourceLocatedRevision,
-          figmaSourceNotLocated: registry.webFigmaReconciliation.coverage.sourceNotLocated,
+          webGenerationPageArchetypes: registry.webGenerationContext.pageArchetypes.length,
+          webGenerationOverlayGrammars: registry.webGenerationContext.overlayGrammars.length,
+          webGenerationSectionRecipes: registry.webGenerationContext.sectionRecipes.length,
         },
         components: filterEntries(registry.components, query, limit),
         patterns: filterEntries(registry.patterns, query, limit),
@@ -178,13 +176,52 @@ export function createMesUiMcpServer() {
   );
 
   server.registerTool(
-    "mes_get_web_usage_context",
+    "mes_get_web_generation_context",
     {
-      title: "MES 실제 웹 사용 맥락 조회",
-      description: "실제 개발 MES에서 관찰한 메뉴 화면, 주요 팝업 진입 흐름, 연결 결과와 불일치를 조회합니다. 이 자료는 사용 위치 근거이며 Figma·승인 규칙보다 우선하는 표준값이 아닙니다.",
+      title: "MES 신규 UI 생성 맥락 조회",
+      description: "원본 화면이 없는 신규 MES UI를 만들기 위해 실제 웹에서 반복된 페이지·팝업·섹션·동작 조합 문법만 조회합니다. Figma 대조와 미검증 수치는 반환하지 않습니다.",
+      inputSchema: z.object({
+        category: z.enum(["all", "pages", "overlays", "sections", "behaviors"]).default("all"),
+        query: z.string().trim().optional().describe("신규 화면의 업무명·화면 성격·가까운 메뉴명"),
+        limit: z.number().int().min(1).max(100).default(50),
+      }),
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    safeTool(async ({ category, query, limit }) => {
+      const registry = readRegistryBundle();
+      const inventory = registry.webUiUsageInventory;
+      const context = registry.webGenerationContext;
+      const normalized = query?.toLocaleLowerCase("ko-KR");
+      const matches = (entry) => !normalized || JSON.stringify(entry).toLocaleLowerCase("ko-KR").includes(normalized);
+      const pages = inventory.pages.filter(matches);
+      const pageIds = new Set(pages.map((page) => page.id));
+      const flows = inventory.entryFlows.filter((flow) => pageIds.has(flow.pageId) || matches(flow));
+      const flowIds = new Set(flows.map((flow) => flow.id));
+      const archetypeRefs = new Set(pages.map((page) => page.archetypeRef));
+      const select = (entries, evidence = () => false) => entries.filter((entry) => matches(entry) || evidence(entry)).slice(0, limit);
+      return toolResult("MES 신규 UI 생성 맥락 조회 완료", {
+        status: context.status,
+        purpose: context.purpose,
+        policy: context.policy,
+        decisionOrder: context.decisionOrder,
+        pageArchetypes: category === "all" || category === "pages" ? select(context.pageArchetypes, (entry) => archetypeRefs.has(entry.observedArchetypeRef)) : [],
+        overlayGrammars: category === "all" || category === "overlays" ? select(context.overlayGrammars, (entry) => entry.evidenceFlowIds.some((id) => flowIds.has(id))) : [],
+        sectionRecipes: category === "all" || category === "sections" ? select(context.sectionRecipes, (entry) => entry.evidenceFlowIds.some((id) => flowIds.has(id))) : [],
+        behaviorRules: category === "all" || category === "behaviors" ? select(context.behaviorRules) : [],
+        nearestObservedExamples: { pages: pages.slice(0, limit), entryFlows: flows.slice(0, limit) },
+        coverage: context.coverage,
+      });
+    }),
+  );
+
+  server.registerTool(
+    "mes_get_reproduction_audit_context",
+    {
+      title: "MES 기존 화면 재현·감사 컨텍스트",
+      description: "특정 기존 화면을 재현하거나 오류를 감사할 때만 실제 웹 관찰값, Figma 원본 후보, 불일치와 검증 상태를 조회합니다. 신규 UI 생성에는 사용하지 않습니다.",
       inputSchema: z.object({
         category: z.enum(["all", "pages", "flows", "connections", "discrepancies", "figma-reconciliation"]).default("all"),
-        query: z.string().trim().optional().describe("메뉴명·화면 ID·버튼명·팝업 제목 검색어"),
+        query: z.string().trim().optional().describe("기존 메뉴명·화면 ID·팝업 제목"),
         limit: z.number().int().min(1).max(100).default(50),
       }),
       annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
@@ -194,7 +231,8 @@ export function createMesUiMcpServer() {
       const inventory = registry.webUiUsageInventory;
       const reconciliation = registry.webFigmaReconciliation;
       const select = (entries) => filterDetailedEntries(entries, query, limit);
-      return toolResult("MES 실제 웹 사용 맥락 조회 완료", {
+      return toolResult("MES 기존 화면 재현·감사 컨텍스트 조회 완료", {
+        mode: "reproduction-audit-only",
         status: inventory.status,
         auditedAt: inventory.auditedAt,
         authority: inventory.usagePolicy.authority,

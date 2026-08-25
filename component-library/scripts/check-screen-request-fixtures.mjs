@@ -45,6 +45,9 @@ assert.ok(resolveScreenRequest(unknownField).quality.issues.some((entry) => entr
 const generationFixturePath = join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json");
 const generationRequest = JSON.parse(readFileSync(generationFixturePath, "utf8"));
 const generationContract = resolveScreenRequest(generationRequest);
+assert.equal(generationContract.decisionTrace.webContext.overlayGrammar.selectedId, "generation.overlay.context-preserving-form");
+assert.equal(generationContract.decisionTrace.webContext.sectionRecipes[0].selectedId, "generation.section.basic-detail-list");
+assert.equal(generationContract.implementation.reproductionAuditContext, null, "신규 UI 계약에 재현·감사 정보가 섞였습니다.");
 const generatedFirst = generateScreenTsx(generationContract);
 const generatedSecond = generateScreenTsx(generationContract);
 assert.equal(generatedFirst, generatedSecond, "동일 계약에서 생성된 TSX가 달라졌습니다.");
@@ -70,11 +73,20 @@ const invalidGenerationRequest = structuredClone(generationRequest);
 invalidGenerationRequest.generation.panelSize = "mega";
 assert.ok(resolveScreenRequest(invalidGenerationRequest).quality.issues.some((entry) => entry.code === "request.generation"));
 
+const missingWebContext = structuredClone(generationRequest);
+delete missingWebContext.webContext;
+assert.ok(resolveScreenRequest(missingWebContext).quality.issues.some((entry) => entry.code === "generation.web-context-required"));
+
+const mismatchedWebContext = structuredClone(generationRequest);
+mismatchedWebContext.webContext.overlayGrammarRef = "generation.overlay.bounded-selection";
+assert.ok(resolveScreenRequest(mismatchedWebContext).quality.issues.some((entry) => entry.code === "generation.overlay-surface-mismatch"));
+
 const centerRequest = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-center-modal.json"), "utf8"));
 const centerContract = resolveScreenRequest(centerRequest);
 const centerFirst = generateScreenTsx(centerContract);
 const centerSecond = generateScreenTsx(resolveScreenRequest(centerRequest));
 assert.equal(centerContract.quality.status, "release-ready");
+assert.equal(centerContract.decisionTrace.webContext.overlayGrammar.selectedId, "generation.overlay.bounded-selection");
 assert.equal(centerFirst, centerSecond, "중앙 팝업 템플릿이 결정적으로 생성되지 않았습니다.");
 assert.equal(generatedSourceFingerprint(centerFirst), "af94ccc69f5e1e0f6f7712c3410bbb2abf85648bacee1501f80716c3f28f34fb");
 assert.match(centerFirst, /<CenterModal/);
@@ -86,6 +98,7 @@ const pageContract = resolveScreenRequest(pageRequest);
 const pageFirst = generateScreenTsx(pageContract);
 const pageSecond = generateScreenTsx(resolveScreenRequest(pageRequest));
 assert.equal(pageContract.quality.status, "review-ready");
+assert.equal(pageContract.decisionTrace.webContext.pageArchetype.selectedId, "generation.page.entity-list");
 assert.ok(pageContract.quality.issues.some((entry) => entry.code === "generation.template-provisional"));
 assert.equal(pageFirst, pageSecond, "전체 페이지 템플릿이 결정적으로 생성되지 않았습니다.");
 assert.equal(generatedSourceFingerprint(pageFirst), "6b4e78b9c46ebeaa4015bc2df87f62ade89cf5d29f9ca07a55d7b261cb0d287d");
@@ -107,4 +120,4 @@ const invalidTableRequest = structuredClone(centerRequest);
 invalidTableRequest.generation.sections[0].rows[0].values.notAColumn = "오류";
 assert.ok(resolveScreenRequest(invalidTableRequest).quality.issues.some((entry) => entry.code === "request.generation"));
 
-console.log(`[screen:fixtures] 계약 정상 3개 + 차단 5개 + TSX 결정성 3개 + 미리보기 3개 통과 · ${generatedSourceFingerprint(generatedFirst).slice(0, 12)}/${generatedSourceFingerprint(centerFirst).slice(0, 12)}/${generatedSourceFingerprint(pageFirst).slice(0, 12)}`);
+console.log(`[screen:fixtures] 계약 정상 3개 + 차단 7개 + TSX 결정성 3개 + 미리보기 3개 통과 · ${generatedSourceFingerprint(generatedFirst).slice(0, 12)}/${generatedSourceFingerprint(centerFirst).slice(0, 12)}/${generatedSourceFingerprint(pageFirst).slice(0, 12)}`);

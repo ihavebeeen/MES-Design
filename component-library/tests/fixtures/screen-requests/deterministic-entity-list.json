@@ -10,6 +10,10 @@
     "nearestScreenId": "production-result-responsive",
     "viewport": { "width": 1920, "height": 960 }
   },
+  "webContext": {
+    "pageArchetypeRef": "generation.page.entity-list",
+    "sectionRecipeRefs": []
+  },
   "composition": {
     "recipeRefs": ["recipe.page-entity-list", "screen.entity-list"],
     "sections": [

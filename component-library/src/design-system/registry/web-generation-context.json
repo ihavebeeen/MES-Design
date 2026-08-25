@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "status": "generation-guidance",
+  "derivedAt": "2026-08-25",
+  "sourceInventory": "web-ui-usage-inventory.json",
+  "purpose": "원본 화면이 없는 신규 MES UI를 만들 때 실제 웹에서 반복된 화면 구조와 진입 흐름을 생성 문법으로 제공한다.",
+  "policy": {
+    "authority": "observed-generation-guidance",
+    "appliesTo": ["new"],
+    "priority": [
+      "승인된 디자인 시스템 Context Rule과 Component/Pattern 계약",
+      "이 레지스트리에서 repeated로 분류된 실제 웹 조합 문법",
+      "가장 가까운 업무 화면의 관찰 예시",
+      "새로운 조합 제안과 사람 검토"
+    ],
+    "rules": [
+      "신규 UI는 특정 Figma 완성 화면을 찾는 일부터 시작하지 않고 업무 의도와 화면 성격을 먼저 분류한다.",
+      "실제 웹에서 반복된 구조는 조합 선택 근거로 사용하되 런타임의 크기·간격·색상은 생성 기본값으로 복사하지 않는다.",
+      "single-case 근거는 가장 가까운 예시일 뿐 공통 기본값이 아니다.",
+      "기존 Shell·Section·Behavior·ActionSet 조합으로 설명할 수 있을 때 신규 패턴을 만들지 않는다.",
+      "새 조합은 격리 후보로 생성하고 반복 근거와 사람 승인 전 표준 레지스트리에 등록하지 않는다."
+    ],
+    "excludedFromGeneration": [
+      "화면별 Figma node ID",
+      "픽셀 검증 미완료 수치",
+      "구형 Figma와 최신 Figma의 대조 이력",
+      "실제 웹의 구현 오류 후보 수치",
+      "단일 화면에서만 관찰된 폭을 전역 preset으로 사용하는 판단"
+    ]
+  },
+  "decisionOrder": [
+    "업무 결과가 조회·등록·편집·선택·분석·모니터링 중 무엇인지 판정한다.",
+    "전체 페이지인지 현재 페이지 위의 작업인지 판정한다.",
+    "현재 페이지 위 작업이면 맥락 유지가 필요한 편집 흐름인지, 범위가 제한된 선택·확인 흐름인지 판정한다.",
+    "가장 가까운 page archetype과 overlay grammar를 선택한다.",
+    "필요한 Section recipe를 업무 순서대로 조합한다.",
+    "선택·행 변경·취소 복원·스크롤 소유 Behavior를 연결한다.",
+    "디자인 토큰과 공용 컴포넌트 계약을 적용한다.",
+    "기존 문법으로 설명되지 않는 차이만 신규 후보로 격리한다."
+  ],
+  "pageArchetypes": [
+    {
+      "id": "generation.page.entity-list",
+      "name": "조회·그룹화·표·하단 액션 목록",
+      "confidence": "repeated",
+      "evidenceCount": 34,
+      "observedArchetypeRef": "observed.entity-list",
+      "useWhen": ["업무 엔티티를 조건으로 조회하고 표에서 선택·출력·등록 작업으로 이어질 때"],
+      "doNotUseWhen": ["지표와 차트가 주 결과일 때", "설비 상태를 실시간 카드로 감시할 때", "마스터 결과와 상세 결과가 동시에 필요할 때"],
+      "regionOrder": ["navigation", "page-tabs", "query-tools", "data-table", "footer-actions"],
+      "patternRefs": ["recipe.page-entity-list", "screen.entity-list", "section.search-table-composition"],
+      "componentRefs": ["sidebar", "page-top-tab-item", "date-range-picker", "group-query", "filter", "quick-query", "search-input", "table", "button"]
+    },
+    {
+      "id": "generation.page.analysis-dashboard",
+      "name": "지표·차트·분석 표 조합",
+      "confidence": "repeated",
+      "evidenceCount": 6,
+      "observedArchetypeRef": "observed.analysis-dashboard",
+      "useWhen": ["기간·기준 변경이 지표, 차트, 분석 표를 함께 갱신할 때"],
+      "doNotUseWhen": ["행 단위 CRUD가 주 업무일 때", "단일 선택 결과만 반환하면 될 때"],
+      "regionOrder": ["navigation", "page-tabs", "analysis-controls", "metrics", "charts-or-analysis-table"],
+      "patternRefs": ["screen.analytics-dashboard"],
+      "componentRefs": ["sidebar", "page-top-tab-item", "card", "analytics-charts", "table", "button"]
+    },
+    {
+      "id": "generation.page.monitoring-dashboard",
+      "name": "설비 상태 모니터링",
+      "confidence": "single-case",
+      "evidenceCount": 1,
+      "observedArchetypeRef": "observed.monitoring-dashboard",
+      "useWhen": ["설비 분류별 상태를 카드로 지속 관찰하고 상세·알람으로 진입할 때"],
+      "doNotUseWhen": ["기간별 분석이 주 결과일 때", "일반 엔티티 목록을 관리할 때"],
+      "regionOrder": ["navigation", "page-tabs", "equipment-category", "status-cards", "detail-actions"],
+      "patternRefs": [],
+      "componentRefs": ["sidebar", "page-top-tab-item", "card", "segmented-control", "button"]
+    },
+    {
+      "id": "generation.page.trace-analysis",
+      "name": "추적 조건·마스터 결과·상세 결과",
+      "confidence": "single-case",
+      "evidenceCount": 1,
+      "observedArchetypeRef": "observed.trace-analysis",
+      "useWhen": ["하나의 추적 조건으로 마스터 결과와 연결 상세 결과를 함께 탐색할 때"],
+      "doNotUseWhen": ["독립적인 단일 표만 필요할 때", "차트 중심 분석일 때"],
+      "regionOrder": ["navigation", "page-tabs", "trace-query", "master-result", "detail-result"],
+      "patternRefs": ["screen.master-detail", "selection.master-detail"],
+      "componentRefs": ["sidebar", "page-top-tab-item", "filter", "table", "button"]
+    }
+  ],
+  "overlayGrammars": [
+    {
+      "id": "generation.overlay.context-preserving-form",
+      "name": "현재 목록을 유지하는 등록·편집 슬라이드",
+      "confidence": "repeated",
+      "evidenceCount": 23,
+      "surfaceSequence": ["side-slide-panel"],
+      "useWhen": ["목록을 떠나지 않고 신규 등록·편집을 수행할 때", "기본정보 뒤에 세부 목록이나 커스텀 정보가 이어질 때"],
+      "doNotUseWhen": ["대상을 먼저 검색·선택해야 할 때", "짧은 확인만 필요할 때", "양쪽 자료를 비교해야 할 때"],
+      "shellRef": "shell.side-slide-panel",
+      "recipeRefs": ["recipe.side-slide-form-editable-list", "popup.side.add-list", "popup.side.custom-columns", "popup.side.inspection-items", "popup.side.time-records"],
+      "requiredBehaviors": ["dismiss.restore-committed"],
+      "evidenceFlowIds": [
+        "flow.sales-target-create", "flow.sales-plan-create", "flow.product-purchase-create", "flow.production-target-create", "flow.production-plan-create", "flow.production-order-create", "flow.operation-log-create", "flow.label-create", "flow.purchase-order-create", "flow.emergency-shipment-create", "flow.incoming-inspection-start", "flow.maintenance-create", "flow.equipment-inspection-create", "flow.partner-create", "flow.item-create", "flow.bom-create", "flow.special-price-create", "flow.warehouse-create", "flow.equipment-create", "flow.process-create", "flow.form-create", "flow.user-create", "flow.permission-group-create"
+      ]
+    },
+    {
+      "id": "generation.overlay.bounded-selection",
+      "name": "검색·선택·반환 중앙 팝업",
+      "confidence": "repeated",
+      "evidenceCount": 4,
+      "surfaceSequence": ["center-modal"],
+      "useWhen": ["현재 작업에 사용할 대상을 제한된 범위에서 검색·선택할 때", "선택 결과를 원래 화면으로 반환할 때"],
+      "doNotUseWhen": ["여러 섹션을 길게 편집할 때", "목록 맥락을 유지한 채 등록해야 할 때"],
+      "shellRef": "shell.center-modal",
+      "recipeRefs": ["recipe.center-modal-search-table", "popup.center.table"],
+      "requiredBehaviors": ["selection.enable-actions", "dismiss.restore-committed"],
+      "evidenceFlowIds": ["flow.self-inspection-create", "flow.inventory-edit", "flow.shipment-result-create", "flow.process-inspection-create"]
+    },
+    {
+      "id": "generation.overlay.select-then-register",
+      "name": "대상 선택 후 등록 슬라이드",
+      "confidence": "repeated",
+      "evidenceCount": 2,
+      "surfaceSequence": ["center-modal", "side-slide-panel"],
+      "useWhen": ["등록할 업무가 기존 지시·발주 같은 선행 대상을 반드시 필요로 할 때"],
+      "doNotUseWhen": ["선행 대상 없이 직접 등록할 수 있을 때", "선택만 하고 종료할 때"],
+      "shellRef": null,
+      "recipeRefs": ["recipe.center-modal-search-table", "recipe.side-slide-form-editable-list"],
+      "requiredBehaviors": ["selection.enable-actions", "dismiss.restore-committed"],
+      "evidenceFlowIds": ["flow.production-result-create", "flow.receiving-create"]
+    },
+    {
+      "id": "generation.overlay.bounded-analysis",
+      "name": "현재 업무를 보조하는 중앙 분석 팝업",
+      "confidence": "single-case",
+      "evidenceCount": 1,
+      "surfaceSequence": ["center-modal"],
+      "useWhen": ["전체 분석 메뉴로 이동하지 않고 현재 대상의 계산·비교 결과를 일시적으로 확인할 때"],
+      "doNotUseWhen": ["반복 등록 폼일 때", "선택 결과를 반환하는 것이 목적일 때"],
+      "shellRef": "shell.center-modal",
+      "recipeRefs": ["popup.center.form", "popup.center.table"],
+      "requiredBehaviors": ["dismiss.restore-committed"],
+      "evidenceFlowIds": ["flow.bom-stock-analysis"]
+    }
+  ],
+  "sectionRecipes": [
+    {
+      "id": "generation.section.basic-detail-list",
+      "name": "기본정보·업무정보·상세목록",
+      "confidence": "repeated",
+      "evidenceCount": 13,
+      "sectionOrder": ["basic-information", "domain-information", "detail-list"],
+      "patternRefs": ["frame.standard-section", "section.form-grid", "section.editable-row-list"],
+      "useWhen": ["등록 단위의 공통 필드와 반복되는 품목·수량·상세 행이 함께 있을 때"],
+      "evidenceFlowIds": ["flow.sales-target-create", "flow.sales-plan-create", "flow.product-purchase-create", "flow.production-target-create", "flow.production-plan-create", "flow.production-order-create", "flow.production-result-create", "flow.purchase-order-create", "flow.receiving-create", "flow.emergency-shipment-create", "flow.maintenance-create", "flow.bom-create", "flow.process-create"]
+    },
+    {
+      "id": "generation.section.basic-custom-information",
+      "name": "기본정보·커스텀 정보",
+      "confidence": "repeated",
+      "evidenceCount": 5,
+      "sectionOrder": ["basic-information", "custom-information"],
+      "patternRefs": ["frame.standard-section", "section.form-grid"],
+      "useWhen": ["마스터 데이터의 표준 필드와 사용자 정의 필드를 나눠 편집할 때"],
+      "evidenceFlowIds": ["flow.partner-create", "flow.item-create", "flow.warehouse-create", "flow.equipment-create", "flow.user-create"]
+    },
+    {
+      "id": "generation.section.inspection-items",
+      "name": "기본정보·검사항목",
+      "confidence": "repeated",
+      "evidenceCount": 3,
+      "sectionOrder": ["basic-information", "inspection-items"],
+      "patternRefs": ["section.form-grid", "section.inspection-items"],
+      "useWhen": ["검사 기준 또는 검사항목별 판정 입력이 업무의 중심일 때"],
+      "evidenceFlowIds": ["flow.incoming-inspection-start", "flow.equipment-inspection-create", "flow.form-create"]
+    },
+    {
+      "id": "generation.section.time-records",
+      "name": "시간표·가동기록·비가동시간",
+      "confidence": "single-case",
+      "evidenceCount": 1,
+      "sectionOrder": ["timetable", "operation-records", "downtime"],
+      "patternRefs": ["popup.side.time-records", "section.editable-row-list"],
+      "useWhen": ["시간 구간과 가동·비가동 기록을 하나의 편집 흐름에서 관리할 때"],
+      "evidenceFlowIds": ["flow.operation-log-create"]
+    }
+  ],
+  "behaviorRules": [
+    {
+      "id": "generation.behavior.dismiss-restores",
+      "confidence": "system-rule",
+      "useWhen": ["저장 전 편집 상태를 가진 팝업"],
+      "behaviorRefs": ["dismiss.restore-committed"],
+      "rule": "취소·X·Esc·backdrop은 같은 dismiss 경로를 사용하고 저장 전 상태를 폐기한다."
+    },
+    {
+      "id": "generation.behavior.selection-controls-actions",
+      "confidence": "system-rule",
+      "useWhen": ["행 선택이 다음 동작의 대상 범위를 결정할 때"],
+      "behaviorRefs": ["selection.enable-actions"],
+      "rule": "선택 상태에서 버튼 활성화, 행 배경, 편집 컨트롤 노출을 파생한다."
+    },
+    {
+      "id": "generation.behavior.precondition-before-lookup",
+      "confidence": "single-case",
+      "useWhen": ["조회에 반드시 필요한 선행 값이 있을 때"],
+      "behaviorRefs": [],
+      "rule": "선행 값이 없으면 빈 조회 팝업을 열지 않고 현재 맥락에서 오류를 설명한다.",
+      "evidenceConnectionIds": ["connection.product-purchase.lookup-warning"]
+    }
+  ],
+  "coverage": {
+    "observedPages": 42,
+    "observedPrimaryFlows": 30,
+    "repeatedPageArchetypes": 2,
+    "singleCasePageArchetypes": 2,
+    "repeatedOverlayGrammars": 3,
+    "singleCaseOverlayGrammars": 1,
+    "remainingObservation": [
+      "선택 행이 있어야 활성화되는 편집·출력·승인 흐름",
+      "선행 입력 뒤 열리는 조건부 중첩 팝업",
+      "행별 링크와 상세 팝업의 반복 유형"
+    ]
+  }
+}

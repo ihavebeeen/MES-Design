@@ -10,9 +10,12 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
 ## Workflow
 
 1. Read `AGENTS.override.md`, then read `references/repository-contract.md`. For a deterministic template request, also read `references/templates.md`.
-2. If the `mes-ui` MCP server is connected, call `mes_list_design_system` to inspect the closest registered assets. Otherwise inspect `getImplementationContext(screenId)` in `component-library/src/design-system/registry/index.ts`.
-3. If a Figma node exists, inspect its metadata and design context before editing code. Treat unmeasured visual guesses as review notes, never facts.
-4. Write a `ScreenRequest` JSON that conforms to `component-library/src/design-system/registry/screen-request.schema.json`. Keep prototype request and contract files under the Git-ignored `component-library/.mes-ui-preview/<request-id>/` directory. When the nearest screen has a registered ScreenSpec, preserve its ordered `composition.sections`; do not reduce it back to an unordered `sectionRefs` list.
+2. Classify the request intent before retrieving examples. If the `mes-ui` MCP server is connected, call `mes_list_design_system`, then:
+   - for `new`, call `mes_get_web_generation_context` with the 업무명 or closest menu. It returns repeated page, overlay, section, and behavior grammar without Figma audit data;
+   - for `reproduce`, `normalize`, or `audit`, call `mes_get_reproduction_audit_context` to retrieve the specific runtime and Figma comparison evidence.
+   When MCP is unavailable, use `getWebGenerationContext` or `getReproductionAuditContext` from `component-library/src/design-system/registry/index.ts`.
+3. For `new`, choose the 업무 결과, page/overlay role, grammar, ordered sections, and behaviors before looking for a visually similar finished Figma screen. Inspect Figma only when the user supplied a reference or a visual constraint needs source evidence. For `reproduce`, inspect the target node metadata and design context before editing code. Treat unmeasured visual guesses as review notes, never facts.
+4. Write a `ScreenRequest` JSON that conforms to `component-library/src/design-system/registry/screen-request.schema.json`. A `new` request must record the selected `webContext.pageArchetypeRef` or `webContext.overlayGrammarRef` and any ordered `webContext.sectionRecipeRefs`; the resolver blocks missing or incompatible grammar. Keep prototype request and contract files under the Git-ignored `component-library/.mes-ui-preview/<request-id>/` directory. When the nearest screen has a registered ScreenSpec, preserve its ordered `composition.sections`; do not reduce it back to an unordered `sectionRefs` list.
    Set `output.route` to `/preview/<request-id>` so the generated screen receives a local-only preview URL.
 5. Resolve it before JSX. Prefer `mes_resolve_screen`; use the CLI only when MCP is unavailable:
 
@@ -47,6 +50,8 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
 ## Selection rules
 
 - Start from `nearestScreenId` whenever an applicable registered screen exists.
+- For source-less `new` requests, use `web-generation-context.json` as the actual-web composition guide. Do not feed `web-figma-reconciliation.json` or incomplete verification counts into generation.
+- `repeated` web grammar can guide composition. `single-case` grammar is a nearest example and cannot become a default without another evidence case or explicit approval.
 - Reuse a shell, section pattern, behavior pattern, and action set before considering a new composition.
 - Preserve business hierarchy, information order, copy, and interaction semantics from the source.
 - Normalize accidental 3px, 9px, 13px, or isolated styling only after classifying it as an inconsistency with evidence. Do not silently normalize intentional exceptions.

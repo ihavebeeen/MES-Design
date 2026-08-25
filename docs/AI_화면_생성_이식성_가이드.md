@@ -9,7 +9,7 @@
 | 단계 | 현재 상태 | 의미 |
 |---|---|---|
 | AI 작업 규칙 발견 | 구현됨 | `AGENTS.override.md`와 repo Skill을 Git으로 공유 |
-| AI 도구 인터페이스 | 구현됨 | Codex·Claude Code가 같은 로컬 `mes-ui` MCP 도구 6개를 호출 |
+| AI 도구 인터페이스 | 구현됨 | Codex·Claude Code가 같은 로컬 `mes-ui` MCP 도구 7개를 호출 |
 | 화면 조합 선택 | 검증됨 | 같은 요청·같은 커밋에서 같은 shell/section/behavior/action/component refs와 fingerprint 생성 |
 | 구현 위반 탐지 | 구현됨 | 원시 HTML 상호작용, 잘못된 셸, 미등록 UI import, no-op handler, 임의 px를 severity별 탐지 |
 | TSX 코드 동일성 | 확장 검증됨 | 우측 슬라이드와 중앙 검색 테이블은 stable 결정형 생성, 페이지 엔티티 목록은 provisional 결정형 생성 |
@@ -24,7 +24,7 @@
 3. `component-library`에서 `npm ci`를 실행합니다.
 4. Codex는 `.codex/config.toml`, Claude Code는 `.mcp.json`에 등록된 로컬 `mes-ui` MCP를 발견합니다. 복제한 프로젝트는 임의 코드를 실행하지 못하도록 최초 1회 신뢰 및 MCP 승인이 필요합니다.
 5. Codex는 `.agents/skills/generate-mes-ui`를 저장소 Skill로 자동 발견합니다. Claude Code는 `CLAUDE.md`, Cursor는 `.cursor/rules/mes-ui.mdc`, GitHub Copilot은 `.github/copilot-instructions.md`를 통해 같은 공통 정책과 Skill로 진입합니다.
-6. AI가 MCP의 `mes_list_design_system` → `mes_get_web_usage_context` → `mes_resolve_screen` → `mes_generate_screen` → `mes_audit_screen` 순서로 작업합니다. 실제 웹 관찰값은 후보 선택 근거이며 Figma와 승인 규칙보다 우선하지 않습니다. MCP가 없는 클라이언트에서는 아래 CLI가 같은 엔진을 실행합니다.
+6. 신규 UI는 `mes_list_design_system` → `mes_get_web_generation_context` → `mes_resolve_screen` → `mes_generate_screen` → `mes_audit_screen` 순서로 작업합니다. 기존 화면 재현·정규화·감사에서만 `mes_get_reproduction_audit_context`를 추가로 호출합니다. MCP가 없는 클라이언트에서는 아래 CLI가 같은 엔진을 실행합니다.
 
 ```bash
 cd component-library
@@ -45,7 +45,8 @@ npm run screen:generate -- .mes-ui-preview/example/contract.json --preview
 `component-library/scripts/mes-ui-mcp-server.mjs`는 별도 클라우드나 상시 웹 서버가 아닙니다. Codex 또는 Claude Code가 프로젝트에서 Node 프로세스로 시작하고, 표준 입출력으로만 호출한 뒤 클라이언트 종료 시 함께 종료되는 로컬 도구입니다.
 
 - `mes_list_design_system`: 등록 컴포넌트·패턴·화면·생성 템플릿 조회
-- `mes_get_web_usage_context`: 실제 개발 MES에서 관찰한 메뉴·팝업 진입·연결 구조 조회. 표준값이 아닌 대조 근거
+- `mes_get_web_generation_context`: 원본 없는 신규 UI에 사용할 실제 웹 반복 조합 문법 조회
+- `mes_get_reproduction_audit_context`: 기존 화면의 실제 웹·Figma·불일치·검증 상태 조회
 - `mes_resolve_screen`: ScreenRequest를 결정형 계약으로 해석
 - `mes_generate_screen`: 지원 템플릿의 TSX와 개별 localhost 미리보기 페이지를 Git-ignored 임시 경로에 생성하고 즉시 감사
 - `mes_audit_screen`: 기존 TSX/JSX를 요청 계약과 레지스트리에 대조
@@ -60,13 +61,14 @@ npm run mcp:check
 ## ScreenRequest 작성 순서
 
 1. `intent`: 원본 재현인지, 신규 생성인지, 정규화인지, 감사인지 선택합니다.
-2. `target.kind`: page / center-modal / side-slide-panel / confirm-dialog 중 업무 맥락에 맞는 셸을 선택합니다.
-3. `nearestScreenId`: 가장 가까운 기존 업무 흐름을 선택합니다.
-4. 기존 화면과 다른 부분만 `composition`에서 override합니다. 빈 객체이면 기준 화면의 조합을 그대로 상속합니다.
+2. 신규 생성은 `webContext`에 선택한 page archetype 또는 overlay grammar와 section recipe를 기록합니다. 누락되거나 target과 맞지 않으면 resolver가 차단합니다.
+3. `target.kind`: page / center-modal / side-slide-panel / confirm-dialog 중 업무 맥락에 맞는 셸을 선택합니다.
+4. `nearestScreenId`: 가장 가까운 기존 업무 흐름을 선택합니다.
+5. 기존 화면과 다른 부분만 `composition`에서 override합니다. 빈 객체이면 기준 화면의 조합을 그대로 상속합니다.
    - 대표 ScreenSpec이 있는 화면은 순서형 `composition.sections`를 상속합니다.
    - `sectionRefs`는 이 구조에서 파생되는 호환 요약이며 섹션 순서를 임의로 다시 정하는 근거가 아닙니다.
-5. 자연어 요구사항은 `requirements`에 업무 상태와 결과 중심으로 적습니다.
-6. 원본 재현은 `evidence.figmaNode`가 없으면 resolver blocker가 됩니다.
+6. 자연어 요구사항은 `requirements`에 업무 상태와 결과 중심으로 적습니다.
+7. 원본 재현은 `evidence.figmaNode`가 없으면 resolver blocker가 됩니다.
 
 예제는 `component-library/tests/fixtures/screen-requests/receiving-side-panel.json`에 있습니다.
 

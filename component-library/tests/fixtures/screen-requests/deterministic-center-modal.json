@@ -10,6 +10,10 @@
     "nearestScreenId": "batch-work-order",
     "viewport": { "width": 1440, "height": 900 }
   },
+  "webContext": {
+    "overlayGrammarRef": "generation.overlay.bounded-selection",
+    "sectionRecipeRefs": []
+  },
   "composition": {
     "recipeRefs": ["recipe.center-modal-search-table"],
     "sections": [

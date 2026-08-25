@@ -40,6 +40,19 @@
         "notes": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
       }
     },
+    "webContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pageArchetypeRef": { "type": "string", "pattern": "^generation\\.page\\.[a-z0-9-]+$" },
+        "overlayGrammarRef": { "type": "string", "pattern": "^generation\\.overlay\\.[a-z0-9-]+$" },
+        "sectionRecipeRefs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^generation\\.section\\.[a-z0-9-]+$" },
+          "uniqueItems": true
+        }
+      }
+    },
     "composition": {
       "type": "object",
       "additionalProperties": false,

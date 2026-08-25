@@ -10,7 +10,8 @@
 
 - 화면, 팝업, 테이블 흐름을 생성하거나 수정할 때 `.agents/skills/generate-mes-ui/SKILL.md`를 먼저 따른다.
 - `mes-ui` MCP가 연결되어 있으면 등록 자산 조회, 계약 해석, 결정형 생성, 구현 감사에 해당 MCP 도구를 우선 사용한다. MCP가 없을 때만 동일 기능의 npm 명령을 사용한다.
-- 가장 가까운 메뉴명이나 화면 ID로 `mes_get_web_usage_context`를 조회해 실제 사용 위치와 연결 흐름을 확인한다. 반환값은 `observed-not-canonical` 근거이므로 Figma·승인 규칙보다 우선하지 않는다.
+- `intent: new`에서는 업무명이나 가장 가까운 메뉴명으로 `mes_get_web_generation_context`를 조회한다. 반복된 실제 웹 조합 문법만 생성에 사용하고 Figma 대조·미검증 수치는 읽지 않는다.
+- `intent: reproduce | normalize | audit`에서만 `mes_get_reproduction_audit_context`를 조회해 특정 화면의 실제 웹·Figma·불일치 근거를 확인한다.
 - 자연어 또는 Figma를 바로 JSX로 옮기지 않는다. 먼저 `ScreenRequest`를 만들고 `npm run screen:resolve`로 계약을 확정한다.
 - 가장 가까운 등록 화면의 `getImplementationContext(screenId)`를 기준으로 시작한다.
 - 가장 가까운 화면에 `screen-specs.json` 명세가 있으면 순서형 `composition.sections`를 보존한다. 평면 `sectionRefs`만 보고 섹션을 재배치하지 않는다.
@@ -19,7 +20,8 @@
 
 ## 근거와 정규화
 
-- Figma 원본이 있으면 콘텐츠, 위계, 상태, 배치, 측정값을 먼저 대조한다.
+- 신규 UI는 업무 결과와 실제 웹 조합 문법을 먼저 선택한다. 시각적으로 비슷한 완성 Figma 화면을 먼저 찾아 조합을 결정하지 않는다.
+- 기존 화면 재현은 Figma의 콘텐츠, 위계, 상태, 배치, 측정값을 먼저 대조한다.
 - 실제 웹은 반복 사용 위치와 연결 구조를 찾는 근거로만 사용한다. 개발 웹의 단일 구현값을 컴포넌트 기본값이나 표준 셸로 자동 승격하지 않는다.
 - 3px/9px/13px 같은 고립값이나 유사 화면 사이 불일치는 자동으로 원본 또는 오류라고 단정하지 않는다. `source-error`, `implementation-error`, `intentional-exception`, `normalization-candidate` 중 하나로 판정 근거를 남긴다.
 - 셸 종류, 섹션 순서, 링크/배지 의미, 선택 상태와 입력 전환 같은 맥락은 시각적 유사성보다 우선한다.
