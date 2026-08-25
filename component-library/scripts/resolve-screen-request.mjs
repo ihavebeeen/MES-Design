@@ -45,6 +45,7 @@ export function readRegistryBundle() {
   const patternContracts = readJson(join(registryDirectory, "pattern-contracts.json"));
   const screenSpecs = readJson(join(registryDirectory, "screen-specs.json"));
   const webUiUsageInventory = readJson(join(registryDirectory, "web-ui-usage-inventory.json"));
+  const webFigmaReconciliation = readJson(join(registryDirectory, "web-figma-reconciliation.json"));
 
   return {
     components: components.components,
@@ -58,6 +59,7 @@ export function readRegistryBundle() {
     patternContracts: patternContracts.contracts,
     screenSpecs: screenSpecs.specs,
     webUiUsageInventory,
+    webFigmaReconciliation,
   };
 }
 
@@ -199,6 +201,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     )
     : [];
   const observedFlowIds = new Set(observedEntryFlows.map((flow) => flow.id));
+  const figmaReconciliationPages = registry.webFigmaReconciliation.pages.filter((page) => observedPageIds.has(page.pageId));
   const observedSearchTerms = unique([request?.target?.nearestScreenId, nearestScreen?.name]).map((value) => value.toLocaleLowerCase("ko-KR"));
   const observedDiscrepancies = registry.webUiUsageInventory.discrepancies.filter((entry) => {
     const serialized = JSON.stringify(entry).toLocaleLowerCase("ko-KR");
@@ -361,6 +364,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       patternContracts: registry.patternContracts,
       screenSpecs: registry.screenSpecs,
       webUiUsageInventory: registry.webUiUsageInventory,
+      webFigmaReconciliation: registry.webFigmaReconciliation,
     }),
     baseScreen: nearestScreen ?? null,
     baseScreenSpec: nearestScreenSpec ?? null,
@@ -390,6 +394,13 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
         entryFlows: observedEntryFlows,
         connectedObservations: registry.webUiUsageInventory.connectedObservations.filter((entry) => observedFlowIds.has(entry.fromFlowId)),
         discrepancies: observedDiscrepancies,
+        figmaReconciliation: {
+          status: registry.webFigmaReconciliation.status,
+          authorityRules: registry.webFigmaReconciliation.authorities.rules,
+          pages: figmaReconciliationPages,
+          structuralFindings: registry.webFigmaReconciliation.structuralFindings,
+          coverage: registry.webFigmaReconciliation.coverage,
+        },
       },
     },
     decisionTrace,

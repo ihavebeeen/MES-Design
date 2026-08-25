@@ -24,6 +24,7 @@ import componentUsageContractData from "./component-usage-contracts.json";
 import patternContractData from "./pattern-contracts.json";
 import screenSpecData from "./screen-specs.json";
 import webUiUsageInventoryData from "./web-ui-usage-inventory.json";
+import webFigmaReconciliationData from "./web-figma-reconciliation.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -51,6 +52,7 @@ import type {
   PatternUsageContractRegistry,
   ScreenSpecRegistry,
   WebUiUsageInventoryRegistry,
+  WebFigmaReconciliationRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -80,6 +82,7 @@ export const componentUsageContractRegistry = componentUsageContractData as Comp
 export const patternUsageContractRegistry = patternContractData as PatternUsageContractRegistry;
 export const screenSpecRegistry = screenSpecData as ScreenSpecRegistry;
 export const webUiUsageInventoryRegistry = webUiUsageInventoryData as WebUiUsageInventoryRegistry;
+export const webFigmaReconciliationRegistry = webFigmaReconciliationData as WebFigmaReconciliationRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);
@@ -136,6 +139,11 @@ export function getWebUsageContext(reference: string) {
       || (normalized !== "" && matches(flow)),
   );
   const flowIds = new Set(flows.map((flow) => flow.id));
+  const reconciliationPages = webFigmaReconciliationRegistry.pages.filter((page) =>
+    pageIds.has(page.pageId)
+      || page.pageId === reference
+      || (normalized !== "" && matches(page)),
+  );
   return {
     authority: webUiUsageInventoryRegistry.usagePolicy.authority,
     usageRules: webUiUsageInventoryRegistry.usagePolicy.rules,
@@ -145,6 +153,13 @@ export function getWebUsageContext(reference: string) {
       flowIds.has(item.fromFlowId) || (normalized !== "" && matches(item)),
     ),
     discrepancies: webUiUsageInventoryRegistry.discrepancies.filter((item) => normalized !== "" && matches(item)),
+    figmaReconciliation: {
+      status: webFigmaReconciliationRegistry.status,
+      authorityRules: webFigmaReconciliationRegistry.authorities.rules,
+      pages: reconciliationPages,
+      structuralFindings: webFigmaReconciliationRegistry.structuralFindings,
+      coverage: webFigmaReconciliationRegistry.coverage,
+    },
   };
 }
 
@@ -183,6 +198,7 @@ export function getGenerationContext() {
     rules: contextRuleRegistry.rules,
     holds: contextRuleRegistry.holds,
     observedWebUsage: webUiUsageInventoryRegistry,
+    webFigmaReconciliation: webFigmaReconciliationRegistry,
   };
 }
 

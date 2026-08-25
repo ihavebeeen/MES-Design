@@ -65,6 +65,9 @@ try {
   assert(catalog.counts.screenSpecs === 3, "순서형 ScreenSpec 개수가 예상과 다릅니다.");
   assert(catalog.counts.observedWebPages === 42, "실제 웹 관찰 페이지 수가 예상과 다릅니다.");
   assert(catalog.counts.observedWebEntryFlows === 30, "실제 웹 관찰 진입 흐름 수가 예상과 다릅니다.");
+  assert(catalog.counts.figmaSourceLocatedLatest === 38, "최신 Figma 원본 위치 확인 수가 예상과 다릅니다.");
+  assert(catalog.counts.figmaSourceLocatedRevision === 3, "후속 수정 Figma 원본 위치 확인 수가 예상과 다릅니다.");
+  assert(catalog.counts.figmaSourceNotLocated === 1, "Figma 원본 위치 미확인 수가 예상과 다릅니다.");
   assert(catalog.componentUsageContracts.some((entry) => entry.componentId === "side-slide-panel" && entry.useWhen.length > 0), "MCP 목록이 컴포넌트 사용 계약 상세를 반환하지 않았습니다.");
   assert(catalog.patternContracts.some((entry) => entry.patternId === "shell.side-slide-panel" && entry.slots.length > 0), "MCP 목록이 패턴 슬롯 계약 상세를 반환하지 않았습니다.");
   assert(catalog.counts.mobileAssets > 0, "모바일 자산이 MCP 목록에 포함되지 않았습니다.");
@@ -75,12 +78,15 @@ try {
   assert(webUsage.authority === "observed-not-canonical", "실제 웹 관찰값이 표준값으로 잘못 노출됐습니다.");
   assert(webUsage.pages.some((entry) => entry.id === "web.production-result"), "생산실적 실제 웹 페이지 맥락을 찾지 못했습니다.");
   assert(webUsage.entryFlows.some((entry) => entry.id === "flow.production-result-create"), "생산실적 등록 진입 흐름을 찾지 못했습니다.");
+  assert(webUsage.figmaReconciliation.coverage.runtimePages === 42, "Figma 대조 대상 실제 웹 페이지 수가 예상과 다릅니다.");
+  assert(webUsage.figmaReconciliation.pages.some((entry) => entry.pageId === "web.production-result"), "생산실적 Figma 대조 근거를 찾지 못했습니다.");
 
   const contract = structured(await client.callTool({ name: "mes_resolve_screen", arguments: { request } }));
   assert(contract.quality.status === "release-ready", `계약 상태가 release-ready가 아닙니다: ${contract.quality.status}`);
   assert(contract.decisionTrace?.shell?.selectedId === "shell.side-slide-panel", "Resolver decision trace에 선택 셸이 없습니다.");
   assert(contract.decisionTrace?.sections?.length === 3, "Resolver decision trace의 순서형 섹션이 예상과 다릅니다.");
   assert(contract.implementation?.observedWebUsage?.authority === "observed-not-canonical", "Resolver가 실제 웹 관찰 근거의 권한을 표시하지 않았습니다.");
+  assert(contract.implementation?.observedWebUsage?.figmaReconciliation?.pages?.length > 0, "Resolver가 실제 웹과 Figma의 대조 근거를 전달하지 않았습니다.");
 
   const generatedResult = await client.callTool({
     name: "mes_generate_screen",

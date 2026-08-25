@@ -233,6 +233,45 @@ export interface WebUiUsageInventoryRegistry {
   };
 }
 
+export type WebFigmaSourceClassification =
+  | "source-located-latest"
+  | "source-located-revision"
+  | "source-not-located";
+
+export interface WebFigmaReconciliationRegistry {
+  schemaVersion: 1;
+  status: "reference-in-progress";
+  auditedAt: string;
+  scope: string;
+  authorities: {
+    canonicalFigmaPage: { fileKey: string; pageId: string; name: string };
+    historicalFigmaPage: { fileKey: string; pageId: string; name: string };
+    runtimeInventory: string;
+    rules: string[];
+  };
+  classifications: Record<WebFigmaSourceClassification, string>;
+  pages: Array<{
+    pageId: string;
+    classification: WebFigmaSourceClassification;
+    figmaEvidence: Array<{ nodeId: string; name: string; role: string }>;
+    notes: string[];
+  }>;
+  structuralFindings: Array<{
+    id: string;
+    classification: "needs-reconciliation" | "comparison-constraint" | "runtime-supplement" | "authority-constraint";
+    detail: string;
+  }>;
+  coverage: {
+    runtimePages: number;
+    sourceLocatedLatest: number;
+    sourceLocatedRevision: number;
+    sourceNotLocated: number;
+    pixelVerified: number;
+    interactionVerifiedAgainstFigma: number;
+  };
+  remaining: string[];
+}
+
 export type ScreenRequestIntent = "reproduce" | "new" | "normalize" | "audit";
 export type ScreenTargetKind = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
 export type NormalizationClassification = "source-error" | "implementation-error" | "intentional-exception" | "normalization-candidate";

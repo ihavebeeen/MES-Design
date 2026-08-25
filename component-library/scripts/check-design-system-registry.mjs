@@ -31,6 +31,7 @@ const componentUsageContractRegistry = readJson("component-usage-contracts.json"
 const patternContractRegistry = readJson("pattern-contracts.json");
 const screenSpecRegistry = readJson("screen-specs.json");
 const webUiUsageInventoryRegistry = readJson("web-ui-usage-inventory.json");
+const webFigmaReconciliationRegistry = readJson("web-figma-reconciliation.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -84,6 +85,7 @@ checkVersion("component-usage-contracts", componentUsageContractRegistry);
 checkVersion("pattern-contracts", patternContractRegistry);
 checkVersion("screen-specs", screenSpecRegistry);
 checkVersion("web-ui-usage-inventory", webUiUsageInventoryRegistry);
+checkVersion("web-figma-reconciliation", webFigmaReconciliationRegistry);
 
 const mobileAssets = new Set([
   ...(mobileAssetRegistry.foundations ?? []).map((entry) => entry.id),
@@ -301,6 +303,36 @@ if (webUiUsageInventoryRegistry.coverage?.mainMenuPagesObserved !== webUsagePage
 if (webUiUsageInventoryRegistry.coverage?.primaryEntryFlowsObserved !== webUsageFlows.size) errors.push("web-ui-usage-inventory: coverage.primaryEntryFlowsObserved가 entryFlows 개수와 다릅니다.");
 if (webUiUsageInventoryRegistry.coverage?.connectedResultsObserved !== webUsageConnections.size) errors.push("web-ui-usage-inventory: coverage.connectedResultsObserved가 connectedObservations 개수와 다릅니다.");
 if (!Array.isArray(webUiUsageInventoryRegistry.coverage?.remaining) || webUiUsageInventoryRegistry.coverage.remaining.length === 0) errors.push("web-ui-usage-inventory: in-progress 상태에는 remaining이 필요합니다.");
+
+const allowedFigmaSourceClassifications = new Set(["source-located-latest", "source-located-revision", "source-not-located"]);
+const webFigmaPages = new Map();
+for (const page of webFigmaReconciliationRegistry.pages ?? []) {
+  if (!page.pageId) errors.push("web-figma-reconciliation: pageId가 없는 항목이 있습니다.");
+  else if (webFigmaPages.has(page.pageId)) errors.push(`web-figma-reconciliation: 중복 pageId '${page.pageId}'`);
+  else webFigmaPages.set(page.pageId, page);
+  if (!allowedFigmaSourceClassifications.has(page.classification)) errors.push(`web-figma-reconciliation '${page.pageId}': 알 수 없는 classification '${page.classification}'`);
+  if (!Array.isArray(page.figmaEvidence) || !Array.isArray(page.notes)) errors.push(`web-figma-reconciliation '${page.pageId}': figmaEvidence와 notes 배열이 필요합니다.`);
+  if (page.classification === "source-not-located" && page.figmaEvidence?.length !== 0) errors.push(`web-figma-reconciliation '${page.pageId}': source-not-located에는 Figma evidence가 없어야 합니다.`);
+  if (page.classification !== "source-not-located" && page.figmaEvidence?.length === 0) errors.push(`web-figma-reconciliation '${page.pageId}': 원본 위치 확인 상태에는 Figma evidence가 필요합니다.`);
+  for (const evidence of page.figmaEvidence ?? []) {
+    if (!/^\d+:\d+$/.test(evidence.nodeId ?? "") || !evidence.name || !evidence.role) errors.push(`web-figma-reconciliation '${page.pageId}': Figma evidence 형식이 잘못되었습니다.`);
+  }
+}
+if (webFigmaReconciliationRegistry.status !== "reference-in-progress") errors.push("web-figma-reconciliation: status는 reference-in-progress여야 합니다.");
+if (!/^\d{4}-\d{2}-\d{2}$/.test(webFigmaReconciliationRegistry.auditedAt ?? "")) errors.push("web-figma-reconciliation: auditedAt은 YYYY-MM-DD 형식이어야 합니다.");
+if (!/^\d+:\d+$/.test(webFigmaReconciliationRegistry.authorities?.canonicalFigmaPage?.pageId ?? "")) errors.push("web-figma-reconciliation: canonical Figma page ID가 필요합니다.");
+if (!/^\d+:\d+$/.test(webFigmaReconciliationRegistry.authorities?.historicalFigmaPage?.pageId ?? "")) errors.push("web-figma-reconciliation: historical Figma page ID가 필요합니다.");
+if (!Array.isArray(webFigmaReconciliationRegistry.authorities?.rules) || webFigmaReconciliationRegistry.authorities.rules.length === 0) errors.push("web-figma-reconciliation: 권한 판단 규칙이 필요합니다.");
+if (!Array.isArray(webFigmaReconciliationRegistry.structuralFindings) || webFigmaReconciliationRegistry.structuralFindings.length === 0) errors.push("web-figma-reconciliation: 구조적 발견 사항이 필요합니다.");
+if (!Array.isArray(webFigmaReconciliationRegistry.remaining) || webFigmaReconciliationRegistry.remaining.length === 0) errors.push("web-figma-reconciliation: reference-in-progress 상태에는 remaining이 필요합니다.");
+for (const pageId of webUsagePages.keys()) if (!webFigmaPages.has(pageId)) errors.push(`web-figma-reconciliation: 실제 웹 page '${pageId}'의 대조 항목이 없습니다.`);
+for (const pageId of webFigmaPages.keys()) if (!webUsagePages.has(pageId)) errors.push(`web-figma-reconciliation: 미등록 실제 웹 page '${pageId}'를 참조합니다.`);
+const figmaClassificationCounts = Object.fromEntries([...allowedFigmaSourceClassifications].map((classification) => [classification, [...webFigmaPages.values()].filter((page) => page.classification === classification).length]));
+if (webFigmaReconciliationRegistry.coverage?.runtimePages !== webUsagePages.size) errors.push("web-figma-reconciliation: coverage.runtimePages가 실제 웹 pages 개수와 다릅니다.");
+if (webFigmaReconciliationRegistry.coverage?.sourceLocatedLatest !== figmaClassificationCounts["source-located-latest"]) errors.push("web-figma-reconciliation: coverage.sourceLocatedLatest가 분류 개수와 다릅니다.");
+if (webFigmaReconciliationRegistry.coverage?.sourceLocatedRevision !== figmaClassificationCounts["source-located-revision"]) errors.push("web-figma-reconciliation: coverage.sourceLocatedRevision이 분류 개수와 다릅니다.");
+if (webFigmaReconciliationRegistry.coverage?.sourceNotLocated !== figmaClassificationCounts["source-not-located"]) errors.push("web-figma-reconciliation: coverage.sourceNotLocated가 분류 개수와 다릅니다.");
+if (webFigmaReconciliationRegistry.coverage?.pixelVerified !== 0 || webFigmaReconciliationRegistry.coverage?.interactionVerifiedAgainstFigma !== 0) errors.push("web-figma-reconciliation: 이번 참고 대조에서는 픽셀·상호작용 검증을 0으로 유지해야 합니다.");
 
 for (const archetype of webUsageArchetypes.values()) {
   if (archetype.status !== "observed-not-canonical") errors.push(`web usage archetype '${archetype.id}': status가 잘못되었습니다.`);

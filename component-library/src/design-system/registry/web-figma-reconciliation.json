@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "status": "reference-in-progress",
+  "auditedAt": "2026-08-25",
+  "scope": "실제 MES 메뉴와 최신 Figma 원본 위치를 연결하는 참고 장부다. 시각 일치나 표준 승인을 의미하지 않는다.",
+  "authorities": {
+    "canonicalFigmaPage": { "fileKey": "F4n5Zr04PAbiRjfIFQAo6v", "pageId": "8247:18600", "name": "- 웹 화면설계서 (최종)" },
+    "historicalFigmaPage": { "fileKey": "F4n5Zr04PAbiRjfIFQAo6v", "pageId": "4431:20990", "name": "01. MES v2.0" },
+    "runtimeInventory": "web-ui-usage-inventory.json",
+    "rules": [
+      "최신 웹 화면설계서 페이지를 구형 MES v2.0 페이지보다 우선한다.",
+      "Figma node를 찾았다는 사실은 원본 위치 확인일 뿐 시각·동작 일치 검증을 뜻하지 않는다.",
+      "후속 수정 섹션은 기본 화면설계서보다 최신일 수 있으므로 같은 기능의 충돌을 별도 판정한다.",
+      "명시적 Figma 원본을 찾지 못한 실제 웹 화면은 runtime-only 표준으로 자동 승격하지 않는다.",
+      "2700×1500 화면설계서 프레임은 설명과 여백을 포함할 수 있어 브라우저 viewport와 직접 비교하지 않는다. 내부 실제 UI frame을 별도로 실측한다."
+    ]
+  },
+  "classifications": {
+    "source-located-latest": "최신 화면설계서의 메뉴 그룹에서 직접 원본 후보를 찾음",
+    "source-located-revision": "후속 수정 섹션에서만 원본 후보를 찾음",
+    "source-not-located": "최신 페이지에서 명시적인 화면 원본을 아직 찾지 못함"
+  },
+  "pages": [
+    { "pageId": "web.sales-target-month", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:27626", "name": "판매목표관리(월) 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.sales-plan-day", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:28350", "name": "판매목표관리(일) 리스트", "role": "list-screen" }], "notes": ["실제 웹은 판매계획관리(일), Figma 프레임은 판매목표관리(일)로 명칭이 달라 의미 대조가 필요하다."] },
+    { "pageId": "web.product-purchase", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:28580", "name": "구매관리(상품) 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.sales-management", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:28931", "name": "판매관리 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.receipt-management", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:28113", "name": "수금관리 리스트", "role": "list-screen" }], "notes": [] },
+
+    { "pageId": "web.production-target-month", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:27768", "name": "생산목표(월) 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.production-plan-day", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9156:29023", "name": "생산계획 리스트", "role": "list-screen" }], "notes": ["Figma 하위 등록 프레임 일부가 생산목표(일)로 표기되어 명칭 정리가 필요하다."] },
+    { "pageId": "web.production-order", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9156:28678", "name": "생산지시 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.production-result", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9156:28561", "name": "생산실적 리스트", "role": "list-screen" }], "notes": ["실제 웹은 작업 선택 중앙 모달 뒤 등록 슬라이드가 연결된다. 정적 원본과 연결 단계 대조가 필요하다."] },
+    { "pageId": "web.operation-log", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:26728", "name": "운전일지 리스트", "role": "list-screen" }, { "nodeId": "17303:45841", "name": "운전일지 개편", "role": "revision-section" }], "notes": ["메뉴 직접 진입과 생산실적 내부 진입의 Shell이 실제 웹에서 다르게 관찰됐다."] },
+    { "pageId": "web.self-inspection", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9156:29742", "name": "자주검사 리스트", "role": "list-screen" }], "notes": [] },
+
+    { "pageId": "web.inventory", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:27084", "name": "재고관리 리스트", "role": "list-screen" }], "notes": ["구형 MES v2.0 문서의 재고편집 Shell 표기와 최신 원본·실제 웹이 충돌하므로 구형 표기를 사용하지 않는다."] },
+    { "pageId": "web.label", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:27436", "name": "라벨관리 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.bom-query", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:29222", "name": "BOM 조회 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.material-input-analysis", "classification": "source-located-revision", "figmaEvidence": [{ "nodeId": "18181:123202", "name": "원료투입분석 재질별 버튼구성 → 메뉴레벨", "role": "revision-section" }], "notes": ["기본 메뉴 그룹에는 없고 3차 수정에서 독립 메뉴 변경 근거가 발견됐다."] },
+
+    { "pageId": "web.purchase-order", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:29458", "name": "발주등록 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.receiving", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:29807", "name": "입고등록 리스트", "role": "list-screen" }], "notes": ["실제 웹은 발주 선택 중앙 모달 뒤 입고 등록 슬라이드로 연결된다."] },
+    { "pageId": "web.shipment-order", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:30274", "name": "출하지시 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.shipment-result", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:30627", "name": "출하실적 리스트", "role": "list-screen" }], "notes": [] },
+
+    { "pageId": "web.incoming-inspection", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:32307", "name": "입고검사 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.outgoing-inspection", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:36246", "name": "출고검사 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.process-inspection", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39124", "name": "공정검사 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.inspection-trend", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39454", "name": "공정검사 경향관리", "role": "analysis-screen" }], "notes": [] },
+
+    { "pageId": "web.equipment-monitoring", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9138:9102", "name": "설비 모니터링", "role": "monitoring-screen" }], "notes": ["Figma 그룹에 PPT용 와이어프레임이 함께 있어 최종 디자인 프레임의 별도 판정이 필요하다."] },
+    { "pageId": "web.maintenance-history", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39620", "name": "정비이력관리 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.equipment-inspection", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39832", "name": "설비점검관리 리스트", "role": "list-screen" }], "notes": [] },
+
+    { "pageId": "web.lot-trace", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:40053", "name": "LOT 추적 리스트", "role": "trace-screen" }], "notes": [] },
+    { "pageId": "web.production-analysis", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:40379", "name": "생산분석 현황", "role": "analysis-screen" }], "notes": [] },
+    { "pageId": "web.equipment-operation-analysis", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:40549", "name": "설비 가동 분석 현황", "role": "analysis-screen" }], "notes": [] },
+    { "pageId": "web.forming-analysis", "classification": "source-located-revision", "figmaEvidence": [{ "nodeId": "18181:127915", "name": "성형/압출분석", "role": "revision-section" }], "notes": ["성형과 압출이 하나의 후속 수정 섹션에 함께 있다."] },
+    { "pageId": "web.extrusion-analysis", "classification": "source-located-revision", "figmaEvidence": [{ "nodeId": "18181:127915", "name": "성형/압출분석", "role": "revision-section" }], "notes": ["성형과 압출이 하나의 후속 수정 섹션에 함께 있다."] },
+    { "pageId": "web.kpi", "classification": "source-not-located", "figmaEvidence": [], "notes": ["최신 웹 화면설계서에서 KPI 또는 성과지표 명칭의 명시적 화면 원본을 찾지 못했다."] },
+
+    { "pageId": "web.partner", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:40925", "name": "거래처 등록 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.item", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:41055", "name": "품목 등록 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.bom", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9184:23132", "name": "BOM 등록 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.special-price", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9184:23262", "name": "특별 단가 등록 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.warehouse", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9184:23987", "name": "창고 등록 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.equipment", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9184:24260", "name": "설비 등록 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.process", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9184:24392", "name": "공정 등록 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.form", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9184:24585", "name": "양식 관리 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.user", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9184:24717", "name": "사용자 등록 리스트", "role": "list-screen" }], "notes": [] },
+    { "pageId": "web.permission", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "10968:38010", "name": "권한 설정 사용자 권한 리스트", "role": "list-screen" }], "notes": [] }
+  ],
+  "structuralFindings": [
+    {
+      "id": "figma.multiple-generations",
+      "classification": "needs-reconciliation",
+      "detail": "같은 파일에 구형 MES v2.0, 최신 웹 화면설계서, 3차 수정과 개별 요구사항 섹션이 함께 있다. 노드가 있다는 이유만으로 최신 원본으로 간주하면 안 된다."
+    },
+    {
+      "id": "figma.spec-frame-not-viewport",
+      "classification": "comparison-constraint",
+      "detail": "최신 기본 화면 프레임은 다수 2700×1500 화면설계서 형식이다. 설명과 여백을 제외한 내부 UI frame을 찾아야 실제 브라우저 viewport와 비교할 수 있다."
+    },
+    {
+      "id": "runtime.connected-states",
+      "classification": "runtime-supplement",
+      "detail": "Figma의 정적 프레임만으로는 작업 선택→등록 슬라이드 같은 연결 순서를 확정하기 어렵다. 실제 웹 클릭 흐름을 보조 근거로 사용한다."
+    },
+    {
+      "id": "runtime-not-canonical",
+      "classification": "authority-constraint",
+      "detail": "실제 웹에서만 발견된 구성은 신규 요구 반영일 수도, 구현 오류일 수도 있다. Figma 부재만으로 표준 승격하거나 제거하지 않는다."
+    }
+  ],
+  "coverage": {
+    "runtimePages": 42,
+    "sourceLocatedLatest": 38,
+    "sourceLocatedRevision": 3,
+    "sourceNotLocated": 1,
+    "pixelVerified": 0,
+    "interactionVerifiedAgainstFigma": 0
+  },
+  "remaining": [
+    "각 화면설계서 프레임 안의 실제 UI frame을 식별해 동일 viewport로 비교",
+    "팝업과 조건부 상태를 최신 기본안·후속 수정안·실제 웹 순서로 대조",
+    "명칭 충돌과 Shell 충돌을 화면별로 판정",
+    "KPI 화면의 Figma 원본 또는 신규 요구 근거 확인"
+  ]
+}

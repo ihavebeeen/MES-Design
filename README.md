@@ -193,6 +193,7 @@ MES-Design/
 - `component-library/src/design-system/registry/pattern-contracts.json`: 핵심 Shell·Section·Behavior의 슬롯·상태·스크롤·액션 계약
 - `component-library/src/design-system/registry/screen-specs.json`: 대표 화면의 순서형 SectionInstance와 동작 대상 명세
 - `component-library/src/design-system/registry/web-ui-usage-inventory.json`: 실제 개발 MES의 메뉴·팝업 진입·연결 구조 관찰 근거. 표준값이 아니라 Figma·승인 규칙과 대조할 사용 위치 자료
+- `component-library/src/design-system/registry/web-figma-reconciliation.json`: 실제 웹 42개 메뉴와 최신 Figma·후속 수정안의 원본 후보 위치를 연결한 참고 장부. 픽셀·동작 검증 상태는 별도로 유지
 - `component-library/src/design-system/registry/mobile-assets.json`: 모바일 원본 근거·컴포넌트·패턴·화면 유형 레지스트리
 - `component-library/src/design-system/registry/screen-request.schema.json`: 자연어를 JSX보다 먼저 고정하는 화면 요청 계약
 - `component-library/src/design-system/registry/generation-templates.json`: 결정적 TSX를 지원하는 Recipe와 필수 조합 레지스트리
@@ -436,6 +437,7 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 - [AI UI 조합 문법 공통 정책](./docs/AI_UI_조합_문법_공통정책.md)
 - [웹 UI 맥락 체계화 현황](./docs/웹_UI_맥락_체계화_현황.md)
 - [실제 MES 웹 UI 사용 맥락 인벤토리](./docs/실제_MES_웹_UI_사용_맥락_인벤토리.md)
+- [실제 MES 웹과 Figma 대조 참고](./docs/실제_MES_웹_Figma_대조_참고.md)
 - [웹 UI 전수검증 현황](./docs/웹_UI_전수검증_현황.md)
 - [AI UI 조합 인벤토리 1차](./docs/AI_UI_조합_인벤토리_1차.md)
 - [AI UI Shell·슬롯 감사 1차](./docs/AI_UI_Shell_슬롯_감사_1차.md)
