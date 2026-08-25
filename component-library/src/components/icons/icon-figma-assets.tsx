@@ -6,8 +6,19 @@ interface FigmaAssetIconProps extends Omit<React.ComponentProps<typeof Image>, "
   size?: number;
 }
 
-function AssetIcon({ src, size, className, ...props }: FigmaAssetIconProps & { src: string }) {
-  return <Image src={src} width={size} height={size} alt="" aria-hidden className={cn("block shrink-0 object-contain", className)} {...props} />;
+function AssetIcon({ src, size, className, style, ...props }: FigmaAssetIconProps & { src: string }) {
+  return (
+    <Image
+      src={src}
+      width={size}
+      height={size}
+      alt=""
+      aria-hidden
+      className={cn("block shrink-0 object-contain", className)}
+      style={{ width: size, height: size, ...style }}
+      {...props}
+    />
+  );
 }
 
 /** Figma node 11210:55901에서 export한 원본 벡터. */

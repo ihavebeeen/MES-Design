@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "auditedAt": "2026-08-24",
-  "sourceFingerprint": "6a55e609d597e89cd7ff69a8f6bce7ba37c6e1d150cb16efd26e5e891850a79f",
+  "sourceFingerprint": "ac9d6fee569dc8d95fb7a5846909eeddec1315e73f646e32ffceefe3750a9491",
   "browserRun": {
     "command": "npm run test:visual",
     "result": "passed",
@@ -739,7 +739,8 @@
       "hasFreeformRules": false,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
-        "popup.center.standard-price-settings"
+        "popup.center.standard-price-settings",
+        "table.column-settings"
       ],
       "reviewState": "needs-review",
       "outstanding": [
@@ -774,8 +775,7 @@
         "popup.side.time-records",
         "recipe.side-slide-form-editable-list",
         "screen.form-management-workflow",
-        "section.editable-row-list",
-        "table.column-settings"
+        "section.editable-row-list"
       ],
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
@@ -1550,7 +1550,8 @@
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
-        "popup.center.standard-price-settings"
+        "popup.center.standard-price-settings",
+        "table.column-settings"
       ],
       "reviewState": "approved-basic",
       "outstanding": [
@@ -1610,11 +1611,12 @@
       "documentationRoute": "/components/tag",
       "hasFreeformRules": false,
       "hasDetailedUsageRule": false,
-      "usedByPatternIds": [],
+      "usedByPatternIds": [
+        "table.column-settings"
+      ],
       "reviewState": "approved-basic",
       "outstanding": [
-        "detailed-usage-rule-missing",
-        "no-registered-pattern-usage"
+        "detailed-usage-rule-missing"
       ]
     },
     {

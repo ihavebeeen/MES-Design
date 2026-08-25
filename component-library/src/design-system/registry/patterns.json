@@ -176,10 +176,10 @@
       "id": "table.column-settings",
       "name": "테이블 컬럼 설정",
       "kind": "table",
-      "placement": "page",
+      "placement": "cross-shell",
       "source": "src/components/patterns/table-column-settings.tsx",
-      "requiredComponents": ["button", "checkbox", "input"],
-      "rules": ["표시·고정·순서 설정을 실제 컬럼 구성 state에 반영한다."]
+      "requiredComponents": ["button", "switch", "checkbox", "tag", "icon-button"],
+      "rules": ["표시·합계·순서 설정을 실제 컬럼 구성 state에 반영한다.", "업무상 필수 열은 표시와 위치를 잠그고 나머지 열만 재정렬한다.", "즉시 전환형 원본은 Switch를 유지하고 중앙 팝업에서 확인 후 반영하는 설정은 Checkbox를 사용한다.", "페이지 위 독립 오버레이 또는 중앙 팝업 본문에서 재사용할 수 있지만 헤더·푸터는 상위 셸 하나만 소유한다."]
     },
     {
       "id": "popup.center.inspection-criteria",
