@@ -30,6 +30,7 @@ const mobileVerificationRegistry = readJson("mobile-verification-contracts.json"
 const componentUsageContractRegistry = readJson("component-usage-contracts.json");
 const patternContractRegistry = readJson("pattern-contracts.json");
 const screenSpecRegistry = readJson("screen-specs.json");
+const webUiUsageInventoryRegistry = readJson("web-ui-usage-inventory.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -82,6 +83,7 @@ checkVersion("mobile-verification-contracts", mobileVerificationRegistry);
 checkVersion("component-usage-contracts", componentUsageContractRegistry);
 checkVersion("pattern-contracts", patternContractRegistry);
 checkVersion("screen-specs", screenSpecRegistry);
+checkVersion("web-ui-usage-inventory", webUiUsageInventoryRegistry);
 
 const mobileAssets = new Set([
   ...(mobileAssetRegistry.foundations ?? []).map((entry) => entry.id),
@@ -284,6 +286,60 @@ const interactionAudits = mapByUniqueId("interaction-audit", (interactionAuditRe
 const componentUsageContracts = mapByUniqueId("component-usage-contracts", (componentUsageContractRegistry.contracts ?? []).map((entry) => ({ ...entry, id: entry.componentId })));
 const patternContracts = mapByUniqueId("pattern-contracts", (patternContractRegistry.contracts ?? []).map((entry) => ({ ...entry, id: entry.patternId })));
 const screenSpecs = mapByUniqueId("screen-specs", (screenSpecRegistry.specs ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
+const webUsageArchetypes = mapByUniqueId("web-ui-usage-inventory archetypes", webUiUsageInventoryRegistry.archetypes ?? []);
+const webUsagePages = mapByUniqueId("web-ui-usage-inventory pages", webUiUsageInventoryRegistry.pages ?? []);
+const webUsageFlows = mapByUniqueId("web-ui-usage-inventory entry flows", webUiUsageInventoryRegistry.entryFlows ?? []);
+const webUsageConnections = mapByUniqueId("web-ui-usage-inventory connections", webUiUsageInventoryRegistry.connectedObservations ?? []);
+const webUsageDiscrepancies = mapByUniqueId("web-ui-usage-inventory discrepancies", webUiUsageInventoryRegistry.discrepancies ?? []);
+
+if (webUiUsageInventoryRegistry.status !== "observed-in-progress") errors.push("web-ui-usage-inventory: status는 observed-in-progress여야 합니다.");
+if (webUiUsageInventoryRegistry.usagePolicy?.authority !== "observed-not-canonical") errors.push("web-ui-usage-inventory: 실제 웹 관찰값은 observed-not-canonical이어야 합니다.");
+if (webUiUsageInventoryRegistry.source?.mode !== "read-only-ui-inspection") errors.push("web-ui-usage-inventory: source.mode는 read-only-ui-inspection이어야 합니다.");
+if (!/^\d{4}-\d{2}-\d{2}$/.test(webUiUsageInventoryRegistry.auditedAt ?? "")) errors.push("web-ui-usage-inventory: auditedAt은 YYYY-MM-DD 형식이어야 합니다.");
+if (!Array.isArray(webUiUsageInventoryRegistry.usagePolicy?.rules) || webUiUsageInventoryRegistry.usagePolicy.rules.length === 0) errors.push("web-ui-usage-inventory: 관찰값의 사용 제한 규칙이 필요합니다.");
+if (webUiUsageInventoryRegistry.coverage?.mainMenuPagesObserved !== webUsagePages.size) errors.push("web-ui-usage-inventory: coverage.mainMenuPagesObserved가 pages 개수와 다릅니다.");
+if (webUiUsageInventoryRegistry.coverage?.primaryEntryFlowsObserved !== webUsageFlows.size) errors.push("web-ui-usage-inventory: coverage.primaryEntryFlowsObserved가 entryFlows 개수와 다릅니다.");
+if (webUiUsageInventoryRegistry.coverage?.connectedResultsObserved !== webUsageConnections.size) errors.push("web-ui-usage-inventory: coverage.connectedResultsObserved가 connectedObservations 개수와 다릅니다.");
+if (!Array.isArray(webUiUsageInventoryRegistry.coverage?.remaining) || webUiUsageInventoryRegistry.coverage.remaining.length === 0) errors.push("web-ui-usage-inventory: in-progress 상태에는 remaining이 필요합니다.");
+
+for (const archetype of webUsageArchetypes.values()) {
+  if (archetype.status !== "observed-not-canonical") errors.push(`web usage archetype '${archetype.id}': status가 잘못되었습니다.`);
+  if (!archetype.name || !Array.isArray(archetype.regions) || archetype.regions.length === 0) errors.push(`web usage archetype '${archetype.id}': name과 regions가 필요합니다.`);
+  for (const componentId of archetype.componentRefs ?? []) if (!components.has(componentId)) errors.push(`web usage archetype '${archetype.id}': 미등록 component '${componentId}'를 참조합니다.`);
+}
+
+for (const page of webUsagePages.values()) {
+  if (!webUsageArchetypes.has(page.archetypeRef)) errors.push(`web usage page '${page.id}': 미등록 archetype '${page.archetypeRef}'를 참조합니다.`);
+  if (!Array.isArray(page.navigation) || page.navigation.length < 2) errors.push(`web usage page '${page.id}': 2단계 이상의 navigation이 필요합니다.`);
+  if (!Number.isInteger(page.tableHeaderCount) || page.tableHeaderCount < 0) errors.push(`web usage page '${page.id}': tableHeaderCount가 잘못되었습니다.`);
+  if (!Array.isArray(page.entryActions)) errors.push(`web usage page '${page.id}': entryActions 배열이 필요합니다.`);
+  if (page.registeredScreenId && !screens.has(page.registeredScreenId)) errors.push(`web usage page '${page.id}': 미등록 screen '${page.registeredScreenId}'를 참조합니다.`);
+}
+
+const allowedObservedSurfaces = new Set(["page", "center-modal", "side-slide-panel", "confirm-dialog"]);
+const allowedWidthBases = new Set(["content", "viewport", "fixed"]);
+const allowedWidthUnits = new Set(["percent", "px"]);
+for (const flow of webUsageFlows.values()) {
+  const page = webUsagePages.get(flow.pageId);
+  if (!page) errors.push(`web usage flow '${flow.id}': 미등록 page '${flow.pageId}'를 참조합니다.`);
+  if (!flow.trigger || !Array.isArray(flow.steps) || flow.steps.length === 0) errors.push(`web usage flow '${flow.id}': trigger와 한 개 이상의 step이 필요합니다.`);
+  if (flow.registeredScreenId && !screens.has(flow.registeredScreenId)) errors.push(`web usage flow '${flow.id}': 미등록 screen '${flow.registeredScreenId}'를 참조합니다.`);
+  if (page?.registeredScreenId && flow.registeredScreenId && page.registeredScreenId !== flow.registeredScreenId) errors.push(`web usage flow '${flow.id}': page와 registeredScreenId가 다릅니다.`);
+  for (const [index, step] of (flow.steps ?? []).entries()) {
+    if (!allowedObservedSurfaces.has(step.surface) || !step.title) errors.push(`web usage flow '${flow.id}' step ${index + 1}: surface 또는 title이 잘못되었습니다.`);
+    if (!allowedWidthBases.has(step.width?.basis) || !allowedWidthUnits.has(step.width?.unit) || !(step.width?.value > 0)) errors.push(`web usage flow '${flow.id}' step ${index + 1}: width가 잘못되었습니다.`);
+    if (!Array.isArray(step.sectionTitles) || !Array.isArray(step.componentRefs)) errors.push(`web usage flow '${flow.id}' step ${index + 1}: sectionTitles와 componentRefs 배열이 필요합니다.`);
+    for (const componentId of step.componentRefs ?? []) if (!components.has(componentId)) errors.push(`web usage flow '${flow.id}' step ${index + 1}: 미등록 component '${componentId}'를 참조합니다.`);
+  }
+}
+
+for (const connection of webUsageConnections.values()) {
+  if (!webUsageFlows.has(connection.fromFlowId)) errors.push(`web usage connection '${connection.id}': 미등록 flow '${connection.fromFlowId}'를 참조합니다.`);
+  if (!connection.trigger || !connection.reason || !allowedObservedSurfaces.has(connection.observedResult?.surface)) errors.push(`web usage connection '${connection.id}': trigger, reason, observedResult가 필요합니다.`);
+}
+for (const discrepancy of webUsageDiscrepancies.values()) {
+  if (!discrepancy.subject || !discrepancy.observedRuntime || !discrepancy.designSystemExpectation || !discrepancy.classification) errors.push(`web usage discrepancy '${discrepancy.id}': 비교 근거가 부족합니다.`);
+}
 
 for (const contract of componentUsageContracts.values()) {
   if (!components.has(contract.componentId)) errors.push(`component-usage-contract '${contract.componentId}': 미등록 component를 참조합니다.`);
@@ -600,5 +656,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${generationTemplates.size} generation templates, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates. Project state: ${completionPolicyRegistry.projectState}, open completion blockers: ${projectCompletionBlockerCount}.`
+  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${generationTemplates.size} generation templates, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates, ${webUsagePages.size} observed web pages, ${webUsageFlows.size} observed web entry flows. Project state: ${completionPolicyRegistry.projectState}, open completion blockers: ${projectCompletionBlockerCount}.`
 );

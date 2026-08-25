@@ -157,6 +157,82 @@ export interface ScreenSpecRegistry {
   specs: ScreenSpecEntry[];
 }
 
+export type WebObservedSurface = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
+
+export interface WebUiUsageWidth {
+  basis: "content" | "viewport" | "fixed";
+  value: number;
+  unit: "percent" | "px";
+}
+
+export interface WebUiObservedStep {
+  surface: WebObservedSurface;
+  title: string;
+  width: WebUiUsageWidth;
+  sectionTitles: string[];
+  componentRefs: string[];
+}
+
+export interface WebUiUsageInventoryRegistry {
+  schemaVersion: 1;
+  status: "observed-in-progress";
+  auditedAt: string;
+  source: {
+    environment: string;
+    path: string;
+    viewport: { width: number; height: number };
+    mode: "read-only-ui-inspection";
+    scope: string;
+  };
+  usagePolicy: {
+    authority: "observed-not-canonical";
+    rules: string[];
+  };
+  archetypes: Array<{
+    id: string;
+    name: string;
+    status: "observed-not-canonical";
+    componentRefs: string[];
+    regions: string[];
+  }>;
+  pages: Array<{
+    id: string;
+    navigation: string[];
+    archetypeRef: string;
+    tableHeaderCount: number;
+    entryActions: string[];
+    registeredScreenId?: string;
+  }>;
+  entryFlows: Array<{
+    id: string;
+    pageId: string;
+    trigger: string;
+    registeredScreenId: string | null;
+    steps: WebUiObservedStep[];
+  }>;
+  connectedObservations: Array<{
+    id: string;
+    fromFlowId: string;
+    trigger: string;
+    observedResult: Pick<WebUiObservedStep, "surface" | "title" | "width">;
+    status: "needs-reconciliation" | "observed";
+    reason: string;
+  }>;
+  discrepancies: Array<{
+    id: string;
+    subject: string;
+    observedRuntime: string;
+    designSystemExpectation: string;
+    classification: "implementation-error-candidate" | "normalization-candidate" | "needs-reconciliation";
+  }>;
+  coverage: {
+    mainMenuPagesObserved: number;
+    primaryEntryFlowsObserved: number;
+    connectedResultsObserved: number;
+    remaining: string[];
+  };
+}
+
 export type ScreenRequestIntent = "reproduce" | "new" | "normalize" | "audit";
 export type ScreenTargetKind = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
 export type NormalizationClassification = "source-error" | "implementation-error" | "intentional-exception" | "normalization-candidate";

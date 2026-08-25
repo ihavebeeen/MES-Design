@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "status": "observed-in-progress",
+  "auditedAt": "2026-08-25",
+  "source": {
+    "environment": "development-mes",
+    "path": "/dongjin",
+    "viewport": { "width": 1961, "height": 1140 },
+    "mode": "read-only-ui-inspection",
+    "scope": "UI 배치·컴포넌트·오버레이 연결만 기록하며 업무 정책과 API 동작은 기록하지 않는다."
+  },
+  "usagePolicy": {
+    "authority": "observed-not-canonical",
+    "rules": [
+      "실제 개발 웹에서 발견한 사용 위치는 디자인 시스템의 근거 후보이지 자동 표준이 아니다.",
+      "Figma 원본과 승인된 정규화 규칙을 대조하기 전에는 실제 웹의 크기·간격·Shell을 생성 기본값으로 사용하지 않는다.",
+      "같은 기능명이 서로 다른 Shell에서 발견되면 둘 다 표준으로 등록하지 않고 불일치로 남긴다.",
+      "반복되는 UI 구조와 연결 관계만 기록하고 권한·데이터 조건·업무 처리 정책은 이 인벤토리의 범위에서 제외한다."
+    ]
+  },
+  "archetypes": [
+    {
+      "id": "observed.entity-list",
+      "name": "조회·그룹화·표·하단 액션 목록",
+      "status": "observed-not-canonical",
+      "componentRefs": ["sidebar", "page-top-tab-item", "date-range-picker", "group-query", "filter", "quick-query", "search-input", "table", "button"],
+      "regions": ["navigation", "page-tabs", "query-tools", "data-table", "footer-actions"]
+    },
+    {
+      "id": "observed.analysis-dashboard",
+      "name": "지표·차트·분석 표 조합",
+      "status": "observed-not-canonical",
+      "componentRefs": ["sidebar", "page-top-tab-item", "card", "analytics-charts", "table", "button"],
+      "regions": ["navigation", "page-tabs", "analysis-controls", "metrics", "charts-or-analysis-table"]
+    },
+    {
+      "id": "observed.monitoring-dashboard",
+      "name": "설비 상태 모니터링",
+      "status": "observed-not-canonical",
+      "componentRefs": ["sidebar", "page-top-tab-item", "card", "segmented-control", "button"],
+      "regions": ["navigation", "page-tabs", "equipment-category", "status-cards", "detail-actions"]
+    },
+    {
+      "id": "observed.trace-analysis",
+      "name": "추적 조건·상세·복수 표 조합",
+      "status": "observed-not-canonical",
+      "componentRefs": ["sidebar", "page-top-tab-item", "filter", "table", "button"],
+      "regions": ["navigation", "page-tabs", "trace-query", "master-result", "detail-result"]
+    }
+  ],
+  "pages": [
+    { "id": "web.sales-target-month", "navigation": ["영업관리", "판매목표관리(월)"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 18, "entryActions": ["엑셀 일괄등록", "판매목표 등록"] },
+    { "id": "web.sales-plan-day", "navigation": ["영업관리", "판매계획관리(일)"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 18, "entryActions": ["출하지시 등록", "엑셀 일괄등록", "판매계획 등록"] },
+    { "id": "web.product-purchase", "navigation": ["영업관리", "구매관리(상품)"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 16, "entryActions": ["구매 등록"] },
+    { "id": "web.sales-management", "navigation": ["영업관리", "판매관리"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 17, "entryActions": ["거래명세서 출력", "출하승인", "청구등록"] },
+    { "id": "web.receipt-management", "navigation": ["영업관리", "수금관리"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 12, "entryActions": [] },
+
+    { "id": "web.production-target-month", "navigation": ["생산관리", "생산목표관리(월)"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 18, "entryActions": ["엑셀 일괄등록", "생산목표 등록"] },
+    { "id": "web.production-plan-day", "navigation": ["생산관리", "생산계획관리(일)"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 14, "entryActions": ["엑셀 일괄등록", "신규 등록"] },
+    { "id": "web.production-order", "navigation": ["생산관리", "생산지시"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 15, "entryActions": ["생산계획(일) 연동", "생산지시 등록"] },
+    { "id": "web.production-result", "navigation": ["생산관리", "생산실적"], "archetypeRef": "observed.entity-list", "registeredScreenId": "production-result", "tableHeaderCount": 21, "entryActions": ["생산실적 등록"] },
+    { "id": "web.operation-log", "navigation": ["생산관리", "운전일지"], "archetypeRef": "observed.entity-list", "registeredScreenId": "operation-log", "tableHeaderCount": 8, "entryActions": ["운전 일지 등록"] },
+    { "id": "web.self-inspection", "navigation": ["생산관리", "자주검사"], "archetypeRef": "observed.entity-list", "registeredScreenId": "self-inspection", "tableHeaderCount": 17, "entryActions": ["일괄 합격", "신규 검사 생성"] },
+
+    { "id": "web.inventory", "navigation": ["자재관리", "재고관리"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 17, "entryActions": ["재고이력조회", "재고 편집"] },
+    { "id": "web.label", "navigation": ["자재관리", "라벨관리"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 16, "entryActions": ["인쇄", "신규 라벨 발행"] },
+    { "id": "web.bom-query", "navigation": ["자재관리", "BOM 조회"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 5, "entryActions": ["BOM 기준 재고분석"] },
+    { "id": "web.material-input-analysis", "navigation": ["자재관리", "원료투입분석"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 5, "entryActions": [] },
+
+    { "id": "web.purchase-order", "navigation": ["입고관리", "발주 등록"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 17, "entryActions": ["엑셀 일괄등록", "발주 등록"] },
+    { "id": "web.receiving", "navigation": ["입고관리", "입고 등록"], "archetypeRef": "observed.entity-list", "registeredScreenId": "receiving", "tableHeaderCount": 17, "entryActions": ["신규 등록"] },
+    { "id": "web.shipment-order", "navigation": ["출고관리", "출하지시"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 18, "entryActions": ["긴급 출하지시 등록"] },
+    { "id": "web.shipment-result", "navigation": ["출고관리", "출하실적"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 14, "entryActions": ["거래명세서 출력", "출하실적 등록"] },
+
+    { "id": "web.incoming-inspection", "navigation": ["품질관리", "입고 검사"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 14, "entryActions": ["입고검사 시작", "일괄 합격"] },
+    { "id": "web.outgoing-inspection", "navigation": ["품질관리", "출고 검사"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 13, "entryActions": ["일괄 합격"] },
+    { "id": "web.process-inspection", "navigation": ["품질관리", "공정 검사"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 17, "entryActions": ["일괄 합격", "신규 검사 생성"] },
+    { "id": "web.inspection-trend", "navigation": ["품질관리", "경향 관리"], "archetypeRef": "observed.analysis-dashboard", "tableHeaderCount": 18, "entryActions": ["반품 건수 전년도 설정", "보류 건수 전년도 설정"] },
+
+    { "id": "web.equipment-monitoring", "navigation": ["설비관리", "모니터링"], "archetypeRef": "observed.monitoring-dashboard", "tableHeaderCount": 0, "entryActions": ["성형기정보", "알람이력"] },
+    { "id": "web.maintenance-history", "navigation": ["설비관리", "정비이력관리"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 16, "entryActions": ["정비이력 등록"] },
+    { "id": "web.equipment-inspection", "navigation": ["설비관리", "설비점검관리"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 9, "entryActions": ["설비점검 등록"] },
+
+    { "id": "web.lot-trace", "navigation": ["데이터 분석", "LOT 추적"], "archetypeRef": "observed.trace-analysis", "tableHeaderCount": 15, "entryActions": [] },
+    { "id": "web.production-analysis", "navigation": ["데이터 분석", "생산 분석"], "archetypeRef": "observed.analysis-dashboard", "tableHeaderCount": 4, "entryActions": ["판매 계획 목표 설정", "생산 계획 목표 설정"] },
+    { "id": "web.equipment-operation-analysis", "navigation": ["데이터 분석", "설비 가동 분석"], "archetypeRef": "observed.analysis-dashboard", "tableHeaderCount": 7, "entryActions": [] },
+    { "id": "web.forming-analysis", "navigation": ["데이터 분석", "성형분석"], "archetypeRef": "observed.analysis-dashboard", "tableHeaderCount": 19, "entryActions": [] },
+    { "id": "web.extrusion-analysis", "navigation": ["데이터 분석", "압출분석"], "archetypeRef": "observed.analysis-dashboard", "tableHeaderCount": 17, "entryActions": [] },
+    { "id": "web.kpi", "navigation": ["데이터 분석", "성과지표 KPI"], "archetypeRef": "observed.analysis-dashboard", "tableHeaderCount": 15, "entryActions": ["편집"] },
+
+    { "id": "web.partner", "navigation": ["MES 설정", "거래처 등록"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 15, "entryActions": ["통화/환율 설정", "거래처 등록"] },
+    { "id": "web.item", "navigation": ["MES 설정", "품목 등록"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 20, "entryActions": ["표준단가 설정", "엑셀 일괄등록", "품목 등록"] },
+    { "id": "web.bom", "navigation": ["MES 설정", "BOM 등록"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 13, "entryActions": ["엑셀 일괄등록", "BOM 등록"] },
+    { "id": "web.special-price", "navigation": ["MES 설정", "특별 단가 관리"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 13, "entryActions": ["엑셀 일괄등록", "특별단가 등록"] },
+    { "id": "web.warehouse", "navigation": ["MES 설정", "창고 등록"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 12, "entryActions": ["기본창고 설정", "창고 등록"] },
+    { "id": "web.equipment", "navigation": ["MES 설정", "설비 등록"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 19, "entryActions": ["설비 등록"] },
+    { "id": "web.process", "navigation": ["MES 설정", "공정 등록"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 7, "entryActions": ["공정 등록"] },
+    { "id": "web.form", "navigation": ["MES 설정", "양식 관리"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 11, "entryActions": ["검사기준", "양식 등록"] },
+    { "id": "web.user", "navigation": ["MES 설정", "사용자 등록"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 8, "entryActions": ["사용자 등록"] },
+    { "id": "web.permission", "navigation": ["MES 설정", "권한 설정"], "archetypeRef": "observed.entity-list", "tableHeaderCount": 6, "entryActions": ["개인 권한 설정", "조 설정", "그룹 등록"] }
+  ],
+  "entryFlows": [
+    { "id": "flow.sales-target-create", "pageId": "web.sales-target-month", "trigger": "판매목표 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "판매목표(월) 등록", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "판매목표(월) 정보", "판매목표(월) 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.sales-plan-create", "pageId": "web.sales-plan-day", "trigger": "판매계획 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "판매계획(일) 등록", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "판매계획(일) 정보", "판매계획(일) 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.product-purchase-create", "pageId": "web.product-purchase", "trigger": "구매 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "상품구매 등록", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "구매품목", "구매품목 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+
+    { "id": "flow.production-target-create", "pageId": "web.production-target-month", "trigger": "생산목표 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "생산목표(월) 등록", "width": { "basis": "content", "value": 55, "unit": "percent" }, "sectionTitles": ["기본정보", "생산목표(월) 정보", "생산목표(월) 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.production-plan-create", "pageId": "web.production-plan-day", "trigger": "신규 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "생산계획 등록", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "생산계획(일) 정보", "생산계획 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.production-order-create", "pageId": "web.production-order", "trigger": "생산지시 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "생산지시 등록", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "생산지시 정보", "생산지시 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.production-result-create", "pageId": "web.production-result", "trigger": "생산실적 등록", "registeredScreenId": "production-result", "steps": [{ "surface": "center-modal", "title": "작업 선택", "width": { "basis": "viewport", "value": 70, "unit": "percent" }, "sectionTitles": ["생산 지시 리스트"], "componentRefs": ["center-modal", "date-range-picker", "filter", "search-input", "table", "checkbox", "button"] }, { "surface": "side-slide-panel", "title": "생산실적 등록", "width": { "basis": "fixed", "value": 900, "unit": "px" }, "sectionTitles": ["지시정보", "실적정보", "생산실적 상세 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.operation-log-create", "pageId": "web.operation-log", "trigger": "운전 일지 등록", "registeredScreenId": "operation-log", "steps": [{ "surface": "side-slide-panel", "title": "운전일지 등록", "width": { "basis": "fixed", "value": 940, "unit": "px" }, "sectionTitles": ["타임테이블", "품목별 가동기록", "비가동시간"], "componentRefs": ["side-slide-panel", "form-grid", "table", "button"] }] },
+    { "id": "flow.self-inspection-create", "pageId": "web.self-inspection", "trigger": "신규 검사 생성", "registeredScreenId": "self-inspection", "steps": [{ "surface": "center-modal", "title": "검사항목 선택", "width": { "basis": "fixed", "value": 1160, "unit": "px" }, "sectionTitles": [], "componentRefs": ["center-modal", "filter", "table", "checkbox", "button"] }] },
+
+    { "id": "flow.inventory-edit", "pageId": "web.inventory", "trigger": "재고 편집", "registeredScreenId": null, "steps": [{ "surface": "center-modal", "title": "재고편집", "width": { "basis": "viewport", "value": 80, "unit": "percent" }, "sectionTitles": ["재고 리스트"], "componentRefs": ["center-modal", "filter", "table", "button"] }] },
+    { "id": "flow.label-create", "pageId": "web.label", "trigger": "신규 라벨 발행", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "라벨 생성", "width": { "basis": "fixed", "value": 374, "unit": "px" }, "sectionTitles": ["LOT 정보"], "componentRefs": ["side-slide-panel", "form-grid", "segmented-control", "button"] }] },
+    { "id": "flow.bom-stock-analysis", "pageId": "web.bom-query", "trigger": "BOM 기준 재고분석", "registeredScreenId": null, "steps": [{ "surface": "center-modal", "title": "BOM 기준 재고 분석", "width": { "basis": "fixed", "value": 1000, "unit": "px" }, "sectionTitles": [], "componentRefs": ["center-modal", "form-grid", "table", "button"] }] },
+
+    { "id": "flow.purchase-order-create", "pageId": "web.purchase-order", "trigger": "발주 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "발주등록", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "발주 품목 정보", "발주 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.receiving-create", "pageId": "web.receiving", "trigger": "신규 등록", "registeredScreenId": "receiving", "steps": [{ "surface": "center-modal", "title": "발주 선택", "width": { "basis": "viewport", "value": 50, "unit": "percent" }, "sectionTitles": ["발주 리스트"], "componentRefs": ["center-modal", "date-range-picker", "filter", "search-input", "table", "checkbox", "button"] }, { "surface": "side-slide-panel", "title": "입고 등록", "width": { "basis": "viewport", "value": 50, "unit": "percent" }, "sectionTitles": ["입고 기본 정보", "LOT단위 품목 추가", "입고실적 상세 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.emergency-shipment-create", "pageId": "web.shipment-order", "trigger": "긴급 출하지시 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "출하지시 등록", "width": { "basis": "content", "value": 55, "unit": "percent" }, "sectionTitles": ["기본정보", "출하지시 품목 정보", "출하지시 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.shipment-result-create", "pageId": "web.shipment-result", "trigger": "출하실적 등록", "registeredScreenId": null, "steps": [{ "surface": "center-modal", "title": "출하지시 정보", "width": { "basis": "fixed", "value": 883, "unit": "px" }, "sectionTitles": ["출하지시 리스트"], "componentRefs": ["center-modal", "filter", "table", "checkbox", "button"] }] },
+
+    { "id": "flow.incoming-inspection-start", "pageId": "web.incoming-inspection", "trigger": "입고검사 시작", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "입고검사 정보", "width": { "basis": "fixed", "value": 849, "unit": "px" }, "sectionTitles": ["검사항목"], "componentRefs": ["side-slide-panel", "inspection-judgement", "table", "button"] }] },
+    { "id": "flow.process-inspection-create", "pageId": "web.process-inspection", "trigger": "신규 검사 생성", "registeredScreenId": null, "steps": [{ "surface": "center-modal", "title": "검사항목 선택", "width": { "basis": "fixed", "value": 1160, "unit": "px" }, "sectionTitles": [], "componentRefs": ["center-modal", "filter", "table", "checkbox", "button"] }] },
+    { "id": "flow.maintenance-create", "pageId": "web.maintenance-history", "trigger": "정비이력 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "정비이력 등록", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "투입자재 등록", "투입자재 상세"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.equipment-inspection-create", "pageId": "web.equipment-inspection", "trigger": "설비점검 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "설비 점검 등록", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "검사항목"], "componentRefs": ["side-slide-panel", "form-grid", "inspection-judgement", "button"] }] },
+
+    { "id": "flow.partner-create", "pageId": "web.partner", "trigger": "거래처 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "거래처 등록", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "커스텀 정보"], "componentRefs": ["side-slide-panel", "form-grid", "button"] }] },
+    { "id": "flow.item-create", "pageId": "web.item", "trigger": "품목 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "품목 정보", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "커스텀 정보"], "componentRefs": ["side-slide-panel", "form-grid", "button"] }] },
+    { "id": "flow.bom-create", "pageId": "web.bom", "trigger": "BOM 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "BOM 등록", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "BOM 등록", "BOM 품목 상세"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.special-price-create", "pageId": "web.special-price", "trigger": "특별단가 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "특별단가 등록", "width": { "basis": "fixed", "value": 760, "unit": "px" }, "sectionTitles": ["기본정보", "단가 등록", "특별단가 적용이력"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.warehouse-create", "pageId": "web.warehouse", "trigger": "창고 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "창고 정보", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "커스텀 정보"], "componentRefs": ["side-slide-panel", "form-grid", "button"] }] },
+    { "id": "flow.equipment-create", "pageId": "web.equipment", "trigger": "설비 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "설비 정보", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "커스텀 정보"], "componentRefs": ["side-slide-panel", "form-grid", "button"] }] },
+    { "id": "flow.process-create", "pageId": "web.process", "trigger": "공정 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "공정 등록", "width": { "basis": "fixed", "value": 760, "unit": "px" }, "sectionTitles": ["기본정보", "품목 등록", "품목 리스트"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "button"] }] },
+    { "id": "flow.form-create", "pageId": "web.form", "trigger": "양식 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "양식관리", "width": { "basis": "fixed", "value": 900, "unit": "px" }, "sectionTitles": ["기본 정보", "검사항목"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "inspection-judgement", "button"] }] },
+    { "id": "flow.user-create", "pageId": "web.user", "trigger": "사용자 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "사용자 정보", "width": { "basis": "content", "value": 50, "unit": "percent" }, "sectionTitles": ["기본정보", "커스텀 정보"], "componentRefs": ["side-slide-panel", "form-grid", "button"] }] },
+    { "id": "flow.permission-group-create", "pageId": "web.permission", "trigger": "그룹 등록", "registeredScreenId": null, "steps": [{ "surface": "side-slide-panel", "title": "그룹 권한 설정", "width": { "basis": "content", "value": 60, "unit": "percent" }, "sectionTitles": ["기본 정보", "구성원 선택", "메뉴별 권한 설정"], "componentRefs": ["side-slide-panel", "section-header", "form-grid", "table", "checkbox", "button"] }] }
+  ],
+  "connectedObservations": [
+    {
+      "id": "connection.production-result.operation-log",
+      "fromFlowId": "flow.production-result-create",
+      "trigger": "운전일지",
+      "observedResult": { "surface": "center-modal", "title": "운전일지 등록", "width": { "basis": "fixed", "value": 940, "unit": "px" } },
+      "status": "needs-reconciliation",
+      "reason": "운전일지 메뉴의 직접 등록은 우측 슬라이드지만 생산실적 내부 진입은 중앙 모달로 관찰됐다."
+    },
+    {
+      "id": "connection.production-result.input-information",
+      "fromFlowId": "flow.production-result-create",
+      "trigger": "투입정보",
+      "observedResult": { "surface": "center-modal", "title": "투입정보", "width": { "basis": "viewport", "value": 80, "unit": "percent" } },
+      "status": "observed-not-canonical",
+      "reason": "생산실적 상세 행에서 중앙 조회 팝업이 중첩된다."
+    },
+    {
+      "id": "connection.product-purchase.lookup-warning",
+      "fromFlowId": "flow.product-purchase-create",
+      "trigger": "리스트 조회/선택",
+      "observedResult": { "surface": "confirm-dialog", "title": "경고", "width": { "basis": "fixed", "value": 380, "unit": "px" } },
+      "status": "observed-not-canonical",
+      "reason": "선행 선택값이 없는 상태에서는 조회 모달 대신 경고 확인 팝업이 중첩된다."
+    }
+  ],
+  "discrepancies": [
+    {
+      "id": "runtime.production-result.horizontal-overflow",
+      "subject": "생산실적 등록 상세 표",
+      "observedRuntime": "표 너비가 가용 영역보다 약 54px 커서 가로 넘침이 발생한다.",
+      "designSystemExpectation": "의도하지 않은 가로 overflow 0",
+      "classification": "implementation-error-candidate"
+    },
+    {
+      "id": "runtime.operation-log.shell-conflict",
+      "subject": "운전일지 등록 Shell",
+      "observedRuntime": "메뉴 직접 진입은 우측 슬라이드, 생산실적 내부 진입은 중앙 모달이다.",
+      "designSystemExpectation": "최신 Figma와 등록 화면은 우측 슬라이드",
+      "classification": "needs-reconciliation"
+    },
+    {
+      "id": "runtime.receiving.width-conflict",
+      "subject": "입고 등록 우측 패널 폭",
+      "observedRuntime": "viewport 50%",
+      "designSystemExpectation": "현재 등록값 standard-900",
+      "classification": "needs-reconciliation"
+    },
+    {
+      "id": "runtime.popup-typography-control-size",
+      "subject": "실제 웹 모달 제목과 하단 버튼",
+      "observedRuntime": "제목 16px Bold, 하단 버튼 38px·16px Regular",
+      "designSystemExpectation": "SideSlidePanel 제목 18px Bold, 기본 Button 40px·15px SemiBold",
+      "classification": "needs-reconciliation"
+    }
+  ],
+  "coverage": {
+    "mainMenuPagesObserved": 42,
+    "primaryEntryFlowsObserved": 30,
+    "connectedResultsObserved": 3,
+    "remaining": [
+      "선택 행이 있어야 활성화되는 편집·출력·승인 팝업",
+      "선행 입력이 있어야 열리는 조건부 중첩 팝업",
+      "행별 링크와 상세 팝업의 반복 유형 대조",
+      "Figma와 실제 웹 차이의 최종 판정"
+    ]
+  }
+}

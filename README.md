@@ -192,6 +192,7 @@ MES-Design/
 - `component-library/src/design-system/registry/component-usage-contracts.json`: 핵심 컴포넌트의 사용·금지·부모·상태·대안 계약
 - `component-library/src/design-system/registry/pattern-contracts.json`: 핵심 Shell·Section·Behavior의 슬롯·상태·스크롤·액션 계약
 - `component-library/src/design-system/registry/screen-specs.json`: 대표 화면의 순서형 SectionInstance와 동작 대상 명세
+- `component-library/src/design-system/registry/web-ui-usage-inventory.json`: 실제 개발 MES의 메뉴·팝업 진입·연결 구조 관찰 근거. 표준값이 아니라 Figma·승인 규칙과 대조할 사용 위치 자료
 - `component-library/src/design-system/registry/mobile-assets.json`: 모바일 원본 근거·컴포넌트·패턴·화면 유형 레지스트리
 - `component-library/src/design-system/registry/screen-request.schema.json`: 자연어를 JSX보다 먼저 고정하는 화면 요청 계약
 - `component-library/src/design-system/registry/generation-templates.json`: 결정적 TSX를 지원하는 Recipe와 필수 조합 레지스트리
@@ -349,7 +350,7 @@ Figma 원본과 기존 구현
 
 AI가 임의의 JSX를 바로 생성하거나 특정 Figma 프레임을 복사하는 대신, 화면 정의에서 필요한 표준 패턴과 컴포넌트를 먼저 찾도록 구성합니다. 생성 결과에 새로운 수치, 변형 또는 조합이 필요하면 화면 안에 즉시 하드코딩하지 않고, 기존 규칙의 재사용·조합·확장으로 설명할 수 있는지 먼저 판별합니다. AI는 신규 조합을 제안할 수 있지만 스스로 정식 패턴으로 승인할 수 없으며, 승인 전 결과는 생성 시안 검토함에 격리합니다.
 
-다른 컴퓨터와 다른 AI에서도 이 흐름을 반복할 수 있도록 저장소 전용 `.agents/skills/generate-mes-ui` Skill, 짧은 우선 지침 `AGENTS.override.md`, 로컬 STDIO MCP 서버를 함께 배포합니다. Codex는 `.codex/config.toml`, Claude Code는 `.mcp.json`을 통해 같은 `mes-ui` MCP를 실행합니다. 사용자는 clone 후 `component-library`에서 `npm ci`를 실행하고 프로젝트 MCP를 한 번 승인해야 합니다. 이후 AI는 `mes_list_design_system`, `mes_resolve_screen`, `mes_generate_screen`, `mes_audit_screen`을 공통 함수처럼 호출할 수 있습니다. 동일한 `ScreenRequest`와 동일한 커밋은 같은 registry fingerprint, 순서형 section, pattern/component refs, decision trace와 quality 판정을 생성합니다. 현재 우측 슬라이드 폼·편집 목록과 중앙 검색 테이블은 stable 결정형 TSX를 생성하며, 페이지 엔티티 목록은 provisional 결정형 템플릿입니다. 아직 지원 템플릿이 없는 Recipe의 TSX와 모든 화면의 최종 픽셀까지 같다는 보장은 없으며, 최종 시각 일치는 화면별 시각 회귀 테스트로 확인합니다.
+다른 컴퓨터와 다른 AI에서도 이 흐름을 반복할 수 있도록 저장소 전용 `.agents/skills/generate-mes-ui` Skill, 짧은 우선 지침 `AGENTS.override.md`, 로컬 STDIO MCP 서버를 함께 배포합니다. Codex는 `.codex/config.toml`, Claude Code는 `.mcp.json`을 통해 같은 `mes-ui` MCP를 실행합니다. 사용자는 clone 후 `component-library`에서 `npm ci`를 실행하고 프로젝트 MCP를 한 번 승인해야 합니다. 이후 AI는 `mes_list_design_system`, `mes_get_web_usage_context`, `mes_resolve_screen`, `mes_generate_screen`, `mes_audit_screen`을 공통 함수처럼 호출할 수 있습니다. 동일한 `ScreenRequest`와 동일한 커밋은 같은 registry fingerprint, 순서형 section, pattern/component refs, decision trace와 quality 판정을 생성합니다. 현재 우측 슬라이드 폼·편집 목록과 중앙 검색 테이블은 stable 결정형 TSX를 생성하며, 페이지 엔티티 목록은 provisional 결정형 템플릿입니다. 아직 지원 템플릿이 없는 Recipe의 TSX와 모든 화면의 최종 픽셀까지 같다는 보장은 없으며, 최종 시각 일치는 화면별 시각 회귀 테스트로 확인합니다.
 
 ### 패턴은 화면 템플릿이 아니라 조합 문법입니다
 
@@ -387,7 +388,8 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 - `screen:resolve`: 등록 ID와 target 셸을 검증하고 stable fingerprint를 가진 구현 계약 생성
 - `screen:generate`: 지원되는 Recipe 계약을 덮어쓰기 없이 결정적 TSX로 생성
 - `screen:audit`: 구현이 계약 셸과 공용 컴포넌트를 지키는지 severity별로 검사
-- `mes-ui` MCP: 위 조회·계약·생성·감사를 Codex와 Claude Code가 공통 호출하는 로컬 도구 인터페이스
+- `mes_get_web_usage_context`: 실제 개발 MES에서 관찰한 사용 위치와 연결 흐름을 조회. 결과는 표준값이 아니라 대조 근거
+- `mes-ui` MCP: 위 관찰 조회·계약·생성·감사를 Codex와 Claude Code가 공통 호출하는 로컬 도구 인터페이스
 
 장기적으로 각 판단 기록에는 다음 정보가 연결되어야 합니다.
 
@@ -433,6 +435,7 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 - [AI 기반 MES 화면 생성 아키텍처](./docs/AI_MES_화면_생성_아키텍처.md)
 - [AI UI 조합 문법 공통 정책](./docs/AI_UI_조합_문법_공통정책.md)
 - [웹 UI 맥락 체계화 현황](./docs/웹_UI_맥락_체계화_현황.md)
+- [실제 MES 웹 UI 사용 맥락 인벤토리](./docs/실제_MES_웹_UI_사용_맥락_인벤토리.md)
 - [웹 UI 전수검증 현황](./docs/웹_UI_전수검증_현황.md)
 - [AI UI 조합 인벤토리 1차](./docs/AI_UI_조합_인벤토리_1차.md)
 - [AI UI Shell·슬롯 감사 1차](./docs/AI_UI_Shell_슬롯_감사_1차.md)

@@ -158,6 +158,8 @@ export function createMesUiMcpServer() {
           screenSpecs: screenSpecs.length,
           generationTemplates: registry.generationTemplates.length,
           mobileAssets: mobile.length,
+          observedWebPages: registry.webUiUsageInventory.pages.length,
+          observedWebEntryFlows: registry.webUiUsageInventory.entryFlows.length,
         },
         components: filterEntries(registry.components, query, limit),
         patterns: filterEntries(registry.patterns, query, limit),
@@ -169,6 +171,36 @@ export function createMesUiMcpServer() {
         mobile: filterEntries(mobile, query, limit),
       };
       return toolResult("MES 디자인 시스템 조회 완료", result);
+    }),
+  );
+
+  server.registerTool(
+    "mes_get_web_usage_context",
+    {
+      title: "MES 실제 웹 사용 맥락 조회",
+      description: "실제 개발 MES에서 관찰한 메뉴 화면, 주요 팝업 진입 흐름, 연결 결과와 불일치를 조회합니다. 이 자료는 사용 위치 근거이며 Figma·승인 규칙보다 우선하는 표준값이 아닙니다.",
+      inputSchema: z.object({
+        category: z.enum(["all", "pages", "flows", "connections", "discrepancies"]).default("all"),
+        query: z.string().trim().optional().describe("메뉴명·화면 ID·버튼명·팝업 제목 검색어"),
+        limit: z.number().int().min(1).max(100).default(50),
+      }),
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    safeTool(async ({ category, query, limit }) => {
+      const inventory = readRegistryBundle().webUiUsageInventory;
+      const select = (entries) => filterDetailedEntries(entries, query, limit);
+      return toolResult("MES 실제 웹 사용 맥락 조회 완료", {
+        status: inventory.status,
+        auditedAt: inventory.auditedAt,
+        authority: inventory.usagePolicy.authority,
+        usageRules: inventory.usagePolicy.rules,
+        coverage: inventory.coverage,
+        archetypes: category === "all" ? select(inventory.archetypes) : [],
+        pages: category === "all" || category === "pages" ? select(inventory.pages) : [],
+        entryFlows: category === "all" || category === "flows" ? select(inventory.entryFlows) : [],
+        connectedObservations: category === "all" || category === "connections" ? select(inventory.connectedObservations) : [],
+        discrepancies: category === "all" || category === "discrepancies" ? select(inventory.discrepancies) : [],
+      });
     }),
   );
 

@@ -44,6 +44,7 @@ export function readRegistryBundle() {
   const componentUsageContracts = readJson(join(registryDirectory, "component-usage-contracts.json"));
   const patternContracts = readJson(join(registryDirectory, "pattern-contracts.json"));
   const screenSpecs = readJson(join(registryDirectory, "screen-specs.json"));
+  const webUiUsageInventory = readJson(join(registryDirectory, "web-ui-usage-inventory.json"));
 
   return {
     components: components.components,
@@ -56,6 +57,7 @@ export function readRegistryBundle() {
     componentUsageContracts: componentUsageContracts.contracts,
     patternContracts: patternContracts.contracts,
     screenSpecs: screenSpecs.specs,
+    webUiUsageInventory,
   };
 }
 
@@ -187,6 +189,21 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const screenSpecMap = new Map(registry.screenSpecs.map((entry) => [entry.screenId, entry]));
   const nearestScreen = request?.target?.nearestScreenId ? screenMap.get(request.target.nearestScreenId) : undefined;
   const nearestScreenSpec = request?.target?.nearestScreenId ? screenSpecMap.get(request.target.nearestScreenId) : undefined;
+  const observedPages = request?.target?.nearestScreenId
+    ? registry.webUiUsageInventory.pages.filter((page) => page.registeredScreenId === request.target.nearestScreenId)
+    : [];
+  const observedPageIds = new Set(observedPages.map((page) => page.id));
+  const observedEntryFlows = request?.target?.nearestScreenId
+    ? registry.webUiUsageInventory.entryFlows.filter((flow) =>
+      flow.registeredScreenId === request.target.nearestScreenId || observedPageIds.has(flow.pageId),
+    )
+    : [];
+  const observedFlowIds = new Set(observedEntryFlows.map((flow) => flow.id));
+  const observedSearchTerms = unique([request?.target?.nearestScreenId, nearestScreen?.name]).map((value) => value.toLocaleLowerCase("ko-KR"));
+  const observedDiscrepancies = registry.webUiUsageInventory.discrepancies.filter((entry) => {
+    const serialized = JSON.stringify(entry).toLocaleLowerCase("ko-KR");
+    return observedSearchTerms.some((term) => serialized.includes(term));
+  });
 
   if (request?.target?.nearestScreenId && !nearestScreen) {
     issues.push(issue("blocker", "registry.unknown-screen", `등록되지 않은 nearestScreenId '${request.target.nearestScreenId}'입니다.`, request.target.nearestScreenId));
@@ -343,6 +360,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       componentUsageContracts: registry.componentUsageContracts,
       patternContracts: registry.patternContracts,
       screenSpecs: registry.screenSpecs,
+      webUiUsageInventory: registry.webUiUsageInventory,
     }),
     baseScreen: nearestScreen ?? null,
     baseScreenSpec: nearestScreenSpec ?? null,
@@ -365,6 +383,14 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       contextDecisions: applicableContextDecisions,
       globalGates: registry.contextRules.globalGates,
       generationTemplate: generationTemplate ?? null,
+      observedWebUsage: {
+        authority: registry.webUiUsageInventory.usagePolicy.authority,
+        usageRules: registry.webUiUsageInventory.usagePolicy.rules,
+        pages: observedPages,
+        entryFlows: observedEntryFlows,
+        connectedObservations: registry.webUiUsageInventory.connectedObservations.filter((entry) => observedFlowIds.has(entry.fromFlowId)),
+        discrepancies: observedDiscrepancies,
+      },
     },
     decisionTrace,
     quality: {

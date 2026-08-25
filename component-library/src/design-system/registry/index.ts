@@ -23,6 +23,7 @@ import mobileAssetData from "./mobile-assets.json";
 import componentUsageContractData from "./component-usage-contracts.json";
 import patternContractData from "./pattern-contracts.json";
 import screenSpecData from "./screen-specs.json";
+import webUiUsageInventoryData from "./web-ui-usage-inventory.json";
 import type {
   ComponentRegistry,
   PatternRegistry,
@@ -49,6 +50,7 @@ import type {
   ComponentUsageContractRegistry,
   PatternUsageContractRegistry,
   ScreenSpecRegistry,
+  WebUiUsageInventoryRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -77,6 +79,7 @@ export const mobileAssetRegistry = mobileAssetData as MobileAssetRegistry;
 export const componentUsageContractRegistry = componentUsageContractData as ComponentUsageContractRegistry;
 export const patternUsageContractRegistry = patternContractData as PatternUsageContractRegistry;
 export const screenSpecRegistry = screenSpecData as ScreenSpecRegistry;
+export const webUiUsageInventoryRegistry = webUiUsageInventoryData as WebUiUsageInventoryRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);
@@ -118,6 +121,33 @@ export function getScreenSpec(screenId: string) {
   return screenSpecRegistry.specs.find((spec) => spec.screenId === screenId);
 }
 
+/** 실제 MES 웹에서 관찰한 사용 위치를 조회한다. 관찰값은 표준값이 아니며 Figma·정규화 규칙보다 우선하지 않는다. */
+export function getWebUsageContext(reference: string) {
+  const normalized = reference.trim().toLocaleLowerCase("ko-KR");
+  const matches = (value: unknown) => JSON.stringify(value).toLocaleLowerCase("ko-KR").includes(normalized);
+  const pages = webUiUsageInventoryRegistry.pages.filter((page) =>
+    page.id === reference || page.registeredScreenId === reference || (normalized !== "" && matches(page)),
+  );
+  const pageIds = new Set(pages.map((page) => page.id));
+  const flows = webUiUsageInventoryRegistry.entryFlows.filter((flow) =>
+    flow.id === reference
+      || flow.registeredScreenId === reference
+      || pageIds.has(flow.pageId)
+      || (normalized !== "" && matches(flow)),
+  );
+  const flowIds = new Set(flows.map((flow) => flow.id));
+  return {
+    authority: webUiUsageInventoryRegistry.usagePolicy.authority,
+    usageRules: webUiUsageInventoryRegistry.usagePolicy.rules,
+    pages,
+    entryFlows: flows,
+    connectedObservations: webUiUsageInventoryRegistry.connectedObservations.filter((item) =>
+      flowIds.has(item.fromFlowId) || (normalized !== "" && matches(item)),
+    ),
+    discrepancies: webUiUsageInventoryRegistry.discrepancies.filter((item) => normalized !== "" && matches(item)),
+  };
+}
+
 export function getContextRules(category?: ContextRuleCategory) {
   return category
     ? contextRuleRegistry.rules.filter((rule) => rule.category === category)
@@ -152,6 +182,7 @@ export function getGenerationContext() {
     decisions: contextRuleRegistry.decisions,
     rules: contextRuleRegistry.rules,
     holds: contextRuleRegistry.holds,
+    observedWebUsage: webUiUsageInventoryRegistry,
   };
 }
 
@@ -191,5 +222,6 @@ export function getImplementationContext(screenId: string) {
       decision.optionRuleIds.some((ruleId) => contextRuleIds.has(ruleId)),
     ),
     contextGlobalGates: contextRuleRegistry.globalGates,
+    observedWebUsage: getWebUsageContext(screenId),
   };
 }
