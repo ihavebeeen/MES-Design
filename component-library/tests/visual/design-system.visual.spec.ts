@@ -1,4 +1,12 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
+import componentCatalog from "../../src/design-system/registry/component-catalog.json";
+
+const componentCatalogCardCount = componentCatalog.groups.reduce(
+  (sum, group) => sum + group.itemIds.length,
+  0,
+);
+const dataDisplayCardCount =
+  componentCatalog.groups.find((group) => group.id === "data-display")?.itemIds.length ?? 0;
 
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
@@ -48,15 +56,15 @@ test("컴포넌트 개요는 역할·성숙도·검색으로 탐색한다", asyn
 
   const catalog = page.locator("[data-component-catalog]");
   await expect(catalog).toBeVisible();
-  await expect(catalog.locator("[data-component-category]")).toHaveCount(8);
-  await expect(catalog.locator("[data-component-card]")).toHaveCount(75);
+  await expect(catalog.locator("[data-component-category]")).toHaveCount(componentCatalog.groups.length);
+  await expect(catalog.locator("[data-component-card]")).toHaveCount(componentCatalogCardCount);
   await expect(page.getByText("티어3 — 아직 착수 전", { exact: true })).toHaveCount(0);
   await expect(page.getByText("티어4 — 아직 착수 전", { exact: true })).toHaveCount(0);
   await expect(page.getByText("예정", { exact: true })).toHaveCount(0);
 
   await catalog.getByRole("button", { name: "데이터 표시", exact: true }).click();
   await expect(catalog.locator("[data-component-category]")).toHaveCount(1);
-  await expect(catalog.locator("[data-component-card]")).toHaveCount(13);
+  await expect(catalog.locator("[data-component-card]")).toHaveCount(dataDisplayCardCount);
 
   await catalog.getByPlaceholder("이름 또는 사용 목적 검색", { exact: true }).fill("테이블");
   await expect(catalog.locator("[data-component-card]")).toHaveCount(2);

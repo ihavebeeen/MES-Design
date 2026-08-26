@@ -112,6 +112,7 @@ import { FigmaScreenPreview } from "@/components/patterns/figma-screen-preview";
 import { CandidateDecisionGallery } from "@/components/experimental";
 import { PromotedStandardCatalog } from "@/components/catalog/promoted-standard-catalog";
 import { ComponentCatalogOverview } from "@/components/catalog/component-catalog-overview";
+import { RegistryComponentDocumentation } from "@/components/catalog/registry-component-documentation";
 import { MobileCatalog } from "@/components/mobile/mobile-catalog";
 import {
   IconArrow,
@@ -162,7 +163,7 @@ import {
   GENERATED_SCREEN_NODES,
   EXPERIMENTAL_NODES,
   SIDEBAR_GROUPS,
-  TEMP_BADGE_IDS,
+  PROVISIONAL_BADGE_IDS,
   TIER_BY_ID,
   TIER_COLOR,
   TOP_NAV,
@@ -268,7 +269,7 @@ function SidebarTreeNode({ node, activeId }: { node: SidebarNode; activeId?: str
       >
         <TierBadge id={node.id} />
         <span className="flex min-w-0 flex-1 flex-col"><span className="truncate">{node.label}</span>{node.labelEn && <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">{node.labelEn}</span>}</span>
-        {TEMP_BADGE_IDS.has(node.id) && <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">임시</span>}
+        {PROVISIONAL_BADGE_IDS.has(node.id) && <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">임시</span>}
       </NextLink>
     );
   }
@@ -279,7 +280,7 @@ function SidebarTreeNode({ node, activeId }: { node: SidebarNode; activeId?: str
         <NextLink key={child.id} href={idToHref(child.id)} className={cn("ml-3 flex items-center gap-1.5 rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors", activeId === child.id ? "border-mes-primary-60 font-semibold text-mes-text-brand" : "text-mes-gray-70 hover:text-mes-gray-130")}>
           <TierBadge id={child.id} />
           <span className="flex min-w-0 flex-1 flex-col"><span className="truncate">{child.label}</span>{child.labelEn && <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">{child.labelEn}</span>}</span>
-          {TEMP_BADGE_IDS.has(child.id) && <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">임시</span>}
+          {PROVISIONAL_BADGE_IDS.has(child.id) && <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">임시</span>}
         </NextLink>
       ))}
     </div>
@@ -309,7 +310,7 @@ function OverviewCard({
     >
       <div className="flex items-center gap-1.5">
         <TierBadge id={id} />
-        {TEMP_BADGE_IDS.has(id) && (
+        {PROVISIONAL_BADGE_IDS.has(id) && (
           <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
             임시
           </span>
@@ -547,7 +548,6 @@ function Section({
   id,
   title,
   titleEn,
-  badge,
   children,
 }: {
   id: string;
@@ -558,15 +558,9 @@ function Section({
    *  이름(파일명과 1:1 대응)은 그 아래 작은 회색 글씨로 병기 — 코드 참조가 필요할 때만
    *  보조적으로 쓰라는 의도. 선택 사항(없으면 영문 줄 자체를 안 그림). */
   titleEn?: string;
-  /** 2026-07-31 신규 — "Tooltip (신규, 판단값 — CSS 경량 구현)"처럼 제목 문자열에
-   *  경위 설명을 욱여넣던 걸 담당자가 "제목이 이게 뭐냐"고 지적해서 분리. 제목은
-   *  컴포넌트명만 깔끔하게, 부가 설명은 옆의 작은 칩으로.
-   *  2026-07-31 25차 — 칩 텍스트를 "판단값"→"임시"로, 색은 회색(bg-mes-bg-subtle)
-   *  →파랑(`bg-mes-bg-brand-subtle-strong` + `text-mes-text-brand`, Badge
-   *  컴포넌트의 blueLight 변형과 동일 톤)으로 변경. */
-  badge?: string;
   children: React.ReactNode;
 }) {
+  const badge = PROVISIONAL_BADGE_IDS.has(id) ? "임시" : undefined;
   const registerSection = useContext(SectionRegistryContext);
   const currentId = useContext(ActiveIdContext);
   const childArray = useMemo(() => Children.toArray(children), [children]);
@@ -1699,11 +1693,6 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                 <GroupIcon className="size-[18px] shrink-0 text-mes-primary-60" />
                 {group.title}
               </div>
-              {group.nodes.length === 0 && (
-                <p className="px-2 text-[12px] leading-[1.5] text-mes-gray-60">
-                  티어3(59)·티어4(41) 미착수 — 자리만 미리 만들어둠
-                </p>
-              )}
               <nav className="flex flex-col gap-3">
                 {tierSections.map((section) => (
                   <section key={`${group.title}-${section.tier ?? "common"}`} aria-label={section.tier ? `Tier ${section.tier}` : "공통·미분류"}>
@@ -2030,7 +2019,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
             </div>
           </section>
 
-          <Section id="grid-container" title="Grid / Container" badge="임시">
+          <Section id="grid-container" title="Grid / Container">
             <Sample
               label="Grid · 3열"
               spec={[
@@ -2075,6 +2064,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
               </div>
               {!activeId && (activeGroup === "components" ? <ComponentCatalogOverview /> : <OverviewGrid nodes={COMPONENT_NODES} />)}
               <PromotedStandardCatalog activeId={activeId} />
+              <RegistryComponentDocumentation activeId={activeId} />
             </>
           )}
 
@@ -2967,7 +2957,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="number-input" title="인풋 — 숫자" titleEn="Input — Number" badge="임시">
+      <Section id="number-input" title="인풋 — 숫자" titleEn="Input — Number">
         <Sample
           label="NumberInput · 기본"
           spec={[
@@ -2982,7 +2972,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="password-input" title="인풋 — 비밀번호" titleEn="Input — Password" badge="임시">
+      <Section id="password-input" title="인풋 — 비밀번호" titleEn="Input — Password">
         <Sample
           label="PasswordInput · 보기/숨기기 토글"
           spec={[
@@ -3453,7 +3443,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         actions={[{ label: "확인", onClick: () => setBannerDialogOpen(false) }]}
       />
 
-      <Section id="user-account-menu" title="계정 메뉴" titleEn="UserAccountMenu" badge="임시">
+      <Section id="user-account-menu" title="계정 메뉴" titleEn="UserAccountMenu">
         <Sample
           label="UserAccountMenu · 클릭해서 열기"
           spec={[
@@ -4543,7 +4533,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </div>
       </section>
 
-      <Section id="sticky-header-footer" title="고정 헤더 / 고정 푸터" titleEn="StickyHeader / StickyFooter" badge="임시">
+      <Section id="sticky-header-footer" title="고정 헤더 / 고정 푸터" titleEn="StickyHeader / StickyFooter">
         <Sample
           label="Sticky · 컨테이너 내부 스크롤"
           spec={[
@@ -4563,7 +4553,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="divider" title="구분선" titleEn="Divider" badge="임시">
+      <Section id="divider" title="구분선" titleEn="Divider">
         <Sample
           label="Divider · horizontal"
           spec={[
@@ -4594,7 +4584,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="navbar" title="내비게이션 바" titleEn="Navbar" badge="임시">
+      <Section id="navbar" title="내비게이션 바" titleEn="Navbar">
         <Sample
           label="Navbar · 3-슬롯"
           spec={[
@@ -4617,7 +4607,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="multi-select-input" title="다중 선택 입력" titleEn="MultiSelectInput" badge="임시">
+      <Section id="multi-select-input" title="다중 선택 입력" titleEn="MultiSelectInput">
         <Sample
           label="MultiSelectInput · 태그 추가/제거"
           spec={[
@@ -4636,7 +4626,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="dropdown-menu" title="드롭다운 메뉴" titleEn="DropdownMenu" badge="임시">
+      <Section id="dropdown-menu" title="드롭다운 메뉴" titleEn="DropdownMenu">
         <Sample
           label="DropdownMenu · 클릭해서 열기"
           spec={[
@@ -4662,7 +4652,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="label" title="라벨" titleEn="Label" badge="임시">
+      <Section id="label" title="라벨" titleEn="Label">
         <Sample
           label="Label · 기본"
           spec={[
@@ -4693,7 +4683,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="logo" title="로고" titleEn="Logo" badge="임시">
+      <Section id="logo" title="로고" titleEn="Logo">
         <Sample
           label="Logo · default/small"
           spec={[
@@ -4711,7 +4701,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="loading-spinner" title="로딩 스피너" titleEn="LoadingSpinner" badge="임시">
+      <Section id="loading-spinner" title="로딩 스피너" titleEn="LoadingSpinner">
         <Sample
           label="LoadingSpinner · 16px"
           spec={[
@@ -4745,7 +4735,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="loading-overlay" title="로딩 오버레이" titleEn="LoadingOverlay" badge="임시">
+      <Section id="loading-overlay" title="로딩 오버레이" titleEn="LoadingOverlay">
         <Sample
           label="LoadingOverlay · 영역 덮기"
           spec={[
@@ -4762,7 +4752,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="list" title="리스트" titleEn="List" badge="임시">
+      <Section id="list" title="리스트" titleEn="List">
         <Sample
           label="List · 클릭 가능 항목"
           spec={[
@@ -4780,7 +4770,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="link" title="링크" titleEn="Link" badge="임시">
+      <Section id="link" title="링크" titleEn="Link">
         <Sample
           label="Link · 기본"
           spec={[
@@ -4796,7 +4786,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="button-group" title="버튼 그룹" titleEn="ButtonGroup" badge="임시">
+      <Section id="button-group" title="버튼 그룹" titleEn="ButtonGroup">
         <Sample
           label="ButtonGroup · 3개 연결"
           spec={[
@@ -4819,7 +4809,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="breadcrumb" title="브레드크럼" titleEn="Breadcrumb" badge="임시">
+      <Section id="breadcrumb" title="브레드크럼" titleEn="Breadcrumb">
         <Sample
           label="Breadcrumb · 3단계"
           spec={[
@@ -4840,7 +4830,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="empty-state" title="상태 — 없음" titleEn="State — Empty" badge="임시">
+      <Section id="empty-state" title="상태 — 없음" titleEn="State — Empty">
         <Sample
           label="EmptyState · 아이콘+액션"
           spec={[
@@ -4866,7 +4856,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="error-state" title="상태 — 오류" titleEn="State — Error" badge="임시">
+      <Section id="error-state" title="상태 — 오류" titleEn="State — Error">
         <Sample
           label="ErrorState · 재시도 액션"
           spec={[
@@ -4887,7 +4877,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="descriptions" title="설명 목록" titleEn="Descriptions" badge="임시">
+      <Section id="descriptions" title="설명 목록" titleEn="Descriptions">
         <Sample
           label="Descriptions · 1열"
           spec={[
@@ -4909,7 +4899,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="switch" title="스위치" titleEn="Switch" badge="임시">
+      <Section id="switch" title="스위치" titleEn="Switch">
         <Sample
           label="Switch · off"
           spec={[
@@ -4951,7 +4941,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="skeleton" title="스켈레톤" titleEn="Skeleton" badge="임시">
+      <Section id="skeleton" title="스켈레톤" titleEn="Skeleton">
         <Sample
           label="Skeleton · text"
           spec={[
@@ -5005,7 +4995,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="scroll-area" title="스크롤 영역" titleEn="ScrollArea" badge="임시">
+      <Section id="scroll-area" title="스크롤 영역" titleEn="ScrollArea">
         <Sample
           label="ScrollArea · 고정 높이"
           spec={[
@@ -5024,7 +5014,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="icon-button" title="아이콘 버튼 / 닫기 버튼" titleEn="IconButton / CloseButton" badge="임시">
+      <Section id="icon-button" title="아이콘 버튼 / 닫기 버튼" titleEn="IconButton / CloseButton">
         <Sample
           label="IconButton · basic/ghost"
           spec={[
@@ -5134,7 +5124,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="accordion" title="아코디언" titleEn="Accordion" badge="임시">
+      <Section id="accordion" title="아코디언" titleEn="Accordion">
         <Sample
           label="Accordion · multiple(기본)"
           spec={[
@@ -5158,7 +5148,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="collapsible" title="접기·펼치기" titleEn="Collapsible" badge="임시">
+      <Section id="collapsible" title="접기·펼치기" titleEn="Collapsible">
         <Sample
           label="Collapsible · 단일 트리거"
           spec={[
@@ -5176,7 +5166,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="card" title="카드" titleEn="Card" badge="임시">
+      <Section id="card" title="카드" titleEn="Card">
         <Sample
           label="Card · 기본"
           spec={[
@@ -5211,7 +5201,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="textarea" title="텍스트 영역" titleEn="Textarea" badge="임시">
+      <Section id="textarea" title="텍스트 영역" titleEn="Textarea">
         <Sample
           label="Textarea · Default(placeholder)"
           spec={[
@@ -5258,7 +5248,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="toggle-button" title="토글 버튼" titleEn="ToggleButton" badge="임시">
+      <Section id="toggle-button" title="토글 버튼" titleEn="ToggleButton">
         <Sample
           label="ToggleButton · 눌림 상태 토글"
           spec={[
@@ -5279,7 +5269,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="tooltip" title="툴팁" titleEn="Tooltip" badge="임시">
+      <Section id="tooltip" title="툴팁" titleEn="Tooltip">
         <Sample
           label="Tooltip · top(기본)"
           spec={[
@@ -5316,7 +5306,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="popover" title="팝오버" titleEn="Popover" badge="임시">
+      <Section id="popover" title="팝오버" titleEn="Popover">
         <Sample
           label="Popover · 클릭해서 열기"
           spec={[
@@ -5343,7 +5333,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="panel" title="패널" titleEn="Panel" badge="임시">
+      <Section id="panel" title="패널" titleEn="Panel">
         <Sample
           label="Panel · 기본"
           spec={[
@@ -5361,7 +5351,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="pagination" title="페이지네이션" titleEn="Pagination" badge="임시">
+      <Section id="pagination" title="페이지네이션" titleEn="Pagination">
         <Sample
           label="Pagination · 10페이지 중 4페이지"
           spec={[
@@ -5375,7 +5365,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="date-picker" title="피커 — 날짜" titleEn="Picker — Date" badge="임시">
+      <Section id="date-picker" title="피커 — 날짜" titleEn="Picker — Date">
         <Sample
           label="DatePicker · 단일 날짜"
           spec={[
@@ -5390,7 +5380,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="date-range-picker" title="피커 — 기간" titleEn="Picker — Range" badge="임시">
+      <Section id="date-range-picker" title="피커 — 기간" titleEn="Picker — Range">
         <Sample
           label="DateRangePicker · 기간 선택"
           spec={[
@@ -5404,7 +5394,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="time-picker" title="피커 — 시간" titleEn="Picker — Time" badge="임시">
+      <Section id="time-picker" title="피커 — 시간" titleEn="Picker — Time">
         <Sample
           label="TimePicker · 30분 간격"
           spec={[
@@ -5418,7 +5408,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="fieldset" title="필드셋" titleEn="Fieldset" badge="임시">
+      <Section id="fieldset" title="필드셋" titleEn="Fieldset">
         <Sample
           label="Fieldset · 필드 묶음"
           spec={[

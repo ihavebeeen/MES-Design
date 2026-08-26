@@ -66,7 +66,7 @@
           "evidence": 41
         },
         "examples": [
-          "src/components/ui/center-modal.tsx:166",
+          "src/components/ui/center-modal.tsx:161",
           "src/components/ui/dialog-body.ts:6",
           "src/components/ui/dialog-body.ts:6",
           "src/components/ui/dialog-body.ts:8",
@@ -128,7 +128,7 @@
         "examples": [
           "src/components/ui/button.tsx:53",
           "src/components/ui/button.tsx:55",
-          "src/components/ui/center-modal.tsx:166",
+          "src/components/ui/center-modal.tsx:161",
           "src/components/ui/confirm-dialog.tsx:141",
           "src/components/ui/descriptions.tsx:32",
           "src/components/ui/dialog-footer.tsx:29",
@@ -338,7 +338,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/ui/center-modal.tsx:166",
+          "src/components/ui/center-modal.tsx:161",
           "src/components/ui/side-slide-panel.tsx:131",
           "src/components/patterns/completed-popup-expanded-content.tsx:307",
           "src/components/patterns/source-popup-gallery.tsx:76"
@@ -736,7 +736,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/ui/center-modal.tsx:160",
+          "src/components/ui/center-modal.tsx:155",
           "src/components/patterns/source-popup-gallery.tsx:75"
         ]
       },
@@ -876,7 +876,7 @@
           "src/components/ui/badge.tsx:39",
           "src/components/ui/card.tsx:37",
           "src/components/ui/card.tsx:48",
-          "src/components/ui/center-modal.tsx:167",
+          "src/components/ui/center-modal.tsx:162",
           "src/components/ui/combobox.tsx:168",
           "src/components/ui/combobox.tsx:174"
         ]
@@ -951,7 +951,7 @@
           "evidence": 8
         },
         "examples": [
-          "src/components/ui/center-modal.tsx:167",
+          "src/components/ui/center-modal.tsx:162",
           "src/components/ui/confirm-dialog.tsx:142",
           "src/components/ui/logo.tsx:27",
           "src/components/ui/quick-query.tsx:255",
@@ -1173,7 +1173,7 @@
         "examples": [
           "src/components/ui/alarm-list-item.tsx:66",
           "src/components/ui/cavity-cell.tsx:13",
-          "src/components/ui/center-modal.tsx:176",
+          "src/components/ui/center-modal.tsx:171",
           "src/components/ui/file-upload.tsx:25",
           "src/components/ui/form-grid.tsx:25",
           "src/components/ui/form-grid.tsx:48",
@@ -1487,7 +1487,7 @@
           "evidence": 3
         },
         "examples": [
-          "src/components/ui/center-modal.tsx:166",
+          "src/components/ui/center-modal.tsx:161",
           "src/components/ui/confirm-dialog.tsx:141",
           "src/components/ui/quick-query.tsx:254",
           "src/components/ui/radio-choice-dialog.tsx:121",
@@ -3745,7 +3745,7 @@
           "canonical": 1
         },
         "examples": [
-          "src/components/ui/center-modal.tsx:159"
+          "src/components/ui/center-modal.tsx:154"
         ]
       },
       {
@@ -4313,7 +4313,7 @@
           "canonical": 1
         },
         "examples": [
-          "src/components/ui/center-modal.tsx:160"
+          "src/components/ui/center-modal.tsx:155"
         ]
       },
       {
@@ -4341,5 +4341,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "973a200ef87c8b6f"
+  "fingerprint": "1c85cb2dee87a37f"
 }

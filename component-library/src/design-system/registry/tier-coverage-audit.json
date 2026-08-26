@@ -1,7 +1,6 @@
 {
   "schemaVersion": 1,
-  "auditDate": "2026-08-20",
-  "source": "docs/UI_컴포넌트_총망라_체크리스트.md",
+  "source": "component-library/src/design-system/registry/tier-candidates.json",
   "policy": {
     "currentGoal": "desktop MES AI screen generation",
     "tier1And2BlockingGaps": 0,
@@ -40,18 +39,16 @@
       "5": {
         "total": 28,
         "intentional-composition": 12,
-        "excluded-scope": 14,
-        "deferred-evidence": 1,
+        "excluded-scope": 15,
         "implemented-pattern": 1
       }
     },
     "byDisposition": {
       "implemented-foundation": 9,
-      "excluded-scope": 42,
+      "excluded-scope": 43,
       "implemented-component": 93,
       "intentional-composition": 57,
-      "implemented-pattern": 14,
-      "deferred-evidence": 1
+      "implemented-pattern": 14
     }
   },
   "items": [
@@ -62,7 +59,7 @@
       "tier": 1,
       "disposition": "implemented-foundation",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "globals.css"
       ],
       "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
@@ -74,7 +71,7 @@
       "tier": 1,
       "disposition": "implemented-foundation",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "globals.css"
       ],
       "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
@@ -108,7 +105,7 @@
       "tier": 1,
       "disposition": "implemented-foundation",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "globals.css"
       ],
       "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
@@ -132,7 +129,7 @@
       "tier": 2,
       "disposition": "implemented-foundation",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "globals.css"
       ],
       "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
@@ -155,7 +152,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -167,7 +164,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -179,7 +176,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -191,7 +188,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -203,7 +200,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -237,7 +234,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -249,7 +246,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -261,7 +258,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -320,7 +317,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -332,7 +329,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -344,7 +341,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -356,7 +353,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -368,7 +365,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -380,7 +377,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -392,7 +389,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -404,7 +401,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -416,7 +413,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -428,7 +425,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -440,7 +437,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -452,7 +449,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -476,7 +473,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -521,7 +518,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -533,7 +530,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -545,7 +542,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -557,7 +554,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -569,7 +566,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -593,7 +590,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -614,11 +611,11 @@
       "layer": "오가니즘",
       "sourceStatus": "없음",
       "tier": 5,
-      "disposition": "deferred-evidence",
+      "disposition": "excluded-scope",
       "evidence": [
-        "tier3-user-review-2026-08-19"
+        "tier5-user-review-2026-08-19"
       ],
-      "note": "기반이던 전체 검색 후보가 제외되어 실제 업무 근거가 생길 때 별도 검토한다."
+      "note": "Tier 5에서는 온보딩 툴팁·제품 투어만 유지한다는 사용자 판정에 따라 현재 범위에서 제외한다."
     },
     {
       "item": "Back to Top",
@@ -638,7 +635,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -663,7 +660,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -675,7 +672,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -711,7 +708,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -723,7 +720,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -735,7 +732,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -747,7 +744,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -771,7 +768,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -783,7 +780,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -831,7 +828,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -854,7 +851,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -866,7 +863,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -878,7 +875,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -901,7 +898,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -913,7 +910,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -925,7 +922,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -937,7 +934,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -949,7 +946,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -961,7 +958,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -973,7 +970,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -985,7 +982,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1009,7 +1006,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1021,7 +1018,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1033,7 +1030,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1056,7 +1053,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1068,7 +1065,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1092,7 +1089,7 @@
       "tier": 1,
       "disposition": "implemented-foundation",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "globals.css"
       ],
       "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
@@ -1104,7 +1101,7 @@
       "tier": 1,
       "disposition": "implemented-foundation",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "globals.css"
       ],
       "note": "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다."
@@ -1139,7 +1136,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1246,7 +1243,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1258,7 +1255,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1270,7 +1267,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1293,7 +1290,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1305,7 +1302,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1352,7 +1349,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1609,7 +1606,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1678,7 +1675,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1714,7 +1711,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1857,7 +1854,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1930,7 +1927,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1965,7 +1962,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1977,7 +1974,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -1989,7 +1986,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -2001,7 +1998,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -2013,7 +2010,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -2025,7 +2022,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -2155,7 +2152,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -2307,7 +2304,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -2354,7 +2351,7 @@
       "tier": 1,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -2520,7 +2517,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -2532,7 +2529,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."
@@ -2544,7 +2541,7 @@
       "tier": 2,
       "disposition": "implemented-component",
       "evidence": [
-        "legacy-checklist",
+        "tier-candidates-source",
         "components registry/code"
       ],
       "note": "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다."

@@ -1,21 +1,32 @@
 {
   "schemaVersion": 1,
-  "auditedAt": "2026-08-24",
-  "sourceFingerprint": "deaaae205f10fb4161cbbce0cc64a14fae03570b75ef1583b8cc094bf2601316",
+  "auditedAt": "2026-08-26T02:22:24.982Z",
+  "sourceFingerprint": "dcc9ea2dbd1e3ba4db0f379b37ca5cb5cc886691451e626fd03491e33bf263b9",
   "browserRun": {
     "command": "npm run test:visual",
     "result": "passed",
-    "passed": 71,
+    "testCount": 72,
+    "passed": 72,
     "failed": 0,
-    "duration": "3.4m",
+    "durationMs": 195545,
+    "recordedAt": "2026-08-26T02:22:24.982Z",
+    "testInventoryFingerprint": "6eba1da3b8679303bb5327f476575c994391d4ea6b7106dfbc9a6529ebfef5ed",
     "includesDeferredMobile": true
+  },
+  "testInventory": {
+    "count": 72,
+    "files": {
+      "tests/visual/design-system.visual.spec.ts": "0daa95df4b585b7c7186fa86b3222323960c9f8ac846d7537fb247f5d385cca3",
+      "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14"
+    },
+    "fingerprint": "6eba1da3b8679303bb5327f476575c994391d4ea6b7106dfbc9a6529ebfef5ed"
   },
   "summary": {
     "components": {
       "total": 88,
       "stable": 40,
       "provisional": 48,
-      "documented": 67,
+      "documented": 86,
       "detailedUsageRules": 20,
       "sourceMissing": 0
     },
@@ -115,7 +126,7 @@
       "status": "stable",
       "source": "src/components/ui/before-after-comparison.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/before-after-comparison",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
@@ -123,7 +134,6 @@
       ],
       "reviewState": "approved-basic",
       "outstanding": [
-        "documentation-route-missing",
         "detailed-usage-rule-missing"
       ]
     },
@@ -221,14 +231,13 @@
       "status": "provisional",
       "source": "src/components/ui/cascader.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/cascader",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "documentation-route-missing",
         "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
@@ -394,7 +403,7 @@
       "status": "stable",
       "source": "src/components/ui/labeled-select.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/labeled-select",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
@@ -403,7 +412,6 @@
       ],
       "reviewState": "approved-basic",
       "outstanding": [
-        "documentation-route-missing",
         "detailed-usage-rule-missing"
       ]
     },
@@ -414,7 +422,7 @@
       "status": "stable",
       "source": "src/components/ui/labeled-input.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/labeled-input",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
@@ -422,7 +430,6 @@
       ],
       "reviewState": "approved-basic",
       "outstanding": [
-        "documentation-route-missing",
         "detailed-usage-rule-missing"
       ]
     },
@@ -433,7 +440,7 @@
       "status": "stable",
       "source": "src/components/ui/selection-action-bar.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/selection-action-bar",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
@@ -441,7 +448,6 @@
       ],
       "reviewState": "approved-basic",
       "outstanding": [
-        "documentation-route-missing",
         "detailed-usage-rule-missing"
       ]
     },
@@ -452,13 +458,12 @@
       "status": "stable",
       "source": "src/components/ui/analytics-charts.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/analytics-charts",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "approved-basic",
       "outstanding": [
-        "documentation-route-missing",
         "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
@@ -508,13 +513,12 @@
       "status": "stable",
       "source": "src/components/ui/dialog-footer.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/dialog-footer",
       "hasFreeformRules": false,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [],
       "reviewState": "approved-with-detailed-rule",
       "outstanding": [
-        "documentation-route-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -643,14 +647,13 @@
       "status": "provisional",
       "source": "src/components/ui/file-upload.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/file-upload",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "documentation-route-missing",
         "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
@@ -680,7 +683,7 @@
       "status": "stable",
       "source": "src/components/ui/form-grid.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/form-grid",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
@@ -689,7 +692,6 @@
       ],
       "reviewState": "approved-basic",
       "outstanding": [
-        "documentation-route-missing",
         "detailed-usage-rule-missing"
       ]
     },
@@ -805,7 +807,7 @@
       "status": "stable",
       "source": "src/components/ui/inspection-judgement.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/inspection-judgement",
       "hasFreeformRules": false,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
@@ -814,7 +816,6 @@
       ],
       "reviewState": "approved-basic",
       "outstanding": [
-        "documentation-route-missing",
         "detailed-usage-rule-missing"
       ]
     },
@@ -1308,13 +1309,12 @@
       "status": "stable",
       "source": "src/components/ui/mes-product-switcher.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/mes-product-switcher",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "approved-basic",
       "outstanding": [
-        "documentation-route-missing",
         "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
@@ -1326,7 +1326,7 @@
       "status": "stable",
       "source": "src/components/ui/section-frame.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/section-frame",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
@@ -1334,9 +1334,7 @@
         "recipe.side-slide-form-editable-list"
       ],
       "reviewState": "approved-with-detailed-rule",
-      "outstanding": [
-        "documentation-route-missing"
-      ]
+      "outstanding": []
     },
     {
       "id": "section-header",
@@ -1345,16 +1343,14 @@
       "status": "stable",
       "source": "src/components/ui/section-header.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/section-header",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "frame.standard-section"
       ],
       "reviewState": "approved-with-detailed-rule",
-      "outstanding": [
-        "documentation-route-missing"
-      ]
+      "outstanding": []
     },
     {
       "id": "icon-menu",
@@ -1381,7 +1377,7 @@
       "status": "stable",
       "source": "src/components/ui/query-date-range.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/query-date-range",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
@@ -1390,7 +1386,6 @@
       ],
       "reviewState": "approved-basic",
       "outstanding": [
-        "documentation-route-missing",
         "detailed-usage-rule-missing"
       ]
     },
@@ -1401,13 +1396,12 @@
       "status": "stable",
       "source": "src/components/ui/cavity-cell.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/cavity-cell",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "approved-basic",
       "outstanding": [
-        "documentation-route-missing",
         "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
@@ -1468,14 +1462,13 @@
       "status": "provisional",
       "source": "src/components/ui/slider.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/slider",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "documentation-route-missing",
         "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
@@ -1664,14 +1657,13 @@
       "status": "provisional",
       "source": "src/components/ui/timeline.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/timeline",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "documentation-route-missing",
         "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
@@ -1700,14 +1692,13 @@
       "status": "provisional",
       "source": "src/components/ui/tree-select.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/tree-select",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "documentation-route-missing",
         "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
@@ -1719,14 +1710,13 @@
       "status": "provisional",
       "source": "src/components/ui/tree-view.tsx",
       "sourceExists": true,
-      "documentationRoute": null,
+      "documentationRoute": "/components/tree-view",
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "documentation-route-missing",
         "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]

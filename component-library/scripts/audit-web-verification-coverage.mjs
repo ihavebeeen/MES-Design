@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
+import { createRequire } from "node:module";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,15 +12,7 @@ const repositoryRoot = path.resolve(projectRoot, "..");
 const registryDirectory = path.join(projectRoot, "src", "design-system", "registry");
 const jsonOutputPath = path.join(registryDirectory, "web-verification-audit.json");
 const markdownOutputPath = path.join(repositoryRoot, "docs", "웹_UI_전수검증_현황.md");
-const auditDate = "2026-08-24";
-const browserRun = {
-  command: "npm run test:visual",
-  result: "passed",
-  passed: 71,
-  failed: 0,
-  duration: "3.4m",
-  includesDeferredMobile: true,
-};
+const require = createRequire(import.meta.url);
 
 function readJson(fileName) {
   return JSON.parse(fs.readFileSync(path.join(registryDirectory, fileName), "utf8"));
@@ -38,6 +32,33 @@ function fingerprint(value) {
 
 function fileFingerprint(filePath) {
   return createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
+}
+
+function walkFiles(directory) {
+  if (!fs.existsSync(directory)) return [];
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const target = path.join(directory, entry.name);
+    return entry.isDirectory() ? walkFiles(target) : [target];
+  });
+}
+
+function collectTestInventory() {
+  const cliPath = require.resolve("@playwright/test/cli");
+  const result = spawnSync(process.execPath, [cliPath, "test", "--list"], {
+    cwd: projectRoot,
+    encoding: "utf8",
+    env: { ...process.env, NO_COLOR: "1", FORCE_COLOR: "0" },
+  });
+  if (result.status !== 0) throw new Error(`Playwright 테스트 목록 조회 실패:\n${result.stderr || result.stdout}`);
+  const output = `${result.stdout}\n${result.stderr}`;
+  const count = Number(output.match(/Total:\s*(\d+)\s+tests?/)?.[1]);
+  if (!Number.isFinite(count)) throw new Error("Playwright 테스트 개수를 읽지 못했습니다.");
+  const testFiles = walkFiles(path.join(projectRoot, "tests", "visual")).filter((filePath) => filePath.endsWith(".spec.ts"));
+  return {
+    count,
+    files: Object.fromEntries(testFiles.sort().map((filePath) => [path.relative(projectRoot, filePath).replaceAll("\\", "/"), fileFingerprint(filePath)])),
+    fingerprint: fingerprint({ count, files: testFiles.sort().map((filePath) => [path.relative(projectRoot, filePath), fileFingerprint(filePath)]) }),
+  };
 }
 
 function escapeCell(value) {
@@ -172,13 +193,12 @@ function buildAudit() {
       return [relativePath, fs.existsSync(absolutePath) ? fileFingerprint(absolutePath) : "missing"];
     }),
   );
-  const visualTestPath = path.join(projectRoot, "tests", "visual", "design-system.visual.spec.ts");
-  const snapshotDirectory = `${visualTestPath}-snapshots`;
+  const visualTestDirectory = path.join(projectRoot, "tests", "visual");
+  const visualTestFiles = walkFiles(visualTestDirectory).filter((filePath) => filePath.endsWith(".spec.ts"));
+  const snapshotFiles = walkFiles(visualTestDirectory).filter((filePath) => filePath.includes("-snapshots") && filePath.endsWith(".png"));
   const visualEvidenceFingerprints = {
-    testSource: fs.existsSync(visualTestPath) ? fileFingerprint(visualTestPath) : "missing",
-    snapshots: fs.existsSync(snapshotDirectory)
-      ? Object.fromEntries(fs.readdirSync(snapshotDirectory).sort().map((fileName) => [fileName, fileFingerprint(path.join(snapshotDirectory, fileName))]))
-      : {},
+    testSources: Object.fromEntries(visualTestFiles.sort().map((filePath) => [path.relative(projectRoot, filePath).replaceAll("\\", "/"), fileFingerprint(filePath)])),
+    snapshots: Object.fromEntries(snapshotFiles.sort().map((filePath) => [path.relative(projectRoot, filePath).replaceAll("\\", "/"), fileFingerprint(filePath)])),
   };
 
   const sourceFingerprint = fingerprint({
@@ -195,11 +215,45 @@ function buildAudit() {
     visualEvidenceFingerprints,
   });
 
+  const testInventory = collectTestInventory();
+  const existingAudit = fs.existsSync(jsonOutputPath) ? JSON.parse(fs.readFileSync(jsonOutputPath, "utf8")) : null;
+  const recordPassed = process.argv.includes("--record-passed");
+  const durationArgument = process.argv.find((argument) => argument.startsWith("--duration-ms="));
+  const previousRunIsCurrent = existingAudit?.sourceFingerprint === sourceFingerprint
+    && existingAudit?.browserRun?.testInventoryFingerprint === testInventory.fingerprint
+    && existingAudit?.browserRun?.result === "passed";
+  const browserRun = recordPassed
+    ? {
+        command: "npm run test:visual",
+        result: "passed",
+        testCount: testInventory.count,
+        passed: testInventory.count,
+        failed: 0,
+        durationMs: Number(durationArgument?.split("=")[1] ?? 0),
+        recordedAt: new Date().toISOString(),
+        testInventoryFingerprint: testInventory.fingerprint,
+        includesDeferredMobile: true,
+      }
+    : previousRunIsCurrent
+      ? { ...existingAudit.browserRun, testCount: testInventory.count }
+      : {
+          command: "npm run test:visual",
+          result: "not-verified-for-current-source",
+          testCount: testInventory.count,
+          passed: null,
+          failed: null,
+          durationMs: null,
+          recordedAt: null,
+          testInventoryFingerprint: testInventory.fingerprint,
+          includesDeferredMobile: true,
+        };
+
   return {
     schemaVersion: 1,
-    auditedAt: auditDate,
+    auditedAt: browserRun.recordedAt,
     sourceFingerprint,
     browserRun,
+    testInventory,
     summary: {
       components: {
         total: components.length,
@@ -237,10 +291,12 @@ function renderMarkdown(audit) {
   const stableWithoutRules = audit.components.filter((entry) => entry.status === "stable" && !entry.hasDetailedUsageRule);
   const patternsWithoutRules = audit.patterns.filter((entry) => !entry.hasDetailedCompositionRule);
   const unusedPatterns = audit.patterns.filter((entry) => entry.usedByScreenIds.length === 0 && entry.generationTemplateIds.length === 0);
+  const browserVerified = audit.browserRun.result === "passed";
+  const recordedDate = audit.browserRun.recordedAt ? audit.browserRun.recordedAt.slice(0, 10) : "현재 소스 미검증";
   const lines = [
     "# 웹 UI 전수검증 현황",
     "",
-    `> 기준일: ${audit.auditedAt} · 브라우저 검사: ${audit.browserRun.passed}개 통과, ${audit.browserRun.failed}개 실패`,
+    `> 기록: ${recordedDate} · 현재 테스트 목록: ${audit.browserRun.testCount}개 · 결과: ${browserVerified ? `${audit.browserRun.passed}개 통과` : "전체 검증 필요"}`,
     "",
     "## 이번에 확인한 범위",
     "",
@@ -250,9 +306,11 @@ function renderMarkdown(audit) {
     `| 화면 구성 방식 | ${audit.summary.patterns.total} | 실제 화면 사용 ${audit.summary.patterns.usedByScreens} | 화면 미사용 ${audit.summary.patterns.unusedByScreens} |`,
     `| 등록 화면 | ${audit.summary.screens.total} | 동작 확인 ${audit.summary.screens.interactionVerified} | 직접 시각 기준 없음 ${audit.summary.screens.total - audit.summary.screens.directlyVisualLinked} |`,
     "",
-    `전체 코드·등록 정보·화면 동작과 저장된 기준 이미지를 검사했다. 브라우저 검사 ${audit.browserRun.passed}개는 모두 통과했다. 등록 화면 ${audit.summary.screens.total}개는 모두 화면별 기준 이미지와 연결되어 있다. 다만 이것은 Figma와 영구적으로 완전히 같다는 뜻이 아니다. 구현 코드나 기준 이미지가 바뀌면 이 원장도 다시 갱신해야 한다.`,
+    browserVerified
+      ? `현재 소스 지문에서 코드·등록 정보·화면 동작과 저장된 기준 이미지를 검사했고 ${audit.browserRun.passed}개가 통과했다. 등록 화면 ${audit.summary.screens.total}개의 연결 상태도 함께 계산했다. 이는 Figma와 영구적으로 같다는 뜻이 아니며 원본 대조가 끝난 화면만 별도 검증으로 판단한다.`
+      : `현재 테스트 ${audit.browserRun.testCount}개는 목록과 소스 지문만 계산한 상태다. 이 소스에 대한 전체 브라우저 검증 결과는 아직 기록되지 않았으므로 통과로 간주하지 않는다.`,
     "",
-    "## 화면 28개 확인 결과",
+    `## 화면 ${audit.summary.screens.total}개 확인 결과`,
     "",
     "| 화면 | 동작 | 기준 이미지 | 화면 순서 상세화 | 현재 판단 |",
     "|---|---|---|---|---|",
@@ -264,7 +322,7 @@ function renderMarkdown(audit) {
     "",
     ...(missingVisual.length > 0
       ? missingVisual.map((entry) => `- 연결 필요: ${entry.name} (${entry.id})`)
-      : ["등록 화면 28개 모두 연결 완료. 이번 점검에서 선발행 라벨, 운전일지, 재고편집, 발주 정보, 그룹화 생산실적, 생산실적 반응형 3종, 생산분석 현황의 누락 기준을 추가했다."]),
+      : [`등록 화면 ${audit.summary.screens.total}개 모두 시각 기준에 연결돼 있다.`]),
     "",
     "### 2. 아직 검토 단계인 공용 화면 요소",
     "",
@@ -293,7 +351,7 @@ function renderMarkdown(audit) {
     "1. 현재 화면에서 많이 사용하는 정식 요소 중 상세 사용 기준이 없는 항목을 먼저 정리한다.",
     "2. 검토 단계 요소는 실제 사용 화면이 생길 때 원본·상태·사용 위치를 확인하고 정식 여부를 판정한다.",
     "3. 화면 구성을 실제 사용 빈도순으로 상세화한다.",
-    "4. 이후 새 자산이나 기준 이미지가 바뀌었는데 이 원장이 갱신되지 않으면 전체 디자인 시스템 검사가 실패하도록 유지한다.",
+    "4. 새 자산·테스트·기준 이미지가 바뀌면 이전 통과 기록을 현재 결과로 재사용하지 않는다.",
     "",
     "## 판정 범위",
     "",

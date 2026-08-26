@@ -4,13 +4,15 @@ import { fileURLToPath } from "node:url";
 import { generatedTextMatches } from "./generated-text.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const checklistPath = path.join(root, "docs/UI_컴포넌트_총망라_체크리스트.md");
+const tierSourcePath = path.join(
+  root,
+  "component-library/src/design-system/registry/tier-candidates.json",
+);
 const outputJsonPath = path.join(
   root,
   "component-library/src/design-system/registry/tier-coverage-audit.json",
 );
 const outputMarkdownPath = path.join(root, "docs/UI_컴포넌트_티어_정규화.md");
-const auditDate = "2026-08-20";
 const experimentalRegistry = JSON.parse(
   fs.readFileSync(
     path.join(root, "component-library/src/design-system/registry/experimental-candidates.json"),
@@ -271,9 +273,9 @@ set(
 );
 set(
   ["Command Palette"],
-  "deferred-evidence",
-  ["tier3-user-review-2026-08-19"],
-  "기반이던 전체 검색 후보가 제외되어 실제 업무 근거가 생길 때 별도 검토한다.",
+  "excluded-scope",
+  ["tier5-user-review-2026-08-19"],
+  "Tier 5에서는 온보딩 툴팁·제품 투어만 유지한다는 사용자 판정에 따라 현재 범위에서 제외한다.",
 );
 set(
   ["Breakpoint Scale", "Split Button", "OTP / PIN Input", "Rich Text Editor", "Context Menu", "Chat Bubble / Message", "Drag Handle / Sortable List", "Kanban Board", "Work Order Kanban", "Anchor / Scroll Spy", "Factory Layout View", "Shift Schedule Calendar", "Maintenance Schedule Calendar", "Defect Pareto Chart", "Label Print Preview", "E-signature Pad", "Skip Link", "Visually Hidden"],
@@ -318,25 +320,6 @@ const excludedTier4 = new Set([
   "Spoiler (더보기/접기 텍스트)",
 ]);
 
-function parseChecklist(markdown) {
-  const rows = [];
-  const rowPattern = /^\|\s*([^|]+?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*(있음|부분|없음)\s*\|\s*([1-5])\s*\|\s*([^|]*?)\s*\|$/;
-
-  for (const line of markdown.split(/\r?\n/)) {
-    const match = line.match(rowPattern);
-    if (!match) continue;
-    rows.push({
-      item: match[1].trim(),
-      description: match[2].trim(),
-      layer: match[3].trim(),
-      sourceStatus: match[4],
-      tier: Number(match[5]),
-      sourceNote: match[6].trim(),
-    });
-  }
-  return rows;
-}
-
 function classify(row) {
   const experimental = experimentalByChecklistItem.get(row.item);
   if (experimental) {
@@ -353,20 +336,20 @@ function classify(row) {
     if (row.layer === "토큰") {
       return {
         disposition: "implemented-foundation",
-        evidence: ["legacy-checklist", "globals.css"],
+        evidence: ["tier-candidates-source", "globals.css"],
         note: "기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다.",
       };
     }
     if (row.layer === "템플릿") {
       return {
         disposition: "implemented-pattern",
-        evidence: ["legacy-checklist", "patterns/screens registry"],
+        evidence: ["tier-candidates-source", "patterns/screens registry"],
         note: "화면 단독 자산이 아니라 재사용 가능한 조합 근거로 유지한다.",
       };
     }
     return {
       disposition: "implemented-component",
-      evidence: ["legacy-checklist", "components registry/code"],
+      evidence: ["tier-candidates-source", "components registry/code"],
       note: "기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다.",
     };
   }
@@ -414,8 +397,6 @@ function escapeCell(value) {
 function renderMarkdown(audit) {
   const lines = [
     "# UI 컴포넌트 티어 정규화",
-    "",
-    `기준일: ${audit.auditDate}`,
     "",
     "이 문서는 최초 피그마 조사 시점의 `있음/부분/없음` 기록을 현재 코드 구조와 대조한 판정표다. 원본 체크리스트의 `없음`은 곧바로 ‘새 컴포넌트를 만들어야 함’을 뜻하지 않는다. 기존 컴포넌트의 조합으로 해결되는지, 현재 MES 범위에서 필요한지, 실제 업무·원본 근거가 있는지를 먼저 판정한다.",
     "",
@@ -484,8 +465,7 @@ function renderMarkdown(audit) {
   return lines.join("\n");
 }
 
-const source = fs.readFileSync(checklistPath, "utf8");
-const parsed = parseChecklist(source);
+const parsed = JSON.parse(fs.readFileSync(tierSourcePath, "utf8")).candidates;
 if (parsed.length !== 216) {
   throw new Error(`Expected 216 checklist rows, found ${parsed.length}`);
 }
@@ -499,8 +479,7 @@ const items = parsed.map((row) => ({
 }));
 const audit = {
   schemaVersion: 1,
-  auditDate,
-  source: "docs/UI_컴포넌트_총망라_체크리스트.md",
+  source: "component-library/src/design-system/registry/tier-candidates.json",
   policy: {
     currentGoal: "desktop MES AI screen generation",
     tier1And2BlockingGaps: 0,

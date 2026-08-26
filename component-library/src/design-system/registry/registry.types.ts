@@ -8,12 +8,16 @@ export interface ComponentRegistryEntry {
     | "data-display"
     | "feedback"
     | "form"
+    | "icon"
     | "layout"
     | "navigation"
     | "overlay"
     | "system";
   source: string;
   status: RegistryStatus;
+  visibility: "public" | "internal";
+  tier: 1 | 2 | 3 | 4 | 5;
+  documentationMode: "interactive" | "registry" | "foundation" | "internal";
   documentationRoute?: string;
   rules?: string[];
 }
@@ -21,6 +25,26 @@ export interface ComponentRegistryEntry {
 export interface ComponentRegistry {
   schemaVersion: 1;
   components: ComponentRegistryEntry[];
+}
+
+export interface AssetManifestRegistry {
+  schemaVersion: 1;
+  purpose: string;
+  generatedFrom: string[];
+  fingerprint: string;
+  summary: {
+    components: {
+      total: number;
+      public: number;
+      internal: number;
+      stable: number;
+      provisional: number;
+      detailedUsageContracts: number;
+    };
+    patterns: number;
+    screens: number;
+  };
+  assets: Array<Record<string, unknown> & { kind: "component" | "pattern" | "screen"; id: string; name: string; source: string }>;
 }
 
 export interface ComponentCatalogGroup {

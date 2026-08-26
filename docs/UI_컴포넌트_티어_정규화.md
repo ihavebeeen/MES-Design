@@ -1,7 +1,5 @@
 # UI 컴포넌트 티어 정규화
 
-기준일: 2026-08-20
-
 이 문서는 최초 피그마 조사 시점의 `있음/부분/없음` 기록을 현재 코드 구조와 대조한 판정표다. 원본 체크리스트의 `없음`은 곧바로 ‘새 컴포넌트를 만들어야 함’을 뜻하지 않는다. 기존 컴포넌트의 조합으로 해결되는지, 현재 MES 범위에서 필요한지, 실제 업무·원본 근거가 있는지를 먼저 판정한다.
 
 ## 현재 결론
@@ -32,57 +30,57 @@
 | 2 | 45 | 45 | 0 | 0 | 0 |
 | 3 | 57 | 47 | 0 | 0 | 10 |
 | 4 | 41 | 23 | 0 | 0 | 18 |
-| 5 | 28 | 13 | 0 | 1 | 14 |
+| 5 | 28 | 13 | 0 | 0 | 15 |
 
 ## Tier 1
 
 | 항목 | 최초 상태 | 현재 판정 | 근거 | 비고 |
 |---|---|---|---|---|
-| Color Palette | 있음 | 파운데이션 구현 | legacy-checklist, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
-| Typography Scale | 있음 | 파운데이션 구현 | legacy-checklist, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
-| Shadow/Elevation Scale | 있음 | 파운데이션 구현 | legacy-checklist, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
-| Button (Primary) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Button (Secondary/Outline/Ghost) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Checkbox | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Radio Button | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Text Input | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Search Input | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Select (Dropdown) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Combobox | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Filter (필터 추가 트리거 + 플라이아웃 패널 + 활성 태그, 통합) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Form Field | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Sidebar / Side Nav | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Tabs | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Table | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Badge | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Chip / Tag | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Progress Bar | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Stat / KPI Card | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Calendar (표시용) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Alert / Banner | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Toast (스낵바 없음) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Modal / Dialog | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Confirm Dialog | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Notification / Bell | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Heading Styles | 있음 | 파운데이션 구현 | legacy-checklist, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
-| Body Text Styles | 있음 | 파운데이션 구현 | legacy-checklist, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
-| Filter Bar / Filter Panel | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| GroupQuery (그룹화 조회) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| QuickQuery (빠른 조회) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Table Bulk Selection | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Column Visibility Toggle | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Inline Cell Edit Grid | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Color Palette | 있음 | 파운데이션 구현 | tier-candidates-source, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
+| Typography Scale | 있음 | 파운데이션 구현 | tier-candidates-source, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
+| Shadow/Elevation Scale | 있음 | 파운데이션 구현 | tier-candidates-source, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
+| Button (Primary) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Button (Secondary/Outline/Ghost) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Checkbox | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Radio Button | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Text Input | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Search Input | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Select (Dropdown) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Combobox | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Filter (필터 추가 트리거 + 플라이아웃 패널 + 활성 태그, 통합) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Form Field | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Sidebar / Side Nav | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Tabs | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Table | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Badge | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Chip / Tag | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Progress Bar | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Stat / KPI Card | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Calendar (표시용) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Alert / Banner | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Toast (스낵바 없음) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Modal / Dialog | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Confirm Dialog | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Notification / Bell | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Heading Styles | 있음 | 파운데이션 구현 | tier-candidates-source, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
+| Body Text Styles | 있음 | 파운데이션 구현 | tier-candidates-source, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
+| Filter Bar / Filter Panel | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| GroupQuery (그룹화 조회) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| QuickQuery (빠른 조회) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Table Bulk Selection | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Column Visibility Toggle | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Inline Cell Edit Grid | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
 | Bulk Selection + Action Toolbar Grid | 부분 | 패턴·화면 조합 구현 | table, selection-action-bar, selection.enable-actions | Table 선택 상태와 SelectionActionBar의 조합 패턴으로 충족한다. |
-| Grid Export / Print | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Center Modal | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Side Slide Panel (Full) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Side Slide Panel — 상하 분할 | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Side Slide Panel — 좌우 분할 | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Modal with Embedded Table | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Modal with Tabs | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Alarm List/Table | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Inspection Checklist Form | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Barcode/QR Scan Input | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Grid Export / Print | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Center Modal | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Side Slide Panel (Full) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Side Slide Panel — 상하 분할 | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Side Slide Panel — 좌우 분할 | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Modal with Embedded Table | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Modal with Tabs | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Alarm List/Table | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Inspection Checklist Form | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Barcode/QR Scan Input | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
 
 ## Tier 2
 
@@ -91,48 +89,48 @@
 | Spacing Scale | 부분 | 파운데이션 구현 | component-specific token policy | 전역 배수 하나로 강제하지 않고 원본 실측과 반복값을 컴포넌트별 규칙으로 관리한다. |
 | Radius Scale | 부분 | 파운데이션 구현 | component-specific token policy | 전역 배수 하나로 강제하지 않고 원본 실측과 반복값을 컴포넌트별 규칙으로 관리한다. |
 | Icon Set | 부분 | 파운데이션 구현 | src/components/icons, icon/mes | 실제 SVG 에셋 33종을 코드화했다. 닫힌 아이콘 총집합을 선제 제작하지 않고 실제 원본이 생길 때 추가한다. |
-| Z-index Scale | 있음 | 파운데이션 구현 | legacy-checklist, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
-| Icon Button | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Button Group | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Toggle Button | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Switch / Toggle | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Textarea | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Number Input | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Password Input | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Multi-select / Tag Input | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Date Picker | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Date Range Picker | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Time Picker | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Navbar / Top Nav | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Breadcrumb | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Pagination | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Dropdown Menu | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| List | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Card | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Tooltip | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Skeleton | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Z-index Scale | 있음 | 파운데이션 구현 | tier-candidates-source, globals.css | 기존 실측·구현 기록을 현재 파운데이션 근거로 유지한다. |
+| Icon Button | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Button Group | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Toggle Button | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Switch / Toggle | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Textarea | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Number Input | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Password Input | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Multi-select / Tag Input | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Date Picker | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Date Range Picker | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Time Picker | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Navbar / Top Nav | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Breadcrumb | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Pagination | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Dropdown Menu | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| List | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Card | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Tooltip | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Skeleton | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
 | Drawer / Sheet | 없음 | 컴포넌트 구현 | side-slide-panel | MES의 우측 진입형 작업은 범용 Drawer 대신 SideSlidePanel 규칙으로 통일한다. |
-| Popover | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Loading Spinner | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Empty State | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Error State | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Accordion | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Collapsible | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Divider / Separator | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Grid / Container | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Panel | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Scroll Area | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Sticky Header/Footer | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Logo / Brandmark | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Popover | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Loading Spinner | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Empty State | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Error State | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Accordion | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Collapsible | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Divider / Separator | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Grid / Container | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Panel | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Scroll Area | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Sticky Header/Footer | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Logo / Brandmark | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
 | Bulk Action Toolbar | 없음 | 컴포넌트 구현 | selection-action-bar | 선택 건이 있을 때만 노출되는 MES용 SelectionActionBar로 구현되어 있다. |
-| User / Account Menu | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Descriptions (Key-Value List) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Close Button (X) | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Loading Overlay | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| User / Account Menu | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Descriptions (Key-Value List) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Close Button (X) | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Loading Overlay | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
 | Backdrop / Dim Overlay | 없음 | 독립 컴포넌트 불필요 | center-modal, side-slide-panel, confirm-dialog | 오버레이 셸 내부 책임이다. 독립 Backdrop API는 중복과 오사용을 만들기 때문에 두지 않는다. |
-| Link | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Fieldset | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
-| Label | 있음 | 컴포넌트 구현 | legacy-checklist, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Link | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Fieldset | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
+| Label | 있음 | 컴포넌트 구현 | tier-candidates-source, components registry/code | 기존 구현 기록과 현재 컴포넌트 코드를 근거로 충족 처리한다. |
 
 ## Tier 3
 
@@ -249,7 +247,7 @@
 | Floating Action Button (FAB) | 없음 | 독립 컴포넌트 불필요 | button | 위치와 클릭 후 동작이 다른 Button 사용 사례이며 별도 컴포넌트가 아니다. |
 | Rating (별점) | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Color Picker | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
-| Command Palette | 없음 | 실제 근거 발생 시 검토 | tier3-user-review-2026-08-19 | 기반이던 전체 검색 후보가 제외되어 실제 업무 근거가 생길 때 별도 검토한다. |
+| Command Palette | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | Tier 5에서는 온보딩 툴팁·제품 투어만 유지한다는 사용자 판정에 따라 현재 범위에서 제외한다. |
 | Avatar Group | 없음 | 독립 컴포넌트 불필요 | experimental.avatar, button | Avatar 반복과 초과 인원 Button 조합이다. |
 | Carousel | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |
 | Video Player | 없음 | 현재 범위 제외 | tier5-user-review-2026-08-19 | 사용자 제외 판정에 따라 실험 레지스트리와 프로토타입 코드에서 제거했다. |

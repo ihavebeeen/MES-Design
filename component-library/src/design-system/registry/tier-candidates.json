@@ -1,0 +1,1950 @@
+{
+  "schemaVersion": 1,
+  "source": "legacy-checklist-normalized",
+  "candidates": [
+    {
+      "id": "tier-candidate-001",
+      "item": "Color Palette",
+      "description": "브랜드/시맨틱 색상 값",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"Color\" 프레임에서 정확한 hex값까지 확인 완료(아래 표 참고)"
+    },
+    {
+      "id": "tier-candidate-002",
+      "item": "Typography Scale",
+      "description": "제목·본문 텍스트 스타일 값",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"MES Design System\": Pretendard Bold/SemiBold/Medium/Regular × 사이즈 스케일"
+    },
+    {
+      "id": "tier-candidate-003",
+      "item": "Spacing Scale",
+      "description": "여백·간격 단위 값",
+      "layer": "토큰",
+      "sourceStatus": "부분",
+      "tier": 2,
+      "sourceNote": "실측 파일럿에서 로컬 변수 `padding/1`=2px, `padding/3`=8px 확인됨 — 전체 스텝(0/2/4 등)은 아직 미확인"
+    },
+    {
+      "id": "tier-candidate-004",
+      "item": "Radius Scale",
+      "description": "모서리 둥글기 값",
+      "layer": "토큰",
+      "sourceStatus": "부분",
+      "tier": 2,
+      "sourceNote": "실측 파일럿 결과 단일 공용값이 아님 — Button은 basic/small 둘 다 4px, Input은 Default 4px/small **3px**로 사이즈별로 다름, 오버레이류(모달)는 16px. 컴포넌트별 개별 확인 필요, 자세한 내용은 [신규 컴포넌트 설계 프로세스 Step C-1](./신규_컴포넌트_설계_프로세스.md) 참고"
+    },
+    {
+      "id": "tier-candidate-005",
+      "item": "Shadow/Elevation Scale",
+      "description": "그림자·고도 값",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" 파일 Foundation의 \"Shadow\" 프레임 확인"
+    },
+    {
+      "id": "tier-candidate-006",
+      "item": "Icon Set",
+      "description": "아이콘 에셋 모음",
+      "layer": "토큰",
+      "sourceStatus": "부분",
+      "tier": 2,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" 파일에는 \"ICON - 크기별 제작필요\"로 명시되어 팀에서도 미완성 인지 중. 이전 MES 파일에서 80여개 확인했던 것과의 관계는 별도 확인 필요. 2026-08-03 데모 페이지에서 Components→Foundation으로 재분류(레이어가 토큰이라 색상/타이포 등과 같은 층위)"
+    },
+    {
+      "id": "tier-candidate-007",
+      "item": "Z-index Scale",
+      "description": "겹침 순서 값",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 정리. Figma엔 없는 개념이라 기존 코드 실사용값(z-10/30/50)을 스케일로 문서화(`디자인_토큰_사용_규칙.md` 8-1절), 새 값 안 만듦"
+    },
+    {
+      "id": "tier-candidate-008",
+      "item": "Breakpoint Scale",
+      "description": "반응형 화면 크기 기준값",
+      "layer": "토큰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": "데스크탑 중심 사내 시스템 특성상 우선순위 낮음. 모바일 체크리스트 0번 섹션에서 모바일용 브레이크포인트 값 자체는 이미 확인됨 — 다만 모바일 전용 기준이라 데스크탑에 그대로 적용 가능한지는 별개 문제, 데스크탑에 반응형이 실제로 필요한지부터 재검토 필요(19번 섹션 참고)"
+    },
+    {
+      "id": "tier-candidate-009",
+      "item": "Button (Primary)",
+      "description": "주요 액션 버튼",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"Button\": Basic/Small/Xsmall 3사이즈 × 6컬러 × hover-press/disable"
+    },
+    {
+      "id": "tier-candidate-010",
+      "item": "Button (Secondary/Outline/Ghost)",
+      "description": "보조 액션 버튼",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "위 매트릭스에 테두리형·연한색 버전 포함"
+    },
+    {
+      "id": "tier-candidate-011",
+      "item": "Icon Button",
+      "description": "아이콘만 있는 버튼",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 코드화(`icon-button.tsx`). Figma 디자인 없어서 기존 컴포넌트들이 각자 인라인으로 만들어 쓰던 아이콘 버튼 패턴(ConfirmDialog 닫기, Sidebar 접기 등)을 역으로 관찰해 공용화 — 새 디자인 아님, 기존 값 재사용(판단값)"
+    },
+    {
+      "id": "tier-candidate-012",
+      "item": "Button Group",
+      "description": "버튼 여러 개 묶음",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma 매칭 노드 없어 판단값 — Button을 감싸는 순수 레이아웃 wrapper(테두리 이어붙임)"
+    },
+    {
+      "id": "tier-candidate-013",
+      "item": "Toggle Button",
+      "description": "눌림 상태를 갖는 버튼",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma 매칭 노드 없어 판단값 — Button의 lineBlacktxt/opacityMain 배색을 눌림 상태로 재사용"
+    },
+    {
+      "id": "tier-candidate-014",
+      "item": "Split Button",
+      "description": "기본 액션 + 드롭다운 옵션 결합 버튼",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-015",
+      "item": "Floating Action Button (FAB)",
+      "description": "화면에 떠 있는 원형 액션 버튼",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": "모바일 앱 패턴, 데스크탑 MES엔 불필요 가능성"
+    },
+    {
+      "id": "tier-candidate-016",
+      "item": "Checkbox",
+      "description": "체크박스",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-28 재확인: 클라우드MES 파일(F4n5Zr04PAbiRjfIFQAo6v) node 9873:82462에 실제로 존재함(이전에 \"없음\"으로 기재됐던 건 이 파일을 확인 안 했던 것) — 코드화 완료(`checkbox.tsx`). 단, disabled 상태는 Figma에 없어 판단값으로 구현. 같은 날 추가: Table 그룹 체크박스용으로 `indeterminate`(중간선택) prop 신규 추가 — Figma에 없는 상태라 판단 구현(main/black 색상 지원). 2026-07-29 확인: \"default(회색)/main(파랑)/black(검정) 중 실제로 어떤 상황에 쓰이는지\" 확인 필요했던 항목에 담당자 답변 — 실사용에서는 원래 `color=\"gray\"`(코드상 \"default\"/통칭 \"checked-gray\")를 기본으로 사용 중이라고 확인. 컴포넌트 코드/기본값 변경 없이 항목만 종결"
+    },
+    {
+      "id": "tier-candidate-017",
+      "item": "Radio Button",
+      "description": "라디오버튼",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"MES Design System\" Direction 섹션 확인. 2026-07-28 클라우드MES 파일 node 9873:82508 기준 정밀실측 후 코드화 완료(`radio.tsx`)"
+    },
+    {
+      "id": "tier-candidate-018",
+      "item": "Switch / Toggle",
+      "description": "온오프 스위치",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 코드화(`switch.tsx`). Figma 디자인 없어서 Checkbox와 동일한 peer 오버레이 패턴 재사용, 색상은 기존 시맨틱 토큰(판단값)"
+    },
+    {
+      "id": "tier-candidate-019",
+      "item": "Segmented Control",
+      "description": "세그먼트형 선택 컨트롤",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-020",
+      "item": "Slider (Range)",
+      "description": "범위 슬라이더",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "수치 필터 범위 지정 등에 활용 가능"
+    },
+    {
+      "id": "tier-candidate-021",
+      "item": "Rating (별점)",
+      "description": "별점 등 평점 입력",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": "소비자 서비스 패턴"
+    },
+    {
+      "id": "tier-candidate-022",
+      "item": "Chip Selector",
+      "description": "칩 형태 다중 선택",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-023",
+      "item": "Text Input",
+      "description": "한 줄 텍스트 입력",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"Input Textbox/Selectbox\" 매트릭스"
+    },
+    {
+      "id": "tier-candidate-024",
+      "item": "Textarea",
+      "description": "여러 줄 텍스트 입력",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 코드화(`textarea.tsx`). Figma 디자인 없어서 Input과 동일한 톤(테두리/배경/포커스/radius) 재사용, min-h/py만 판단값"
+    },
+    {
+      "id": "tier-candidate-025",
+      "item": "Number Input",
+      "description": "숫자 입력(증감 버튼 포함)",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma 재탐색 안 함(판단값 우선) — Input 실측 스타일 + 증감 버튼 판단값"
+    },
+    {
+      "id": "tier-candidate-026",
+      "item": "Search Input",
+      "description": "검색창",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "위 Input 매트릭스에 search 컬럼 포함. 2026-08-03 별도 컴포넌트로 코드화(`search-input.tsx`, node 17360:46256/20186:68084 실측, 200×32px 고정폭) — 담당자 지정 동작: 검색어를 입력하면 배경색(Primary-20)이 깔려 \"검색어가 명확히 입력됨\"을 표시"
+    },
+    {
+      "id": "tier-candidate-027",
+      "item": "Password Input",
+      "description": "비밀번호 입력(보기/숨기기)",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "로그인 화면 필수. 2026-08-03 구현, 판단값(Input 재사용 + Eye/EyeOff 토글)"
+    },
+    {
+      "id": "tier-candidate-028",
+      "item": "Select (Dropdown)",
+      "description": "단일 선택 드롭다운",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"Selectbox\" 확인됨"
+    },
+    {
+      "id": "tier-candidate-029",
+      "item": "Combobox",
+      "description": "검색 가능한 선택형 드롭다운",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-28 코드화 완료(`combobox.tsx`, Radix Popover 기반) — Selectbox와 별도 컴포넌트로 분리. 상세는 19번 섹션 참고"
+    },
+    {
+      "id": "tier-candidate-030",
+      "item": "Multi-select / Tag Input",
+      "description": "다중 선택·태그 입력",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "필터 등에 활용. 18-1 Select 변형 분석의 결론(MES 필터에서 실사용 가능성 높음)을 반영해 티어3→2로 상향. 2026-08-03 구현, 판단값(Tag 재사용)"
+    },
+    {
+      "id": "tier-candidate-031",
+      "item": "Filter (필터 추가 트리거 + 플라이아웃 패널 + 활성 태그, 통합)",
+      "description": "목록·테이블 상단 필터 진입점",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-28 완료·통합, 이후 담당자 재검토로 2차 수정까지 완료. 트리거+태그 컨테이너(node 9873:83762)는 정밀실측, 플라이아웃 패널은 Figma에 별도 노드가 없어 조립형으로 구현. **2차 수정 3건**: (1) 태그 표시 방식을 \"1개 선택=개수 뱃지/2개 이상=전체보기\" 2종에서 **선택 개수만 항상 표시**로 통일(전체보기가 실제 전체선택 여부와 무관해 혼란을 줘서 담당자가 정책 변경, filter-tag.tsx), (2) 트리거 박스와 활성 태그 박스를 테두리 공유하는 통짜 구조에서 **서로 다른 두 개의 독립 박스**로 분리(태그 없으면 트리거만 노출), (3) 트리거 아이콘을 임의로 골랐던 lucide `Filter`(깔때기)에서 **`SlidersHorizontal`로 교체** — node 9873:83762의 벡터 좌표(원 3개가 위/중간/아래 가로줄에 각각 다른 위치로 배치된 구조)를 재분석해 실제로는 슬라이더형 아이콘임을 확인함(SVG 원본은 샌드박스 네트워크 제약으로 여전히 직접 다운로드 불가, 좌표 분석 기반 대체)"
+    },
+    {
+      "id": "tier-candidate-032",
+      "item": "Date Picker",
+      "description": "날짜 선택기",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma에 \"달력\"(클라우드MES) 이름은 검색됐으나 node-id 해석 불가(재시도 안 함) — 판단값, 순수 Date 계산(외부 라이브러리 없음)"
+    },
+    {
+      "id": "tier-candidate-033",
+      "item": "Date Range Picker",
+      "description": "기간(시작~종료) 선택기",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. DatePicker와 동일 근거, 달력 계산 로직 재사용"
+    },
+    {
+      "id": "tier-candidate-034",
+      "item": "Time Picker",
+      "description": "시간 선택기",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현, 판단값(Popover 재사용)"
+    },
+    {
+      "id": "tier-candidate-035",
+      "item": "File Upload / Dropzone",
+      "description": "파일 업로드 영역",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "문서·첨부 관리"
+    },
+    {
+      "id": "tier-candidate-036",
+      "item": "Form Field",
+      "description": "라벨+입력+헬퍼텍스트+에러 조합",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "위 Input 매트릭스에 \"라벨포함\" 행 존재"
+    },
+    {
+      "id": "tier-candidate-037",
+      "item": "OTP / PIN Input",
+      "description": "인증번호 입력",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-038",
+      "item": "Color Picker",
+      "description": "색상 선택기",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": "디자인 도구용, MES엔 불필요"
+    },
+    {
+      "id": "tier-candidate-039",
+      "item": "Rich Text Editor",
+      "description": "서식 있는 텍스트 편집기",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-040",
+      "item": "Navbar / Top Nav",
+      "description": "상단 내비게이션 바",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. 판단값, 높이 56px은 이 데모 페이지 자체 상단 바 실사용값 재사용"
+    },
+    {
+      "id": "tier-candidate-041",
+      "item": "Sidebar / Side Nav",
+      "description": "좌측 내비게이션",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-29 코드화, 2026-07-30/07-31 재검증: `components/ui/sidebar.tsx`. 접기버튼(hover), 1-depth 항목(hover=Gray-120/active=Primary-60), 2-depth 항목(hover/active, 트리 연결선), MES/FEMS 토글은 담당자 지시로 의도적 미구현 실측·반영 완료. 2026-07-31 22차에 마지막 남았던 접기(collapsed rail/`SNB-hide`, node 9873:83651) 상태까지 `collapsed` prop으로 구현 — 62px 아이콘 레일, 라벨 숨김, hover 시 2-depth 플라이아웃(group-hover CSS, 판단값 구현). 이걸로 \"부분\"에서 \"있음\"으로 전환"
+    },
+    {
+      "id": "tier-candidate-042",
+      "item": "Breadcrumb",
+      "description": "현재 위치 경로 표시",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma에 \"breadcrumb-mid/chip\" 등 이름은 검색됐으나 node-id 해석 불가(재시도 안 함) — 판단값"
+    },
+    {
+      "id": "tier-candidate-043",
+      "item": "Tabs",
+      "description": "탭 전환",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-29 코드화, 2026-07-30 재검증: `components/ui/page-top-tab-item.tsx`(node 157:18051 컴포넌트 세트, default/hover/active 3종 전부 실측). active는 배경 Gray-110 + 제목 SemiBold로 정정(이전 판단값은 틀렸었음)"
+    },
+    {
+      "id": "tier-candidate-044",
+      "item": "Pagination",
+      "description": "페이지네이션",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma에 \"NEW Pagination\" 등 이름은 검색됐으나 node-id 해석 불가(재시도 안 함) — 판단값"
+    },
+    {
+      "id": "tier-candidate-045",
+      "item": "Stepper / Wizard",
+      "description": "단계형 진행 표시",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "작업지시 등록형 멀티스텝 폼에 유용"
+    },
+    {
+      "id": "tier-candidate-046",
+      "item": "Dropdown Menu",
+      "description": "클릭 시 열리는 메뉴",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma 검색 결과 애매(필터창 등)해 재시도 안 함 — 판단값(Popover 재사용)"
+    },
+    {
+      "id": "tier-candidate-047",
+      "item": "Context Menu",
+      "description": "우클릭 메뉴",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-048",
+      "item": "Command Palette",
+      "description": "Cmd+K 형태의 빠른 검색·실행창",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-049",
+      "item": "Back to Top",
+      "description": "맨 위로 가기 버튼",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-050",
+      "item": "Table",
+      "description": "표",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-28 코드화 완료(`table.tsx`) — 원본 정의(node 9873:83780)와 실제 수정 화면 \"생산계획(일) 리스트\"(node 16938:42501) 대조 실측. 헤더 배경(Gray-10) 추가, 점선 세로 구분선, 선택행/신규행의 구분선 진하기 변화(Gray-30), 신규행 좌측 빨간 점(Danger-60, 판단값), 그룹행 핑크 배경(#fde9ea) 반영. 같은 날 2차: 담당자가 실제 운영 화면(생산실적 그룹화 조회) 스크린샷으로 지적한 5건 반영 — 2·3차 그룹화(`TableGroup.groups` 재귀 중첩, depth별 배경색은 판단값), 그룹 합계열/총계열이 헤더 컬럼과 어긋나던 정렬 버그 수정(라벨을 첫 컬럼 Cell 안에 넣는 구조로 변경), 그룹 헤더 행 체크박스+indeterminate(중간선택) 상태 추가(Checkbox 컴포넌트에 신규 prop 추가), 헤더 텍스트 정렬이 데이터 셀과 항상 일치하도록 수정. 같은 날 3차(재검토) 4건: 그룹 펼침 버튼이 체크박스처럼 보여 겹쳐 보이던 것을 테두리·배경 제거해 수정, 지시일→설비→담당기사 3단 그룹화 데모로 확장(컴포넌트 로직 변경 없음, 이미 재귀 구조였음), 펼침/접힘 회전을 90도(왼쪽↔위)에서 180도(위↔아래)로 수정, 헤더에 그룹 depth별(현재 3개) 전체 접기/펼치기 버튼 추가. 같은 날 4차 후속: 3차에서 임의로 지웠던 펼침 버튼 테두리·배경 박스를 담당자가 준 정확한 값(22x22px/Gray-0/radius3/Gray-50)으로 원상복구. 같은 날 5차: 체크박스를 항상 최좌측 고정하고 마스터 토글 버튼을 그 오른쪽으로 재배치 + \"체크박스+마스터 토글 영역\"을 모든 행 종류(헤더/그룹행/데이터행/총계행)가 동일하게 예약하도록 통일해 헤더-바디 정렬 버그 재수정, 데모 Table 섹션 폭 제약 해제, `TableColumn.width`에 가변폭(`{min, grow?}`) 지원 타입 추가(실제 컬럼 전환은 보류). 같은 날 6차: 헤더 마스터 토글 버튼과 그룹행 depth별 펼침 버튼을 같은 폭의 슬롯 구조로 통일해 세로 정렬 일치, 신규행 빨간 점을 체크박스 오른쪽으로 이동, 그룹/총계 라벨을 컬럼 align과 무관하게 좌측 고정 + 데모 컬럼 정렬 일관성 재정리(equipment 가운데로 통일). 같은 날 7차: 신규행 빨간 점을 체크박스 우측 정확히 10px(`CHECKBOX_COLUMN_WIDTH`/`NEW_DOT_GAP_FROM_CHECKBOX` 상수화)로 고정하면서 `TotalsRow` 체크박스 칼럼이 border-box 특성으로 다른 행보다 12px 좁게 렌더링되던 선행 버그 발견·수정, 헤더 라벨 셀은 컬럼 align과 무관하게 항상 가운데정렬(데이터 셀은 컬럼별 align 유지), 숫자(데이터행+그룹집계+총계) 전체에 1000단위 콤마 적용. 같은 날 7차 후속(데모 구성 3건): 창고명/품목구분 컬럼 제거로 데모 폭 축소, 담당기사 값 전부 \"이해빈\"으로 교체, 기존 15컬럼 합본 데모는 유지하면서 3컬럼짜리 단순 데이터로 헤더만/그룹화만/컬럼 2개 이상(그룹 없음)/총계행만 4개의 분리 미니 데모 추가(컴포넌트 코드 변경 없이 데모 구성만 조정). 같은 날 8차: 합본 데모가 \"시선강탈\"이라는 지적으로 합본 Table 데모 1개만 기본 접힘 상태의 토글로 변경(미니 데모 4개는 그대로 유지, 컴포넌트 코드 변경 없음). 같은 날 8차 후속: 합본 데모의 라운드별 수정 이력 설명 문단을 삭제(문서에 이미 기록돼 있어 데모 화면엔 불필요)하고, 접기/펼치기 헤더 줄 폭을 섹션 자체는 다른 데모와 동일한 max-w-[960px]로 맞추고 실제 `<Table>`만 내부 overflow-x-auto로 감싸 가로 스크롤 처리. 2026-07-29 확인: 담당자가 처음엔 \"disable 스타일 없음\"이라고 답했다가, 실제 화면(판매관리 리스트) 스크린샷을 다시 근거로 정확한 값을 지정 — 비활성 행은 텍스트 Gray-80/배경 Gray-10. `DataRow`의 기존 `opacity-50` 판단값을 이 값으로 교체 완료(`table.tsx`, 데모는 `rowR8`로 확인 가능). \"분할\" 변형은 담당자도 무엇을 가리키는지 특정 못 해서 계속 보류(추가 자료 없이는 진행 불가). 그룹 들여쓰기 px/depth별 정확한 배경색은 여전히 실제 화면 스크린샷 기반 판단값(실측 아님). 체크박스 미선택 상태 관련 항목은 5번 섹션 Checkbox 항목에서 담당자 확인으로 종결. 상세 경위는 `AGENTS.md` \"Table 작업 회고\" 섹션과 `docs/Table_수정_대기목록.md` 참고."
+    },
+    {
+      "id": "tier-candidate-051",
+      "item": "Data Grid",
+      "description": "정렬·필터 가능한 표",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "MES 핵심"
+    },
+    {
+      "id": "tier-candidate-052",
+      "item": "List",
+      "description": "리스트",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현, 판단값(Table 행 스타일 재사용)"
+    },
+    {
+      "id": "tier-candidate-053",
+      "item": "Card",
+      "description": "카드",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma 검색상 명확한 전용 노드 못 찾아 판단값 — radius는 `--mes-radius-control`(주석상 \"카드형 배경\" 용도) 재사용"
+    },
+    {
+      "id": "tier-candidate-054",
+      "item": "Avatar",
+      "description": "프로필 이미지",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-055",
+      "item": "Avatar Group",
+      "description": "아바타 겹침 그룹",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-056",
+      "item": "Badge",
+      "description": "상태/개수 배지",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-28 클라우드MES 파일 node 13687:33504 기준 정밀실측 후 코드화 완료(`badge.tsx`, 7종). orange/yellow는 Figma 컴포넌트 이름과 실제 색상이 다름(각각 실제로는 gray/blue). 2026-07-29 담당자 확정: \"원본 이름은 상관없이 색 대로 이름을 다시 매겨\" — 값 변경 없이 variant 키만 실제 색 기준으로 개명(orange→grayFill, yellow→blue2, variant6→blueLight, variant7→blueOutline, blue/red/gray는 그대로). blue2가 blue와 값이 완전히 동일한 이유(둘 다 \"완료\" 계열 상태에 왜 다른 스타일이 필요한지 포함)는 여전히 확인 필요(19번 섹션 참고)"
+    },
+    {
+      "id": "tier-candidate-057",
+      "item": "Chip / Tag",
+      "description": "태그·라벨",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-28 완료. 필터 전용 태그(node 9873:83747, `filter-tag.tsx`)와 범용 3색 태그(node 9873:83675, `tag.tsx`, fill-main/gray/red) 둘 다 정밀실측해 코드화 완료. 담당자 확인: 범용 3색 태그는 \"거의 안 씀\", 실제로는 Badge(badge.tsx)를 훨씬 많이 사용 — 최소 구현만 해둠"
+    },
+    {
+      "id": "tier-candidate-058",
+      "item": "Tooltip",
+      "description": "말풍선 설명",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 코드화(`tooltip.tsx`). Figma 디자인 없음 — Radix 의존성 추가 없이 CSS group-hover 기반 경량 구현(판단값), 포털/딜레이/터치 롱프레스 미지원"
+    },
+    {
+      "id": "tier-candidate-059",
+      "item": "Progress Bar",
+      "description": "진행률 막대",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-28 클라우드MES 파일 node 20144:101580 기준 정밀실측 후 코드화 완료(`progress.tsx`). 트랙 Gray-40, 채움 Gray-100(담당자 확인). 같은 날 담당자 지적으로 재실측: 바-라벨 간격 자체는 2px가 맞았지만, 라벨이 44px 고정폭 박스 안에서 우측정렬되는 구조(자릿수 바뀌어도 컴포넌트 전체 폭 고정)가 처음 구현 때 빠져있던 걸 발견해 복원"
+    },
+    {
+      "id": "tier-candidate-060",
+      "item": "Progress Circle",
+      "description": "진행률 원형",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-061",
+      "item": "Skeleton",
+      "description": "로딩 중 placeholder",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 코드화(`skeleton.tsx`). Figma 디자인 없음 — text/rect/circle 3variant, `animate-pulse`(판단값)"
+    },
+    {
+      "id": "tier-candidate-062",
+      "item": "Stat / KPI Card",
+      "description": "숫자 지표 카드",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Asset/Templates의 \"Dashboard Card\" 확인"
+    },
+    {
+      "id": "tier-candidate-063",
+      "item": "Timeline",
+      "description": "시간순 타임라인",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "이력추적·알람 이력"
+    },
+    {
+      "id": "tier-candidate-064",
+      "item": "Tree View",
+      "description": "계층형 트리 목록",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "BOM·계보 등 MES에 흔함"
+    },
+    {
+      "id": "tier-candidate-065",
+      "item": "Chart",
+      "description": "라인/바/파이 차트",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "SPC·트렌드 등"
+    },
+    {
+      "id": "tier-candidate-066",
+      "item": "Calendar (표시용)",
+      "description": "달력 뷰",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Side Modal \"검사 모달/배열\" 내 캘린더 확인"
+    },
+    {
+      "id": "tier-candidate-067",
+      "item": "Carousel",
+      "description": "이미지·콘텐츠 슬라이더",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": "마케팅용 패턴"
+    },
+    {
+      "id": "tier-candidate-068",
+      "item": "Alert / Banner",
+      "description": "상단/인라인 경고 배너",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-29 완료 — 클라우드MES 파일 \"모달\" 갤러리(node 18887:62605)에서 발견한 노란 안내 배너(안내문+\"OO 바로가기 →\" 링크)를 `notice-banner.tsx`(`NoticeBanner`)로 코드화. 배경/테두리/아이콘 색은 `get_variable_defs`로 실측(Yellow-10/20/50, `globals.css`에 신규 Yellow 팔레트 추가), padding/radius/배너 아이콘 벡터는 `get_metadata`/`get_design_context`가 이 노드에서 계속 실패(SSE 파싱 에러)해서 판단값(19번 섹션 참고). 담당자는 이 요소를 \"배너\"보다 \"도움말\"/\"툴팁\"이라고 부름. ConfirmDialog의 `banner` prop으로 통합 가능하고 독립 컴포넌트로도 사용 가능 — 통합 시 버튼 영역과의 간격은 담당자가 확정한 20px(처음엔 52px로 잘못 판단했다가 정정). 아이콘도 처음엔 느낌표(`IconExclamationCircle`)로 임의 처리했다가 담당자가 \"전구 모양\"이라고 확정해줘서 `lucide-react`의 `Lightbulb`로 교체(아직 실측 벡터 아님, 실제 SVG export 시 재교체 필요). 2026-07-29 곧바로 이어서: 배너 없는 일반 형태의 본문-버튼 간격도 담당자가 \"40px쯤 되어 보인다, 20px로 하자\"고 지적 — 원래 32px+20px=52px는 node 11106:37629 실측값 그대로였지만(임의 판단 아니었음), 담당자 명시적 지시로 20px로 축소 확정. 이제 이 값은 원본 실측치보다 담당자 지정값이 우선하는 사례로 별도 기록"
+    },
+    {
+      "id": "tier-candidate-069",
+      "item": "Toast (스낵바 없음)",
+      "description": "짧게 떴다 사라지는 알림",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-28 완료. 담당자 확인: 스낵바는 없고 Toast만 있음. 클라우드MES 파일 TOAST-RED(node 11098:37167)/TOAST-BLUE(node 11028:35650) 정밀실측 후 코드화(`toast.tsx`). 두 색상이 하나의 공유 컴포넌트가 아니라 별개 프레임이라 gap(8px/16px)·닫기아이콘 크기(16px/18px)·테두리색이 서로 다름 — 실측 그대로 반영. BLUE 배경색(#156BE9)은 확정 Primary-60(#1573FB)과 미묘하게 다른 값이라 팔레트에 편입시키지 않고 원본값 유지"
+    },
+    {
+      "id": "tier-candidate-070",
+      "item": "Modal / Dialog",
+      "description": "화면 중앙 팝업",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Type01: 중앙 모달, 최대높이 80vh"
+    },
+    {
+      "id": "tier-candidate-071",
+      "item": "Drawer / Sheet",
+      "description": "옆에서 슬라이드로 열리는 패널",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 2,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-072",
+      "item": "Popover",
+      "description": "특정 요소 옆에 뜨는 작은 팝업",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma 전용 노드 없어 판단값 — 기존 `@radix-ui/react-popover`(Combobox 등에서 이미 사용 중) 재사용, 새 의존성 없음"
+    },
+    {
+      "id": "tier-candidate-073",
+      "item": "Confirm Dialog",
+      "description": "확인/취소 확인창",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-28 완료(1형태만). 클라우드MES 파일 \"modal-error\"(node 11106:37629, 에러 안내 톤, 버튼 1개) 정밀실측 후 코드화(`confirm-dialog.tsx`, Radix Dialog 기반). **원래 이 항목이 참조하던 \"삭제 모달 - 드롭다운/라디오버튼\" 2종(Center Modal 안의 다른 변형)은 이번 실측 대상이 아니었음** — 확인/취소 2버튼 형태나 성공/정보 톤 변형이 별도로 있는지 확인 필요(19번 섹션 참고). 2026-07-29 담당자가 준 Figma \"모달\" 갤러리(node 18887:62605)로 확인·확장: 확인/취소 2버튼은 기존 `actions` 배열로 이미 가능했음(코드 변경 없음), `tone` prop 신규 추가로 error(기존)/warning(신규, Yellow-50)/info(신규, Primary-60) 3톤 지원, `banner` prop으로 안내 배너(아래 NoticeBanner) 통합 지원 추가. `get_metadata`/`get_design_context`가 이 노드에서 SSE 파싱 에러로 계속 실패해서 배너 세부 px는 판단값(19번 섹션 참고)이지만, \"배너(담당자 호칭 도움말/툴팁)가 있을 때 배너-버튼 간격\"은 담당자가 정확한 값(20px)을 직접 줘서 확정 반영함(기존엔 52px로 잘못 판단했었음). 모바일(배경 딤) 변형은 범위 밖으로 보류"
+    },
+    {
+      "id": "tier-candidate-074",
+      "item": "Loading Spinner",
+      "description": "로딩 스피너",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 코드화(`loading-spinner.tsx`). Figma 디자인 없음 — lucide `LoaderCircle` + `animate-spin`(판단값)"
+    },
+    {
+      "id": "tier-candidate-075",
+      "item": "Empty State",
+      "description": "데이터 없음 화면",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma 전용 노드 없어 판단값 — 아이콘/제목/설명/액션 조합, 아이콘은 호출부 지정(Button startIcon과 동일 원칙)"
+    },
+    {
+      "id": "tier-candidate-076",
+      "item": "Error State",
+      "description": "에러 화면",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma 전용 노드 없어 판단값 — EmptyState와 동일 레이아웃, `--mes-text-danger` 첫 실사용"
+    },
+    {
+      "id": "tier-candidate-077",
+      "item": "Notification / Bell",
+      "description": "알림 아이콘·목록",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-07-30 코드화: `components/ui/notification-panel.tsx`(node 157:15771 \"알림모달 2\"/157:15833 \"알림 내역 존재 X\" 실측). AlarmListItem을 재사용하는 드롭다운 패널 — 헤더(\"전체 알림\" 탭+카운트+닫기), 리스트(높이 350px 스크롤) 또는 빈 상태 문구로 구성. \"미확인\"/\"확인\" 탭 추정 자리는 이 패널 트리에 실제로 포함되어 있지 않아 확인 필요로 제외. 벨 아이콘 트리거 자체는 미실측. 2026-08-03 담당자가 실제 서비스 스크린샷 2건으로 추가 지시(Figma 링크 없음, 판단값): (1) 항목 클릭 시 목록에서 제거 — `onItemClick(id)` 콜백 신규 추가(제거 로직 자체는 호출부 책임, 컴포넌트는 컨트롤형 유지), (2) 설정(톱니) 아이콘 클릭 시 패널 내용이 \"알림 설정\"(뒤로가기+제목+알림 유형별 Switch 토글 목록) 화면으로 전환 — `settingsItems`/`onSettingsItemChange` prop + 내부 `view` state로 구현. 톱니 아이콘 자체는 목적지 화면만 스크린샷에 있고 트리거 모양은 없어서 Sidebar/QuickQuery와 동일한 `lucide-react` `Settings` placeholder 사용(판단값). 곧바로 이어서 담당자가 \"하단에 설정 아이콘이 두 개인데 작동 안 하는 작대기형(필터)은 빼고 톱니만 남겨라\"고 지적 — 원래부터 동작 미실측이던 필터 아이콘(`IconFilter`)과 `onFilterClick` prop을 컴포넌트에서 완전히 제거함. 그다음 담당자가 \"알람리스트아이템 말고 노티피케이션페널 내 비활성화 처리된 내역을 삭제해야지. 걍 클릭하면 리스트에서 지워지는 형식임\"이라고 재확인 — 즉 \"비활성화 처리된 내역 삭제\"는 이미 구현된 (1)번 `onItemClick` 클릭-삭제 그 자체를 가리키는 말이었고, `read` prop과는 무관함이 확정됨(한때 read=false를 \"비활성화\"로 잘못 추정해 AlarmListItem/NotificationPanel 데모에서 뺐던 예시는 전부 원복)"
+    },
+    {
+      "id": "tier-candidate-078",
+      "item": "Accordion",
+      "description": "아코디언",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Figma 전용 노드 없어 판단값(Tooltip과 동일 이유로 Radix 의존성 안 늘림) — 순수 React state, 확장 화살표는 table-full 데모의 ChevronRight/rotate-90 규칙 재사용"
+    },
+    {
+      "id": "tier-candidate-079",
+      "item": "Collapsible",
+      "description": "접고 펼치는 영역",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현. Accordion과 동일 근거 — 단일 트리거+콘텐츠 버전"
+    },
+    {
+      "id": "tier-candidate-080",
+      "item": "Disclosure Panel",
+      "description": "더보기 형태 패널",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-081",
+      "item": "Divider / Separator",
+      "description": "구분선",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 코드화(`divider.tsx`). Figma 디자인 없음 — 기존 구분선 색(`border-mes-border-default`) 재사용, 가로/세로 지원"
+    },
+    {
+      "id": "tier-candidate-082",
+      "item": "Grid / Container",
+      "description": "레이아웃 그리드",
+      "layer": "레이아웃 유틸",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현, 판단값(Container는 데모 페이지 max-w-[960px] 재사용). 같은 날 데모 페이지에서 Components→Foundation으로 재분류"
+    },
+    {
+      "id": "tier-candidate-083",
+      "item": "Panel",
+      "description": "패널 영역",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현, 판단값(NotificationPanel/Combobox 패널 톤 재사용)"
+    },
+    {
+      "id": "tier-candidate-084",
+      "item": "Resizable Panel",
+      "description": "크기 조절 가능한 영역",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "다중 창 작업에 유용"
+    },
+    {
+      "id": "tier-candidate-085",
+      "item": "Scroll Area",
+      "description": "커스텀 스크롤 영역",
+      "layer": "레이아웃 유틸",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현, 판단값(새 스크롤바 라이브러리 없이 overflow-y-auto만)"
+    },
+    {
+      "id": "tier-candidate-086",
+      "item": "Sticky Header/Footer",
+      "description": "고정 헤더·푸터",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현, 판단값(position: sticky wrapper)"
+    },
+    {
+      "id": "tier-candidate-087",
+      "item": "Split View",
+      "description": "좌우/상하 분할 뷰",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-088",
+      "item": "Heading Styles",
+      "description": "제목 스타일 체계",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Pretendard Bold/SemiBold"
+    },
+    {
+      "id": "tier-candidate-089",
+      "item": "Body Text Styles",
+      "description": "본문 텍스트 스타일 체계",
+      "layer": "토큰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Pretendard Medium/Regular"
+    },
+    {
+      "id": "tier-candidate-090",
+      "item": "Image / Thumbnail",
+      "description": "이미지·썸네일 표시",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "제품·설비 사진"
+    },
+    {
+      "id": "tier-candidate-091",
+      "item": "Video Player",
+      "description": "비디오 플레이어",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-092",
+      "item": "Logo / Brandmark",
+      "description": "로고 표기",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "헤더에 항상 필요. 2026-08-03 구현, 실제 로고 애셋 없어 텍스트 워드마크로 최소 구현(정식 애셋 생기면 교체 필요)"
+    },
+    {
+      "id": "tier-candidate-093",
+      "item": "Empty Illustration",
+      "description": "빈 상태용 일러스트",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-094",
+      "item": "Chat Bubble / Message",
+      "description": "대화형 메시지 말풍선",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-095",
+      "item": "AI Prompt Input Box",
+      "description": "AI에게 지시를 입력하는 창",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-096",
+      "item": "Streaming Text Indicator",
+      "description": "텍스트가 실시간 생성되는 표시",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-097",
+      "item": "Code Block",
+      "description": "코드 표시 블록",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-098",
+      "item": "Markdown Renderer",
+      "description": "마크다운 렌더링 영역",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-099",
+      "item": "Suggestion Chip",
+      "description": "AI 추천 액션 칩",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-100",
+      "item": "Source / Citation Badge",
+      "description": "출처 표시 배지",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-101",
+      "item": "Filter Bar / Filter Panel",
+      "description": "목록·테이블 상단 필터 영역",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"Filter\" 확인됨"
+    },
+    {
+      "id": "tier-candidate-102",
+      "item": "GroupQuery (그룹화 조회)",
+      "description": "테이블 데이터를 Level 1~3 필드로 그룹화 지정",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-08-03. 담당자가 \"생산지시\" 화면 스크린샷으로 전달(Figma 링크 없음, 스크린샷 기반 판단값). 다만 \"빠른 조회\" 조사 중 같은 상단바 프레임(node 17360:46223)에 실측 노드로도 포함돼 있어 색상/치수는 실측값 채택. `group-query.tsx`"
+    },
+    {
+      "id": "tier-candidate-103",
+      "item": "QuickQuery (빠른 조회)",
+      "description": "조회 조건(그룹화/필터/조회 설정)을 즐겨찾기 3개까지 저장·적용",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "2026-08-03. Figma node 17360:46359(트리거 바)+17963:81433(조회 조건 프리셋 모달) 실측. `quick-query.tsx`"
+    },
+    {
+      "id": "tier-candidate-104",
+      "item": "Bulk Action Toolbar",
+      "description": "다중 선택 시 나타나는 액션 바",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 `bulk-action-toolbar.tsx`로 코드화했다가 담당자가 \"있으면 좋을 것 같긴 한데 지금 안 쓰고 있고 그게 필요한 상황도 아니다\"라고 해서 롤백"
+    },
+    {
+      "id": "tier-candidate-105",
+      "item": "Table Bulk Selection",
+      "description": "테이블 행 다중 선택",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Center Modal \"탭 구분 모달\"/\"필터·검색\"에서 전체선택 체크박스 확인"
+    },
+    {
+      "id": "tier-candidate-106",
+      "item": "Column Visibility Toggle",
+      "description": "테이블 컬럼 표시/숨김 설정",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Center Modal의 \"컬럼 설정\" 확인"
+    },
+    {
+      "id": "tier-candidate-107",
+      "item": "Row Expand / Detail Drawer",
+      "description": "행 클릭 시 상세 정보 확장",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-108",
+      "item": "Inline Edit",
+      "description": "클릭해서 바로 수정하는 텍스트",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-109",
+      "item": "Drag Handle / Sortable List",
+      "description": "드래그로 순서 변경",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-110",
+      "item": "User / Account Menu",
+      "description": "우측 상단 프로필 드롭다운",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "헤더에 항상 필요. 2026-08-03 구현, 판단값(DropdownMenu 재사용)"
+    },
+    {
+      "id": "tier-candidate-111",
+      "item": "Global Search / Search Overlay",
+      "description": "전역 검색창",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-112",
+      "item": "Onboarding Tooltip / Product Tour",
+      "description": "신규 사용자 안내 툴팁",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-113",
+      "item": "Onboarding Checklist",
+      "description": "초기 설정 체크리스트",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-114",
+      "item": "Settings List",
+      "description": "설정 항목 리스트(토글 포함)",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-115",
+      "item": "Comment / Activity Feed",
+      "description": "댓글·활동 기록 피드",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-116",
+      "item": "Kanban Board",
+      "description": "칸반 보드(카드 드래그 이동)",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-117",
+      "item": "Global Top Loading Bar",
+      "description": "페이지 상단 로딩 진행바",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-118",
+      "item": "Cookie Consent Banner",
+      "description": "쿠키 동의 배너",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-119",
+      "item": "Feedback Widget",
+      "description": "설문·피드백 수집 팝업",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-120",
+      "item": "Live Chat Widget",
+      "description": "실시간 채팅 상담 위젯",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-121",
+      "item": "Dark Mode Toggle",
+      "description": "다크모드 전환 스위치",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-122",
+      "item": "Language / Locale Selector",
+      "description": "언어 선택",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-123",
+      "item": "Pricing Table",
+      "description": "요금제 비교 표",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-124",
+      "item": "Upgrade / Paywall Prompt",
+      "description": "업그레이드 유도 배너",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-125",
+      "item": "Kbd (Keyboard Key)",
+      "description": "키보드 단축키 표시",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-126",
+      "item": "Aspect Ratio",
+      "description": "미디어 비율 고정 컨테이너",
+      "layer": "레이아웃 유틸",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-127",
+      "item": "Cascader",
+      "description": "계층형 연속 선택 드롭다운",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "설비·지역 트리 선택에 활용"
+    },
+    {
+      "id": "tier-candidate-128",
+      "item": "Mentions",
+      "description": "@ 멘션 자동완성 입력",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-129",
+      "item": "Transfer (Dual List)",
+      "description": "두 목록 간 항목 이동",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "권한 할당 등 관리기능"
+    },
+    {
+      "id": "tier-candidate-130",
+      "item": "Tree Select",
+      "description": "트리 구조를 가진 선택 드롭다운",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-131",
+      "item": "QR Code",
+      "description": "QR코드 생성·표시",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "라벨·추적 관련"
+    },
+    {
+      "id": "tier-candidate-132",
+      "item": "Descriptions (Key-Value List)",
+      "description": "상세 정보 키-값 리스트",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "상세보기 화면에 흔함. 2026-08-03 구현, 판단값"
+    },
+    {
+      "id": "tier-candidate-133",
+      "item": "Result Page",
+      "description": "성공/실패/404 등 결과 안내 화면",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-134",
+      "item": "Watermark",
+      "description": "워터마크 오버레이",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-135",
+      "item": "Masonry Grid",
+      "description": "핀터레스트형 그리드 레이아웃",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-136",
+      "item": "Anchor / Scroll Spy",
+      "description": "스크롤 위치에 따라 활성화되는 목차 내비게이션",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-137",
+      "item": "Mask Input",
+      "description": "형식이 정해진 입력(자동 포맷팅)",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-138",
+      "item": "Close Button (X)",
+      "description": "모달·배너 등을 닫는 X 버튼",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 코드화 — `icon-button.tsx`에 `IconButton` 기반 프리셋(`CloseButton`)으로 같이 구현. 기존 다이얼로그들의 인라인 닫기 버튼은 이번엔 리팩터링하지 않음(범위 밖)"
+    },
+    {
+      "id": "tier-candidate-139",
+      "item": "Copy Button",
+      "description": "클립보드 복사 버튼",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-140",
+      "item": "Burger (Hamburger Menu)",
+      "description": "햄버거 메뉴 아이콘 버튼",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-141",
+      "item": "Loading Overlay",
+      "description": "특정 영역을 덮는 로딩 오버레이",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현, 판단값(LoadingSpinner 재사용). Backdrop(딤 처리)과는 목적이 달라 별개로 구현"
+    },
+    {
+      "id": "tier-candidate-142",
+      "item": "Backdrop / Dim Overlay",
+      "description": "모달 등의 배경 딤 처리",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 `backdrop.tsx`로 코드화했다가 담당자가 \"왜 넣었냐 빼라\"고 해서 롤백. ConfirmDialog/RadioChoiceDialog는 각자 Radix Overlay로 이미 잘 처리되고 있어 별도 공용 아톰이 불필요하다고 판단"
+    },
+    {
+      "id": "tier-candidate-143",
+      "item": "Status Indicator (Dot)",
+      "description": "상태 점(온라인 등)",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-144",
+      "item": "Overflow List (\"+N more\")",
+      "description": "목록 초과 시 \"+N개 더\" 표시",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-145",
+      "item": "Spoiler (더보기/접기 텍스트)",
+      "description": "긴 텍스트 일부만 보여주고 펼치기",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-146",
+      "item": "Blockquote",
+      "description": "인용구 블록",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-147",
+      "item": "Search Highlight Text",
+      "description": "검색어 하이라이트 표시",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-148",
+      "item": "Marquee",
+      "description": "흐르는 공지 텍스트",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-149",
+      "item": "Frozen Column Grid",
+      "description": "스크롤해도 고정되는 컬럼이 있는 그리드",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-150",
+      "item": "Grouped Header Grid",
+      "description": "다단(2단 이상) 헤더 그리드",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-151",
+      "item": "Row Grouping / Expandable Sub-row",
+      "description": "행 그룹화·하위 행 펼치기",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-152",
+      "item": "Master-Detail Grid (Nested Grid)",
+      "description": "그리드 안에 또 다른 그리드",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-153",
+      "item": "Inline Cell Edit Grid",
+      "description": "셀 클릭해 바로 수정",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Center Modal의 \"테이블 일괄 변경\" 확인"
+    },
+    {
+      "id": "tier-candidate-154",
+      "item": "Cell Status Color Grid",
+      "description": "값에 따라 셀 색이 달라지는 그리드",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-155",
+      "item": "Text Link Cell",
+      "description": "클릭 시 상세로 이동하는 텍스트 셀",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-156",
+      "item": "Icon Cell",
+      "description": "상태·액션 아이콘이 들어간 셀",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-157",
+      "item": "Bulk Selection + Action Toolbar Grid",
+      "description": "다중 선택 후 일괄 처리 버튼이 뜨는 그리드",
+      "layer": "오가니즘",
+      "sourceStatus": "부분",
+      "tier": 1,
+      "sourceNote": "2026-07-31 Table 연동까지 했다가 액션 바(`bulk-action-toolbar.tsx`) 자체를 담당자 요청으로 롤백 — 테이블 다중 선택 자체는 여전히 됨(부분 유지), 액션 바는 필요해지면 다시 구현"
+    },
+    {
+      "id": "tier-candidate-158",
+      "item": "Column Resize / Reorder / Show-Hide",
+      "description": "컬럼 너비·순서·표시 설정",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-159",
+      "item": "Grid Export / Print",
+      "description": "엑셀 내보내기·인쇄 버튼",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Center Modal의 \"일자/조회/다운로드\" 확인"
+    },
+    {
+      "id": "tier-candidate-160",
+      "item": "Virtual Scroll Grid",
+      "description": "대용량 데이터 가상 스크롤",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-161",
+      "item": "Real-time Update Indicator (Grid)",
+      "description": "실시간 갱신 표시",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-162",
+      "item": "Center Modal",
+      "description": "화면 중앙 기본 팝업",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "공식 Modal 스펙을 근거로 구현 완료. 폭 960px, 최대높이 80vh, 헤더·푸터 고정과 본문 스크롤 규칙을 적용한다. 내부 콘텐츠는 children 조합으로 구성하며 테이블·상단바·폼 종류를 별도 Modal 변형으로 만들지 않는다."
+    },
+    {
+      "id": "tier-candidate-163",
+      "item": "Side Slide Panel (Full)",
+      "description": "우측 전체 슬라이드 패널",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Type02, 960px 기본(예시 프레임은 900px, 텍스트 스펙 960px을 채택). 2026-08-03 같은 스펙 페이지로 `side-slide-panel.tsx` 신규 코드화 완료(Center Modal과 헤더/푸터 구조 공유, 화면 우측 고정+세로 풀높이)"
+    },
+    {
+      "id": "tier-candidate-164",
+      "item": "Side Slide Panel — 상하 분할",
+      "description": "우측 슬라이드 내부가 상/하로 나뉜 형태",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Center Modal의 \"상하 섹션 구분\"(생산계획 리스트+원부자재 리스트+하단 통계) 확인"
+    },
+    {
+      "id": "tier-candidate-165",
+      "item": "Side Slide Panel — 좌우 분할",
+      "description": "우측 슬라이드 내부가 좌/우로 나뉜 형태",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Center Modal의 \"좌우 섹션 구분\"(품목검사 폼+캘린더) 및 Side Modal \"타임테이블/좌우구분\" 확인"
+    },
+    {
+      "id": "tier-candidate-166",
+      "item": "Modal with Embedded Table",
+      "description": "팝업 안에 표·그리드 포함",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "\"생산계획/작업진행 실적입력\" 모달"
+    },
+    {
+      "id": "tier-candidate-167",
+      "item": "Modal with Tabs",
+      "description": "팝업 안이 탭으로 구획",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Center Modal의 \"탭 구분 모달\"(좌측 Type01~06 리스트+우측 테이블) 확인"
+    },
+    {
+      "id": "tier-candidate-168",
+      "item": "Full-screen Modal",
+      "description": "화면 전체를 덮는 팝업",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-169",
+      "item": "Resizable / Draggable Popup",
+      "description": "크기 조절·이동 가능한 팝업",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-170",
+      "item": "Andon Board (설비 상태판)",
+      "description": "라인 전체 설비 상태 보드",
+      "layer": "템플릿",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-171",
+      "item": "Equipment Status Card/Tile",
+      "description": "개별 설비 상태 카드",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-172",
+      "item": "Real-time Gauge/Meter",
+      "description": "온도·압력·속도 게이지",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-173",
+      "item": "OEE Dashboard Widget",
+      "description": "설비종합효율 지표 위젯",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-174",
+      "item": "Process Flow Diagram",
+      "description": "공정 흐름도",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": "고급 시각화, 구현 난이도 높음"
+    },
+    {
+      "id": "tier-candidate-175",
+      "item": "Real-time Trend Chart",
+      "description": "시계열 센서 데이터 차트",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-176",
+      "item": "Utilization Heatmap",
+      "description": "설비·라인별 가동률 히트맵",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-177",
+      "item": "Factory Layout View",
+      "description": "공장 배치도 오버레이 뷰",
+      "layer": "템플릿",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-178",
+      "item": "Alarm List/Table",
+      "description": "알람 이력 리스트",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Asset/Templates의 \"Alarm list\" 확인. 2026-07-30 코드화: `components/ui/alarm-list-item.tsx`(node 163:3039 \"MES 알람 리스트\" 실측). \"두줄\" 용도는 확인 필요. 2026-08-03 `read`(흐림) variant 삭제 — 담당자 확인: Figma엔 있지만 실제 서비스엔 미구현. 실제 상태는 기본(강조바)/클릭 시 제거 두 가지뿐"
+    },
+    {
+      "id": "tier-candidate-179",
+      "item": "Blinking Alarm Indicator",
+      "description": "알람 발생 시 점멸 표시",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-180",
+      "item": "Severity Level Tag",
+      "description": "알람 심각도 태그",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-181",
+      "item": "Alarm Acknowledge Button",
+      "description": "알람 확인·조치 버튼",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-182",
+      "item": "Escalation Timeline",
+      "description": "알람 에스컬레이션 이력",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-183",
+      "item": "Work Order Form",
+      "description": "작업지시서 입력·조회 폼",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-184",
+      "item": "Work Order Kanban",
+      "description": "작업지시 진행상태별 칸반",
+      "layer": "템플릿",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-185",
+      "item": "Production Gantt Chart",
+      "description": "생산 일정 간트차트",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-186",
+      "item": "Shift Schedule Calendar",
+      "description": "교대조 근무 일정 캘린더",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-187",
+      "item": "Routing/BOM Tree",
+      "description": "공정순서·BOM 트리 뷰",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-188",
+      "item": "Lot Progress Bar",
+      "description": "로트 단위 생산 진척률",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-189",
+      "item": "Defect Type Tag/Selector",
+      "description": "불량 유형 태그·선택기",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-190",
+      "item": "SPC Control Chart",
+      "description": "통계적 공정관리 관리도",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-191",
+      "item": "Inspection Checklist Form",
+      "description": "검사 항목 체크리스트 폼",
+      "layer": "오가니즘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Foundation의 \"검사항목 체크\" 프레임 확인"
+    },
+    {
+      "id": "tier-candidate-192",
+      "item": "검사 판정 버튼 (○/△/✕/-)",
+      "description": "품질검사 판정 버튼, 실제로는 4상태(○/△/✕/-) — 단순 합격/불합격 이진 토글 아님",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": "모바일에는 이미 디자인 있음(모바일 체크리스트 5번 섹션 \"검사 버튼\") — 데스크탑판만 신규 제작하면 되므로 실제 착수는 티어1과 함께 해도 무방. 상세 스펙은 [컴포넌트 기능 변형 심층분석](./컴포넌트_기능_변형_심층분석.md) 참고. \"-\"의 정확한 의미는 사용자 확인 대기 중(19번 섹션 참고)"
+    },
+    {
+      "id": "tier-candidate-193",
+      "item": "Sampling Plan Table",
+      "description": "샘플링 검사 기준표",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-194",
+      "item": "Defect Pareto Chart",
+      "description": "불량 유형별 파레토 차트",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-195",
+      "item": "Barcode/QR Scan Input",
+      "description": "바코드·QR 스캔 입력창",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 1,
+      "sourceNote": "Figma \"컴포넌트 라이브러리\" Center Modal \"탭 구분 모달\" 내 Scan 버튼 확인"
+    },
+    {
+      "id": "tier-candidate-196",
+      "item": "Lot/Serial Search",
+      "description": "Lot·시리얼 번호 조회창",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-197",
+      "item": "Genealogy Tree",
+      "description": "제품 이력추적 트리",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-198",
+      "item": "Inventory Level Indicator",
+      "description": "재고 수량 게이지·바",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-199",
+      "item": "Warehouse Location Map",
+      "description": "창고 위치 배치도",
+      "layer": "템플릿",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": "니치 기능"
+    },
+    {
+      "id": "tier-candidate-200",
+      "item": "Label Print Preview",
+      "description": "라벨 출력 미리보기",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-201",
+      "item": "Approval Workflow Stepper",
+      "description": "결재선 단계 표시",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-202",
+      "item": "E-signature Pad",
+      "description": "전자서명 입력 패드",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-203",
+      "item": "Document Version History",
+      "description": "문서 개정 이력",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-204",
+      "item": "Attachment List",
+      "description": "첨부파일 목록",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-205",
+      "item": "Maintenance Schedule Calendar",
+      "description": "예방보전 일정 캘린더",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-206",
+      "item": "Downtime Reason Selector",
+      "description": "비가동 사유 선택기",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-207",
+      "item": "Equipment Detail Card",
+      "description": "설비 상세정보 카드",
+      "layer": "몰큘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-208",
+      "item": "PM Checklist",
+      "description": "예방보전 점검 체크리스트",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-209",
+      "item": "Link",
+      "description": "하이퍼링크(텍스트 링크)",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 코드화(`link.tsx`). NoticeBanner에서 이미 반복되던 링크 스타일(`text-mes-text-brand` + hover underline)을 역추출"
+    },
+    {
+      "id": "tier-candidate-210",
+      "item": "Fieldset",
+      "description": "관련 폼 필드를 묶는 wrapper",
+      "layer": "몰큘",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-08-03 구현, 판단값(Label 톤 재사용)"
+    },
+    {
+      "id": "tier-candidate-211",
+      "item": "Label",
+      "description": "독립된 폼 라벨 아톰",
+      "layer": "아톰",
+      "sourceStatus": "있음",
+      "tier": 2,
+      "sourceNote": "2026-07-31 코드화(`label.tsx`). Figma 디자인 없어서 Input/Select와 같은 텍스트 색 체계 재사용, required(*) 표시 판단값"
+    },
+    {
+      "id": "tier-candidate-212",
+      "item": "Footer",
+      "description": "페이지 하단 영역",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-213",
+      "item": "File",
+      "description": "첨부파일 표시(칩/아이콘, 업로드 입력과 별개)",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 3,
+      "sourceNote": ""
+    },
+    {
+      "id": "tier-candidate-214",
+      "item": "Hero",
+      "description": "큰 배너(주로 랜딩페이지용)",
+      "layer": "오가니즘",
+      "sourceStatus": "없음",
+      "tier": 5,
+      "sourceNote": "MES 어드민 도구엔 낮은 우선순위"
+    },
+    {
+      "id": "tier-candidate-215",
+      "item": "Skip Link",
+      "description": "키보드 포커스 건너뛰기 링크",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": "접근성 전용"
+    },
+    {
+      "id": "tier-candidate-216",
+      "item": "Visually Hidden",
+      "description": "스크린리더 전용 숨김 텍스트",
+      "layer": "아톰",
+      "sourceStatus": "없음",
+      "tier": 4,
+      "sourceNote": "접근성 유틸리티"
+    }
+  ]
+}

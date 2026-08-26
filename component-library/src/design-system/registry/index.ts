@@ -1,4 +1,5 @@
 import componentData from "./components.json";
+import assetManifestData from "./asset-manifest.json";
 import componentCatalogData from "./component-catalog.json";
 import patternData from "./patterns.json";
 import screenData from "./screens.json";
@@ -30,6 +31,7 @@ import webFigmaReconciliationData from "./web-figma-reconciliation.json";
 import webGenerationContextData from "./web-generation-context.json";
 import type {
   ComponentRegistry,
+  AssetManifestRegistry,
   ComponentCatalogRegistry,
   PatternRegistry,
   ScreenRegistry,
@@ -64,6 +66,7 @@ import type {
 export type * from "./registry.types";
 
 export const componentRegistry = componentData as ComponentRegistry;
+export const assetManifestRegistry = assetManifestData as AssetManifestRegistry;
 export const componentCatalogRegistry = componentCatalogData as ComponentCatalogRegistry;
 export const patternRegistry = { schemaVersion: 1, patterns: [...patternData.patterns, ...sourceAssetData.patterns] } as PatternRegistry;
 export const screenRegistry = { schemaVersion: 1, screens: [...screenData.screens, ...sourceAssetData.screens] } as ScreenRegistry;

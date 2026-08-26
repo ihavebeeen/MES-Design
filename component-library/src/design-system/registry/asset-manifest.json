@@ -1,0 +1,6070 @@
+{
+  "schemaVersion": 1,
+  "purpose": "AI와 사람이 같은 자산 상태·위치·사용 근거를 조회하는 생성 원장",
+  "generatedFrom": [
+    "components.json",
+    "component-usage-contracts.json",
+    "component-catalog.json",
+    "patterns.json + source-assets.json",
+    "screens.json + source-assets.json"
+  ],
+  "fingerprint": "1109c520d083858757bffe597504933dbdb3fa784cc3c43e4cf7381c6aec8a64",
+  "summary": {
+    "components": {
+      "total": 88,
+      "public": 86,
+      "internal": 2,
+      "stable": 40,
+      "provisional": 48,
+      "detailedUsageContracts": 20
+    },
+    "patterns": 62,
+    "screens": 28
+  },
+  "assets": [
+    {
+      "kind": "component",
+      "id": "accordion",
+      "name": "Accordion",
+      "category": "layout",
+      "source": "src/components/ui/accordion.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/accordion",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/accordion.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "7db7cb47b8b37ed9949e02955ea95738d66809bf3be43c86187ca25b05157db8",
+        "symbols": [
+          "AccordionItemData",
+          "AccordionProps",
+          "Accordion"
+        ],
+        "propNames": [
+          "id",
+          "title",
+          "content",
+          "disabled",
+          "items",
+          "type",
+          "defaultOpenIds",
+          "className"
+        ],
+        "stateMarkers": [
+          "disabled"
+        ],
+        "summary": "MES Accordion — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Accordion\", 상태 \"없음\").",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "alarm-list-item",
+      "name": "AlarmListItem",
+      "category": "data-display",
+      "source": "src/components/ui/alarm-list-item.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/alarm-list-item",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/alarm-list-item.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "77d16ceeef85d168ac3e449bdc770a530e5e1c56ed78ab085bbe3b30649e3338",
+        "symbols": [
+          "AlarmTone",
+          "AlarmListItemProps",
+          "AlarmListItem"
+        ],
+        "propNames": [
+          "blue",
+          "red",
+          "yellow",
+          "green",
+          "tone",
+          "title",
+          "time",
+          "description",
+          "secondaryDescription",
+          "onClick",
+          "className"
+        ],
+        "stateMarkers": [
+          "hover"
+        ],
+        "summary": "설명 아래 2번째 줄(원본 Figma \"두줄\")",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "avatar",
+      "name": "Avatar",
+      "category": "data-display",
+      "source": "src/components/ui/avatar.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/avatar",
+      "rules": [
+        "사용자·작업자 식별의 축약 표시에 사용한다.",
+        "온라인 상태는 보조 표식이며 이름 텍스트를 대체하지 않는다."
+      ],
+      "visibility": "public",
+      "tier": 4,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/avatar.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "180705e272414afbe639560ebc519b3133f59f35896726bfeee26b5c7520dc6f",
+        "symbols": [
+          "AvatarProps",
+          "Avatar"
+        ],
+        "propNames": [
+          "name",
+          "initials",
+          "size",
+          "status"
+        ],
+        "stateMarkers": [],
+        "summary": "",
+        "aria": [
+          "aria-label",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "badge",
+      "name": "Badge",
+      "category": "data-display",
+      "source": "src/components/ui/badge.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/badge",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/badge.md",
+      "usageContract": {
+        "componentId": "badge",
+        "capabilities": [
+          "status-display",
+          "category-display"
+        ],
+        "variants": [
+          "blue",
+          "red",
+          "grayFill",
+          "blue2",
+          "gray",
+          "blueLight",
+          "blueOutline",
+          "amber"
+        ],
+        "requiredStates": [
+          "static"
+        ],
+        "useWhen": [
+          "행이나 항목의 상태·분류를 짧게 표시"
+        ],
+        "doNotUseWhen": [
+          "클릭해 상세로 이동",
+          "필터를 제거하는 조작",
+          "긴 설명 문구"
+        ],
+        "allowedParents": [
+          "section.search-table-composition",
+          "table.grouped-list"
+        ],
+        "constraints": [
+          "동일 의미에 화면마다 다른 색 variant를 임의 적용하지 않는다.",
+          "링크처럼 밑줄이나 클릭 affordance를 추가하지 않는다."
+        ],
+        "accessibility": [
+          "색상만으로 상태를 구분하지 않고 텍스트를 함께 제공한다."
+        ],
+        "evidence": [
+          "material-input-settings",
+          "grouped-production-list"
+        ],
+        "alternatives": [
+          {
+            "componentId": "link",
+            "chooseInsteadWhen": "상세 화면을 여는 값일 때"
+          },
+          {
+            "componentId": "filter-tag",
+            "chooseInsteadWhen": "적용된 조건을 제거할 수 있어야 할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "onboarding.product-tour",
+        "popup.center.purchase-lookup",
+        "popup.center.standard-price-settings",
+        "popup.center.team-settings"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "ceabe8c90c0cd4d8c1aa002f0dd7a1775f7f58813ed43da32643bd4d178ab002",
+        "symbols": [
+          "BadgeProps",
+          "Badge",
+          "badgeVariants"
+        ],
+        "propNames": [],
+        "stateMarkers": [],
+        "summary": "MES Badge (상태 뱃지) — Figma 실측 기반",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "before-after-comparison",
+      "name": "BeforeAfterComparison",
+      "category": "data-display",
+      "source": "src/components/ui/before-after-comparison.tsx",
+      "status": "stable",
+      "rules": [
+        "선택·정렬이 없는 변경 전후 요약 비교에만 사용한다.",
+        "헤더와 상태 행은 같은 grid 컬럼 좌표를 공유한다.",
+        "변경된 값만 Primary-60 SemiBold로 강조한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/before-after-comparison",
+      "documentationFile": "docs/components/before-after-comparison.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.before-after-confirmation"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "75209e17426b857fb4b10c52acc598bdb7998934c903186d88b729ff347f7e8b",
+        "symbols": [
+          "BeforeAfterComparisonMetric",
+          "BeforeAfterComparisonSnapshot",
+          "BeforeAfterComparisonProps",
+          "BeforeAfterComparison"
+        ],
+        "propNames": [
+          "key",
+          "label",
+          "id",
+          "values",
+          "emphasized",
+          "metrics",
+          "snapshots",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "변경 전후 비교표 — Figma 19451:95617 하위 19483:104432 실측.",
+        "aria": [
+          "aria-label",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "breadcrumb",
+      "name": "Breadcrumb",
+      "category": "navigation",
+      "source": "src/components/ui/breadcrumb.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/breadcrumb",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/breadcrumb.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "c98fc5b25d2d2ec1dfb4cffc833668e038ad4c19d84926f9285ac263280a7a4a",
+        "symbols": [
+          "BreadcrumbItemData",
+          "BreadcrumbProps",
+          "Breadcrumb"
+        ],
+        "propNames": [
+          "label",
+          "onClick",
+          "items",
+          "className"
+        ],
+        "stateMarkers": [
+          "hover"
+        ],
+        "summary": "MES Breadcrumb — Figma 검색(search_design_system)에서 \"breadcrumb-mid/chip\" 등 이름",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "button",
+      "name": "Button",
+      "category": "action",
+      "source": "src/components/ui/button.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/button-size",
+      "rules": [
+        "모든 화면 액션은 raw button 대신 Button 또는 IconButton을 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/button.md",
+      "usageContract": {
+        "componentId": "button",
+        "capabilities": [
+          "semantic-action",
+          "icon-label-action",
+          "disabled-action"
+        ],
+        "variants": [
+          "fillMain",
+          "fillGray",
+          "fillBlack",
+          "fillRed",
+          "lineMain",
+          "lineBlacktxt",
+          "opacityMain",
+          "softMain",
+          "softDanger",
+          "loginPrimary"
+        ],
+        "requiredStates": [
+          "default",
+          "hover",
+          "disabled"
+        ],
+        "useWhen": [
+          "사용자가 즉시 실행하는 명시적 동작",
+          "DialogFooter 또는 조회 툴바의 액션"
+        ],
+        "doNotUseWhen": [
+          "다른 화면이나 상세로 이동하는 링크 의미",
+          "상태값을 표시하는 경우",
+          "아이콘만 필요한 32px 이하 동작"
+        ],
+        "allowedParents": [
+          "action-set.cancel-save",
+          "action-set.cancel-confirm",
+          "action-set.save-only",
+          "action-set.close-only",
+          "action-set.cancel-select",
+          "action-set.cancel-input",
+          "section.editable-row-list",
+          "section.inspection-items",
+          "section.search-table-composition"
+        ],
+        "constraints": [
+          "화면 구현에서 raw button을 직접 만들지 않는다.",
+          "주요 액션은 한 영역에서 하나만 primary 계열로 강조한다."
+        ],
+        "accessibility": [
+          "텍스트가 없는 버튼은 aria-label을 제공한다.",
+          "disabled 상태는 실제 disabled 속성과 연결한다."
+        ],
+        "evidence": [
+          "batch-work-order",
+          "receiving",
+          "self-inspection"
+        ],
+        "alternatives": [
+          {
+            "componentId": "link",
+            "chooseInsteadWhen": "이동 또는 상세 열기 의미일 때"
+          },
+          {
+            "componentId": "icon-button",
+            "chooseInsteadWhen": "아이콘만으로 의미가 확정된 소형 동작일 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "action-set.cancel-confirm",
+        "action-set.cancel-input",
+        "action-set.cancel-save",
+        "action-set.cancel-select",
+        "action-set.close-only",
+        "action-set.close-reregister",
+        "action-set.save-only",
+        "onboarding.product-tour",
+        "popup.center.before-after-confirmation",
+        "popup.center.cavity-layout",
+        "popup.center.dual-pane",
+        "popup.center.equipment-discharge-settings",
+        "popup.center.form",
+        "popup.center.inspection-criteria",
+        "popup.center.inspection-records",
+        "popup.center.navigation-detail",
+        "popup.center.standard-price-settings",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "popup.center.time-selector",
+        "popup.side.add-list",
+        "popup.side.custom-columns",
+        "popup.side.inspection-items",
+        "popup.side.time-records",
+        "recipe.center-modal-search-table",
+        "recipe.side-slide-form-editable-list",
+        "row.mutation-policy",
+        "screen.production-result-responsive",
+        "section.editable-row-list",
+        "section.inspection-items",
+        "selection.enable-actions",
+        "selection.transfer-list",
+        "table.column-settings",
+        "table.row-expand-detail",
+        "visualization.process-flow",
+        "workflow.stepper"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "5cc6fdcd088ebc20639d2a66d1e94b457d16f9d0ffef8162c49a13b031b4abc7",
+        "symbols": [
+          "ButtonProps",
+          "Button",
+          "buttonVariants"
+        ],
+        "propNames": [
+          "asChild",
+          "startIcon",
+          "endIcon"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "hover"
+        ],
+        "summary": "버튼 텍스트 앞에 표시할 아이콘.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "button-group",
+      "name": "ButtonGroup",
+      "category": "action",
+      "source": "src/components/ui/button-group.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/button-group",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/button-group.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "d390a4406660bbe1e63ce81cedadf8c4792e5dcf42f9a7145a57d7c438ea4aee",
+        "symbols": [
+          "ButtonGroup"
+        ],
+        "propNames": [],
+        "stateMarkers": [],
+        "summary": "MES ButtonGroup — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Button Group\", 상태 \"없음\").",
+        "aria": [
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "cascader",
+      "name": "Cascader",
+      "category": "form",
+      "source": "src/components/ui/cascader.tsx",
+      "status": "provisional",
+      "rules": [
+        "서로 종속된 2단계 선택에 사용한다.",
+        "3단계 이상 또는 복수 선택이 필요하면 TreeSelect를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/cascader",
+      "documentationFile": "docs/components/cascader.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "f65e8ef98a0206bf608a72eb3d4d15188a4d5130bb909c2ca8296c6a6c46aac7",
+        "symbols": [
+          "CascaderItem",
+          "CascaderGroup",
+          "CascaderValue",
+          "CascaderProps",
+          "Cascader"
+        ],
+        "propNames": [
+          "groups",
+          "value",
+          "defaultValue",
+          "onValueChange",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "두 단계의 서로 종속된 선택에만 사용한다.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "card",
+      "name": "Card",
+      "category": "layout",
+      "source": "src/components/ui/card.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/card",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/card.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "screen.analytics-dashboard"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "185fec90bac5592f3cc73185772643b8245127f01f5e421de0a433f94e6abaf4",
+        "symbols": [
+          "Card",
+          "CardHeader",
+          "CardTitle",
+          "CardDescription",
+          "CardContent",
+          "CardFooter"
+        ],
+        "propNames": [],
+        "stateMarkers": [],
+        "summary": "MES Card — Figma 검색(search_design_system)에 정확히 일치하는 전용 노드를 못 찾음",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "center-modal",
+      "name": "CenterModal",
+      "category": "overlay",
+      "source": "src/components/ui/center-modal.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/center-modal",
+      "rules": [
+        "중앙 팝업은 임의 overlay가 아니라 CenterModal size variant를 사용한다.",
+        "취소·X·Esc·배경 클릭은 같은 dismiss 경로에서 onCancel로 변경값을 폐기한 뒤 open state를 false로 변경한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/center-modal.md",
+      "usageContract": {
+        "componentId": "center-modal",
+        "capabilities": [
+          "blocking-overlay",
+          "header-body-footer",
+          "dismiss-restore"
+        ],
+        "variants": [
+          "compact-400",
+          "compact-480",
+          "medium-600",
+          "standard-960",
+          "wide-1024",
+          "large-1100",
+          "wide-1142",
+          "wide-1400"
+        ],
+        "requiredStates": [
+          "closed",
+          "open",
+          "dismiss",
+          "confirm"
+        ],
+        "useWhen": [
+          "현재 맥락을 차단하고 중앙에서 짧은 조회·선택·편집을 완료",
+          "원본이 중앙 팝업으로 확인됨"
+        ],
+        "doNotUseWhen": [
+          "긴 등록 흐름",
+          "우측 슬라이드 원본",
+          "짧은 확인만 필요한 작은 대화상자"
+        ],
+        "allowedParents": [
+          "shell.center-modal"
+        ],
+        "constraints": [
+          "임의 overlay와 wrapper로 재구현하지 않는다.",
+          "헤더·본문·푸터와 본문 scroll 책임을 셸이 소유한다."
+        ],
+        "accessibility": [
+          "제목을 Dialog title로 연결한다.",
+          "Esc·X·backdrop·취소가 동일 dismiss 정책을 사용한다."
+        ],
+        "evidence": [
+          "batch-work-order",
+          "material-input-settings",
+          "inventory-add"
+        ],
+        "alternatives": [
+          {
+            "componentId": "side-slide-panel",
+            "chooseInsteadWhen": "긴 등록·편집 흐름이 우측에서 이어질 때"
+          },
+          {
+            "componentId": "confirm-dialog",
+            "chooseInsteadWhen": "짧은 확인 또는 경고만 필요할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "dismiss.restore-committed",
+        "popup.center.cavity-layout",
+        "popup.center.dual-pane",
+        "popup.center.equipment-discharge-settings",
+        "popup.center.form",
+        "popup.center.inspection-criteria",
+        "popup.center.inspection-records",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.purchase-lookup",
+        "popup.center.standard-price-settings",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "popup.center.time-selector",
+        "recipe.center-modal-search-table",
+        "screen.form-management-workflow",
+        "shell.center-modal"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "9733aafcc80ae1ca4268d215f4c8fd4d3877fed4ed728d526984d3497fa85169",
+        "symbols": [
+          "CenterModalSize",
+          "CenterModalProps",
+          "CenterModal",
+          "centerModalSizeClasses"
+        ],
+        "propNames": [
+          "open",
+          "onOpenChange",
+          "title",
+          "children",
+          "cancelLabel",
+          "onCancel",
+          "confirmLabel",
+          "onConfirm",
+          "size",
+          "actions",
+          "footer",
+          "headerDivider",
+          "bodyPadding",
+          "scrollMode",
+          "bodyAlign",
+          "exactWidth",
+          "exactHeight",
+          "maxHeight",
+          "contentClassName",
+          "className"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "open"
+        ],
+        "summary": "취소·X·Esc·배경 클릭에 공통 적용되는 변경 폐기/원상복구 콜백.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "checkbox",
+      "name": "Checkbox",
+      "category": "form",
+      "source": "src/components/ui/checkbox.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/checkbox",
+      "rules": [
+        "MES 테이블은 미선택 grayCheck, 선택 black을 사용한다.",
+        "선택 상태는 행 배경과 편집 가능 상태를 함께 변경한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/checkbox.md",
+      "usageContract": {
+        "componentId": "checkbox",
+        "capabilities": [
+          "boolean-selection",
+          "row-selection",
+          "master-selection",
+          "indeterminate"
+        ],
+        "variants": [
+          "main",
+          "gray",
+          "black",
+          "outline",
+          "grayCheck"
+        ],
+        "requiredStates": [
+          "unchecked",
+          "checked",
+          "indeterminate",
+          "disabled"
+        ],
+        "useWhen": [
+          "복수 항목 선택",
+          "테이블 행·그룹·전체 선택",
+          "독립적인 참/거짓 값"
+        ],
+        "doNotUseWhen": [
+          "하나만 선택 가능한 옵션",
+          "단순 상태 표시"
+        ],
+        "allowedParents": [
+          "section.search-table-composition",
+          "table.grouped-list",
+          "popup.center.table",
+          "table.column-settings"
+        ],
+        "constraints": [
+          "MES 표는 미선택 grayCheck, 선택 black을 기본으로 사용한다.",
+          "선택 행 배경과 편집 컨트롤은 같은 선택 ID 상태에서 파생한다."
+        ],
+        "accessibility": [
+          "부분 선택은 indeterminate 상태로 전달한다.",
+          "행 label과 선택 목적을 접근 가능한 이름으로 연결한다."
+        ],
+        "evidence": [
+          "material-input-settings",
+          "batch-work-order",
+          "bom-copy"
+        ],
+        "alternatives": [
+          {
+            "componentId": "radio",
+            "chooseInsteadWhen": "단일 선택만 허용할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "popup.center.dual-pane",
+        "popup.center.inspection-records",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "screen.production-result-responsive",
+        "selection.transfer-list",
+        "table.column-settings",
+        "table.grouped-list"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "222ba85529ea2d0a09e1937d2a0fd4aae9495eb896345eaaa8fa2705f158fedc",
+        "symbols": [
+          "CheckboxColor",
+          "CheckboxUncheckedAppearance",
+          "CheckboxProps",
+          "Checkbox"
+        ],
+        "propNames": [
+          "main",
+          "gray",
+          "black",
+          "color",
+          "indeterminate",
+          "size",
+          "uncheckedAppearance",
+          "shape"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "checked",
+          "indeterminate",
+          "focus"
+        ],
+        "summary": "일부만 선택된 상태(하위 항목 중 일부만 체크됨) — 판단 구현, 위 주석 5번 참고",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "collapsible",
+      "name": "Collapsible",
+      "category": "layout",
+      "source": "src/components/ui/collapsible.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/collapsible",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/collapsible.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "2d341da7d4ebc408becedc54d80fb2e0b93664363b840b8acb11fab0b3553985",
+        "symbols": [
+          "CollapsibleProps",
+          "Collapsible"
+        ],
+        "propNames": [
+          "trigger",
+          "children",
+          "open",
+          "defaultOpen",
+          "onOpenChange",
+          "className"
+        ],
+        "stateMarkers": [
+          "open"
+        ],
+        "summary": "MES Collapsible — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Collapsible\", 상태 \"없음\").",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "combobox",
+      "name": "Combobox",
+      "category": "form",
+      "source": "src/components/ui/combobox.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/combobox",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/combobox.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "93b6bded4b787e844ab471a3eb07744c753250cf3a2d355ed60e85bc2b3391f7",
+        "symbols": [
+          "ComboboxOption",
+          "ComboboxProps",
+          "Combobox"
+        ],
+        "propNames": [
+          "value",
+          "label",
+          "options",
+          "defaultValue",
+          "onValueChange",
+          "placeholder",
+          "searchPlaceholder",
+          "emptyText",
+          "size",
+          "disabled",
+          "className",
+          "icon"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "selected",
+          "open",
+          "hover"
+        ],
+        "summary": "트리거 우측 아이콘 — 기본값은 ChevronDown, 다른 아이콘으로 교체 가능(2026-07-28 추가)",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "confirm-dialog",
+      "name": "ConfirmDialog",
+      "category": "overlay",
+      "source": "src/components/ui/confirm-dialog.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/confirm-dialog",
+      "rules": [
+        "작은 확인·안내 팝업은 CenterModal이 아니라 12px radius와 modal-shadow를 가진 ConfirmDialog를 사용한다.",
+        "합성 콘텐츠가 필요하면 children과 footer 슬롯을 사용하되 외곽 헤더·그림자 규격을 다시 그리지 않는다.",
+        "X·Esc·배경 클릭은 onCancel을 거쳐 닫는다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/confirm-dialog.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.before-after-confirmation",
+        "popup.center.equipment-discharge-settings",
+        "popup.center.standard-price-settings",
+        "shell.confirm-dialog"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "ecc39874250fbe53e96394d884565701dac2f286da6fe7069ef5d6c0a342b15b",
+        "symbols": [
+          "ConfirmDialogAction",
+          "ConfirmDialogTone",
+          "ConfirmDialogProps",
+          "ConfirmDialog"
+        ],
+        "propNames": [
+          "label",
+          "onClick",
+          "variant",
+          "error",
+          "warning",
+          "info",
+          "open",
+          "onOpenChange",
+          "title",
+          "heading",
+          "description",
+          "actions",
+          "tone",
+          "banner",
+          "children",
+          "footer",
+          "onCancel",
+          "className"
+        ],
+        "stateMarkers": [
+          "open",
+          "error"
+        ],
+        "summary": "본문 아이콘 색 — error(기본, 빨강)/warning(주황)/info(파랑).",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "date-picker",
+      "name": "DatePicker",
+      "category": "form",
+      "source": "src/components/ui/date-picker.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/date-picker",
+      "rules": [
+        "표 셀에서는 size=small(22px)을 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/date-picker.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.inventory-add",
+        "popup.center.standard-price-settings"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "20e7bfcdb707397d90c85e55719b786a4bbbb6711071599228962037e3a17cf4",
+        "symbols": [
+          "DatePickerProps",
+          "DatePicker",
+          "buildMonthMatrix",
+          "isSameDay",
+          "formatDate",
+          "WEEKDAYS"
+        ],
+        "propNames": [
+          "value",
+          "onValueChange",
+          "placeholder",
+          "disabled",
+          "className",
+          "separator",
+          "iconPosition",
+          "iconColor",
+          "size"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "selected",
+          "open",
+          "hover"
+        ],
+        "summary": "표 셀처럼 22px 컨트롤이 필요한 경우 사용한다.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "labeled-select",
+      "name": "LabeledSelect",
+      "category": "form",
+      "source": "src/components/ui/labeled-select.tsx",
+      "status": "stable",
+      "rules": [
+        "일괄 변경 영역처럼 보조 라벨과 선택값이 하나의 32px 컨트롤 안에 들어갈 때 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/labeled-select",
+      "documentationFile": "docs/components/labeled-select.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "75d42b4f903a2041dfd943e7a13c086e1197e180b84c24c73a00d9c3c7fe64ef",
+        "symbols": [
+          "LabeledSelectProps",
+          "LabeledSelect"
+        ],
+        "propNames": [
+          "label",
+          "value",
+          "options",
+          "onValueChange",
+          "className",
+          "disabled"
+        ],
+        "stateMarkers": [
+          "disabled"
+        ],
+        "summary": "한 컨트롤 안에 보조 라벨과 선택값을 함께 표시하는 MES 조회/일괄변경용 Select.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "labeled-input",
+      "name": "LabeledInput",
+      "category": "form",
+      "source": "src/components/ui/labeled-input.tsx",
+      "status": "stable",
+      "rules": [
+        "일괄 변경 영역처럼 보조 라벨과 입력값이 하나의 32px 컨트롤 안에 들어갈 때 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/labeled-input",
+      "documentationFile": "docs/components/labeled-input.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.inventory-edit"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "139fff2459bf1935608b38d1688c2adede46f4a8670ad9a6a164aed6477a05a5",
+        "symbols": [
+          "LabeledInputProps",
+          "LabeledInput"
+        ],
+        "propNames": [
+          "label"
+        ],
+        "stateMarkers": [],
+        "summary": "한 개의 32px 입력 컨트롤 안에 보조 라벨과 값을 배치한다.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "selection-action-bar",
+      "name": "SelectionActionBar",
+      "category": "feedback",
+      "source": "src/components/ui/selection-action-bar.tsx",
+      "status": "stable",
+      "rules": [
+        "표에서 하나 이상 선택됐을 때만 하단 중앙에 표시한다.",
+        "삭제·이동·선택 초기화 액션을 제공한다."
+      ],
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/selection-action-bar",
+      "documentationFile": "docs/components/selection-action-bar.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.inventory-edit"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "db1edea212d1b78ee23c1e6d642b2d374f51442c24c56a8e202a68490a5a4866",
+        "symbols": [
+          "SelectionActionBarProps",
+          "SelectionActionBar"
+        ],
+        "propNames": [
+          "selectedCount",
+          "onDelete",
+          "onMove",
+          "onClear",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "Figma node 17702:49441의 표 선택 후 플로팅 액션 바.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "analytics-charts",
+      "name": "AnalyticsCharts",
+      "category": "data-display",
+      "source": "src/components/ui/analytics-charts.tsx",
+      "status": "stable",
+      "rules": [
+        "MES 분석 화면의 축·눈금·막대·라인 규격을 공통으로 유지한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/analytics-charts",
+      "documentationFile": "docs/components/analytics-charts.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "7d57f194481902e807d7bd1510da72b157696096938f7f90e1ebaa9277a4c129",
+        "symbols": [
+          "HorizontalBarChartProps",
+          "EquipmentProductionChart",
+          "HorizontalBarChart",
+          "InventoryComparisonChart"
+        ],
+        "propNames": [
+          "labels",
+          "values",
+          "barValues",
+          "max"
+        ],
+        "stateMarkers": [],
+        "summary": "",
+        "aria": [
+          "aria-label",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "date-range-picker",
+      "name": "DateRangePicker",
+      "category": "form",
+      "source": "src/components/ui/date-range-picker.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/date-range-picker",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/date-range-picker.md",
+      "usageContract": {
+        "componentId": "date-range-picker",
+        "capabilities": [
+          "date-range-query"
+        ],
+        "variants": [
+          "default"
+        ],
+        "requiredStates": [
+          "empty",
+          "complete",
+          "calendar-open"
+        ],
+        "useWhen": [
+          "조회 대상의 시작일과 종료일을 한 범위로 선택"
+        ],
+        "doNotUseWhen": [
+          "단일 날짜 업무 필드",
+          "원본에 기간 조회가 없는 화면"
+        ],
+        "allowedParents": [
+          "section.search-table-composition",
+          "screen.entity-list"
+        ],
+        "constraints": [
+          "시작일은 종료일보다 늦을 수 없다.",
+          "조회 버튼과 같은 상단 조건 영역에 배치한다."
+        ],
+        "accessibility": [
+          "시작일과 종료일 입력을 각각 식별한다.",
+          "달력 열기와 날짜 이동을 키보드로 수행할 수 있어야 한다."
+        ],
+        "evidence": [
+          "grouped-production-list",
+          "production-result-responsive"
+        ],
+        "alternatives": [
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "저장되는 단일 날짜 필드이며 화면 근거가 있을 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "screen.analytics-dashboard"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "4395c7e483901bfead589dcbc1ab45075b23c6b03c53c5887127eee67f02742d",
+        "symbols": [
+          "DateRange",
+          "DateRangePickerProps",
+          "DateRangePicker"
+        ],
+        "propNames": [
+          "start",
+          "end",
+          "value",
+          "onValueChange",
+          "placeholder",
+          "disabled",
+          "className"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "open",
+          "hover"
+        ],
+        "summary": "MES DateRangePicker — DatePicker(date-picker.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "descriptions",
+      "name": "Descriptions",
+      "category": "data-display",
+      "source": "src/components/ui/descriptions.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/descriptions",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/descriptions.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "screen.master-detail",
+        "table.row-expand-detail"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "1268dd9346e77bd9b6bf3546fbeb0138b05abcc76ec1ac053ff8c18d415a1a4b",
+        "symbols": [
+          "DescriptionItem",
+          "DescriptionsProps",
+          "Descriptions"
+        ],
+        "propNames": [
+          "label",
+          "value",
+          "items",
+          "columns",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Descriptions (상세 정보 키-값 리스트) — Figma에 전용 컴포넌트 없음(체크리스트",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "dialog-footer",
+      "name": "DialogFooter",
+      "category": "system",
+      "source": "src/components/ui/dialog-footer.tsx",
+      "status": "stable",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/dialog-footer",
+      "documentationFile": "docs/components/dialog-footer.md",
+      "usageContract": {
+        "componentId": "dialog-footer",
+        "capabilities": [
+          "dialog-actions",
+          "semantic-action-set"
+        ],
+        "variants": [
+          "none",
+          "single",
+          "paired",
+          "custom-width"
+        ],
+        "requiredStates": [
+          "default",
+          "primary-disabled",
+          "pending"
+        ],
+        "useWhen": [
+          "중앙 모달이나 우측 패널의 하단 액션",
+          "등록된 action set을 버튼 배열로 렌더링"
+        ],
+        "doNotUseWhen": [
+          "페이지 상단·본문 로컬 액션",
+          "화면마다 임의 버튼 순서를 구성"
+        ],
+        "allowedParents": [
+          "shell.center-modal",
+          "shell.side-slide-panel",
+          "shell.confirm-dialog"
+        ],
+        "constraints": [
+          "action-set 레지스트리의 라벨·순서·dismiss 의미를 따른다.",
+          "취소와 X는 동일 복원 경로를 사용한다."
+        ],
+        "accessibility": [
+          "탭 순서는 시각 순서와 일치한다.",
+          "primaryDisabled는 실제 버튼 disabled와 연결한다."
+        ],
+        "evidence": [
+          "batch-work-order",
+          "receiving",
+          "production-quantity-reregistration"
+        ],
+        "alternatives": []
+      },
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "b9ea8f819aa4890eae5c3cf7c80c111577bd22f6dbafde55c27ee6819c1d05fb",
+        "symbols": [
+          "DialogAction",
+          "DialogFooterProps",
+          "DialogFooter"
+        ],
+        "propNames": [
+          "id",
+          "label",
+          "variant",
+          "disabled",
+          "onClick",
+          "className",
+          "actions"
+        ],
+        "stateMarkers": [
+          "disabled"
+        ],
+        "summary": "중앙 모달과 우측 패널이 공유하는 액션 푸터.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "divider",
+      "name": "Divider",
+      "category": "layout",
+      "source": "src/components/ui/divider.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/divider",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/divider.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "fdfa7fb60999571ac42e76fc276c74cdb876b39d16a26c401bbdbbca84fb3e75",
+        "symbols": [
+          "DividerProps",
+          "Divider"
+        ],
+        "propNames": [
+          "orientation"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Divider — Figma 디자인 없음(체크리스트 티어2 \"Divider / Separator\", 상태 \"없음\").",
+        "aria": [
+          "aria-orientation",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "dropdown-menu",
+      "name": "DropdownMenu",
+      "category": "overlay",
+      "source": "src/components/ui/dropdown-menu.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/dropdown-menu",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/dropdown-menu.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "032b25201f2eadf1caa8e341709485bcade12143923a007caa3cbcf8a0d3244c",
+        "symbols": [
+          "DropdownMenuItemData",
+          "DropdownMenuProps",
+          "DropdownMenu"
+        ],
+        "propNames": [
+          "id",
+          "label",
+          "onSelect",
+          "disabled",
+          "danger",
+          "trigger",
+          "items",
+          "align",
+          "className"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "open",
+          "hover"
+        ],
+        "summary": "MES DropdownMenu — Figma 검색에서 \"필터창\"/\"Links container\" 등 애매한 후보만 나오고",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "empty-state",
+      "name": "EmptyState",
+      "category": "feedback",
+      "source": "src/components/ui/empty-state.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/empty-state",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/empty-state.md",
+      "usageContract": {
+        "componentId": "empty-state",
+        "capabilities": [
+          "empty-feedback",
+          "empty-action"
+        ],
+        "variants": [
+          "message-only",
+          "icon-message",
+          "message-action"
+        ],
+        "requiredStates": [
+          "static"
+        ],
+        "useWhen": [
+          "조회 결과나 편집 목록이 비었고 다음 행동을 안내해야 함"
+        ],
+        "doNotUseWhen": [
+          "로딩 중",
+          "오류가 발생함",
+          "실제 데이터가 존재함",
+          "Figma 근거 없이 빈 공간을 꾸밈"
+        ],
+        "allowedParents": [
+          "section.search-table-composition",
+          "section.editable-row-list",
+          "section.inspection-items"
+        ],
+        "constraints": [
+          "전용 Figma 원형이 없는 provisional 자산이므로 원본 empty 상태 또는 반복 업무 근거가 필요하다.",
+          "원본에 없는 설명 문구를 임의 추가하지 않는다."
+        ],
+        "accessibility": [
+          "빈 상태 제목을 간결하게 읽을 수 있어야 한다.",
+          "제공되는 액션은 Button 계약을 따른다."
+        ],
+        "evidence": [
+          "form-management",
+          "team-settings"
+        ],
+        "alternatives": [
+          {
+            "componentId": "loading-spinner",
+            "chooseInsteadWhen": "데이터를 불러오는 중일 때"
+          },
+          {
+            "componentId": "error-state",
+            "chooseInsteadWhen": "요청 실패를 안내할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "e487c8db19888127ded7d0f51ec4948b9aba964069a27dc1d2db1e645a6f9bf1",
+        "symbols": [
+          "EmptyStateProps",
+          "EmptyState"
+        ],
+        "propNames": [
+          "icon",
+          "title",
+          "description",
+          "action",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "MES EmptyState — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Empty State\", 상태 \"없음\").",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "error-state",
+      "name": "ErrorState",
+      "category": "feedback",
+      "source": "src/components/ui/error-state.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/error-state",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/error-state.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "9711d0209771b0a248851acf3c7d506a9addef625937362184d618f0b1414ed2",
+        "symbols": [
+          "ErrorStateProps",
+          "ErrorState"
+        ],
+        "propNames": [
+          "icon",
+          "title",
+          "description",
+          "action",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "MES ErrorState — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Error State\", 상태 \"없음\").",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "fieldset",
+      "name": "Fieldset",
+      "category": "form",
+      "source": "src/components/ui/fieldset.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/fieldset",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/fieldset.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "902229e83dd42cda4e2586ef23595053808a9828f72b1734e8d63ff89d79f9c1",
+        "symbols": [
+          "FieldsetProps",
+          "Fieldset"
+        ],
+        "propNames": [
+          "legend"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Fieldset — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Fieldset\", 상태 \"없음\",",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "filter",
+      "name": "Filter",
+      "category": "form",
+      "source": "src/components/ui/filter.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/filter",
+      "rules": [
+        "필터 추가는 검색창으로 대체하지 않고 Filter 트리거와 선택 패널을 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/filter.md",
+      "usageContract": {
+        "componentId": "filter",
+        "capabilities": [
+          "structured-filter",
+          "multi-filter",
+          "active-filter-tags"
+        ],
+        "variants": [
+          "label",
+          "icon-only",
+          "searchable",
+          "non-searchable"
+        ],
+        "requiredStates": [
+          "closed",
+          "category-open",
+          "options-open",
+          "active"
+        ],
+        "useWhen": [
+          "목록에 구조화된 복수 조건을 추가",
+          "필터 카테고리와 값을 단계적으로 선택"
+        ],
+        "doNotUseWhen": [
+          "자유 검색어 입력",
+          "단일 업무 필드 값 선택"
+        ],
+        "allowedParents": [
+          "section.search-table-composition",
+          "screen.entity-list",
+          "table.grouped-list"
+        ],
+        "constraints": [
+          "검색창으로 대체하지 않는다.",
+          "검색 입력과 같은 toolbar 안에서 수직 중앙 정렬한다."
+        ],
+        "accessibility": [
+          "열림 상태와 현재 카테고리를 전달한다.",
+          "활성 태그 제거를 키보드로 수행할 수 있어야 한다."
+        ],
+        "evidence": [
+          "material-input-settings",
+          "batch-work-order",
+          "grouped-production-list"
+        ],
+        "alternatives": [
+          {
+            "componentId": "search-input",
+            "chooseInsteadWhen": "자유 문자열로 현재 목록을 찾을 때"
+          },
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "저장되는 단일 값을 선택할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "popup.center.equipment-discharge-settings",
+        "popup.center.inspection-records",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.purchase-lookup",
+        "popup.center.table",
+        "recipe.center-modal-search-table",
+        "recipe.page-entity-list",
+        "screen.analytics-dashboard",
+        "screen.entity-list",
+        "screen.form-management-workflow",
+        "screen.production-result-responsive",
+        "section.search-table-composition"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "373eb56dd0ddb8bfa8d1e3ea51790c94cc3909d1aafad453a5778ef07e58cc39",
+        "symbols": [
+          "FilterOption",
+          "FilterCategory",
+          "FilterProps",
+          "Filter"
+        ],
+        "propNames": [
+          "id",
+          "label",
+          "options",
+          "categories",
+          "value",
+          "onChange",
+          "className",
+          "searchable",
+          "triggerLabel",
+          "showTriggerArrow",
+          "showActiveTags",
+          "placeholder"
+        ],
+        "stateMarkers": [
+          "checked",
+          "selected",
+          "open",
+          "focus",
+          "hover"
+        ],
+        "summary": "카테고리/옵션 패널의 내부 검색창 표시 여부.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "file-upload",
+      "name": "FileUpload",
+      "category": "form",
+      "source": "src/components/ui/file-upload.tsx",
+      "status": "provisional",
+      "rules": [
+        "파일 선택과 드롭 동작만 소유하며 서버 전송과 유효성 검사는 호출부가 담당한다.",
+        "허용 형식과 최대 크기는 helpText와 accept로 명시한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/file-upload",
+      "documentationFile": "docs/components/file-upload.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "52053f8259405df615420b2792dee436fcef609fcfd7f6cef9a1305121511be1",
+        "symbols": [
+          "FileUploadProps",
+          "FileUpload"
+        ],
+        "propNames": [
+          "label",
+          "helpText",
+          "onFilesChange",
+          "showSelection"
+        ],
+        "stateMarkers": [
+          "disabled"
+        ],
+        "summary": "파일 선택과 드롭을 같은 계약으로 제공하며 업로드 전송 자체는 호출부가 담당한다.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "filter-tag",
+      "name": "FilterTag",
+      "category": "system",
+      "source": "src/components/ui/filter-tag.tsx",
+      "status": "stable",
+      "visibility": "internal",
+      "tier": 1,
+      "documentationMode": "internal",
+      "documentationFile": "docs/components/filter-tag.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "4f39ef529e73afd65739a47e28cbd911494fbf5b10aa8c4b76d2161ea8f39bef",
+        "symbols": [
+          "FilterTagProps",
+          "FilterTag"
+        ],
+        "propNames": [
+          "category",
+          "count",
+          "onRemove",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "MES FilterTag (필터에서 쓰는 태그/칩) — Figma 실측 기반 + 담당자 정책 결정 반영",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "form-grid",
+      "name": "FormGrid / FormFieldRow",
+      "category": "layout",
+      "source": "src/components/ui/form-grid.tsx",
+      "status": "stable",
+      "rules": [
+        "FormGrid는 열 수와 행·열 간격을 소유하고 FormFieldRow는 라벨·필수표시·control 정렬을 소유한다.",
+        "labelWidth는 raw pixel이 아니라 standard(100px) 또는 wide(108px) variant를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/form-grid",
+      "documentationFile": "docs/components/form-grid.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "recipe.side-slide-form-editable-list",
+        "section.form-grid"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "7e3bd0db720a606ddc96d6f21f0443fd171a0c2749b6133236931b497843f599",
+        "symbols": [
+          "FormGridColumns",
+          "FormGridDensity",
+          "FormFieldLabelWidth",
+          "FormGridProps",
+          "FormFieldRowProps",
+          "FormFieldRow",
+          "FormGrid"
+        ],
+        "propNames": [
+          "columns",
+          "density",
+          "compact",
+          "comfortable",
+          "label",
+          "required",
+          "labelWidth",
+          "children",
+          "standard",
+          "wide"
+        ],
+        "stateMarkers": [],
+        "summary": "label, required marker와 control의 수평 정렬을 한 상태에서 파생한다.",
+        "aria": [
+          "aria-hidden",
+          "aria-labelledby",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "grid-container",
+      "name": "Container / Grid",
+      "category": "layout",
+      "source": "src/components/ui/grid-container.tsx",
+      "status": "provisional",
+      "documentationRoute": "/foundations/grid-container",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "foundation",
+      "documentationFile": "docs/components/grid-container.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "a5b41883273a6cfa9e2e4571486866a3b80e0ee260933cc08dfc62cadd9a621e",
+        "symbols": [
+          "GridProps",
+          "Container",
+          "Grid"
+        ],
+        "propNames": [
+          "columns",
+          "gap"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Container/Grid — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Grid / Container\",",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "group-query",
+      "name": "GroupQuery",
+      "category": "form",
+      "source": "src/components/ui/group-query.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/group-query",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/group-query.md",
+      "usageContract": {
+        "componentId": "group-query",
+        "capabilities": [
+          "grouping-levels",
+          "grouping-order"
+        ],
+        "variants": [
+          "default",
+          "compact"
+        ],
+        "requiredStates": [
+          "empty",
+          "configured",
+          "open"
+        ],
+        "useWhen": [
+          "그룹형 표의 그룹 기준과 순서를 선택",
+          "다단 그룹 접기 구조의 조회 조건"
+        ],
+        "doNotUseWhen": [
+          "일반 필터 조건",
+          "정렬만 바꾸는 경우",
+          "그룹형 표가 아닌 목록"
+        ],
+        "allowedParents": [
+          "section.search-table-composition",
+          "table.grouped-list",
+          "screen.entity-list"
+        ],
+        "constraints": [
+          "선택한 그룹 단계 수와 Table의 그룹 depth가 같은 상태 모델을 사용한다."
+        ],
+        "accessibility": [
+          "각 단계의 현재 기준과 순서를 전달한다."
+        ],
+        "evidence": [
+          "grouped-production-list",
+          "production-result-responsive"
+        ],
+        "alternatives": [
+          {
+            "componentId": "filter",
+            "chooseInsteadWhen": "행 포함 여부를 조건으로 좁힐 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "screen.form-management-workflow",
+        "screen.production-result-responsive"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "607faa35b5fd43b70ff402b58118938c5917d7726e2ee4a3661c4081755d0da2",
+        "symbols": [
+          "GroupQueryOption",
+          "GroupQueryProps",
+          "GroupQuery"
+        ],
+        "propNames": [
+          "id",
+          "label",
+          "options",
+          "levels",
+          "onLevelChange",
+          "className",
+          "compact",
+          "compactLabel",
+          "index",
+          "value",
+          "onChange",
+          "showDivider"
+        ],
+        "stateMarkers": [
+          "selected",
+          "open",
+          "hover"
+        ],
+        "summary": "그룹화 가능한 필드 목록(전체 포함) — 전체 Level 공통 옵션 풀",
+        "aria": [
+          "aria-label",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "icon-button",
+      "name": "IconButton / CloseButton",
+      "category": "action",
+      "source": "src/components/ui/icon-button.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/icon-button",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/icon-button.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.standard-price-settings",
+        "table.column-settings"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "3201db42321bb1f52bda02b3c5d7e0f2a6a3452dc311b7c6b2e3282760baec1a",
+        "symbols": [
+          "IconButtonProps",
+          "CloseButtonProps",
+          "IconButton",
+          "CloseButton",
+          "iconButtonVariants"
+        ],
+        "propNames": [
+          "asChild",
+          "icon"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "hover"
+        ],
+        "summary": "아이콘만 있는 버튼이라 스크린리더용 라벨이 항상 필요함 — 필수 prop으로 강제",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "input",
+      "name": "Input",
+      "category": "form",
+      "source": "src/components/ui/input.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/input",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/input.md",
+      "usageContract": {
+        "componentId": "input",
+        "capabilities": [
+          "text-entry",
+          "numeric-text-entry",
+          "readonly-display"
+        ],
+        "variants": [
+          "default",
+          "small"
+        ],
+        "requiredStates": [
+          "default",
+          "focus",
+          "complete",
+          "readonly",
+          "disabled"
+        ],
+        "useWhen": [
+          "자유 텍스트 입력",
+          "화면 계약상 숫자 문자열을 직접 입력",
+          "읽기 전용 필드"
+        ],
+        "doNotUseWhen": [
+          "정해진 선택지 중 하나를 고름",
+          "검색 전용 입력",
+          "증감 버튼이 필수인 수량 입력"
+        ],
+        "allowedParents": [
+          "section.form-grid",
+          "section.editable-row-list",
+          "section.search-table-composition",
+          "popup.center.table"
+        ],
+        "constraints": [
+          "value를 전달하면 onChange 또는 readOnly를 함께 제공한다.",
+          "필수 표시와 label 정렬은 FormFieldRow가 소유한다."
+        ],
+        "accessibility": [
+          "label 또는 aria-label을 연결한다.",
+          "오류 상태는 설명 텍스트와 연결한다."
+        ],
+        "evidence": [
+          "receiving",
+          "batch-work-order",
+          "inventory-add"
+        ],
+        "alternatives": [
+          {
+            "componentId": "search-input",
+            "chooseInsteadWhen": "목록 검색 전용일 때"
+          },
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "허용 값이 제한돼 있을 때"
+          },
+          {
+            "componentId": "number-input",
+            "chooseInsteadWhen": "증감 조작이 업무상 필요하고 별도 근거가 있을 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "popup.center.cavity-layout",
+        "popup.center.dual-pane",
+        "popup.center.equipment-discharge-settings",
+        "popup.center.form",
+        "popup.center.inspection-criteria",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.standard-price-settings",
+        "popup.center.table",
+        "popup.side.add-list",
+        "popup.side.custom-columns",
+        "popup.side.inspection-items",
+        "popup.side.time-records",
+        "recipe.side-slide-form-editable-list",
+        "screen.form-management-workflow",
+        "section.editable-row-list"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "6f6d4329bfcf56f451d9c1c6152f78efde599ea61e9bd793d86506fedc0a48b8",
+        "symbols": [
+          "InputProps",
+          "Input",
+          "inputVariants"
+        ],
+        "propNames": [],
+        "stateMarkers": [
+          "disabled",
+          "focus"
+        ],
+        "summary": "MES Input (Textbox) — Figma 실측 기반",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "image-thumbnail",
+      "name": "ImageThumbnail",
+      "category": "data-display",
+      "source": "src/components/ui/image-thumbnail.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/image-thumbnail",
+      "rules": [
+        "이미지 후보를 축소 미리보기로 비교·선택할 때 사용한다.",
+        "파일 저장과 업로드 상태는 FileUpload 또는 호출부가 담당한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/image-thumbnail.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "b55611135455a871bc760a7aa8122c812295829fe64bfbf88089ec830aad7971",
+        "symbols": [
+          "ImageThumbnailItem",
+          "ImageThumbnailProps",
+          "ImageThumbnail"
+        ],
+        "propNames": [
+          "id",
+          "label",
+          "preview",
+          "items",
+          "value",
+          "defaultValue",
+          "onValueChange",
+          "size"
+        ],
+        "stateMarkers": [
+          "selected"
+        ],
+        "summary": "",
+        "aria": [
+          "aria-label",
+          "aria-selected",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "inspection-judgement",
+      "name": "InspectionJudgement",
+      "category": "system",
+      "source": "src/components/ui/inspection-judgement.tsx",
+      "status": "stable",
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/inspection-judgement",
+      "documentationFile": "docs/components/inspection-judgement.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.side.inspection-items",
+        "section.inspection-items"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "ae3ad7d8a6b2fd07b6a22860ae39c69a758ffba7beb9b75e6be04c26b5b3f44d",
+        "symbols": [
+          "InspectionJudgementValue",
+          "InspectionJudgementProps",
+          "InspectionJudgement"
+        ],
+        "propNames": [
+          "value",
+          "onValueChange",
+          "className"
+        ],
+        "stateMarkers": [
+          "checked"
+        ],
+        "summary": "Figma 자주검사 화면의 판정 4분할 입력.",
+        "aria": [
+          "aria-checked",
+          "aria-label",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "label",
+      "name": "Label",
+      "category": "form",
+      "source": "src/components/ui/label.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/label",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/label.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "b461b3fc469a9586f29bfa79d7f9ff5af9c17770ab75e78318b4f42f12c5201c",
+        "symbols": [
+          "LabelProps",
+          "Label"
+        ],
+        "propNames": [
+          "required"
+        ],
+        "stateMarkers": [],
+        "summary": "필수 입력 표시(* 를 라벨 뒤에 danger 색으로 붙임)",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "link",
+      "name": "Link",
+      "category": "action",
+      "source": "src/components/ui/link.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/link",
+      "rules": [
+        "링크 의미의 값은 Badge나 Tag가 아니라 Link를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/link.md",
+      "usageContract": {
+        "componentId": "link",
+        "capabilities": [
+          "navigation",
+          "open-detail",
+          "inline-reference"
+        ],
+        "variants": [
+          "default"
+        ],
+        "requiredStates": [
+          "default",
+          "hover",
+          "focus"
+        ],
+        "useWhen": [
+          "다른 화면·상세·관련 목록으로 이동",
+          "표 셀에서 연결된 건수나 식별자를 여는 경우"
+        ],
+        "doNotUseWhen": [
+          "상태값 표시",
+          "저장·삭제 등 즉시 실행 동작"
+        ],
+        "allowedParents": [
+          "section.search-table-composition",
+          "table.grouped-list",
+          "popup.center.purchase-lookup"
+        ],
+        "constraints": [
+          "링크 의미를 Badge나 Tag로 대체하지 않는다.",
+          "클릭 결과가 이동이 아니라 상태 변경이면 Button을 사용한다."
+        ],
+        "accessibility": [
+          "목적을 텍스트만으로 식별할 수 있어야 한다.",
+          "새 창이면 접근 가능한 안내를 제공한다."
+        ],
+        "evidence": [
+          "purchase-order-lookup",
+          "team-settings"
+        ],
+        "alternatives": [
+          {
+            "componentId": "button",
+            "chooseInsteadWhen": "현재 화면에서 동작을 실행할 때"
+          },
+          {
+            "componentId": "badge",
+            "chooseInsteadWhen": "상태나 분류만 표시할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "popup.center.purchase-lookup",
+        "popup.center.team-settings"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "7939658509c63fc169ac79351ccad31bb9e36279a42b3533bc043de510f7acaa",
+        "symbols": [
+          "LinkProps",
+          "Link"
+        ],
+        "propNames": [],
+        "stateMarkers": [
+          "hover"
+        ],
+        "summary": "MES Link (텍스트 링크) — Figma 디자인 없음(체크리스트 티어2 \"Link\", 상태 \"없음\" —",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "list",
+      "name": "List / ListItem",
+      "category": "data-display",
+      "source": "src/components/ui/list.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/list",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/list.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "15b9266e2782ba96662bc80608211f0f75f0f923790f80d13222b31238107e5e",
+        "symbols": [
+          "ListItemProps",
+          "List",
+          "ListItem"
+        ],
+        "propNames": [
+          "onClick"
+        ],
+        "stateMarkers": [
+          "hover"
+        ],
+        "summary": "MES List — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"List\", 상태 \"없음\", 재탐색",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "loading-overlay",
+      "name": "LoadingOverlay",
+      "category": "feedback",
+      "source": "src/components/ui/loading-overlay.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/loading-overlay",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/loading-overlay.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "c3bbf3434aacffff4fb133d4c5c53b09a0dffcdb8e3fef72e52f7b9c4ddf1862",
+        "symbols": [
+          "LoadingOverlayProps",
+          "LoadingOverlay"
+        ],
+        "propNames": [
+          "label",
+          "className"
+        ],
+        "stateMarkers": [
+          "loading"
+        ],
+        "summary": "MES LoadingOverlay — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Loading Overlay\",",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "loading-spinner",
+      "name": "LoadingSpinner",
+      "category": "feedback",
+      "source": "src/components/ui/loading-spinner.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/loading-spinner",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/loading-spinner.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "04935c4748134f9104dd9568a7706f317d4e64ee0cac26110f066dbee9a3cc83",
+        "symbols": [
+          "LoadingSpinnerProps",
+          "LoadingSpinner"
+        ],
+        "propNames": [
+          "size"
+        ],
+        "stateMarkers": [],
+        "summary": "MES LoadingSpinner — Figma 디자인 없음(체크리스트 티어2 \"Loading Spinner\", 상태 \"없음\").",
+        "aria": [
+          "aria-label",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "logo",
+      "name": "Logo",
+      "category": "navigation",
+      "source": "src/components/ui/logo.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/logo",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/logo.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "6c68458c9bb71fc1bce10e2ca2e2b8dd01d1a56827002f6f949f6844e394cd45",
+        "symbols": [
+          "LogoProps",
+          "Logo"
+        ],
+        "propNames": [
+          "size",
+          "brand",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Logo/Brandmark — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Logo / Brandmark\",",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "multi-select-input",
+      "name": "MultiSelectInput",
+      "category": "form",
+      "source": "src/components/ui/multi-select-input.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/multi-select-input",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/multi-select-input.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "09c2dd6b3b6cde2940986a79c52e86ccff595a74364960940749854baed3bd73",
+        "symbols": [
+          "MultiSelectInputProps",
+          "MultiSelectInput"
+        ],
+        "propNames": [
+          "values",
+          "onValuesChange",
+          "placeholder",
+          "disabled",
+          "className"
+        ],
+        "stateMarkers": [
+          "disabled"
+        ],
+        "summary": "MES MultiSelectInput (다중 선택·태그 입력) — Figma에 전용 컴포넌트 없음(체크리스트",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "navbar",
+      "name": "Navbar",
+      "category": "navigation",
+      "source": "src/components/ui/navbar.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/navbar",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/navbar.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "71f43212db747fca2cfb7dd3d364b49a6b9b9f9531ddc4c18392f46fc6942181",
+        "symbols": [
+          "NavbarProps",
+          "Navbar"
+        ],
+        "propNames": [
+          "left",
+          "center",
+          "right",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Navbar (상단 내비게이션 바) — Figma에 전용 컴포넌트 없음(체크리스트 티어2",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "notice-banner",
+      "name": "NoticeBanner",
+      "category": "feedback",
+      "source": "src/components/ui/notice-banner.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/notice-banner",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/notice-banner.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "fe0ed2e8a25b3ef7b165acdc7d3ad10101a4771bce3538aeccc1f0781fda5874",
+        "symbols": [
+          "NoticeBannerProps",
+          "NoticeBanner"
+        ],
+        "propNames": [
+          "message",
+          "linkLabel",
+          "onLinkClick",
+          "href"
+        ],
+        "stateMarkers": [
+          "hover"
+        ],
+        "summary": "MES NoticeBanner (안내 배너, 링크 포함) — Figma 실측 기반",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "notification-panel",
+      "name": "NotificationPanel",
+      "category": "overlay",
+      "source": "src/components/ui/notification-panel.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/notification-panel",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/notification-panel.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "d4b16037bb9a6d94262d7cfb415bea250acc3bcb397d2cf9db16eb551b830b0e",
+        "symbols": [
+          "NotificationPanelItem",
+          "NotificationSettingItem",
+          "NotificationPanelProps",
+          "NotificationPanel"
+        ],
+        "propNames": [
+          "id",
+          "label",
+          "enabled",
+          "totalCount",
+          "items",
+          "onClose",
+          "onItemClick",
+          "settingsItems",
+          "onSettingsItemChange",
+          "className"
+        ],
+        "stateMarkers": [
+          "checked"
+        ],
+        "summary": "React key 및 클릭 핸들러 구분용 id",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "number-input",
+      "name": "NumberInput",
+      "category": "form",
+      "source": "src/components/ui/number-input.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/number-input",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/number-input.md",
+      "usageContract": {
+        "componentId": "number-input",
+        "capabilities": [
+          "bounded-number-entry",
+          "stepper"
+        ],
+        "variants": [
+          "default",
+          "small"
+        ],
+        "requiredStates": [
+          "default",
+          "disabled",
+          "min",
+          "max"
+        ],
+        "useWhen": [
+          "증가·감소 버튼이 업무 흐름에 실제로 필요한 수량 입력"
+        ],
+        "doNotUseWhen": [
+          "Figma나 업무 근거 없이 단순 숫자 입력을 꾸미는 경우",
+          "표 안의 조밀한 숫자 편집"
+        ],
+        "allowedParents": [
+          "section.form-grid",
+          "section.editable-row-list"
+        ],
+        "constraints": [
+          "전용 Figma 원형이 없는 provisional 자산이므로 화면 근거 없이 신규 표준에 사용하지 않는다.",
+          "min·max·step과 직접 입력을 같은 값 모델에서 관리한다."
+        ],
+        "accessibility": [
+          "증가·감소 버튼에 접근 가능한 이름을 유지한다.",
+          "키보드 직접 입력을 막지 않는다."
+        ],
+        "evidence": [
+          "defect-quantity-input"
+        ],
+        "alternatives": [
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "숫자를 직접 입력하는 것만 필요할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "d3e2de208b805ae8e7e5b326538a09abcad2b733af39edc2418a8e991c135908",
+        "symbols": [
+          "NumberInputProps",
+          "NumberInput"
+        ],
+        "propNames": [
+          "value",
+          "defaultValue",
+          "onValueChange",
+          "min",
+          "max",
+          "step",
+          "size",
+          "disabled",
+          "className"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "hover"
+        ],
+        "summary": "MES NumberInput — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Number Input\", 상태",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "page-top-tab-item",
+      "name": "PageTopTabItem",
+      "category": "navigation",
+      "source": "src/components/ui/page-top-tab-item.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/page-top-tab-item",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/page-top-tab-item.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "recipe.page-entity-list",
+        "screen.entity-list",
+        "screen.form-management-workflow"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "972a390f1698fba98424c5af7acb2a9fd38a715cb454d3efb13e2f721dd03c7b",
+        "symbols": [
+          "PageTopTabItemProps",
+          "PageTopTabItem"
+        ],
+        "propNames": [
+          "label",
+          "active",
+          "bookmarked",
+          "onBookmarkClick",
+          "onClose",
+          "closable",
+          "className"
+        ],
+        "stateMarkers": [
+          "hover"
+        ],
+        "summary": "실측 3종(default/hover/active) 중 현재 열려있는 탭 표시 — 2026-07-30 정확한 값으로 교체",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "overflow-list",
+      "name": "OverflowList",
+      "category": "data-display",
+      "source": "src/components/ui/overflow-list.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/overflow-list",
+      "rules": [
+        "한정된 공간에서 보조 항목을 +N으로 접어 표시할 때 사용한다.",
+        "핵심 업무 값이나 필수 판정값은 숨기지 않는다."
+      ],
+      "visibility": "public",
+      "tier": 4,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/overflow-list.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "c0411e3dc3d9150a94222e08b4c456c3287ce2a7e732a05d94362d3e60f2ab83",
+        "symbols": [
+          "OverflowListProps",
+          "OverflowList"
+        ],
+        "propNames": [
+          "items",
+          "maxVisible",
+          "getKey",
+          "renderItem"
+        ],
+        "stateMarkers": [],
+        "summary": "",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "pagination",
+      "name": "Pagination",
+      "category": "navigation",
+      "source": "src/components/ui/pagination.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/pagination",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/pagination.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "recipe.page-entity-list",
+        "screen.entity-list"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "765d952e3209349a7929c227da56062d68983fe400ea4d0f59dbc2af9bb36e22",
+        "symbols": [
+          "PaginationProps",
+          "Pagination"
+        ],
+        "propNames": [
+          "page",
+          "totalPages",
+          "onPageChange",
+          "siblingCount",
+          "className"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "hover"
+        ],
+        "summary": "MES Pagination — Figma 검색에서 \"NEW Pagination\"/\"NEW numbering\" 이름은 찾았으나",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "panel",
+      "name": "Panel",
+      "category": "layout",
+      "source": "src/components/ui/panel.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/panel",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/panel.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "screen.master-detail"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "ddb2a0be5929ac11e03762cb038bff1975a7efca722baf47b47fc22c0502e3be",
+        "symbols": [
+          "Panel"
+        ],
+        "propNames": [],
+        "stateMarkers": [],
+        "summary": "MES Panel — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Panel\", 상태 \"없음\", 재탐색",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "password-input",
+      "name": "PasswordInput",
+      "category": "form",
+      "source": "src/components/ui/password-input.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/password-input",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/password-input.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "e60a386114b99467668e519fd3387048d65fe5b585fbcab5d8d8e31f57328b42",
+        "symbols": [
+          "PasswordInputProps",
+          "PasswordInput"
+        ],
+        "propNames": [
+          "size",
+          "visibilityToggle"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "focus",
+          "hover"
+        ],
+        "summary": "로그인·비밀번호 재설정 원본처럼 보기/숨기기 아이콘이 없는 입력에서 false로 사용한다.",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "popover",
+      "name": "Popover",
+      "category": "overlay",
+      "source": "src/components/ui/popover.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/popover",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/popover.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "1472f982c52a64c36cb89886b225b767fc2d8258a6557ffd0794714d81070bc5",
+        "symbols": [
+          "Popover",
+          "PopoverTrigger",
+          "PopoverAnchor",
+          "PopoverContent"
+        ],
+        "propNames": [],
+        "stateMarkers": [],
+        "summary": "MES Popover — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Popover\", 상태 \"없음\").",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "progress",
+      "name": "Progress",
+      "category": "feedback",
+      "source": "src/components/ui/progress.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/progress",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/progress.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.purchase-lookup",
+        "workflow.stepper"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "5178b2da8fe4145a91dc7604867942e3ce795c1cd84ca8cf908cbfb132b91c41",
+        "symbols": [
+          "ProgressProps",
+          "Progress"
+        ],
+        "propNames": [
+          "value",
+          "showLabel",
+          "labelTone"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Progress Bar (진행률 막대) — Figma 실측 기반",
+        "aria": [
+          "aria-valuemax",
+          "aria-valuemin",
+          "aria-valuenow",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "progress-circle",
+      "name": "ProgressCircle",
+      "category": "feedback",
+      "source": "src/components/ui/progress-circle.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/progress-circle",
+      "rules": [
+        "좁은 카드에서 단일 진행률을 요약할 때 사용한다.",
+        "목록 비교나 긴 진행 영역은 선형 Progress를 우선한다."
+      ],
+      "visibility": "public",
+      "tier": 4,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/progress-circle.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "ddaad5806f7d3b191e77de2f8f5b211285a1935779a3f888bb68e5c32e130b38",
+        "symbols": [
+          "ProgressCircleProps",
+          "ProgressCircle"
+        ],
+        "propNames": [
+          "value",
+          "size",
+          "label"
+        ],
+        "stateMarkers": [],
+        "summary": "",
+        "aria": [
+          "aria-valuemax",
+          "aria-valuemin",
+          "aria-valuenow",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "quick-query",
+      "name": "QuickQuery",
+      "category": "form",
+      "source": "src/components/ui/quick-query.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/quick-query",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/quick-query.md",
+      "usageContract": {
+        "componentId": "quick-query",
+        "capabilities": [
+          "saved-query",
+          "query-preset",
+          "preset-management"
+        ],
+        "variants": [
+          "default",
+          "compact"
+        ],
+        "requiredStates": [
+          "inactive",
+          "active",
+          "settings-open"
+        ],
+        "useWhen": [
+          "사용자가 저장한 조회 조건을 반복 적용",
+          "목록 화면의 빠른 조회 슬롯"
+        ],
+        "doNotUseWhen": [
+          "일회성 필터 조건",
+          "업무 데이터를 저장하는 입력"
+        ],
+        "allowedParents": [
+          "section.search-table-composition",
+          "screen.entity-list",
+          "table.grouped-list"
+        ],
+        "constraints": [
+          "Filter·GroupQuery와 같은 조회 상태를 공유하되 각각의 의미를 합치지 않는다."
+        ],
+        "accessibility": [
+          "활성 preset을 현재 상태로 전달한다.",
+          "설정 팝업 열기 동작에 접근 가능한 이름을 제공한다."
+        ],
+        "evidence": [
+          "grouped-production-list",
+          "production-result-responsive"
+        ],
+        "alternatives": [
+          {
+            "componentId": "filter",
+            "chooseInsteadWhen": "새로운 구조화 조건을 직접 고를 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "69620b18c59e077211d94b6a9b4fc6f26d339dd966ad6f93e5d83a35675edcfe",
+        "symbols": [
+          "QuickQueryPreset",
+          "QuickQueryProps",
+          "QuickQuerySlotDetail",
+          "QuickQuerySlot",
+          "QuickQueryPresetDialogProps",
+          "QuickQuery",
+          "QuickQueryPresetDialog"
+        ],
+        "propNames": [
+          "id",
+          "label",
+          "presets",
+          "activeId",
+          "onApply",
+          "onClearActive",
+          "onSettingsClick",
+          "className",
+          "triggerLabel",
+          "compact",
+          "grouping",
+          "filters",
+          "view",
+          "name",
+          "detail",
+          "open",
+          "onOpenChange",
+          "slots",
+          "onDelete",
+          "onSaveSlot"
+        ],
+        "stateMarkers": [
+          "checked",
+          "open",
+          "readOnly"
+        ],
+        "summary": "저장된 프리셋 최대 3개",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "radio",
+      "name": "Radio",
+      "category": "form",
+      "source": "src/components/ui/radio.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/radio",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/radio.md",
+      "usageContract": {
+        "componentId": "radio",
+        "capabilities": [
+          "single-choice"
+        ],
+        "variants": [
+          "default",
+          "small"
+        ],
+        "requiredStates": [
+          "unselected",
+          "selected",
+          "disabled"
+        ],
+        "useWhen": [
+          "서로 배타적인 소수 옵션을 동시에 보여주고 하나를 선택"
+        ],
+        "doNotUseWhen": [
+          "복수 선택",
+          "옵션이 많아 공간을 차지하는 경우",
+          "단순 아이콘 표시"
+        ],
+        "allowedParents": [
+          "section.form-grid",
+          "section.inspection-items"
+        ],
+        "constraints": [
+          "같은 name 그룹 안에서 단일 선택 상태를 실제로 변경한다.",
+          "시각 상태만 그리고 입력 동작을 생략하지 않는다."
+        ],
+        "accessibility": [
+          "동일 그룹은 fieldset과 legend 또는 동등한 이름을 가진다.",
+          "화살표키 또는 브라우저 기본 라디오 키보드 동작을 유지한다."
+        ],
+        "evidence": [
+          "custom-information",
+          "self-inspection"
+        ],
+        "alternatives": [
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "옵션이 많거나 공간이 제한될 때"
+          },
+          {
+            "componentId": "checkbox",
+            "chooseInsteadWhen": "복수 선택이 가능할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "popup.center.cavity-layout",
+        "popup.center.form",
+        "screen.form-management-workflow"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "a929f911671ee7deefd4e971e9de2c380ef4ff89128e247c9e3c6e35e406d102",
+        "symbols": [
+          "RadioProps",
+          "Radio"
+        ],
+        "propNames": [
+          "size"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "checked"
+        ],
+        "summary": "MES Radio (라디오버튼) — Figma 실측 기반",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "radio-choice-dialog",
+      "name": "RadioChoiceDialog",
+      "category": "overlay",
+      "source": "src/components/ui/radio-choice-dialog.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/radio-choice-dialog",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/radio-choice-dialog.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "a94acfeed072685b7f438994f7e10e507d7bff8febaa26b7d2505f2b00d2e99c",
+        "symbols": [
+          "RadioChoiceOption",
+          "RadioChoiceDialogProps",
+          "RadioChoiceDialog"
+        ],
+        "propNames": [
+          "title",
+          "description",
+          "open",
+          "onOpenChange",
+          "question",
+          "options",
+          "selectedIndex",
+          "defaultSelectedIndex",
+          "onSelectedIndexChange",
+          "warning",
+          "cancelLabel",
+          "confirmLabel",
+          "onCancel",
+          "onConfirm"
+        ],
+        "stateMarkers": [
+          "checked",
+          "open",
+          "error"
+        ],
+        "summary": "제어형 선택 인덱스.",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "scroll-area",
+      "name": "ScrollArea",
+      "category": "layout",
+      "source": "src/components/ui/scroll-area.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/scroll-area",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/scroll-area.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "table.frozen-column-grid"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "d3070c4ddbf63232177934513977b24ee1e808b929d387eda98158fb7b531b1b",
+        "symbols": [
+          "ScrollArea"
+        ],
+        "propNames": [],
+        "stateMarkers": [],
+        "summary": "MES ScrollArea — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Scroll Area\", 상태",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "search-highlight",
+      "name": "SearchHighlight",
+      "category": "data-display",
+      "source": "src/components/ui/search-highlight.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/search-highlight",
+      "rules": [
+        "검색 결과 텍스트 안에서 실제 일치 문자열만 강조한다.",
+        "검색·필터 상태는 SearchInput 또는 호출부가 소유한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/search-highlight.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "adfa46277517a56069b5a0b0217dc882167a96d1d1066a7e24e9da99b39cb38b",
+        "symbols": [
+          "SearchHighlightProps",
+          "SearchHighlight"
+        ],
+        "propNames": [
+          "text",
+          "query",
+          "caseSensitive",
+          "markClassName"
+        ],
+        "stateMarkers": [],
+        "summary": "",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "search-input",
+      "name": "SearchInput",
+      "category": "form",
+      "source": "src/components/ui/search-input.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/search-input",
+      "rules": [
+        "컴포넌트는 크기를 소유하고 부모 toolbar는 배치와 수직 정렬을 소유한다.",
+        "compact는 화면 상단 조회 툴바의 220×32·14px·Gray-20 규격이다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/search-input.md",
+      "usageContract": {
+        "componentId": "search-input",
+        "capabilities": [
+          "list-search",
+          "clear-query"
+        ],
+        "variants": [
+          "default",
+          "compact",
+          "fixed",
+          "fill",
+          "white",
+          "subtle"
+        ],
+        "requiredStates": [
+          "empty",
+          "value",
+          "focus"
+        ],
+        "useWhen": [
+          "현재 목록·표의 검색어 입력",
+          "조회 툴바 우측 검색 슬롯"
+        ],
+        "doNotUseWhen": [
+          "필터 조건 추가",
+          "업무 필드 값 입력"
+        ],
+        "allowedParents": [
+          "section.search-table-composition",
+          "screen.entity-list",
+          "table.grouped-list"
+        ],
+        "constraints": [
+          "컴포넌트는 크기만 소유하고 툴바가 배치와 수직 중앙 정렬을 소유한다.",
+          "필터 추가를 검색창으로 대체하지 않는다."
+        ],
+        "accessibility": [
+          "placeholder만으로 목적이 불명확하면 aria-label을 보강한다.",
+          "지우기 동작은 키보드로 접근 가능해야 한다."
+        ],
+        "evidence": [
+          "material-input-settings",
+          "batch-work-order",
+          "grouped-production-list"
+        ],
+        "alternatives": [
+          {
+            "componentId": "filter",
+            "chooseInsteadWhen": "구조화된 조건을 선택할 때"
+          },
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "저장되는 업무 값을 입력할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "popup.center.equipment-discharge-settings",
+        "popup.center.inspection-records",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.purchase-lookup",
+        "popup.center.standard-price-settings",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "recipe.center-modal-search-table",
+        "recipe.page-entity-list",
+        "screen.entity-list",
+        "screen.form-management-workflow",
+        "screen.production-result-responsive",
+        "section.search-table-composition"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "4ea5032ffc4067f4f514ef0224b04649bb0835b338f8f20f87d6d16ddf087c00",
+        "symbols": [
+          "SearchInputProps",
+          "SearchInput"
+        ],
+        "propNames": [
+          "value",
+          "onChange",
+          "placeholder",
+          "className",
+          "width",
+          "iconColor",
+          "size",
+          "background"
+        ],
+        "stateMarkers": [],
+        "summary": "화면 상단의 조밀한 조회 툴바용 규격.",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "segmented-control",
+      "name": "SegmentedControl",
+      "category": "form",
+      "source": "src/components/ui/segmented-control.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/segmented-control",
+      "rules": [
+        "서로 배타적인 소수의 보기·상태 중 하나를 즉시 전환할 때 사용한다.",
+        "ButtonGroup의 단순 배치나 ToggleButton의 독립 on/off와 구분한다.",
+        "방향키·Home·End 이동과 roving tabindex를 유지한다."
+      ],
+      "visibility": "public",
+      "tier": 4,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/segmented-control.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "visualization.production-gantt"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "957d669968736931117a0360f33b379147ebcfc5837e2201897875a3ddf6d7f9",
+        "symbols": [
+          "SegmentedControlOption",
+          "SegmentedControlProps",
+          "SegmentedControl"
+        ],
+        "propNames": [
+          "options",
+          "value",
+          "defaultValue",
+          "onValueChange",
+          "ariaLabel"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "checked",
+          "selected",
+          "hover"
+        ],
+        "summary": "",
+        "aria": [
+          "aria-checked",
+          "aria-label",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "mes-product-switcher",
+      "name": "MesProductSwitcher",
+      "category": "navigation",
+      "source": "src/components/ui/mes-product-switcher.tsx",
+      "status": "stable",
+      "rules": [
+        "접힌 SNB에서는 MES/FEMS를 M/F로 축약한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/mes-product-switcher",
+      "documentationFile": "docs/components/mes-product-switcher.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "ebd74c18efc3cb34dd114faae8fd9bcde4cff66c6d4ec3b8c293621f54fa117c",
+        "symbols": [
+          "MesProductSwitcherProps",
+          "MesProductSwitcher"
+        ],
+        "propNames": [
+          "value",
+          "onValueChange",
+          "collapsed",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "MES/FEMS 제품 전환기.",
+        "aria": [
+          "aria-label",
+          "aria-pressed"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "section-frame",
+      "name": "SectionFrame",
+      "category": "layout",
+      "source": "src/components/ui/section-frame.tsx",
+      "status": "stable",
+      "rules": [
+        "SectionFrame은 padding·divider·background만 소유하고 업무 제목과 본문은 slot으로 받는다.",
+        "Shell의 overlay·header·footer와 화면별 고정 높이는 변경하지 않는다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/section-frame",
+      "documentationFile": "docs/components/section-frame.md",
+      "usageContract": {
+        "componentId": "section-frame",
+        "capabilities": [
+          "section-boundary",
+          "padding-owner",
+          "divider-owner",
+          "background-owner"
+        ],
+        "variants": [
+          "surface",
+          "subtle",
+          "standard-padding",
+          "no-padding",
+          "bottom-divider",
+          "inline-divider"
+        ],
+        "requiredStates": [
+          "static"
+        ],
+        "useWhen": [
+          "셸 본문을 의미 있는 복수 섹션으로 분할",
+          "섹션 padding·divider·background 책임을 한 곳에 둠"
+        ],
+        "doNotUseWhen": [
+          "화면 전체 셸",
+          "표 안의 임의 장식 박스",
+          "업무 의미가 없는 wrapper"
+        ],
+        "allowedParents": [
+          "shell.center-modal",
+          "shell.side-slide-panel"
+        ],
+        "constraints": [
+          "고정 높이와 shell scroll을 소유하지 않는다.",
+          "업무 제목과 본문은 slot으로 받는다."
+        ],
+        "accessibility": [
+          "문자열 제목이 있으면 section aria-label로 연결한다."
+        ],
+        "evidence": [
+          "receiving",
+          "production-result",
+          "custom-information"
+        ],
+        "alternatives": []
+      },
+      "usedByPatternIds": [
+        "frame.standard-section",
+        "recipe.side-slide-form-editable-list"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "91d15f616433287f7af2b3ac805084fc67153f79148659643cab34d442a300bc",
+        "symbols": [
+          "SectionFrameDivider",
+          "SectionFramePadding",
+          "SectionFrameBackground",
+          "SectionFrameProps",
+          "SectionFrame"
+        ],
+        "propNames": [
+          "title",
+          "action",
+          "divider",
+          "padding",
+          "background",
+          "contentClassName",
+          "none",
+          "bottom"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Section Frame.",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "section-header",
+      "name": "SectionHeader",
+      "category": "layout",
+      "source": "src/components/ui/section-header.tsx",
+      "status": "stable",
+      "rules": [
+        "모달 섹션 제목의 28px 회색 밴드와 우측 액션을 10px 간격으로 배치한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/section-header",
+      "documentationFile": "docs/components/section-header.md",
+      "usageContract": {
+        "componentId": "section-header",
+        "capabilities": [
+          "section-heading",
+          "section-action-slot"
+        ],
+        "variants": [
+          "title-only",
+          "title-action"
+        ],
+        "requiredStates": [
+          "static"
+        ],
+        "useWhen": [
+          "팝업 안에서 복수 섹션의 내용을 구분",
+          "섹션 제목 우측에 로컬 액션이 있음"
+        ],
+        "doNotUseWhen": [
+          "모달 전체 제목",
+          "섹션이 하나뿐이고 별도 위계가 필요 없음",
+          "일반 페이지에서 근거 없는 긴 회색 밴드"
+        ],
+        "allowedParents": [
+          "frame.standard-section"
+        ],
+        "constraints": [
+          "SectionFrame의 title slot을 통해 사용한다.",
+          "텍스트 hug가 아니라 사용 가능한 섹션 폭을 채운다."
+        ],
+        "accessibility": [
+          "시각 제목이 section의 접근 가능한 이름이 되도록 연결한다."
+        ],
+        "evidence": [
+          "receiving",
+          "production-result",
+          "custom-information"
+        ],
+        "alternatives": [
+          {
+            "componentId": "center-modal",
+            "chooseInsteadWhen": "모달 전체 제목을 표현할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "frame.standard-section"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "5f0f92b7983d9bbfcd0814a7626488a97bb99f268490f826fd23df8d619604e7",
+        "symbols": [
+          "SectionHeaderProps",
+          "SectionHeader"
+        ],
+        "propNames": [
+          "children",
+          "action",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "모달 내부 섹션의 회색 제목 밴드와 우측 액션을 한 행으로 묶는다.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "icon-menu",
+      "name": "IconMenu",
+      "category": "icon",
+      "source": "src/components/icons/icon-menu.tsx",
+      "status": "stable",
+      "rules": [
+        "Figma node 18849:64891의 17×14 원본 벡터를 사용한다."
+      ],
+      "visibility": "internal",
+      "tier": 2,
+      "documentationMode": "internal",
+      "documentationFile": "docs/components/icon-menu.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "fba5d9b31f2165b2abee3008252a4c8087cd26384a77cc082a5c28edc9f2029e",
+        "symbols": [
+          "IconMenuProps",
+          "IconMenu"
+        ],
+        "propNames": [
+          "size"
+        ],
+        "stateMarkers": [],
+        "summary": "Figma 생산실적 화면의 17×14 반응형 메뉴 아이콘(node 18849:64891) 원본 벡터.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "query-date-range",
+      "name": "QueryDateRange",
+      "category": "form",
+      "source": "src/components/ui/query-date-range.tsx",
+      "status": "stable",
+      "rules": [
+        "라벨·두 DatePicker·기간 구분자를 32px 단일 컨트롤로 결합한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/query-date-range",
+      "documentationFile": "docs/components/query-date-range.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.inspection-records",
+        "popup.center.purchase-lookup"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "f6d97138331481cecf38512de7559986d9b3fa385f5f106fb972b39691e43107",
+        "symbols": [
+          "QueryDateRangeProps",
+          "QueryDateRange"
+        ],
+        "propNames": [
+          "label",
+          "start",
+          "end",
+          "onStartChange",
+          "onEndChange",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "조회 헤더의 라벨 + 시작일 + 구분자 + 종료일 결합형 기간 입력.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "cavity-cell",
+      "name": "CavityCell",
+      "category": "data-display",
+      "source": "src/components/ui/cavity-cell.tsx",
+      "status": "stable",
+      "rules": [
+        "값 없음·값 있음·선택 상태를 10×10 배열에서 동일 규격으로 표시한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/cavity-cell",
+      "documentationFile": "docs/components/cavity-cell.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "e45cf5a72f52cd4f26ab4bc7dc909d9bca18dd0ac02734655e2086fac4e40ef2",
+        "symbols": [
+          "CavityCellProps",
+          "CavityCell"
+        ],
+        "propNames": [
+          "value",
+          "selected"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "selected"
+        ],
+        "summary": "캐비티 배열의 10×10 셀.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "select",
+      "name": "Select",
+      "category": "form",
+      "source": "src/components/ui/select.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/select",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/select.md",
+      "usageContract": {
+        "componentId": "select",
+        "capabilities": [
+          "single-choice",
+          "option-list"
+        ],
+        "variants": [
+          "default",
+          "small"
+        ],
+        "requiredStates": [
+          "default",
+          "open",
+          "focus",
+          "complete",
+          "disabled"
+        ],
+        "useWhen": [
+          "유한한 선택지 중 하나를 고름",
+          "선택 행에서 편집 가능한 코드·구분 값을 선택"
+        ],
+        "doNotUseWhen": [
+          "여러 값을 동시에 선택",
+          "자유 입력",
+          "라디오로 모든 옵션을 한눈에 비교해야 함"
+        ],
+        "allowedParents": [
+          "section.form-grid",
+          "section.editable-row-list",
+          "section.search-table-composition",
+          "popup.center.table"
+        ],
+        "constraints": [
+          "현재 value는 options에 존재해야 한다.",
+          "선택 행에서만 보여야 하는 경우 행 선택 state에서 노출을 파생한다."
+        ],
+        "accessibility": [
+          "트리거에 label 또는 aria-label을 연결한다.",
+          "키보드 열기·이동·선택을 유지한다."
+        ],
+        "evidence": [
+          "receiving",
+          "batch-work-order",
+          "team-settings"
+        ],
+        "alternatives": [
+          {
+            "componentId": "radio",
+            "chooseInsteadWhen": "소수 옵션을 한눈에 비교해야 할 때"
+          },
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "허용 값이 제한되지 않을 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "popup.center.dual-pane",
+        "popup.center.form",
+        "popup.center.inspection-criteria",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "popup.side.add-list",
+        "popup.side.custom-columns",
+        "recipe.side-slide-form-editable-list",
+        "screen.form-management-workflow",
+        "section.editable-row-list",
+        "section.measurement-heatmap-analysis"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "77699c50893256e42df6e54f21d65986c961565961156e9d9670abc1ccc71fa4",
+        "symbols": [
+          "SelectTriggerProps",
+          "Select",
+          "SelectGroup",
+          "SelectValue",
+          "SelectTrigger",
+          "SelectContent",
+          "SelectItem",
+          "selectTriggerVariants"
+        ],
+        "propNames": [
+          "icon"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "checked",
+          "selected",
+          "open",
+          "hover"
+        ],
+        "summary": "트리거 우측 아이콘 — 기본값은 ChevronDown, 다른 아이콘으로 교체 가능",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "sidebar",
+      "name": "Sidebar",
+      "category": "navigation",
+      "source": "src/components/ui/sidebar.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/sidebar",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/sidebar.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "recipe.page-entity-list",
+        "screen.entity-list",
+        "screen.form-management-workflow"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "a6bac27606b8ee05dab247dc2f36ee81bb1fbac5ec8279c0b5ec2f8d34fe0dc8",
+        "symbols": [
+          "SidebarSubItem",
+          "SidebarNavItem",
+          "SidebarProps",
+          "Sidebar",
+          "SidebarSettingsIcon"
+        ],
+        "propNames": [
+          "key",
+          "label",
+          "icon",
+          "children",
+          "items",
+          "expandedKey",
+          "onExpandedKeyChange",
+          "activeKey",
+          "activeSubKey",
+          "onSubItemClick",
+          "onItemClick",
+          "favorited",
+          "onFavoriteClick",
+          "onDashboardClick",
+          "dashboardActive",
+          "collapsed",
+          "onCollapseClick",
+          "onManualClick",
+          "onLogoutClick",
+          "logo"
+        ],
+        "stateMarkers": [
+          "open",
+          "hover"
+        ],
+        "summary": "펼쳐진 1-depth 항목 key (없으면 전부 접힘)",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "slider",
+      "name": "Slider",
+      "category": "form",
+      "source": "src/components/ui/slider.tsx",
+      "status": "provisional",
+      "rules": [
+        "연속 범위를 빠르게 조절할 때 사용한다.",
+        "정확한 수치 입력이 우선이면 NumberInput을 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/slider",
+      "documentationFile": "docs/components/slider.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "411fb04ef3074617e2e7f21b42cce6fdaf3d8395355dce722ec56b62e49b3081",
+        "symbols": [
+          "SliderProps",
+          "Slider"
+        ],
+        "propNames": [
+          "value",
+          "defaultValue",
+          "onValueChange",
+          "showValue",
+          "formatValue"
+        ],
+        "stateMarkers": [],
+        "summary": "연속 수치 범위를 조절하는 입력이다.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "side-slide-panel",
+      "name": "SideSlidePanel",
+      "category": "overlay",
+      "source": "src/components/ui/side-slide-panel.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/side-slide-panel",
+      "rules": [
+        "우측에서 열리는 등록·검사 화면은 SideSlidePanel을 사용한다.",
+        "폭은 Figma에서 반복 확인한 760·849·900·960px preset만 사용한다.",
+        "취소·X·Esc·배경 클릭은 같은 dismiss 경로에서 onCancel로 변경값을 폐기한 뒤 닫는다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/side-slide-panel.md",
+      "usageContract": {
+        "componentId": "side-slide-panel",
+        "capabilities": [
+          "full-height-overlay",
+          "ordered-sections",
+          "dismiss-restore"
+        ],
+        "variants": [
+          "narrow-760",
+          "medium-849",
+          "standard-900",
+          "wide-960"
+        ],
+        "requiredStates": [
+          "closed",
+          "open",
+          "dismiss",
+          "save"
+        ],
+        "useWhen": [
+          "현재 목록 맥락을 유지하며 긴 등록·편집을 우측에서 수행",
+          "원본이 우측 슬라이드 팝업으로 확인됨"
+        ],
+        "doNotUseWhen": [
+          "중앙 조회·선택 팝업",
+          "짧은 확인",
+          "독립 전체 페이지"
+        ],
+        "allowedParents": [
+          "shell.side-slide-panel"
+        ],
+        "constraints": [
+          "760·849·900·960px 승인 preset만 사용한다.",
+          "본문 섹션만 스크롤하고 헤더·푸터는 고정한다."
+        ],
+        "accessibility": [
+          "제목을 Dialog title로 연결한다.",
+          "Esc·X·backdrop·취소가 동일 dismiss 정책을 사용한다."
+        ],
+        "evidence": [
+          "receiving",
+          "production-result",
+          "operation-log"
+        ],
+        "alternatives": [
+          {
+            "componentId": "center-modal",
+            "chooseInsteadWhen": "짧은 중앙 조회·선택 작업일 때"
+          },
+          {
+            "componentId": "confirm-dialog",
+            "chooseInsteadWhen": "확인 문구와 한두 개 액션만 필요할 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "dismiss.restore-committed",
+        "popup.side.add-list",
+        "popup.side.custom-columns",
+        "popup.side.inspection-items",
+        "popup.side.time-records",
+        "recipe.side-slide-form-editable-list",
+        "screen.form-management-workflow",
+        "shell.side-slide-panel"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "1452d53e5ef17f905aaf8bd4f5ae3d40561428b7ce57c9d60445fe1539508dc6",
+        "symbols": [
+          "SideSlidePanelSize",
+          "SideSlidePanelProps",
+          "SideSlidePanel",
+          "sideSlidePanelSizeClasses"
+        ],
+        "propNames": [
+          "open",
+          "onOpenChange",
+          "title",
+          "children",
+          "cancelLabel",
+          "onCancel",
+          "confirmLabel",
+          "onConfirm",
+          "size",
+          "actions",
+          "footer",
+          "bodyPadding",
+          "scrollMode",
+          "bodyAlign",
+          "contentClassName",
+          "className"
+        ],
+        "stateMarkers": [
+          "open"
+        ],
+        "summary": "취소·X·Esc·배경 클릭에 공통 적용되는 변경 폐기/원상복구 콜백.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "skeleton",
+      "name": "Skeleton",
+      "category": "feedback",
+      "source": "src/components/ui/skeleton.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/skeleton",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/skeleton.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "27bff4ca4f229fdd03c4b78b919542675f791037cc874bd27fb720a9c01144fc",
+        "symbols": [
+          "SkeletonProps",
+          "Skeleton",
+          "skeletonVariants"
+        ],
+        "propNames": [
+          "variants",
+          "defaultVariants"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Skeleton — Figma 디자인 없음(체크리스트 티어2 \"Skeleton\", 상태 \"없음\").",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "sticky-header-footer",
+      "name": "StickyHeader / StickyFooter",
+      "category": "layout",
+      "source": "src/components/ui/sticky-header-footer.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/sticky-header-footer",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/sticky-header-footer.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "c0e9512b6bf196234c34a773ef0c333f8ac780c0dea25e7f325e0cd1bdbe097c",
+        "symbols": [
+          "StickyHeader",
+          "StickyFooter"
+        ],
+        "propNames": [],
+        "stateMarkers": [],
+        "summary": "MES StickyHeader/StickyFooter — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Sticky",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "switch",
+      "name": "Switch",
+      "category": "form",
+      "source": "src/components/ui/switch.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/switch",
+      "rules": [
+        "기본 40×20은 설정 목록에 사용한다.",
+        "compact 26×18은 표준단가 카드의 단가 동기화에 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/switch.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.standard-price-settings",
+        "table.column-settings"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "f268d548100abe4b131816cdf87c376f2daeefe3d88da88d33304e3996e8508f",
+        "symbols": [
+          "SwitchProps",
+          "Switch"
+        ],
+        "propNames": [
+          "size"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "checked"
+        ],
+        "summary": "표준단가 카드의 단가 동기화처럼 조밀한 영역에서 쓰는 Figma 실측 26×18 규격.",
+        "aria": [
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "table",
+      "name": "Table",
+      "category": "data-display",
+      "source": "src/components/ui/table.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/table-full",
+      "rules": [
+        "header, group, row, totals는 동일한 선택열·토글열·컬럼 폭 배열을 공유한다.",
+        "행 선택은 Checkbox 상태, 활성 행 배경, 조건부 편집 컨트롤을 동일 state에서 파생한다.",
+        "MES 테이블 기본 선택 색은 black이고 미선택 외형은 grayCheck다.",
+        "헤더 배경은 기본 gray10을 유지하고 원본이 흰색인 화면에서만 headerBackground=white를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/table.md",
+      "usageContract": {
+        "componentId": "table",
+        "capabilities": [
+          "aligned-columns",
+          "row-selection",
+          "grouping",
+          "totals",
+          "inline-editing"
+        ],
+        "variants": [
+          "flat",
+          "grouped",
+          "selectable",
+          "readonly",
+          "inline-edit"
+        ],
+        "requiredStates": [
+          "default",
+          "selected",
+          "active",
+          "disabled",
+          "empty"
+        ],
+        "useWhen": [
+          "열 정렬이 중요한 복수 행 비교",
+          "스캔·정렬·선택·그룹 집계가 필요한 목록"
+        ],
+        "doNotUseWhen": [
+          "몇 개의 독립 입력 행을 정렬하기 위한 용도",
+          "카드형 정보가 더 자연스러운 비정형 내용"
+        ],
+        "allowedParents": [
+          "section.search-table-composition",
+          "table.grouped-list",
+          "popup.center.table",
+          "screen.entity-list"
+        ],
+        "constraints": [
+          "header·group·row·totals는 선택열과 컬럼 폭 배열을 공유한다.",
+          "가로 스크롤 허용 여부와 scroll owner를 화면 계약에 명시한다.",
+          "선택·활성·편집 상태를 서로 다른 하드코딩 index로 관리하지 않는다."
+        ],
+        "accessibility": [
+          "헤더와 셀의 의미 관계를 유지한다.",
+          "행 선택과 활성 행 조작을 키보드로 수행할 수 있어야 한다."
+        ],
+        "evidence": [
+          "batch-work-order",
+          "material-input-settings",
+          "grouped-production-list"
+        ],
+        "alternatives": [
+          {
+            "componentId": "list",
+            "chooseInsteadWhen": "열 비교가 필요 없는 단순 목록일 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "popup.center.dual-pane",
+        "popup.center.equipment-discharge-settings",
+        "popup.center.inspection-records",
+        "popup.center.inventory-add",
+        "popup.center.inventory-edit",
+        "popup.center.navigation-detail",
+        "popup.center.purchase-lookup",
+        "popup.center.standard-price-settings",
+        "popup.center.table",
+        "popup.center.team-settings",
+        "popup.side.custom-columns",
+        "popup.side.time-records",
+        "recipe.center-modal-search-table",
+        "recipe.page-entity-list",
+        "screen.entity-list",
+        "screen.form-management-workflow",
+        "screen.master-detail",
+        "screen.production-result-responsive",
+        "section.measurement-heatmap-analysis",
+        "section.search-table-composition",
+        "selection.enable-actions",
+        "selection.master-detail",
+        "selection.reveal-inline-editor",
+        "summary.table-total-row",
+        "table.frozen-column-grid",
+        "table.grouped-header-grid",
+        "table.grouped-list",
+        "table.row-expand-detail"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "1010e3086b4fe718b5ce0fdc1a13c912b4fb53cafc914a60ae8bd9cbd10d0f7f",
+        "symbols": [
+          "TableColumn",
+          "TableRowData",
+          "TableGroup",
+          "TableProps",
+          "Table"
+        ],
+        "propNames": [
+          "key",
+          "label",
+          "headerDetail",
+          "width",
+          "align",
+          "render",
+          "id",
+          "data",
+          "isNew",
+          "disabled",
+          "hideSelection",
+          "summary",
+          "rows",
+          "groups",
+          "defaultExpanded",
+          "columns",
+          "selectedIds",
+          "activeId",
+          "activeRowAppearance",
+          "selectedRowAppearance"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "checked",
+          "indeterminate",
+          "selected"
+        ],
+        "summary": "점검 결과표처럼 컬럼명 아래에 판정 기준을 표시하는 2단 헤더.",
+        "aria": [
+          "aria-label",
+          "aria-selected",
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "tag",
+      "name": "Tag",
+      "category": "data-display",
+      "source": "src/components/ui/tag.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/tag",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/tag.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "table.column-settings"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "3a584399ee94f7a3b1e36a5884efcb2fe2d655db7be0113c7e91b49cf62318bd",
+        "symbols": [
+          "TagColor",
+          "TagSize",
+          "TagProps",
+          "Tag"
+        ],
+        "propNames": [
+          "main",
+          "gray",
+          "red",
+          "opacityMain",
+          "color",
+          "startIcon",
+          "endIcon",
+          "size"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Tag (범용 3색 태그/칩) — Figma 실측 기반",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "textarea",
+      "name": "Textarea",
+      "category": "form",
+      "source": "src/components/ui/textarea.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/textarea",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/textarea.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "46d3fecaa6d5dc48cd54e01c571fbe4c83ecf42350147157a41798356975b28f",
+        "symbols": [
+          "TextareaProps",
+          "Textarea"
+        ],
+        "propNames": [],
+        "stateMarkers": [
+          "disabled",
+          "focus"
+        ],
+        "summary": "MES Textarea — Figma 디자인 없음(체크리스트 티어2 \"Textarea\", 상태 \"없음\").",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "time-picker",
+      "name": "TimePicker",
+      "category": "form",
+      "source": "src/components/ui/time-picker.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/time-picker",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/time-picker.md",
+      "usageContract": null,
+      "usedByPatternIds": [
+        "popup.center.time-selector",
+        "popup.side.time-records"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "b6c9e9b98ad5a6a82d25760a12c3eed5425b8731c24ddb12d913e232714ca31d",
+        "symbols": [
+          "TimePickerProps",
+          "TimePicker"
+        ],
+        "propNames": [
+          "value",
+          "onValueChange",
+          "step",
+          "placeholder",
+          "disabled",
+          "className",
+          "indicator"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "open",
+          "hover"
+        ],
+        "summary": "MES TimePicker — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Time Picker\", 상태",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "timeline",
+      "name": "Timeline",
+      "category": "data-display",
+      "source": "src/components/ui/timeline.tsx",
+      "status": "provisional",
+      "rules": [
+        "시간 순서가 의미를 갖는 변경·작업 이력에만 사용한다.",
+        "순서 의미가 없는 항목은 List를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/timeline",
+      "documentationFile": "docs/components/timeline.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "b2d159f86276725a5b2d1d8bc97cafecc4084f1875f71946940483fde3d1a282",
+        "symbols": [
+          "TimelineItem",
+          "TimelineProps",
+          "Timeline"
+        ],
+        "propNames": [],
+        "stateMarkers": [],
+        "summary": "시간 순서가 의미를 갖는 변경·작업 이력을 표시한다.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "toast",
+      "name": "Toast",
+      "category": "feedback",
+      "source": "src/components/ui/toast.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/toast",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/toast.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "aee2258c72674e36ec53ba3da6d9d4a8356ea9849fbe54ca8c5ab87cd1c4654a",
+        "symbols": [
+          "ToastVariant",
+          "ToastProps",
+          "Toast"
+        ],
+        "propNames": [
+          "variant",
+          "message",
+          "onClose",
+          "className",
+          "red",
+          "blue"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Toast (짧게 떴다 사라지는 알림) — Figma 실측 기반",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "tree-select",
+      "name": "TreeSelect",
+      "category": "form",
+      "source": "src/components/ui/tree-select.tsx",
+      "status": "provisional",
+      "rules": [
+        "계층을 보며 복수 값을 제출하는 입력에 사용한다.",
+        "부모·자식 선택 전파는 업무 규칙이므로 호출부가 명시한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/tree-select",
+      "documentationFile": "docs/components/tree-select.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "a52db8000c0991c363f5724f14a60fd3dd0adf460142c2e73b7612c563dfcb56",
+        "symbols": [
+          "TreeSelectNode",
+          "TreeSelectProps",
+          "TreeSelect"
+        ],
+        "propNames": [
+          "nodes",
+          "value",
+          "defaultValue",
+          "onValueChange",
+          "className"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "checked",
+          "selected"
+        ],
+        "summary": "계층을 보면서 복수 선택한다.",
+        "aria": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "tree-view",
+      "name": "TreeView",
+      "category": "navigation",
+      "source": "src/components/ui/tree-view.tsx",
+      "status": "provisional",
+      "rules": [
+        "읽기·탐색 목적의 계층에 사용한다.",
+        "선택값 제출이 필요하면 TreeSelect를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/tree-view",
+      "documentationFile": "docs/components/tree-view.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "97e48c634d4125cf43aa69c093cb2aa440d70bbd1829bf08aa54989a5e4e2597",
+        "symbols": [
+          "TreeViewNode",
+          "TreeViewProps",
+          "TreeView"
+        ],
+        "propNames": [],
+        "stateMarkers": [],
+        "summary": "읽기·탐색 목적의 계층이다.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "toggle-button",
+      "name": "ToggleButton",
+      "category": "action",
+      "source": "src/components/ui/toggle-button.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/toggle-button",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/toggle-button.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "d9a641d3bd09fe563c562b14e9fe3c6943f328c52a17150e73e634b75ab6b876",
+        "symbols": [
+          "ToggleButtonProps",
+          "ToggleButton"
+        ],
+        "propNames": [
+          "pressed",
+          "onPressedChange",
+          "size",
+          "basic",
+          "small",
+          "xsmall"
+        ],
+        "stateMarkers": [
+          "disabled",
+          "hover"
+        ],
+        "summary": "MES ToggleButton — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Toggle Button\", 상태 \"없음\").",
+        "aria": [
+          "aria-pressed"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "tooltip",
+      "name": "Tooltip",
+      "category": "overlay",
+      "source": "src/components/ui/tooltip.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/tooltip",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/tooltip.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "e2ea484b2de05a1442c8674cf5cf779e51809657353e6d2d62628222e6fffd03",
+        "symbols": [
+          "TooltipProps",
+          "Tooltip"
+        ],
+        "propNames": [
+          "content",
+          "children",
+          "side",
+          "className"
+        ],
+        "stateMarkers": [],
+        "summary": "MES Tooltip — Figma 디자인 없음(체크리스트 티어2 \"Tooltip\", 상태 \"없음\").",
+        "aria": [
+          "role"
+        ]
+      }
+    },
+    {
+      "kind": "component",
+      "id": "user-account-menu",
+      "name": "UserAccountMenu",
+      "category": "navigation",
+      "source": "src/components/ui/user-account-menu.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/user-account-menu",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive",
+      "documentationFile": "docs/components/user-account-menu.md",
+      "usageContract": null,
+      "usedByPatternIds": [],
+      "sourceFacts": {
+        "sourceFingerprint": "648a284f87562230f914ceac0eab87dfcc7b2b48ad0b70ffadc48304183bbdd6",
+        "symbols": [
+          "UserAccountMenuProps",
+          "UserAccountMenu"
+        ],
+        "propNames": [
+          "name",
+          "items",
+          "className"
+        ],
+        "stateMarkers": [
+          "hover"
+        ],
+        "summary": "MES UserAccountMenu — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"User / Account",
+        "aria": []
+      }
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.form",
+      "name": "중앙 · 폼/정보 중심",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "button",
+        "input",
+        "select",
+        "radio"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.table",
+      "name": "중앙 · 단일 테이블 선택/편집",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "button",
+        "checkbox",
+        "filter",
+        "search-input",
+        "table",
+        "input",
+        "select"
+      ],
+      "usedByScreenIds": [
+        "batch-work-order",
+        "defect-quantity-input",
+        "preissued-label"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.dual-pane",
+      "name": "중앙 · 원본/대상 비교",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "button",
+        "checkbox",
+        "table",
+        "input",
+        "select"
+      ],
+      "usedByScreenIds": [
+        "bom-copy"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.navigation-detail",
+      "name": "중앙 · 탐색 레일 + 상세",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "button",
+        "checkbox",
+        "filter",
+        "search-input",
+        "table",
+        "input",
+        "select"
+      ],
+      "usedByScreenIds": [
+        "material-input-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.time-selector",
+      "name": "중앙 · 시간 휠 + 계산",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "button",
+        "time-picker"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.side.add-list",
+      "name": "우측 슬라이드 · 추가 + 하단 리스트",
+      "patternKind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "button",
+        "input",
+        "select"
+      ],
+      "usedByScreenIds": [
+        "production-result",
+        "receiving"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.side.custom-columns",
+      "name": "우측 슬라이드 · 커스텀 정보",
+      "patternKind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "button",
+        "input",
+        "select",
+        "table"
+      ],
+      "usedByScreenIds": [
+        "custom-information"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.side.inspection-items",
+      "name": "우측 슬라이드 · 검사항목",
+      "patternKind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "button",
+        "input",
+        "inspection-judgement"
+      ],
+      "usedByScreenIds": [
+        "self-inspection"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.side.time-records",
+      "name": "우측 슬라이드 · 시간 기록",
+      "patternKind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "button",
+        "input",
+        "time-picker",
+        "table"
+      ],
+      "usedByScreenIds": [
+        "operation-log"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "recipe.side-slide-form-editable-list",
+      "name": "우측 슬라이드 · 폼 + 반복 입력 행 생성 Recipe",
+      "patternKind": "recipe",
+      "placement": "right-slide",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "button",
+        "input",
+        "select"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "recipe.center-modal-search-table",
+      "name": "중앙 팝업 · 검색 + 선택 테이블 생성 Recipe",
+      "patternKind": "recipe",
+      "placement": "center",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "requiredComponents": [
+        "center-modal",
+        "filter",
+        "search-input",
+        "table",
+        "button"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "recipe.page-entity-list",
+      "name": "전체 페이지 · 조회 조건 + 엔티티 리스트 생성 Recipe",
+      "patternKind": "recipe",
+      "placement": "page",
+      "source": "scripts/generate-screen-tsx.mjs",
+      "requiredComponents": [
+        "sidebar",
+        "page-top-tab-item",
+        "filter",
+        "search-input",
+        "table",
+        "pagination"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "screen.entity-list",
+      "name": "엔티티 리스트 화면",
+      "patternKind": "screen",
+      "placement": "page",
+      "source": "src/components/patterns/entity-list-pattern.tsx",
+      "requiredComponents": [
+        "sidebar",
+        "page-top-tab-item",
+        "filter",
+        "search-input",
+        "table",
+        "pagination"
+      ],
+      "usedByScreenIds": [
+        "grouped-production-list"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "screen.master-detail",
+      "name": "마스터-디테일 화면",
+      "patternKind": "screen",
+      "placement": "page",
+      "source": "src/components/patterns/master-detail-pattern.tsx",
+      "requiredComponents": [
+        "table",
+        "panel",
+        "descriptions"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "screen.analytics-dashboard",
+      "name": "분석 대시보드",
+      "patternKind": "screen",
+      "placement": "page",
+      "source": "src/components/patterns/analytics-dashboard-pattern.tsx",
+      "requiredComponents": [
+        "card",
+        "date-range-picker",
+        "filter"
+      ],
+      "usedByScreenIds": [
+        "process-inspection-trend",
+        "production-analytics-latest"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "section.monthly-comparison-chart",
+      "name": "월별 전년 비교 차트",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "requiredComponents": [],
+      "usedByScreenIds": [
+        "process-inspection-trend"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "section.measurement-heatmap-analysis",
+      "name": "측정 목록·히트맵 분석",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "requiredComponents": [
+        "table",
+        "select"
+      ],
+      "usedByScreenIds": [
+        "process-inspection-trend"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "summary.inspection-achievement-stack",
+      "name": "검사 달성률 스택",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "requiredComponents": [],
+      "usedByScreenIds": [
+        "process-inspection-trend"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "table.grouped-list",
+      "name": "그룹화 선택 테이블",
+      "patternKind": "table",
+      "placement": "page",
+      "source": "src/components/ui/table.tsx",
+      "requiredComponents": [
+        "table",
+        "checkbox"
+      ],
+      "usedByScreenIds": [
+        "grouped-production-list",
+        "sales-transaction-statement"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "table.column-settings",
+      "name": "테이블 컬럼 설정",
+      "patternKind": "table",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/table-column-settings.tsx",
+      "requiredComponents": [
+        "button",
+        "switch",
+        "checkbox",
+        "tag",
+        "icon-button"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.inspection-criteria",
+      "name": "중앙 · 검사 판정 기준 설정",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/inspection-criteria-pattern.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "button",
+        "input",
+        "select"
+      ],
+      "usedByScreenIds": [
+        "form-inspection-criteria"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.before-after-confirmation",
+      "name": "중앙 · 변경 전후 비교 확인",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/production-quantity-reregistration-pattern.tsx",
+      "requiredComponents": [
+        "confirm-dialog",
+        "before-after-comparison",
+        "button"
+      ],
+      "usedByScreenIds": [
+        "production-quantity-reregistration"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "frame.standard-section",
+      "name": "표준 섹션 프레임",
+      "patternKind": "section-frame",
+      "placement": "section",
+      "source": "src/components/ui/section-frame.tsx",
+      "requiredComponents": [
+        "section-frame",
+        "section-header"
+      ],
+      "usedByScreenIds": [
+        "custom-information",
+        "production-result",
+        "receiving"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "section.form-grid",
+      "name": "폼 그리드",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/ui/form-grid.tsx",
+      "requiredComponents": [
+        "form-grid"
+      ],
+      "usedByScreenIds": [
+        "cavity-layout-settings",
+        "custom-information",
+        "form-inspection-criteria",
+        "form-management",
+        "production-result",
+        "receiving",
+        "user-password-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "dismiss.restore-committed",
+      "name": "취소 시 저장 전 상태 복원",
+      "patternKind": "behavior",
+      "placement": "cross-shell",
+      "source": "src/components/ui/side-slide-panel.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "side-slide-panel"
+      ],
+      "usedByScreenIds": [
+        "batch-work-order",
+        "equipment-discharge-settings",
+        "form-inspection-criteria",
+        "receiving",
+        "sales-transaction-statement",
+        "shipment-approval",
+        "standard-price-settings",
+        "team-settings",
+        "user-password-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "shell.center-modal",
+      "name": "중앙 팝업 셸",
+      "patternKind": "shell",
+      "placement": "center",
+      "source": "src/components/ui/center-modal.tsx",
+      "requiredComponents": [
+        "center-modal"
+      ],
+      "usedByScreenIds": [
+        "batch-work-order",
+        "bom-copy",
+        "cavity-layout-settings",
+        "defect-quantity-input",
+        "equipment-discharge-settings",
+        "equipment-inspection-records",
+        "form-inspection-criteria",
+        "form-management",
+        "inventory-add",
+        "inventory-edit",
+        "material-input-settings",
+        "preissued-label",
+        "purchase-order-lookup",
+        "sales-transaction-statement",
+        "shipment-approval",
+        "standard-price-settings",
+        "team-settings",
+        "user-password-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "shell.side-slide-panel",
+      "name": "우측 슬라이드 팝업 셸",
+      "patternKind": "shell",
+      "placement": "right-slide",
+      "source": "src/components/ui/side-slide-panel.tsx",
+      "requiredComponents": [
+        "side-slide-panel"
+      ],
+      "usedByScreenIds": [
+        "custom-information",
+        "form-management",
+        "operation-log",
+        "production-result",
+        "receiving",
+        "self-inspection",
+        "user-password-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "shell.confirm-dialog",
+      "name": "확인 팝업 셸",
+      "patternKind": "shell",
+      "placement": "center",
+      "source": "src/components/ui/confirm-dialog.tsx",
+      "requiredComponents": [
+        "confirm-dialog"
+      ],
+      "usedByScreenIds": [
+        "production-quantity-reregistration",
+        "user-password-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "section.search-table-composition",
+      "name": "검색·필터·테이블 조합",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": [
+        "filter",
+        "search-input",
+        "table"
+      ],
+      "usedByScreenIds": [
+        "batch-work-order",
+        "equipment-discharge-settings",
+        "equipment-inspection-records",
+        "form-management",
+        "grouped-production-list",
+        "inventory-add",
+        "inventory-edit",
+        "material-input-settings",
+        "production-analytics-latest",
+        "production-result-responsive",
+        "purchase-order-lookup",
+        "sales-transaction-statement",
+        "shipment-approval",
+        "standard-price-settings",
+        "team-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "section.editable-row-list",
+      "name": "편집 가능한 행 목록",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": [
+        "button",
+        "input",
+        "select"
+      ],
+      "usedByScreenIds": [
+        "operation-log",
+        "production-result",
+        "receiving"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "section.inspection-items",
+      "name": "검사항목 목록",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": [
+        "inspection-judgement",
+        "button"
+      ],
+      "usedByScreenIds": [
+        "self-inspection"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "summary.table-total-row",
+      "name": "표 컬럼 정렬 합계행",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": [
+        "table"
+      ],
+      "usedByScreenIds": [
+        "bom-copy",
+        "production-result-responsive"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "summary.result-total-card",
+      "name": "결과 합계 카드",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": [],
+      "usedByScreenIds": [
+        "defect-quantity-input"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "selection.reveal-inline-editor",
+      "name": "행 선택 시 인라인 편집 노출",
+      "patternKind": "behavior",
+      "placement": "cross-shell",
+      "source": "src/design-system/behavior-patterns.ts",
+      "requiredComponents": [
+        "table"
+      ],
+      "usedByScreenIds": [
+        "batch-work-order",
+        "equipment-discharge-settings",
+        "inventory-add",
+        "material-input-settings",
+        "standard-price-settings",
+        "team-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "selection.enable-actions",
+      "name": "선택 기반 동작 활성화",
+      "patternKind": "behavior",
+      "placement": "cross-shell",
+      "source": "src/design-system/behavior-patterns.ts",
+      "requiredComponents": [
+        "table",
+        "button"
+      ],
+      "usedByScreenIds": [
+        "bom-copy",
+        "equipment-inspection-records",
+        "inventory-edit",
+        "preissued-label",
+        "production-result-responsive",
+        "sales-transaction-statement",
+        "shipment-approval"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "selection.master-detail",
+      "name": "마스터·상세 선택",
+      "patternKind": "behavior",
+      "placement": "cross-shell",
+      "source": "src/design-system/behavior-patterns.ts",
+      "requiredComponents": [
+        "table"
+      ],
+      "usedByScreenIds": [
+        "equipment-discharge-settings",
+        "grouped-production-list",
+        "process-inspection-trend",
+        "standard-price-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "row.mutation-policy",
+      "name": "행 추가·삭제 정책",
+      "patternKind": "behavior",
+      "placement": "cross-shell",
+      "source": "src/design-system/behavior-patterns.ts",
+      "requiredComponents": [
+        "button"
+      ],
+      "usedByScreenIds": [
+        "defect-quantity-input",
+        "operation-log",
+        "production-result",
+        "receiving",
+        "self-inspection"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "action-set.cancel-save",
+      "name": "취소·저장 동작 세트",
+      "patternKind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": [
+        "button"
+      ],
+      "usedByScreenIds": [
+        "batch-work-order",
+        "bom-copy",
+        "cavity-layout-settings",
+        "custom-information",
+        "equipment-discharge-settings",
+        "form-inspection-criteria",
+        "form-management",
+        "inventory-add",
+        "material-input-settings",
+        "operation-log",
+        "preissued-label",
+        "production-result",
+        "receiving",
+        "sales-transaction-statement",
+        "self-inspection",
+        "shipment-approval",
+        "team-settings",
+        "user-password-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "action-set.cancel-confirm",
+      "name": "취소·확인 동작 세트",
+      "patternKind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": [
+        "button"
+      ],
+      "usedByScreenIds": [
+        "standard-price-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "action-set.save-only",
+      "name": "저장 동작 세트",
+      "patternKind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": [
+        "button"
+      ],
+      "usedByScreenIds": [
+        "defect-quantity-input"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "action-set.close-only",
+      "name": "닫기 동작 세트",
+      "patternKind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": [
+        "button"
+      ],
+      "usedByScreenIds": [
+        "inventory-edit"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "action-set.cancel-select",
+      "name": "취소·선택 동작 세트",
+      "patternKind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": [
+        "button"
+      ],
+      "usedByScreenIds": [
+        "purchase-order-lookup"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "action-set.cancel-input",
+      "name": "취소·입력 동작 세트",
+      "patternKind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": [
+        "button"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "action-set.close-reregister",
+      "name": "닫기·재등록 동작 세트",
+      "patternKind": "action-set",
+      "placement": "cross-shell",
+      "source": "src/design-system/action-sets.ts",
+      "requiredComponents": [
+        "button"
+      ],
+      "usedByScreenIds": [
+        "production-quantity-reregistration"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "workflow.stepper",
+      "name": "단계 진행",
+      "patternKind": "workflow",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "requiredComponents": [
+        "button",
+        "progress"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "selection.transfer-list",
+      "name": "이중 목록 이동",
+      "patternKind": "selection",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "requiredComponents": [
+        "button",
+        "checkbox"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "table.row-expand-detail",
+      "name": "행 상세 펼침",
+      "patternKind": "table",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "requiredComponents": [
+        "button",
+        "descriptions",
+        "table"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "table.frozen-column-grid",
+      "name": "고정 컬럼 그리드",
+      "patternKind": "table",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "requiredComponents": [
+        "table",
+        "scroll-area"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "table.grouped-header-grid",
+      "name": "그룹 헤더 그리드",
+      "patternKind": "table",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/tier3-promoted-patterns.tsx",
+      "requiredComponents": [
+        "table"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "visualization.process-flow",
+      "name": "공정 흐름도",
+      "patternKind": "visualization",
+      "placement": "cross-shell",
+      "source": "src/components/patterns/process-flow-pattern.tsx",
+      "requiredComponents": [
+        "button"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "visualization.production-gantt",
+      "name": "생산 간트 차트",
+      "patternKind": "visualization",
+      "placement": "screen-content",
+      "source": "src/components/patterns/production-gantt-pattern.tsx",
+      "requiredComponents": [
+        "segmented-control"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "onboarding.product-tour",
+      "name": "온보딩 툴팁·제품 투어",
+      "patternKind": "onboarding",
+      "placement": "overlay",
+      "source": "src/components/patterns/product-tour-pattern.tsx",
+      "requiredComponents": [
+        "badge",
+        "button"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "screen.form-management-workflow",
+      "name": "양식관리 업무 흐름",
+      "patternKind": "screen",
+      "placement": "page",
+      "source": "src/components/patterns/original-mes-screen-assets.tsx",
+      "requiredComponents": [
+        "sidebar",
+        "page-top-tab-item",
+        "group-query",
+        "filter",
+        "search-input",
+        "table",
+        "side-slide-panel",
+        "center-modal",
+        "radio",
+        "input",
+        "select"
+      ],
+      "usedByScreenIds": [
+        "form-management"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "screen.production-result-responsive",
+      "name": "생산실적 반응형 리스트",
+      "patternKind": "screen",
+      "placement": "page",
+      "source": "src/components/patterns/exact-production-result-screen.tsx",
+      "requiredComponents": [
+        "group-query",
+        "filter",
+        "search-input",
+        "table",
+        "button",
+        "checkbox"
+      ],
+      "usedByScreenIds": [
+        "production-result-responsive"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.cavity-layout",
+      "name": "캐비티 배열 설정",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "button",
+        "radio",
+        "input"
+      ],
+      "usedByScreenIds": [
+        "cavity-layout-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.inventory-add",
+      "name": "재고 추가",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/exact-inventory-add-modal.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "filter",
+        "search-input",
+        "table",
+        "checkbox",
+        "input",
+        "select",
+        "date-picker",
+        "labeled-select"
+      ],
+      "usedByScreenIds": [
+        "inventory-add"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.inventory-edit",
+      "name": "재고편집",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "filter",
+        "search-input",
+        "table",
+        "checkbox",
+        "input",
+        "select",
+        "selection-action-bar",
+        "labeled-input",
+        "labeled-select"
+      ],
+      "usedByScreenIds": [
+        "inventory-edit"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.purchase-lookup",
+      "name": "발주 정보 조회",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/exact-purchase-modals.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "query-date-range",
+        "filter",
+        "search-input",
+        "table",
+        "link",
+        "progress",
+        "badge"
+      ],
+      "usedByScreenIds": [
+        "purchase-order-lookup"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.inspection-records",
+      "name": "설비 점검 기록 조회",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/equipment-inspection-records-modal.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "query-date-range",
+        "filter",
+        "search-input",
+        "table",
+        "checkbox",
+        "button"
+      ],
+      "usedByScreenIds": [
+        "equipment-inspection-records"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.equipment-discharge-settings",
+      "name": "품목 생산량 설정",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "confirm-dialog",
+        "filter",
+        "search-input",
+        "table",
+        "input",
+        "button"
+      ],
+      "usedByScreenIds": [
+        "equipment-discharge-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.standard-price-settings",
+      "name": "표준단가 설정",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/standard-price-settings-pattern.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "confirm-dialog",
+        "search-input",
+        "table",
+        "date-picker",
+        "input",
+        "switch",
+        "badge",
+        "button",
+        "icon-button"
+      ],
+      "usedByScreenIds": [
+        "standard-price-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.center.team-settings",
+      "name": "조 설정",
+      "patternKind": "popup",
+      "placement": "center",
+      "source": "src/components/patterns/team-settings-pattern.tsx",
+      "requiredComponents": [
+        "center-modal",
+        "button",
+        "badge",
+        "search-input",
+        "table",
+        "checkbox",
+        "select",
+        "link"
+      ],
+      "usedByScreenIds": [
+        "team-settings"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "material-input-settings",
+      "name": "투입품목 설정/조회",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "figmaNode": "18826:60554",
+      "patternRefs": [
+        "popup.center.navigation-detail",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "selection.reveal-inline-editor",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "batch-work-order",
+      "name": "생산계획(일) 연동 일괄작업지시",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figmaNode": "11210:50866",
+      "patternRefs": [
+        "popup.center.table",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "selection.reveal-inline-editor",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "defect-quantity-input",
+      "name": "불량수량 입력",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figmaNode": "11210:52919",
+      "patternRefs": [
+        "popup.center.table",
+        "shell.center-modal",
+        "summary.result-total-card",
+        "row.mutation-policy",
+        "action-set.save-only"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "bom-copy",
+      "name": "BOM 복사",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "figmaNode": "18962:67817",
+      "patternRefs": [
+        "popup.center.dual-pane",
+        "shell.center-modal",
+        "summary.table-total-row",
+        "selection.enable-actions",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "preissued-label",
+      "name": "선발행 라벨 수량 확정",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "figmaNode": "18756:60803",
+      "patternRefs": [
+        "popup.center.table",
+        "shell.center-modal",
+        "selection.enable-actions",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "operation-log",
+      "name": "운전일지 등록",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "figmaNode": "17303:45841",
+      "patternRefs": [
+        "popup.side.time-records",
+        "shell.side-slide-panel",
+        "section.editable-row-list",
+        "row.mutation-policy",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "production-result",
+      "name": "생산실적 등록",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figmaNode": "11210:48851",
+      "patternRefs": [
+        "popup.side.add-list",
+        "shell.side-slide-panel",
+        "frame.standard-section",
+        "section.form-grid",
+        "section.editable-row-list",
+        "row.mutation-policy",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "receiving",
+      "name": "입고등록",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figmaNode": "11210:49261",
+      "patternRefs": [
+        "popup.side.add-list",
+        "shell.side-slide-panel",
+        "frame.standard-section",
+        "section.form-grid",
+        "section.editable-row-list",
+        "row.mutation-policy",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "custom-information",
+      "name": "자주검사 — 커스텀 정보 등록 상태",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figmaNode": "11210:51570",
+      "patternRefs": [
+        "popup.side.custom-columns",
+        "shell.side-slide-panel",
+        "frame.standard-section",
+        "section.form-grid",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "self-inspection",
+      "name": "자주검사",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figmaNode": "11210:51420",
+      "patternRefs": [
+        "popup.side.inspection-items",
+        "shell.side-slide-panel",
+        "section.inspection-items",
+        "row.mutation-policy",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "grouped-production-list",
+      "name": "그룹화 리스트 관리 화면",
+      "source": "src/app/[...slug]/client-page.tsx",
+      "figmaNode": "17000:39999",
+      "patternRefs": [
+        "screen.entity-list",
+        "section.search-table-composition",
+        "table.grouped-list",
+        "selection.master-detail"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "form-inspection-criteria",
+      "name": "양식관리 · 검사 판정 기준 설정",
+      "source": "src/components/patterns/inspection-criteria-pattern.tsx",
+      "figmaNode": "17309:159298",
+      "patternRefs": [
+        "popup.center.inspection-criteria",
+        "shell.center-modal",
+        "section.form-grid",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "production-quantity-reregistration",
+      "name": "총 생산수량 변경 · 투입품 재등록 확인",
+      "source": "src/components/patterns/production-quantity-reregistration-pattern.tsx",
+      "figmaNode": "19451:95617",
+      "patternRefs": [
+        "popup.center.before-after-confirmation",
+        "shell.confirm-dialog",
+        "action-set.close-reregister"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "process-inspection-trend",
+      "name": "공정검사 경향관리",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "figmaNode": "11751:102614",
+      "patternRefs": [
+        "screen.analytics-dashboard",
+        "section.monthly-comparison-chart",
+        "section.measurement-heatmap-analysis",
+        "summary.inspection-achievement-stack",
+        "selection.master-detail"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "user-password-settings",
+      "name": "사용자 정보 · 비밀번호 설정",
+      "source": "src/components/patterns/user-password-settings-pattern.tsx",
+      "figmaNode": "17489:80534",
+      "patternRefs": [
+        "shell.side-slide-panel",
+        "section.form-grid",
+        "shell.confirm-dialog",
+        "shell.center-modal",
+        "action-set.cancel-save",
+        "dismiss.restore-committed"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "sales-transaction-statement",
+      "name": "판매관리 · 거래명세서",
+      "source": "src/components/patterns/sales-transaction-statement-pattern.tsx",
+      "figmaNode": "17475:46145",
+      "patternRefs": [
+        "table.grouped-list",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "selection.enable-actions",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "shipment-approval",
+      "name": "출하승인",
+      "source": "src/components/patterns/shipment-approval-pattern.tsx",
+      "figmaNode": "17370:46831",
+      "patternRefs": [
+        "shell.center-modal",
+        "section.search-table-composition",
+        "selection.enable-actions",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "form-management",
+      "name": "양식관리",
+      "source": "src/components/patterns/original-mes-screen-assets.tsx",
+      "figmaNode": "17377:50192",
+      "patternRefs": [
+        "screen.form-management-workflow",
+        "shell.side-slide-panel",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "section.form-grid",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "production-result-responsive",
+      "name": "생산실적 반응형",
+      "source": "src/components/patterns/original-mes-screen-assets.tsx",
+      "figmaNode": "18849:62314",
+      "patternRefs": [
+        "screen.production-result-responsive",
+        "section.search-table-composition",
+        "summary.table-total-row",
+        "selection.enable-actions"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "cavity-layout-settings",
+      "name": "캐비티 배열 설정",
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "figmaNode": "18795:62149",
+      "patternRefs": [
+        "popup.center.cavity-layout",
+        "shell.center-modal",
+        "section.form-grid",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "inventory-add",
+      "name": "재고 추가",
+      "source": "src/components/patterns/exact-inventory-add-modal.tsx",
+      "figmaNode": "18813:64179",
+      "patternRefs": [
+        "popup.center.inventory-add",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "selection.reveal-inline-editor",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "inventory-edit",
+      "name": "재고편집",
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "figmaNode": "17491:82304",
+      "patternRefs": [
+        "popup.center.inventory-edit",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "selection.enable-actions",
+        "action-set.close-only"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "purchase-order-lookup",
+      "name": "발주 정보",
+      "source": "src/components/patterns/exact-purchase-modals.tsx",
+      "figmaNode": "17503:85601",
+      "patternRefs": [
+        "popup.center.purchase-lookup",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "action-set.cancel-select"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "production-analytics-latest",
+      "name": "생산분석 현황",
+      "source": "src/components/patterns/exact-production-analytics-screen.tsx",
+      "figmaNode": "17520:46628",
+      "patternRefs": [
+        "screen.analytics-dashboard",
+        "section.search-table-composition"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "equipment-inspection-records",
+      "name": "냉각기 점검표",
+      "source": "src/components/patterns/equipment-inspection-records-modal.tsx",
+      "figmaNode": "9873:112416",
+      "patternRefs": [
+        "popup.center.inspection-records",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "selection.enable-actions"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "equipment-discharge-settings",
+      "name": "설비별 토출량 설정",
+      "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+      "figmaNode": "20302:68442",
+      "patternRefs": [
+        "popup.center.equipment-discharge-settings",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "selection.master-detail",
+        "selection.reveal-inline-editor",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "standard-price-settings",
+      "name": "표준단가 설정",
+      "source": "src/components/patterns/standard-price-settings-pattern.tsx",
+      "figmaNode": "18753:60729",
+      "patternRefs": [
+        "popup.center.standard-price-settings",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "selection.master-detail",
+        "selection.reveal-inline-editor",
+        "dismiss.restore-committed",
+        "action-set.cancel-confirm"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "team-settings",
+      "name": "조 설정",
+      "source": "src/components/patterns/team-settings-pattern.tsx",
+      "figmaNode": "18531:57637",
+      "patternRefs": [
+        "popup.center.team-settings",
+        "shell.center-modal",
+        "section.search-table-composition",
+        "selection.reveal-inline-editor",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ]
+    }
+  ]
+}

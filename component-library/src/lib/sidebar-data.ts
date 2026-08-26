@@ -1,4 +1,5 @@
-import { COMPONENT_CATALOG_GROUPS } from "@/lib/component-catalog-data";
+import componentData from "@/design-system/registry/components.json";
+import { COMPONENT_CATALOG_GROUPS, getCatalogRegistryId } from "@/lib/component-catalog-data";
 
 /**
  * 2026-08-04 신규 — 페이지 분할(라우팅) 도입으로 이 파일을 app/page.tsx(client)에서
@@ -48,7 +49,9 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   { id: "label", label: "라벨", labelEn: "Label" },
   { id: "link", label: "링크", labelEn: "Link" },
   { id: "input", label: "기본 입력", labelEn: "Input" },
+  { id: "labeled-input", label: "라벨 결합 입력", labelEn: "LabeledInput" },
   { id: "select", label: "셀렉트", labelEn: "Select" },
+  { id: "labeled-select", label: "라벨 결합 선택", labelEn: "LabeledSelect" },
   { id: "badge", label: "뱃지", labelEn: "Badge" },
   { id: "radio", label: "라디오 버튼", labelEn: "Radio" },
   { id: "checkbox", label: "체크박스", labelEn: "Checkbox" },
@@ -58,6 +61,7 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   { id: "quick-query", label: "빠른 조회", labelEn: "QuickQuery" },
   { id: "search-input", label: "검색창", labelEn: "SearchInput" },
   { id: "search-highlight", label: "검색어 강조", labelEn: "SearchHighlight" },
+  { id: "query-date-range", label: "조회 기간", labelEn: "QueryDateRange" },
   { id: "image-thumbnail", label: "이미지 썸네일", labelEn: "ImageThumbnail" },
   { id: "segmented-control", label: "세그먼트 컨트롤", labelEn: "SegmentedControl" },
   { id: "avatar", label: "사용자 아바타", labelEn: "Avatar" },
@@ -81,6 +85,7 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   { id: "sidebar", label: "사이드바", labelEn: "Sidebar" },
   { id: "alarm-list-item", label: "알람 리스트 항목", labelEn: "AlarmListItem" },
   { id: "notification-panel", label: "알림 패널", labelEn: "NotificationPanel" },
+  { id: "mes-product-switcher", label: "제품 전환", labelEn: "MesProductSwitcher" },
   { id: "card", label: "카드", labelEn: "Card" },
   { id: "empty-state", label: "없음", labelEn: "Empty" },
   { id: "error-state", label: "오류", labelEn: "Error" },
@@ -109,6 +114,15 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   { id: "logo", label: "로고", labelEn: "Logo" },
   { id: "user-account-menu", label: "계정 메뉴", labelEn: "UserAccountMenu" },
   { id: "loading-overlay", label: "로딩 오버레이", labelEn: "LoadingOverlay" },
+  { id: "before-after-comparison", label: "변경 전후 비교", labelEn: "BeforeAfterComparison" },
+  { id: "analytics-charts", label: "분석 차트", labelEn: "AnalyticsCharts" },
+  { id: "cavity-cell", label: "캐비티 셀", labelEn: "CavityCell" },
+  { id: "selection-action-bar", label: "선택 액션 바", labelEn: "SelectionActionBar" },
+  { id: "dialog-footer", label: "팝업 하단 액션", labelEn: "DialogFooter" },
+  { id: "form-grid", label: "폼 그리드", labelEn: "FormGrid" },
+  { id: "section-frame", label: "섹션 프레임", labelEn: "SectionFrame" },
+  { id: "section-header", label: "섹션 헤더", labelEn: "SectionHeader" },
+  { id: "inspection-judgement", label: "검사 판정", labelEn: "InspectionJudgement" },
   { id: "icons", label: "아이콘" },
   { id: "table-parts", label: "테이블 구성 요소", labelEn: "Table Parts" },
   { id: "table-full", label: "테이블 합본", labelEn: "Full Table" },
@@ -264,8 +278,7 @@ export const FOUNDATION_ID_LIST = [
 ];
 export const FOUNDATION_NODES: SidebarNode[] = FOUNDATION_ID_LIST.map((id) => leaf(id));
 
-/** 2026-08-05 신규 — Patterns(3층) id 목록. 지금은 순서가 곧 등록한 순서(별도 정렬 없음
- *  — 아직 3개뿐이라 Components처럼 티어 정렬을 도입할 필요가 없음, 늘어나면 재검토). */
+/** Patterns는 화면 메뉴명이 아니라 조합 역할별 묶음으로 탐색한다. */
 export const PATTERN_ID_LIST = [
   "original-mes-screen-assets",
   "grouped-list-screen",
@@ -337,141 +350,23 @@ export const SIDEBAR_GROUPS: { title: string; nodes: SidebarNode[] }[] = [
   { title: "Experimental", nodes: EXPERIMENTAL_NODES },
 ];
 
-/**
- * 2026-08-03 신규 — 담당자 요청: "'임시'인 건 좌측 메뉴 리스트에도 '임시' 태그를 달아줘".
- * 각 섹션의 `<Section badge="임시">`와 1:1로 맞춰 수동 관리하는 id 목록(FOUNDATION_IDS와
- * 같은 방식) — 새 섹션에 `badge="임시"`를 달거나 뗄 때 여기도 같이 바꿀 것.
- */
-export const TEMP_BADGE_IDS = new Set([
-  "icon-button",
-  "divider",
-  "tooltip",
-  "loading-spinner",
-  "skeleton",
-  "switch",
-  "textarea",
-  "label",
-  "link",
-  "card",
-  "empty-state",
-  "error-state",
-  "popover",
-  "accordion",
-  "collapsible",
-  "button-group",
-  "toggle-button",
-  "number-input",
-  "password-input",
-  "multi-select-input",
-  "breadcrumb",
-  "pagination",
-  "dropdown-menu",
-  "list",
-  "panel",
-  "fieldset",
-  "descriptions",
-  "date-picker",
-  "date-range-picker",
-  "time-picker",
-  "navbar",
-  "grid-container",
-  "scroll-area",
-  "sticky-header-footer",
-  "logo",
-  "user-account-menu",
-  "loading-overlay",
-]);
+const componentById = new Map(componentData.components.map((component) => [component.id, component]));
 
-/**
- * 2026-08-03 신규 — 담당자 요청: "티어 1 2 3 4 5도 좌측 리스트에 표기를 둬봐". 각 id를
- * `docs/UI_컴포넌트_총망라_체크리스트.md`의 티어 값과 1:1로 맞춰 수동 관리(TEMP_BADGE_IDS와
- * 같은 방식 — 체크리스트에서 컴포넌트를 새로 완료하거나 티어를 바꾸면 여기도 같이 바꿀 것).
- * Foundation 6개는 각각 대응하는 토큰 체크리스트 행(Color/Typography/Spacing/Radius/
- * Shadow Scale)의 티어, "semantic-tokens"는 체크리스트에 별도 행이 없어 배지 없음.
- */
+/** 상태 배지는 components.json의 status에서 파생한다. 화면과 사이드바에 상태를 중복 기록하지 않는다. */
+export const PROVISIONAL_BADGE_IDS = new Set(
+  COMPONENT_CATALOG_GROUPS.flatMap((group) => group.itemIds).filter(
+    (id) => componentById.get(getCatalogRegistryId(id))?.status === "provisional",
+  ),
+);
+
+/** 컴포넌트 tier는 components.json에서, Foundation·Pattern tier만 이 탐색 설정에서 관리한다. */
 export const TIER_BY_ID: Record<string, number> = {
   "color-palette": 1,
   typography: 1,
   spacing: 2,
   radius: 2,
   shadow: 1,
-  "button-size": 1,
-  "button-icon": 1,
-  "button-color": 1,
-  "icon-button": 2,
-  divider: 2,
-  tooltip: 2,
-  "loading-spinner": 2,
-  skeleton: 2,
-  switch: 2,
-  textarea: 2,
-  label: 2,
-  link: 2,
-  input: 1,
-  select: 1,
-  badge: 1,
-  radio: 1,
-  checkbox: 1,
-  progress: 1,
-  filter: 1,
-  "group-query": 1,
-  "quick-query": 1,
-  "search-input": 1,
-  tag: 1,
-  combobox: 1,
-  toast: 1,
-  "confirm-dialog": 1,
-  "notice-banner": 1,
-  "radio-choice-dialog": 1,
-  "center-modal": 1,
-  "side-slide-panel": 1,
-  "page-top-tab-item": 1,
-  sidebar: 1,
-  "alarm-list-item": 1,
-  "notification-panel": 1,
-  card: 2,
-  "empty-state": 2,
-  "error-state": 2,
-  popover: 2,
-  accordion: 2,
-  collapsible: 2,
-  "button-group": 2,
-  "toggle-button": 2,
-  "number-input": 2,
-  "password-input": 2,
-  "multi-select-input": 2,
-  breadcrumb: 2,
-  pagination: 2,
-  "dropdown-menu": 2,
-  list: 2,
-  panel: 2,
-  fieldset: 2,
-  descriptions: 2,
-  "date-picker": 2,
-  "date-range-picker": 2,
-  "time-picker": 2,
-  navbar: 2,
-  "grid-container": 2,
-  "scroll-area": 2,
-  "sticky-header-footer": 2,
-  logo: 2,
-  "user-account-menu": 2,
-  "loading-overlay": 2,
   icons: 2,
-  "table-parts": 1,
-  "table-full": 1,
-  "slider": 3,
-  "file-upload": 3,
-  "cascader": 3,
-  "tree-select": 3,
-  "timeline": 3,
-  "tree-view": 3,
-  "image-thumbnail": 3,
-  "search-highlight": 3,
-  "segmented-control": 4,
-  "avatar": 4,
-  "progress-circle": 4,
-  "overflow-list": 4,
   "workflow-stepper": 3,
   "selection-transfer-list": 3,
   "table-row-expand-detail": 3,
@@ -481,6 +376,16 @@ export const TIER_BY_ID: Record<string, number> = {
   "visualization-production-gantt": 4,
   "onboarding-product-tour": 5,
 };
+
+for (const component of componentData.components) {
+  TIER_BY_ID[component.id] = component.tier;
+}
+for (const group of COMPONENT_CATALOG_GROUPS) {
+  for (const id of group.itemIds) {
+    const component = componentById.get(getCatalogRegistryId(id));
+    if (component) TIER_BY_ID[id] = component.tier;
+  }
+}
 
 export const TIER_COLOR: Record<number, string> = {
   1: "bg-mes-bg-danger/10 text-mes-danger-70",

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-08-26T02:22:25.008Z",
+  "outcome": "passed",
+  "durationMs": 247155,
+  "assetManifestFingerprint": "1109c520d083858757bffe597504933dbdb3fa784cc3c43e4cf7381c6aec8a64",
+  "verificationSourceFingerprint": "dcc9ea2dbd1e3ba4db0f379b37ca5cb5cc886691451e626fd03491e33bf263b9",
+  "testInventory": {
+    "count": 72,
+    "files": {
+      "tests/visual/design-system.visual.spec.ts": "0daa95df4b585b7c7186fa86b3222323960c9f8ac846d7537fb247f5d385cca3",
+      "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14"
+    },
+    "fingerprint": "6eba1da3b8679303bb5327f476575c994391d4ea6b7106dfbc9a6529ebfef5ed"
+  },
+  "stages": [
+    {
+      "id": "asset-sync",
+      "command": "npm run sync:assets",
+      "status": "passed",
+      "durationMs": 597,
+      "exitCode": 0
+    },
+    {
+      "id": "verification-inventory",
+      "command": "node scripts/audit-web-verification-coverage.mjs --write",
+      "status": "passed",
+      "durationMs": 679,
+      "exitCode": 0
+    },
+    {
+      "id": "design-system-check",
+      "command": "npm run check:design-system",
+      "status": "passed",
+      "durationMs": 10106,
+      "exitCode": 0
+    },
+    {
+      "id": "design-system-lint",
+      "command": "npm run lint:design-system",
+      "status": "passed",
+      "durationMs": 7337,
+      "exitCode": 0
+    },
+    {
+      "id": "playwright",
+      "command": "npm run test:visual",
+      "status": "passed",
+      "durationMs": 195545,
+      "exitCode": 0
+    },
+    {
+      "id": "production-build",
+      "command": "npm run build",
+      "status": "passed",
+      "durationMs": 31864,
+      "exitCode": 0
+    },
+    {
+      "id": "verification-record",
+      "command": "node scripts/audit-web-verification-coverage.mjs --write --record-passed --duration-ms=195545",
+      "status": "passed",
+      "durationMs": 1025,
+      "exitCode": 0
+    }
+  ]
+}

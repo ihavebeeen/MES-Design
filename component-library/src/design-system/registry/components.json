@@ -1,93 +1,1105 @@
 {
   "schemaVersion": 1,
   "components": [
-    { "id": "accordion", "name": "Accordion", "category": "layout", "source": "src/components/ui/accordion.tsx", "status": "provisional", "documentationRoute": "/components/accordion" },
-    { "id": "alarm-list-item", "name": "AlarmListItem", "category": "data-display", "source": "src/components/ui/alarm-list-item.tsx", "status": "stable", "documentationRoute": "/components/alarm-list-item" },
-    { "id": "avatar", "name": "Avatar", "category": "data-display", "source": "src/components/ui/avatar.tsx", "status": "provisional", "documentationRoute": "/components/avatar", "rules": ["사용자·작업자 식별의 축약 표시에 사용한다.", "온라인 상태는 보조 표식이며 이름 텍스트를 대체하지 않는다."] },
-    { "id": "badge", "name": "Badge", "category": "data-display", "source": "src/components/ui/badge.tsx", "status": "stable", "documentationRoute": "/components/badge" },
-    { "id": "before-after-comparison", "name": "BeforeAfterComparison", "category": "data-display", "source": "src/components/ui/before-after-comparison.tsx", "status": "stable", "rules": ["선택·정렬이 없는 변경 전후 요약 비교에만 사용한다.", "헤더와 상태 행은 같은 grid 컬럼 좌표를 공유한다.", "변경된 값만 Primary-60 SemiBold로 강조한다."] },
-    { "id": "breadcrumb", "name": "Breadcrumb", "category": "navigation", "source": "src/components/ui/breadcrumb.tsx", "status": "provisional", "documentationRoute": "/components/breadcrumb" },
-    { "id": "button", "name": "Button", "category": "action", "source": "src/components/ui/button.tsx", "status": "stable", "documentationRoute": "/components/button-size", "rules": ["모든 화면 액션은 raw button 대신 Button 또는 IconButton을 사용한다."] },
-    { "id": "button-group", "name": "ButtonGroup", "category": "action", "source": "src/components/ui/button-group.tsx", "status": "provisional", "documentationRoute": "/components/button-group" },
-    { "id": "cascader", "name": "Cascader", "category": "form", "source": "src/components/ui/cascader.tsx", "status": "provisional", "rules": ["서로 종속된 2단계 선택에 사용한다.", "3단계 이상 또는 복수 선택이 필요하면 TreeSelect를 사용한다."] },
-    { "id": "card", "name": "Card", "category": "layout", "source": "src/components/ui/card.tsx", "status": "provisional", "documentationRoute": "/components/card" },
-    { "id": "center-modal", "name": "CenterModal", "category": "overlay", "source": "src/components/ui/center-modal.tsx", "status": "stable", "documentationRoute": "/components/center-modal", "rules": ["중앙 팝업은 임의 overlay가 아니라 CenterModal size variant를 사용한다.", "취소·X·Esc·배경 클릭은 같은 dismiss 경로에서 onCancel로 변경값을 폐기한 뒤 open state를 false로 변경한다."] },
-    { "id": "checkbox", "name": "Checkbox", "category": "form", "source": "src/components/ui/checkbox.tsx", "status": "stable", "documentationRoute": "/components/checkbox", "rules": ["MES 테이블은 미선택 grayCheck, 선택 black을 사용한다.", "선택 상태는 행 배경과 편집 가능 상태를 함께 변경한다."] },
-    { "id": "collapsible", "name": "Collapsible", "category": "layout", "source": "src/components/ui/collapsible.tsx", "status": "provisional", "documentationRoute": "/components/collapsible" },
-    { "id": "combobox", "name": "Combobox", "category": "form", "source": "src/components/ui/combobox.tsx", "status": "stable", "documentationRoute": "/components/combobox" },
-    { "id": "confirm-dialog", "name": "ConfirmDialog", "category": "overlay", "source": "src/components/ui/confirm-dialog.tsx", "status": "stable", "documentationRoute": "/components/confirm-dialog", "rules": ["작은 확인·안내 팝업은 CenterModal이 아니라 12px radius와 modal-shadow를 가진 ConfirmDialog를 사용한다.", "합성 콘텐츠가 필요하면 children과 footer 슬롯을 사용하되 외곽 헤더·그림자 규격을 다시 그리지 않는다.", "X·Esc·배경 클릭은 onCancel을 거쳐 닫는다."] },
-    { "id": "date-picker", "name": "DatePicker", "category": "form", "source": "src/components/ui/date-picker.tsx", "status": "provisional", "documentationRoute": "/components/date-picker", "rules": ["표 셀에서는 size=small(22px)을 사용한다."] },
-    { "id": "labeled-select", "name": "LabeledSelect", "category": "form", "source": "src/components/ui/labeled-select.tsx", "status": "stable", "rules": ["일괄 변경 영역처럼 보조 라벨과 선택값이 하나의 32px 컨트롤 안에 들어갈 때 사용한다."] },
-    { "id": "labeled-input", "name": "LabeledInput", "category": "form", "source": "src/components/ui/labeled-input.tsx", "status": "stable", "rules": ["일괄 변경 영역처럼 보조 라벨과 입력값이 하나의 32px 컨트롤 안에 들어갈 때 사용한다."] },
-    { "id": "selection-action-bar", "name": "SelectionActionBar", "category": "feedback", "source": "src/components/ui/selection-action-bar.tsx", "status": "stable", "rules": ["표에서 하나 이상 선택됐을 때만 하단 중앙에 표시한다.", "삭제·이동·선택 초기화 액션을 제공한다."] },
-    { "id": "analytics-charts", "name": "AnalyticsCharts", "category": "data-display", "source": "src/components/ui/analytics-charts.tsx", "status": "stable", "rules": ["MES 분석 화면의 축·눈금·막대·라인 규격을 공통으로 유지한다."] },
-    { "id": "date-range-picker", "name": "DateRangePicker", "category": "form", "source": "src/components/ui/date-range-picker.tsx", "status": "provisional", "documentationRoute": "/components/date-range-picker" },
-    { "id": "descriptions", "name": "Descriptions", "category": "data-display", "source": "src/components/ui/descriptions.tsx", "status": "provisional", "documentationRoute": "/components/descriptions" },
-    { "id": "dialog-footer", "name": "DialogFooter", "category": "system", "source": "src/components/ui/dialog-footer.tsx", "status": "stable" },
-    { "id": "divider", "name": "Divider", "category": "layout", "source": "src/components/ui/divider.tsx", "status": "provisional", "documentationRoute": "/components/divider" },
-    { "id": "dropdown-menu", "name": "DropdownMenu", "category": "overlay", "source": "src/components/ui/dropdown-menu.tsx", "status": "provisional", "documentationRoute": "/components/dropdown-menu" },
-    { "id": "empty-state", "name": "EmptyState", "category": "feedback", "source": "src/components/ui/empty-state.tsx", "status": "provisional", "documentationRoute": "/components/empty-state" },
-    { "id": "error-state", "name": "ErrorState", "category": "feedback", "source": "src/components/ui/error-state.tsx", "status": "provisional", "documentationRoute": "/components/error-state" },
-    { "id": "fieldset", "name": "Fieldset", "category": "form", "source": "src/components/ui/fieldset.tsx", "status": "provisional", "documentationRoute": "/components/fieldset" },
-    { "id": "filter", "name": "Filter", "category": "form", "source": "src/components/ui/filter.tsx", "status": "stable", "documentationRoute": "/components/filter", "rules": ["필터 추가는 검색창으로 대체하지 않고 Filter 트리거와 선택 패널을 사용한다."] },
-    { "id": "file-upload", "name": "FileUpload", "category": "form", "source": "src/components/ui/file-upload.tsx", "status": "provisional", "rules": ["파일 선택과 드롭 동작만 소유하며 서버 전송과 유효성 검사는 호출부가 담당한다.", "허용 형식과 최대 크기는 helpText와 accept로 명시한다."] },
-    { "id": "filter-tag", "name": "FilterTag", "category": "system", "source": "src/components/ui/filter-tag.tsx", "status": "stable" },
-    { "id": "form-grid", "name": "FormGrid / FormFieldRow", "category": "layout", "source": "src/components/ui/form-grid.tsx", "status": "stable", "rules": ["FormGrid는 열 수와 행·열 간격을 소유하고 FormFieldRow는 라벨·필수표시·control 정렬을 소유한다.", "labelWidth는 raw pixel이 아니라 standard(100px) 또는 wide(108px) variant를 사용한다."] },
-    { "id": "grid-container", "name": "Container / Grid", "category": "layout", "source": "src/components/ui/grid-container.tsx", "status": "provisional", "documentationRoute": "/foundations/grid-container" },
-    { "id": "group-query", "name": "GroupQuery", "category": "form", "source": "src/components/ui/group-query.tsx", "status": "stable", "documentationRoute": "/components/group-query" },
-    { "id": "icon-button", "name": "IconButton / CloseButton", "category": "action", "source": "src/components/ui/icon-button.tsx", "status": "provisional", "documentationRoute": "/components/icon-button" },
-    { "id": "input", "name": "Input", "category": "form", "source": "src/components/ui/input.tsx", "status": "stable", "documentationRoute": "/components/input" },
-    { "id": "image-thumbnail", "name": "ImageThumbnail", "category": "data-display", "source": "src/components/ui/image-thumbnail.tsx", "status": "provisional", "documentationRoute": "/components/image-thumbnail", "rules": ["이미지 후보를 축소 미리보기로 비교·선택할 때 사용한다.", "파일 저장과 업로드 상태는 FileUpload 또는 호출부가 담당한다."] },
-    { "id": "inspection-judgement", "name": "InspectionJudgement", "category": "system", "source": "src/components/ui/inspection-judgement.tsx", "status": "stable" },
-    { "id": "label", "name": "Label", "category": "form", "source": "src/components/ui/label.tsx", "status": "provisional", "documentationRoute": "/components/label" },
-    { "id": "link", "name": "Link", "category": "action", "source": "src/components/ui/link.tsx", "status": "provisional", "documentationRoute": "/components/link", "rules": ["링크 의미의 값은 Badge나 Tag가 아니라 Link를 사용한다."] },
-    { "id": "list", "name": "List / ListItem", "category": "data-display", "source": "src/components/ui/list.tsx", "status": "provisional", "documentationRoute": "/components/list" },
-    { "id": "loading-overlay", "name": "LoadingOverlay", "category": "feedback", "source": "src/components/ui/loading-overlay.tsx", "status": "provisional", "documentationRoute": "/components/loading-overlay" },
-    { "id": "loading-spinner", "name": "LoadingSpinner", "category": "feedback", "source": "src/components/ui/loading-spinner.tsx", "status": "provisional", "documentationRoute": "/components/loading-spinner" },
-    { "id": "logo", "name": "Logo", "category": "navigation", "source": "src/components/ui/logo.tsx", "status": "provisional", "documentationRoute": "/components/logo" },
-    { "id": "multi-select-input", "name": "MultiSelectInput", "category": "form", "source": "src/components/ui/multi-select-input.tsx", "status": "provisional", "documentationRoute": "/components/multi-select-input" },
-    { "id": "navbar", "name": "Navbar", "category": "navigation", "source": "src/components/ui/navbar.tsx", "status": "provisional", "documentationRoute": "/components/navbar" },
-    { "id": "notice-banner", "name": "NoticeBanner", "category": "feedback", "source": "src/components/ui/notice-banner.tsx", "status": "stable", "documentationRoute": "/components/notice-banner" },
-    { "id": "notification-panel", "name": "NotificationPanel", "category": "overlay", "source": "src/components/ui/notification-panel.tsx", "status": "stable", "documentationRoute": "/components/notification-panel" },
-    { "id": "number-input", "name": "NumberInput", "category": "form", "source": "src/components/ui/number-input.tsx", "status": "provisional", "documentationRoute": "/components/number-input" },
-    { "id": "page-top-tab-item", "name": "PageTopTabItem", "category": "navigation", "source": "src/components/ui/page-top-tab-item.tsx", "status": "stable", "documentationRoute": "/components/page-top-tab-item" },
-    { "id": "overflow-list", "name": "OverflowList", "category": "data-display", "source": "src/components/ui/overflow-list.tsx", "status": "provisional", "documentationRoute": "/components/overflow-list", "rules": ["한정된 공간에서 보조 항목을 +N으로 접어 표시할 때 사용한다.", "핵심 업무 값이나 필수 판정값은 숨기지 않는다."] },
-    { "id": "pagination", "name": "Pagination", "category": "navigation", "source": "src/components/ui/pagination.tsx", "status": "provisional", "documentationRoute": "/components/pagination" },
-    { "id": "panel", "name": "Panel", "category": "layout", "source": "src/components/ui/panel.tsx", "status": "provisional", "documentationRoute": "/components/panel" },
-    { "id": "password-input", "name": "PasswordInput", "category": "form", "source": "src/components/ui/password-input.tsx", "status": "provisional", "documentationRoute": "/components/password-input" },
-    { "id": "popover", "name": "Popover", "category": "overlay", "source": "src/components/ui/popover.tsx", "status": "provisional", "documentationRoute": "/components/popover" },
-    { "id": "progress", "name": "Progress", "category": "feedback", "source": "src/components/ui/progress.tsx", "status": "stable", "documentationRoute": "/components/progress" },
-    { "id": "progress-circle", "name": "ProgressCircle", "category": "feedback", "source": "src/components/ui/progress-circle.tsx", "status": "provisional", "documentationRoute": "/components/progress-circle", "rules": ["좁은 카드에서 단일 진행률을 요약할 때 사용한다.", "목록 비교나 긴 진행 영역은 선형 Progress를 우선한다."] },
-    { "id": "quick-query", "name": "QuickQuery", "category": "form", "source": "src/components/ui/quick-query.tsx", "status": "stable", "documentationRoute": "/components/quick-query" },
-    { "id": "radio", "name": "Radio", "category": "form", "source": "src/components/ui/radio.tsx", "status": "stable", "documentationRoute": "/components/radio" },
-    { "id": "radio-choice-dialog", "name": "RadioChoiceDialog", "category": "overlay", "source": "src/components/ui/radio-choice-dialog.tsx", "status": "stable", "documentationRoute": "/components/radio-choice-dialog" },
-    { "id": "scroll-area", "name": "ScrollArea", "category": "layout", "source": "src/components/ui/scroll-area.tsx", "status": "provisional", "documentationRoute": "/components/scroll-area" },
-    { "id": "search-highlight", "name": "SearchHighlight", "category": "data-display", "source": "src/components/ui/search-highlight.tsx", "status": "provisional", "documentationRoute": "/components/search-highlight", "rules": ["검색 결과 텍스트 안에서 실제 일치 문자열만 강조한다.", "검색·필터 상태는 SearchInput 또는 호출부가 소유한다."] },
-    { "id": "search-input", "name": "SearchInput", "category": "form", "source": "src/components/ui/search-input.tsx", "status": "stable", "documentationRoute": "/components/search-input", "rules": ["컴포넌트는 크기를 소유하고 부모 toolbar는 배치와 수직 정렬을 소유한다.", "compact는 화면 상단 조회 툴바의 220×32·14px·Gray-20 규격이다."] },
-    { "id": "segmented-control", "name": "SegmentedControl", "category": "form", "source": "src/components/ui/segmented-control.tsx", "status": "provisional", "documentationRoute": "/components/segmented-control", "rules": ["서로 배타적인 소수의 보기·상태 중 하나를 즉시 전환할 때 사용한다.", "ButtonGroup의 단순 배치나 ToggleButton의 독립 on/off와 구분한다.", "방향키·Home·End 이동과 roving tabindex를 유지한다."] },
-    { "id": "mes-product-switcher", "name": "MesProductSwitcher", "category": "navigation", "source": "src/components/ui/mes-product-switcher.tsx", "status": "stable", "rules": ["접힌 SNB에서는 MES/FEMS를 M/F로 축약한다."] },
-    { "id": "section-frame", "name": "SectionFrame", "category": "layout", "source": "src/components/ui/section-frame.tsx", "status": "stable", "rules": ["SectionFrame은 padding·divider·background만 소유하고 업무 제목과 본문은 slot으로 받는다.", "Shell의 overlay·header·footer와 화면별 고정 높이는 변경하지 않는다."] },
-    { "id": "section-header", "name": "SectionHeader", "category": "layout", "source": "src/components/ui/section-header.tsx", "status": "stable", "rules": ["모달 섹션 제목의 28px 회색 밴드와 우측 액션을 10px 간격으로 배치한다."] },
-    { "id": "icon-menu", "name": "IconMenu", "category": "icon", "source": "src/components/icons/icon-menu.tsx", "status": "stable", "rules": ["Figma node 18849:64891의 17×14 원본 벡터를 사용한다."] },
-    { "id": "query-date-range", "name": "QueryDateRange", "category": "form", "source": "src/components/ui/query-date-range.tsx", "status": "stable", "rules": ["라벨·두 DatePicker·기간 구분자를 32px 단일 컨트롤로 결합한다."] },
-    { "id": "cavity-cell", "name": "CavityCell", "category": "data-display", "source": "src/components/ui/cavity-cell.tsx", "status": "stable", "rules": ["값 없음·값 있음·선택 상태를 10×10 배열에서 동일 규격으로 표시한다."] },
-    { "id": "select", "name": "Select", "category": "form", "source": "src/components/ui/select.tsx", "status": "stable", "documentationRoute": "/components/select" },
-    { "id": "sidebar", "name": "Sidebar", "category": "navigation", "source": "src/components/ui/sidebar.tsx", "status": "stable", "documentationRoute": "/components/sidebar" },
-    { "id": "slider", "name": "Slider", "category": "form", "source": "src/components/ui/slider.tsx", "status": "provisional", "rules": ["연속 범위를 빠르게 조절할 때 사용한다.", "정확한 수치 입력이 우선이면 NumberInput을 사용한다."] },
-    { "id": "side-slide-panel", "name": "SideSlidePanel", "category": "overlay", "source": "src/components/ui/side-slide-panel.tsx", "status": "stable", "documentationRoute": "/components/side-slide-panel", "rules": ["우측에서 열리는 등록·검사 화면은 SideSlidePanel을 사용한다.", "폭은 Figma에서 반복 확인한 760·849·900·960px preset만 사용한다.", "취소·X·Esc·배경 클릭은 같은 dismiss 경로에서 onCancel로 변경값을 폐기한 뒤 닫는다."] },
-    { "id": "skeleton", "name": "Skeleton", "category": "feedback", "source": "src/components/ui/skeleton.tsx", "status": "provisional", "documentationRoute": "/components/skeleton" },
-    { "id": "sticky-header-footer", "name": "StickyHeader / StickyFooter", "category": "layout", "source": "src/components/ui/sticky-header-footer.tsx", "status": "provisional", "documentationRoute": "/components/sticky-header-footer" },
-    { "id": "switch", "name": "Switch", "category": "form", "source": "src/components/ui/switch.tsx", "status": "stable", "documentationRoute": "/components/switch", "rules": ["기본 40×20은 설정 목록에 사용한다.", "compact 26×18은 표준단가 카드의 단가 동기화에 사용한다."] },
-    { "id": "table", "name": "Table", "category": "data-display", "source": "src/components/ui/table.tsx", "status": "stable", "documentationRoute": "/components/table-full", "rules": ["header, group, row, totals는 동일한 선택열·토글열·컬럼 폭 배열을 공유한다.", "행 선택은 Checkbox 상태, 활성 행 배경, 조건부 편집 컨트롤을 동일 state에서 파생한다.", "MES 테이블 기본 선택 색은 black이고 미선택 외형은 grayCheck다.", "헤더 배경은 기본 gray10을 유지하고 원본이 흰색인 화면에서만 headerBackground=white를 사용한다."] },
-    { "id": "tag", "name": "Tag", "category": "data-display", "source": "src/components/ui/tag.tsx", "status": "stable", "documentationRoute": "/components/tag" },
-    { "id": "textarea", "name": "Textarea", "category": "form", "source": "src/components/ui/textarea.tsx", "status": "provisional", "documentationRoute": "/components/textarea" },
-    { "id": "time-picker", "name": "TimePicker", "category": "form", "source": "src/components/ui/time-picker.tsx", "status": "provisional", "documentationRoute": "/components/time-picker" },
-    { "id": "timeline", "name": "Timeline", "category": "data-display", "source": "src/components/ui/timeline.tsx", "status": "provisional", "rules": ["시간 순서가 의미를 갖는 변경·작업 이력에만 사용한다.", "순서 의미가 없는 항목은 List를 사용한다."] },
-    { "id": "toast", "name": "Toast", "category": "feedback", "source": "src/components/ui/toast.tsx", "status": "stable", "documentationRoute": "/components/toast" },
-    { "id": "tree-select", "name": "TreeSelect", "category": "form", "source": "src/components/ui/tree-select.tsx", "status": "provisional", "rules": ["계층을 보며 복수 값을 제출하는 입력에 사용한다.", "부모·자식 선택 전파는 업무 규칙이므로 호출부가 명시한다."] },
-    { "id": "tree-view", "name": "TreeView", "category": "navigation", "source": "src/components/ui/tree-view.tsx", "status": "provisional", "rules": ["읽기·탐색 목적의 계층에 사용한다.", "선택값 제출이 필요하면 TreeSelect를 사용한다."] },
-    { "id": "toggle-button", "name": "ToggleButton", "category": "action", "source": "src/components/ui/toggle-button.tsx", "status": "provisional", "documentationRoute": "/components/toggle-button" },
-    { "id": "tooltip", "name": "Tooltip", "category": "overlay", "source": "src/components/ui/tooltip.tsx", "status": "provisional", "documentationRoute": "/components/tooltip" },
-    { "id": "user-account-menu", "name": "UserAccountMenu", "category": "navigation", "source": "src/components/ui/user-account-menu.tsx", "status": "provisional", "documentationRoute": "/components/user-account-menu" }
+    {
+      "id": "accordion",
+      "name": "Accordion",
+      "category": "layout",
+      "source": "src/components/ui/accordion.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/accordion",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "alarm-list-item",
+      "name": "AlarmListItem",
+      "category": "data-display",
+      "source": "src/components/ui/alarm-list-item.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/alarm-list-item",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "avatar",
+      "name": "Avatar",
+      "category": "data-display",
+      "source": "src/components/ui/avatar.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/avatar",
+      "rules": [
+        "사용자·작업자 식별의 축약 표시에 사용한다.",
+        "온라인 상태는 보조 표식이며 이름 텍스트를 대체하지 않는다."
+      ],
+      "visibility": "public",
+      "tier": 4,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "badge",
+      "name": "Badge",
+      "category": "data-display",
+      "source": "src/components/ui/badge.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/badge",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "before-after-comparison",
+      "name": "BeforeAfterComparison",
+      "category": "data-display",
+      "source": "src/components/ui/before-after-comparison.tsx",
+      "status": "stable",
+      "rules": [
+        "선택·정렬이 없는 변경 전후 요약 비교에만 사용한다.",
+        "헤더와 상태 행은 같은 grid 컬럼 좌표를 공유한다.",
+        "변경된 값만 Primary-60 SemiBold로 강조한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/before-after-comparison"
+    },
+    {
+      "id": "breadcrumb",
+      "name": "Breadcrumb",
+      "category": "navigation",
+      "source": "src/components/ui/breadcrumb.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/breadcrumb",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "button",
+      "name": "Button",
+      "category": "action",
+      "source": "src/components/ui/button.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/button-size",
+      "rules": [
+        "모든 화면 액션은 raw button 대신 Button 또는 IconButton을 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "button-group",
+      "name": "ButtonGroup",
+      "category": "action",
+      "source": "src/components/ui/button-group.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/button-group",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "cascader",
+      "name": "Cascader",
+      "category": "form",
+      "source": "src/components/ui/cascader.tsx",
+      "status": "provisional",
+      "rules": [
+        "서로 종속된 2단계 선택에 사용한다.",
+        "3단계 이상 또는 복수 선택이 필요하면 TreeSelect를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/cascader"
+    },
+    {
+      "id": "card",
+      "name": "Card",
+      "category": "layout",
+      "source": "src/components/ui/card.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/card",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "center-modal",
+      "name": "CenterModal",
+      "category": "overlay",
+      "source": "src/components/ui/center-modal.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/center-modal",
+      "rules": [
+        "중앙 팝업은 임의 overlay가 아니라 CenterModal size variant를 사용한다.",
+        "취소·X·Esc·배경 클릭은 같은 dismiss 경로에서 onCancel로 변경값을 폐기한 뒤 open state를 false로 변경한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "checkbox",
+      "name": "Checkbox",
+      "category": "form",
+      "source": "src/components/ui/checkbox.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/checkbox",
+      "rules": [
+        "MES 테이블은 미선택 grayCheck, 선택 black을 사용한다.",
+        "선택 상태는 행 배경과 편집 가능 상태를 함께 변경한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "collapsible",
+      "name": "Collapsible",
+      "category": "layout",
+      "source": "src/components/ui/collapsible.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/collapsible",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "combobox",
+      "name": "Combobox",
+      "category": "form",
+      "source": "src/components/ui/combobox.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/combobox",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "confirm-dialog",
+      "name": "ConfirmDialog",
+      "category": "overlay",
+      "source": "src/components/ui/confirm-dialog.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/confirm-dialog",
+      "rules": [
+        "작은 확인·안내 팝업은 CenterModal이 아니라 12px radius와 modal-shadow를 가진 ConfirmDialog를 사용한다.",
+        "합성 콘텐츠가 필요하면 children과 footer 슬롯을 사용하되 외곽 헤더·그림자 규격을 다시 그리지 않는다.",
+        "X·Esc·배경 클릭은 onCancel을 거쳐 닫는다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "date-picker",
+      "name": "DatePicker",
+      "category": "form",
+      "source": "src/components/ui/date-picker.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/date-picker",
+      "rules": [
+        "표 셀에서는 size=small(22px)을 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "labeled-select",
+      "name": "LabeledSelect",
+      "category": "form",
+      "source": "src/components/ui/labeled-select.tsx",
+      "status": "stable",
+      "rules": [
+        "일괄 변경 영역처럼 보조 라벨과 선택값이 하나의 32px 컨트롤 안에 들어갈 때 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/labeled-select"
+    },
+    {
+      "id": "labeled-input",
+      "name": "LabeledInput",
+      "category": "form",
+      "source": "src/components/ui/labeled-input.tsx",
+      "status": "stable",
+      "rules": [
+        "일괄 변경 영역처럼 보조 라벨과 입력값이 하나의 32px 컨트롤 안에 들어갈 때 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/labeled-input"
+    },
+    {
+      "id": "selection-action-bar",
+      "name": "SelectionActionBar",
+      "category": "feedback",
+      "source": "src/components/ui/selection-action-bar.tsx",
+      "status": "stable",
+      "rules": [
+        "표에서 하나 이상 선택됐을 때만 하단 중앙에 표시한다.",
+        "삭제·이동·선택 초기화 액션을 제공한다."
+      ],
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/selection-action-bar"
+    },
+    {
+      "id": "analytics-charts",
+      "name": "AnalyticsCharts",
+      "category": "data-display",
+      "source": "src/components/ui/analytics-charts.tsx",
+      "status": "stable",
+      "rules": [
+        "MES 분석 화면의 축·눈금·막대·라인 규격을 공통으로 유지한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/analytics-charts"
+    },
+    {
+      "id": "date-range-picker",
+      "name": "DateRangePicker",
+      "category": "form",
+      "source": "src/components/ui/date-range-picker.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/date-range-picker",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "descriptions",
+      "name": "Descriptions",
+      "category": "data-display",
+      "source": "src/components/ui/descriptions.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/descriptions",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "dialog-footer",
+      "name": "DialogFooter",
+      "category": "system",
+      "source": "src/components/ui/dialog-footer.tsx",
+      "status": "stable",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/dialog-footer"
+    },
+    {
+      "id": "divider",
+      "name": "Divider",
+      "category": "layout",
+      "source": "src/components/ui/divider.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/divider",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "dropdown-menu",
+      "name": "DropdownMenu",
+      "category": "overlay",
+      "source": "src/components/ui/dropdown-menu.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/dropdown-menu",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "empty-state",
+      "name": "EmptyState",
+      "category": "feedback",
+      "source": "src/components/ui/empty-state.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/empty-state",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "error-state",
+      "name": "ErrorState",
+      "category": "feedback",
+      "source": "src/components/ui/error-state.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/error-state",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "fieldset",
+      "name": "Fieldset",
+      "category": "form",
+      "source": "src/components/ui/fieldset.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/fieldset",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "filter",
+      "name": "Filter",
+      "category": "form",
+      "source": "src/components/ui/filter.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/filter",
+      "rules": [
+        "필터 추가는 검색창으로 대체하지 않고 Filter 트리거와 선택 패널을 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "file-upload",
+      "name": "FileUpload",
+      "category": "form",
+      "source": "src/components/ui/file-upload.tsx",
+      "status": "provisional",
+      "rules": [
+        "파일 선택과 드롭 동작만 소유하며 서버 전송과 유효성 검사는 호출부가 담당한다.",
+        "허용 형식과 최대 크기는 helpText와 accept로 명시한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/file-upload"
+    },
+    {
+      "id": "filter-tag",
+      "name": "FilterTag",
+      "category": "system",
+      "source": "src/components/ui/filter-tag.tsx",
+      "status": "stable",
+      "visibility": "internal",
+      "tier": 1,
+      "documentationMode": "internal"
+    },
+    {
+      "id": "form-grid",
+      "name": "FormGrid / FormFieldRow",
+      "category": "layout",
+      "source": "src/components/ui/form-grid.tsx",
+      "status": "stable",
+      "rules": [
+        "FormGrid는 열 수와 행·열 간격을 소유하고 FormFieldRow는 라벨·필수표시·control 정렬을 소유한다.",
+        "labelWidth는 raw pixel이 아니라 standard(100px) 또는 wide(108px) variant를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/form-grid"
+    },
+    {
+      "id": "grid-container",
+      "name": "Container / Grid",
+      "category": "layout",
+      "source": "src/components/ui/grid-container.tsx",
+      "status": "provisional",
+      "documentationRoute": "/foundations/grid-container",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "foundation"
+    },
+    {
+      "id": "group-query",
+      "name": "GroupQuery",
+      "category": "form",
+      "source": "src/components/ui/group-query.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/group-query",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "icon-button",
+      "name": "IconButton / CloseButton",
+      "category": "action",
+      "source": "src/components/ui/icon-button.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/icon-button",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "input",
+      "name": "Input",
+      "category": "form",
+      "source": "src/components/ui/input.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/input",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "image-thumbnail",
+      "name": "ImageThumbnail",
+      "category": "data-display",
+      "source": "src/components/ui/image-thumbnail.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/image-thumbnail",
+      "rules": [
+        "이미지 후보를 축소 미리보기로 비교·선택할 때 사용한다.",
+        "파일 저장과 업로드 상태는 FileUpload 또는 호출부가 담당한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "inspection-judgement",
+      "name": "InspectionJudgement",
+      "category": "system",
+      "source": "src/components/ui/inspection-judgement.tsx",
+      "status": "stable",
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/inspection-judgement"
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "category": "form",
+      "source": "src/components/ui/label.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/label",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "link",
+      "name": "Link",
+      "category": "action",
+      "source": "src/components/ui/link.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/link",
+      "rules": [
+        "링크 의미의 값은 Badge나 Tag가 아니라 Link를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "list",
+      "name": "List / ListItem",
+      "category": "data-display",
+      "source": "src/components/ui/list.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/list",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "loading-overlay",
+      "name": "LoadingOverlay",
+      "category": "feedback",
+      "source": "src/components/ui/loading-overlay.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/loading-overlay",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "loading-spinner",
+      "name": "LoadingSpinner",
+      "category": "feedback",
+      "source": "src/components/ui/loading-spinner.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/loading-spinner",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "logo",
+      "name": "Logo",
+      "category": "navigation",
+      "source": "src/components/ui/logo.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/logo",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "multi-select-input",
+      "name": "MultiSelectInput",
+      "category": "form",
+      "source": "src/components/ui/multi-select-input.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/multi-select-input",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "navbar",
+      "name": "Navbar",
+      "category": "navigation",
+      "source": "src/components/ui/navbar.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/navbar",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "notice-banner",
+      "name": "NoticeBanner",
+      "category": "feedback",
+      "source": "src/components/ui/notice-banner.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/notice-banner",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "notification-panel",
+      "name": "NotificationPanel",
+      "category": "overlay",
+      "source": "src/components/ui/notification-panel.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/notification-panel",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "number-input",
+      "name": "NumberInput",
+      "category": "form",
+      "source": "src/components/ui/number-input.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/number-input",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "page-top-tab-item",
+      "name": "PageTopTabItem",
+      "category": "navigation",
+      "source": "src/components/ui/page-top-tab-item.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/page-top-tab-item",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "overflow-list",
+      "name": "OverflowList",
+      "category": "data-display",
+      "source": "src/components/ui/overflow-list.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/overflow-list",
+      "rules": [
+        "한정된 공간에서 보조 항목을 +N으로 접어 표시할 때 사용한다.",
+        "핵심 업무 값이나 필수 판정값은 숨기지 않는다."
+      ],
+      "visibility": "public",
+      "tier": 4,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "pagination",
+      "name": "Pagination",
+      "category": "navigation",
+      "source": "src/components/ui/pagination.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/pagination",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "panel",
+      "name": "Panel",
+      "category": "layout",
+      "source": "src/components/ui/panel.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/panel",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "password-input",
+      "name": "PasswordInput",
+      "category": "form",
+      "source": "src/components/ui/password-input.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/password-input",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "popover",
+      "name": "Popover",
+      "category": "overlay",
+      "source": "src/components/ui/popover.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/popover",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "progress",
+      "name": "Progress",
+      "category": "feedback",
+      "source": "src/components/ui/progress.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/progress",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "progress-circle",
+      "name": "ProgressCircle",
+      "category": "feedback",
+      "source": "src/components/ui/progress-circle.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/progress-circle",
+      "rules": [
+        "좁은 카드에서 단일 진행률을 요약할 때 사용한다.",
+        "목록 비교나 긴 진행 영역은 선형 Progress를 우선한다."
+      ],
+      "visibility": "public",
+      "tier": 4,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "quick-query",
+      "name": "QuickQuery",
+      "category": "form",
+      "source": "src/components/ui/quick-query.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/quick-query",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "radio",
+      "name": "Radio",
+      "category": "form",
+      "source": "src/components/ui/radio.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/radio",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "radio-choice-dialog",
+      "name": "RadioChoiceDialog",
+      "category": "overlay",
+      "source": "src/components/ui/radio-choice-dialog.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/radio-choice-dialog",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "scroll-area",
+      "name": "ScrollArea",
+      "category": "layout",
+      "source": "src/components/ui/scroll-area.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/scroll-area",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "search-highlight",
+      "name": "SearchHighlight",
+      "category": "data-display",
+      "source": "src/components/ui/search-highlight.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/search-highlight",
+      "rules": [
+        "검색 결과 텍스트 안에서 실제 일치 문자열만 강조한다.",
+        "검색·필터 상태는 SearchInput 또는 호출부가 소유한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "search-input",
+      "name": "SearchInput",
+      "category": "form",
+      "source": "src/components/ui/search-input.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/search-input",
+      "rules": [
+        "컴포넌트는 크기를 소유하고 부모 toolbar는 배치와 수직 정렬을 소유한다.",
+        "compact는 화면 상단 조회 툴바의 220×32·14px·Gray-20 규격이다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "segmented-control",
+      "name": "SegmentedControl",
+      "category": "form",
+      "source": "src/components/ui/segmented-control.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/segmented-control",
+      "rules": [
+        "서로 배타적인 소수의 보기·상태 중 하나를 즉시 전환할 때 사용한다.",
+        "ButtonGroup의 단순 배치나 ToggleButton의 독립 on/off와 구분한다.",
+        "방향키·Home·End 이동과 roving tabindex를 유지한다."
+      ],
+      "visibility": "public",
+      "tier": 4,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "mes-product-switcher",
+      "name": "MesProductSwitcher",
+      "category": "navigation",
+      "source": "src/components/ui/mes-product-switcher.tsx",
+      "status": "stable",
+      "rules": [
+        "접힌 SNB에서는 MES/FEMS를 M/F로 축약한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/mes-product-switcher"
+    },
+    {
+      "id": "section-frame",
+      "name": "SectionFrame",
+      "category": "layout",
+      "source": "src/components/ui/section-frame.tsx",
+      "status": "stable",
+      "rules": [
+        "SectionFrame은 padding·divider·background만 소유하고 업무 제목과 본문은 slot으로 받는다.",
+        "Shell의 overlay·header·footer와 화면별 고정 높이는 변경하지 않는다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/section-frame"
+    },
+    {
+      "id": "section-header",
+      "name": "SectionHeader",
+      "category": "layout",
+      "source": "src/components/ui/section-header.tsx",
+      "status": "stable",
+      "rules": [
+        "모달 섹션 제목의 28px 회색 밴드와 우측 액션을 10px 간격으로 배치한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/section-header"
+    },
+    {
+      "id": "icon-menu",
+      "name": "IconMenu",
+      "category": "icon",
+      "source": "src/components/icons/icon-menu.tsx",
+      "status": "stable",
+      "rules": [
+        "Figma node 18849:64891의 17×14 원본 벡터를 사용한다."
+      ],
+      "visibility": "internal",
+      "tier": 2,
+      "documentationMode": "internal"
+    },
+    {
+      "id": "query-date-range",
+      "name": "QueryDateRange",
+      "category": "form",
+      "source": "src/components/ui/query-date-range.tsx",
+      "status": "stable",
+      "rules": [
+        "라벨·두 DatePicker·기간 구분자를 32px 단일 컨트롤로 결합한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/query-date-range"
+    },
+    {
+      "id": "cavity-cell",
+      "name": "CavityCell",
+      "category": "data-display",
+      "source": "src/components/ui/cavity-cell.tsx",
+      "status": "stable",
+      "rules": [
+        "값 없음·값 있음·선택 상태를 10×10 배열에서 동일 규격으로 표시한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/cavity-cell"
+    },
+    {
+      "id": "select",
+      "name": "Select",
+      "category": "form",
+      "source": "src/components/ui/select.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/select",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "sidebar",
+      "name": "Sidebar",
+      "category": "navigation",
+      "source": "src/components/ui/sidebar.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/sidebar",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "slider",
+      "name": "Slider",
+      "category": "form",
+      "source": "src/components/ui/slider.tsx",
+      "status": "provisional",
+      "rules": [
+        "연속 범위를 빠르게 조절할 때 사용한다.",
+        "정확한 수치 입력이 우선이면 NumberInput을 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/slider"
+    },
+    {
+      "id": "side-slide-panel",
+      "name": "SideSlidePanel",
+      "category": "overlay",
+      "source": "src/components/ui/side-slide-panel.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/side-slide-panel",
+      "rules": [
+        "우측에서 열리는 등록·검사 화면은 SideSlidePanel을 사용한다.",
+        "폭은 Figma에서 반복 확인한 760·849·900·960px preset만 사용한다.",
+        "취소·X·Esc·배경 클릭은 같은 dismiss 경로에서 onCancel로 변경값을 폐기한 뒤 닫는다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "category": "feedback",
+      "source": "src/components/ui/skeleton.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/skeleton",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "sticky-header-footer",
+      "name": "StickyHeader / StickyFooter",
+      "category": "layout",
+      "source": "src/components/ui/sticky-header-footer.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/sticky-header-footer",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "switch",
+      "name": "Switch",
+      "category": "form",
+      "source": "src/components/ui/switch.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/switch",
+      "rules": [
+        "기본 40×20은 설정 목록에 사용한다.",
+        "compact 26×18은 표준단가 카드의 단가 동기화에 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "table",
+      "name": "Table",
+      "category": "data-display",
+      "source": "src/components/ui/table.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/table-full",
+      "rules": [
+        "header, group, row, totals는 동일한 선택열·토글열·컬럼 폭 배열을 공유한다.",
+        "행 선택은 Checkbox 상태, 활성 행 배경, 조건부 편집 컨트롤을 동일 state에서 파생한다.",
+        "MES 테이블 기본 선택 색은 black이고 미선택 외형은 grayCheck다.",
+        "헤더 배경은 기본 gray10을 유지하고 원본이 흰색인 화면에서만 headerBackground=white를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "tag",
+      "name": "Tag",
+      "category": "data-display",
+      "source": "src/components/ui/tag.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/tag",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "textarea",
+      "name": "Textarea",
+      "category": "form",
+      "source": "src/components/ui/textarea.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/textarea",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "time-picker",
+      "name": "TimePicker",
+      "category": "form",
+      "source": "src/components/ui/time-picker.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/time-picker",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "category": "data-display",
+      "source": "src/components/ui/timeline.tsx",
+      "status": "provisional",
+      "rules": [
+        "시간 순서가 의미를 갖는 변경·작업 이력에만 사용한다.",
+        "순서 의미가 없는 항목은 List를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/timeline"
+    },
+    {
+      "id": "toast",
+      "name": "Toast",
+      "category": "feedback",
+      "source": "src/components/ui/toast.tsx",
+      "status": "stable",
+      "documentationRoute": "/components/toast",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "tree-select",
+      "name": "TreeSelect",
+      "category": "form",
+      "source": "src/components/ui/tree-select.tsx",
+      "status": "provisional",
+      "rules": [
+        "계층을 보며 복수 값을 제출하는 입력에 사용한다.",
+        "부모·자식 선택 전파는 업무 규칙이므로 호출부가 명시한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/tree-select"
+    },
+    {
+      "id": "tree-view",
+      "name": "TreeView",
+      "category": "navigation",
+      "source": "src/components/ui/tree-view.tsx",
+      "status": "provisional",
+      "rules": [
+        "읽기·탐색 목적의 계층에 사용한다.",
+        "선택값 제출이 필요하면 TreeSelect를 사용한다."
+      ],
+      "visibility": "public",
+      "tier": 3,
+      "documentationMode": "interactive",
+      "documentationRoute": "/components/tree-view"
+    },
+    {
+      "id": "toggle-button",
+      "name": "ToggleButton",
+      "category": "action",
+      "source": "src/components/ui/toggle-button.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/toggle-button",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "tooltip",
+      "name": "Tooltip",
+      "category": "overlay",
+      "source": "src/components/ui/tooltip.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/tooltip",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    },
+    {
+      "id": "user-account-menu",
+      "name": "UserAccountMenu",
+      "category": "navigation",
+      "source": "src/components/ui/user-account-menu.tsx",
+      "status": "provisional",
+      "documentationRoute": "/components/user-account-menu",
+      "visibility": "public",
+      "tier": 2,
+      "documentationMode": "interactive"
+    }
   ]
 }

@@ -39,13 +39,8 @@ const centerModalSizeClasses: Record<CenterModalSize, string> = {
  * MES Center Modal (화면 중앙 기본 팝업, 오가니즘) — Figma 실측 기반
  *
  * ── 0. 경위 ─────────────────────────────────────────────────────
- * 2026-07-29 컴포넌트 라이브러리 파일(qEAQNTqXf76bYydyupti2V) node 168:37994("modal")로
- * 1차 코드화했으나, 담당자가 "Center Modal과 Side Slide Panel이 위계가 비슷해서 나중에
- * 같이 자료 보내주겠다"며 보류 지시 — 코드는 `docs/보류_컴포넌트/center-modal.tsx.bak`에
- * 백업, 체크리스트 상태 "보류"로 변경.
- * 2026-08-03 담당자가 클라우드MES 파일 node 9873:82872("Modal" 스펙 페이지, Type01=Center
- * Modal/Type02=Side Slide Panel 둘 다 포함)를 전달 — 약속했던 "같이 보내주는 자료"에
- * 해당해 보류 해제, 이 스펙으로 복원+갱신. `side-slide-panel.tsx`도 같은 자료로 신규 작성.
+ * 컴포넌트 라이브러리 node 168:37994의 초기안은 한때 보류됐으나, 이후 클라우드MES
+ * node 9873:82872의 Type01/Type02 스펙으로 복원·확정했다. 과거 백업은 현재 근거로 사용하지 않는다.
  *
  * ── 1. 레이아웃(실측, node 9873:82872 Type01) ──────────────────────
  * 전체: 흰 배경, radius **16px**(ConfirmDialog의 12px과 다름 — 과거에 이 둘을 같은

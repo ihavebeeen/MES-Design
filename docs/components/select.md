@@ -1,0 +1,40 @@
+# Select
+
+> `select` · form · Tier 1 · stable · 공개
+
+## 역할
+
+유한한 선택지 중 하나를 고름
+
+## 사용 기준
+
+- 유한한 선택지 중 하나를 고름
+- 선택 행에서 편집 가능한 코드·구분 값을 선택
+
+사용하지 않는 경우:
+- 여러 값을 동시에 선택
+- 자유 입력
+- 라디오로 모든 옵션을 한눈에 비교해야 함
+
+## API와 상태
+
+- 공개 심볼: `SelectTriggerProps`, `Select`, `SelectGroup`, `SelectValue`, `SelectTrigger`, `SelectContent`, `SelectItem`, `selectTriggerVariants`
+- 주요 Props: `icon`
+- 상태: `default`, `open`, `focus`, `complete`, `disabled`
+- 변형: `default`, `small`
+
+## 접근성과 제약
+
+- 트리거에 label 또는 aria-label을 연결한다.
+- 키보드 열기·이동·선택을 유지한다.
+- 현재 value는 options에 존재해야 한다.
+- 선택 행에서만 보여야 하는 경우 행 선택 state에서 노출을 파생한다.
+
+## 근거
+
+- 구현: `src/components/ui/select.tsx`
+- 웹 문서: `/components/select`
+- 상세 사용 계약: 등록됨
+- 화면 근거: `receiving`, `batch-work-order`, `team-settings`
+
+이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

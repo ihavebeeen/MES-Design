@@ -13,49 +13,49 @@
       "label": "입력과 선택",
       "labelEn": "Inputs & Selection",
       "description": "값을 입력하거나 정해진 선택지·기간·범위를 고르는 컨트롤",
-      "itemIds": ["input", "number-input", "password-input", "textarea", "label", "select", "radio", "checkbox", "switch", "multi-select-input", "combobox", "cascader", "tree-select", "slider", "file-upload", "fieldset", "date-picker", "date-range-picker", "time-picker"]
+      "itemIds": ["input", "labeled-input", "number-input", "password-input", "textarea", "label", "select", "labeled-select", "radio", "checkbox", "switch", "multi-select-input", "combobox", "cascader", "tree-select", "slider", "file-upload", "fieldset", "inspection-judgement", "date-picker", "date-range-picker", "time-picker"]
     },
     {
       "id": "query",
       "label": "조회와 필터",
       "labelEn": "Query & Filtering",
       "description": "MES 목록에서 조건을 만들고 검색 결과를 좁히는 조회 전용 컨트롤",
-      "itemIds": ["filter", "group-query", "quick-query", "search-input", "search-highlight"]
+      "itemIds": ["filter", "group-query", "quick-query", "query-date-range", "search-input", "search-highlight"]
     },
     {
       "id": "data-display",
       "label": "데이터 표시",
       "labelEn": "Data Display",
       "description": "상태, 수치, 목록, 이력과 테이블 정보를 비교·확인하는 요소",
-      "itemIds": ["badge", "tag", "progress", "progress-circle", "image-thumbnail", "avatar", "overflow-list", "timeline", "alarm-list-item", "list", "descriptions", "table-parts", "table-full"]
+      "itemIds": ["badge", "tag", "progress", "progress-circle", "image-thumbnail", "avatar", "overflow-list", "timeline", "alarm-list-item", "list", "descriptions", "before-after-comparison", "analytics-charts", "cavity-cell", "table-parts", "table-full"]
     },
     {
       "id": "feedback",
       "label": "상태와 피드백",
       "labelEn": "Status & Feedback",
       "description": "진행, 완료, 오류, 빈 상태와 사용자의 다음 행동을 안내하는 요소",
-      "itemIds": ["tooltip", "loading-spinner", "skeleton", "toast", "notice-banner", "empty-state", "error-state", "loading-overlay"]
+      "itemIds": ["tooltip", "loading-spinner", "skeleton", "toast", "notice-banner", "empty-state", "error-state", "loading-overlay", "selection-action-bar"]
     },
     {
       "id": "overlay",
       "label": "팝업과 오버레이",
       "labelEn": "Popups & Overlays",
       "description": "중앙 모달, 우측 슬라이드, 확인창과 임시 부유 영역",
-      "itemIds": ["confirm-dialog", "radio-choice-dialog", "center-modal", "side-slide-panel", "notification-panel", "popover", "dropdown-menu"]
+      "itemIds": ["confirm-dialog", "radio-choice-dialog", "center-modal", "side-slide-panel", "dialog-footer", "notification-panel", "popover", "dropdown-menu"]
     },
     {
       "id": "navigation",
       "label": "탐색",
       "labelEn": "Navigation",
       "description": "화면, 메뉴, 페이지와 계층 사이를 이동하는 요소",
-      "itemIds": ["page-top-tab-item", "sidebar", "breadcrumb", "pagination", "navbar", "tree-view", "logo", "user-account-menu", "segmented-control"]
+      "itemIds": ["page-top-tab-item", "sidebar", "mes-product-switcher", "breadcrumb", "pagination", "navbar", "tree-view", "logo", "user-account-menu", "segmented-control"]
     },
     {
       "id": "layout",
       "label": "레이아웃",
       "labelEn": "Layout",
       "description": "콘텐츠를 묶고 나누며 스크롤과 고정 영역을 소유하는 컨테이너",
-      "itemIds": ["divider", "card", "accordion", "collapsible", "panel", "scroll-area", "sticky-header-footer"]
+      "itemIds": ["divider", "card", "accordion", "collapsible", "panel", "form-grid", "section-frame", "section-header", "scroll-area", "sticky-header-footer"]
     }
   ],
   "registryAliases": {
