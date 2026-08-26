@@ -138,7 +138,7 @@
 
   /* Success — 2026-08-04 신규. 데스크탑 Figma엔 이 System Color 그룹 자체가 없어서
      (Danger만 확인됨) 모바일 파일에서 이미 확정된 "성공(Success)" 팔레트 값을 담당자
-     확인 하에 그대로 가져옴(모바일_컴포넌트_체크리스트.md 0-1절 출처, get_variable_defs
+     확인 하에 그대로 가져옴(모바일_UI_보류_기록.md Foundation 출처, get_variable_defs
      실측). Yellow(주의/Warning)와 동일한 10~110 11단계 구조 — 역할 라벨: 20=surface,
      60=Base, 50=Text. 아직 이 색을 쓰는 컴포넌트는 없음(선제 정의) — 필요해지면
      ConfirmDialog tone="success" 등으로 확장. */

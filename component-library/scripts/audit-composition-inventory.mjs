@@ -6,7 +6,6 @@ import { generatedTextMatches } from "./generated-text.mjs";
 const root = process.cwd();
 const patternDirectory = join(root, "src", "components", "patterns");
 const inventoryPath = join(root, "src", "design-system", "registry", "composition-inventory.json");
-const reportPath = join(root, "..", "docs", "AI_UI_조합_인벤토리_1차.md");
 const mode = process.argv.includes("--write") ? "write" : process.argv.includes("--check") ? "check" : "print";
 
 const normalizePath = (path) => path.replaceAll("\\", "/");
@@ -152,83 +151,20 @@ function buildInventory() {
   return { ...inventory, fingerprint };
 }
 
-function buildReport(inventory) {
-  const topFiles = [...inventory.files].sort((a, b) => b.lines - a.lines).slice(0, 10);
-  const frameTotals = inventory.files.reduce((totals, file) => {
-    for (const [key, value] of Object.entries(file.sectionFrames)) totals[key] = (totals[key] ?? 0) + value;
-    return totals;
-  }, {});
-  return `# AI UI 조합 인벤토리 1차
-
-이 문서는 \`npm run audit:composition\`으로 생성되는 얕은 전수조사 결과다. 자동 탐지값은 표준 패턴이 아니라 2차 검토 후보이며, 이 결과만으로 파일을 이동하거나 기존 패턴을 승격하지 않는다.
-
-## 조사 범위
-
-| 항목 | 결과 |
-|---|---:|
-| 검사 파일 | ${inventory.summary.scannedFiles} |
-| 전체 줄 수 | ${inventory.summary.totalLines.toLocaleString()} |
-| 혼합 Section Frame 파일 | ${inventory.summary.filesWithMixedSectionFrames} |
-| 표준 Frame 없이 native section만 사용 | ${inventory.summary.filesWithNativeSectionOnly} |
-| rounded wrapper가 있는 Section 후보 파일 | ${inventory.summary.filesWithRoundedSectionCandidates} |
-| fingerprint | \`${inventory.fingerprint}\` |
-
-## Shell 사용
-
-| Shell | 인스턴스 |
-|---|---:|
-${Object.entries(inventory.summary.shellInstances).map(([id, value]) => `| ${id} | ${value} |`).join("\n") || "| - | 0 |"}
-
-## Section Frame 관찰값
-
-| 표현 방식 | 사용 횟수 |
-|---|---:|
-${Object.entries(frameTotals).map(([id, value]) => `| ${id} | ${value} |`).join("\n")}
-
-## 자동 탐지 Section 후보
-
-| 후보 | 파일 수 | 주요 소스 |
-|---|---:|---|
-${inventory.sectionCandidateSignals.map((item) => `| \`${item.id}\` | ${item.fileCount} | ${item.sources.slice(0, 4).map((source) => `\`${source.split("/").at(-1)}\``).join(", ")} |`).join("\n") || "| - | 0 | - |"}
-
-## 자동 탐지 Behavior 후보
-
-| 후보 | 파일 수 | 주요 소스 |
-|---|---:|---|
-${inventory.behaviorSignals.map((item) => `| \`${item.id}\` | ${item.fileCount} | ${item.sources.slice(0, 4).map((source) => `\`${source.split("/").at(-1)}\``).join(", ")} |`).join("\n") || "| - | 0 | - |"}
-
-## 우선 검토 파일
-
-| 파일 | 줄 수 | Shell | Section 후보 | 검토 플래그 |
-|---|---:|---|---|---|
-${topFiles.map((file) => `| \`${file.name}\` | ${file.lines} | ${file.shells.map((item) => `${item.id} ${item.count}`).join(", ") || "-"} | ${file.sectionCandidateSignals.join(", ") || "-"} | ${file.reviewFlags.join(", ") || "-"} |`).join("\n")}
-
-## 해석 제한
-
-- 정규식 기반 1차 조사이므로 동일 JSX가 조건부 렌더링되는 맥락과 Figma 근거까지 판정하지 않는다.
-- \`SectionBand\`, \`SectionHeader\`, native \`section\`의 사용 횟수는 구조적 불일치 후보이지 자동 오류가 아니다.
-- Section·Behavior 후보는 이름과 코드 신호만 수집한 것이며 사용자 승인 전까지 \`observed-not-canonical\`이다.
-- 2차 조사에서는 반복 횟수보다 정보 위계, 상태 전이, Shell 슬롯과 시각 근거를 우선 검토한다.
-`;
-}
-
 const inventory = buildInventory();
 const inventoryText = `${JSON.stringify(inventory, null, 2)}\n`;
-const reportText = buildReport(inventory);
 
 if (mode === "write") {
   writeFileSync(inventoryPath, inventoryText, "utf8");
-  writeFileSync(reportPath, reportText, "utf8");
   console.log(`Composition inventory updated: ${inventory.summary.scannedFiles} files, ${inventory.summary.totalLines} lines, ${inventory.fingerprint}`);
 } else if (mode === "check") {
   const errors = [];
   if (!existsSync(inventoryPath) || !generatedTextMatches(readFileSync(inventoryPath, "utf8"), inventoryText)) errors.push("composition-inventory.json이 현재 패턴 코드와 다릅니다. npm run audit:composition을 실행하세요.");
-  if (!existsSync(reportPath) || !generatedTextMatches(readFileSync(reportPath, "utf8"), reportText)) errors.push("AI UI 조합 인벤토리 보고서가 현재 패턴 코드와 다릅니다. npm run audit:composition을 실행하세요.");
   if (errors.length) {
     console.error(["Composition inventory check failed:", ...errors.map((error) => `- ${error}`)].join("\n"));
     process.exit(1);
   }
   console.log(`Composition inventory check passed: ${inventory.summary.scannedFiles} files, ${inventory.summary.totalLines} lines, ${inventory.fingerprint}`);
 } else {
-  console.log(reportText);
+  console.log(JSON.stringify(inventory.summary, null, 2));
 }

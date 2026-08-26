@@ -42,7 +42,7 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 - 실제 웹은 반복 사용 위치와 연결 구조의 참고 근거다. 단일 구현값을 표준으로 자동 승격하지 않는다.
 - `component-usage-contracts.json`은 88개 전수 사용처 원장이 아니라 신규 UI의 자산 선택을 바꾸는 핵심 규칙만 담는다.
 - 선택 규칙이 없는 단순 컴포넌트는 실제 소스의 API·상태 문서만 사용한다.
-- 신규 UI에서 실제 선택 오류가 확인됐을 때만 `generation-selection-feedback.json`에 기록하고 관련 선택 규칙을 보강한다.
+- **핵심 선택 규칙을 기본으로 적용하고, 생성 피드백을 통해 필요한 규칙만 추가 보강**한다. 피드백은 `generation-selection-feedback.json`에 기록한다.
 - 한 화면에서만 관찰된 사용 방식은 사용자 확정 또는 공식 공통 명세가 없으면 전역 규칙으로 승격하지 않는다.
 - 등록 컴포넌트와 패턴을 우선 사용한다. 화면 코드에서 원시 `button`, `input`, `select`, `textarea`를 직접 만들지 않는다.
 - 기존 패턴으로 설명할 수 없는 차이는 `reuse`, `compose`, `extend`, `propose-new`, `normalize` 중 하나로 판정한다.

@@ -20,7 +20,7 @@ AI의 Shell·Section·Behavior·ActionSet 조합 단위와 승인 절차는 [AI 
 - 구현 감사: 섹션 ID·순서, 패턴 marker, action set, 원시 control과 임의 값 검사
 - `generation-templates.json`: stable 2종, provisional 1종의 결정형 TSX 생성 경로
 
-아래의 일부 타입과 장기 디렉터리 구조는 목표 모델을 설명한다. 현재 구현 파일과 충돌할 때는 위 레지스트리와 [웹 UI 맥락 체계화 현황](./웹_UI_맥락_체계화_현황.md)을 우선한다.
+아래의 일부 타입과 장기 디렉터리 구조는 목표 모델을 설명한다. 현재 구현 파일과 충돌할 때는 위 레지스트리와 [웹 UI 근거와 신규 생성 맥락](./웹_UI_근거와_신규_생성_맥락.md)을 우선한다.
 
 ## 1. 결정
 

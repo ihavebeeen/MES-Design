@@ -147,6 +147,8 @@ Behavior는 어떤 Section 또는 Action에 적용되는지 target을 가져야 
 
 ## 5. AI 생성 정책
 
+> **핵심 선택 규칙을 기본으로 적용하고, 생성 피드백을 통해 필요한 규칙만 추가 보강**
+
 AI는 JSX를 작성하기 전에 다음 순서를 지킨다.
 
 1. 요구사항을 ScreenSpec 후보로 정규화한다.
@@ -234,12 +236,6 @@ Resolver는 선택된 셸·섹션·동작·액션·컴포넌트뿐 아니라 제
 - 대표 순서형 화면 명세: `component-library/src/design-system/registry/screen-specs.json`
 - 맥락 선택 규칙: `component-library/src/design-system/registry/context-rules.json`
 - 사람용 맥락 설명: [AI UI 맥락 규칙](./AI_UI_맥락_규칙.md)
-- 사람용 보고서: [AI UI 조합 인벤토리 1차](./AI_UI_조합_인벤토리_1차.md)
-- Shell 감사: [AI UI Shell·슬롯 감사 1차](./AI_UI_Shell_슬롯_감사_1차.md)
-- Section Frame 감사: [AI UI Section Frame 감사 1차](./AI_UI_Section_Frame_감사_1차.md)
-- Section Pattern 후보 감사: [AI UI Section Pattern 후보 감사 1차](./AI_UI_Section_Pattern_후보_감사_1차.md)
-- Behavior 후보 감사: [AI UI Behavior 후보 감사 1차](./AI_UI_Behavior_후보_감사_1차.md)
-- 승인 전 표준 후보: [AI UI 표준 후보 제안 1차](./AI_UI_표준_후보_제안_1차.md)
-- 후속 작업과 보류: [AI UI 조합 문법 적용 TODO](./AI_UI_조합_문법_적용_TODO.md)
+- 사람용 감사·승인·이관 이력: [AI UI 조합 문법 감사 및 이관 기록](./AI_UI_조합_문법_감사_및_이관_기록.md)
 
 자동 탐지 인벤토리 자체의 상태는 계속 `observed-not-canonical`이다. 다만 승인 결과가 `patterns.json`에 등록된 Section·Behavior·ActionSet은 공용 표준으로 사용할 수 있다. 새 자동 탐지 후보는 별도 승인 전까지 표준으로 사용하지 않는다.

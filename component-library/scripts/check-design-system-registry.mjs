@@ -469,7 +469,7 @@ if (componentUsagePolicy?.webEvidenceRole !== "reference-only") errors.push("com
 if (componentUsagePolicy?.singleScreenRule !== "do-not-promote") errors.push("component-usage-contracts: 단일 화면 관찰을 공통 규칙으로 승격하면 안 됩니다.");
 if (!new Set(["warning", "blocker"]).has(componentUsagePolicy?.allowedParentMismatchSeverity)) errors.push("component-usage-contracts: allowedParentMismatchSeverity가 잘못되었습니다.");
 if (!Array.isArray(componentUsagePolicy?.promotionRequirements) || componentUsagePolicy.promotionRequirements.length < 2) errors.push("component-usage-contracts: 공통 규칙 승격 조건이 필요합니다.");
-if (componentUsagePolicy?.feedbackLedger !== "generation-selection-feedback.json") errors.push("component-usage-contracts: 선택 오류 원장 연결이 필요합니다.");
+if (componentUsagePolicy?.feedbackLedger !== "generation-selection-feedback.json") errors.push("component-usage-contracts: 생성 피드백 원장 연결이 필요합니다.");
 
 for (const contract of componentUsageContracts.values()) {
   if (!components.has(contract.componentId)) errors.push(`component-usage-contract '${contract.componentId}': 미등록 component를 참조합니다.`);
