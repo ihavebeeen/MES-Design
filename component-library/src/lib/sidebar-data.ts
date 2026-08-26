@@ -326,13 +326,6 @@ export const COMPONENT_NODES: SidebarNode[] = COMPONENT_CATALOG_GROUPS.map((grou
   branch(group.label, group.labelEn, group.itemIds),
 );
 
-/**
- * 2026-08-03 신규 — 담당자 요청: "더 작업이 필요한 것들의 구역을 미리 생성해 둬".
- * 체크리스트 기준 티어3(59개, 필수)/티어4(41개, 포함권장 19+보류 22) 미착수 항목을
- * 위한 자리만 미리 만들어둠 — 실제 항목 이름을 다 채우진 않고(125개를 지금 다 나열하는
- * 건 과함), "여기에 나중에 채워진다"는 구조만 사이드바+메인 양쪽에 둠. 티어5(28개)는
- * 체크리스트에서 이미 "제외" 확정이라 이 자리에 포함하지 않음.
- */
 export const SIDEBAR_GROUPS: { title: string; nodes: SidebarNode[] }[] = [
   { title: "Foundations", nodes: FOUNDATION_NODES },
   { title: "Components", nodes: COMPONENT_NODES },

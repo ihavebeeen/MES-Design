@@ -50,6 +50,9 @@ test("컴포넌트 개요는 역할·성숙도·검색으로 탐색한다", asyn
   await expect(catalog).toBeVisible();
   await expect(catalog.locator("[data-component-category]")).toHaveCount(8);
   await expect(catalog.locator("[data-component-card]")).toHaveCount(75);
+  await expect(page.getByText("티어3 — 아직 착수 전", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("티어4 — 아직 착수 전", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("예정", { exact: true })).toHaveCount(0);
 
   await catalog.getByRole("button", { name: "데이터 표시", exact: true }).click();
   await expect(catalog.locator("[data-component-category]")).toHaveCount(1);

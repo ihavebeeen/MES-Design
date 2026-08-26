@@ -4543,29 +4543,6 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </div>
       </section>
 
-      {/* 2026-08-03 신규 — 담당자 요청: "더 작업이 필요한 것들의 구역을 미리 생성해 둬".
-          아직 착수 안 한 티어3/4를 위한 자리만 미리 만들어둠(SIDEBAR_GROUPS의 "예정"
-          그룹과 짝) — 실제 항목 125개를 지금 다 채우진 않음. 티어5(28개)는 체크리스트
-          기준 이미 "제외" 확정이라 여기 포함하지 않음.
-          2026-08-04 — 버그 수정: 이 배너도 Foundation/Components 배너와 똑같이
-          activeGroup·activeId와 무관하게 항상 렌더링되고 있었음 — "피커 — 기간처럼
-          구체적 컴포넌트를 보고 있는데도 '예정' 배너가 같이 뜬다"는 리포트의 진짜
-          원인(처음엔 맨 아래 upcoming-tier3/4로 착각했는데, 실제로는 컴포넌트 목록
-          중간에 물리적으로 끼어있던 이 배너였음). Components 루트(카드 그리드 개요
-          화면)에서만 보이도록 조건 추가 — 아래 upcoming-tier3/4 EmptyState 두 개랑
-          같은 조건. */}
-      {activeGroup === "components" && !activeId && (
-        <div className="flex w-full max-w-[960px] flex-col gap-1.5 border-l-8 border-mes-gray-60 pl-5">
-          <span className="flex items-center gap-2.5 text-[28px] font-extrabold leading-tight tracking-tight text-mes-gray-130">
-            <Hammer className="size-7 shrink-0 text-mes-gray-60" />
-            예정
-          </span>
-          <p className="text-[13px] leading-[1.5] text-mes-gray-70">
-            체크리스트 기준 티어3(59개, 필수)·티어4(41개, 포함권장 19 + 보류 22) 미착수
-            항목이 여기 채워질 예정입니다. 티어5(28개)는 이미 범위 제외로 확정.
-          </p>
-        </div>
-      )}
       <Section id="sticky-header-footer" title="고정 헤더 / 고정 푸터" titleEn="StickyHeader / StickyFooter" badge="임시">
         <Sample
           label="Sticky · 컨테이너 내부 스크롤"
@@ -5511,38 +5488,6 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </div>
       </Section>
 
-      {/* 2026-08-04 — 페이지 분할 도입 후: 이 두 안내 블록은 특정 id에 매인 게 아니라
-          "/components 루트(카드 그리드 개요 화면)"에서만 같이 노출 — 특정 항목 페이지
-          (/foundations/xxx, /components/xxx)나 홈("/")에서는 숨김. 담당자 리포트("radius
-          보는 중인데 이게 같이 뜬다")는 사실 이 블록이 아니라 바로 위 Foundation/Components
-          배너가 activeGroup 무관하게 항상 렌더링되던 버그였음(위에서 수정) — 이 블록
-          조건은 원래도 맞았지만, 헷갈리지 않도록 이중부정 대신 긍정문으로 다시 씀. */}
-      <section
-        id="upcoming-tier3"
-        className={cn(
-          "flex w-full max-w-[960px] scroll-mt-20 flex-col border-b border-mes-gray-30 pb-8",
-          (activeGroup !== "components" || Boolean(activeId)) && "hidden"
-        )}
-      >
-        <EmptyState
-          icon={<Hammer size={32} />}
-          title="티어3 — 아직 착수 전"
-          description="화면 패턴 카탈로그 59개(필수 범위). 담당자 우선순위 확정 후 순차 진행 예정."
-        />
-      </section>
-      <section
-        id="upcoming-tier4"
-        className={cn(
-          "flex w-full max-w-[960px] scroll-mt-20 flex-col pb-8",
-          (activeGroup !== "components" || Boolean(activeId)) && "hidden"
-        )}
-      >
-        <EmptyState
-          icon={<Hammer size={32} />}
-          title="티어4 — 아직 착수 전"
-          description="포함권장 41개(19개 권장 + 22개 보류). 티어1~3 완료 후 진행 예정."
-        />
-      </section>
         </main>
         <RightRail items={sectionRegistry.get(activeId ?? "") ?? []} />
       </div>
