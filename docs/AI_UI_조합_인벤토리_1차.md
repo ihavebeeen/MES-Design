@@ -7,11 +7,11 @@
 | 항목 | 결과 |
 |---|---:|
 | 검사 파일 | 41 |
-| 전체 줄 수 | 8,101 |
+| 전체 줄 수 | 8,250 |
 | 혼합 Section Frame 파일 | 2 |
 | 표준 Frame 없이 native section만 사용 | 18 |
-| rounded wrapper가 있는 Section 후보 파일 | 22 |
-| fingerprint | `7fbf47d1c6adc4ef` |
+| rounded wrapper가 있는 Section 후보 파일 | 23 |
+| fingerprint | `dd92dae5892916da` |
 
 ## Shell 사용
 
@@ -28,17 +28,17 @@
 | sectionBand | 14 |
 | sectionHeader | 7 |
 | patternGroupHeader | 0 |
-| nativeSection | 42 |
+| nativeSection | 40 |
 | dividerContainer | 33 |
-| roundedContainer | 65 |
-| gray20Container | 34 |
+| roundedContainer | 62 |
+| gray20Container | 33 |
 
 ## 자동 탐지 Section 후보
 
 | 후보 | 파일 수 | 주요 소스 |
 |---|---:|---|
+| `section.summary` | 14 | `business-operation-settings-pattern.tsx`, `completed-application-patterns.tsx`, `completed-popup-expanded-content.tsx`, `completed-popup-patterns.tsx` |
 | `section.search-table` | 13 | `equipment-discharge-settings-pattern.tsx`, `equipment-inspection-records-modal.tsx`, `exact-form-management-screen.tsx`, `exact-inventory-add-modal.tsx` |
-| `section.summary` | 13 | `business-operation-settings-pattern.tsx`, `completed-application-patterns.tsx`, `completed-popup-expanded-content.tsx`, `completed-popup-patterns.tsx` |
 | `section.form-grid` | 10 | `business-operation-settings-pattern.tsx`, `completed-popup-patterns.tsx`, `equipment-discharge-settings-pattern.tsx`, `exact-production-analytics-screen.tsx` |
 | `section.inspection-items` | 7 | `completed-popup-patterns.tsx`, `equipment-inspection-records-modal.tsx`, `inspection-criteria-pattern.tsx`, `inspection-trend-analysis-pattern.tsx` |
 | `section.editable-row-list` | 3 | `completed-popup-patterns.tsx`, `easy-mode-receiving-pattern.tsx`, `original-mes-screen-assets.tsx` |

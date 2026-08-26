@@ -60,6 +60,9 @@ assert.equal(auditScreenImplementation(generationContract, generatedFirst).statu
 const sideSlidePreview = createScreenPreviewPlan(generationContract, "src/generated-previews/deterministic-receiving-dialog.tsx", { projectRoot });
 assert.equal(sideSlidePreview.relativePath, "src/app/preview/deterministic-receiving-fixture/page.tsx");
 assert.equal(sideSlidePreview.url, "http://localhost:3000/preview/deterministic-receiving-fixture");
+assert.equal(sideSlidePreview.manifestEntry.persistence, "local");
+assert.equal(sideSlidePreview.manifestEntry.reviewStatus, "draft");
+assert.equal(sideSlidePreview.manifestEntry.generationInfluence, "blocked");
 assert.match(sideSlidePreview.source, /<DeterministicReceivingDialog open=\{open\} onOpenChange=\{setOpen\}/);
 assert.match(sideSlidePreview.source, /다시 열기/);
 

@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx",
   "summary": {
     "scannedFiles": 41,
-    "totalLines": 8101,
+    "totalLines": 8250,
     "shellInstances": {
       "CenterModal": 13,
       "SideSlidePanel": 9,
@@ -13,9 +13,29 @@
     },
     "filesWithMixedSectionFrames": 2,
     "filesWithNativeSectionOnly": 18,
-    "filesWithRoundedSectionCandidates": 22
+    "filesWithRoundedSectionCandidates": 23
   },
   "sectionCandidateSignals": [
+    {
+      "id": "section.summary",
+      "fileCount": 14,
+      "sources": [
+        "src/components/patterns/business-operation-settings-pattern.tsx",
+        "src/components/patterns/completed-application-patterns.tsx",
+        "src/components/patterns/completed-popup-expanded-content.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/exact-production-analytics-screen.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/generated-screen-review.tsx",
+        "src/components/patterns/kiosk-easy-receiving-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/production-quantity-reregistration-pattern.tsx",
+        "src/components/patterns/sales-transaction-statement-pattern.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/source-popup-gallery.tsx",
+        "src/components/patterns/table-column-settings.tsx"
+      ]
+    },
     {
       "id": "section.search-table",
       "fileCount": 13,
@@ -33,25 +53,6 @@
         "src/components/patterns/shipment-approval-pattern.tsx",
         "src/components/patterns/standard-price-settings-pattern.tsx",
         "src/components/patterns/team-settings-pattern.tsx"
-      ]
-    },
-    {
-      "id": "section.summary",
-      "fileCount": 13,
-      "sources": [
-        "src/components/patterns/business-operation-settings-pattern.tsx",
-        "src/components/patterns/completed-application-patterns.tsx",
-        "src/components/patterns/completed-popup-expanded-content.tsx",
-        "src/components/patterns/completed-popup-patterns.tsx",
-        "src/components/patterns/exact-production-analytics-screen.tsx",
-        "src/components/patterns/exact-production-result-screen.tsx",
-        "src/components/patterns/kiosk-easy-receiving-pattern.tsx",
-        "src/components/patterns/original-mes-screen-assets.tsx",
-        "src/components/patterns/production-quantity-reregistration-pattern.tsx",
-        "src/components/patterns/sales-transaction-statement-pattern.tsx",
-        "src/components/patterns/section-patterns.tsx",
-        "src/components/patterns/source-popup-gallery.tsx",
-        "src/components/patterns/table-column-settings.tsx"
       ]
     },
     {
@@ -260,7 +261,8 @@
     {
       "source": "src/components/patterns/generated-screen-review.tsx",
       "flags": [
-        "native-section-without-registered-frame"
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
       ]
     },
     {
@@ -1659,7 +1661,7 @@
       "source": "src/components/patterns/generated-screen-review.tsx",
       "name": "generated-screen-review.tsx",
       "observedRole": "generated-candidate",
-      "lines": 86,
+      "lines": 235,
       "exportedSymbols": [
         "GeneratedScreenReview"
       ],
@@ -1668,18 +1670,21 @@
         "sectionBand": 0,
         "sectionHeader": 0,
         "patternGroupHeader": 0,
-        "nativeSection": 4,
+        "nativeSection": 2,
         "dividerContainer": 1,
-        "roundedContainer": 5,
-        "gray20Container": 2
+        "roundedContainer": 2,
+        "gray20Container": 1
       },
       "sectionTitles": [],
       "uiComponents": [],
-      "stateHookCount": 0,
+      "stateHookCount": 2,
       "behaviorSignals": [],
-      "sectionCandidateSignals": [],
+      "sectionCandidateSignals": [
+        "section.summary"
+      ],
       "reviewFlags": [
-        "native-section-without-registered-frame"
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
       ]
     },
     {
@@ -2942,5 +2947,5 @@
       ]
     }
   ],
-  "fingerprint": "7fbf47d1c6adc4ef"
+  "fingerprint": "dd92dae5892916da"
 }

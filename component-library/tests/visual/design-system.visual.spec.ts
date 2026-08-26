@@ -42,6 +42,25 @@ test("Tier 3 승격 자산은 Components에서 정식 API로 확인한다", asyn
 
 });
 
+test("컴포넌트 개요는 역할·성숙도·검색으로 탐색한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/components");
+
+  const catalog = page.locator("[data-component-catalog]");
+  await expect(catalog).toBeVisible();
+  await expect(catalog.locator("[data-component-category]")).toHaveCount(8);
+  await expect(catalog.locator("[data-component-card]")).toHaveCount(75);
+
+  await catalog.getByRole("button", { name: "데이터 표시", exact: true }).click();
+  await expect(catalog.locator("[data-component-category]")).toHaveCount(1);
+  await expect(catalog.locator("[data-component-card]")).toHaveCount(13);
+
+  await catalog.getByPlaceholder("이름 또는 사용 목적 검색", { exact: true }).fill("테이블");
+  await expect(catalog.locator("[data-component-card]")).toHaveCount(2);
+  await expect(catalog.locator('[data-component-card="table-parts"]')).toBeVisible();
+  await expect(catalog.locator('[data-component-card="table-full"]')).toBeVisible();
+});
+
 test("Tier 4·5 승격 자산은 Components·Patterns에 있고 Experimental 후보는 비어 있다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/experimental");
@@ -477,13 +496,14 @@ test("종결한 생성안은 표준 패턴과 분리된 검토함에 보관된�
   await expect(easyCandidate.getByText("보관", { exact: true })).toBeVisible();
   await expect(easyCandidate.getByText("표준 영향 차단", { exact: true })).toBeVisible();
   await expect(easyCandidate.getByText("50 / 100", { exact: true })).toBeVisible();
-  await expect(easyCandidate.getByText("단일 화면 생성과 수정에 시간이 과도하게 걸렸다.", { exact: true })).toBeVisible();
-  await expect(easyCandidate.getByText("사용자 검토를 통과한 뒤에만 patterns.json과 screens.json에 승격한다.", { exact: true })).toBeVisible();
+  await expect(easyCandidate).toContainText("단일 화면 생성과 수정에 시간이 과도하게 걸렸다.");
+  await expect(page.locator('[data-generated-stage="review"]')).toContainText("Git에는 보존되지만 사용자 승인 전까지 AI 생성에는 영향을 주지 않는 시안입니다.");
+  await expect(page.locator('[data-generated-stage="approved"]')).toContainText("신규 UI 생성의 표준 근거로 사용할 수 있습니다.");
 
   const kioskCandidate = page.getByRole("article").filter({ has: page.getByRole("heading", { name: "키오스크 이지 입고" }) });
   await expect(kioskCandidate).toBeVisible();
   await expect(kioskCandidate.getByText("보관", { exact: true })).toBeVisible();
-  await expect(kioskCandidate.getByText("탐색 시안(원본 없음)", { exact: false })).toBeVisible();
+  await expect(kioskCandidate).toContainText("원본 없음");
   await expect(kioskCandidate.getByText("표준 영향 차단", { exact: true })).toBeVisible();
 
   const preview = page.frameLocator('iframe[title="이지모드 입고등록 미리보기"]');

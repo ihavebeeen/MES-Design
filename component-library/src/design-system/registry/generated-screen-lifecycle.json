@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mes.generated-screen-lifecycle",
+  "stages": [
+    {
+      "id": "draft",
+      "label": "임시 생성",
+      "persistence": "local",
+      "generationInfluence": "blocked",
+      "sourceRoot": "src/generated-previews",
+      "description": "현재 PC에서만 확인하는 작업 중 시안입니다. Git과 표준 생성 근거에 포함하지 않습니다."
+    },
+    {
+      "id": "review",
+      "label": "검토 대기",
+      "persistence": "git",
+      "generationInfluence": "blocked",
+      "sourceRoot": "src/components/generated-candidates",
+      "description": "여러 PC에서 검토할 수 있도록 Git에 보존하지만 승인 전까지 신규 UI 생성 근거로 사용하지 않습니다."
+    },
+    {
+      "id": "approved",
+      "label": "승인 완료",
+      "persistence": "git",
+      "generationInfluence": "standard",
+      "sourceRoot": "src/components/patterns",
+      "description": "사용자 승인과 검증을 통과해 정식 화면·패턴 레지스트리에서 사용할 수 있습니다."
+    },
+    {
+      "id": "rejected",
+      "label": "반려",
+      "persistence": "git",
+      "generationInfluence": "blocked",
+      "sourceRoot": "src/design-system/registry/generated-screen-evaluations.json",
+      "description": "평가 기록만 남기며 구현은 표준 생성 근거로 사용하지 않습니다."
+    },
+    {
+      "id": "archived",
+      "label": "보관",
+      "persistence": "git",
+      "generationInfluence": "blocked",
+      "sourceRoot": "src/design-system/registry/generated-screen-evaluations.json",
+      "description": "과거 판단과 시행착오를 보존하지만 이후 화면 생성에는 영향을 주지 않습니다."
+    }
+  ],
+  "promotionRules": [
+    "로컬 draft는 사용자 요청 없이 Git 검토 후보로 승격하지 않는다.",
+    "Git에 저장되었다는 사실만으로 standard 영향 권한을 부여하지 않는다.",
+    "approved와 generationInfluence=standard는 사용자 승인 및 검증 근거가 함께 있을 때만 허용한다.",
+    "rejected와 archived 자산은 평가 기록을 유지하되 생성 컨텍스트에서 제외한다."
+  ]
+}

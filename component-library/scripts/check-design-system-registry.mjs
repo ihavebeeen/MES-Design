@@ -6,12 +6,14 @@ const registryDirectory = join(root, "src", "design-system", "registry");
 const readJson = (name) => JSON.parse(readFileSync(join(registryDirectory, name), "utf8"));
 
 const componentRegistry = readJson("components.json");
+const componentCatalogRegistry = readJson("component-catalog.json");
 const patternRegistry = readJson("patterns.json");
 const screenRegistry = readJson("screens.json");
 const visualRegistry = readJson("visual-regression.json");
 const sourceAssetRegistry = readJson("source-assets.json");
 const sourceEvidenceRegistry = readJson("source-evidence.json");
 const generatedScreenRegistry = readJson("generated-screen-evaluations.json");
+const generatedScreenLifecycleRegistry = readJson("generated-screen-lifecycle.json");
 const compositionPolicyRegistry = readJson("composition-policy.json");
 const compositionShellLedgerRegistry = readJson("composition-shell-ledger.json");
 const compositionSectionFrameLedgerRegistry = readJson("composition-section-frame-ledger.json");
@@ -61,12 +63,14 @@ function checkSource(name, entry) {
 }
 
 checkVersion("components", componentRegistry);
+checkVersion("component-catalog", componentCatalogRegistry);
 checkVersion("patterns", patternRegistry);
 checkVersion("screens", screenRegistry);
 checkVersion("visual-regression", visualRegistry);
 checkVersion("source-assets", sourceAssetRegistry);
 checkVersion("source-evidence", sourceEvidenceRegistry);
 checkVersion("generated-screen-evaluations", generatedScreenRegistry);
+checkVersion("generated-screen-lifecycle", generatedScreenLifecycleRegistry);
 checkVersion("composition-policy", compositionPolicyRegistry);
 checkVersion("composition-shell-ledger", compositionShellLedgerRegistry);
 checkVersion("composition-section-frame-ledger", compositionSectionFrameLedgerRegistry);
@@ -279,6 +283,25 @@ for (const [name, registry] of proposalRegistries) {
 }
 
 const components = mapByUniqueId("components", componentRegistry.components ?? []);
+const componentCatalogGroups = mapByUniqueId("component-catalog groups", componentCatalogRegistry.groups ?? []);
+const componentCatalogIds = new Set();
+const documentedComponentIds = new Set();
+for (const group of componentCatalogGroups.values()) {
+  if (!group.label || !group.labelEn || !group.description) errors.push(`component-catalog group '${group.id}': label, labelEn, description이 필요합니다.`);
+  if (!Array.isArray(group.itemIds) || group.itemIds.length === 0) errors.push(`component-catalog group '${group.id}': itemIds가 필요합니다.`);
+  for (const itemId of group.itemIds ?? []) {
+    if (componentCatalogIds.has(itemId)) errors.push(`component-catalog: 중복 item '${itemId}'`);
+    componentCatalogIds.add(itemId);
+    const registryId = componentCatalogRegistry.registryAliases?.[itemId] ?? itemId;
+    if (!components.has(registryId)) errors.push(`component-catalog '${itemId}': 미등록 component '${registryId}'를 참조합니다.`);
+    else documentedComponentIds.add(registryId);
+  }
+}
+for (const [componentId, component] of components) {
+  if (component.documentationRoute?.startsWith("/components/") && !documentedComponentIds.has(componentId)) {
+    errors.push(`component-catalog: 문서 경로가 있는 component '${componentId}'가 카탈로그에 없습니다.`);
+  }
+}
 const patterns = mapByUniqueId("patterns", patternRegistry.patterns ?? []);
 const screens = mapByUniqueId("screens", screenRegistry.screens ?? []);
 const generationTemplates = mapByUniqueId("generation-templates", generationTemplateRegistry.templates ?? []);
@@ -620,6 +643,19 @@ for (const [name, registry] of proposalRegistries) {
 
 const allowedEvidenceStatuses = new Set(["queued", "in-progress", "verified", "deferred", "closed-unverified"]);
 const allowedCandidateStatuses = new Set(["partial-success", "review", "approved", "rejected", "archived"]);
+const allowedReviewStatuses = new Set(["draft", "review", "approved", "rejected", "archived"]);
+const allowedPersistenceValues = new Set(["local", "git"]);
+const allowedGenerationInfluences = new Set(["blocked", "reference", "standard"]);
+const lifecycleStages = mapByUniqueId("generated-screen-lifecycle", generatedScreenLifecycleRegistry.stages ?? []);
+for (const requiredStage of allowedReviewStatuses) {
+  if (!lifecycleStages.has(requiredStage)) errors.push(`generated-screen-lifecycle: '${requiredStage}' 단계가 필요합니다.`);
+}
+for (const stage of lifecycleStages.values()) {
+  if (!allowedPersistenceValues.has(stage.persistence)) errors.push(`generated-screen-lifecycle '${stage.id}': 알 수 없는 persistence '${stage.persistence}'`);
+  if (!allowedGenerationInfluences.has(stage.generationInfluence)) errors.push(`generated-screen-lifecycle '${stage.id}': 알 수 없는 generationInfluence '${stage.generationInfluence}'`);
+}
+if (lifecycleStages.get("draft")?.persistence !== "local") errors.push("generated-screen-lifecycle: draft는 local이어야 합니다.");
+if (lifecycleStages.get("approved")?.generationInfluence !== "standard") errors.push("generated-screen-lifecycle: approved만 standard 생성 근거가 될 수 있습니다.");
 const requiredQualityGates = ["designContext", "metadataLedger", "componentMapping", "browserMeasurement", "interactionTest", "visualBaseline"];
 const figmaNodes = new Set();
 for (const source of sourceEvidence.values()) {
@@ -659,6 +695,15 @@ for (const candidate of generatedCandidates.values()) {
   if (candidate.figmaNode && !/^\d+:\d+$/.test(candidate.figmaNode)) errors.push(`generated candidate '${candidate.id}': figmaNode 형식이 잘못되었습니다.`);
   if (!candidate.route?.startsWith("/")) errors.push(`generated candidate '${candidate.id}': route는 '/'로 시작해야 합니다.`);
   if (!allowedCandidateStatuses.has(candidate.status)) errors.push(`generated candidate '${candidate.id}': 알 수 없는 status '${candidate.status}'`);
+  if (!allowedPersistenceValues.has(candidate.persistence)) errors.push(`generated candidate '${candidate.id}': 알 수 없는 persistence '${candidate.persistence}'`);
+  if (!allowedReviewStatuses.has(candidate.reviewStatus)) errors.push(`generated candidate '${candidate.id}': 알 수 없는 reviewStatus '${candidate.reviewStatus}'`);
+  if (!allowedGenerationInfluences.has(candidate.generationInfluence)) errors.push(`generated candidate '${candidate.id}': 알 수 없는 generationInfluence '${candidate.generationInfluence}'`);
+  if (candidate.persistence !== "git") errors.push(`generated candidate '${candidate.id}': tracked 검토 원장의 persistence는 git이어야 합니다.`);
+  const expectedReviewStatus = candidate.status === "partial-success" ? "review" : candidate.status;
+  if (candidate.reviewStatus !== expectedReviewStatus) errors.push(`generated candidate '${candidate.id}': status와 reviewStatus가 일치하지 않습니다.`);
+  const expectedGenerationInfluence = candidate.status === "approved" ? "standard" : "blocked";
+  if (candidate.generationInfluence !== expectedGenerationInfluence) errors.push(`generated candidate '${candidate.id}': reviewStatus에 맞지 않는 generationInfluence입니다.`);
+  if ((candidate.influence === "approved") !== (candidate.generationInfluence === "standard")) errors.push(`generated candidate '${candidate.id}': legacy influence와 generationInfluence가 일치하지 않습니다.`);
   if (!Number.isInteger(candidate.score) || candidate.score < 0 || candidate.score > 100) errors.push(`generated candidate '${candidate.id}': score는 0~100 정수여야 합니다.`);
   if (!Array.isArray(candidate.strengths) || candidate.strengths.length === 0) errors.push(`generated candidate '${candidate.id}': strengths가 필요합니다.`);
   if (!Array.isArray(candidate.issues) || candidate.issues.length === 0) errors.push(`generated candidate '${candidate.id}': issues가 필요합니다.`);

@@ -111,6 +111,7 @@ import { GeneratedScreenReview } from "@/components/patterns/generated-screen-re
 import { FigmaScreenPreview } from "@/components/patterns/figma-screen-preview";
 import { CandidateDecisionGallery } from "@/components/experimental";
 import { PromotedStandardCatalog } from "@/components/catalog/promoted-standard-catalog";
+import { ComponentCatalogOverview } from "@/components/catalog/component-catalog-overview";
 import { MobileCatalog } from "@/components/mobile/mobile-catalog";
 import {
   IconArrow,
@@ -2072,7 +2073,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                   테이블·알림 패널 같은 복합 컴포넌트까지.
                 </p>
               </div>
-              {!activeId && <OverviewGrid nodes={COMPONENT_NODES} />}
+              {!activeId && (activeGroup === "components" ? <ComponentCatalogOverview /> : <OverviewGrid nodes={COMPONENT_NODES} />)}
               <PromotedStandardCatalog activeId={activeId} />
             </>
           )}

@@ -1,10 +1,12 @@
 import componentData from "./components.json";
+import componentCatalogData from "./component-catalog.json";
 import patternData from "./patterns.json";
 import screenData from "./screens.json";
 import visualRegressionData from "./visual-regression.json";
 import sourceAssetData from "./source-assets.json";
 import sourceEvidenceData from "./source-evidence.json";
 import generatedScreenEvaluationData from "./generated-screen-evaluations.json";
+import generatedScreenLifecycleData from "./generated-screen-lifecycle.json";
 import compositionPolicyData from "./composition-policy.json";
 import compositionInventoryData from "./composition-inventory.json";
 import compositionShellLedgerData from "./composition-shell-ledger.json";
@@ -28,11 +30,13 @@ import webFigmaReconciliationData from "./web-figma-reconciliation.json";
 import webGenerationContextData from "./web-generation-context.json";
 import type {
   ComponentRegistry,
+  ComponentCatalogRegistry,
   PatternRegistry,
   ScreenRegistry,
   VisualRegressionRegistry,
   SourceEvidenceRegistry,
   GeneratedScreenEvaluationRegistry,
+  GeneratedScreenLifecycleRegistry,
   CompositionPolicyRegistry,
   CompositionInventoryRegistry,
   CompositionShellLedgerRegistry,
@@ -60,11 +64,13 @@ import type {
 export type * from "./registry.types";
 
 export const componentRegistry = componentData as ComponentRegistry;
+export const componentCatalogRegistry = componentCatalogData as ComponentCatalogRegistry;
 export const patternRegistry = { schemaVersion: 1, patterns: [...patternData.patterns, ...sourceAssetData.patterns] } as PatternRegistry;
 export const screenRegistry = { schemaVersion: 1, screens: [...screenData.screens, ...sourceAssetData.screens] } as ScreenRegistry;
 export const visualRegressionRegistry = visualRegressionData as VisualRegressionRegistry;
 export const sourceEvidenceRegistry = sourceEvidenceData as SourceEvidenceRegistry;
 export const generatedScreenEvaluationRegistry = generatedScreenEvaluationData as GeneratedScreenEvaluationRegistry;
+export const generatedScreenLifecycleRegistry = generatedScreenLifecycleData as GeneratedScreenLifecycleRegistry;
 export const compositionPolicyRegistry = compositionPolicyData as CompositionPolicyRegistry;
 export const compositionInventoryRegistry = compositionInventoryData as CompositionInventoryRegistry;
 export const compositionShellLedgerRegistry = compositionShellLedgerData as CompositionShellLedgerRegistry;

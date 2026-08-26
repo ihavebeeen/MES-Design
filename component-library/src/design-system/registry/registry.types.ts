@@ -23,6 +23,20 @@ export interface ComponentRegistry {
   components: ComponentRegistryEntry[];
 }
 
+export interface ComponentCatalogGroup {
+  id: string;
+  label: string;
+  labelEn: string;
+  description: string;
+  itemIds: string[];
+}
+
+export interface ComponentCatalogRegistry {
+  schemaVersion: 1;
+  groups: ComponentCatalogGroup[];
+  registryAliases: Record<string, string>;
+}
+
 export interface ComponentUsageContractEntry {
   componentId: string;
   capabilities: string[];
@@ -549,6 +563,9 @@ export interface SourceEvidenceRegistry {
 }
 
 export type GeneratedScreenStatus = "partial-success" | "review" | "approved" | "rejected" | "archived";
+export type GeneratedScreenPersistence = "local" | "git";
+export type GeneratedScreenReviewStatus = "draft" | "review" | "approved" | "rejected" | "archived";
+export type GeneratedScreenInfluence = "blocked" | "reference" | "standard";
 
 export interface GeneratedScreenEvaluationEntry {
   id: string;
@@ -558,6 +575,9 @@ export interface GeneratedScreenEvaluationEntry {
   route: string;
   source: string;
   status: GeneratedScreenStatus;
+  persistence: GeneratedScreenPersistence;
+  reviewStatus: GeneratedScreenReviewStatus;
+  generationInfluence: GeneratedScreenInfluence;
   score: number;
   disposition: "prototype" | "standard";
   influence: "quarantined" | "approved";
@@ -569,6 +589,22 @@ export interface GeneratedScreenEvaluationEntry {
 export interface GeneratedScreenEvaluationRegistry {
   schemaVersion: 1;
   candidates: GeneratedScreenEvaluationEntry[];
+}
+
+export interface GeneratedScreenLifecycleStage {
+  id: GeneratedScreenReviewStatus;
+  label: string;
+  persistence: GeneratedScreenPersistence;
+  generationInfluence: GeneratedScreenInfluence;
+  sourceRoot: string;
+  description: string;
+}
+
+export interface GeneratedScreenLifecycleRegistry {
+  schemaVersion: 1;
+  policyId: "mes.generated-screen-lifecycle";
+  stages: GeneratedScreenLifecycleStage[];
+  promotionRules: string[];
 }
 
 export interface CompositionPolicyLayer {

@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const defaultProjectRoot = resolve(scriptDirectory, "..");
 const previewRoutePattern = /^\/preview\/([a-z0-9]+(?:-[a-z0-9]+)*)$/;
+const localManifestRelativePath = "public/.mes-ui-preview/index.json";
 
 function normalizeSourceImport(projectRoot, outputPath) {
   const absolutePath = isAbsolute(outputPath) ? outputPath : resolve(projectRoot, outputPath);
@@ -48,23 +49,60 @@ export function createScreenPreviewPlan(contract, outputPath, options = {}) {
   const source = generateScreenPreviewSource(contract, componentImport);
   const baseUrl = (options.baseUrl ?? "http://localhost:3000").replace(/\/$/, "");
   return {
+    projectRoot,
     route,
     relativePath,
     absolutePath,
     componentImport,
     source,
     url: `${baseUrl}${route}`,
+    manifestEntry: {
+      id: contract.request.requestId,
+      name: contract.request.name,
+      title: contract.request.target.title,
+      targetKind: contract.request.target.kind,
+      route,
+      source: componentImport,
+      persistence: "local",
+      reviewStatus: "draft",
+      generationInfluence: "blocked",
+    },
   };
 }
 
-export function writeScreenPreview(plan) {
-  if (existsSync(plan.absolutePath)) {
-    if (readFileSync(plan.absolutePath, "utf8") === plan.source) return { created: false };
-    throw new Error(`기존 미리보기 파일을 덮어쓰지 않습니다: ${plan.relativePath}`);
+function writeLocalDraftManifest(plan) {
+  const manifestPath = resolve(plan.projectRoot, ...localManifestRelativePath.split("/"));
+  let manifest = { schemaVersion: 1, drafts: [] };
+  if (existsSync(manifestPath)) {
+    const parsed = JSON.parse(readFileSync(manifestPath, "utf8"));
+    if (parsed?.schemaVersion === 1 && Array.isArray(parsed.drafts)) manifest = parsed;
   }
-  mkdirSync(dirname(plan.absolutePath), { recursive: true });
-  writeFileSync(plan.absolutePath, plan.source, { encoding: "utf8", flag: "wx" });
-  return { created: true };
+  const previous = manifest.drafts.find((draft) => draft.id === plan.manifestEntry.id);
+  const now = new Date().toISOString();
+  const entry = {
+    ...plan.manifestEntry,
+    createdAt: previous?.createdAt ?? now,
+    updatedAt: now,
+  };
+  manifest.drafts = [...manifest.drafts.filter((draft) => draft.id !== entry.id), entry]
+    .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
+  mkdirSync(dirname(manifestPath), { recursive: true });
+  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+}
+
+export function writeScreenPreview(plan) {
+  let created = false;
+  if (existsSync(plan.absolutePath)) {
+    if (readFileSync(plan.absolutePath, "utf8") !== plan.source) {
+      throw new Error(`기존 미리보기 파일을 덮어쓰지 않습니다: ${plan.relativePath}`);
+    }
+  } else {
+    mkdirSync(dirname(plan.absolutePath), { recursive: true });
+    writeFileSync(plan.absolutePath, plan.source, { encoding: "utf8", flag: "wx" });
+    created = true;
+  }
+  writeLocalDraftManifest(plan);
+  return { created };
 }
 
 function runCli() {

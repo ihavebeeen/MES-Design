@@ -20,6 +20,7 @@
 /.mes-ui-preview/
 /src/generated-previews/
 /src/app/preview/
+/public/.mes-ui-preview/
 
 # next.js
 /.next/

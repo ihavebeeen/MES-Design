@@ -32,9 +32,9 @@ npm run screen:resolve -- .mes-ui-preview/example/request.json --out .mes-ui-pre
 npm run screen:generate -- .mes-ui-preview/example/contract.json --preview
 ```
 
-프로토타입 요청·계약은 `.mes-ui-preview/`, 생성 코드는 `src/generated-previews/`, 미리보기 라우트는 `src/app/preview/`에 둡니다. 세 경로는 모두 Git에서 제외됩니다. 생성기는 `ScreenRequest.output.route`에 맞춰 `http://localhost:3000/preview/<request-id>` 주소를 반환합니다. `npm run dev`가 실행 중이면 사용자는 이 주소에서 결과를 바로 확인합니다.
+프로토타입 요청·계약은 `.mes-ui-preview/`, 생성 코드는 `src/generated-previews/`, 미리보기 라우트는 `src/app/preview/`에 둡니다. 세 경로는 모두 Git에서 제외됩니다. 생성기는 `ScreenRequest.output.route`에 맞춰 `http://localhost:3000/preview/<request-id>` 주소를 반환하고 `public/.mes-ui-preview/index.json` 로컬 인덱스도 갱신합니다. `npm run dev`가 실행 중이면 사용자는 미리보기 주소와 `/generated-screens/`의 **임시 생성** 구역에서 결과를 확인합니다.
 
-임시 프로토타입은 `generated-screen-evaluations.json`이나 정식 화면 레지스트리에 자동 등록하지 않습니다. 사용자가 보관 또는 승격을 명시한 화면만 별도 검토 후 추적 경로로 이동합니다.
+임시 프로토타입은 `generated-screen-evaluations.json`이나 정식 화면 레지스트리에 자동 등록하지 않습니다. 로컬 인덱스도 Git에서 제외됩니다. 사용자가 보관을 명시한 화면만 `persistence: git`, `reviewStatus: review`, `generationInfluence: blocked` 상태로 추적 경로에 이동하고, 별도 승인과 검증을 통과한 화면만 `generationInfluence: standard`가 됩니다.
 
 출력의 `fingerprint`가 다르면 두 컴퓨터의 요청 또는 레지스트리 커밋이 다른 것입니다. fingerprint가 같으면 AI가 읽어야 하는 구현 계약은 같습니다.
 
