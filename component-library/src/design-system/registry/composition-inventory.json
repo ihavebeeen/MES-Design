@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx",
   "summary": {
     "scannedFiles": 41,
-    "totalLines": 8250,
+    "totalLines": 8253,
     "shellInstances": {
       "CenterModal": 13,
       "SideSlidePanel": 9,
@@ -607,7 +607,7 @@
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
       "name": "completed-popup-expanded-content.tsx",
       "observedRole": "catalog-or-recipe",
-      "lines": 526,
+      "lines": 527,
       "exportedSymbols": [
         "BomCopyContent",
         "MaterialInputSetupContent",
@@ -653,6 +653,10 @@
           "jsxCount": 1
         },
         {
+          "name": "ContentRegionHeading",
+          "jsxCount": 1
+        },
+        {
           "name": "DatePicker",
           "jsxCount": 1
         },
@@ -684,7 +688,7 @@
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "name": "completed-popup-patterns.tsx",
       "observedRole": "catalog-or-recipe",
-      "lines": 1029,
+      "lines": 1030,
       "exportedSymbols": [
         "PopupRenderer"
       ],
@@ -731,6 +735,10 @@
         },
         {
           "name": "Checkbox",
+          "jsxCount": 1
+        },
+        {
+          "name": "ContentRegionHeading",
           "jsxCount": 1
         },
         {
@@ -930,7 +938,7 @@
       "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx",
       "name": "equipment-discharge-settings-pattern.tsx",
       "observedRole": "composition-source",
-      "lines": 283,
+      "lines": 284,
       "exportedSymbols": [],
       "shells": [
         {
@@ -959,6 +967,10 @@
         },
         {
           "name": "ConfirmDialog",
+          "jsxCount": 1
+        },
+        {
+          "name": "ContentRegionHeading",
           "jsxCount": 1
         },
         {
@@ -2947,5 +2959,5 @@
       ]
     }
   ],
-  "fingerprint": "dd92dae5892916da"
+  "fingerprint": "744b09089bcf550b"
 }

@@ -70,7 +70,7 @@
       "kind": "popup",
       "placement": "center",
       "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx",
-      "requiredComponents": ["center-modal", "confirm-dialog", "filter", "search-input", "table", "input", "button"],
+      "requiredComponents": ["center-modal", "confirm-dialog", "content-region-heading", "filter", "search-input", "table", "input", "button"],
       "rules": ["품목은 단일 선택이며 선택한 품목의 공정과 일치하는 설비만 우측에 표시한다.", "설비는 복수 선택하며 선택된 행만 시간당 생산량 입력을 활성화한다.", "일괄 변경은 현재 표시된 전체 설비에 적용하고 저장 완료 안내 중에도 주 팝업은 유지한다.", "취소·X·Esc·배경 클릭은 저장 전 변경을 폐기하고 마지막 저장 상태로 복원한다."]
     },
     {

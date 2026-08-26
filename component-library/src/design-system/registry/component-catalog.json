@@ -55,7 +55,7 @@
       "label": "레이아웃",
       "labelEn": "Layout",
       "description": "콘텐츠를 묶고 나누며 스크롤과 고정 영역을 소유하는 컨테이너",
-      "itemIds": ["divider", "card", "accordion", "collapsible", "panel", "form-grid", "section-frame", "section-header", "scroll-area", "sticky-header-footer"]
+      "itemIds": ["divider", "card", "accordion", "collapsible", "panel", "form-grid", "section-frame", "content-region-heading", "section-header", "scroll-area", "sticky-header-footer"]
     }
   ],
   "registryAliases": {

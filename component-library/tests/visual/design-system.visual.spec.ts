@@ -196,6 +196,13 @@ test("투입품목 설정/조회 팝업", async ({ page }) => {
   await page.goto("/visual-regression/popup");
   const dialog = page.getByRole("dialog", { name: "투입품목 설정/조회" });
   await expect(dialog).toBeVisible();
+  const contentHeading = dialog.getByRole("heading", { name: "품목 재고 리스트", exact: true });
+  await expect(contentHeading).toBeVisible();
+  const headingStyle = await contentHeading.evaluate((element) => {
+    const style = window.getComputedStyle(element);
+    return { backgroundColor: style.backgroundColor, fontSize: style.fontSize, lineHeight: style.lineHeight };
+  });
+  expect(headingStyle).toEqual({ backgroundColor: "rgba(0, 0, 0, 0)", fontSize: "16px", lineHeight: "24px" });
   const selectionCheckboxes = dialog.locator('.material-inventory-table input[type="checkbox"]');
   const [headerCheckbox, firstRowCheckbox] = await Promise.all([
     selectionCheckboxes.nth(0).boundingBox(),

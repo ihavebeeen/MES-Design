@@ -54,6 +54,12 @@ function CatalogThumbnail({ id, groupId }: { id: string; groupId: string }) {
   if (["image-thumbnail", "avatar"].includes(key)) {
     return <div className="flex h-full items-center justify-center gap-3"><span className="size-12 rounded-full bg-mes-primary-20" /><span className="size-14 rounded-mes-control border border-mes-gray-30 bg-gradient-to-br from-mes-gray-20 to-mes-primary-20" /><span className="size-14 rounded-mes-control border border-mes-gray-30 bg-mes-gray-20" /></div>;
   }
+  if (key === "content-region-heading") {
+    return <div className="mx-auto flex h-20 w-48 items-start rounded-mes-control border border-mes-gray-30 bg-white p-4"><span className="text-[16px] font-bold leading-6 text-mes-gray-130">품목 재고 리스트</span></div>;
+  }
+  if (key === "section-header") {
+    return <div className="mx-auto flex h-20 w-48 items-start rounded-mes-control border border-mes-gray-30 bg-white p-3"><span className="flex h-7 w-full items-center rounded-mes-control bg-mes-gray-30 px-2.5 text-[14px] font-semibold text-mes-gray-130">기본 정보</span></div>;
+  }
   if (groupId === "navigation") {
     return <div className="mx-auto flex h-20 w-48 overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white"><span className="w-12 bg-mes-gray-130" /><span className="flex-1 p-3"><span className="block h-2 w-24 rounded bg-mes-primary-30" /><span className="mt-3 block h-2 w-32 rounded bg-mes-gray-30" /><span className="mt-2 block h-2 w-20 rounded bg-mes-gray-20" /></span></div>;
   }

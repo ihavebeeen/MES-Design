@@ -65,7 +65,7 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 - Figma의 고립된 3px, 9px, 13px 값을 자동 표준으로 만들지 않는다.
 - 불일치는 `source-error`, `implementation-error`, `intentional-exception`, `normalization-candidate` 중 하나로 기록한다.
 - 셸 종류, 섹션 순서, 링크·배지 의미, 선택 상태와 입력 전환은 시각적 유사성보다 우선한다.
-- 섹션의 padding, divider, background는 `SectionFrame`이 소유하고, 제목은 `SectionHeader`가 담당한다.
+- 복수 논리 섹션의 padding, divider, background는 `SectionFrame`이 소유하고 제목은 `SectionHeader`가 담당한다. 단일 테이블·리스트·작업영역의 이름은 배경 없는 `ContentRegionHeading`을 사용한다.
 - 모달 헤더는 팝업 전체를 설명하며 모든 모달에 필요하다. 섹션 헤더는 복수 섹션을 구분할 때만 사용한다.
 - 표의 header, group, row, totals는 선택 열과 컬럼 폭 배열을 공유해야 한다.
 - 취소와 X는 같은 dismiss 경로를 사용하고 편집값을 복원한다.

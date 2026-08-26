@@ -4,6 +4,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CenterModal } from "@/components/ui/center-modal";
+import { ContentRegionHeading } from "@/components/ui/content-region-heading";
 import { DatePicker } from "@/components/ui/date-picker";
 import { IconButton } from "@/components/ui/icon-button";
 import { Link } from "@/components/ui/link";
@@ -116,7 +117,7 @@ export function MaterialInputSetupContent() {
 
       <div className="flex min-h-0 flex-col">
         <div className="h-[100px] shrink-0">
-          <b className="flex h-[52px] items-center px-5 text-[16px]">품목 재고 리스트</b>
+          <ContentRegionHeading className="flex h-[52px] items-center px-5">품목 재고 리스트</ContentRegionHeading>
           <div className="material-query-toolbar mx-5 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
             <FixtureFilter tags={[]} searchable={false} />
             <FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" />

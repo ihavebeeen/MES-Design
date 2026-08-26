@@ -5,6 +5,7 @@ import { IconReload } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { CenterModal } from "@/components/ui/center-modal";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { ContentRegionHeading } from "@/components/ui/content-region-heading";
 import { Filter } from "@/components/ui/filter";
 import { Input } from "@/components/ui/input";
 import { SearchInput } from "@/components/ui/search-input";
@@ -217,7 +218,7 @@ function EquipmentDischargeSettingsModal({ open, onOpenChange, initialItemId = n
 
           <section data-testid="equipment-list-panel" className="flex min-h-0 flex-col pr-5">
             <div className="flex h-[52px] shrink-0 items-center justify-between">
-              <h2 className="text-[16px] font-bold leading-6 text-mes-gray-130">설비 리스트</h2>
+              <ContentRegionHeading>설비 리스트</ContentRegionHeading>
               <SearchInput value={equipmentSearch} onChange={setEquipmentSearch} placeholder="검색어 입력.." size="compact" background="white" className="!w-[200px]" />
             </div>
             <div data-testid="equipment-batch-toolbar" className="flex h-12 shrink-0 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">

@@ -25,7 +25,7 @@ AI는 구현 요소를 선택하기 전에 다음을 먼저 판정한다.
 |---|---|---|---|---|
 | Overlay root heading | 중앙 모달·우측 슬라이드·확인 팝업 전체 | 모든 오버레이 | 정확히 1개 | 각 Shell의 Header 슬롯 |
 | Section heading | 본문의 독립적인 논리 묶음 하나 | 서로 다른 섹션이 둘 이상이거나 경계가 필요한 경우 | 0개 이상 | `SectionHeader` + `frame.standard-section` |
-| Content region heading | 단일 테이블·리스트·작업영역 | 콘텐츠의 이름만 필요하고 별도 섹션 경계는 불필요한 경우 | 0개 또는 1개 | 해당 콘텐츠 패턴의 제목 슬롯 |
+| Content region heading | 단일 테이블·리스트·작업영역 | 콘텐츠의 이름만 필요하고 별도 섹션 경계는 불필요한 경우 | 0개 또는 1개 | `ContentRegionHeading` |
 | Page section heading | 페이지 안의 설정·관리 영역 하나 | 반복 원본과 전용 계약이 확인된 경우 | 현재 보류 | 자동 선택 금지 |
 
 ### 2.1 Modal header
@@ -44,7 +44,9 @@ AI는 구현 요소를 선택하기 전에 다음을 먼저 판정한다.
 
 ### 2.3 Content region title
 
-`생산실적 리스트`처럼 한 테이블·리스트의 이름만 필요한 경우다. 이때 제목은 Section heading보다 시각 위계가 낮아서가 아니라 설명 대상이 하나의 콘텐츠 영역이기 때문에 선택된다. 따라서 모달용 회색 `SectionHeader` 밴드를 자동으로 상속하지 않는다.
+`생산실적 리스트`나 `품목 재고 리스트`처럼 한 테이블·리스트의 이름만 필요한 경우다. 이때 제목은 Section heading보다 시각 위계가 낮아서가 아니라 설명 대상이 하나의 콘텐츠 영역이기 때문에 선택된다. `ContentRegionHeading`은 16px Bold 일반 텍스트만 소유하며, 모달용 회색 `SectionHeader` 밴드와 제목 행의 높이·padding을 상속하지 않는다.
+
+출하실적 일괄등록 Figma node `19932:67376`에서 모달 루트 제목, 일반 텍스트형 `품목 재고 리스트`, 회색 작업 도구 영역이 서로 다른 역할로 확인된다. 생성기는 “팝업 안에 있다”는 이유만으로 이 세 역할을 하나의 회색 헤더로 합치지 않는다.
 
 ### 2.4 Page section heading 보류
 

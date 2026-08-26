@@ -91,6 +91,7 @@
       "requirement": "optional-zero-or-one",
       "allowedParents": ["shell.center-modal", "shell.side-slide-panel", "screen.entity-list", "screen.master-detail"],
       "implementationRefs": [
+        { "kind": "component", "id": "content-region-heading" },
         { "kind": "pattern", "id": "section.search-table-composition" }
       ],
       "useWhen": [

@@ -121,6 +121,7 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   { id: "dialog-footer", label: "팝업 하단 액션", labelEn: "DialogFooter" },
   { id: "form-grid", label: "폼 그리드", labelEn: "FormGrid" },
   { id: "section-frame", label: "섹션 프레임", labelEn: "SectionFrame" },
+  { id: "content-region-heading", label: "콘텐츠 영역 제목", labelEn: "ContentRegionHeading" },
   { id: "section-header", label: "섹션 헤더", labelEn: "SectionHeader" },
   { id: "inspection-judgement", label: "검사 판정", labelEn: "InspectionJudgement" },
   { id: "icons", label: "아이콘" },

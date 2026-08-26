@@ -16,7 +16,7 @@
       "kind": "popup",
       "placement": "center",
       "source": "src/components/patterns/completed-popup-patterns.tsx",
-      "requiredComponents": ["center-modal", "button", "checkbox", "filter", "search-input", "table", "input", "select"],
+      "requiredComponents": ["center-modal", "content-region-heading", "button", "checkbox", "filter", "search-input", "table", "input", "select"],
       "rules": ["조회 toolbar와 table을 별도 고정 영역으로 측정한다.", "선택된 행에만 입력·선택 컨트롤을 노출한다.", "불필요한 가로 스크롤이 생기지 않도록 viewport에서 scrollWidth를 검증한다."]
     },
     {
@@ -34,7 +34,7 @@
       "kind": "popup",
       "placement": "center",
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
-      "requiredComponents": ["center-modal", "button", "checkbox", "filter", "search-input", "table", "input", "select"],
+      "requiredComponents": ["center-modal", "content-region-heading", "button", "checkbox", "filter", "search-input", "table", "input", "select"],
       "rules": ["좌측 탐색 레일과 우측 상세 영역의 고정 폭을 원본 기준으로 유지한다.", "filter와 search는 같은 toolbar의 수직 중앙에 배치한다.", "테이블 선택은 회색 미선택 체크, 검정 선택 체크, 파란 행 배경을 함께 사용한다."]
     },
     {

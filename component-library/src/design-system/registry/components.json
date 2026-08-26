@@ -832,6 +832,21 @@
       "documentationRoute": "/components/section-header"
     },
     {
+      "id": "content-region-heading",
+      "name": "ContentRegionHeading",
+      "category": "layout",
+      "source": "src/components/ui/content-region-heading.tsx",
+      "status": "stable",
+      "rules": [
+        "단일 테이블·리스트·작업영역의 이름을 16px Bold 일반 텍스트 제목으로 표시한다.",
+        "배경·테두리·radius·고정 높이와 외부 여백은 소유하지 않는다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/content-region-heading"
+    },
+    {
       "id": "icon-menu",
       "name": "IconMenu",
       "category": "icon",

@@ -1,5 +1,7 @@
 import componentData from "@/design-system/registry/components.json";
 import usageData from "@/design-system/registry/component-usage-contracts.json";
+import { ContentRegionHeading } from "@/components/ui/content-region-heading";
+import { SectionHeader } from "@/components/ui/section-header";
 
 const componentById = new Map(componentData.components.map((component) => [component.id, component]));
 const usageById = new Map(usageData.contracts.map((contract) => [contract.componentId, contract]));
@@ -7,6 +9,19 @@ const usageById = new Map(usageData.contracts.map((contract) => [contract.compon
 function List({ items, fallback }: { items?: string[]; fallback: string }) {
   const values = items?.length ? items : [fallback];
   return <ul className="list-disc space-y-1 pl-4 text-[13px] leading-5 text-mes-gray-80">{values.map((item) => <li key={item}>{item}</li>)}</ul>;
+}
+
+function HeadingPreview({ id }: { id: string }) {
+  if (id !== "content-region-heading" && id !== "section-header") return null;
+
+  return (
+    <article className="rounded-mes-panel border border-mes-gray-30 bg-white p-4">
+      <h3 className="mb-3 text-[14px] font-semibold text-mes-gray-130">기본 예시</h3>
+      {id === "content-region-heading"
+        ? <ContentRegionHeading>품목 재고 리스트</ContentRegionHeading>
+        : <SectionHeader>기본 정보</SectionHeader>}
+    </article>
+  );
 }
 
 /** 전용 데모 섹션이 없는 공개 자산의 짧은 레지스트리 문서 화면. */
@@ -25,6 +40,8 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
         </div>
         <p className="mt-1 text-[12px] text-mes-gray-60">{component.id} · {component.category}</p>
       </header>
+
+      <HeadingPreview id={component.id} />
 
       <div className="grid gap-4 md:grid-cols-2">
         <article className="rounded-mes-panel border border-mes-gray-30 bg-white p-4">

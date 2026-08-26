@@ -9,7 +9,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "796d49deb84b2b34a0dc53a2dca35666564d4cb622d858528c82fce559b4ad74",
+  "fingerprint": "4bfcff32dbc217a48f7455539f732788fe3280b3e03591d6790f19b001c3d427",
   "guidancePolicy": {
     "componentSelection": {
       "coverageMode": "selection-critical-only",
@@ -25,20 +25,20 @@
       "feedbackLedger": "generation-selection-feedback.json"
     },
     "selectionFeedback": {
-      "total": 6,
+      "total": 7,
       "observed": 0,
-      "resolved": 6,
+      "resolved": 7,
       "dismissed": 0
     }
   },
   "summary": {
     "components": {
-      "total": 88,
-      "public": 86,
+      "total": 89,
+      "public": 87,
       "internal": 2,
-      "stable": 40,
+      "stable": 41,
       "provisional": 48,
-      "selectionGuardContracts": 20
+      "selectionGuardContracts": 21
     },
     "patterns": 62,
     "screens": 28
@@ -3630,6 +3630,10 @@
           {
             "componentId": "center-modal",
             "chooseInsteadWhen": "모달 전체 제목을 표현할 때"
+          },
+          {
+            "componentId": "content-region-heading",
+            "chooseInsteadWhen": "별도 섹션 경계 없이 단일 테이블·리스트·작업영역의 이름만 표시할 때"
           }
         ]
       },
@@ -3649,6 +3653,90 @@
         ],
         "stateMarkers": [],
         "summary": "모달 내부 섹션의 회색 제목 밴드와 우측 액션을 한 행으로 묶는다.",
+        "aria": []
+      }
+    },
+    {
+      "kind": "component",
+      "id": "content-region-heading",
+      "name": "ContentRegionHeading",
+      "category": "layout",
+      "source": "src/components/ui/content-region-heading.tsx",
+      "status": "stable",
+      "rules": [
+        "단일 테이블·리스트·작업영역의 이름을 16px Bold 일반 텍스트 제목으로 표시한다.",
+        "배경·테두리·radius·고정 높이와 외부 여백은 소유하지 않는다."
+      ],
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/content-region-heading",
+      "documentationFile": "docs/components/content-region-heading.md",
+      "guidanceMode": "selection-guard",
+      "usageContract": {
+        "componentId": "content-region-heading",
+        "capabilities": [
+          "content-region-label",
+          "plain-heading"
+        ],
+        "variants": [
+          "h2",
+          "h3"
+        ],
+        "requiredStates": [
+          "static"
+        ],
+        "useWhen": [
+          "팝업·페이지 안에서 단일 테이블·리스트·작업영역의 이름을 표시",
+          "별도 SectionFrame 경계 없이 콘텐츠 이름만 필요"
+        ],
+        "doNotUseWhen": [
+          "모달 전체 제목",
+          "서로 다른 논리 섹션을 SectionFrame과 회색 밴드로 구분",
+          "제목 없이도 컬럼 헤더와 주변 맥락만으로 내용이 명확"
+        ],
+        "allowedParents": [
+          "shell.center-modal",
+          "shell.side-slide-panel",
+          "section.search-table-composition",
+          "screen.entity-list",
+          "screen.master-detail"
+        ],
+        "constraints": [
+          "배경·테두리·radius를 추가하지 않는다.",
+          "기본 typography는 16px Bold, 24px line-height, gray130이다.",
+          "52px 제목 행, 외부 padding, 우측 액션 배치는 부모 패턴이 소유한다."
+        ],
+        "accessibility": [
+          "콘텐츠 구조에 맞는 h2 또는 h3 요소로 렌더링한다."
+        ],
+        "evidence": [
+          "material-input-settings",
+          "equipment-discharge-settings"
+        ],
+        "alternatives": [
+          {
+            "componentId": "section-header",
+            "chooseInsteadWhen": "한 오버레이 안의 서로 다른 논리 섹션을 명시적인 경계와 함께 나눌 때"
+          }
+        ]
+      },
+      "usedByPatternIds": [
+        "popup.center.equipment-discharge-settings",
+        "popup.center.navigation-detail",
+        "popup.center.table"
+      ],
+      "sourceFacts": {
+        "sourceFingerprint": "b46317836f8f7b4c070dffbeb1c4ebbca7f07534c26353578d93d1f21542244b",
+        "symbols": [
+          "ContentRegionHeadingProps",
+          "ContentRegionHeading"
+        ],
+        "propNames": [
+          "as"
+        ],
+        "stateMarkers": [],
+        "summary": "단일 테이블·리스트·작업영역의 이름을 배경이나 테두리 없이 표시한다.",
         "aria": []
       }
     },
@@ -4722,6 +4810,7 @@
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "requiredComponents": [
         "center-modal",
+        "content-region-heading",
         "button",
         "checkbox",
         "filter",
@@ -4764,6 +4853,7 @@
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
       "requiredComponents": [
         "center-modal",
+        "content-region-heading",
         "button",
         "checkbox",
         "filter",
@@ -5727,6 +5817,7 @@
       "requiredComponents": [
         "center-modal",
         "confirm-dialog",
+        "content-region-heading",
         "filter",
         "search-input",
         "table",

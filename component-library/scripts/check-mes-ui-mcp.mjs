@@ -61,7 +61,7 @@ try {
   const request = JSON.parse(readFileSync(fixturePath, "utf8"));
   const catalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "side-slide", limit: 10 } }));
   assert(catalog.counts.generationTemplates === 3, "생성 템플릿 개수가 예상과 다릅니다.");
-  assert(catalog.counts.componentUsageContracts === 20, "컴포넌트 사용 계약 개수가 예상과 다릅니다.");
+  assert(catalog.counts.componentUsageContracts === 21, "컴포넌트 사용 계약 개수가 예상과 다릅니다.");
   assert(catalog.counts.patternContracts === 10, "패턴 계약 개수가 예상과 다릅니다.");
   assert(catalog.counts.screenSpecs === 3, "순서형 ScreenSpec 개수가 예상과 다릅니다.");
   assert(catalog.counts.webGenerationPageArchetypes === 4, "신규 생성용 페이지 문법 수가 예상과 다릅니다.");

@@ -232,7 +232,23 @@
       "accessibility": ["시각 제목이 section의 접근 가능한 이름이 되도록 연결한다."],
       "evidence": ["receiving", "production-result", "custom-information"],
       "alternatives": [
-        { "componentId": "center-modal", "chooseInsteadWhen": "모달 전체 제목을 표현할 때" }
+        { "componentId": "center-modal", "chooseInsteadWhen": "모달 전체 제목을 표현할 때" },
+        { "componentId": "content-region-heading", "chooseInsteadWhen": "별도 섹션 경계 없이 단일 테이블·리스트·작업영역의 이름만 표시할 때" }
+      ]
+    },
+    {
+      "componentId": "content-region-heading",
+      "capabilities": ["content-region-label", "plain-heading"],
+      "variants": ["h2", "h3"],
+      "requiredStates": ["static"],
+      "useWhen": ["팝업·페이지 안에서 단일 테이블·리스트·작업영역의 이름을 표시", "별도 SectionFrame 경계 없이 콘텐츠 이름만 필요"],
+      "doNotUseWhen": ["모달 전체 제목", "서로 다른 논리 섹션을 SectionFrame과 회색 밴드로 구분", "제목 없이도 컬럼 헤더와 주변 맥락만으로 내용이 명확"],
+      "allowedParents": ["shell.center-modal", "shell.side-slide-panel", "section.search-table-composition", "screen.entity-list", "screen.master-detail"],
+      "constraints": ["배경·테두리·radius를 추가하지 않는다.", "기본 typography는 16px Bold, 24px line-height, gray130이다.", "52px 제목 행, 외부 padding, 우측 액션 배치는 부모 패턴이 소유한다."],
+      "accessibility": ["콘텐츠 구조에 맞는 h2 또는 h3 요소로 렌더링한다."],
+      "evidence": ["material-input-settings", "equipment-discharge-settings"],
+      "alternatives": [
+        { "componentId": "section-header", "chooseInsteadWhen": "한 오버레이 안의 서로 다른 논리 섹션을 명시적인 경계와 함께 나눌 때" }
       ]
     },
     {

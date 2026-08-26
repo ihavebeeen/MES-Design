@@ -55,6 +55,7 @@
 - ConfirmDialog는 짧은 확인·경고에 사용한다.
 - 모달 헤더는 팝업 전체의 제목이며 모든 팝업에 필요하다.
 - SectionHeader는 복수 섹션을 구분할 때만 사용한다. 섹션이 하나라면 불필요한 위계를 만들지 않는다.
+- 단일 테이블·리스트·작업영역의 이름만 필요하면 배경 없는 ContentRegionHeading을 사용한다. 팝업 안이라는 이유만으로 SectionHeader로 바꾸지 않는다.
 - SectionFrame이 padding, divider, background를 소유한다. Shell의 높이와 스크롤을 소유하지 않는다.
 - 팝업 본문만 스크롤하며 헤더와 푸터는 고정한다. 예외는 화면 계약에 명시한다.
 - 취소, X, Esc, 허용된 backdrop 닫기는 같은 dismiss 경로를 사용하고 미저장 변경을 복원한다.

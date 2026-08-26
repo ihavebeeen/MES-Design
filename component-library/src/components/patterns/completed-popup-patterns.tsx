@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CenterModal, type CenterModalSize, type DialogAction, type DialogBodyAlign, type DialogBodyPadding, type DialogBodyScrollMode } from "@/components/ui/center-modal";
+import { ContentRegionHeading } from "@/components/ui/content-region-heading";
 import { DatePicker } from "@/components/ui/date-picker";
 import { FormFieldRow, FormGrid } from "@/components/ui/form-grid";
 import { IconButton } from "@/components/ui/icon-button";
@@ -328,7 +329,7 @@ function PurchaseContent() {
   });
   return (
     <div className="flex h-full w-full flex-col">
-      <div className="flex items-center justify-between"><b className="text-[16px]">품목 리스트</b></div>
+      <div className="flex items-center justify-between"><ContentRegionHeading>품목 리스트</ContentRegionHeading></div>
       <div className="mt-3 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3"><FixtureFilter tags={[{ label: "품목", count: 5 }, { label: "품목", count: 23 }, { label: "품목: 전체보기", count: 1 }]} /><FixtureSearch value={search} onValueChange={setSearch} /></div>
       <div className="mt-3 flex h-12 items-center gap-2.5 rounded-t-mes-control bg-mes-gray-20 px-3"><b className="flex w-[160px] shrink-0 items-center gap-1"><IconReload size={16} />전체 일괄 변경</b><InlineLabeledControl label="입고 예정일" className="w-[220px] shrink-0"><DatePicker value={bulkDate} onValueChange={setBulkDate} separator="-" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 구분" className="flex-1"><FixtureSelect value={bulkType} options={["선택", "일반입고", "긴급입고"]} onValueChange={setBulkType} className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 수량" className="flex-1"><FixtureInput value={bulkQuantity} onValueChange={setBulkQuantity} inputMode="numeric" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 창고" className="flex-1"><FixtureSelect value={bulkWarehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={setBulkWarehouse} className="h-full rounded-none border-0" /></InlineLabeledControl><Button size="small" className="w-[60px] shrink-0" onClick={applyBulk}>적용</Button></div>
       <div className="min-h-0 flex-1 overflow-hidden"><FixtureTable headers={headers} rows={rows} checkedRows={visibleCheckedRows} onCheckedRowsChange={updateVisibleCheckedRows} selectionColor="black" unselectedCheckboxAppearance="grayCheck" selectionHeaderIndeterminate={false} unselectedTextTone="gray80" edgePadding={0} selectionColumnWidth={56} centerSelection columnDividers={false} horizontalScroll={false} aligns={["left", "center", "center", "center", "center", "center", "right", "center"]} /></div>
