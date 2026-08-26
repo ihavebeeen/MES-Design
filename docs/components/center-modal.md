@@ -6,12 +6,12 @@
 
 현재 맥락을 차단하고 중앙에서 짧은 조회·선택·편집을 완료
 
-## 사용 기준
+## 생성 선택 기준
 
 - 현재 맥락을 차단하고 중앙에서 짧은 조회·선택·편집을 완료
 - 원본이 중앙 팝업으로 확인됨
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 긴 등록 흐름
 - 우측 슬라이드 원본
 - 짧은 확인만 필요한 작은 대화상자
@@ -34,7 +34,8 @@
 
 - 구현: `src/components/ui/center-modal.tsx`
 - 웹 문서: `/components/center-modal`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `batch-work-order`, `material-input-settings`, `inventory-add`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `batch-work-order`, `material-input-settings`, `inventory-add`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

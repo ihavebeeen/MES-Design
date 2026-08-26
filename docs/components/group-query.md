@@ -6,12 +6,12 @@
 
 그룹형 표의 그룹 기준과 순서를 선택
 
-## 사용 기준
+## 생성 선택 기준
 
 - 그룹형 표의 그룹 기준과 순서를 선택
 - 다단 그룹 접기 구조의 조회 조건
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 일반 필터 조건
 - 정렬만 바꾸는 경우
 - 그룹형 표가 아닌 목록
@@ -32,7 +32,8 @@
 
 - 구현: `src/components/ui/group-query.tsx`
 - 웹 문서: `/components/group-query`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `grouped-production-list`, `production-result-responsive`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `grouped-production-list`, `production-result-responsive`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

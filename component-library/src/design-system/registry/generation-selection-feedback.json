@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "purpose": "신규 UI 생성에서 실제로 발생한 자산 선택 오류만 기록하고, 반복 또는 명시적 승인 근거가 있을 때 선택 규칙을 보강한다.",
+    "recordOnlyObservedFailures": true,
+    "singleOccurrenceDoesNotCreateGlobalRule": true,
+    "runtimeWebIsReferenceOnly": true,
+    "statuses": ["observed", "resolved", "dismissed"]
+  },
+  "entries": [
+    {
+      "id": "selection-feedback.link-rendered-as-badge",
+      "status": "resolved",
+      "source": "user-review",
+      "problem": "상세로 이동하는 표 값을 상태 Badge로 표현했다.",
+      "wrongAssetRefs": ["badge"],
+      "expectedAssetRefs": ["link"],
+      "ruleRefs": ["button", "link", "badge"],
+      "resolution": "이동은 Link, 즉시 동작은 Button, 상태 표시는 Badge로 의미를 분리했다."
+    },
+    {
+      "id": "selection-feedback.slide-rendered-as-center-modal",
+      "status": "resolved",
+      "source": "user-review",
+      "problem": "우측에서 이어지는 등록 흐름을 중앙 모달로 생성했다.",
+      "wrongAssetRefs": ["center-modal"],
+      "expectedAssetRefs": ["side-slide-panel"],
+      "ruleRefs": ["center-modal", "side-slide-panel"],
+      "resolution": "짧은 차단형 조회·선택은 중앙 모달, 긴 등록·편집 흐름은 우측 슬라이드로 분리했다."
+    },
+    {
+      "id": "selection-feedback.section-heading-used-as-page-band",
+      "status": "resolved",
+      "source": "user-review",
+      "problem": "섹션 헤더를 일반 페이지의 긴 회색 제목 밴드로 사용했다.",
+      "wrongAssetRefs": ["section-header"],
+      "expectedAssetRefs": ["page-heading", "plain-section-title"],
+      "ruleRefs": ["section-header", "section-frame"],
+      "resolution": "SectionHeader는 팝업 내부의 의미 있는 복수 섹션을 나눌 때만 사용하도록 제한했다."
+    },
+    {
+      "id": "selection-feedback.filter-replaced-with-search",
+      "status": "resolved",
+      "source": "user-review",
+      "problem": "구조화된 필터 추가 동작을 검색어 입력창으로 대체했다.",
+      "wrongAssetRefs": ["search-input"],
+      "expectedAssetRefs": ["filter"],
+      "ruleRefs": ["search-input", "filter"],
+      "resolution": "자유 검색과 조건 선택을 서로 다른 컴포넌트 계약으로 분리했다."
+    },
+    {
+      "id": "selection-feedback.table-used-for-repeated-entry",
+      "status": "resolved",
+      "source": "user-review",
+      "problem": "정렬·탐색이 필요 없는 반복 입력 행을 데이터 테이블로 구성했다.",
+      "wrongAssetRefs": ["table"],
+      "expectedAssetRefs": ["section.editable-row-list"],
+      "ruleRefs": ["table"],
+      "resolution": "열 비교·정렬·선택이 핵심일 때만 Table을 사용하고 단순 반복 입력은 EditableRowList 패턴으로 구성한다."
+    },
+    {
+      "id": "selection-feedback.raw-button-bypassed-component",
+      "status": "resolved",
+      "source": "user-review",
+      "problem": "생성 화면에서 디자인 시스템 Button 대신 원시 HTML button을 사용했다.",
+      "wrongAssetRefs": ["html.button"],
+      "expectedAssetRefs": ["button", "icon-button"],
+      "ruleRefs": ["button"],
+      "resolution": "화면 구현에서는 등록 Button 또는 IconButton만 사용하도록 구현 감사 규칙과 연결했다."
+    }
+  ]
+}

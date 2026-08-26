@@ -6,12 +6,12 @@
 
 현재 목록·표의 검색어 입력
 
-## 사용 기준
+## 생성 선택 기준
 
 - 현재 목록·표의 검색어 입력
 - 조회 툴바 우측 검색 슬롯
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 필터 조건 추가
 - 업무 필드 값 입력
 
@@ -33,7 +33,8 @@
 
 - 구현: `src/components/ui/search-input.tsx`
 - 웹 문서: `/components/search-input`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `material-input-settings`, `batch-work-order`, `grouped-production-list`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `material-input-settings`, `batch-work-order`, `grouped-production-list`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

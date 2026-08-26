@@ -32,6 +32,10 @@ export interface AssetManifestRegistry {
   purpose: string;
   generatedFrom: string[];
   fingerprint: string;
+  guidancePolicy: {
+    componentSelection: ComponentUsageContractRegistry["policy"];
+    selectionFeedback: { total: number; observed: number; resolved: number; dismissed: number };
+  };
   summary: {
     components: {
       total: number;
@@ -39,7 +43,7 @@ export interface AssetManifestRegistry {
       internal: number;
       stable: number;
       provisional: number;
-      detailedUsageContracts: number;
+      selectionGuardContracts: number;
     };
     patterns: number;
     screens: number;
@@ -77,6 +81,15 @@ export interface ComponentUsageContractEntry {
 
 export interface ComponentUsageContractRegistry {
   schemaVersion: 1;
+  policy: {
+    coverageMode: "selection-critical-only";
+    unlistedComponentMode: "source-api-only";
+    webEvidenceRole: "reference-only";
+    singleScreenRule: "do-not-promote";
+    allowedParentMismatchSeverity: "warning" | "blocker";
+    promotionRequirements: string[];
+    feedbackLedger: string;
+  };
   contracts: ComponentUsageContractEntry[];
 }
 

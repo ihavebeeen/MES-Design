@@ -6,12 +6,12 @@
 
 셸 본문을 의미 있는 복수 섹션으로 분할
 
-## 사용 기준
+## 생성 선택 기준
 
 - 셸 본문을 의미 있는 복수 섹션으로 분할
 - 섹션 padding·divider·background 책임을 한 곳에 둠
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 화면 전체 셸
 - 표 안의 임의 장식 박스
 - 업무 의미가 없는 wrapper
@@ -33,7 +33,8 @@
 
 - 구현: `src/components/ui/section-frame.tsx`
 - 웹 문서: `/components/section-frame`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `receiving`, `production-result`, `custom-information`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `receiving`, `production-result`, `custom-information`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

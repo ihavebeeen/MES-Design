@@ -16,7 +16,8 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 
 - 전체 자산 조회: `component-library/src/design-system/registry/asset-manifest.json`
 - 컴포넌트 신원·상태·공개 범위: `components.json`
-- 컴포넌트 사용 맥락: `component-usage-contracts.json`
+- 신규 UI 컴포넌트 선택 규칙: `component-usage-contracts.json`
+- 실제 생성 선택 오류: `generation-selection-feedback.json`
 - 패턴과 조합 계약: `patterns.json`, `pattern-contracts.json`
 - 화면 순서와 구성: `screens.json`, `screen-specs.json`
 - Tier 후보와 판정: `tier-candidates.json`, `tier-coverage-audit.json`
@@ -39,6 +40,10 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 - 신규 UI는 반복된 MES 업무 맥락과 조합 문법을 먼저 선택한다.
 - 원본 재현은 Figma의 콘텐츠, 위계, 상태, 배치와 측정값을 먼저 대조한다.
 - 실제 웹은 반복 사용 위치와 연결 구조의 참고 근거다. 단일 구현값을 표준으로 자동 승격하지 않는다.
+- `component-usage-contracts.json`은 88개 전수 사용처 원장이 아니라 신규 UI의 자산 선택을 바꾸는 핵심 규칙만 담는다.
+- 선택 규칙이 없는 단순 컴포넌트는 실제 소스의 API·상태 문서만 사용한다.
+- 신규 UI에서 실제 선택 오류가 확인됐을 때만 `generation-selection-feedback.json`에 기록하고 관련 선택 규칙을 보강한다.
+- 한 화면에서만 관찰된 사용 방식은 사용자 확정 또는 공식 공통 명세가 없으면 전역 규칙으로 승격하지 않는다.
 - 등록 컴포넌트와 패턴을 우선 사용한다. 화면 코드에서 원시 `button`, `input`, `select`, `textarea`를 직접 만들지 않는다.
 - 기존 패턴으로 설명할 수 없는 차이는 `reuse`, `compose`, `extend`, `propose-new`, `normalize` 중 하나로 판정한다.
 - 미승인 `extend`와 `propose-new`는 생성 시안 검토함에 격리한다.
@@ -68,7 +73,7 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 ## 컴포넌트 변경
 
 - 공개 자산은 `components.json`에 `visibility`, `tier`, `documentationMode`, `documentationRoute`를 기록한다.
-- 사용 맥락이 달라지면 `component-usage-contracts.json`을 함께 갱신한다.
+- 신규 UI의 자산 선택 결과를 바꾸는 사용 맥락이 달라질 때만 `component-usage-contracts.json`을 갱신한다.
 - optional prop을 추가하거나 의미를 바꾸면 `docs/컴포넌트_OPTIONAL_PROP_레지스트리.md`도 갱신한다.
 - `src/components/ui`의 활성 파일은 모두 레지스트리에 등록한다.
 - `.removed-*`, `.bak` 파일을 활성 `src` 아래에 보관하지 않는다. 복구는 Git 이력을 사용한다.

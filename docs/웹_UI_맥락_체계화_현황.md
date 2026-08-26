@@ -25,7 +25,7 @@
 
 ## 2026-08-24 구현 배치
 
-- `component-usage-contracts.json`: 핵심 컴포넌트 20개의 사용·금지·허용 부모·필수 상태·대안·근거 계약
+- `component-usage-contracts.json`: 신규 UI에서 선택이 혼동되기 쉬운 핵심 컴포넌트 20개의 선택·금지·대안 규칙. 실제 웹은 참고 근거이며 사용처 전수조사는 하지 않는다.
 - `pattern-contracts.json`: 핵심 패턴 10개의 슬롯·상태 모델·동작 대상·스크롤 소유자·허용 action set 계약
 - `screen-specs.json`: 대표 화면 3개의 순서형 SectionInstance, 컴포넌트, 동작과 스크롤 명세
 - Resolver: ScreenSpec 상속과 `decisionTrace` 출력

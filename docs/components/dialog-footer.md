@@ -6,12 +6,12 @@
 
 중앙 모달이나 우측 패널의 하단 액션
 
-## 사용 기준
+## 생성 선택 기준
 
 - 중앙 모달이나 우측 패널의 하단 액션
 - 등록된 action set을 버튼 배열로 렌더링
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 페이지 상단·본문 로컬 액션
 - 화면마다 임의 버튼 순서를 구성
 
@@ -33,7 +33,8 @@
 
 - 구현: `src/components/ui/dialog-footer.tsx`
 - 웹 문서: `/components/dialog-footer`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `batch-work-order`, `receiving`, `production-quantity-reregistration`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `batch-work-order`, `receiving`, `production-quantity-reregistration`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

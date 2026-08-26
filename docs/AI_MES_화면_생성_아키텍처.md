@@ -12,7 +12,7 @@ AI의 Shell·Section·Behavior·ActionSet 조합 단위와 승인 절차는 [AI 
 
 현재 코드에서 이 아키텍처는 다음 파일로 구체화되어 있다.
 
-- `component-usage-contracts.json`: 핵심 컴포넌트 20개의 선택·제외·부모·상태·대안 계약
+- `component-usage-contracts.json`: 서로 혼동하기 쉬운 핵심 컴포넌트 20개의 신규 UI 선택·제외·대안 규칙. 실제 웹 사용처 전수 원장이 아니다.
 - `pattern-contracts.json`: 핵심 패턴 10개의 슬롯·상태·동작 대상·스크롤·action set 계약
 - `screen-specs.json`: 대표 화면 3개의 순서형 SectionInstance
 - `screen-request.schema.json`: 자연어 요구를 코드보다 먼저 고정하는 입력 계약

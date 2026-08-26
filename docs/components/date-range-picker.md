@@ -6,11 +6,11 @@
 
 조회 대상의 시작일과 종료일을 한 범위로 선택
 
-## 사용 기준
+## 생성 선택 기준
 
 - 조회 대상의 시작일과 종료일을 한 범위로 선택
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 단일 날짜 업무 필드
 - 원본에 기간 조회가 없는 화면
 
@@ -32,7 +32,8 @@
 
 - 구현: `src/components/ui/date-range-picker.tsx`
 - 웹 문서: `/components/date-range-picker`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `grouped-production-list`, `production-result-responsive`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `grouped-production-list`, `production-result-responsive`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

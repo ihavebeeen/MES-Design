@@ -6,12 +6,12 @@
 
 목록에 구조화된 복수 조건을 추가
 
-## 사용 기준
+## 생성 선택 기준
 
 - 목록에 구조화된 복수 조건을 추가
 - 필터 카테고리와 값을 단계적으로 선택
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 자유 검색어 입력
 - 단일 업무 필드 값 선택
 
@@ -33,7 +33,8 @@
 
 - 구현: `src/components/ui/filter.tsx`
 - 웹 문서: `/components/filter`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `material-input-settings`, `batch-work-order`, `grouped-production-list`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `material-input-settings`, `batch-work-order`, `grouped-production-list`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

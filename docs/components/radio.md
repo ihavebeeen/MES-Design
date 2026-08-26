@@ -6,11 +6,11 @@
 
 서로 배타적인 소수 옵션을 동시에 보여주고 하나를 선택
 
-## 사용 기준
+## 생성 선택 기준
 
 - 서로 배타적인 소수 옵션을 동시에 보여주고 하나를 선택
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 복수 선택
 - 옵션이 많아 공간을 차지하는 경우
 - 단순 아이콘 표시
@@ -33,7 +33,8 @@
 
 - 구현: `src/components/ui/radio.tsx`
 - 웹 문서: `/components/radio`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `custom-information`, `self-inspection`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `custom-information`, `self-inspection`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

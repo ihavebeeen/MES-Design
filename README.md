@@ -39,7 +39,7 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 | 공개 / 내부 조립용 | 86 / 2 |
 | Shell·Section·Behavior·Recipe 패턴 | 62 |
 | AI 조회용 화면 정의 | 28 |
-| 상세 컴포넌트 사용 계약 | 20 |
+| 신규 UI 선택 규칙 | 20 |
 | 컴포넌트별 문서 | 88 |
 <!-- GENERATED:ASSET-SUMMARY:END -->
 
@@ -188,7 +188,8 @@ MES-Design/
 - `component-library/src/components/experimental/`: 원본 근거가 아직 없는 조작 가능한 격리 프로토타입
 - `component-library/src/components/mobile/`: 모바일 전용 공용 자산과 대표 셸
 - `component-library/src/design-system/registry/`: AI 조회용 컴포넌트·패턴·화면 레지스트리
-- `component-library/src/design-system/registry/component-usage-contracts.json`: 핵심 컴포넌트의 사용·금지·부모·상태·대안 계약
+- `component-library/src/design-system/registry/component-usage-contracts.json`: 신규 UI의 선택을 바꾸는 핵심 컴포넌트 규칙만 관리
+- `component-library/src/design-system/registry/generation-selection-feedback.json`: 생성 과정에서 실제로 발생한 자산 선택 오류와 해결 기록
 - `component-library/src/design-system/registry/pattern-contracts.json`: 핵심 Shell·Section·Behavior의 슬롯·상태·스크롤·액션 계약
 - `component-library/src/design-system/registry/screen-specs.json`: 대표 화면의 순서형 SectionInstance와 동작 대상 명세
 - `component-library/src/design-system/registry/web-ui-usage-inventory.json`: 실제 개발 MES의 메뉴·팝업 진입·연결 구조 관찰 근거. 표준값이 아니라 Figma·승인 규칙과 대조할 사용 위치 자료
@@ -449,6 +450,7 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 - [전체 검증 결과](./docs/전체_검증_결과.md)
 - [컴포넌트별 문서](./docs/components/README.md)
 - [MES 디자인 시스템 규칙](./docs/MES_디자인_시스템_규칙.md)
+- [신규 UI 컴포넌트 선택 규칙](./docs/신규_UI_컴포넌트_선택_규칙.md)
 - [AI UI 조합 인벤토리 1차](./docs/AI_UI_조합_인벤토리_1차.md)
 - [AI UI Shell·슬롯 감사 1차](./docs/AI_UI_Shell_슬롯_감사_1차.md)
 - [AI UI Section Frame 감사 1차](./docs/AI_UI_Section_Frame_감사_1차.md)
@@ -471,7 +473,7 @@ AI는 기존 후보, 차이, 근거, 영향 범위와 권장 판정을 `PatternD
 
 ## 다음 단계
 
-1. 실제 업무 요청이 생기는 순서대로 기본 계약만 있는 컴포넌트의 상세 사용 계약을 보강합니다.
+1. 신규 UI 생성에서 실제 자산 선택 오류가 확인된 경우에만 관련 선택 규칙을 보강합니다.
 2. 화면 코드에서 발견되는 의미·토큰·조합 위반을 자동 차단하는 MES 전용 lint 규칙을 추가합니다.
 3. 대표 컴포넌트 문서에 실제 variant와 상호작용 예시를 연결합니다.
 4. 이후 별도 배치에서 MCP 조회 기능 확장, 단일 토큰 생성 파이프라인, 패키지 버전·변경 관리를 진행합니다.

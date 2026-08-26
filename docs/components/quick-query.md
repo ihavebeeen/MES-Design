@@ -6,12 +6,12 @@
 
 사용자가 저장한 조회 조건을 반복 적용
 
-## 사용 기준
+## 생성 선택 기준
 
 - 사용자가 저장한 조회 조건을 반복 적용
 - 목록 화면의 빠른 조회 슬롯
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 일회성 필터 조건
 - 업무 데이터를 저장하는 입력
 
@@ -32,7 +32,8 @@
 
 - 구현: `src/components/ui/quick-query.tsx`
 - 웹 문서: `/components/quick-query`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `grouped-production-list`, `production-result-responsive`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `grouped-production-list`, `production-result-responsive`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

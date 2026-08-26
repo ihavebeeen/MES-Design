@@ -24,7 +24,9 @@ assert.deepEqual(first.composition.behaviorRefs, ["row.mutation-policy", "dismis
 assert.equal(first.composition.actionSetRef, "action-set.cancel-save");
 assert.deepEqual(first.composition.sections.map(({ id }) => id), ["basicInformation", "receivingItems", "optionalInformation"]);
 assert.equal(first.decisionTrace.shell.source, "screen-spec");
-assert.equal(first.decisionTrace.components.find(({ selectedId }) => selectedId === "input")?.contractCoverage, "structured");
+assert.equal(first.decisionTrace.components.find(({ selectedId }) => selectedId === "input")?.contractCoverage, "selection-guard");
+assert.equal(first.decisionTrace.components.find(({ selectedId }) => selectedId === "input")?.evidenceRole, "reference-only");
+assert.equal(first.implementation.componentUsagePolicy.unlistedComponentMode, "source-api-only");
 assert.ok(first.implementation.components.some((entry) => entry.id === "side-slide-panel"));
 assert.ok(!first.implementation.components.some((entry) => entry.id === "center-modal"));
 assert.ok(first.implementation.contextRules.some((entry) => entry.id === "overlay.side-slide-panel"));

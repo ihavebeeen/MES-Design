@@ -6,12 +6,12 @@
 
 열 정렬이 중요한 복수 행 비교
 
-## 사용 기준
+## 생성 선택 기준
 
 - 열 정렬이 중요한 복수 행 비교
 - 스캔·정렬·선택·그룹 집계가 필요한 목록
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 몇 개의 독립 입력 행을 정렬하기 위한 용도
 - 카드형 정보가 더 자연스러운 비정형 내용
 
@@ -34,7 +34,8 @@
 
 - 구현: `src/components/ui/table.tsx`
 - 웹 문서: `/components/table-full`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `batch-work-order`, `material-input-settings`, `grouped-production-list`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `batch-work-order`, `material-input-settings`, `grouped-production-list`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

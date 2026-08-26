@@ -30,6 +30,7 @@ const generationTemplateRegistry = readJson("generation-templates.json");
 const mobileAssetRegistry = readJson("mobile-assets.json");
 const mobileVerificationRegistry = readJson("mobile-verification-contracts.json");
 const componentUsageContractRegistry = readJson("component-usage-contracts.json");
+const generationSelectionFeedbackRegistry = readJson("generation-selection-feedback.json");
 const patternContractRegistry = readJson("pattern-contracts.json");
 const screenSpecRegistry = readJson("screen-specs.json");
 const webUiUsageInventoryRegistry = readJson("web-ui-usage-inventory.json");
@@ -87,6 +88,7 @@ checkVersion("generation-templates", generationTemplateRegistry);
 checkVersion("mobile-assets", mobileAssetRegistry);
 checkVersion("mobile-verification-contracts", mobileVerificationRegistry);
 checkVersion("component-usage-contracts", componentUsageContractRegistry);
+checkVersion("generation-selection-feedback", generationSelectionFeedbackRegistry);
 checkVersion("pattern-contracts", patternContractRegistry);
 checkVersion("screen-specs", screenSpecRegistry);
 checkVersion("web-ui-usage-inventory", webUiUsageInventoryRegistry);
@@ -311,6 +313,7 @@ const footerActionAudits = mapByUniqueId("footer-action-audit", (footerActionAud
 const generatedCandidates = mapByUniqueId("generated-screen-evaluations", generatedScreenRegistry.candidates ?? []);
 const interactionAudits = mapByUniqueId("interaction-audit", (interactionAuditRegistry.screens ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
 const componentUsageContracts = mapByUniqueId("component-usage-contracts", (componentUsageContractRegistry.contracts ?? []).map((entry) => ({ ...entry, id: entry.componentId })));
+const generationSelectionFeedback = mapByUniqueId("generation-selection-feedback", generationSelectionFeedbackRegistry.entries ?? []);
 const patternContracts = mapByUniqueId("pattern-contracts", (patternContractRegistry.contracts ?? []).map((entry) => ({ ...entry, id: entry.patternId })));
 const screenSpecs = mapByUniqueId("screen-specs", (screenSpecRegistry.specs ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
 const webUsageArchetypes = mapByUniqueId("web-ui-usage-inventory archetypes", webUiUsageInventoryRegistry.archetypes ?? []);
@@ -459,6 +462,15 @@ for (const discrepancy of webUsageDiscrepancies.values()) {
   if (!discrepancy.subject || !discrepancy.observedRuntime || !discrepancy.designSystemExpectation || !discrepancy.classification) errors.push(`web usage discrepancy '${discrepancy.id}': 비교 근거가 부족합니다.`);
 }
 
+const componentUsagePolicy = componentUsageContractRegistry.policy;
+if (componentUsagePolicy?.coverageMode !== "selection-critical-only") errors.push("component-usage-contracts: coverageMode는 selection-critical-only여야 합니다.");
+if (componentUsagePolicy?.unlistedComponentMode !== "source-api-only") errors.push("component-usage-contracts: 미등록 단순 컴포넌트는 source-api-only여야 합니다.");
+if (componentUsagePolicy?.webEvidenceRole !== "reference-only") errors.push("component-usage-contracts: 실제 MES 웹 근거는 reference-only여야 합니다.");
+if (componentUsagePolicy?.singleScreenRule !== "do-not-promote") errors.push("component-usage-contracts: 단일 화면 관찰을 공통 규칙으로 승격하면 안 됩니다.");
+if (!new Set(["warning", "blocker"]).has(componentUsagePolicy?.allowedParentMismatchSeverity)) errors.push("component-usage-contracts: allowedParentMismatchSeverity가 잘못되었습니다.");
+if (!Array.isArray(componentUsagePolicy?.promotionRequirements) || componentUsagePolicy.promotionRequirements.length < 2) errors.push("component-usage-contracts: 공통 규칙 승격 조건이 필요합니다.");
+if (componentUsagePolicy?.feedbackLedger !== "generation-selection-feedback.json") errors.push("component-usage-contracts: 선택 오류 원장 연결이 필요합니다.");
+
 for (const contract of componentUsageContracts.values()) {
   if (!components.has(contract.componentId)) errors.push(`component-usage-contract '${contract.componentId}': 미등록 component를 참조합니다.`);
   for (const field of ["capabilities", "variants", "requiredStates", "useWhen", "doNotUseWhen", "allowedParents", "constraints", "accessibility", "evidence"]) {
@@ -473,6 +485,22 @@ for (const contract of componentUsageContracts.values()) {
   if (!Array.isArray(contract.alternatives)) errors.push(`component-usage-contract '${contract.componentId}': alternatives 배열이 필요합니다.`);
   for (const alternative of contract.alternatives ?? []) {
     if (!components.has(alternative.componentId) || !alternative.chooseInsteadWhen) errors.push(`component-usage-contract '${contract.componentId}': alternative '${alternative.componentId ?? ""}'가 잘못되었습니다.`);
+  }
+}
+
+const feedbackPolicy = generationSelectionFeedbackRegistry.policy;
+if (feedbackPolicy?.recordOnlyObservedFailures !== true || feedbackPolicy?.singleOccurrenceDoesNotCreateGlobalRule !== true || feedbackPolicy?.runtimeWebIsReferenceOnly !== true) {
+  errors.push("generation-selection-feedback: 관찰 오류만 기록하고 단건·실제 웹을 자동 표준화하지 않는 정책이 필요합니다.");
+}
+const allowedFeedbackStatuses = new Set(feedbackPolicy?.statuses ?? []);
+for (const entry of generationSelectionFeedback.values()) {
+  if (!allowedFeedbackStatuses.has(entry.status)) errors.push(`generation-selection-feedback '${entry.id}': status '${entry.status}'가 잘못되었습니다.`);
+  for (const field of ["problem", "source", "resolution"]) if (!entry[field]) errors.push(`generation-selection-feedback '${entry.id}': ${field}가 필요합니다.`);
+  for (const field of ["wrongAssetRefs", "expectedAssetRefs", "ruleRefs"]) {
+    if (!Array.isArray(entry[field]) || entry[field].length === 0) errors.push(`generation-selection-feedback '${entry.id}': ${field}가 필요합니다.`);
+  }
+  for (const componentId of entry.ruleRefs ?? []) {
+    if (!componentUsageContracts.has(componentId)) errors.push(`generation-selection-feedback '${entry.id}': 선택 규칙 '${componentId}'가 없습니다.`);
   }
 }
 

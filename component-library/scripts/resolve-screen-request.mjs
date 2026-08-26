@@ -56,6 +56,7 @@ export function readRegistryBundle() {
     contextRules,
     generationTemplates: generationTemplates.templates,
     mobileAssets,
+    componentUsagePolicy: componentUsageContracts.policy,
     componentUsageContracts: componentUsageContracts.contracts,
     patternContracts: patternContracts.contracts,
     screenSpecs: screenSpecs.specs,
@@ -367,7 +368,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     const usageContract = componentUsageContractMap.get(component.id);
     if (!usageContract) continue;
     if (!usageContract.allowedParents.some((parentId) => selectedPatternSet.has(parentId))) {
-      issues.push(issue("blocker", "component.parent-context", `component '${component.id}'를 허용하는 parent pattern이 현재 조합에 없습니다.`, component.id));
+      issues.push(issue(registry.componentUsagePolicy.allowedParentMismatchSeverity, "component.parent-context", `component '${component.id}'를 허용하는 parent pattern이 현재 조합에 없습니다. 선택 규칙을 참고해 조합을 검토하세요.`, component.id));
     }
   }
 
@@ -403,7 +404,8 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
         reason: usage?.useWhen ?? ["선택된 패턴의 requiredComponents에 포함됩니다."],
         doNotUseWhen: usage?.doNotUseWhen ?? [],
         alternatives: usage?.alternatives ?? [],
-        contractCoverage: usage ? "structured" : "registry-only",
+        contractCoverage: usage ? "selection-guard" : "source-api-only",
+        evidenceRole: usage ? registry.componentUsagePolicy.webEvidenceRole : null,
       };
     }),
   };
@@ -422,6 +424,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       contextRules: registry.contextRules,
       generationTemplates: registry.generationTemplates,
       componentUsageContracts: registry.componentUsageContracts,
+      componentUsagePolicy: registry.componentUsagePolicy,
       patternContracts: registry.patternContracts,
       screenSpecs: registry.screenSpecs,
       webGenerationContext: registry.webGenerationContext,
@@ -445,6 +448,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       patterns: resolvedPatterns.map(({ id, name, kind, placement, source, rules }) => ({ id, name, kind, placement, source, rules })),
       patternContracts: resolvedPatterns.map(({ id }) => patternContractMap.get(id)).filter(Boolean),
       components: resolvedComponents.map(({ id, name, category, source, status, rules }) => ({ id, name, category, source, status, rules: rules ?? [] })),
+      componentUsagePolicy: registry.componentUsagePolicy,
       componentUsageContracts: resolvedComponents.map(({ id }) => componentUsageContractMap.get(id)).filter(Boolean),
       actionSet: actionSetRef ? actionSetMap.get(actionSetRef) ?? null : null,
       contextRules: applicableContextRules,

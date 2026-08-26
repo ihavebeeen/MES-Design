@@ -6,13 +6,13 @@
 
 자유 텍스트 입력
 
-## 사용 기준
+## 생성 선택 기준
 
 - 자유 텍스트 입력
 - 화면 계약상 숫자 문자열을 직접 입력
 - 읽기 전용 필드
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 정해진 선택지 중 하나를 고름
 - 검색 전용 입력
 - 증감 버튼이 필수인 수량 입력
@@ -35,7 +35,8 @@
 
 - 구현: `src/components/ui/input.tsx`
 - 웹 문서: `/components/input`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `receiving`, `batch-work-order`, `inventory-add`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `receiving`, `batch-work-order`, `inventory-add`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

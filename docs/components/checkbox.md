@@ -6,13 +6,13 @@
 
 복수 항목 선택
 
-## 사용 기준
+## 생성 선택 기준
 
 - 복수 항목 선택
 - 테이블 행·그룹·전체 선택
 - 독립적인 참/거짓 값
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 하나만 선택 가능한 옵션
 - 단순 상태 표시
 
@@ -34,7 +34,8 @@
 
 - 구현: `src/components/ui/checkbox.tsx`
 - 웹 문서: `/components/checkbox`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `material-input-settings`, `batch-work-order`, `bom-copy`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `material-input-settings`, `batch-work-order`, `bom-copy`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

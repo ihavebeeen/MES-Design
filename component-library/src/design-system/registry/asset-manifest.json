@@ -4,11 +4,33 @@
   "generatedFrom": [
     "components.json",
     "component-usage-contracts.json",
+    "generation-selection-feedback.json",
     "component-catalog.json",
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "1109c520d083858757bffe597504933dbdb3fa784cc3c43e4cf7381c6aec8a64",
+  "fingerprint": "796d49deb84b2b34a0dc53a2dca35666564d4cb622d858528c82fce559b4ad74",
+  "guidancePolicy": {
+    "componentSelection": {
+      "coverageMode": "selection-critical-only",
+      "unlistedComponentMode": "source-api-only",
+      "webEvidenceRole": "reference-only",
+      "singleScreenRule": "do-not-promote",
+      "allowedParentMismatchSeverity": "warning",
+      "promotionRequirements": [
+        "같은 의미의 사용이 서로 다른 화면에서 두 번 이상 반복됨",
+        "사용자가 공통 규칙으로 명시적으로 확정함",
+        "공식 Figma 컴포넌트 또는 명세에서 공통 계약이 확인됨"
+      ],
+      "feedbackLedger": "generation-selection-feedback.json"
+    },
+    "selectionFeedback": {
+      "total": 6,
+      "observed": 0,
+      "resolved": 6,
+      "dismissed": 0
+    }
+  },
   "summary": {
     "components": {
       "total": 88,
@@ -16,7 +38,7 @@
       "internal": 2,
       "stable": 40,
       "provisional": 48,
-      "detailedUsageContracts": 20
+      "selectionGuardContracts": 20
     },
     "patterns": 62,
     "screens": 28
@@ -34,6 +56,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/accordion.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -72,6 +95,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/alarm-list-item.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -117,6 +141,7 @@
       "tier": 4,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/avatar.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -151,6 +176,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/badge.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "badge",
         "capabilities": [
@@ -240,6 +266,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/before-after-comparison",
       "documentationFile": "docs/components/before-after-comparison.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.before-after-confirmation"
@@ -282,6 +309,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/breadcrumb.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -321,6 +349,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/button.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "button",
         "capabilities": [
@@ -459,6 +488,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/button-group.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -490,6 +520,7 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/cascader",
       "documentationFile": "docs/components/cascader.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -525,6 +556,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/card.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "screen.analytics-dashboard"
@@ -561,6 +593,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/center-modal.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "center-modal",
         "capabilities": [
@@ -694,6 +727,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/checkbox.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "checkbox",
         "capabilities": [
@@ -803,6 +837,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/collapsible.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -838,6 +873,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/combobox.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -888,6 +924,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/confirm-dialog.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.before-after-confirmation",
@@ -948,6 +985,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/date-picker.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inventory-add",
@@ -999,6 +1037,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/labeled-select",
       "documentationFile": "docs/components/labeled-select.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inventory-add",
@@ -1040,6 +1079,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/labeled-input",
       "documentationFile": "docs/components/labeled-input.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inventory-edit"
@@ -1074,6 +1114,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/selection-action-bar",
       "documentationFile": "docs/components/selection-action-bar.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inventory-edit"
@@ -1111,6 +1152,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/analytics-charts",
       "documentationFile": "docs/components/analytics-charts.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1147,6 +1189,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/date-range-picker.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "date-range-picker",
         "capabilities": [
@@ -1230,6 +1273,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/descriptions.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "screen.master-detail",
@@ -1266,6 +1310,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/dialog-footer",
       "documentationFile": "docs/components/dialog-footer.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "dialog-footer",
         "capabilities": [
@@ -1347,6 +1392,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/divider.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1378,6 +1424,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/dropdown-menu.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1419,6 +1466,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/empty-state.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "empty-state",
         "capabilities": [
@@ -1501,6 +1549,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/error-state.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1533,6 +1582,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/fieldset.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1564,6 +1614,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/filter.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "filter",
         "capabilities": [
@@ -1685,6 +1736,7 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/file-upload",
       "documentationFile": "docs/components/file-upload.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1717,6 +1769,7 @@
       "tier": 1,
       "documentationMode": "internal",
       "documentationFile": "docs/components/filter-tag.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1754,6 +1807,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/form-grid",
       "documentationFile": "docs/components/form-grid.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "recipe.side-slide-form-editable-list",
@@ -1803,6 +1857,7 @@
       "tier": 2,
       "documentationMode": "foundation",
       "documentationFile": "docs/components/grid-container.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1833,6 +1888,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/group-query.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "group-query",
         "capabilities": [
@@ -1928,6 +1984,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/icon-button.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.standard-price-settings",
@@ -1968,6 +2025,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/input.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "input",
         "capabilities": [
@@ -2081,6 +2139,7 @@
       "tier": 3,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/image-thumbnail.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2123,6 +2182,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/inspection-judgement",
       "documentationFile": "docs/components/inspection-judgement.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.side.inspection-items",
@@ -2163,6 +2223,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/label.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2194,6 +2255,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/link.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "link",
         "capabilities": [
@@ -2275,6 +2337,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/list.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2306,6 +2369,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/loading-overlay.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2337,6 +2401,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/loading-spinner.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2368,6 +2433,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/logo.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2398,6 +2464,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/multi-select-input.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2434,6 +2501,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/navbar.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2465,6 +2533,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/notice-banner.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2498,6 +2567,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/notification-panel.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2541,6 +2611,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/number-input.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "number-input",
         "capabilities": [
@@ -2626,6 +2697,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/page-top-tab-item.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "recipe.page-entity-list",
@@ -2672,6 +2744,7 @@
       "tier": 4,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/overflow-list.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2703,6 +2776,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/pagination.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "recipe.page-entity-list",
@@ -2743,6 +2817,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/panel.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "screen.master-detail"
@@ -2770,6 +2845,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/password-input.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2805,6 +2881,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/popover.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2833,6 +2910,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/progress.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.purchase-lookup",
@@ -2875,6 +2953,7 @@
       "tier": 4,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/progress-circle.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2910,6 +2989,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/quick-query.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "quick-query",
         "capabilities": [
@@ -3014,6 +3094,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/radio.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "radio",
         "capabilities": [
@@ -3097,6 +3178,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/radio-choice-dialog.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3145,6 +3227,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/scroll-area.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "table.frozen-column-grid"
@@ -3176,6 +3259,7 @@
       "tier": 3,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/search-highlight.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3211,6 +3295,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/search-input.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "search-input",
         "capabilities": [
@@ -3324,6 +3409,7 @@
       "tier": 4,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/segmented-control.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "visualization.production-gantt"
@@ -3371,6 +3457,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/mes-product-switcher",
       "documentationFile": "docs/components/mes-product-switcher.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3409,6 +3496,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/section-frame",
       "documentationFile": "docs/components/section-frame.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "section-frame",
         "capabilities": [
@@ -3500,6 +3588,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/section-header",
       "documentationFile": "docs/components/section-header.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "section-header",
         "capabilities": [
@@ -3577,6 +3666,7 @@
       "tier": 2,
       "documentationMode": "internal",
       "documentationFile": "docs/components/icon-menu.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3608,6 +3698,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/query-date-range",
       "documentationFile": "docs/components/query-date-range.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inspection-records",
@@ -3647,6 +3738,7 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/cavity-cell",
       "documentationFile": "docs/components/cavity-cell.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3679,6 +3771,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/select.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "select",
         "capabilities": [
@@ -3789,6 +3882,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/sidebar.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "recipe.page-entity-list",
@@ -3852,6 +3946,7 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/slider",
       "documentationFile": "docs/components/slider.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3889,6 +3984,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/side-slide-panel.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "side-slide-panel",
         "capabilities": [
@@ -3999,6 +4095,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/skeleton.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4029,6 +4126,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/sticky-header-footer.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4059,6 +4157,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/switch.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.standard-price-settings",
@@ -4101,6 +4200,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/table.md",
+      "guidanceMode": "selection-guard",
       "usageContract": {
         "componentId": "table",
         "capabilities": [
@@ -4246,6 +4346,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/tag.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "table.column-settings"
@@ -4285,6 +4386,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/textarea.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4314,6 +4416,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/time-picker.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.time-selector",
@@ -4359,6 +4462,7 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/timeline",
       "documentationFile": "docs/components/timeline.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4386,6 +4490,7 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/toast.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4426,6 +4531,7 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/tree-select",
       "documentationFile": "docs/components/tree-select.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4469,6 +4575,7 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/tree-view",
       "documentationFile": "docs/components/tree-view.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4496,6 +4603,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/toggle-button.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4534,6 +4642,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/tooltip.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4567,6 +4676,7 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/user-account-menu.md",
+      "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {

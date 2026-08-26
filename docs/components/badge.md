@@ -6,11 +6,11 @@
 
 행이나 항목의 상태·분류를 짧게 표시
 
-## 사용 기준
+## 생성 선택 기준
 
 - 행이나 항목의 상태·분류를 짧게 표시
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 클릭해 상세로 이동
 - 필터를 제거하는 조작
 - 긴 설명 문구
@@ -32,7 +32,8 @@
 
 - 구현: `src/components/ui/badge.tsx`
 - 웹 문서: `/components/badge`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `material-input-settings`, `grouped-production-list`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `material-input-settings`, `grouped-production-list`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

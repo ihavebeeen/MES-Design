@@ -87,7 +87,8 @@ function bulletLines(values, fallback, limit = 4) {
 
 function componentDocument(asset) {
   const contract = asset.usageContract;
-  const role = firstSentence(contract?.useWhen?.[0]) || firstSentence(asset.rules?.[0]) || asset.sourceFacts.summary || categoryPurpose[asset.category];
+  const sourceSummary = /figma|체크리스트|추후|임시|provisional|디자인 없음|구현 없음|\b20\d{2}\b/i.test(asset.sourceFacts.summary) ? "" : asset.sourceFacts.summary;
+  const role = firstSentence(contract?.useWhen?.[0]) || firstSentence(asset.rules?.[0]) || sourceSummary || categoryPurpose[asset.category];
   const useWhen = contract?.useWhen ?? asset.rules ?? [];
   const doNotUseWhen = contract?.doNotUseWhen ?? [];
   const states = contract?.requiredStates?.length ? contract.requiredStates : asset.sourceFacts.stateMarkers;
@@ -97,6 +98,18 @@ function componentDocument(asset) {
   const evidence = contract?.evidence ?? [];
   const visibilityLabel = asset.visibility === "public" ? "공개" : "내부 조립용";
   const route = asset.documentationRoute ? `\`${asset.documentationRoute}\`` : "웹 탐색에 노출하지 않음";
+  const selectionGuidance = contract ? [
+    "## 생성 선택 기준",
+    "",
+    ...bulletLines(useWhen, "등록된 화면·패턴에서 같은 의미가 필요할 때 사용합니다."),
+    "",
+    "선택하지 않는 경우:",
+    ...bulletLines(doNotUseWhen, "역할이 다른 기존 컴포넌트를 선택합니다."),
+  ] : [
+    "## 생성 선택 기준",
+    "",
+    "이 컴포넌트는 전역 선택 가드 대상이 아닙니다. 실제 코드 API와 부모 패턴 계약만 따르며, 별도 사용처 전수조사를 만들지 않습니다.",
+  ];
 
   return [
     `# ${asset.name}`,
@@ -107,12 +120,7 @@ function componentDocument(asset) {
     "",
     role,
     "",
-    "## 사용 기준",
-    "",
-    ...bulletLines(useWhen, asset.visibility === "internal" ? "독립 화면에서 직접 사용하지 않고 부모 컴포넌트 내부에서만 사용합니다." : "등록된 화면·패턴에서 같은 의미가 필요할 때 사용합니다."),
-    "",
-    "사용하지 않는 경우:",
-    ...bulletLines(doNotUseWhen, asset.visibility === "internal" ? "화면 코드와 생성 화면에서 직접 호출하지 않습니다." : "역할이 다른 기존 컴포넌트로 표현할 수 있으면 새 용도로 확장하지 않습니다."),
+    ...selectionGuidance,
     "",
     "## API와 상태",
     "",
@@ -124,14 +132,15 @@ function componentDocument(asset) {
     "## 접근성과 제약",
     "",
     ...bulletLines(accessibility, asset.sourceFacts.aria.length ? `구현에 선언된 ${asset.sourceFacts.aria.map((item) => `\`${item}\``).join(", ")} 의미를 제거하지 않습니다.` : "네이티브 의미와 부모 컨텍스트의 접근 가능한 이름을 유지합니다.", 3),
-    ...bulletLines(constraints, asset.status === "provisional" ? "실제 MES 근거를 확인하기 전 신규 화면의 기본 선택으로 사용하지 않습니다." : "공개 Props와 등록된 사용 맥락 밖으로 임의 확장하지 않습니다.", 3),
+    ...bulletLines(constraints, asset.visibility === "internal" ? "화면 코드에서 직접 호출하지 않고 부모 컴포넌트 내부에서만 사용합니다." : "공개 Props와 구현된 상태 범위 밖으로 임의 확장하지 않습니다.", 3),
     "",
     "## 근거",
     "",
     `- 구현: \`${asset.source}\``,
     `- 웹 문서: ${route}`,
-    `- 상세 사용 계약: ${contract ? "등록됨" : "기본 계약만 등록됨"}`,
-    `- 화면 근거: ${evidence.length ? evidence.map((item) => `\`${item}\``).join(", ") : "구현 주석·레지스트리 규칙"}`,
+    `- 생성 선택 규칙: ${contract ? "적용됨" : "적용 안 함(API 문서만 사용)"}`,
+    `- 참고 화면: ${evidence.length ? evidence.map((item) => `\`${item}\``).join(", ") : "없음"}`,
+    `- 참고 화면의 역할: ${contract ? "선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님" : "해당 없음"}`,
     "",
     "이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.",
     "",
@@ -146,7 +155,7 @@ function renderDocsIndex(components) {
     "",
     `공개 ${components.filter((item) => item.visibility === "public").length}개, 내부 조립용 ${components.filter((item) => item.visibility === "internal").length}개를 같은 형식으로 기록한다.`,
     "",
-    "상태·Tier·공개 범위는 `components.json`, 사용 기준은 `component-usage-contracts.json`, API는 실제 구현 파일에서 생성한다.",
+    "상태·Tier·공개 범위는 `components.json`, 신규 UI 선택 규칙은 `component-usage-contracts.json`, API는 실제 구현 파일에서 생성한다. 선택 규칙이 없는 단순 컴포넌트는 API 문서만 유지한다.",
     "",
   ];
   for (const key of Object.keys(groups).sort()) {
@@ -169,7 +178,7 @@ function renderReadmeSummary(manifest) {
     `| 공개 / 내부 조립용 | ${manifest.summary.components.public} / ${manifest.summary.components.internal} |`,
     `| Shell·Section·Behavior·Recipe 패턴 | ${manifest.summary.patterns} |`,
     `| AI 조회용 화면 정의 | ${manifest.summary.screens} |`,
-    `| 상세 컴포넌트 사용 계약 | ${manifest.summary.components.detailedUsageContracts} |`,
+    `| 신규 UI 선택 규칙 | ${manifest.summary.components.selectionGuardContracts} |`,
     `| 컴포넌트별 문서 | ${manifest.summary.components.total} |`,
     readmeEnd,
   ].join("\n");
@@ -193,6 +202,7 @@ function walkFiles(directory) {
 function buildOutputs() {
   const registry = readRegistryBundle();
   const catalog = readJson("component-catalog.json");
+  const selectionFeedback = readJson("generation-selection-feedback.json");
   const contractById = new Map(registry.componentUsageContracts.map((contract) => [contract.componentId, contract]));
   const catalogRegistryIds = new Set(catalog.groups.flatMap((group) => group.itemIds.map((id) => catalog.registryAliases[id] ?? id)));
   const patternsByComponent = new Map();
@@ -218,6 +228,7 @@ function buildOutputs() {
       kind: "component",
       ...component,
       documentationFile: `docs/components/${component.id}.md`,
+      guidanceMode: contractById.has(component.id) ? "selection-guard" : "source-api-only",
       usageContract: contractById.get(component.id) ?? null,
       usedByPatternIds: unique(patternsByComponent.get(component.id) ?? []).sort(),
       sourceFacts: facts,
@@ -247,14 +258,25 @@ function buildOutputs() {
     patterns,
     screens,
     catalog,
+    componentUsagePolicy: registry.componentUsagePolicy,
+    selectionFeedback,
   });
   const manifest = {
     schemaVersion: 1,
     purpose: "AI와 사람이 같은 자산 상태·위치·사용 근거를 조회하는 생성 원장",
-    generatedFrom: ["components.json", "component-usage-contracts.json", "component-catalog.json", "patterns.json + source-assets.json", "screens.json + source-assets.json"],
+    generatedFrom: ["components.json", "component-usage-contracts.json", "generation-selection-feedback.json", "component-catalog.json", "patterns.json + source-assets.json", "screens.json + source-assets.json"],
     fingerprint,
+    guidancePolicy: {
+      componentSelection: registry.componentUsagePolicy,
+      selectionFeedback: {
+        total: selectionFeedback.entries.length,
+        observed: selectionFeedback.entries.filter((entry) => entry.status === "observed").length,
+        resolved: selectionFeedback.entries.filter((entry) => entry.status === "resolved").length,
+        dismissed: selectionFeedback.entries.filter((entry) => entry.status === "dismissed").length
+      }
+    },
     summary: {
-      components: { total: components.length, public: components.filter((item) => item.visibility === "public").length, internal: components.filter((item) => item.visibility === "internal").length, stable: components.filter((item) => item.status === "stable").length, provisional: components.filter((item) => item.status === "provisional").length, detailedUsageContracts: components.filter((item) => item.usageContract).length },
+      components: { total: components.length, public: components.filter((item) => item.visibility === "public").length, internal: components.filter((item) => item.visibility === "internal").length, stable: components.filter((item) => item.status === "stable").length, provisional: components.filter((item) => item.status === "provisional").length, selectionGuardContracts: components.filter((item) => item.usageContract).length },
       patterns: patterns.length,
       screens: screens.length,
     },

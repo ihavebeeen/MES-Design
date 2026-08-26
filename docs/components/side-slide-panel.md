@@ -6,12 +6,12 @@
 
 현재 목록 맥락을 유지하며 긴 등록·편집을 우측에서 수행
 
-## 사용 기준
+## 생성 선택 기준
 
 - 현재 목록 맥락을 유지하며 긴 등록·편집을 우측에서 수행
 - 원본이 우측 슬라이드 팝업으로 확인됨
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 중앙 조회·선택 팝업
 - 짧은 확인
 - 독립 전체 페이지
@@ -34,7 +34,8 @@
 
 - 구현: `src/components/ui/side-slide-panel.tsx`
 - 웹 문서: `/components/side-slide-panel`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `receiving`, `production-result`, `operation-log`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `receiving`, `production-result`, `operation-log`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

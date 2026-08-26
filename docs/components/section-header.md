@@ -6,12 +6,12 @@
 
 팝업 안에서 복수 섹션의 내용을 구분
 
-## 사용 기준
+## 생성 선택 기준
 
 - 팝업 안에서 복수 섹션의 내용을 구분
 - 섹션 제목 우측에 로컬 액션이 있음
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 모달 전체 제목
 - 섹션이 하나뿐이고 별도 위계가 필요 없음
 - 일반 페이지에서 근거 없는 긴 회색 밴드
@@ -33,7 +33,8 @@
 
 - 구현: `src/components/ui/section-header.tsx`
 - 웹 문서: `/components/section-header`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `receiving`, `production-result`, `custom-information`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `receiving`, `production-result`, `custom-information`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

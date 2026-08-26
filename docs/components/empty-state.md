@@ -6,11 +6,11 @@
 
 조회 결과나 편집 목록이 비었고 다음 행동을 안내해야 함
 
-## 사용 기준
+## 생성 선택 기준
 
 - 조회 결과나 편집 목록이 비었고 다음 행동을 안내해야 함
 
-사용하지 않는 경우:
+선택하지 않는 경우:
 - 로딩 중
 - 오류가 발생함
 - 실제 데이터가 존재함
@@ -34,7 +34,8 @@
 
 - 구현: `src/components/ui/empty-state.tsx`
 - 웹 문서: `/components/empty-state`
-- 상세 사용 계약: 등록됨
-- 화면 근거: `form-management`, `team-settings`
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `form-management`, `team-settings`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

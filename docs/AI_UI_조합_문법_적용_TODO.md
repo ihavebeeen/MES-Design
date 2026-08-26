@@ -40,7 +40,7 @@
 - [x] 화면 ID가 없는 신규 생성도 전체 선택 규칙·보류 항목을 한 번에 읽도록 `getGenerationContext` API를 추가했다.
 - [x] 페이지 전용 섹션 제목은 별도 컴포넌트로 만들지 않기로 종결했다. 페이지에서는 기존 content-region 제목과 최소 타이포 조합을 사용하고 모달용 회색 `SectionHeader`를 자동 재사용하지 않는다.
 - [x] 투입정보·부산물 생성 시안은 추가 승격 검토 없이 격리 시안으로 보존·종결했다.
-- [x] Button·Input·Table·Shell 등 핵심 웹 컴포넌트 20개의 사용·금지·부모·상태·대안 계약을 `component-usage-contracts.json`으로 구조화했다.
+- [x] Button·Input·Table·Shell 등 신규 UI에서 선택이 혼동되기 쉬운 20개의 선택·금지·대안 규칙을 `component-usage-contracts.json`으로 구조화했다. 나머지는 소스 API 문서만 유지한다.
 - [x] 핵심 Shell·Section·Behavior 10개의 슬롯·상태·스크롤·action set 계약을 `pattern-contracts.json`으로 구조화했다.
 - [x] 우측 슬라이드, 중앙 검색 테이블, 페이지 그룹 목록 대표 화면 3개를 순서형 `screen-specs.json`으로 이관했다.
 - [x] Resolver가 선택·제외 근거를 `decisionTrace`로 출력하고, 구현 감사가 섹션 ID·순서·패턴 marker·action set을 차단 조건으로 검사하도록 확장했다.
