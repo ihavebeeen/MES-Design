@@ -49,6 +49,8 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
 
 ## Selection rules
 
+- Apply the asset selection ladder to every meaningful component, section pattern, behavior, shell, and action set: exact approved match first; then a compatible existing candidate; only then a quarantined new-asset proposal.
+- A visually similar candidate is reusable only when semantic role, interaction effect, selection cardinality, state model, accessibility contract, allowed parent, and information hierarchy remain valid. Otherwise reject it instead of restyling it into another control.
 - Start from `nearestScreenId` whenever an applicable registered screen exists.
 - For source-less `new` requests, use `web-generation-context.json` as the actual-web composition guide. Do not feed `web-figma-reconciliation.json` or incomplete verification counts into generation.
 - `repeated` web grammar can guide composition. `single-case` grammar is a nearest example and cannot become a default without another evidence case or explicit approval.

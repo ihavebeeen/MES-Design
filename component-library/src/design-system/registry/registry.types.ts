@@ -656,6 +656,15 @@ export interface CompositionPolicyMigrationHold {
   decision: string;
 }
 
+export interface AssetSelectionStep {
+  id: "exact-match" | "compatible-existing" | "new-asset";
+  question: string;
+  comparisonAxes?: string[];
+  passOutcome: Array<"reuse" | "compose" | "extend" | "propose-new">;
+  failAction: string;
+  approval?: string;
+}
+
 export interface CompositionPolicyRegistry {
   schemaVersion: 1;
   policyId: "mes.ai-composition-grammar";
@@ -669,6 +678,12 @@ export interface CompositionPolicyRegistry {
     sectionInstance: string[];
     shellSlots: string[];
     sectionFrameVariants: string[];
+  };
+  assetSelectionLadder: {
+    scope: string[];
+    steps: AssetSelectionStep[];
+    similarityRule: string;
+    example: string;
   };
   decisionOutcomes: Array<"reuse" | "compose" | "extend" | "propose-new" | "normalize">;
   approval: {

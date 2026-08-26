@@ -153,12 +153,13 @@ AI는 JSX를 작성하기 전에 다음 순서를 지킨다.
 
 1. 요구사항을 ScreenSpec 후보로 정규화한다.
 2. `select.overlay-shell`, `select.heading-context`, `select.action-role`, `select.input-control`, `select.content-boundary`, `select.table-model`, `select.scroll-owner`로 의미 역할과 부모 맥락을 판정한다.
-3. Shell, Section, Behavior별 기존 후보를 조회한다.
-4. 각 차이를 `reuse`, `compose`, `extend`, `propose-new`, `normalize`로 판정한다.
-5. 선택 근거, 기존 후보, 차이와 승인 상태를 PatternDecision으로 기록한다.
-6. 승인된 Shell과 Section Pattern의 슬롯 안에 컴포넌트를 배치한다.
-7. 임의 wrapper, 배경, radius, 안내 문구와 정보 위계를 추가하지 않는다.
-8. 정적·상호작용·시각 검증 후 GenerationReport를 남긴다.
+3. Shell, Section, Behavior, ActionSet, Component마다 의미·동작·상태·부모 맥락에 정확히 맞는 승인 자산을 조회한다.
+4. 정확한 자산이 없으면 가장 가까운 후보의 의미 역할, 동작 결과, 선택 수, 상태 모델, 접근성, 허용 부모와 정보 위계를 비교한다. 이를 보존할 수 있을 때만 `reuse`, `compose`, `extend`한다.
+5. 유사 후보도 사용할 수 없을 때만 `propose-new`한다. 시각적으로 비슷하다는 이유로 의미가 다른 자산을 변형하지 않는다.
+6. 각 차이를 `reuse`, `compose`, `extend`, `propose-new`, `normalize`로 확정하고 선택·탈락 근거와 승인 상태를 PatternDecision에 기록한다.
+7. 승인된 Shell과 Section Pattern의 슬롯 안에 컴포넌트를 배치한다.
+8. 임의 wrapper, 배경, radius, 안내 문구와 정보 위계를 추가하지 않는다.
+9. 정적·상호작용·시각 검증 후 GenerationReport를 남긴다.
 
 AI는 `propose-new` 또는 기존 패턴의 의미를 바꾸는 `extend`를 스스로 승인하지 않는다. 승인 전 코드는 생성 시안 검토함에 격리하며 후속 화면의 표준 근거로 사용하지 않는다.
 

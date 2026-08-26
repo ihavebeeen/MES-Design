@@ -15,6 +15,7 @@
 - 자연어 또는 Figma를 바로 JSX로 옮기지 않는다. 먼저 `ScreenRequest`를 만들고 `npm run screen:resolve`로 계약을 확정한다.
 - 가장 가까운 등록 화면의 `getImplementationContext(screenId)`를 기준으로 시작한다.
 - 가장 가까운 화면에 `screen-specs.json` 명세가 있으면 순서형 `composition.sections`를 보존한다. 평면 `sectionRefs`만 보고 섹션을 재배치하지 않는다.
+- 각 의미 있는 자산은 정확히 일치하는 승인 자산을 먼저 찾고, 없으면 가장 가까운 후보가 의미·동작·선택 수·상태·접근성·부모 맥락을 보존하는지 판정한다. 보존할 수 없을 때만 신규 자산 proposal로 이동한다.
 - 등록 컴포넌트와 패턴을 우선 사용한다. `<button>`, `<input>`, `<select>`, `<textarea>` 같은 원시 상호작용 요소를 화면 코드에 직접 만들지 않는다.
 - Experimental 후보와 `influence: quarantined` 생성 화면은 근거로 사용하지 않는다.
 

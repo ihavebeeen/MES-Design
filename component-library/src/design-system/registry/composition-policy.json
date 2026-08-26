@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "policyId": "mes.ai-composition-grammar",
-  "policyVersion": "1.3.0",
+  "policyVersion": "1.4.0",
   "status": "active",
   "authority": "common-policy",
   "layers": [
@@ -21,6 +21,33 @@
     "sectionInstance": ["sectionFrame:1", "sectionPattern:1", "screenConfig:1"],
     "shellSlots": ["header", "body", "footer"],
     "sectionFrameVariants": ["standard", "collapsible", "none"]
+  },
+  "assetSelectionLadder": {
+    "scope": ["component", "section-pattern", "behavior-pattern", "shell", "action-set"],
+    "steps": [
+      {
+        "id": "exact-match",
+        "question": "요구된 의미·동작·상태·부모 맥락에 정확히 맞는 승인 자산이 있는가?",
+        "passOutcome": ["reuse"],
+        "failAction": "compatible-existing 단계로 이동"
+      },
+      {
+        "id": "compatible-existing",
+        "question": "가장 가까운 기존 자산을 의미 변경 없이 재사용·조합·확장할 수 있는가?",
+        "comparisonAxes": ["semantic-role", "interaction-effect", "selection-cardinality", "state-model", "accessibility-contract", "allowed-parent", "information-hierarchy"],
+        "passOutcome": ["reuse", "compose", "extend"],
+        "failAction": "유사 자산을 사용하지 않고 new-asset 단계로 이동"
+      },
+      {
+        "id": "new-asset",
+        "question": "정확한 자산도 없고 기존 자산의 의미를 보존한 표현도 불가능한가?",
+        "passOutcome": ["propose-new"],
+        "failAction": "요구사항 또는 후보 판정을 다시 확인",
+        "approval": "required-and-quarantined-before-approval"
+      }
+    ],
+    "similarityRule": "시각적 유사성은 2단계 후보를 찾는 단서일 뿐 사용 허가가 아니다.",
+    "example": "단일 선택 Radio가 없을 때 복수·독립 선택 Checkbox는 selection-cardinality와 state-model이 달라 2단계에서 탈락하며 Radio를 신규 제안한다."
   },
   "decisionOutcomes": ["reuse", "compose", "extend", "propose-new", "normalize"],
   "approval": {

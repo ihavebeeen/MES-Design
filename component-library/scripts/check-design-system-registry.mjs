@@ -159,6 +159,17 @@ const compositionLayers = new Set((compositionPolicyRegistry.layers ?? []).map((
 for (const layer of requiredCompositionLayers) {
   if (!compositionLayers.has(layer)) errors.push(`composition-policy: 필수 layer '${layer}'가 없습니다.`);
 }
+const assetSelectionSteps = compositionPolicyRegistry.assetSelectionLadder?.steps ?? [];
+const requiredAssetSelectionSteps = ["exact-match", "compatible-existing", "new-asset"];
+if (JSON.stringify(assetSelectionSteps.map((step) => step.id)) !== JSON.stringify(requiredAssetSelectionSteps)) {
+  errors.push("composition-policy: 자산 선택 단계는 exact-match → compatible-existing → new-asset 순서여야 합니다.");
+}
+if (!assetSelectionSteps.find((step) => step.id === "compatible-existing")?.comparisonAxes?.includes("semantic-role")) {
+  errors.push("composition-policy: 유사 자산 판정에 semantic-role 비교가 필요합니다.");
+}
+if (assetSelectionSteps.find((step) => step.id === "new-asset")?.approval !== "required-and-quarantined-before-approval") {
+  errors.push("composition-policy: 신규 자산은 승인 전 격리되어야 합니다.");
+}
 for (const hold of compositionPolicyRegistry.migrationHolds ?? []) {
   if (!["resolved", "closed-no-action"].includes(hold.status) || !hold.decision) errors.push(`composition-policy: migration '${hold.id}'는 종결 상태와 decision이 필요합니다.`);
 }

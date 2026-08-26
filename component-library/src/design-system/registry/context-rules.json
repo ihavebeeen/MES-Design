@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "policyId": "mes.ai-context-rules",
-  "policyVersion": "1.1.0",
+  "policyVersion": "1.2.0",
   "status": "active",
   "authority": "common-policy",
   "decisionAxes": [
@@ -17,6 +17,8 @@
     "source-evidence"
   ],
   "globalGates": [
+    "모든 의미 있는 UI 자산은 정확히 일치하는 승인 자산 조회, 유사 후보의 의미 적합성 판정, 신규 자산 제안 순서로 선택한다.",
+    "유사한 외형은 후보 탐색 근거일 뿐이며 의미·동작·선택 수·상태·접근성·부모 맥락 중 하나라도 충돌하면 대체 사용하지 않는다.",
     "시각적 유사성보다 의미 역할과 설명 범위를 먼저 비교한다.",
     "stable 컴포넌트라도 허용된 부모 맥락이 다르면 자동 재사용하지 않는다.",
     "필수 요소와 선택 요소를 구분하고 선택 요소는 존재 이유를 설명할 수 있을 때만 추가한다.",

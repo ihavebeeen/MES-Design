@@ -33,6 +33,8 @@ Choose in this order:
 
 Do not select by visual resemblance alone. A gray rectangle, title, or repeated row is not sufficient evidence of a component or pattern identity.
 
+For every meaningful component, section pattern, behavior, shell, and action set, apply `exact-match → compatible-existing → new-asset`. The middle step must compare semantic role, interaction effect, selection cardinality, state model, accessibility, allowed parent, and information hierarchy. A mismatch rejects the candidate; it does not justify disguising that asset with new styles. Only after both existing-asset steps fail may the result become a quarantined `propose-new` decision.
+
 The resolved contract must include `decisionTrace`. It is the machine-readable answer to why a shell, section, behavior, action set, or component was selected and which alternatives were rejected. An implementation without this trace is not auditable.
 
 ## Fidelity and normalization

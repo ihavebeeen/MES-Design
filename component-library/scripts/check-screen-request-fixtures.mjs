@@ -31,6 +31,8 @@ assert.ok(first.implementation.components.some((entry) => entry.id === "side-sli
 assert.ok(!first.implementation.components.some((entry) => entry.id === "center-modal"));
 assert.ok(first.implementation.contextRules.some((entry) => entry.id === "overlay.side-slide-panel"));
 assert.ok(!first.implementation.contextRules.some((entry) => entry.id === "overlay.center-modal"));
+assert.ok(first.implementation.globalGates.some((rule) => rule.includes("정확히 일치하는 승인 자산 조회")), "Resolver가 3단계 자산 선택 순서를 전달하지 않았습니다.");
+assert.ok(first.implementation.globalGates.some((rule) => rule.includes("유사한 외형은 후보 탐색 근거")), "Resolver가 유사 자산의 의미 적합성 gate를 전달하지 않았습니다.");
 
 const wrongShell = structuredClone(request);
 wrongShell.target.kind = "center-modal";
