@@ -5,9 +5,9 @@ import { dirname, resolve } from "node:path";
 import { auditScreenFile, auditScreenImplementation } from "./audit-screen-implementation.mjs";
 import { generateScreenTsx } from "./generate-screen-tsx.mjs";
 import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-preview.mjs";
-import { resolveScreenRequest } from "./resolve-screen-request.mjs";
+import { readRegistryBundle, resolveScreenRequest } from "./resolve-screen-request.mjs";
 import { digest, implementationRoot } from "./screen-implementation-graph.mjs";
-import { assertStaticPass, reviewPaths, verifyScreenHandoff, visualChecks } from "./screen-handoff.mjs";
+import { assertStaticPass, recordScreenReview, reviewPaths, verifyScreenHandoff, visualChecks } from "./screen-handoff.mjs";
 
 const root = implementationRoot;
 mkdirSync(resolve(root, "src/generated-previews"), { recursive: true });
@@ -82,6 +82,38 @@ try {
     const c = resolveScreenRequest(req);
     assert.ok(auditScreenImplementation(c, generateScreenTsx(c).replace("<PageTopTabItem", "<div")).findings.some((f) => f.code === "shell.page-chrome"));
   });
+  check("실제 Button asChild=false API 및 단일 링크 조합 통과", () => {
+    for (const jsx of ['<Button asChild={false}>저장</Button>', '<Button asChild><a href="/items">품목</a></Button>']) {
+      const result = auditScreenImplementation(contract, original + `\nconst Supported = () => ${jsx};`);
+      assert.equal(result.blockerCount, 0, JSON.stringify(result.findings));
+    }
+  });
+  check("가짜/미지원 asChild·동적 자식·원시 컨트롤 위장 차단", () => {
+    for (const jsx of ['<Input asChild={false}/>', '<Button asChild><input /></Button>', '<Button asChild><div role="button">가짜</div></Button>', '<Button asChild={enabled}><a href="/">링크</a></Button>', '<Button asChild><a href="javascript:alert(1)">링크</a></Button>']) {
+      assert.ok(auditScreenImplementation(contract, original + `\nconst Unsupported = () => ${jsx};`).findings.some((f) => f.code === "source.render-override"));
+    }
+  });
+  check("배치용 style·실제 MES 토큰·비상호작용 접근성 속성 통과", () => {
+    const result = auditScreenImplementation(contract, original + '\nconst Layout = () => <div role="region" aria-label="입력" tabIndex={-1} style={{display:"flex", minWidth:0, width:"100%", color:"var(--mes-gray-130)"}}/>;');
+    assert.equal(result.blockerCount, 0, JSON.stringify(result.findings));
+  });
+  check("미등록 토큰·동적 style·원시 역할/이벤트 위장 차단", () => {
+    for (const jsx of ['<div style={{color:"var(--not-mes)"}}/>', '<div style={unknown}/>', '<div style={{fontSize:"99px"}}/>', '<div role="button" onClick={() => save()}/>', '<div tabIndex={0}/>']) {
+      assert.ok(auditScreenImplementation(contract, original + `\nconst Fake = () => ${jsx};`).blockerCount > 0);
+    }
+  });
+  check("페이지 틀은 선택한 등록 패턴을 따름 (전역 Sidebar 강제 아님)", () => {
+    const req = JSON.parse(readFileSync(resolve(root, "tests/fixtures/screen-requests/deterministic-entity-list.json")));
+    const c = resolveScreenRequest(req);
+    const registry = readRegistryBundle();
+    // Synthetic alternative contract only; this does not approve a production pattern.
+    for (const p of registry.patterns.filter((p) => c.composition.selectedPatternRefs.includes(p.id) && p.placement === "page")) {
+      p.requiredComponents = p.requiredComponents.filter((id) => !["sidebar", "page-top-tab-item"].includes(id));
+    }
+    const source = generateScreenTsx(c).replace("<PageTopTabItem", "<div").replace("<Sidebar", "<div");
+    assert.equal(auditScreenImplementation(c, source, registry).blockerCount, 0);
+    assert.ok(auditScreenImplementation(c, source, readRegistryBundle()).findings.some((f) => f.code === "shell.page-chrome"));
+  });
   write(original);
   check("검사 결과 없으면 전달 차단", () => {
     rmSync(paths.audit);
@@ -150,6 +182,65 @@ try {
   check("시각 캡처 변경 시 차단", () => {
     writeFileSync(artifactPath, "changed");
     assert.throws(() => verifyScreenHandoff(plan), /캡처 누락\/변경/);
+  });
+  const observation = { reviewer: "synthetic-regression-only", rendered: true, interactions: true };
+  check("신규 UI는 캡처·7개 서술 없이 짧은 실제 확인 형식으로 통과", () => {
+    const recorded = recordScreenReview(plan, observation);
+    assert.equal(recorded.schemaVersion, 2);
+    assert.deepEqual(recorded.captures, []);
+    assert.equal(recorded.note, "");
+    assert.equal(recorded.checks, undefined);
+    assert.equal(verifyScreenHandoff(plan).status, "handoff-ready");
+  });
+  check("같은 코드 재검사는 과거 시각 확인을 변경 없이 재사용", () => {
+    const saved = JSON.parse(readFileSync(paths.visual));
+    saved.comparedAt = new Date(Date.now() - 60000).toISOString();
+    json(paths.visual, saved);
+    const before = readFileSync(paths.visual, "utf8");
+    writeScreenPreview(plan);
+    assert.equal(verifyScreenHandoff(plan).status, "handoff-ready");
+    assert.equal(readFileSync(paths.visual, "utf8"), before);
+  });
+  check("검사 결과 갱신과 렌더링 변경을 구분", () => {
+    const before = readFileSync(paths.visual, "utf8");
+    const staleAudit = JSON.parse(readFileSync(paths.audit));
+    json(paths.audit, { ...staleAudit, fingerprint: "old-checker-fingerprint" });
+    assert.throws(() => verifyScreenHandoff(plan), /재검사/);
+    writeScreenPreview(plan);
+    assert.equal(verifyScreenHandoff(plan).status, "handoff-ready");
+    assert.equal(readFileSync(paths.visual, "utf8"), before);
+  });
+  check("짧은 확인도 실패/미확인은 차단하고 이전 성공 무효화", () => {
+    assert.throws(() => recordScreenReview(plan, { ...observation, interactions: false }), /미확인\/실패/);
+    assert.throws(() => verifyScreenHandoff(plan), /미확인\/실패/);
+    assert.throws(() => recordScreenReview(plan, { ...observation, unchecked: ["날짜 입력 미확인"] }), /미확인 항목/);
+    assert.throws(() => recordScreenReview(plan, { ...observation, captures: ["does-not-exist.png"] }));
+    assert.throws(() => verifyScreenHandoff(plan), /전달 차단/);
+    recordScreenReview(plan, observation);
+  });
+  check("코드 변경 후 정적 재검사만으로 이전 시각 확인 재사용 불가", () => {
+    write(original + "\n// new render source");
+    writeScreenPreview(plan);
+    assert.throws(() => verifyScreenHandoff(plan), /영향을 받은 부분/);
+    recordScreenReview(plan, observation);
+    assert.equal(verifyScreenHandoff(plan).status, "handoff-ready");
+    write(original); writeScreenPreview(plan); recordScreenReview(plan, observation);
+  });
+  check("원본 재현은 원본 대조 필요, 별도 캡처 복사는 불필요", () => {
+    const reproduction = resolveScreenRequest({ ...request, intent: "reproduce" });
+    const reproductionPlan = createScreenPreviewPlan(reproduction, sourcePath);
+    writeScreenPreview(reproductionPlan);
+    assert.throws(() => recordScreenReview(reproductionPlan, observation), /원본 대조/);
+    recordScreenReview(reproductionPlan, { ...observation, sourceCompared: true });
+    assert.equal(verifyScreenHandoff(reproductionPlan).status, "handoff-ready");
+    writeScreenPreview(plan); recordScreenReview(plan, observation);
+  });
+  check("CLI가 짧은 확인을 자동 기록하고 재전달에서 재사용", () => {
+    assert.equal(cli("screen-handoff.mjs", [contractPath, sourcePath, "--reviewed"]).status, 0);
+    const before = readFileSync(paths.visual, "utf8");
+    assert.equal(cli("screen-handoff.mjs", [contractPath, sourcePath]).status, 0);
+    assert.equal(readFileSync(paths.visual, "utf8"), before);
+    assert.notEqual(cli("screen-handoff.mjs", [contractPath, sourcePath, "--unknown"]).status, 0);
   });
   check("다른 CLI 진입점도 HTML 및 검사 실패 차단", () => {
     const html = resolve(directory, "standalone.html"); writeFileSync(html, '<button>자체 UI</button>');

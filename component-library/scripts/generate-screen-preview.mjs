@@ -115,7 +115,7 @@ function runCli() {
   const contract = JSON.parse(readFileSync(contractPath, "utf8"));
   const plan = createScreenPreviewPlan(contract, sourcePath);
   const result = writeScreenPreview(plan);
-  console.log(`[screen:preview:internal-qa] ${result.created ? "created" : "existing"} · ${plan.relativePath} · QA 전용 ${plan.url}\n사용자 전달 전 screen:handoff 필요. 시각 기록: ${result.paths.visual}`);
+  console.log(`[screen:preview:internal-qa] ${result.created ? "created" : "existing"} · ${plan.relativePath} · QA 전용 ${plan.url}\n실제 렌더링·동작 확인 후 screen:handoff --reviewed 필요. 기록 자동 저장 위치: ${result.paths.visual}`);
 }
 
 if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {

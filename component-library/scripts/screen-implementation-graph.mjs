@@ -46,6 +46,55 @@ function exportsName(path, name, seen = new Set()) {
   return false;
 }
 
+// Inspect the exported component's explicit local props, rather than maintaining
+// a second list of which MES components support composition APIs.
+function declaresBooleanProp(path, exportName, prop) {
+  const file = ts.createSourceFile(path, readFileSync(path, "utf8"), ts.ScriptTarget.Latest, true);
+  const declarations = new Map();
+  for (const statement of file.statements) {
+    if (statement.name) declarations.set(statement.name.text, statement);
+    if (ts.isVariableStatement(statement)) for (const d of statement.declarationList.declarations) declarations.set(d.name.getText(file), d);
+  }
+  const visited = new Set();
+  function has(type) {
+    if (!type || visited.has(type)) return false;
+    visited.add(type);
+    if (ts.isTypeReferenceNode(type)) return has(declarations.get(type.typeName.getText(file)));
+    if (ts.isTypeAliasDeclaration(type)) return has(type.type);
+    if (ts.isIntersectionTypeNode(type)) return type.types.some(has);
+    return type.members?.some((member) => member.name?.getText(file) === prop && member.type?.kind === ts.SyntaxKind.BooleanKeyword) ?? false;
+  }
+  const declaration = declarations.get(exportName);
+  if (!declaration) return false;
+  if (ts.isFunctionDeclaration(declaration)) return has(declaration.parameters[0]?.type);
+  if (ts.isVariableDeclaration(declaration)) {
+    const value = declaration.initializer;
+    if (value && ts.isCallExpression(value) && /(?:^|\.)forwardRef$/.test(value.expression.getText(file))) return has(value.typeArguments?.[1]);
+    if (value && (ts.isArrowFunction(value) || ts.isFunctionExpression(value))) return has(value.parameters[0]?.type);
+  }
+  return false;
+}
+
+function inspectInlineStyle(value, file, tokens) {
+  const expression = value && ts.isJsxExpression(value) ? value.expression : null;
+  if (!expression || !ts.isObjectLiteralExpression(expression)) return "style 객체를 정적으로 확인할 수 없습니다.";
+  // Layout mechanics are not MES visual constants. Token values come from the
+  // existing stylesheet; no copied palette, spacing scale or component list.
+  const mechanics = /^(?:display|flexDirection|flexWrap|flexGrow|flexShrink|alignItems|alignSelf|justifyContent|gridTemplateColumns|gridColumn|gridRow|width|minWidth|maxWidth|height|minHeight|maxHeight|overflow|overflowX|overflowY)$/;
+  for (const property of expression.properties) {
+    if (!ts.isPropertyAssignment(property) || ts.isComputedPropertyName(property.name)) return "동적 style/spread는 확인이 필요합니다.";
+    const name = property.name.getText(file).replaceAll(/["']/g, "");
+    const v = property.initializer;
+    const literal = ts.isStringLiteral(v) ? v.text : ts.isNumericLiteral(v) ? Number(v.text) : null;
+    const token = typeof literal === "string" ? /^var\((--[\w-]+)\)$/.exec(literal)?.[1] : null;
+    if (token && tokens.has(token) && !name.startsWith("--")) continue;
+    if (mechanics.test(name) && (literal === 0 || (/(?:Grow|Shrink)$/.test(name) && typeof literal === "number" && literal >= 0)
+      || (typeof literal === "string" && /^(?:auto|none|block|inline|flex|inline-flex|grid|row|column|wrap|nowrap|center|start|end|stretch|flex-start|flex-end|space-between|visible|hidden|scroll|100%|min-content|max-content|fit-content|repeat\(\d+,\s*minmax\(0,\s*1fr\)\))$/.test(literal)))) continue;
+    return `${name}: MES 토큰/variant 또는 확인 가능한 배치값이 필요합니다.`;
+  }
+  return null;
+}
+
 // Bind every JSX/call use to its lexical import symbol. Comments, unused imports,
 // same-named local components and shadowed imports are not implementation evidence.
 function inspectModule(path, source, approved, root) {
@@ -60,6 +109,7 @@ function inspectModule(path, source, approved, root) {
   const sections = [];
   const actions = new Set();
   const imports = [];
+  const tokens = new Set([...readFileSync(resolve(root, "src/app/globals.css"), "utf8").matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1]));
   const add = (code, message, severity = "blocker") => findings.push({ severity, code, message: `${path}: ${message}` });
   for (const diagnostic of program.getSyntacticDiagnostics()) add("source.syntax", ts.flattenDiagnosticMessageText(diagnostic.messageText, " "));
 
@@ -78,7 +128,7 @@ function inspectModule(path, source, approved, root) {
     const modulePath = resolveLocalImport(parent.moduleSpecifier.text, path, root);
     if (!modulePath || !approved.has(modulePath)) return null;
     if (!exportsName(modulePath, name)) { add("component.invalid-export", `${name}은 ${modulePath}의 실제 export가 아닙니다.`); return null; }
-    return name;
+    return { name, modulePath };
   }
 
   function visit(node) {
@@ -91,11 +141,21 @@ function inspectModule(path, source, approved, root) {
     if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
       const tag = node.tagName.getText(file);
       const lower = /^[a-z]/.test(tag);
+      const actual = lower ? null : importedUse(node.tagName);
+      // An anchor slotted through the real MES Button retains its styling/API.
+      // Only one direct anchor child with href is supported here, not arbitrary
+      // raw controls or a div disguised as a button.
+      const element = ts.isJsxOpeningElement(node) ? node.parent : node;
+      const parent = element.parent;
+      const owner = parent && ts.isJsxElement(parent) ? parent.openingElement : null;
+      const ownerUse = owner && importedUse(owner.tagName);
+      const ownerSlot = owner?.attributes.properties.find((a) => ts.isJsxAttribute(a) && a.name.getText(file) === "asChild");
+      const slotOn = ownerSlot && (!ownerSlot.initializer || (ts.isJsxExpression(ownerSlot.initializer) && ownerSlot.initializer.expression?.kind === ts.SyntaxKind.TrueKeyword));
+      const slottedAnchor = tag === "a" && ownerUse && slotOn && declaresBooleanProp(ownerUse.modulePath, ownerUse.name, "asChild");
       const native = ["button", "input", "select", "textarea", "table", "a", "form", "nav", "iframe", "style", "script", "html", "body", "svg"];
-      if (lower && native.includes(tag)) add(`native.${tag}`, `원시 <${tag}> 대신 MES 자산이 필요합니다.`);
+      if (lower && native.includes(tag) && !slottedAnchor) add(`native.${tag}`, `원시 <${tag}> 대신 MES 자산이 필요합니다.`);
       if (!lower) {
-        const actual = importedUse(node.tagName);
-        if (actual) uses.add(actual);
+        if (actual) uses.add(actual.name);
         else if (!checker.getSymbolAtLocation(node.tagName)?.declarations?.length) add("component.unresolved", `${tag}의 구현을 확인할 수 없습니다.`);
       }
       for (const attribute of node.attributes.properties) {
@@ -103,9 +163,23 @@ function inspectModule(path, source, approved, root) {
         const name = attribute.name.getText(file);
         const value = attribute.initializer;
         if (name === "data-section-id" && value && ts.isStringLiteral(value)) sections.push({ id: value.text, position: node.pos });
-        if (name === "dangerouslySetInnerHTML" || name === "asChild" || name === "as") add("source.render-override", `${name} 렌더링 우회는 수동 검토/등록 자산 이관 전 차단합니다.`);
-        if (lower && (/^on[A-Z]/.test(name) || ["role", "tabIndex", "contentEditable"].includes(name))) add("native.interaction", `원시 ${tag}의 ${name}으로 MES 컨트롤을 대체할 수 없습니다.`);
-        if (name === "style") add("style.inline", "화면 자체 inline style 대신 MES 토큰/등록 variant를 사용하세요.");
+        if (name === "dangerouslySetInnerHTML" || name === "as") add("source.render-override", `${name}의 실제 렌더링을 지원 검사로 확인해야 합니다.`);
+        if (name === "asChild") {
+          const bool = !value ? true : ts.isJsxExpression(value) && value.expression?.kind === ts.SyntaxKind.FalseKeyword ? false
+            : ts.isJsxExpression(value) && value.expression?.kind === ts.SyntaxKind.TrueKeyword ? true : null;
+          const children = ts.isJsxElement(element) ? element.children.filter((c) => !(ts.isJsxText(c) && !c.text.trim())) : [];
+          const child = children.length === 1 && ts.isJsxElement(children[0]) ? children[0].openingElement : null;
+          const href = child?.attributes.properties.find((a) => ts.isJsxAttribute(a) && a.name.getText(file) === "href");
+          const link = child?.tagName.getText(file) === "a" && href && ts.isStringLiteral(href.initializer) && /^(?:\/(?!\/)|https?:\/\/|#)/.test(href.initializer.text);
+          if (!actual || !declaresBooleanProp(actual.modulePath, actual.name, name) || bool === null || (bool && !link)) {
+            add("source.render-override", "실제 asChild API와 단일 링크 자식을 확인할 수 없습니다. 동적/다른 조합은 검사 지원이 필요합니다.");
+          }
+        }
+        const role = value && ts.isStringLiteral(value) ? value.text : null;
+        const passiveRole = ["region", "group", "status", "note", "presentation", "none"].includes(role);
+        const focusTarget = name === "tabIndex" && value && ts.isJsxExpression(value) && value.expression?.getText(file) === "-1";
+        if (lower && (/^on[A-Z]/.test(name) || (name === "role" && !passiveRole) || (name === "tabIndex" && !focusTarget) || name === "contentEditable")) add("native.interaction", `원시 ${tag}의 ${name}으로 MES 컨트롤을 대체할 수 없습니다.`);
+        if (name === "style") { const problem = inspectInlineStyle(value, file, tokens); if (problem) add("style.inline", problem); }
         if (name === "className" && value && /(?:\[(?:#[a-f\d]{3,8}|rgba?\(|hsla?\()|(?:bg|text|border)-(?:red|blue|green|slate|gray|zinc|yellow|purple|orange)-\d)/i.test(value.getText(file))) add("style.non-mes-color", "MES 토큰 외 색상 유틸리티의 근거/variant 사용을 대조하세요.", "warning");
         if (value && ts.isJsxExpression(value) && value.expression && ts.isArrowFunction(value.expression)) {
           const body = value.expression.body;
@@ -115,8 +189,8 @@ function inspectModule(path, source, approved, root) {
     }
     if (ts.isCallExpression(node)) {
       const actual = importedUse(node.expression);
-      if (actual) uses.add(actual);
-      if (actual === "createDialogActionSet" && node.arguments[0] && ts.isStringLiteral(node.arguments[0])) actions.add(node.arguments[0].text);
+      if (actual) uses.add(actual.name);
+      if (actual?.name === "createDialogActionSet" && node.arguments[0] && ts.isStringLiteral(node.arguments[0])) actions.add(node.arguments[0].text);
       if (node.expression.kind === ts.SyntaxKind.ImportKeyword || /(?:^|\.)(?:require|eval|Function|createElement|createPortal|insertAdjacentHTML|write)$/.test(node.expression.getText(file))) add("source.dynamic-render", "동적 로딩/HTML 주입/JSX 외 렌더링은 이 검사 경로에서 지원하지 않습니다.");
     }
     if (ts.isBinaryExpression(node) && /\.(?:innerHTML|outerHTML)$/.test(node.left.getText(file))) add("source.html-injection", "직접 HTML 주입은 차단합니다.");

@@ -113,6 +113,16 @@ try {
   assert(existsSync(previewPath), "MCP가 미리보기 페이지를 만들지 않았습니다.");
   const unreviewed = await client.callTool({ name: "mes_handoff_screen", arguments: { request, sourcePath: outputRelativePath } });
   assert(unreviewed.isError, "MCP 전달 경로가 미작성 시각 기록을 통과시켰습니다.");
+  // Protocol/schema fixture only, not an assertion that a browser was inspected.
+  const review = { reviewer: "synthetic-mcp-regression-only", rendered: true, interactions: true };
+  const reviewed = await client.callTool({ name: "mes_handoff_screen", arguments: { request, sourcePath: outputRelativePath, review } });
+  assert(!reviewed.isError && structured(reviewed).status === "handoff-ready", "짧은 확인 기록 MCP 전달 실패");
+  const reused = await client.callTool({ name: "mes_handoff_screen", arguments: { request, sourcePath: outputRelativePath } });
+  assert(!reused.isError && structured(reused).visualEvidenceFingerprint === structured(reviewed).visualEvidenceFingerprint, "동일 코드 기록 재사용 실패");
+  const failedReview = await client.callTool({ name: "mes_handoff_screen", arguments: { request, sourcePath: outputRelativePath, review: { ...review, interactions: false } } });
+  assert(failedReview.isError, "실패한 동작 확인을 MCP가 통과시켰습니다.");
+  const staleSuccess = await client.callTool({ name: "mes_handoff_screen", arguments: { request, sourcePath: outputRelativePath } });
+  assert(staleSuccess.isError, "실패 이후 과거 성공 재사용 차단 실패");
 
   const audited = structured(await client.callTool({
     name: "mes_audit_screen",
@@ -143,7 +153,7 @@ try {
   });
   assert(trackedSourceResult.isError, "MCP가 임시 생성 화면을 Git 추적 소스 경로에 쓰는 것을 차단하지 않았습니다.");
 
-  console.log(`[mcp:check] 도구 ${toolNames.length}개 · 생성 ${generated.sourceFingerprint.slice(0, 12)} · 내부 QA ${generated.previewRoute} · 감사 ${audited.status} · 안전 차단 5개 통과`);
+  console.log(`[mcp:check] 도구 ${toolNames.length}개 · 생성 ${generated.sourceFingerprint.slice(0, 12)} · 내부 QA ${generated.previewRoute} · 감사 ${audited.status} · 안전 차단 7개 + 짧은 기록/재사용 통과`);
 } finally {
   await client.close();
   if (existsSync(outputPath)) rmSync(outputPath);

@@ -32,7 +32,7 @@ npm run screen:resolve -- .mes-ui-preview/example/request.json --out .mes-ui-pre
 npm run screen:generate -- .mes-ui-preview/example/contract.json --preview
 ```
 
-프로토타입 요청·계약·검사 기록은 `.mes-ui-preview/`, 생성 코드는 `src/generated-previews/`, 미리보기 라우트는 `src/app/preview/`에 둡니다. 모두 Git에서 제외됩니다. 생성기는 실제 파일을 검사한 뒤 **내부 QA용** `qaPreviewUrl`을 반환하며 사용자 목록에는 자동 등록하지 않습니다. 기준 화면과 비교하여 `visual-review.json`을 채우고 `npm run screen:handoff -- <contract.json> <screen.tsx>`를 통과한 다음 사용자에게 주소를 제공합니다. 별도 폴더·임시 시안도 같은 규칙입니다. 자세한 강제 범위와 한계는 [전달 검사](../.agents/skills/generate-mes-ui/references/delivery-gate.md)를 참고하세요.
+프로토타입 요청·계약·검사 기록은 `.mes-ui-preview/`, 생성 코드는 `src/generated-previews/`, 미리보기 라우트는 `src/app/preview/`에 둡니다. 모두 Git에서 제외됩니다. 생성기는 실제 파일을 검사한 뒤 **내부 QA용** `qaPreviewUrl`을 반환하며 사용자 목록에는 자동 등록하지 않습니다. 실제 MES 렌더링·동작을 확인한 뒤 `npm run screen:handoff -- <contract.json> <screen.tsx> --reviewed`로 짧은 기록을 자동 저장하고 주소를 제공합니다. 원본 재현·정규화·감사는 원본 대조 후 `--source-compared`를 추가합니다. 같은 렌더링 재전달은 옵션 없이 기존 확인을 재사용합니다. 캡처나 별도 MD는 매번 필요하지 않습니다. 별도 폴더·임시 시안도 같은 규칙이며, [전달 검사](../.agents/skills/generate-mes-ui/references/delivery-gate.md)에 강제 범위와 한계를 명시했습니다.
 
 임시 프로토타입은 `generated-screen-evaluations.json`이나 정식 화면 레지스트리에 자동 등록하지 않습니다. 로컬 인덱스도 Git에서 제외됩니다. 사용자가 보관을 명시한 화면만 `persistence: git`, `reviewStatus: review`, `generationInfluence: blocked` 상태로 추적 경로에 이동하고, 별도 승인과 검증을 통과한 화면만 `generationInfluence: standard`가 됩니다.
 
@@ -49,7 +49,7 @@ npm run screen:generate -- .mes-ui-preview/example/contract.json --preview
 - `mes_get_reproduction_audit_context`: 기존 화면의 실제 웹·Figma·불일치·검증 상태 조회
 - `mes_resolve_screen`: ScreenRequest를 결정형 계약으로 해석
 - `mes_generate_screen`: 지원 템플릿의 최종 파일 검사 후 내부 QA 미리보기 생성 (`qaPreviewUrl`, `handoffReady: false`). 사용자 전달은 시각 대조와 `screen:handoff` 이후
-- `mes_handoff_screen`: 시각 대조 기록과 현재 구현을 같은 전달 검사로 확인한 뒤에만 사용자 URL 반환 (CLI `screen:handoff`와 동일)
+- `mes_handoff_screen`: 실제 확인 후 짧은 `review`를 자동 기록하고 현재 구현과 대조하여 URL 반환. `review` 생략 시 동일 구현의 기록 재사용 (CLI `screen:handoff`와 동일)
 - `mes_audit_screen`: 기존 TSX/JSX를 요청 계약과 레지스트리에 대조
 
 서버는 절대경로, `component-library` 외부 경로, `src/` 외부 출력, 기존 파일 덮어쓰기를 거부합니다. 연결과 실제 도구 호출은 다음 명령으로 검증합니다.

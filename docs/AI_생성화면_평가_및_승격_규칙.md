@@ -29,7 +29,7 @@ Git 저장 여부와 AI 사용 권한을 하나의 상태로 합치지 않는다
 ## 격리 원칙
 
 - 일반 생성 결과는 `.mes-ui-preview/`, `src/generated-previews/`, `src/app/preview/`에 두며 모두 Git에서 제외한다.
-- 생성 명령은 내부 QA 미리보기와 최종 파일 검사 기록만 생성하며, 미검증 결과를 로컬 인덱스에 자동 등록하지 않는다. 기존 `public/.mes-ui-preview/index.json`은 과거 초안 목록으로 보존되며 검증 통과 근거가 아니다. 사용자 전달 전 기준 화면 대조와 `screen:handoff`가 필요하다. [전달 검사](../.agents/skills/generate-mes-ui/references/delivery-gate.md) 참고.
+- 생성 명령은 내부 QA 미리보기와 최종 파일 검사 기록만 생성하며, 미검증 결과를 로컬 인덱스에 자동 등록하지 않는다. 기존 `public/.mes-ui-preview/index.json`은 과거 초안 목록으로 보존되며 검증 통과 근거가 아니다. 사용자 전달 전 MES 규칙에 따른 렌더링·동작 확인과 `screen:handoff`가 필요하다. 원본 재현·정규화는 원본도 대조한다. 짧은 확인은 자동 저장하고 동일 렌더링은 재사용하며, 매번 캡처/장문 기록을 만들지 않는다. [전달 검사](../.agents/skills/generate-mes-ui/references/delivery-gate.md) 참고.
 - `approved`가 아닌 화면은 `patterns.json`, `screens.json`, `source-assets.json`에 등록하지 않는다.
 - Git 검토 후보의 코드와 평가는 추적 경로와 `generated-screen-evaluations.json`에서 함께 관리한다.
 - 시각 회귀 테스트는 실패 상태를 보존하고 비교하기 위해 유지할 수 있지만, 테스트 통과 자체를 표준 승격으로 해석하지 않는다.

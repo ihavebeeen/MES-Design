@@ -13,7 +13,7 @@ These requirements apply to **all MES outputs**, including separate folders, tem
 
 If permissions, dependencies, tools or supported templates prevent reuse/verification, stop delivery, explain the specific constraint and viable MES-based alternatives, and request the necessary approval. Do not quietly create a standalone HTML/CSS substitute. A proposed new asset needs scoped approval, implementation and supported verification; approval is not permission to mark an unchecked result as verified.
 
-Before JSX, identify the actual shell/chrome source, nearest applicable baseline, approved layout/section patterns and MES imports/API to use. Record them in existing request requirements/evidence notes; do not create another planning document. Full pages reuse the existing sidebar/top tabs; overlays reuse their registered shell. Different arrangements require an applicable approved pattern or explicit scoped user approval, not blanket bans or personal taste.
+Before JSX, identify the actual shell/chrome source, approved layout/section patterns and MES imports/API to use. Reuse existing contract references instead of writing another planning document. Full pages follow their selected registered page pattern (including sidebar/tabs when required); overlays follow their registered shell. A new UI need not have a matching original screen. Reproduction/normalization needs the relevant original reference. Different arrangements require an applicable approved pattern or explicit scoped user approval, not blanket bans or personal taste.
 
 ## Workflow
 
@@ -52,14 +52,16 @@ Before JSX, identify the actual shell/chrome source, nearest applicable baseline
    npm run check:design-system
    ```
 
-10. Start/reuse `npm run dev` and inspect the exact `qaPreviewUrl` internally at the target viewport. Compare the final render with the recorded baseline: shell/chrome, date controls, spacing, color/font/radius, hierarchy/layout and interactions (including cancel/close, selection and input). Check overflow, console errors and reading/input order as part of layout/interactions. Capture the reference and final states. If browser access or baseline evidence is missing, report the blocker instead of returning a ready-to-use link.
-11. Fill the generated `visual-review.json` truthfully following `references/delivery-gate.md`. Keep automated findings, visual findings and unchecked items distinct. Review whole-screen focus, grouping, density and whitespace, not just isolated components. Resolve failures and rerun preview/audit after any source/dependency/wrapper change, then repeat affected visual checks. Neither “prototype” nor “recorded as a limitation” is a pass. Run the delivery gate **immediately before providing the URL**:
+10. Inspect the exact internal `qaPreviewUrl` at the target viewport. Confirm applicable MES shell/chrome, date controls, spacing, color/font/radius, hierarchy/layout and actual interactions (cancel/close, selection, input), including console errors and overflow. For `new`, use the selected MES component/pattern rules, not an invented matching original screen; this is compliance checking, not an aesthetic score. For `reproduce`/`normalize`/`audit`, also compare with the original. Captures are optional aids for a discrepancy, uncertain measurement or requested evidence, not mandatory artifacts for every screen. Missing browser confirmation still blocks handoff; a new UI's lack of a whole-screen baseline does not.
+11. Record actual observations briefly through the handoff command/tool; it saves `visual-review.json` with code-bound fingerprints automatically. Do not hand-write seven prose checks or a new MD for each run. Add a note only for a discrepancy/new decision; static warnings still need a resolution reason, which can reuse the contract's existing evidence. Separate automatic results, observed results and unknowns. Neither “prototype” nor “recorded as a limitation” is a pass. After code/asset/contract changes rerun preview/audit and affected browser checks. An unchanged render can reuse its previous observation even after a static audit rerun. Immediately before providing the URL:
 
    ```bash
-   npm run screen:handoff -- .mes-ui-preview/<request-id>/contract.json src/generated-previews/<request-id>.tsx
+   # Only after real rendering/interaction confirmation; add --source-compared for reproduction.
+   npm run screen:handoff -- .mes-ui-preview/<request-id>/contract.json src/generated-previews/<request-id>.tsx --reviewed
+   # Same render, re-delivery: omit --reviewed to reuse the saved observation.
    ```
 
-   With MCP, `mes_handoff_screen` takes the same request and sourcePath and runs the same gate. Only a successful fresh handoff may be presented as a checked preview. A user-approved alternative that the checker cannot represent requires a supported contract/checker update and tests, not a skip flag. Do not edit/fabricate a pass receipt to work around a blocker.
+   With MCP, `mes_handoff_screen` takes the same request/sourcePath and optional `review: { reviewer, rendered: true, interactions: true }` (plus `sourceCompared: true` for original comparison). Omit `review` to reuse the current observation. Flags are an assertion by the reviewer, not an automated browser test; never set them without observing. Only successful fresh handoff may be presented as checked. Supported MES API options and layout mechanics are not violations by themselves; see the delivery reference for supported cases. An approved but unsupported combination needs checker support/tests, not a skip flag or forged pass.
 12. Register newly discovered semantics as quarantined proposals. Never promote a one-off visual fragment directly into the stable component or pattern registry.
 
 ## Selection rules
@@ -83,7 +85,7 @@ For an ordinary prototype, create and return the following as local Git-ignored 
 - input `ScreenRequest` and resolved contract under `.mes-ui-preview/`;
 - implementation source under `src/generated-previews/`;
 - internal QA page under `src/app/preview/`; provide its localhost URL only after the handoff gate succeeds;
-- code-bound `implementation-audit.json`, `visual-review.json`, baseline/final captures under `.mes-ui-preview/`.
+- automatically saved, code-bound `implementation-audit.json` and compact `visual-review.json` under `.mes-ui-preview/`; captures only when useful/requested.
 
 The preview commands no longer auto-register unchecked drafts in the user catalog. Distinguish **program-enforced** managed-command checks from **agent duties** (baseline selection, truthful visual comparison, not bypassing the workflow). The repository cannot intercept arbitrary external servers, every shell command or a manually pasted URL. Report these limits; do not claim complete prevention. Global Hooks/permissions require separate explicit authorization.
 

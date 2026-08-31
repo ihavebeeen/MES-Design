@@ -25,18 +25,17 @@ export function auditScreenImplementation(contract, source, registry = readRegis
   if (implementation.uses.size === 0) findings.push(finding("blocker", "component.no-mes-usage", "실제로 JSX/호출에서 사용하는 MES 자산을 확인하지 못했습니다."));
   if (!implementation.exports?.has(contract.request?.output?.componentName)) findings.push(finding("blocker", "source.entry-export", "계약의 화면 componentName에 해당하는 값 export가 없습니다."));
 
-  const shellComponents = {
-    "center-modal": "CenterModal",
-    "side-slide-panel": "SideSlidePanel",
-    "confirm-dialog": "ConfirmDialog",
-  };
-  const expectedShellComponent = shellComponents[contract.request?.target?.kind];
-  if (expectedShellComponent && !implementation.uses.has(expectedShellComponent)) {
-    findings.push(finding("blocker", "shell.missing", `계약된 셸 컴포넌트 ${expectedShellComponent}를 구현에서 찾지 못했습니다.`));
-  }
-  if (contract.request?.target?.kind === "page") {
-    for (const component of ["Sidebar", "PageTopTabItem"]) {
-      if (!implementation.uses.has(component)) findings.push(finding("blocker", "shell.page-chrome", `전체 페이지 공통 틀 ${component} 실제 사용이 필요합니다. 다른 승인 셸은 검사 지원을 먼저 추가하세요.`));
+  const page = contract.request?.target?.kind === "page";
+  const selected = new Set(contract.composition?.selectedPatternRefs ?? []);
+  const frames = registry.patterns.filter((p) => page
+    ? selected.has(p.id) && p.placement === "page" && ["screen", "recipe"].includes(p.kind)
+    : p.id === contract.composition?.shellRef);
+  if (!frames.length) findings.push(finding("blocker", "shell.contract-missing", "적용할 페이지/팝업 틀의 등록 계약이 필요합니다."));
+  for (const frame of frames) {
+    // Required assets come from the selected pattern, not a universal sidebar rule.
+    for (const id of frame.requiredComponents ?? []) {
+      const asset = registry.components.find((entry) => entry.id === id);
+      if (!asset || !implementation.uses.has(asset.name)) findings.push(finding("blocker", page ? "shell.page-chrome" : "shell.missing", `선택한 ${frame.id}의 공통 자산 ${asset?.name ?? id} 실제 사용이 필요합니다.`));
     }
   }
 
@@ -113,7 +112,9 @@ export function auditScreenFile(contract, sourcePath, options = {}) {
     return [name, existsSync(file) ? digest(readFileSync(file)) : null];
   });
   const renderingFiles = renderingDependencies([path, ...support.filter((name) => !name.startsWith("scripts/")).map((name) => resolve(root, name))], root);
-  return { ...result, sourcePath: path, fingerprint: digest(JSON.stringify({ sourcePath: path, contract, registry, renderingFiles, environmentFiles })), environmentFiles, renderingFiles };
+  const renderFingerprint = digest(JSON.stringify({ sourcePath: path, contract, renderingFiles,
+    patterns: registry.patterns.filter((p) => contract.composition?.selectedPatternRefs?.includes(p.id)) }));
+  return { ...result, sourcePath: path, fingerprint: digest(JSON.stringify({ sourcePath: path, contract, registry, renderingFiles, environmentFiles })), renderFingerprint, environmentFiles, renderingFiles };
 }
 
 function runCli() {

@@ -8,7 +8,7 @@ import { auditScreenImplementation, auditScreenFile } from "./audit-screen-imple
 import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-preview.mjs";
 import { generateScreenTsx, generatedSourceFingerprint } from "./generate-screen-tsx.mjs";
 import { readRegistryBundle, resolveScreenRequest } from "./resolve-screen-request.mjs";
-import { verifyScreenHandoff } from "./screen-handoff.mjs";
+import { recordScreenReview, verifyScreenHandoff } from "./screen-handoff.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -309,7 +309,7 @@ export function createMesUiMcpServer() {
     "mes_generate_screen",
     {
       title: "MES 화면 코드 생성",
-      description: "등록 자산 TSX의 최종 파일을 검사하고 내부 QA용 미리보기를 만듭니다. 사용자 전달 승인 아님: 기준 화면 대조와 screen:handoff가 필요합니다. 기존 파일은 덮어쓰지 않습니다.",
+      description: "등록 자산 TSX의 최종 파일을 검사하고 내부 QA용 미리보기를 만듭니다. 사용자 전달 승인 아님: 실제 렌더링·동작 확인 후 screen:handoff가 필요하며, 원본 재현은 원본도 대조합니다. 기존 파일은 덮어쓰지 않습니다.",
       inputSchema: z.object({
         request: requestSchema,
         outputPath: previewSourcePathSchema,
@@ -346,7 +346,7 @@ export function createMesUiMcpServer() {
         previewRoute: preview.route,
         qaPreviewUrl: preview.url,
         handoffReady: false,
-        nextStep: "기준 화면 시각 대조를 기록하고 mes_handoff_screen 또는 npm run screen:handoff 실행",
+        nextStep: "실제 렌더링·동작 확인 후 mes_handoff_screen의 review로 짧게 기록. 원본 재현/정규화는 sourceCompared도 필요. 동일 구현 재전달은 기존 기록 재사용.",
         visualReviewPath: previewResult.paths.visual,
         previewCreated: previewResult.created,
         contractStatus: contract.quality.status,
@@ -387,14 +387,19 @@ export function createMesUiMcpServer() {
     "mes_handoff_screen",
     {
       title: "MES 미리보기 전달 검사",
-      description: "최종 파일·의존성·정확한 preview wrapper·시각 대조 기록이 모두 현재 버전인지 확인한 후에만 사용자 전달 URL을 반환합니다. 기록 누락/실패/변경은 차단합니다.",
-      inputSchema: z.object({ request: requestSchema, sourcePath: sourcePathSchema }),
-      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+      description: "최종 구현과 실제 렌더링·동작 확인을 연결한 뒤 URL을 반환합니다. review는 실제 확인 후에만 전달하며 자동 저장됩니다. 신규 UI는 캡처/장문 기록 불필요, 원본 재현은 sourceCompared 필요. review 생략 시 동일 코드의 기록을 재사용합니다.",
+      inputSchema: z.object({ request: requestSchema, sourcePath: sourcePathSchema, review: z.object({
+        reviewer: z.string().min(1), rendered: z.boolean(), interactions: z.boolean(), sourceCompared: z.boolean().optional(),
+        viewport: z.object({ width: z.number().positive(), height: z.number().positive() }).optional(), note: z.string().optional(),
+        warningResolutions: z.array(z.object({ code: z.string(), reason: z.string().min(1) })).optional(), unchecked: z.array(z.string()).optional(),
+      }).strict().optional() }),
+      annotations: { readOnlyHint: false, idempotentHint: false, openWorldHint: false },
     },
-    safeTool(async ({ request, sourcePath }) => {
+    safeTool(async ({ request, sourcePath, review }) => {
       const target = resolveRepositorySourcePath(sourcePath);
       const contract = resolveScreenRequest(request);
       const plan = createScreenPreviewPlan(contract, target.absolutePath, { projectRoot });
+      if (review) recordScreenReview(plan, review);
       const result = verifyScreenHandoff(plan);
       return toolResult("현재 구현과 제출된 시각 대조 기록의 전달 검사 통과", {
         status: result.status, previewUrl: plan.url, fingerprint: result.fingerprint,

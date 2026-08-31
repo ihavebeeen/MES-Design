@@ -306,8 +306,10 @@ npm run screen:audit -- path/to/contract.json path/to/implementation.tsx
 # 실제 파일 검사 후 내부 QA 미리보기 생성 (사용자 전달 승인 아님)
 npm run screen:preview -- path/to/contract.json src/generated-previews/example.tsx
 
-# 기준 화면 대조 기록 후 현재 코드·시각 근거를 확인하고 전달 URL 반환
-npm run screen:handoff -- path/to/contract.json src/generated-previews/example.tsx
+# 실제 MES 렌더링·동작 확인 후 짧은 기록 자동 저장 + 전달 URL 반환
+# 원본 재현/정규화는 원본 대조 후 --source-compared 추가
+npm run screen:handoff -- path/to/contract.json src/generated-previews/example.tsx --reviewed
+# 같은 렌더링을 다시 전달할 때는 --reviewed 없이 기존 기록 재사용 (캡처/장문 기록은 매번 불필요)
 
 # 화면 계약 결정성 및 미검증 미리보기 차단 회귀 검사
 npm run check:screen-contracts

@@ -34,19 +34,14 @@ export function recordPreviewAudit(plan) {
     previewFingerprint: digest(plan.source), purpose: "internal-qa", handoffReady: false };
   writeJson(paths.audit, receipt);
   assertStaticPass(receipt);
-  if (!existsSync(paths.visual)) writeJson(paths.visual, {
-    schemaVersion: 1, implementationFingerprint: receipt.fingerprint, previewFingerprint: receipt.previewFingerprint,
-    reviewer: "", comparedAt: "", viewport: { width: null, height: null },
-    baseline: { kind: "approved-mes", reference: "", artifacts: [] }, renderedArtifacts: [],
-    checks: Object.fromEntries(visualChecks.map((name) => [name, { status: "not-checked", note: "" }])),
-    warningResolutions: [], unchecked: ["기준 화면과 실제 렌더링 대조 전"],
-  });
+  // Existing observations remain valid for the same render bytes. Merely
+  // rerunning the static audit must not create new visual paperwork.
   return { audit: receipt, paths };
 }
 
 function requireEvidence(condition, message) { if (!condition) throw new Error(`전달 차단: ${message}`); }
 function verifyArtifacts(artifacts, base) {
-  requireEvidence(Array.isArray(artifacts) && artifacts.length > 0, "기준/구현 캡처 파일이 필요합니다.");
+  requireEvidence(Array.isArray(artifacts), "캡처 목록 형식이 잘못됐습니다.");
   for (const artifact of artifacts) {
     requireEvidence(typeof artifact.path === "string" && /^[a-f0-9]{64}$/.test(artifact.sha256 ?? ""), "캡처 경로와 SHA-256이 필요합니다.");
     const file = resolve(base, artifact.path);
@@ -59,7 +54,7 @@ function verifyArtifacts(artifacts, base) {
   }
 }
 
-export function verifyScreenHandoff(plan, visualPath = reviewPaths(plan.contract, plan.projectRoot).visual) {
+function currentAuditedImplementation(plan) {
   const paths = reviewPaths(plan.contract, plan.projectRoot);
   requireEvidence(existsSync(paths.audit), "최종 구현 검사 결과가 없습니다. screen:preview를 실행하세요.");
   const receipt = readJson(paths.audit);
@@ -67,39 +62,100 @@ export function verifyScreenHandoff(plan, visualPath = reviewPaths(plan.contract
   // Never trust the saved pass without inspecting current source and dependencies.
   const current = auditScreenFile(plan.contract, plan.outputPath, { projectRoot: plan.projectRoot });
   assertStaticPass(current);
-  requireEvidence(current.fingerprint === receipt.fingerprint, "구현/의존 자산/검사기가 변경됐습니다. 재검사·시각 대조가 필요합니다.");
+  requireEvidence(current.fingerprint === receipt.fingerprint, "구현/의존 자산/검사기가 변경됐습니다. screen:preview로 재검사하세요. 렌더링이 같으면 기존 확인을 재사용합니다.");
   requireEvidence(receipt.previewPath === plan.absolutePath && receipt.previewFingerprint === digest(plan.source), "다른 미리보기 진입점의 결과를 재사용할 수 없습니다.");
   requireEvidence(existsSync(plan.absolutePath) && digest(readFileSync(plan.absolutePath)) === receipt.previewFingerprint, "미리보기 wrapper가 누락/변경됐습니다.");
-  requireEvidence(existsSync(visualPath), "시각 대조 결과가 없습니다.");
-  const visual = readJson(visualPath);
-  requireEvidence(visual.schemaVersion === 1 && visual.implementationFingerprint === current.fingerprint && visual.previewFingerprint === receipt.previewFingerprint, "시각 대조가 현재 구현에 연결되지 않았습니다.");
-  requireEvidence(typeof visual.reviewer === "string" && visual.reviewer.trim() && Number.isFinite(Date.parse(visual.comparedAt)) && Date.parse(visual.comparedAt) >= Date.parse(receipt.checkedAt) && Date.parse(visual.comparedAt) <= Date.now() + 5000, "검사 이후 실제 비교자·시각이 필요합니다.");
-  requireEvidence(visual.viewport?.width > 0 && visual.viewport?.height > 0, "비교 viewport가 필요합니다.");
-  requireEvidence(["figma", "approved-mes", "user-approved"].includes(visual.baseline?.kind) && visual.baseline.reference?.trim(), "기준 화면/승인 근거가 필요합니다.");
-  verifyArtifacts(visual.baseline.artifacts, dirname(visualPath));
-  verifyArtifacts(visual.renderedArtifacts, dirname(visualPath));
-  for (const name of visualChecks) {
-    const check = visual.checks?.[name];
-    const allowsNA = name === "dateInput" || (name === "pageChrome" && plan.contract.request.target.kind !== "page");
-    requireEvidence(check && (check.status === "passed" || (allowsNA && check.status === "not-applicable")), `${name} 미검증/실패`);
-    requireEvidence(typeof check.note === "string" && check.note.trim(), `${name} 비교 근거가 없습니다.`);
+  return { current, receipt };
+}
+
+export function sourceComparisonRequired(contract) { return contract.request?.intent !== "new"; }
+
+function verifyObservation(visual, current, receipt, plan, base) {
+  requireEvidence(typeof visual.reviewer === "string" && visual.reviewer.trim() && Number.isFinite(Date.parse(visual.comparedAt)) && Date.parse(visual.comparedAt) <= Date.now() + 5000, "실제 확인자·시각이 필요합니다.");
+  requireEvidence(visual.viewport?.width > 0 && visual.viewport?.height > 0, "확인 viewport가 필요합니다.");
+  requireEvidence(visual.previewFingerprint === receipt.previewFingerprint, "확인이 현재 미리보기와 연결되지 않았습니다.");
+  if (visual.schemaVersion === 2) {
+    requireEvidence(visual.renderFingerprint === current.renderFingerprint, "렌더링/계약이 변경됐습니다. 영향을 받은 부분을 재확인하세요.");
+    requireEvidence(visual.rendered === true && visual.interactions === true, "MES 렌더링·동작 미확인/실패");
+    if (sourceComparisonRequired(plan.contract)) {
+      requireEvidence(visual.sourceCompared === true, "원본 재현/정규화에는 원본 대조가 필요합니다.");
+      const evidence = plan.contract.request.evidence;
+      requireEvidence(Boolean(evidence?.figmaNode || evidence?.sourceUrl || plan.contract.request.target.nearestScreenId), "계약에 원본 참조가 없습니다.");
+    }
+    verifyArtifacts(visual.captures ?? [], base);
+  } else {
+    // Preserve previously written detailed records, without the old requirement
+    // that comparison time must be later than every identical audit rerun.
+    requireEvidence(visual.schemaVersion === 1 && visual.implementationFingerprint === current.fingerprint, "시각 대조가 현재 구현에 연결되지 않았습니다.");
+    requireEvidence(["figma", "approved-mes", "user-approved"].includes(visual.baseline?.kind) && visual.baseline.reference?.trim(), "기준 화면/승인 근거가 필요합니다.");
+    verifyArtifacts(visual.baseline.artifacts, base);
+    verifyArtifacts(visual.renderedArtifacts, base);
+    for (const name of visualChecks) {
+      const check = visual.checks?.[name];
+      const allowsNA = name === "dateInput" || (name === "pageChrome" && plan.contract.request.target.kind !== "page");
+      requireEvidence(check && (check.status === "passed" || (allowsNA && check.status === "not-applicable")), `${name} 미검증/실패`);
+    }
   }
   requireEvidence(Array.isArray(visual.unchecked) && visual.unchecked.length === 0, "미확인 항목을 제약으로 기록한 것만으로 통과할 수 없습니다.");
   for (const warning of current.findings.filter((f) => f.severity === "warning")) {
-    requireEvidence(visual.warningResolutions?.some((r) => r.code === warning.code && r.reason?.trim()), `경고 근거 검토 필요: ${warning.code}`);
+    requireEvidence(visual.warningResolutions?.some((r) => r.code === warning.code && r.reason?.trim()), `새 경고 근거 검토 필요: ${warning.code}`);
   }
+}
+
+// Call only after actually observing the QA render. This saves the observation;
+// it does not pretend that a static checker performed browser/visual QA.
+export function recordScreenReview(plan, observation) {
+  const { current, receipt } = currentAuditedImplementation(plan);
+  const paths = reviewPaths(plan.contract, plan.projectRoot);
+  // Invalidate old success before reading optional evidence (which can fail).
+  writeJson(paths.visual, { schemaVersion: 2, rendered: false, interactions: false, status: "recording" });
+  const visual = { schemaVersion: 2, renderFingerprint: current.renderFingerprint, previewFingerprint: receipt.previewFingerprint,
+    reviewer: observation.reviewer, comparedAt: new Date().toISOString(), viewport: observation.viewport ?? plan.contract.request.target.viewport,
+    rendered: observation.rendered, interactions: observation.interactions, sourceCompared: observation.sourceCompared ?? false,
+    note: observation.note ?? "", captures: (observation.captures ?? []).map((path) => ({ path: resolve(plan.projectRoot, path), sha256: digest(readFileSync(resolve(plan.projectRoot, path))) })),
+    warningResolutions: observation.warningResolutions ?? [], unchecked: observation.unchecked ?? [] };
+  // Save failures too: a failed recheck must invalidate an earlier success.
+  writeJson(paths.visual, visual);
+  verifyObservation(visual, current, receipt, plan, paths.directory);
+  return visual;
+}
+
+export function verifyScreenHandoff(plan, visualPath = reviewPaths(plan.contract, plan.projectRoot).visual) {
+  const { current, receipt } = currentAuditedImplementation(plan);
+  requireEvidence(existsSync(visualPath), "시각 대조 결과가 없습니다.");
+  const visual = readJson(visualPath);
+  verifyObservation(visual, current, receipt, plan, dirname(visualPath));
   return { status: "handoff-ready", fingerprint: current.fingerprint, previewFingerprint: receipt.previewFingerprint,
     visualEvidenceFingerprint: digest(JSON.stringify(visual)), automatic: current, visual,
     limitation: "시각 판정은 비교자의 기록입니다. 픽셀 일치나 기록의 진실성을 자동 증명하지 않습니다. 이 결과는 현재 파일에만 유효합니다." };
 }
 
-if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {
+async function runCli() {
   try {
-    const [contractPath, sourcePath, visualPath] = process.argv.slice(2);
-    if (!contractPath || !sourcePath) throw new Error("사용법: npm run screen:handoff -- <contract.json> <screen.tsx> [visual-review.json]");
+    const [contractPath, sourcePath, ...args] = process.argv.slice(2);
+    const visualPath = args[0] && !args[0].startsWith("--") ? args.shift() : undefined;
+    if (!contractPath || !sourcePath) throw new Error("사용법: npm run screen:handoff -- <contract.json> <screen.tsx> [--reviewed] [--source-compared] [--note 설명]");
+    const flags = {};
+    const warningResolutions = [];
+    for (let i = 0; i < args.length; i += 1) {
+      if (["--reviewed", "--source-compared"].includes(args[i])) flags[args[i]] = true;
+      else if (args[i] === "--warning" && args[i + 1]?.includes("=")) {
+        const value = args[++i]; const split = value.indexOf("=");
+        warningResolutions.push({ code: value.slice(0, split), reason: value.slice(split + 1) });
+      }
+      else if (["--note", "--reviewer"].includes(args[i]) && args[i + 1]) flags[args[i]] = args[++i];
+      else throw new Error(`알 수 없거나 값이 없는 옵션: ${args[i]}`);
+    }
     const { createScreenPreviewPlan } = await import("./generate-screen-preview.mjs");
     const plan = createScreenPreviewPlan(readJson(resolve(contractPath)), resolve(sourcePath));
+    if (flags["--reviewed"]) {
+      requireEvidence(!visualPath, "직접 지정한 과거 기록과 새 확인을 동시에 사용할 수 없습니다.");
+      recordScreenReview(plan, { reviewer: flags["--reviewer"] ?? "agent", rendered: true, interactions: true, sourceCompared: Boolean(flags["--source-compared"]), note: flags["--note"] ?? "", warningResolutions });
+    } else requireEvidence(!Object.keys(flags).length && !warningResolutions.length, "새 확인 옵션에는 --reviewed가 필요합니다.");
     const result = verifyScreenHandoff(plan, visualPath ? resolve(visualPath) : undefined);
     console.log(JSON.stringify({ status: result.status, fingerprint: result.fingerprint, previewUrl: plan.url, limitation: result.limitation }, null, 2));
   } catch (error) { console.error(String(error)); process.exitCode = 1; }
 }
+
+// Preview imports this module too: do not top-level-await that circular import.
+if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) void runCli();
