@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-preview.mjs";
 import { contractFingerprint } from "./resolve-screen-request.mjs";
 import { validateGenerationSpec } from "./screen-generation-contract.mjs";
+import { auditScreenImplementation, auditScreenFile } from "./audit-screen-implementation.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -232,6 +233,8 @@ function runCli() {
   if (!existsSync(inputPath)) throw new Error(`계약 파일을 찾을 수 없습니다: ${inputPath}`);
   const contract = JSON.parse(readFileSync(inputPath, "utf8"));
   const source = generateScreenTsx(contract);
+  const generatedAudit = auditScreenImplementation(contract, source);
+  if (generatedAudit.blockerCount > 0) throw new Error(`생성 코드 검사 차단: ${JSON.stringify(generatedAudit.findings)}`);
   const resolvedOutput = output
     ? resolve(process.cwd(), output)
     : preview
@@ -245,6 +248,8 @@ function runCli() {
     mkdirSync(dirname(outputPath), { recursive: true });
     writeFileSync(outputPath, source, { encoding: "utf8", flag: "wx" });
     try {
+      const writtenAudit = auditScreenFile(contract, outputPath);
+      if (writtenAudit.blockerCount > 0) throw new Error(`최종 파일 검사 차단: ${JSON.stringify(writtenAudit.findings)}`);
       if (previewPlan) writeScreenPreview(previewPlan);
     } catch (error) {
       rmSync(outputPath);
@@ -252,7 +257,7 @@ function runCli() {
     }
   } else process.stdout.write(source);
   console.error(`[screen:generate] ${generatedSourceFingerprint(source).slice(0, 12)} · ${source.split("\n").length - 1} lines`);
-  if (previewPlan) console.error(`[screen:preview] ${previewPlan.relativePath} · ${previewPlan.url}`);
+  if (previewPlan) console.error(`[screen:preview:internal-qa] ${previewPlan.relativePath} · QA 전용 ${previewPlan.url} · 사용자 전달 전 screen:handoff 필요`);
 }
 
 if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {

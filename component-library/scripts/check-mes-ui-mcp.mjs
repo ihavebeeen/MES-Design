@@ -1,8 +1,9 @@
-import { existsSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
+import { reviewPaths } from "./screen-handoff.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -20,10 +21,12 @@ const expectedTools = [
   "mes_get_mobile_context",
   "mes_get_reproduction_audit_context",
   "mes_get_web_generation_context",
+  "mes_handoff_screen",
   "mes_list_design_system",
   "mes_resolve_screen",
 ];
 const expectedSourceFingerprint = "cbf73874ac6cf26241cda1a23f0300796e79342552f5b4843162548e33180fb3";
+const reviewDirectory = reviewPaths({ request: { requestId: "deterministic-receiving-fixture" } }).directory;
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -36,6 +39,7 @@ function structured(result) {
 
 if (existsSync(outputPath)) throw new Error(`검증용 출력 파일이 이미 존재합니다: ${outputRelativePath}`);
 if (existsSync(previewPath)) throw new Error(`검증용 미리보기 파일이 이미 존재합니다: ${previewRelativePath}`);
+if (existsSync(reviewDirectory)) throw new Error(`검증용 review 폴더가 이미 존재합니다: ${reviewDirectory}`);
 
 const claudeConfig = JSON.parse(readFileSync(join(repositoryRoot, ".mcp.json"), "utf8"));
 assert(claudeConfig.mcpServers?.["mes-ui"]?.command === "node", "Claude Code의 mes-ui MCP 설정을 찾을 수 없습니다.");
@@ -104,14 +108,22 @@ try {
   assert(existsSync(outputPath), "MCP가 출력 파일을 만들지 않았습니다.");
   assert(generated.previewPath === previewRelativePath, `MCP 미리보기 경로가 다릅니다: ${generated.previewPath}`);
   assert(generated.outputPath === outputRelativePath, `MCP 기본 임시 출력 경로가 다릅니다: ${generated.outputPath}`);
-  assert(generated.previewUrl === "http://localhost:3000/preview/deterministic-receiving-fixture", `MCP 미리보기 URL이 다릅니다: ${generated.previewUrl}`);
+  assert(generated.qaPreviewUrl === "http://localhost:3000/preview/deterministic-receiving-fixture", `MCP QA URL이 다릅니다: ${generated.qaPreviewUrl}`);
+  assert(generated.handoffReady === false && !("previewUrl" in generated), "MCP가 시각 검증 전 사용자 전달 URL을 반환했습니다.");
   assert(existsSync(previewPath), "MCP가 미리보기 페이지를 만들지 않았습니다.");
+  const unreviewed = await client.callTool({ name: "mes_handoff_screen", arguments: { request, sourcePath: outputRelativePath } });
+  assert(unreviewed.isError, "MCP 전달 경로가 미작성 시각 기록을 통과시켰습니다.");
 
   const audited = structured(await client.callTool({
     name: "mes_audit_screen",
     arguments: { request, sourcePath: outputRelativePath },
   }));
   assert(audited.status === "audit-ready", `MCP 감사 상태가 audit-ready가 아닙니다: ${audited.status}`);
+  const validSource = readFileSync(outputPath, "utf8");
+  writeFileSync(outputPath, 'export const Bad = () => <input type="date" />;');
+  const blockedAudit = await client.callTool({ name: "mes_audit_screen", arguments: { request, sourcePath: outputRelativePath } });
+  assert(blockedAudit.isError && structured(blockedAudit).status === "blocked", "MCP가 원시 HTML 위반을 성공 결과로 반환했습니다.");
+  writeFileSync(outputPath, validSource);
 
   const overwriteResult = await client.callTool({
     name: "mes_generate_screen",
@@ -131,9 +143,10 @@ try {
   });
   assert(trackedSourceResult.isError, "MCP가 임시 생성 화면을 Git 추적 소스 경로에 쓰는 것을 차단하지 않았습니다.");
 
-  console.log(`[mcp:check] 도구 ${toolNames.length}개 · 생성 ${generated.sourceFingerprint.slice(0, 12)} · 미리보기 ${generated.previewRoute} · 감사 ${audited.status} · 안전 차단 3개 통과`);
+  console.log(`[mcp:check] 도구 ${toolNames.length}개 · 생성 ${generated.sourceFingerprint.slice(0, 12)} · 내부 QA ${generated.previewRoute} · 감사 ${audited.status} · 안전 차단 5개 통과`);
 } finally {
   await client.close();
   if (existsSync(outputPath)) rmSync(outputPath);
   if (existsSync(previewDirectory)) rmSync(previewDirectory, { recursive: true });
+  if (existsSync(reviewDirectory)) rmSync(reviewDirectory, { recursive: true });
 }

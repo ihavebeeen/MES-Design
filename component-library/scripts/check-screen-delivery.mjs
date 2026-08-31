@@ -1,0 +1,193 @@
+import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { auditScreenFile, auditScreenImplementation } from "./audit-screen-implementation.mjs";
+import { generateScreenTsx } from "./generate-screen-tsx.mjs";
+import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-preview.mjs";
+import { resolveScreenRequest } from "./resolve-screen-request.mjs";
+import { digest, implementationRoot } from "./screen-implementation-graph.mjs";
+import { assertStaticPass, reviewPaths, verifyScreenHandoff, visualChecks } from "./screen-handoff.mjs";
+
+const root = implementationRoot;
+mkdirSync(resolve(root, "src/generated-previews"), { recursive: true });
+const directory = mkdtempSync(resolve(root, "src/generated-previews/gate-regression-"));
+const id = directory.split(/[\\/]/).at(-1).toLowerCase();
+const request = JSON.parse(readFileSync(resolve(root, "tests/fixtures/screen-requests/deterministic-side-slide.json"), "utf8"));
+request.requestId = id;
+request.output.route = `/preview/${id}`;
+const contract = resolveScreenRequest(request);
+const original = generateScreenTsx(contract);
+const sourcePath = resolve(directory, "screen.tsx");
+const contractPath = resolve(directory, "contract.json");
+writeFileSync(sourcePath, original);
+writeFileSync(contractPath, JSON.stringify(contract));
+const plan = createScreenPreviewPlan(contract, sourcePath);
+const paths = reviewPaths(contract);
+assert.equal(existsSync(paths.directory), false, "다른 작업의 검증 기록 보존");
+assert.equal(existsSync(dirname(plan.absolutePath)), false, "다른 작업의 미리보기 보존");
+const write = (value) => writeFileSync(sourcePath, value);
+const json = (path, value) => writeFileSync(path, JSON.stringify(value));
+let count = 0;
+function check(label, run) { run(); count += 1; console.log(`[screen:delivery] ${label}`); }
+const cli = (script, args) => spawnSync(process.execPath, [resolve(root, "scripts", script), ...args], { cwd: root, encoding: "utf8" });
+try {
+  check("정상 MES 컴포넌트와 DS 내부 원시 HTML 통과", () => assertStaticPass(auditScreenFile(contract, sourcePath)));
+  check("실제 import alias 사용 통과", () => assert.equal(auditScreenImplementation(contract, original.replace("{ SideSlidePanel }", "{ SideSlidePanel as Panel }").replaceAll("<SideSlidePanel", "<Panel").replaceAll("</SideSlidePanel", "</Panel")).blockerCount, 0));
+  check("실제 namespace import 사용 통과", () => assert.equal(auditScreenImplementation(contract, original.replace("{ SideSlidePanel }", "* as PanelKit").replaceAll("<SideSlidePanel", "<PanelKit.SideSlidePanel").replaceAll("</SideSlidePanel", "</PanelKit.SideSlidePanel")).blockerCount, 0));
+  check("등록 파일의 존재하지 않는 export 이름 차단", () => {
+    const source = original.replace('import { Button } from "@/components/ui/button";', 'import { Button } from "@/components/ui/input";');
+    assert.ok(auditScreenImplementation(contract, source).findings.some((f) => f.code === "component.invalid-export"));
+  });
+  check("이름/주석/미사용 import는 셸 사용 근거 아님", () => {
+    const source = original.slice(0, original.indexOf("export interface")) + `\n// SideSlidePanel\nexport const Fake = () => <div>자체 시안</div>`;
+    assert.ok(auditScreenImplementation(contract, source).findings.some((f) => f.code === "shell.missing"));
+  });
+  check("동일 이름의 로컬 대체 컴포넌트 차단", () => {
+    const source = original.replace('import { SideSlidePanel } from "@/components/ui/side-slide-panel";', "const SideSlidePanel = (props: any) => <div>{props.children}</div>;");
+    assert.ok(auditScreenImplementation(contract, source).findings.some((f) => f.code === "shell.missing"));
+  });
+  check("shadow된 import 차단", () => {
+    const source = original.replace("return (\n    <SideSlidePanel", "const SideSlidePanel = (props: any) => <div>{props.children}</div>;\n  return (\n    <SideSlidePanel");
+    assert.notEqual(source, original);
+    assert.ok(auditScreenImplementation(contract, source).findings.some((f) => f.code === "shell.missing"));
+  });
+  check("HTML/CSS 대체·원시 날짜·버튼 차단", () => {
+    write('export const Fake = () => <html><style>{".box{color:red}"}</style><body><button>저장</button><input type="date" /></body></html>');
+    assert.throws(() => writeScreenPreview(plan), /최종 구현 검사/);
+    assert.equal(existsSync(plan.absolutePath), false);
+  });
+  check("검사 실행 실패는 실패 결과로 기록", () => {
+    write(original + '\nimport Missing from "./missing-file";');
+    assert.throws(() => writeScreenPreview(plan), /import를 확인/);
+    assert.equal(JSON.parse(readFileSync(paths.audit)).status, "error");
+  });
+  check("하위 로컬 파일의 원시 컨트롤 차단", () => {
+    writeFileSync(resolve(directory, "helper.tsx"), 'export const Helper = () => <button>대체</button>;');
+    write(original + '\nimport {Helper} from "./helper"; export const Extra = () => <Helper />;');
+    assert.ok(auditScreenFile(contract, sourcePath).findings.some((f) => f.code === "native.button"));
+  });
+  check("자체 CSS 및 inline style 우회 차단", () => {
+    writeFileSync(resolve(directory, "fake.css"), ".fake { color: red; }");
+    write(original + '\nimport "./fake.css";');
+    assert.ok(auditScreenFile(contract, sourcePath).findings.some((f) => f.code === "style.external-css"));
+    assert.ok(auditScreenImplementation(contract, original + '\nconst Fake = () => <div style={{color:"red"}}/>;').findings.some((f) => f.code === "style.inline"));
+  });
+  check("구문 오류·동적 HTML 주입 차단", () => {
+    assert.ok(auditScreenImplementation(contract, original + '\nconst x = <div').blockerCount > 0);
+    assert.ok(auditScreenImplementation(contract, original + '\nconst x = React.createElement("input");').findings.some((f) => f.code === "source.dynamic-render"));
+  });
+  check("전체 페이지 공통 메뉴·탭 누락 차단", () => {
+    const req = JSON.parse(readFileSync(resolve(root, "tests/fixtures/screen-requests/deterministic-entity-list.json")));
+    const c = resolveScreenRequest(req);
+    assert.ok(auditScreenImplementation(c, generateScreenTsx(c).replace("<PageTopTabItem", "<div")).findings.some((f) => f.code === "shell.page-chrome"));
+  });
+  write(original);
+  check("검사 결과 없으면 전달 차단", () => {
+    rmSync(paths.audit);
+    assert.throws(() => verifyScreenHandoff(plan), /검사 결과가 없습니다/);
+  });
+  check("검사 도중 파일 읽기 오류 시 과거 통과 무효", () => {
+    writeScreenPreview(plan);
+    rmSync(sourcePath);
+    assert.throws(() => writeScreenPreview(plan));
+    assert.equal(JSON.parse(readFileSync(paths.audit)).status, "error");
+    write(original);
+    assert.throws(() => verifyScreenHandoff(plan), /누락\/오류\/차단/);
+  });
+  writeScreenPreview(plan);
+  check("정적 통과만으로 시각 미확인 전달 금지", () => assert.throws(() => verifyScreenHandoff(plan), /전달 차단/));
+
+  // Synthetic evidence exercises the gate schema, NOT an actual screen visual pass.
+  const artifactPath = resolve(paths.directory, "synthetic-test-capture.png");
+  writeFileSync(artifactPath, Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=", "base64"));
+  const artifact = { path: artifactPath, sha256: digest(readFileSync(artifactPath)) };
+  const receipt = JSON.parse(readFileSync(paths.audit));
+  const visual = { schemaVersion: 1, implementationFingerprint: receipt.fingerprint, previewFingerprint: receipt.previewFingerprint,
+    reviewer: "regression-schema-fixture-only", comparedAt: new Date().toISOString(), viewport: { width: 1440, height: 900 },
+    baseline: { kind: "approved-mes", reference: "synthetic-test-only", artifacts: [artifact] }, renderedArtifacts: [artifact],
+    checks: Object.fromEntries(visualChecks.map((name) => [name, { status: "passed", note: "synthetic gate test" }])), warningResolutions: [], unchecked: [] };
+  json(paths.visual, visual);
+  check("검사+현재 코드+시각 기록의 연결 형식 통과 (실제 시각 QA 아님)", () => assert.equal(verifyScreenHandoff(plan).status, "handoff-ready"));
+  check("실패를 제약으로 기록해도 차단", () => {
+    json(paths.visual, { ...visual, checks: { ...visual.checks, spacing: { status: "failed", note: "prototype" } } });
+    assert.throws(() => verifyScreenHandoff(plan), /spacing 미검증\/실패/);
+    json(paths.visual, visual);
+  });
+  check("코드 변경 시 이전 통과 재사용 차단", () => {
+    write(original + "\n// changed");
+    assert.throws(() => verifyScreenHandoff(plan), /변경됐습니다/);
+    write(original);
+  });
+  check("다른 출력 파일에 이전 통과 재사용 차단", () => {
+    const copy = resolve(directory, "copy.tsx"); writeFileSync(copy, original);
+    assert.throws(() => verifyScreenHandoff(createScreenPreviewPlan(contract, copy)), /변경됐습니다/);
+  });
+  check("하위 파일 변경 시 이전 통과 재사용 차단", () => {
+    const helper = resolve(directory, "dependency.ts");
+    writeFileSync(helper, "export const value = 1;");
+    write(original + '\nimport {value} from "./dependency";');
+    writeScreenPreview(plan);
+    const updated = JSON.parse(readFileSync(paths.audit));
+    json(paths.visual, { ...visual, implementationFingerprint: updated.fingerprint, comparedAt: new Date().toISOString() });
+    assert.equal(verifyScreenHandoff(plan).status, "handoff-ready");
+    writeFileSync(helper, "export const value = 2;");
+    assert.throws(() => verifyScreenHandoff(plan), /변경됐습니다/);
+    write(original); json(paths.audit, receipt); json(paths.visual, visual);
+  });
+  check("별도 미리보기 wrapper 및 변조 계획 차단", () => {
+    assert.throws(() => writeScreenPreview({ ...plan, source: '<input type="date" />' }), /계획이 변경/);
+    writeFileSync(plan.absolutePath, plan.source + "\n// changed wrapper");
+    assert.throws(() => verifyScreenHandoff(plan), /wrapper/);
+    writeFileSync(plan.absolutePath, plan.source);
+  });
+  check("Next 암묵적 layout에 숨긴 원시 컨트롤 차단", () => {
+    const layout = resolve(dirname(plan.absolutePath), "layout.tsx");
+    writeFileSync(layout, 'export default function Layout({children}: any) { return <><input type="date"/>{children}</>; }');
+    assert.throws(() => verifyScreenHandoff(plan), /최종 구현 검사/);
+    rmSync(layout);
+  });
+  check("시각 캡처 변경 시 차단", () => {
+    writeFileSync(artifactPath, "changed");
+    assert.throws(() => verifyScreenHandoff(plan), /캡처 누락\/변경/);
+  });
+  check("다른 CLI 진입점도 HTML 및 검사 실패 차단", () => {
+    const html = resolve(directory, "standalone.html"); writeFileSync(html, '<button>자체 UI</button>');
+    assert.notEqual(cli("generate-screen-preview.mjs", [contractPath, html]).status, 0);
+    assert.notEqual(cli("audit-screen-implementation.mjs", [contractPath, html]).status, 0);
+    assert.notEqual(cli("screen-handoff.mjs", [contractPath, html]).status, 0);
+    write('<input type="date" />');
+    assert.notEqual(cli("generate-screen-preview.mjs", [contractPath, sourcePath]).status, 0);
+    assert.notEqual(cli("screen-handoff.mjs", [contractPath, sourcePath]).status, 0);
+  });
+  check("외부 출력/다른 route 미리보기 차단", () => {
+    assert.throws(() => createScreenPreviewPlan(contract, resolve(root, "../outside.tsx")), /안에 있어야/);
+    assert.throws(() => createScreenPreviewPlan({ ...contract, request: { ...contract.request, output: { ...contract.request.output, route: "/other" } } }, sourcePath), /route/);
+  });
+  check("심볼릭 링크를 통한 외부 출력 경로 차단", () => {
+    const link = resolve(directory, "outside-link");
+    symlinkSync(resolve(root, ".."), link, "junction");
+    try { assert.throws(() => createScreenPreviewPlan(contract, resolve(link, "screen.tsx")), /심볼릭 링크/); }
+    finally { unlinkSync(link); }
+  });
+  check("생성 CLI의 별도 출력 옵션도 최종 검사 우회 불가", () => {
+    const req = JSON.parse(readFileSync(resolve(root, "tests/fixtures/screen-requests/deterministic-entity-list.json")));
+    req.generation.pageTitle = '<input type="date" />';
+    const unsafeContract = resolve(directory, "unsafe-contract.json");
+    json(unsafeContract, resolveScreenRequest(req));
+    const alternateOutput = resolve(directory, "alternate.tsx");
+    const result = cli("generate-screen-tsx.mjs", [unsafeContract, "--out", alternateOutput]);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /검사 차단/);
+    assert.equal(existsSync(alternateOutput), false);
+  });
+  console.log(`[screen:delivery] ${count}개 통과. 시각 판정의 진실성/직접 실행 서버는 이 테스트의 강제 범위 밖입니다.`);
+} finally {
+  // These exact paths are owned by this run (mkdtemp + matching request id).
+  for (const [target, parent] of [[directory, "src/generated-previews"], [dirname(plan.absolutePath), "src/app/preview"], [paths.directory, ".mes-ui-preview"]]) {
+    assert.ok(resolve(target).replaceAll("\\", "/").startsWith(`${resolve(root, parent).replaceAll("\\", "/")}/`), "cleanup 대상이 테스트 작업 영역을 벗어났습니다.");
+  }
+  rmSync(directory, { recursive: true, force: true });
+  if (existsSync(dirname(plan.absolutePath))) rmSync(dirname(plan.absolutePath), { recursive: true });
+  if (existsSync(paths.directory)) rmSync(paths.directory, { recursive: true });
+}

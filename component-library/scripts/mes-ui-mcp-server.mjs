@@ -1,13 +1,14 @@
-import { existsSync, mkdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/server";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 import { z } from "zod";
-import { auditScreenImplementation } from "./audit-screen-implementation.mjs";
+import { auditScreenImplementation, auditScreenFile } from "./audit-screen-implementation.mjs";
 import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-preview.mjs";
 import { generateScreenTsx, generatedSourceFingerprint } from "./generate-screen-tsx.mjs";
 import { readRegistryBundle, resolveScreenRequest } from "./resolve-screen-request.mjs";
+import { verifyScreenHandoff } from "./screen-handoff.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -308,7 +309,7 @@ export function createMesUiMcpServer() {
     "mes_generate_screen",
     {
       title: "MES 화면 코드 생성",
-      description: "ScreenRequest를 해석하고 등록 컴포넌트 기반 TSX와 localhost 미리보기 페이지를 생성한 뒤 즉시 감사합니다. 기존 파일은 덮어쓰지 않습니다.",
+      description: "등록 자산 TSX의 최종 파일을 검사하고 내부 QA용 미리보기를 만듭니다. 사용자 전달 승인 아님: 기준 화면 대조와 screen:handoff가 필요합니다. 기존 파일은 덮어쓰지 않습니다.",
       inputSchema: z.object({
         request: requestSchema,
         outputPath: previewSourcePathSchema,
@@ -343,15 +344,18 @@ export function createMesUiMcpServer() {
         outputPath: target.relativePath,
         previewPath: preview.relativePath,
         previewRoute: preview.route,
-        previewUrl: preview.url,
+        qaPreviewUrl: preview.url,
+        handoffReady: false,
+        nextStep: "기준 화면 시각 대조를 기록하고 mes_handoff_screen 또는 npm run screen:handoff 실행",
+        visualReviewPath: previewResult.paths.visual,
         previewCreated: previewResult.created,
         contractStatus: contract.quality.status,
         contractFingerprint: contract.fingerprint,
         sourceFingerprint: generatedSourceFingerprint(source),
         lineCount: source.split("\n").length - 1,
-        audit,
+        audit: previewResult.audit,
       };
-      return toolResult("MES 화면 생성 및 감사 완료", result);
+      return toolResult("MES 코드 정적 검사 통과 · 내부 QA만 가능 · 사용자 전달 미승인", result);
     }),
   );
 
@@ -370,12 +374,31 @@ export function createMesUiMcpServer() {
       const target = resolveRepositorySourcePath(sourcePath);
       if (!existsSync(target.absolutePath)) throw new Error(`화면 소스를 찾을 수 없습니다: ${target.relativePath}`);
       const contract = resolveScreenRequest(request);
-      const source = readFileSync(target.absolutePath, "utf8");
-      const audit = auditScreenImplementation(contract, source);
-      return toolResult(`MES 화면 감사 ${audit.status} · blockers ${audit.blockerCount} · warnings ${audit.warningCount}`, {
+      const audit = auditScreenFile(contract, target.absolutePath);
+      return { ...toolResult(`MES 정적 감사 ${audit.status} · 사용자 전달 승인은 별도`, {
         sourcePath: target.relativePath,
         contractFingerprint: contract.fingerprint,
         ...audit,
+      }), isError: audit.blockerCount > 0 };
+    }),
+  );
+
+  server.registerTool(
+    "mes_handoff_screen",
+    {
+      title: "MES 미리보기 전달 검사",
+      description: "최종 파일·의존성·정확한 preview wrapper·시각 대조 기록이 모두 현재 버전인지 확인한 후에만 사용자 전달 URL을 반환합니다. 기록 누락/실패/변경은 차단합니다.",
+      inputSchema: z.object({ request: requestSchema, sourcePath: sourcePathSchema }),
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    safeTool(async ({ request, sourcePath }) => {
+      const target = resolveRepositorySourcePath(sourcePath);
+      const contract = resolveScreenRequest(request);
+      const plan = createScreenPreviewPlan(contract, target.absolutePath, { projectRoot });
+      const result = verifyScreenHandoff(plan);
+      return toolResult("현재 구현과 제출된 시각 대조 기록의 전달 검사 통과", {
+        status: result.status, previewUrl: plan.url, fingerprint: result.fingerprint,
+        visualEvidenceFingerprint: result.visualEvidenceFingerprint, limitation: result.limitation,
       });
     }),
   );

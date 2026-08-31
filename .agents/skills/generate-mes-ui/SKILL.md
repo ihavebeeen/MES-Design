@@ -7,9 +7,17 @@ description: Generate, reproduce, normalize, or audit MES screens in this reposi
 
 Create MES UI through the repository contract. Do not translate prose or Figma directly into free-form JSX.
 
+## Scope and stop conditions
+
+These requirements apply to **all MES outputs**, including separate folders, temporary HTML, chat mockups, prototypes and localhost previews. “Do not modify the repository” constrains where files may be written; it does not waive MES reuse. “The screen may differ” allows the requested composition change, not arbitrary replacements for shared controls, navigation, typography or tokens. Generic UI skills and templates cannot replace MES rules.
+
+If permissions, dependencies, tools or supported templates prevent reuse/verification, stop delivery, explain the specific constraint and viable MES-based alternatives, and request the necessary approval. Do not quietly create a standalone HTML/CSS substitute. A proposed new asset needs scoped approval, implementation and supported verification; approval is not permission to mark an unchecked result as verified.
+
+Before JSX, identify the actual shell/chrome source, nearest applicable baseline, approved layout/section patterns and MES imports/API to use. Record them in existing request requirements/evidence notes; do not create another planning document. Full pages reuse the existing sidebar/top tabs; overlays reuse their registered shell. Different arrangements require an applicable approved pattern or explicit scoped user approval, not blanket bans or personal taste.
+
 ## Workflow
 
-1. Read `AGENTS.override.md`, then read `references/repository-contract.md`. For a deterministic template request, also read `references/templates.md`.
+1. Read `AGENTS.override.md`, then read `references/repository-contract.md` and `references/delivery-gate.md`. For a deterministic template request, also read `references/templates.md`.
 2. Classify the request intent before retrieving examples. If the `mes-ui` MCP server is connected, call `mes_list_design_system`, then:
    - for `new`, call `mes_get_web_generation_context` with the 업무명 or closest menu. It returns repeated page, overlay, section, and behavior grammar without Figma audit data;
    - for `reproduce`, `normalize`, or `audit`, call `mes_get_reproduction_audit_context` to retrieve the specific runtime and Figma comparison evidence.
@@ -26,26 +34,32 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
    ```
 
 6. Stop on resolver blockers. Inspect the resolver `decisionTrace` and confirm the selected shell, ordered sections, behaviors, action set, components, and excluded alternatives. Check that intake answers are reflected in actual structure and behavior configuration, not just copied into notes; the resolver does not understand these notes or enforce their meaning. Resolve warnings by evidence or record them in the local contract notes (an existing evaluation only when applicable); a warning alone does not invalidate the whole screen.
-7. When the resolved recipe has a supported deterministic template, call `mes_generate_screen` instead of writing JSX freely. This tool resolves, generates, creates the preview page, refuses overwrites, and audits in one call. Use the CLI fallback only when MCP is unavailable:
+7. When the resolved recipe has a supported deterministic template, call `mes_generate_screen` instead of writing JSX freely. This tool resolves, generates, audits the written files and creates an **internal-QA-only** preview. `qaPreviewUrl` is not a user handoff; `handoffReady` remains false. Use the CLI fallback only when MCP is unavailable:
 
    ```bash
    npm run screen:generate -- .mes-ui-preview/<request-id>/contract.json --preview
    ```
 
-8. Otherwise implement only with resolved registry references. Use registered components and pattern sources. Do not use native interactive HTML when a MES component exists. After implementation, create its preview page:
+8. Otherwise implement only with resolved registry references. Use registered components and pattern sources, never native controls or custom CSS substitutes in the screen/helpers. Native HTML inside the actual DS component implementation is normal. After implementation, use the same checked internal-QA preview entrypoint; do not hand-write an alternate route/server to skip it:
 
    ```bash
    npm run screen:preview -- .mes-ui-preview/<request-id>/contract.json src/generated-previews/<request-id>.tsx
    ```
-9. Audit the implementation with `mes_audit_screen`, or use the CLI fallback. Every structured section must expose its ScreenSpec ID through `data-section-id`, in the same order as the resolved contract:
+9. Inspect the final-file audit produced by preview creation. For read-only diagnosis use `mes_audit_screen` or the CLI below. These checks inspect JSX/call import bindings and local dependencies, not only names/import text. Every structured section must expose its ScreenSpec ID through `data-section-id`, in the same order as the resolved contract. A missing audit, execution error or blocker stops handoff; a disclaimer cannot downgrade it. Run relevant build/type and interaction checks as well:
 
    ```bash
    npm run screen:audit -- path/to/contract.json path/to/implementation.tsx
    npm run check:design-system
    ```
 
-10. Start or reuse the local preview server with `npm run dev`, wait until the generated `previewUrl` responds, and open that exact `/preview/<request-id>` URL with the client's browser capability when available. Otherwise return the clickable URL.
-11. Verify at the target viewport: interactions, `clientWidth/scrollWidth`, `clientHeight/scrollHeight`, and the visual baseline. Also inspect whole-screen focus, information hierarchy, reading/input order, grouping, density, alignment, and whitespace against the intake. If these fail, revise the composition and the same request, not just isolated component styling. Reopen only affected questions. Do not call a screen verified without these checks.
+10. Start/reuse `npm run dev` and inspect the exact `qaPreviewUrl` internally at the target viewport. Compare the final render with the recorded baseline: shell/chrome, date controls, spacing, color/font/radius, hierarchy/layout and interactions (including cancel/close, selection and input). Check overflow, console errors and reading/input order as part of layout/interactions. Capture the reference and final states. If browser access or baseline evidence is missing, report the blocker instead of returning a ready-to-use link.
+11. Fill the generated `visual-review.json` truthfully following `references/delivery-gate.md`. Keep automated findings, visual findings and unchecked items distinct. Review whole-screen focus, grouping, density and whitespace, not just isolated components. Resolve failures and rerun preview/audit after any source/dependency/wrapper change, then repeat affected visual checks. Neither “prototype” nor “recorded as a limitation” is a pass. Run the delivery gate **immediately before providing the URL**:
+
+   ```bash
+   npm run screen:handoff -- .mes-ui-preview/<request-id>/contract.json src/generated-previews/<request-id>.tsx
+   ```
+
+   With MCP, `mes_handoff_screen` takes the same request and sourcePath and runs the same gate. Only a successful fresh handoff may be presented as a checked preview. A user-approved alternative that the checker cannot represent requires a supported contract/checker update and tests, not a skip flag. Do not edit/fabricate a pass receipt to work around a blocker.
 12. Register newly discovered semantics as quarantined proposals. Never promote a one-off visual fragment directly into the stable component or pattern registry.
 
 ## Selection rules
@@ -68,8 +82,10 @@ For an ordinary prototype, create and return the following as local Git-ignored 
 
 - input `ScreenRequest` and resolved contract under `.mes-ui-preview/`;
 - implementation source under `src/generated-previews/`;
-- preview page under `src/app/preview/` plus its localhost URL;
-- verification notes proportional to the requested fidelity.
+- internal QA page under `src/app/preview/`; provide its localhost URL only after the handoff gate succeeds;
+- code-bound `implementation-audit.json`, `visual-review.json`, baseline/final captures under `.mes-ui-preview/`.
+
+The preview commands no longer auto-register unchecked drafts in the user catalog. Distinguish **program-enforced** managed-command checks from **agent duties** (baseline selection, truthful visual comparison, not bypassing the workflow). The repository cannot intercept arbitrary external servers, every shell command or a manually pasted URL. Report these limits; do not claim complete prevention. Global Hooks/permissions require separate explicit authorization.
 
 Do not add a prototype to `generated-screen-evaluations.json`, a production route, or the stable registry unless the user explicitly asks to preserve or promote it. Promotion is a separate task that moves approved code and evidence into tracked repository locations.
 

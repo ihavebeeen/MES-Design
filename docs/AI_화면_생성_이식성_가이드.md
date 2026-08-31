@@ -32,7 +32,7 @@ npm run screen:resolve -- .mes-ui-preview/example/request.json --out .mes-ui-pre
 npm run screen:generate -- .mes-ui-preview/example/contract.json --preview
 ```
 
-프로토타입 요청·계약은 `.mes-ui-preview/`, 생성 코드는 `src/generated-previews/`, 미리보기 라우트는 `src/app/preview/`에 둡니다. 세 경로는 모두 Git에서 제외됩니다. 생성기는 `ScreenRequest.output.route`에 맞춰 `http://localhost:3000/preview/<request-id>` 주소를 반환하고 `public/.mes-ui-preview/index.json` 로컬 인덱스도 갱신합니다. `npm run dev`가 실행 중이면 사용자는 미리보기 주소와 `/generated-screens/`의 **임시 생성** 구역에서 결과를 확인합니다.
+프로토타입 요청·계약·검사 기록은 `.mes-ui-preview/`, 생성 코드는 `src/generated-previews/`, 미리보기 라우트는 `src/app/preview/`에 둡니다. 모두 Git에서 제외됩니다. 생성기는 실제 파일을 검사한 뒤 **내부 QA용** `qaPreviewUrl`을 반환하며 사용자 목록에는 자동 등록하지 않습니다. 기준 화면과 비교하여 `visual-review.json`을 채우고 `npm run screen:handoff -- <contract.json> <screen.tsx>`를 통과한 다음 사용자에게 주소를 제공합니다. 별도 폴더·임시 시안도 같은 규칙입니다. 자세한 강제 범위와 한계는 [전달 검사](../.agents/skills/generate-mes-ui/references/delivery-gate.md)를 참고하세요.
 
 임시 프로토타입은 `generated-screen-evaluations.json`이나 정식 화면 레지스트리에 자동 등록하지 않습니다. 로컬 인덱스도 Git에서 제외됩니다. 사용자가 보관을 명시한 화면만 `persistence: git`, `reviewStatus: review`, `generationInfluence: blocked` 상태로 추적 경로에 이동하고, 별도 승인과 검증을 통과한 화면만 `generationInfluence: standard`가 됩니다.
 
@@ -48,7 +48,8 @@ npm run screen:generate -- .mes-ui-preview/example/contract.json --preview
 - `mes_get_web_generation_context`: 원본 없는 신규 UI에 사용할 실제 웹 반복 조합 문법 조회
 - `mes_get_reproduction_audit_context`: 기존 화면의 실제 웹·Figma·불일치·검증 상태 조회
 - `mes_resolve_screen`: ScreenRequest를 결정형 계약으로 해석
-- `mes_generate_screen`: 지원 템플릿의 TSX와 개별 localhost 미리보기 페이지를 Git-ignored 임시 경로에 생성하고 즉시 감사
+- `mes_generate_screen`: 지원 템플릿의 최종 파일 검사 후 내부 QA 미리보기 생성 (`qaPreviewUrl`, `handoffReady: false`). 사용자 전달은 시각 대조와 `screen:handoff` 이후
+- `mes_handoff_screen`: 시각 대조 기록과 현재 구현을 같은 전달 검사로 확인한 뒤에만 사용자 URL 반환 (CLI `screen:handoff`와 동일)
 - `mes_audit_screen`: 기존 TSX/JSX를 요청 계약과 레지스트리에 대조
 
 서버는 절대경로, `component-library` 외부 경로, `src/` 외부 출력, 기존 파일 덮어쓰기를 거부합니다. 연결과 실제 도구 호출은 다음 명령으로 검증합니다.

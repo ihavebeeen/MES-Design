@@ -2,37 +2,28 @@ import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { contractFingerprint, readRegistryBundle } from "./resolve-screen-request.mjs";
+import { digest, implementationRoot, inspectImplementation, renderingDependencies } from "./screen-implementation-graph.mjs";
 
 function finding(severity, code, message) {
   return { severity, code, message };
 }
 
-function normalizeSource(source) {
-  return source.replaceAll("\\", "/").replace(/^src\//, "").replace(/\.(tsx?|jsx?)$/, "");
-}
-
-export function auditScreenImplementation(contract, source, registry = readRegistryBundle()) {
+export function auditScreenImplementation(contract, source, registry = readRegistryBundle(), options = {}) {
   const findings = [];
 
   if (contract.fingerprint !== contractFingerprint(contract)) findings.push(finding("blocker", "contract.fingerprint", "계약 내용과 fingerprint가 일치하지 않습니다. screen:resolve를 다시 실행하세요."));
   if (contract.quality?.blockerCount > 0) findings.push(finding("blocker", "contract.blocked", "blocker가 있는 계약은 구현 근거로 사용할 수 없습니다."));
   if (!contract.decisionTrace) findings.push(finding("blocker", "contract.decision-trace", "선택·제외 근거가 없는 계약입니다. screen:resolve를 다시 실행하세요."));
 
-  const nativeInteractive = [...source.matchAll(/<\s*(button|input|select|textarea|table)\b/g)].map((match) => match[1]);
-  for (const tag of [...new Set(nativeInteractive)]) findings.push(finding("blocker", `native.${tag}`, `화면 구현에서 원시 <${tag}>를 직접 사용했습니다. 등록된 MES 컴포넌트로 교체하세요.`));
-
-  if (/on(?:Change|Click|ValueChange|CheckedChange)\s*=\s*\{\s*\(.*?\)\s*=>\s*(?:undefined|\{\s*\})\s*\}/s.test(source)) {
-    findings.push(finding("blocker", "interaction.no-op", "상태를 바꾸지 않는 no-op 상호작용 핸들러가 있습니다."));
+  let implementation = { uses: new Set(), sections: [], actions: new Set(), files: [] };
+  try {
+    implementation = inspectImplementation(source, registry, options);
+    findings.push(...implementation.findings);
+  } catch (error) {
+    findings.push(finding("blocker", "audit.execution-error", String(error)));
   }
-
-  const allowedSources = new Set([
-    ...registry.components.map((entry) => normalizeSource(entry.source)),
-    ...registry.patterns.map((entry) => normalizeSource(entry.source)),
-  ]);
-  const localImports = [...source.matchAll(/from\s+["'](@\/components\/(?:ui|patterns)\/[^"']+)["']/g)].map((match) => match[1].replace(/^@\//, ""));
-  for (const imported of unique(localImports)) {
-    if (!allowedSources.has(normalizeSource(imported))) findings.push(finding("warning", "registry.unregistered-import", `등록되지 않은 UI 구현 '${imported}'를 import합니다.`));
-  }
+  if (implementation.uses.size === 0) findings.push(finding("blocker", "component.no-mes-usage", "실제로 JSX/호출에서 사용하는 MES 자산을 확인하지 못했습니다."));
+  if (!implementation.exports?.has(contract.request?.output?.componentName)) findings.push(finding("blocker", "source.entry-export", "계약의 화면 componentName에 해당하는 값 export가 없습니다."));
 
   const shellComponents = {
     "center-modal": "CenterModal",
@@ -40,14 +31,18 @@ export function auditScreenImplementation(contract, source, registry = readRegis
     "confirm-dialog": "ConfirmDialog",
   };
   const expectedShellComponent = shellComponents[contract.request?.target?.kind];
-  if (expectedShellComponent && !new RegExp(`\\b${expectedShellComponent}\\b`).test(source)) {
+  if (expectedShellComponent && !implementation.uses.has(expectedShellComponent)) {
     findings.push(finding("blocker", "shell.missing", `계약된 셸 컴포넌트 ${expectedShellComponent}를 구현에서 찾지 못했습니다.`));
+  }
+  if (contract.request?.target?.kind === "page") {
+    for (const component of ["Sidebar", "PageTopTabItem"]) {
+      if (!implementation.uses.has(component)) findings.push(finding("blocker", "shell.page-chrome", `전체 페이지 공통 틀 ${component} 실제 사용이 필요합니다. 다른 승인 셸은 검사 지원을 먼저 추가하세요.`));
+    }
   }
 
   const sectionPositions = [];
   for (const section of contract.composition?.sections ?? []) {
-    const literal = `data-section-id=${JSON.stringify(section.id)}`;
-    const position = source.indexOf(literal);
+    const position = implementation.sections.findIndex((entry) => entry.id === section.id);
     if (position < 0) findings.push(finding("blocker", "composition.section-missing", `ScreenSpec section '${section.id}'의 data-section-id marker를 구현에서 찾지 못했습니다.`));
     else sectionPositions.push({ id: section.id, position });
   }
@@ -59,12 +54,12 @@ export function auditScreenImplementation(contract, source, registry = readRegis
 
   for (const patternContract of contract.implementation?.patternContracts ?? []) {
     for (const marker of patternContract.implementationMarkers ?? []) {
-      if (!source.includes(marker)) findings.push(finding("blocker", "composition.pattern-marker", `pattern '${patternContract.patternId}'의 구현 marker '${marker}'를 찾지 못했습니다.`));
+      if (!implementation.uses.has(marker)) findings.push(finding("blocker", "composition.pattern-marker", `pattern '${patternContract.patternId}'의 실제 MES JSX/호출 '${marker}'를 찾지 못했습니다.`));
     }
   }
 
   const actionSetRef = contract.composition?.actionSetRef;
-  if (actionSetRef && !source.includes(`createDialogActionSet(${JSON.stringify(actionSetRef)}`)) {
+  if (actionSetRef && !implementation.actions.has(actionSetRef)) {
     findings.push(finding("blocker", "composition.action-set", `action set '${actionSetRef}'가 createDialogActionSet을 통해 구현되지 않았습니다.`));
   }
 
@@ -74,11 +69,51 @@ export function auditScreenImplementation(contract, source, registry = readRegis
   const blockers = findings.filter((entry) => entry.severity === "blocker");
   const warnings = findings.filter((entry) => entry.severity === "warning");
   return {
+    scope: "static-implementation-only",
+    handoffReady: false,
+    sourceFingerprint: digest(source),
+    dependencies: implementation.files,
     status: blockers.length > 0 ? "blocked" : warnings.length > 0 ? "review-ready" : "audit-ready",
     blockerCount: blockers.length,
     warningCount: warnings.length,
     findings,
   };
+}
+
+// A report is a receipt for these bytes, not a reusable approval for a filename.
+export function auditScreenFile(contract, sourcePath, options = {}) {
+  const root = options.projectRoot ?? implementationRoot;
+  const path = resolve(root, sourcePath);
+  if (!/\.(?:tsx|jsx)$/.test(path)) throw new Error("독립 HTML/CSS는 검증된 MES 미리보기로 제공할 수 없습니다. TSX/JSX 구현이 필요합니다.");
+  const registry = readRegistryBundle();
+  const result = auditScreenImplementation(contract, readFileSync(path, "utf8"), registry, { ...options, sourcePath: path });
+  const support = ["package-lock.json", "tsconfig.json", "next.config.ts", "postcss.config.mjs", "src/app/layout.tsx", "src/app/globals.css",
+    "scripts/screen-implementation-graph.mjs", "scripts/audit-screen-implementation.mjs", "scripts/screen-handoff.mjs", "scripts/generate-screen-preview.mjs"];
+  const route = contract.request?.output?.route;
+  if (!/^\/preview\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(route ?? "")) throw new Error("최종 파일 검사에는 관리되는 /preview/<id> 진입점이 필요합니다.");
+  // Next implicitly composes route layouts; these are not TS import dependencies.
+  for (const directory of ["src/app/preview", `src/app${route}`]) {
+    for (const stem of ["layout", "template", "loading", "error", "not-found"]) {
+      for (const extension of ["tsx", "jsx", "ts", "js"]) {
+        const name = `${directory}/${stem}.${extension}`;
+        support.push(name);
+        const file = resolve(root, name);
+        if (existsSync(file)) {
+          const extra = inspectImplementation(readFileSync(file, "utf8"), registry, { projectRoot: root, sourcePath: file });
+          result.findings.push(...extra.findings);
+        }
+      }
+    }
+  }
+  result.blockerCount = result.findings.filter((f) => f.severity === "blocker").length;
+  result.warningCount = result.findings.filter((f) => f.severity === "warning").length;
+  result.status = result.blockerCount ? "blocked" : result.warningCount ? "review-ready" : "audit-ready";
+  const environmentFiles = support.map((name) => {
+    const file = resolve(root, name);
+    return [name, existsSync(file) ? digest(readFileSync(file)) : null];
+  });
+  const renderingFiles = renderingDependencies([path, ...support.filter((name) => !name.startsWith("scripts/")).map((name) => resolve(root, name))], root);
+  return { ...result, sourcePath: path, fingerprint: digest(JSON.stringify({ sourcePath: path, contract, registry, renderingFiles, environmentFiles })), environmentFiles, renderingFiles };
 }
 
 function runCli() {
@@ -90,14 +125,9 @@ function runCli() {
   if (!existsSync(contractPath) || !existsSync(sourcePath)) throw new Error("계약 파일 또는 구현 파일을 찾을 수 없습니다.");
 
   const contract = JSON.parse(readFileSync(contractPath, "utf8"));
-  const source = readFileSync(sourcePath, "utf8");
-  const result = auditScreenImplementation(contract, source);
+  const result = auditScreenFile(contract, sourcePath);
   console.log(JSON.stringify(result, null, 2));
   if (result.blockerCount > 0) process.exitCode = 1;
-}
-
-function unique(values) {
-  return [...new Set(values)];
 }
 
 if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {

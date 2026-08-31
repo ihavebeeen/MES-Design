@@ -300,10 +300,16 @@ npm run screen:resolve -- tests/fixtures/screen-requests/receiving-side-panel.js
 # 지원 Recipe의 계약을 동일한 TSX로 생성
 npm run screen:generate -- path/to/contract.json --out path/to/implementation.tsx
 
-# 계약과 실제 화면 구현의 원시 HTML·셸·등록 import 감사
+# 최종 JSX의 실제 자산 사용·하위 파일·셸 감사 (시각 검증은 별도)
 npm run screen:audit -- path/to/contract.json path/to/implementation.tsx
 
-# 화면 계약의 결정성 fixture 검사
+# 실제 파일 검사 후 내부 QA 미리보기 생성 (사용자 전달 승인 아님)
+npm run screen:preview -- path/to/contract.json src/generated-previews/example.tsx
+
+# 기준 화면 대조 기록 후 현재 코드·시각 근거를 확인하고 전달 URL 반환
+npm run screen:handoff -- path/to/contract.json src/generated-previews/example.tsx
+
+# 화면 계약 결정성 및 미검증 미리보기 차단 회귀 검사
 npm run check:screen-contracts
 
 # 로컬 MCP를 실제 클라이언트로 연결하여 조회·생성·감사·경로 차단 검사

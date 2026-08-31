@@ -1,11 +1,17 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { recordPreviewAudit } from "./screen-handoff.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const defaultProjectRoot = resolve(scriptDirectory, "..");
 const previewRoutePattern = /^\/preview\/([a-z0-9]+(?:-[a-z0-9]+)*)$/;
-const localManifestRelativePath = "public/.mes-ui-preview/index.json";
+function checkRealContainment(root, path) {
+  let ancestor = path;
+  while (!existsSync(ancestor)) ancestor = dirname(ancestor);
+  const rel = relative(realpathSync(root), realpathSync(ancestor));
+  if (rel === ".." || rel.startsWith(`..${sep}`) || isAbsolute(rel)) throw new Error("심볼릭 링크를 통한 외부 미리보기 경로는 허용하지 않습니다.");
+}
 
 function normalizeSourceImport(projectRoot, outputPath) {
   const absolutePath = isAbsolute(outputPath) ? outputPath : resolve(projectRoot, outputPath);
@@ -16,6 +22,7 @@ function normalizeSourceImport(projectRoot, outputPath) {
   const normalized = relativePath.split(sep).join("/");
   if (!normalized.startsWith("src/")) throw new Error("미리보기 대상 화면은 component-library/src/ 아래에 있어야 합니다.");
   if (!/\.(?:tsx|jsx)$/.test(normalized)) throw new Error("미리보기 대상 화면은 .tsx 또는 .jsx 파일이어야 합니다.");
+  checkRealContainment(projectRoot, absolutePath);
   return `@/${normalized.slice(4).replace(/\.(?:tsx|jsx)$/, "")}`;
 }
 
@@ -45,10 +52,14 @@ export function createScreenPreviewPlan(contract, outputPath, options = {}) {
 
   const relativePath = `src/app/preview/${routeMatch[1]}/page.tsx`;
   const absolutePath = resolve(projectRoot, ...relativePath.split("/"));
+  checkRealContainment(projectRoot, absolutePath);
   const componentImport = normalizeSourceImport(projectRoot, outputPath);
   const source = generateScreenPreviewSource(contract, componentImport);
   const baseUrl = (options.baseUrl ?? "http://localhost:3000").replace(/\/$/, "");
   return {
+    contract: structuredClone(contract),
+    outputPath: resolve(projectRoot, outputPath),
+    purpose: "internal-qa",
     projectRoot,
     route,
     relativePath,
@@ -70,39 +81,26 @@ export function createScreenPreviewPlan(contract, outputPath, options = {}) {
   };
 }
 
-function writeLocalDraftManifest(plan) {
-  const manifestPath = resolve(plan.projectRoot, ...localManifestRelativePath.split("/"));
-  let manifest = { schemaVersion: 1, drafts: [] };
-  if (existsSync(manifestPath)) {
-    const parsed = JSON.parse(readFileSync(manifestPath, "utf8"));
-    if (parsed?.schemaVersion === 1 && Array.isArray(parsed.drafts)) manifest = parsed;
-  }
-  const previous = manifest.drafts.find((draft) => draft.id === plan.manifestEntry.id);
-  const now = new Date().toISOString();
-  const entry = {
-    ...plan.manifestEntry,
-    createdAt: previous?.createdAt ?? now,
-    updatedAt: now,
-  };
-  manifest.drafts = [...manifest.drafts.filter((draft) => draft.id !== entry.id), entry]
-    .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
-  mkdirSync(dirname(manifestPath), { recursive: true });
-  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
-}
-
 export function writeScreenPreview(plan) {
+  const canonical = createScreenPreviewPlan(plan.contract, plan.outputPath, { projectRoot: plan.projectRoot });
+  for (const field of ["absolutePath", "relativePath", "componentImport", "source", "route"]) {
+    if (plan[field] !== canonical[field]) throw new Error(`미리보기 계획이 변경됐습니다: ${field}`);
+  }
   let created = false;
   if (existsSync(plan.absolutePath)) {
     if (readFileSync(plan.absolutePath, "utf8") !== plan.source) {
       throw new Error(`기존 미리보기 파일을 덮어쓰지 않습니다: ${plan.relativePath}`);
     }
-  } else {
+  }
+  // Audit the bytes that will actually be imported, not generator output in memory.
+  const review = recordPreviewAudit(canonical);
+  if (!existsSync(plan.absolutePath)) {
     mkdirSync(dirname(plan.absolutePath), { recursive: true });
     writeFileSync(plan.absolutePath, plan.source, { encoding: "utf8", flag: "wx" });
     created = true;
   }
-  writeLocalDraftManifest(plan);
-  return { created };
+  // No public catalog registration: rendering is internal QA, not a handoff pass.
+  return { created, purpose: "internal-qa", handoffReady: false, ...review };
 }
 
 function runCli() {
@@ -117,7 +115,7 @@ function runCli() {
   const contract = JSON.parse(readFileSync(contractPath, "utf8"));
   const plan = createScreenPreviewPlan(contract, sourcePath);
   const result = writeScreenPreview(plan);
-  console.log(`[screen:preview] ${result.created ? "created" : "existing"} · ${plan.relativePath} · ${plan.url}`);
+  console.log(`[screen:preview:internal-qa] ${result.created ? "created" : "existing"} · ${plan.relativePath} · QA 전용 ${plan.url}\n사용자 전달 전 screen:handoff 필요. 시각 기록: ${result.paths.visual}`);
 }
 
 if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {
