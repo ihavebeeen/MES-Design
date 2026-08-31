@@ -8,6 +8,18 @@ For center/slide/confirmation popup-only work, host knowledge is optional. Witho
 
 `connected-flow` requires `hostPage`: `sourcePath` (local `src/...tsx`), `componentName` (actual export), `triggerLabel`, `saveBehavior` (`notify-parent` or explicitly `none`). Use the intended page or a scoped MES adapter. It accepts `overlayActions: ReactNode`, `saveVersion: number`, `savedData: unknown`; place the action/data at their real locations. The wrapper keeps it mounted, blocks background interaction and returns focus on close. The popup accepts `open`, `onOpenChange`, and `onSave` when requested; emit success only after successful validation/save. Inspect only the relevant connection, not all details of the parent page. Missing necessary connection facts block that integration scope, not unrelated popup-only work. An explicitly supplied broken host is not silently discarded: it is rendered and must pass inspection even in surface mode. Tests' `ApplicationHostFixture` is not business evidence. Regenerate/review old wrappers only for the current task; preserve unrelated previews.
 
+## Slide body composition and independent list behavior
+
+Choose the shared `SideSlidePanel` and its body placement separately from editing behavior. The user-confirmed body families are custom fields (left/basic + right/custom values), inspection (left/target + right/judgements), top/bottom input/list, and special group settings (basic + members + permissions). Operation logs remain a business example, not the fourth universal body family.
+
+`side-slide-custom-fields.v1`, `side-slide-inspection.v1`, `side-slide-entry-list.v1`, and `side-slide-group-settings.v1` are provisional deterministic composition templates. Their roles and references are in `generation-templates.json`. Examples in `slide-composition-examples.json` use sample data, not complete source-screen replicas or backend persistence.
+
+For a record list, set `addMethods` to `["blank-row"]`, `["entry-form"]`, or both. Independently specify `editableFields`; top-entry addition does not imply a read-only list. Both paths append to the same draft and validate the same fields on Save. Keep an `entry-form` section only when that addition path is used. `inheritOnAdd` applies only to the top form reset; it is not inferred from layout. These are capabilities of this template, not a ban on other approved compositions.
+
+Basic form, custom field values, inspection judgement, staged input, record list, member selection and permission matrix are separate section roles. These templates currently support explicit Input/Select field definitions and a two-level permission matrix; unsupported shapes need a scoped extension, not invented fields or silently dropped data. Custom/inspection `availableFields`/`availableItems` are caller-supplied definitions, not an implementation of the original field-definition editor.
+
+Use the ordinary resolve → generate → final-file audit → managed QA preview → handoff path. New generation has the same delivery gate as old templates. To update the checked-in composition demonstrations, run `node scripts/sync-slide-composition-examples.mjs --write`; normal generated drafts remain ignored under `/preview/`.
+
 ## `side-slide-form-editable-list.v1`
 
 Use for a full-height right panel composed of ordered form sections and exactly one repeating input-row section. It generates `SideSlidePanel`, `SectionFrame`, `FormGrid`, `EditableRowListSection`, `EditableRowGrid`, committed-draft restore, row mutation, and cancel/save actions.

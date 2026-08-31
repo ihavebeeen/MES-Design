@@ -1,6 +1,8 @@
+import { slideTemplateKinds, validateSlideComposition } from "./slide-composition-contract.mjs";
 export const supportedScreenTemplate = "side-slide-form-editable-list.v1";
 export const supportedScreenTemplates = new Set([
   supportedScreenTemplate,
+  ...Object.keys(slideTemplateKinds),
   "center-modal-search-table.v1",
   "page-entity-list.v1",
 ]);
@@ -158,7 +160,8 @@ export function validateGenerationSpec(generation, { required = false } = {}) {
   if (generation === undefined) return required ? ["generation 객체가 필요합니다."] : issues;
   if (!generation || typeof generation !== "object" || Array.isArray(generation)) return ["generation은 객체여야 합니다."];
   if (!supportedScreenTemplates.has(generation.templateId)) return [`generation.templateId: 지원값은 ${[...supportedScreenTemplates].join(", ")}입니다.`];
-  if (generation.templateId === supportedScreenTemplate) validateSideSlide(generation, issues);
+  if (Object.hasOwn(slideTemplateKinds, generation.templateId)) issues.push(...validateSlideComposition(generation));
+  else if (generation.templateId === supportedScreenTemplate) validateSideSlide(generation, issues);
   else validateSearchTableTemplate(generation, issues, generation.templateId === "page-entity-list.v1");
   return issues;
 }

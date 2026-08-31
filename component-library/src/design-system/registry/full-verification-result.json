@@ -1,54 +1,69 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-08-31T05:43:16.204Z",
-  "outcome": "failed",
-  "durationMs": 274766,
-  "assetManifestFingerprint": "af9c0ee2423f31c9ca06fcd49e7f48379486b0b0bffb79bb7cac1370099aaff3",
-  "verificationSourceFingerprint": "0827d25506c9bdd74470fd083795e1c5aad833317d860df0397345f5898d201a",
+  "recordedAt": "2026-08-31T06:37:19.037Z",
+  "outcome": "passed",
+  "durationMs": 337843,
+  "assetManifestFingerprint": "833812eaffdc2ecd5a85213e61272f30a0605ca96b7252066909c0fd38370541",
+  "verificationSourceFingerprint": "95f08cb0f3f832eb2d92471208b72f047942d9200c8725933950bd03594e6003",
   "testInventory": {
-    "count": 77,
+    "count": 83,
     "files": {
       "tests/visual/application-flow.spec.mts": "e972eb78d92011e8f24b4a475837a425ac2656a9327a108abb802fe06eba4496",
       "tests/visual/design-system.visual.spec.ts": "8da3b0bf45babf6e7e9e6d0c43cfa4df34d9c8a76a072d4a3bd7037e6f8b64e9",
-      "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14"
+      "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
+      "tests/visual/slide-compositions.spec.mts": "2c018a1a7334f1f0e0a13f7d1977b3556142863dec93841498f5d55a778a9299"
     },
-    "fingerprint": "d85a0d8842da8793117713d76ff5363087b272775532c1119c4c3a0afbd8fa50"
+    "fingerprint": "be6c153d9a408eafc58baf5ab79116fbe52d2c595fc5c5db17aa6df41c1d3b1c"
   },
   "stages": [
     {
       "id": "asset-sync",
       "command": "npm run sync:assets",
       "status": "passed",
-      "durationMs": 721,
+      "durationMs": 673,
       "exitCode": 0
     },
     {
       "id": "verification-inventory",
       "command": "node scripts/audit-web-verification-coverage.mjs --write",
       "status": "passed",
-      "durationMs": 1538,
+      "durationMs": 1514,
       "exitCode": 0
     },
     {
       "id": "design-system-check",
       "command": "npm run check:design-system",
       "status": "passed",
-      "durationMs": 58523,
+      "durationMs": 59586,
       "exitCode": 0
     },
     {
       "id": "design-system-lint",
       "command": "npm run lint:design-system",
       "status": "passed",
-      "durationMs": 5315,
+      "durationMs": 6870,
       "exitCode": 0
     },
     {
       "id": "playwright",
       "command": "npm run test:visual",
-      "status": "failed",
-      "durationMs": 208667,
-      "exitCode": 1
+      "status": "passed",
+      "durationMs": 245613,
+      "exitCode": 0
+    },
+    {
+      "id": "production-build",
+      "command": "npm run build",
+      "status": "passed",
+      "durationMs": 22337,
+      "exitCode": 0
+    },
+    {
+      "id": "verification-record",
+      "command": "node scripts/audit-web-verification-coverage.mjs --write --record-passed --duration-ms=245613",
+      "status": "passed",
+      "durationMs": 1250,
+      "exitCode": 0
     }
   ]
 }

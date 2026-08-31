@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-preview.mjs";
 import { contractFingerprint } from "./resolve-screen-request.mjs";
 import { validateGenerationSpec } from "./screen-generation-contract.mjs";
+import { generateSlideComposition, isSlideComposition, slideCompositionSections } from "./generate-slide-composition.mjs";
 import { auditScreenImplementation, auditScreenFile } from "./audit-screen-implementation.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
@@ -41,6 +42,11 @@ function classNameForAlign(align) {
 
 export function validateGenerationContract(contract) {
   const issues = validateGenerationSpec(contract?.request?.generation, { required: true });
+  if (isSlideComposition(contract?.request?.generation?.templateId) && issues.length === 0) {
+    const expected = slideCompositionSections(contract.request.generation);
+    const actual = contract.composition?.sections ?? [];
+    if (actual.length !== expected.length || expected.some((s, i) => actual[i]?.id !== s.id || actual[i]?.patternRef !== s.patternRef)) issues.push("생성 본문과 조합 계약의 섹션 역할/순서가 다릅니다.");
+  }
   if (contract?.fingerprint !== contractFingerprint(contract)) issues.push("계약 fingerprint가 현재 내용과 일치하지 않습니다.");
   if (contract?.quality?.blockerCount > 0) issues.push("blocker가 있는 계약은 생성할 수 없습니다.");
   const template = contract?.implementation?.generationTemplate;
@@ -203,6 +209,7 @@ export function generateScreenTsx(contract) {
   const issues = validateGenerationContract(contract);
   if (issues.length > 0) throw new Error(`화면 생성 계약 오류:\n- ${issues.join("\n- ")}`);
   const templateId = contract.request.generation.templateId;
+  if (isSlideComposition(templateId)) return generateSlideComposition(contract);
   if (templateId === "center-modal-search-table.v1") return generateCenterModalSearchTable(contract);
   if (templateId === "page-entity-list.v1") return generatePageEntityList(contract);
   return generateSideSlideScreenTsx(contract);

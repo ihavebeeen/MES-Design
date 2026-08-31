@@ -403,7 +403,7 @@ export type ScreenRequestIntent = "reproduce" | "new" | "normalize" | "audit";
 export type ScreenTargetKind = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
 export type NormalizationClassification = "source-error" | "implementation-error" | "intentional-exception" | "normalization-candidate";
 export type ScreenTemplateControl = "input" | "select";
-export type ScreenGenerationTemplateId = "side-slide-form-editable-list.v1" | "center-modal-search-table.v1" | "page-entity-list.v1";
+export type ScreenGenerationTemplateId = import("../slide-composition").SlideCompositionTemplateId | "side-slide-form-editable-list.v1" | "center-modal-search-table.v1" | "page-entity-list.v1";
 
 export interface ScreenTemplateField {
   key: string;
@@ -505,6 +505,7 @@ export interface ScreenRequest {
     reason: string;
   }>;
   generation?:
+    | import("../slide-composition").SlideCompositionConfig
     | {
         templateId: "side-slide-form-editable-list.v1";
         panelSize: "narrow-760" | "medium-849" | "standard-900" | "wide-960";
@@ -537,7 +538,8 @@ export interface GenerationTemplateRegistryEntry {
   recipeRef: string;
   source: string;
   requiredPatternRefs: string[];
-  supportedSectionKinds: Array<"form-grid" | "editable-row-list" | "search-table">;
+  supportedSectionKinds: Array<import("../slide-composition").SlideCompositionSection["kind"] | "editable-row-list" | "search-table">;
+  body?: { kind: import("../slide-composition").SlideBodyKind; title: string; description: string; referenceNode: string; sourcePatternRef: string };
   output: "tsx";
   overwrite: "forbid";
 }

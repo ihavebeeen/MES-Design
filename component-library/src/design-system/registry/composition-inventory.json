@@ -4,21 +4,21 @@
   "status": "observed-not-canonical",
   "scope": "src/components/patterns/*.tsx",
   "summary": {
-    "scannedFiles": 41,
-    "totalLines": 8253,
+    "scannedFiles": 43,
+    "totalLines": 8486,
     "shellInstances": {
       "CenterModal": 13,
       "SideSlidePanel": 9,
       "ConfirmDialog": 4
     },
     "filesWithMixedSectionFrames": 2,
-    "filesWithNativeSectionOnly": 18,
-    "filesWithRoundedSectionCandidates": 23
+    "filesWithNativeSectionOnly": 19,
+    "filesWithRoundedSectionCandidates": 24
   },
   "sectionCandidateSignals": [
     {
       "id": "section.summary",
-      "fileCount": 14,
+      "fileCount": 15,
       "sources": [
         "src/components/patterns/business-operation-settings-pattern.tsx",
         "src/components/patterns/completed-application-patterns.tsx",
@@ -32,13 +32,14 @@
         "src/components/patterns/production-quantity-reregistration-pattern.tsx",
         "src/components/patterns/sales-transaction-statement-pattern.tsx",
         "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/side-slide-compositions.tsx",
         "src/components/patterns/source-popup-gallery.tsx",
         "src/components/patterns/table-column-settings.tsx"
       ]
     },
     {
       "id": "section.search-table",
-      "fileCount": 13,
+      "fileCount": 14,
       "sources": [
         "src/components/patterns/equipment-discharge-settings-pattern.tsx",
         "src/components/patterns/equipment-inspection-records-modal.tsx",
@@ -51,13 +52,14 @@
         "src/components/patterns/mes-screen-fixtures.tsx",
         "src/components/patterns/sales-transaction-statement-pattern.tsx",
         "src/components/patterns/shipment-approval-pattern.tsx",
+        "src/components/patterns/side-slide-compositions.tsx",
         "src/components/patterns/standard-price-settings-pattern.tsx",
         "src/components/patterns/team-settings-pattern.tsx"
       ]
     },
     {
       "id": "section.form-grid",
-      "fileCount": 10,
+      "fileCount": 11,
       "sources": [
         "src/components/patterns/business-operation-settings-pattern.tsx",
         "src/components/patterns/completed-popup-patterns.tsx",
@@ -66,6 +68,7 @@
         "src/components/patterns/inspection-criteria-pattern.tsx",
         "src/components/patterns/kiosk-easy-receiving-pattern.tsx",
         "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/side-slide-compositions.tsx",
         "src/components/patterns/standard-price-settings-pattern.tsx",
         "src/components/patterns/team-settings-pattern.tsx",
         "src/components/patterns/user-password-settings-pattern.tsx"
@@ -73,7 +76,7 @@
     },
     {
       "id": "section.inspection-items",
-      "fileCount": 7,
+      "fileCount": 9,
       "sources": [
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/equipment-inspection-records-modal.tsx",
@@ -81,6 +84,8 @@
         "src/components/patterns/inspection-trend-analysis-pattern.tsx",
         "src/components/patterns/original-mes-screen-assets.tsx",
         "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/side-slide-compositions.tsx",
+        "src/components/patterns/slide-composition-catalog.tsx",
         "src/components/patterns/source-popup-gallery.tsx"
       ]
     },
@@ -111,7 +116,7 @@
   "behaviorSignals": [
     {
       "id": "selection.enable-editor",
-      "fileCount": 16,
+      "fileCount": 17,
       "sources": [
         "src/components/patterns/completed-application-patterns.tsx",
         "src/components/patterns/completed-popup-expanded-content.tsx",
@@ -126,6 +131,7 @@
         "src/components/patterns/mes-screen-fixtures.tsx",
         "src/components/patterns/sales-transaction-statement-pattern.tsx",
         "src/components/patterns/shipment-approval-pattern.tsx",
+        "src/components/patterns/side-slide-compositions.tsx",
         "src/components/patterns/source-popup-gallery.tsx",
         "src/components/patterns/standard-price-settings-pattern.tsx",
         "src/components/patterns/team-settings-pattern.tsx"
@@ -151,11 +157,13 @@
     },
     {
       "id": "row.add-remove",
-      "fileCount": 4,
+      "fileCount": 6,
       "sources": [
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/easy-mode-receiving-pattern.tsx",
         "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/side-slide-compositions.tsx",
+        "src/components/patterns/slide-composition-catalog.tsx",
         "src/components/patterns/user-password-settings-pattern.tsx"
       ]
     },
@@ -178,6 +186,13 @@
       "fileCount": 1,
       "sources": [
         "src/components/patterns/completed-application-patterns.tsx"
+      ]
+    },
+    {
+      "id": "table.group-selection",
+      "fileCount": 1,
+      "sources": [
+        "src/components/patterns/side-slide-compositions.tsx"
       ]
     }
   ],
@@ -325,6 +340,13 @@
     },
     {
       "source": "src/components/patterns/shipment-approval-pattern.tsx",
+      "flags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/side-slide-compositions.tsx",
       "flags": [
         "native-section-without-registered-frame",
         "rounded-wrapper-around-section-candidate"
@@ -688,7 +710,7 @@
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "name": "completed-popup-patterns.tsx",
       "observedRole": "catalog-or-recipe",
-      "lines": 1030,
+      "lines": 1034,
       "exportedSymbols": [
         "PopupRenderer"
       ],
@@ -2524,6 +2546,160 @@
       ]
     },
     {
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "name": "side-slide-compositions.tsx",
+      "observedRole": "composition-source",
+      "lines": 185,
+      "exportedSymbols": [
+        "SlideBodyLayout",
+        "SlideCompositionSectionView",
+        "useSlideCompositionDraft"
+      ],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 2,
+        "dividerContainer": 0,
+        "roundedContainer": 2,
+        "gray20Container": 1
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 4
+        },
+        {
+          "name": "Checkbox",
+          "jsxCount": 1
+        },
+        {
+          "name": "ContentRegionHeading",
+          "jsxCount": 2
+        },
+        {
+          "name": "FormFieldRow",
+          "jsxCount": 2
+        },
+        {
+          "name": "FormGrid",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 1
+        },
+        {
+          "name": "Input",
+          "jsxCount": 1
+        },
+        {
+          "name": "InspectionJudgement",
+          "jsxCount": 1
+        },
+        {
+          "name": "Popover",
+          "jsxCount": 1
+        },
+        {
+          "name": "PopoverContent",
+          "jsxCount": 1
+        },
+        {
+          "name": "PopoverTrigger",
+          "jsxCount": 1
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 2
+        },
+        {
+          "name": "SectionFrame",
+          "jsxCount": 5
+        },
+        {
+          "name": "Select",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 1
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 1
+        },
+        {
+          "name": "Table",
+          "jsxCount": 3
+        }
+      ],
+      "stateHookCount": 3,
+      "behaviorSignals": [
+        "row.add-remove",
+        "selection.enable-editor",
+        "table.group-selection"
+      ],
+      "sectionCandidateSignals": [
+        "section.form-grid",
+        "section.inspection-items",
+        "section.search-table",
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "native-section-without-registered-frame",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
+    {
+      "source": "src/components/patterns/slide-composition-catalog.tsx",
+      "name": "slide-composition-catalog.tsx",
+      "observedRole": "composition-source",
+      "lines": 44,
+      "exportedSymbols": [
+        "SlideCompositionCatalog"
+      ],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [
+        {
+          "name": "Button",
+          "jsxCount": 4
+        },
+        {
+          "name": "Card",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 2,
+      "behaviorSignals": [
+        "row.add-remove"
+      ],
+      "sectionCandidateSignals": [
+        "section.inspection-items"
+      ],
+      "reviewFlags": []
+    },
+    {
       "source": "src/components/patterns/source-popup-gallery.tsx",
       "name": "source-popup-gallery.tsx",
       "observedRole": "evidence",
@@ -2959,5 +3135,5 @@
       ]
     }
   ],
-  "fingerprint": "744b09089bcf550b"
+  "fingerprint": "78f1dec69a537c7e"
 }

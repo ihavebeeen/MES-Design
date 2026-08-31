@@ -3,6 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateGenerationSpec } from "./screen-generation-contract.mjs";
+import { isSlideComposition, slideCompositionSections } from "./generate-slide-composition.mjs";
 import { validateHostPage, validateVerificationScope, verificationContext } from "./screen-application-context.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
@@ -276,7 +277,9 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
 
   const inheritedRefs = nearestScreen?.patternRefs ?? [];
   const composition = request?.composition ?? {};
-  const sections = selectedOrInherited(composition.sections, nearestScreenSpec?.sections ?? []);
+  const slide = isSlideComposition(request?.generation?.templateId);
+  const derivedSections = slide && validateGenerationSpec(request.generation).length === 0 ? slideCompositionSections(request.generation) : null;
+  const sections = selectedOrInherited(composition.sections, derivedSections ?? nearestScreenSpec?.sections ?? []);
   const structuredSectionRefs = unique(sections.flatMap((section) => [section.frameRef, section.patternRef, ...(section.supportingPatternRefs ?? [])]));
   const recipeRefs = unique(selectedOrInherited(composition.recipeRefs, refsByKind(inheritedRefs, patternMap, ["popup", "screen", "recipe"])));
   const inheritedShellRefs = refsByKind(inheritedRefs, patternMap, ["shell"]);
@@ -400,7 +403,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       patternRef: section.patternRef,
       supportingPatternRefs: section.supportingPatternRefs ?? [],
       scrollOwner: section.scrollOwner,
-      reason: composition.sections !== undefined ? "요청이 순서와 슬롯을 명시했습니다." : "가까운 화면의 구조화된 ScreenSpec을 상속했습니다.",
+      reason: composition.sections !== undefined ? "요청이 순서와 슬롯을 명시했습니다." : derivedSections ? "본문 조합과 별도로 지정된 목록 추가·편집 동작에서 섹션을 구성했습니다." : "가까운 화면의 구조화된 ScreenSpec을 상속했습니다.",
     })),
     behaviors: behaviorRefs.map((id) => ({ id, reason: composition.behaviorRefs !== undefined ? "요청이 명시했습니다." : nearestScreenSpec ? "ScreenSpec의 상태·동작 계약을 상속했습니다." : "가까운 화면의 patternRefs를 상속했습니다." })),
     actionSet: actionSetRef ? { selectedId: actionSetRef, reason: composition.actionSetRef !== undefined ? "요청이 명시했습니다." : nearestScreenSpec ? "ScreenSpec의 하단 동작 의미를 상속했습니다." : "가까운 화면의 action set을 상속했습니다." } : null,

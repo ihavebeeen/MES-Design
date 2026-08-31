@@ -88,6 +88,9 @@ function buildPlan(files) {
   let runApplicationFlow = full;
   const applicationFiles = new Set([
     "scripts/generate-screen-preview.mjs", "scripts/generate-screen-tsx.mjs", "scripts/screen-application-context.mjs",
+    "scripts/generate-slide-composition.mjs", "scripts/slide-composition-contract.mjs", "scripts/sync-slide-composition-examples.mjs",
+    "src/design-system/slide-composition.ts", "src/design-system/registry/slide-composition-examples.json",
+    "tests/visual/slide-compositions.spec.mts", "tests/helpers/slide-compositions.mjs",
     "scripts/audit-screen-implementation.mjs", "scripts/screen-handoff.mjs", "scripts/screen-implementation-graph.mjs", "scripts/resolve-screen-request.mjs",
     "tests/visual/application-flow.spec.mts", "tests/helpers/application-flow.mjs", "src/components/visual-tests/application-host-fixture.tsx",
     "src/components/preview/surface-preview-frame.tsx",
@@ -176,5 +179,5 @@ if (plan.runAllMobile) {
   run(process.execPath, [playwrightCli, "test", "tests/visual/mobile-design-system.spec.ts"], { capture: false, cwd: projectRoot });
 }
 if (plan.runApplicationFlow) {
-  run(process.execPath, [playwrightCli, "test", "tests/visual/application-flow.spec.mts"], { capture: false, cwd: projectRoot });
+  run(process.execPath, [playwrightCli, "test", "tests/visual/application-flow.spec.mts", "tests/visual/slide-compositions.spec.mts"], { capture: false, cwd: projectRoot });
 }

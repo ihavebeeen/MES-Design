@@ -9,7 +9,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "af9c0ee2423f31c9ca06fcd49e7f48379486b0b0bffb79bb7cac1370099aaff3",
+  "fingerprint": "833812eaffdc2ecd5a85213e61272f30a0605ca96b7252066909c0fd38370541",
   "guidancePolicy": {
     "componentSelection": {
       "coverageMode": "selection-critical-only",
@@ -40,7 +40,7 @@
       "provisional": 48,
       "selectionGuardContracts": 21
     },
-    "patterns": 62,
+    "patterns": 72,
     "screens": 28
   },
   "assets": [
@@ -444,11 +444,19 @@
         "popup.side.inspection-items",
         "popup.side.time-records",
         "recipe.center-modal-search-table",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
         "recipe.side-slide-form-editable-list",
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection",
         "row.mutation-policy",
         "screen.production-result-responsive",
+        "section.added-record-list",
         "section.editable-row-list",
         "section.inspection-items",
+        "section.member-selection",
+        "section.permission-matrix",
+        "section.staged-record-entry",
         "selection.enable-actions",
         "selection.transfer-list",
         "table.column-settings",
@@ -792,6 +800,8 @@
         "popup.center.navigation-detail",
         "popup.center.table",
         "popup.center.team-settings",
+        "popup.side.group-settings",
+        "recipe.side-slide-group-settings",
         "screen.production-result-responsive",
         "selection.transfer-list",
         "table.column-settings",
@@ -1810,8 +1820,15 @@
       "guidanceMode": "source-api-only",
       "usageContract": null,
       "usedByPatternIds": [
+        "popup.side.group-settings",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
         "recipe.side-slide-form-editable-list",
-        "section.form-grid"
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection",
+        "section.custom-field-values",
+        "section.form-grid",
+        "section.staged-record-entry"
       ],
       "sourceFacts": {
         "sourceFingerprint": "7e3bd0db720a606ddc96d6f21f0443fd171a0c2749b6133236931b497843f599",
@@ -1988,6 +2005,7 @@
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.standard-price-settings",
+        "recipe.side-slide-entry-list",
         "table.column-settings"
       ],
       "sourceFacts": {
@@ -2103,9 +2121,15 @@
         "popup.side.custom-columns",
         "popup.side.inspection-items",
         "popup.side.time-records",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
         "recipe.side-slide-form-editable-list",
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection",
         "screen.form-management-workflow",
-        "section.editable-row-list"
+        "section.custom-field-values",
+        "section.editable-row-list",
+        "section.staged-record-entry"
       ],
       "sourceFacts": {
         "sourceFingerprint": "6f6d4329bfcf56f451d9c1c6152f78efde599ea61e9bd793d86506fedc0a48b8",
@@ -2186,6 +2210,7 @@
       "usageContract": null,
       "usedByPatternIds": [
         "popup.side.inspection-items",
+        "recipe.side-slide-inspection",
         "section.inspection-items"
       ],
       "sourceFacts": {
@@ -2883,7 +2908,10 @@
       "documentationFile": "docs/components/popover.md",
       "guidanceMode": "source-api-only",
       "usageContract": null,
-      "usedByPatternIds": [],
+      "usedByPatternIds": [
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-inspection"
+      ],
       "sourceFacts": {
         "sourceFingerprint": "1472f982c52a64c36cb89886b225b767fc2d8258a6557ffd0794714d81070bc5",
         "symbols": [
@@ -3364,6 +3392,8 @@
         "popup.center.team-settings",
         "recipe.center-modal-search-table",
         "recipe.page-entity-list",
+        "recipe.side-slide-entry-list",
+        "recipe.side-slide-group-settings",
         "screen.entity-list",
         "screen.form-management-workflow",
         "screen.production-result-responsive",
@@ -3545,7 +3575,12 @@
       },
       "usedByPatternIds": [
         "frame.standard-section",
-        "recipe.side-slide-form-editable-list"
+        "popup.side.group-settings",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
+        "recipe.side-slide-form-editable-list",
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection"
       ],
       "sourceFacts": {
         "sourceFingerprint": "91d15f616433287f7af2b3ac805084fc67153f79148659643cab34d442a300bc",
@@ -3724,7 +3759,8 @@
       "usedByPatternIds": [
         "popup.center.equipment-discharge-settings",
         "popup.center.navigation-detail",
-        "popup.center.table"
+        "popup.center.table",
+        "recipe.side-slide-entry-list"
       ],
       "sourceFacts": {
         "sourceFingerprint": "b46317836f8f7b4c070dffbeb1c4ebbca7f07534c26353578d93d1f21542244b",
@@ -3927,8 +3963,13 @@
         "popup.center.team-settings",
         "popup.side.add-list",
         "popup.side.custom-columns",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
         "recipe.side-slide-form-editable-list",
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection",
         "screen.form-management-workflow",
+        "section.custom-field-values",
         "section.editable-row-list",
         "section.measurement-heatmap-analysis"
       ],
@@ -4132,9 +4173,14 @@
         "dismiss.restore-committed",
         "popup.side.add-list",
         "popup.side.custom-columns",
+        "popup.side.group-settings",
         "popup.side.inspection-items",
         "popup.side.time-records",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
         "recipe.side-slide-form-editable-list",
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection",
         "screen.form-management-workflow",
         "shell.side-slide-panel"
       ],
@@ -4359,14 +4405,20 @@
         "popup.center.table",
         "popup.center.team-settings",
         "popup.side.custom-columns",
+        "popup.side.group-settings",
         "popup.side.time-records",
         "recipe.center-modal-search-table",
         "recipe.page-entity-list",
+        "recipe.side-slide-entry-list",
+        "recipe.side-slide-group-settings",
         "screen.entity-list",
         "screen.form-management-workflow",
         "screen.master-detail",
         "screen.production-result-responsive",
+        "section.added-record-list",
         "section.measurement-heatmap-analysis",
+        "section.member-selection",
+        "section.permission-matrix",
         "section.search-table-composition",
         "selection.enable-actions",
         "selection.master-detail",
@@ -4784,6 +4836,167 @@
         "summary": "MES UserAccountMenu — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"User / Account",
         "aria": []
       }
+    },
+    {
+      "kind": "pattern",
+      "id": "recipe.side-slide-custom-fields",
+      "name": "좌우 분할 · 커스텀 정보 조합",
+      "patternKind": "recipe",
+      "placement": "right-slide",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "button",
+        "input",
+        "select",
+        "popover"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "recipe.side-slide-inspection",
+      "name": "좌우 분할 · 검사항목 조합",
+      "patternKind": "recipe",
+      "placement": "right-slide",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "button",
+        "input",
+        "select",
+        "inspection-judgement",
+        "popover"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "recipe.side-slide-entry-list",
+      "name": "상하 분할 · 입력 + 목록 조합",
+      "patternKind": "recipe",
+      "placement": "right-slide",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "button",
+        "input",
+        "select",
+        "table",
+        "content-region-heading",
+        "search-input",
+        "icon-button"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "recipe.side-slide-group-settings",
+      "name": "특수 · 그룹설정 조합",
+      "patternKind": "recipe",
+      "placement": "right-slide",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "button",
+        "input",
+        "select",
+        "table",
+        "checkbox",
+        "search-input"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "popup.side.group-settings",
+      "name": "우측 슬라이드 · 그룹설정",
+      "patternKind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "table",
+        "checkbox"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "section.custom-field-values",
+      "name": "커스텀 필드 값",
+      "patternKind": "section-pattern",
+      "placement": "shared",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "form-grid",
+        "input",
+        "select"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "section.staged-record-entry",
+      "name": "상단 작성값 추가",
+      "patternKind": "section-pattern",
+      "placement": "shared",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "form-grid",
+        "input",
+        "button"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "section.added-record-list",
+      "name": "추가된 목록 · 직접 편집 선택",
+      "patternKind": "section-pattern",
+      "placement": "shared",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "table",
+        "button"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "section.member-selection",
+      "name": "소속 사용자 선택",
+      "patternKind": "section-pattern",
+      "placement": "shared",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "table",
+        "button"
+      ],
+      "usedByScreenIds": []
+    },
+    {
+      "kind": "pattern",
+      "id": "section.permission-matrix",
+      "name": "메뉴별 권한",
+      "patternKind": "section-pattern",
+      "placement": "shared",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "table",
+        "button"
+      ],
+      "usedByScreenIds": []
     },
     {
       "kind": "pattern",

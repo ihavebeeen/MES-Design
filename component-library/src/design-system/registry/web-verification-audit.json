@@ -1,26 +1,27 @@
 {
   "schemaVersion": 1,
-  "auditedAt": null,
-  "sourceFingerprint": "0827d25506c9bdd74470fd083795e1c5aad833317d860df0397345f5898d201a",
+  "auditedAt": "2026-08-31T06:37:19.016Z",
+  "sourceFingerprint": "95f08cb0f3f832eb2d92471208b72f047942d9200c8725933950bd03594e6003",
   "browserRun": {
     "command": "npm run test:visual",
-    "result": "not-verified-for-current-source",
-    "testCount": 77,
-    "passed": null,
-    "failed": null,
-    "durationMs": null,
-    "recordedAt": null,
-    "testInventoryFingerprint": "d85a0d8842da8793117713d76ff5363087b272775532c1119c4c3a0afbd8fa50",
+    "result": "passed",
+    "testCount": 83,
+    "passed": 83,
+    "failed": 0,
+    "durationMs": 245613,
+    "recordedAt": "2026-08-31T06:37:19.016Z",
+    "testInventoryFingerprint": "be6c153d9a408eafc58baf5ab79116fbe52d2c595fc5c5db17aa6df41c1d3b1c",
     "includesDeferredMobile": true
   },
   "testInventory": {
-    "count": 77,
+    "count": 83,
     "files": {
       "tests/visual/application-flow.spec.mts": "e972eb78d92011e8f24b4a475837a425ac2656a9327a108abb802fe06eba4496",
       "tests/visual/design-system.visual.spec.ts": "8da3b0bf45babf6e7e9e6d0c43cfa4df34d9c8a76a072d4a3bd7037e6f8b64e9",
-      "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14"
+      "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
+      "tests/visual/slide-compositions.spec.mts": "2c018a1a7334f1f0e0a13f7d1977b3556142863dec93841498f5d55a778a9299"
     },
-    "fingerprint": "d85a0d8842da8793117713d76ff5363087b272775532c1119c4c3a0afbd8fa50"
+    "fingerprint": "be6c153d9a408eafc58baf5ab79116fbe52d2c595fc5c5db17aa6df41c1d3b1c"
   },
   "summary": {
     "components": {
@@ -32,9 +33,9 @@
       "sourceMissing": 0
     },
     "patterns": {
-      "total": 62,
+      "total": 72,
       "usedByScreens": 46,
-      "unusedByScreens": 16,
+      "unusedByScreens": 26,
       "detailedCompositionRules": 10,
       "withVisualEvidence": 46,
       "sourceMissing": 0
@@ -192,11 +193,19 @@
         "popup.side.inspection-items",
         "popup.side.time-records",
         "recipe.center-modal-search-table",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
         "recipe.side-slide-form-editable-list",
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection",
         "row.mutation-policy",
         "screen.production-result-responsive",
+        "section.added-record-list",
         "section.editable-row-list",
         "section.inspection-items",
+        "section.member-selection",
+        "section.permission-matrix",
+        "section.staged-record-entry",
         "selection.enable-actions",
         "selection.transfer-list",
         "table.column-settings",
@@ -313,6 +322,8 @@
         "popup.center.navigation-detail",
         "popup.center.table",
         "popup.center.team-settings",
+        "popup.side.group-settings",
+        "recipe.side-slide-group-settings",
         "screen.production-result-responsive",
         "selection.transfer-list",
         "table.column-settings",
@@ -688,8 +699,15 @@
       "hasFreeformRules": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
+        "popup.side.group-settings",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
         "recipe.side-slide-form-editable-list",
-        "section.form-grid"
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection",
+        "section.custom-field-values",
+        "section.form-grid",
+        "section.staged-record-entry"
       ],
       "reviewState": "approved-basic",
       "outstanding": [
@@ -743,6 +761,7 @@
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.standard-price-settings",
+        "recipe.side-slide-entry-list",
         "table.column-settings"
       ],
       "reviewState": "needs-review",
@@ -776,9 +795,15 @@
         "popup.side.custom-columns",
         "popup.side.inspection-items",
         "popup.side.time-records",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
         "recipe.side-slide-form-editable-list",
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection",
         "screen.form-management-workflow",
-        "section.editable-row-list"
+        "section.custom-field-values",
+        "section.editable-row-list",
+        "section.staged-record-entry"
       ],
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
@@ -813,6 +838,7 @@
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.side.inspection-items",
+        "recipe.side-slide-inspection",
         "section.inspection-items"
       ],
       "reviewState": "approved-basic",
@@ -1121,12 +1147,14 @@
       "documentationRoute": "/components/popover",
       "hasFreeformRules": false,
       "hasDetailedUsageRule": false,
-      "usedByPatternIds": [],
+      "usedByPatternIds": [
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-inspection"
+      ],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
-        "no-registered-pattern-usage"
+        "detailed-usage-rule-missing"
       ]
     },
     {
@@ -1276,6 +1304,8 @@
         "popup.center.team-settings",
         "recipe.center-modal-search-table",
         "recipe.page-entity-list",
+        "recipe.side-slide-entry-list",
+        "recipe.side-slide-group-settings",
         "screen.entity-list",
         "screen.form-management-workflow",
         "screen.production-result-responsive",
@@ -1332,7 +1362,12 @@
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "frame.standard-section",
-        "recipe.side-slide-form-editable-list"
+        "popup.side.group-settings",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
+        "recipe.side-slide-form-editable-list",
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection"
       ],
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
@@ -1366,7 +1401,8 @@
       "usedByPatternIds": [
         "popup.center.equipment-discharge-settings",
         "popup.center.navigation-detail",
-        "popup.center.table"
+        "popup.center.table",
+        "recipe.side-slide-entry-list"
       ],
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
@@ -1446,8 +1482,13 @@
         "popup.center.team-settings",
         "popup.side.add-list",
         "popup.side.custom-columns",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
         "recipe.side-slide-form-editable-list",
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection",
         "screen.form-management-workflow",
+        "section.custom-field-values",
         "section.editable-row-list",
         "section.measurement-heatmap-analysis"
       ],
@@ -1506,9 +1547,14 @@
         "dismiss.restore-committed",
         "popup.side.add-list",
         "popup.side.custom-columns",
+        "popup.side.group-settings",
         "popup.side.inspection-items",
         "popup.side.time-records",
+        "recipe.side-slide-custom-fields",
+        "recipe.side-slide-entry-list",
         "recipe.side-slide-form-editable-list",
+        "recipe.side-slide-group-settings",
+        "recipe.side-slide-inspection",
         "screen.form-management-workflow",
         "shell.side-slide-panel"
       ],
@@ -1592,14 +1638,20 @@
         "popup.center.table",
         "popup.center.team-settings",
         "popup.side.custom-columns",
+        "popup.side.group-settings",
         "popup.side.time-records",
         "recipe.center-modal-search-table",
         "recipe.page-entity-list",
+        "recipe.side-slide-entry-list",
+        "recipe.side-slide-group-settings",
         "screen.entity-list",
         "screen.form-management-workflow",
         "screen.master-detail",
         "screen.production-result-responsive",
+        "section.added-record-list",
         "section.measurement-heatmap-analysis",
+        "section.member-selection",
+        "section.permission-matrix",
         "section.search-table-composition",
         "selection.enable-actions",
         "selection.master-detail",
@@ -1796,6 +1848,186 @@
     }
   ],
   "patterns": [
+    {
+      "id": "recipe.side-slide-custom-fields",
+      "name": "좌우 분할 · 커스텀 정보 조합",
+      "kind": "recipe",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [
+        "side-slide-custom-fields.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "recipe.side-slide-inspection",
+      "name": "좌우 분할 · 검사항목 조합",
+      "kind": "recipe",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [
+        "side-slide-inspection.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "recipe.side-slide-entry-list",
+      "name": "상하 분할 · 입력 + 목록 조합",
+      "kind": "recipe",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [
+        "side-slide-entry-list.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "recipe.side-slide-group-settings",
+      "name": "특수 · 그룹설정 조합",
+      "kind": "recipe",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [
+        "side-slide-group-settings.v1"
+      ],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "covered-basic",
+      "outstanding": [
+        "detailed-composition-rule-missing"
+      ]
+    },
+    {
+      "id": "popup.side.group-settings",
+      "name": "우측 슬라이드 · 그룹설정",
+      "kind": "popup",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "section.custom-field-values",
+      "name": "커스텀 필드 값",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "section.staged-record-entry",
+      "name": "상단 작성값 추가",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "section.added-record-list",
+      "name": "추가된 목록 · 직접 편집 선택",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "section.member-selection",
+      "name": "소속 사용자 선택",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
+    {
+      "id": "section.permission-matrix",
+      "name": "메뉴별 권한",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "hasDetailedCompositionRule": false,
+      "usedByScreenIds": [],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": false,
+      "reviewState": "needs-evidence",
+      "outstanding": [
+        "detailed-composition-rule-missing",
+        "no-screen-or-generator-usage",
+        "visual-evidence-missing"
+      ]
+    },
     {
       "id": "popup.center.form",
       "name": "중앙 · 폼/정보 중심",
@@ -2212,7 +2444,11 @@
         "receiving"
       ],
       "generationTemplateIds": [
-        "side-slide-form-editable-list.v1"
+        "side-slide-custom-fields.v1",
+        "side-slide-entry-list.v1",
+        "side-slide-form-editable-list.v1",
+        "side-slide-group-settings.v1",
+        "side-slide-inspection.v1"
       ],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": true,
@@ -2263,7 +2499,11 @@
       ],
       "generationTemplateIds": [
         "center-modal-search-table.v1",
-        "side-slide-form-editable-list.v1"
+        "side-slide-custom-fields.v1",
+        "side-slide-entry-list.v1",
+        "side-slide-form-editable-list.v1",
+        "side-slide-group-settings.v1",
+        "side-slide-inspection.v1"
       ],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": true,
@@ -2322,7 +2562,11 @@
         "user-password-settings"
       ],
       "generationTemplateIds": [
-        "side-slide-form-editable-list.v1"
+        "side-slide-custom-fields.v1",
+        "side-slide-entry-list.v1",
+        "side-slide-form-editable-list.v1",
+        "side-slide-group-settings.v1",
+        "side-slide-inspection.v1"
       ],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": true,
@@ -2576,7 +2820,11 @@
       ],
       "generationTemplateIds": [
         "center-modal-search-table.v1",
-        "side-slide-form-editable-list.v1"
+        "side-slide-custom-fields.v1",
+        "side-slide-entry-list.v1",
+        "side-slide-form-editable-list.v1",
+        "side-slide-group-settings.v1",
+        "side-slide-inspection.v1"
       ],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": true,

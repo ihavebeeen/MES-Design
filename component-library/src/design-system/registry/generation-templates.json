@@ -2,6 +2,116 @@
   "schemaVersion": 1,
   "templates": [
     {
+      "id": "side-slide-custom-fields.v1",
+      "status": "provisional",
+      "targetKind": "side-slide-panel",
+      "recipeRef": "recipe.side-slide-custom-fields",
+      "source": "scripts/generate-slide-composition.mjs",
+      "requiredPatternRefs": [
+        "recipe.side-slide-custom-fields",
+        "shell.side-slide-panel",
+        "frame.standard-section",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ],
+      "supportedSectionKinds": [
+        "form-grid",
+        "custom-fields"
+      ],
+      "output": "tsx",
+      "overwrite": "forbid",
+      "body": {
+        "kind": "custom-fields",
+        "title": "좌우 분할 · 커스텀 정보",
+        "description": "좌측 기본 정보와 우측 커스텀 필드 값. 항목 추가는 필드 정의를 늘리는 동작입니다.",
+        "referenceNode": "10594:34597",
+        "sourcePatternRef": "popup.side.custom-columns"
+      }
+    },
+    {
+      "id": "side-slide-inspection.v1",
+      "status": "provisional",
+      "targetKind": "side-slide-panel",
+      "recipeRef": "recipe.side-slide-inspection",
+      "source": "scripts/generate-slide-composition.mjs",
+      "requiredPatternRefs": [
+        "recipe.side-slide-inspection",
+        "shell.side-slide-panel",
+        "frame.standard-section",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ],
+      "supportedSectionKinds": [
+        "form-grid",
+        "inspection-items"
+      ],
+      "output": "tsx",
+      "overwrite": "forbid",
+      "body": {
+        "kind": "inspection",
+        "title": "좌우 분할 · 검사항목",
+        "description": "좌측 대상 정보와 우측 검사·판정. 항목 추가 유무는 해당 업무 설정을 따릅니다.",
+        "referenceNode": "19414:93662",
+        "sourcePatternRef": "popup.side.inspection-items"
+      }
+    },
+    {
+      "id": "side-slide-entry-list.v1",
+      "status": "provisional",
+      "targetKind": "side-slide-panel",
+      "recipeRef": "recipe.side-slide-entry-list",
+      "source": "scripts/generate-slide-composition.mjs",
+      "requiredPatternRefs": [
+        "recipe.side-slide-entry-list",
+        "shell.side-slide-panel",
+        "frame.standard-section",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ],
+      "supportedSectionKinds": [
+        "form-grid",
+        "entry-form",
+        "record-list"
+      ],
+      "output": "tsx",
+      "overwrite": "forbid",
+      "body": {
+        "kind": "entry-list",
+        "title": "상하 분할 · 입력 + 목록",
+        "description": "상단 정보/입력 영역과 하단 목록. 빈 행 추가, 상단 값 추가, 두 방식 병행을 별도로 선택합니다.",
+        "referenceNode": "19079:63364",
+        "sourcePatternRef": "popup.side.add-list"
+      }
+    },
+    {
+      "id": "side-slide-group-settings.v1",
+      "status": "provisional",
+      "targetKind": "side-slide-panel",
+      "recipeRef": "recipe.side-slide-group-settings",
+      "source": "scripts/generate-slide-composition.mjs",
+      "requiredPatternRefs": [
+        "recipe.side-slide-group-settings",
+        "shell.side-slide-panel",
+        "frame.standard-section",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ],
+      "supportedSectionKinds": [
+        "form-grid",
+        "member-selection",
+        "permission-matrix"
+      ],
+      "output": "tsx",
+      "overwrite": "forbid",
+      "body": {
+        "kind": "group-settings",
+        "title": "특수 · 그룹설정",
+        "description": "그룹 기본 정보 → 소속 사용자 선택 → 메뉴별 권한. 일반 행 추가 목록과 구분합니다.",
+        "referenceNode": "11122:47785",
+        "sourcePatternRef": "popup.side.group-settings"
+      }
+    },
+    {
       "id": "side-slide-form-editable-list.v1",
       "status": "stable",
       "targetKind": "side-slide-panel",

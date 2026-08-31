@@ -2,6 +2,185 @@
   "schemaVersion": 1,
   "patterns": [
     {
+      "id": "recipe.side-slide-custom-fields",
+      "name": "좌우 분할 · 커스텀 정보 조합",
+      "kind": "recipe",
+      "placement": "right-slide",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "button",
+        "input",
+        "select",
+        "popover"
+      ],
+      "rules": [
+        "좌측 기본 정보와 우측 커스텀 필드 값. 항목 추가는 필드 정의를 늘리는 동작입니다.",
+        "배치 유형으로 추가/편집 동작을 추론하지 않는다. 사용자 지정/승인 패턴의 기능을 명시한다.",
+        "취소·X는 확정 전 상태로 복원한다."
+      ]
+    },
+    {
+      "id": "recipe.side-slide-inspection",
+      "name": "좌우 분할 · 검사항목 조합",
+      "kind": "recipe",
+      "placement": "right-slide",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "button",
+        "input",
+        "select",
+        "inspection-judgement",
+        "popover"
+      ],
+      "rules": [
+        "좌측 대상 정보와 우측 검사·판정. 항목 추가 유무는 해당 업무 설정을 따릅니다.",
+        "배치 유형으로 추가/편집 동작을 추론하지 않는다. 사용자 지정/승인 패턴의 기능을 명시한다.",
+        "취소·X는 확정 전 상태로 복원한다."
+      ]
+    },
+    {
+      "id": "recipe.side-slide-entry-list",
+      "name": "상하 분할 · 입력 + 목록 조합",
+      "kind": "recipe",
+      "placement": "right-slide",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "button",
+        "input",
+        "select",
+        "table",
+        "content-region-heading",
+        "search-input",
+        "icon-button"
+      ],
+      "rules": [
+        "상단 정보/입력 영역과 하단 목록. 빈 행 추가, 상단 값 추가, 두 방식 병행을 별도로 선택합니다.",
+        "배치 유형으로 추가/편집 동작을 추론하지 않는다. 사용자 지정/승인 패턴의 기능을 명시한다.",
+        "취소·X는 확정 전 상태로 복원한다."
+      ]
+    },
+    {
+      "id": "recipe.side-slide-group-settings",
+      "name": "특수 · 그룹설정 조합",
+      "kind": "recipe",
+      "placement": "right-slide",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "button",
+        "input",
+        "select",
+        "table",
+        "checkbox",
+        "search-input"
+      ],
+      "rules": [
+        "그룹 기본 정보 → 소속 사용자 선택 → 메뉴별 권한. 일반 행 추가 목록과 구분합니다.",
+        "배치 유형으로 추가/편집 동작을 추론하지 않는다. 사용자 지정/승인 패턴의 기능을 명시한다.",
+        "취소·X는 확정 전 상태로 복원한다."
+      ]
+    },
+    {
+      "id": "popup.side.group-settings",
+      "name": "우측 슬라이드 · 그룹설정",
+      "kind": "popup",
+      "placement": "right-slide",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "side-slide-panel",
+        "section-frame",
+        "form-grid",
+        "table",
+        "checkbox"
+      ],
+      "rules": [
+        "그룹 기본 정보 → 소속 사용자 선택 → 메뉴별 권한. 일반 행 추가 목록과 구분합니다."
+      ]
+    },
+    {
+      "id": "section.custom-field-values",
+      "name": "커스텀 필드 값",
+      "kind": "section-pattern",
+      "placement": "shared",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "form-grid",
+        "input",
+        "select"
+      ],
+      "rules": [
+        "상위 Shell과 구분하여 해당 섹션의 역할과 상태를 관리한다."
+      ]
+    },
+    {
+      "id": "section.staged-record-entry",
+      "name": "상단 작성값 추가",
+      "kind": "section-pattern",
+      "placement": "shared",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "form-grid",
+        "input",
+        "button"
+      ],
+      "rules": [
+        "상위 Shell과 구분하여 해당 섹션의 역할과 상태를 관리한다."
+      ]
+    },
+    {
+      "id": "section.added-record-list",
+      "name": "추가된 목록 · 직접 편집 선택",
+      "kind": "section-pattern",
+      "placement": "shared",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "table",
+        "button"
+      ],
+      "rules": [
+        "addMethods는 blank-row, entry-form 또는 둘 다. editableFields는 별도 지정하며 어느 경로에서 추가했든 행 검증은 동일하다."
+      ]
+    },
+    {
+      "id": "section.member-selection",
+      "name": "소속 사용자 선택",
+      "kind": "section-pattern",
+      "placement": "shared",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "table",
+        "button"
+      ],
+      "rules": [
+        "상위 Shell과 구분하여 해당 섹션의 역할과 상태를 관리한다."
+      ]
+    },
+    {
+      "id": "section.permission-matrix",
+      "name": "메뉴별 권한",
+      "kind": "section-pattern",
+      "placement": "shared",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "requiredComponents": [
+        "table",
+        "button"
+      ],
+      "rules": [
+        "상위 Shell과 구분하여 해당 섹션의 역할과 상태를 관리한다."
+      ]
+    },
+    {
       "id": "popup.center.form",
       "name": "중앙 · 폼/정보 중심",
       "kind": "popup",
@@ -53,7 +232,7 @@
       "placement": "right-slide",
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "requiredComponents": ["side-slide-panel", "button", "input", "select"],
-      "rules": ["상단 입력값을 추가하면 하단 리스트 state에 실제 행이 생성되어야 한다."]
+      "rules": ["상단 입력값 추가·목록 빈 행 추가·두 방식 병행을 배치와 별도로 선택한다.", "추가 경로가 둘이면 같은 목록 state에 행을 쌓는다. 추가 후 목록 편집 가능 여부는 별도 지정한다."]
     },
     {
       "id": "popup.side.custom-columns",

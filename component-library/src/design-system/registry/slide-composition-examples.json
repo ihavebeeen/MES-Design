@@ -1,0 +1,487 @@
+{
+  "schemaVersion": 1,
+  "role": "composition-demonstrations-not-screen-reproductions",
+  "requests": [
+    {
+      "schemaVersion": 1,
+      "requestId": "slide-custom-fields-example",
+      "name": "좌우 분할 · 커스텀 정보",
+      "intent": "new",
+      "lifecycle": "draft",
+      "verificationScope": "surface",
+      "target": {
+        "kind": "side-slide-panel",
+        "title": "사용자 정보",
+        "nearestScreenId": "receiving",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        }
+      },
+      "webContext": {
+        "overlayGrammarRef": "generation.overlay.context-preserving-form",
+        "sectionRecipeRefs": []
+      },
+      "evidence": {
+        "figmaNode": "10594:34597",
+        "notes": [
+          "담당자가 지정한 본문 유형의 조합 예제. 샘플 데이터이며 원본 화면 전체 복제나 서버 연동이 아님.",
+          "2026-08-31 담당자 정정: 목록 빈 행 추가/상단 작성값 추가/둘 다 가능. 배치와 추가·편집 동작은 독립."
+        ]
+      },
+      "composition": {
+        "recipeRefs": [
+          "recipe.side-slide-custom-fields"
+        ],
+        "shellRef": "shell.side-slide-panel",
+        "behaviorRefs": [
+          "dismiss.restore-committed"
+        ],
+        "actionSetRef": "action-set.cancel-save"
+      },
+      "requirements": [
+        "좌측 기본 정보와 우측 커스텀 필드 값. 항목 추가는 필드 정의를 늘리는 동작입니다.",
+        "기존 MES 자산을 재사용한다. 취소/X는 미저장 변경을 복원한다."
+      ],
+      "generation": {
+        "templateId": "side-slide-custom-fields.v1",
+        "panelSize": "standard-900",
+        "sections": [
+          {
+            "id": "basicInformation",
+            "title": "기본정보",
+            "kind": "form-grid",
+            "columns": 1,
+            "density": "comfortable",
+            "fields": [
+              {
+                "key": "userName",
+                "label": "이름",
+                "control": "input",
+                "defaultValue": "홍길동"
+              },
+              {
+                "key": "department",
+                "label": "부서",
+                "control": "input",
+                "defaultValue": "생산팀"
+              }
+            ]
+          },
+          {
+            "id": "customInformation",
+            "title": "커스텀 정보",
+            "kind": "custom-fields",
+            "fields": [
+              {
+                "key": "height",
+                "label": "키",
+                "control": "input",
+                "defaultValue": "170"
+              }
+            ],
+            "availableFields": [
+              {
+                "key": "weight",
+                "label": "몸무게",
+                "control": "input",
+                "defaultValue": ""
+              }
+            ]
+          }
+        ]
+      },
+      "output": {
+        "route": "/preview/slide-custom-fields-example",
+        "componentName": "CustomFieldsExample"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "requestId": "slide-inspection-example",
+      "name": "좌우 분할 · 검사항목",
+      "intent": "new",
+      "lifecycle": "draft",
+      "verificationScope": "surface",
+      "target": {
+        "kind": "side-slide-panel",
+        "title": "공정검사",
+        "nearestScreenId": "self-inspection",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        }
+      },
+      "webContext": {
+        "overlayGrammarRef": "generation.overlay.context-preserving-form",
+        "sectionRecipeRefs": []
+      },
+      "evidence": {
+        "figmaNode": "19414:93662",
+        "notes": [
+          "담당자가 지정한 본문 유형의 조합 예제. 샘플 데이터이며 원본 화면 전체 복제나 서버 연동이 아님.",
+          "2026-08-31 담당자 정정: 목록 빈 행 추가/상단 작성값 추가/둘 다 가능. 배치와 추가·편집 동작은 독립."
+        ]
+      },
+      "composition": {
+        "recipeRefs": [
+          "recipe.side-slide-inspection"
+        ],
+        "shellRef": "shell.side-slide-panel",
+        "behaviorRefs": [
+          "dismiss.restore-committed"
+        ],
+        "actionSetRef": "action-set.cancel-save"
+      },
+      "requirements": [
+        "좌측 대상 정보와 우측 검사·판정. 항목 추가 유무는 해당 업무 설정을 따릅니다.",
+        "기존 MES 자산을 재사용한다. 취소/X는 미저장 변경을 복원한다."
+      ],
+      "generation": {
+        "templateId": "side-slide-inspection.v1",
+        "panelSize": "standard-900",
+        "sections": [
+          {
+            "id": "basicInformation",
+            "title": "기본정보",
+            "kind": "form-grid",
+            "columns": 1,
+            "density": "comfortable",
+            "fields": [
+              {
+                "key": "item",
+                "label": "품목",
+                "control": "input",
+                "defaultValue": "성형품"
+              },
+              {
+                "key": "process",
+                "label": "공정",
+                "control": "input",
+                "defaultValue": "성형"
+              }
+            ]
+          },
+          {
+            "id": "inspectionItems",
+            "title": "검사항목",
+            "kind": "inspection-items",
+            "items": [
+              {
+                "id": "appearance",
+                "label": "외관",
+                "value": "none"
+              },
+              {
+                "id": "packing",
+                "label": "포장 상태",
+                "value": "none"
+              }
+            ],
+            "availableItems": [
+              {
+                "id": "marking",
+                "label": "표기 사항",
+                "value": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "output": {
+        "route": "/preview/slide-inspection-example",
+        "componentName": "InspectionExample"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "requestId": "slide-entry-list-example",
+      "name": "상하 분할 · 입력 + 목록",
+      "intent": "new",
+      "lifecycle": "draft",
+      "verificationScope": "surface",
+      "target": {
+        "kind": "side-slide-panel",
+        "title": "생산실적 등록",
+        "nearestScreenId": "production-result",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        }
+      },
+      "webContext": {
+        "overlayGrammarRef": "generation.overlay.context-preserving-form",
+        "sectionRecipeRefs": []
+      },
+      "evidence": {
+        "figmaNode": "19079:63364",
+        "notes": [
+          "담당자가 지정한 본문 유형의 조합 예제. 샘플 데이터이며 원본 화면 전체 복제나 서버 연동이 아님.",
+          "2026-08-31 담당자 정정: 목록 빈 행 추가/상단 작성값 추가/둘 다 가능. 배치와 추가·편집 동작은 독립."
+        ]
+      },
+      "composition": {
+        "recipeRefs": [
+          "recipe.side-slide-entry-list"
+        ],
+        "shellRef": "shell.side-slide-panel",
+        "behaviorRefs": [
+          "dismiss.restore-committed"
+        ],
+        "actionSetRef": "action-set.cancel-save"
+      },
+      "requirements": [
+        "상단 정보/입력 영역과 하단 목록. 빈 행 추가, 상단 값 추가, 두 방식 병행을 별도로 선택합니다.",
+        "기존 MES 자산을 재사용한다. 취소/X는 미저장 변경을 복원한다."
+      ],
+      "generation": {
+        "templateId": "side-slide-entry-list.v1",
+        "panelSize": "standard-900",
+        "sections": [
+          {
+            "id": "basicInformation",
+            "title": "기본정보",
+            "kind": "form-grid",
+            "columns": 1,
+            "density": "comfortable",
+            "fields": [
+              {
+                "key": "instruction",
+                "label": "작업지시",
+                "control": "input",
+                "defaultValue": "작업지시-001"
+              }
+            ]
+          },
+          {
+            "id": "recordEntry",
+            "title": "실적 입력",
+            "kind": "entry-form",
+            "fields": [
+              {
+                "key": "item",
+                "label": "품목",
+                "control": "input",
+                "defaultValue": "",
+                "required": true
+              },
+              {
+                "key": "quantity",
+                "label": "수량",
+                "control": "input",
+                "defaultValue": "",
+                "required": true,
+                "inputMode": "decimal",
+                "validation": "positive-number"
+              },
+              {
+                "key": "warehouse",
+                "label": "창고",
+                "control": "select",
+                "defaultValue": "본창고",
+                "options": [
+                  "본창고",
+                  "외주창고"
+                ]
+              }
+            ],
+            "inheritOnAdd": [
+              "warehouse"
+            ]
+          },
+          {
+            "id": "recordList",
+            "title": "실적 상세 리스트",
+            "kind": "record-list",
+            "columns": [
+              {
+                "key": "item",
+                "label": "품목",
+                "control": "input",
+                "defaultValue": "",
+                "required": true
+              },
+              {
+                "key": "quantity",
+                "label": "수량",
+                "control": "input",
+                "defaultValue": "",
+                "required": true,
+                "inputMode": "decimal",
+                "validation": "positive-number"
+              },
+              {
+                "key": "warehouse",
+                "label": "창고",
+                "control": "select",
+                "defaultValue": "본창고",
+                "options": [
+                  "본창고",
+                  "외주창고"
+                ]
+              }
+            ],
+            "addMethods": [
+              "blank-row",
+              "entry-form"
+            ],
+            "editableFields": [
+              "item",
+              "quantity",
+              "warehouse"
+            ],
+            "rows": [],
+            "minRecords": 1
+          }
+        ]
+      },
+      "output": {
+        "route": "/preview/slide-entry-list-example",
+        "componentName": "EntryListExample"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "requestId": "slide-group-settings-example",
+      "name": "특수 · 그룹설정",
+      "intent": "new",
+      "lifecycle": "draft",
+      "verificationScope": "surface",
+      "target": {
+        "kind": "side-slide-panel",
+        "title": "그룹 기본 정보",
+        "nearestScreenId": "receiving",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        }
+      },
+      "webContext": {
+        "overlayGrammarRef": "generation.overlay.context-preserving-form",
+        "sectionRecipeRefs": []
+      },
+      "evidence": {
+        "figmaNode": "11122:47785",
+        "notes": [
+          "담당자가 지정한 본문 유형의 조합 예제. 샘플 데이터이며 원본 화면 전체 복제나 서버 연동이 아님.",
+          "2026-08-31 담당자 정정: 목록 빈 행 추가/상단 작성값 추가/둘 다 가능. 배치와 추가·편집 동작은 독립."
+        ]
+      },
+      "composition": {
+        "recipeRefs": [
+          "recipe.side-slide-group-settings"
+        ],
+        "shellRef": "shell.side-slide-panel",
+        "behaviorRefs": [
+          "dismiss.restore-committed"
+        ],
+        "actionSetRef": "action-set.cancel-save"
+      },
+      "requirements": [
+        "그룹 기본 정보 → 소속 사용자 선택 → 메뉴별 권한. 일반 행 추가 목록과 구분합니다.",
+        "기존 MES 자산을 재사용한다. 취소/X는 미저장 변경을 복원한다."
+      ],
+      "generation": {
+        "templateId": "side-slide-group-settings.v1",
+        "panelSize": "standard-900",
+        "sections": [
+          {
+            "id": "basicInformation",
+            "title": "기본정보",
+            "kind": "form-grid",
+            "columns": 1,
+            "density": "comfortable",
+            "fields": [
+              {
+                "key": "groupName",
+                "label": "그룹명",
+                "control": "input",
+                "defaultValue": "생산관리",
+                "required": true
+              },
+              {
+                "key": "description",
+                "label": "그룹 설명",
+                "control": "input",
+                "defaultValue": "생산 담당자"
+              }
+            ]
+          },
+          {
+            "id": "members",
+            "title": "소속 사용자",
+            "kind": "member-selection",
+            "members": [
+              {
+                "id": "userA",
+                "name": "홍길동",
+                "email": "user-a@example.test",
+                "department": "생산팀",
+                "group": "생산관리"
+              },
+              {
+                "id": "userB",
+                "name": "김담당",
+                "email": "user-b@example.test",
+                "department": "품질팀",
+                "group": "품질관리"
+              }
+            ],
+            "selectedIds": [
+              "userA"
+            ]
+          },
+          {
+            "id": "permissions",
+            "title": "메뉴별 권한 설정",
+            "kind": "permission-matrix",
+            "columns": [
+              {
+                "key": "view",
+                "label": "조회"
+              },
+              {
+                "key": "download",
+                "label": "다운로드"
+              },
+              {
+                "key": "edit",
+                "label": "편집"
+              }
+            ],
+            "rows": [
+              {
+                "id": "production",
+                "label": "생산관리"
+              },
+              {
+                "id": "results",
+                "label": "생산실적",
+                "parentId": "production",
+                "values": {
+                  "view": true,
+                  "download": false,
+                  "edit": false
+                }
+              },
+              {
+                "id": "instructions",
+                "label": "생산지시",
+                "parentId": "production",
+                "values": {
+                  "view": true,
+                  "download": false,
+                  "edit": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "output": {
+        "route": "/preview/slide-group-settings-example",
+        "componentName": "GroupSettingsExample"
+      }
+    }
+  ]
+}

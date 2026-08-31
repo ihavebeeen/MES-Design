@@ -65,7 +65,16 @@ try {
 
   const request = JSON.parse(readFileSync(fixturePath, "utf8"));
   const catalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "side-slide", limit: 10 } }));
-  assert(catalog.counts.generationTemplates === 3, "생성 템플릿 개수가 예상과 다릅니다.");
+  const expectedTemplates = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/generation-templates.json"), "utf8")).templates;
+  assert(catalog.counts.generationTemplates === expectedTemplates.length, "MCP 생성 템플릿 개수가 등록 원장과 다릅니다.");
+  const expectedSlideIds = expectedTemplates.filter(entry => entry.id.includes("side-slide")).map(entry => entry.id).sort();
+  assert(JSON.stringify(catalog.generationTemplates.map(entry => entry.id).sort()) === JSON.stringify(expectedSlideIds), "MCP 조회에서 슬라이드 조합 생성기가 누락됐습니다.");
+  const slideRequests = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/slide-composition-examples.json"), "utf8")).requests;
+  for (const slideRequest of slideRequests) {
+    const resolved = structured(await client.callTool({ name: "mes_resolve_screen", arguments: { request: slideRequest } }));
+    assert(resolved.quality.blockerCount === 0, "MCP가 새 본문 조합을 해석하지 못했습니다: " + slideRequest.requestId);
+    assert(resolved.implementation.generationTemplate.id === slideRequest.generation.templateId, "MCP에서 다른 생성기가 선택됐습니다.");
+  }
   assert(catalog.counts.componentUsageContracts === 21, "컴포넌트 사용 계약 개수가 예상과 다릅니다.");
   assert(catalog.counts.patternContracts === 10, "패턴 계약 개수가 예상과 다릅니다.");
   assert(catalog.counts.screenSpecs === 3, "순서형 ScreenSpec 개수가 예상과 다릅니다.");

@@ -43,6 +43,7 @@ import {
   UpdatedOperationLogContent,
 } from "./completed-popup-expanded-content";
 import { SourcePopupGallery } from "./source-popup-gallery";
+import { SlideCompositionCatalog } from "./slide-composition-catalog";
 import { InspectionItemsSection, ResultTotalCard, SearchTableSection } from "./section-patterns";
 import { useRowMutationPolicy, useSelectionBehavior } from "@/design-system/behavior-patterns";
 import { createDialogActionSet } from "@/design-system/action-sets";
@@ -114,7 +115,7 @@ const SIDE_POPUP_GROUPS: PopupPatternGroup[] = [
   {
     id: "side-add-list",
     title: "상하 분할 · 추가 + 하단 리스트",
-    description: "상단 입력값을 ‘추가’하여 하단 상세 리스트에 쌓는 유형",
+    description: "상단 정보/입력과 하단 목록을 배치하는 유형. 빈 행 추가·상단 값 추가·병행 여부는 화면별로 정합니다.",
   },
   {
     id: "side-inspection-items",
@@ -992,10 +993,13 @@ function CompletedPopupExamples() {
         <div className="mb-3 flex items-end justify-between gap-4">
           <div>
             <h3 id="side-popup-patterns-title" className="text-[18px] font-bold text-mes-gray-130">우측 슬라이드 팝업</h3>
-            <p className="mt-1 text-[13px] text-mes-gray-80">등록과 검사를 별도 메뉴로 떼지 않고, 우측에서 열리는 모든 팝업을 본문 구조에 따라 나눕니다.</p>
+            <p className="mt-1 text-[13px] text-mes-gray-80">공통 슬라이드 틀 안에 커스텀 정보, 검사항목, 상하 입력·목록, 특수 그룹설정 본문을 조합합니다.</p>
           </div>
-          <Tag color="gray" size="compact">4개 구조 · 5개 화면</Tag>
+          <Tag color="gray" size="compact">본문 유형과 입력 동작 분리</Tag>
         </div>
+        <SlideCompositionCatalog />
+        <h4 className="mb-3 mt-6 text-base font-bold">기존 업무 예제 · 운전일지 포함</h4>
+        <p className="mb-3 text-sm text-mes-gray-80">아래 예제는 기존 구현을 보존합니다. 운전일지는 네 번째 공통 본문 유형이 아니라 별도 업무 사례입니다.</p>
         <div className="grid gap-3 lg:grid-cols-2">
           {SIDE_POPUP_GROUPS.map((group) => <PopupPatternCard key={group.id} group={group} selectedKind={kind} onOpen={openPopup} />)}
         </div>

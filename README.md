@@ -37,7 +37,7 @@ MES 서비스의 디자인을 코드로 보존하고, 그 코드에서 일관된
 |---|---:|
 | UI 컴포넌트 | 89 |
 | 공개 / 내부 조립용 | 87 / 2 |
-| Shell·Section·Behavior·Recipe 패턴 | 62 |
+| Shell·Section·Behavior·Recipe 패턴 | 72 |
 | AI 조회용 화면 정의 | 28 |
 | 신규 UI 선택 규칙 | 21 |
 | 컴포넌트별 문서 | 89 |
