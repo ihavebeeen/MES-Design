@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "assets": {
+    "ContentRegionHeading": {
+      "sourceCommit": "044c97d17830558c9bf54f4febe23f1e393d9317",
+      "requestId": "3ef19c81a0803788c4ac9c4aaa9dabd937e548c75bd412cec336723df7a6dc29",
+      "evidence": {
+        "reviewer": "Codex / user-authorized Figma continuation",
+        "verifiedAt": "2026-08-31T07:11:35.691Z",
+        "id": "ContentRegionHeading",
+        "figmaNodeIds": [
+          "455:735"
+        ],
+        "note": "Created new component set455:744; As=h2/h3, editable Title, existing MES/Text/16/Bold and gray130 binding. Metadata and screenshots inspected. Width240 long-title example expands to48 with two24px lines. Existing SectionHeader28/HUG preserved. Figma-only checks; no browser pixel-parity claim. Evidence: docs/figma-followup-20260831.json in parent workspace.",
+        "checks": {
+          "geometry": true,
+          "paint": true,
+          "instances": true,
+          "visual": true,
+          "manualEditsReviewed": true
+        }
+      }
+    }
+  }
+}

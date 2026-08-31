@@ -1,0 +1,47 @@
+name: Figma update request
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: mes-figma-sync-request
+  cancel-in-progress: false
+
+jobs:
+  request:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Always inspect latest main; an older queued run must not overwrite a newer request.
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test change detection and request delivery
+        run: node tools/figma-sync/verify.mjs
+      - name: Generate review request from committed code
+        run: node tools/figma-sync/request.mjs
+      - name: Preserve full request evidence
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: figma-sync-request
+          path: |
+            component-library/.figma-sync/request.*
+            component-library/.figma-sync/verification.*
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Create or update repository review issue
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/figma-sync/post-issue.mjs

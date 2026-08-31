@@ -1,0 +1,1504 @@
+{
+  "schemaVersion": 1,
+  "fileKey": "DAHeMHiVwqZCzONVAWbMXb",
+  "repositoryUrl": "https://github.com/ihavebeeen/MES-Design",
+  "baselineCommit": "65fa60c0011058c57bae6914616aec6fcd2999e0",
+  "registryPath": "component-library/src/design-system/registry/components.json",
+  "globalFiles": [
+    "component-library/src/app/globals.css",
+    "component-library/package.json",
+    "component-library/package-lock.json",
+    "component-library/tsconfig.json",
+    "component-library/tailwind.config.ts",
+    "component-library/tailwind.config.js",
+    "component-library/postcss.config.mjs"
+  ],
+  "reviewFiles": [
+    "component-library/src/design-system/registry/component-usage-contracts.json",
+    "docs/MES_디자인_시스템_규칙.md",
+    "docs/컴포넌트_OPTIONAL_PROP_레지스트리.md"
+  ],
+  "protectedRules": [
+    {
+      "id": "manual-figma-edits",
+      "assetIds": [
+        "*"
+      ],
+      "rule": "사용자 확정(2026-08-31): 에이전트가 직접 수정하지 않은 Figma 변경은 사용자 수정으로 취급한다. 현재 사용자 수정본을 이전 코드·제작 기록보다 우선하며, 같은 변경의 작성자나 색상 기준을 재질문하지 않는다. 원본 마스터와 관련 인스턴스를 그 수정본에 맞추고, 서로 무관한 사용처로 임의 확장하지 않는다. 사용자 수정값을 코드 기준으로 되돌리지 않는다."
+    },
+    {
+      "id": "section-header-28",
+      "assetIds": [
+        "SectionHeader",
+        "SectionFrame"
+      ],
+      "rule": "사용자 확정: 제목·액션 28px 및 외곽 28px/Hug 유지. 코드의 h-8 외곽32px을 자동 반영하지 않는다."
+    },
+    {
+      "id": "button-hierarchy",
+      "assetIds": [
+        "Button",
+        "IconButton",
+        "Card",
+        "SectionHeader",
+        "SectionFrame",
+        "DialogFooter",
+        "CenterModal",
+        "SideSlidePanel",
+        "ConfirmDialog",
+        "RadioChoiceDialog"
+      ],
+      "rule": "현재 사용자 수정본의 fillMain/fillBlack 등 버튼 종류·색상·위계와 팝업 하단40px를 유지한다. 이전 코드의 기본값보다 최신 사용자 수정이 우선이다. Button small32px는 전역 축소하지 않는다."
+    },
+    {
+      "id": "dialog-footer-user-design",
+      "assetIds": ["DialogFooter", "CenterModal", "SideSlidePanel", "RadioChoiceDialog"],
+      "rule": "2026-08-31 사용자 확정본: DialogFooter Action1=fillBlack, Action2=fillMain, Action3=fillGray 순서. 관련 모달·패널·선택 팝업 16곳의 확인 버튼은 fillMain. 취소/저장/다음 등 사용처 문구와 기존 취소 버튼은 유지. Action2/3 교체 속성도 사용자 마스터에 연결한다. 이후 사용자 수정이 있으면 그 현재 값을 우선한다."
+    },
+    {
+      "id": "source-exceptions",
+      "assetIds": [
+        "ProgressCircle",
+        "AnalyticsCharts",
+        "Sidebar",
+        "Table",
+        "SearchHighlight"
+      ],
+      "rule": "기존 원본 확인사항·웹 미검증을 자동 해소 처리하지 않는다. 실제 코드 diff와 Figma 대조 근거를 기록한다."
+    }
+  ],
+  "assets": [
+    {
+      "id": "ContentRegionHeading",
+      "name": "ContentRegionHeading",
+      "kind": "component",
+      "sources": ["component-library/src/components/ui/content-region-heading.tsx"],
+      "figmaNodeIds": ["455:735"]
+    },
+    {
+      "id": "Accordion",
+      "name": "Accordion",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/accordion.tsx"
+      ],
+      "figmaNodeIds": [
+        "291:326"
+      ]
+    },
+    {
+      "id": "AlarmListItem",
+      "name": "AlarmListItem",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/alarm-list-item.tsx"
+      ],
+      "figmaNodeIds": [
+        "159:67"
+      ]
+    },
+    {
+      "id": "Avatar",
+      "name": "Avatar",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/avatar.tsx"
+      ],
+      "figmaNodeIds": [
+        "26:2"
+      ]
+    },
+    {
+      "id": "Badge",
+      "name": "Badge",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/badge.tsx"
+      ],
+      "figmaNodeIds": [
+        "23:3"
+      ]
+    },
+    {
+      "id": "BeforeAfterComparison",
+      "name": "BeforeAfterComparison",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/before-after-comparison.tsx"
+      ],
+      "figmaNodeIds": [
+        "162:37"
+      ]
+    },
+    {
+      "id": "Breadcrumb",
+      "name": "Breadcrumb",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/breadcrumb.tsx"
+      ],
+      "figmaNodeIds": [
+        "352:2"
+      ]
+    },
+    {
+      "id": "Button",
+      "name": "Button",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/button.tsx"
+      ],
+      "figmaNodeIds": [
+        "12:2"
+      ]
+    },
+    {
+      "id": "ButtonGroup",
+      "name": "ButtonGroup",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/button-group.tsx"
+      ],
+      "figmaNodeIds": [
+        "32:93"
+      ]
+    },
+    {
+      "id": "Cascader",
+      "name": "Cascader",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/cascader.tsx"
+      ],
+      "figmaNodeIds": [
+        "97:180"
+      ]
+    },
+    {
+      "id": "Card",
+      "name": "Card",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/card.tsx"
+      ],
+      "figmaNodeIds": [
+        "282:245"
+      ]
+    },
+    {
+      "id": "CenterModal",
+      "name": "CenterModal",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/center-modal.tsx"
+      ],
+      "figmaNodeIds": [
+        "370:324"
+      ]
+    },
+    {
+      "id": "Checkbox",
+      "name": "Checkbox",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/checkbox.tsx"
+      ],
+      "figmaNodeIds": [
+        "52:30"
+      ]
+    },
+    {
+      "id": "Collapsible",
+      "name": "Collapsible",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/collapsible.tsx"
+      ],
+      "figmaNodeIds": [
+        "288:309"
+      ]
+    },
+    {
+      "id": "Combobox",
+      "name": "Combobox",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/combobox.tsx"
+      ],
+      "figmaNodeIds": [
+        "55:30"
+      ]
+    },
+    {
+      "id": "ConfirmDialog",
+      "name": "ConfirmDialog",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/confirm-dialog.tsx"
+      ],
+      "figmaNodeIds": [
+        "374:222"
+      ]
+    },
+    {
+      "id": "DatePicker",
+      "name": "DatePicker",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/date-picker.tsx"
+      ],
+      "figmaNodeIds": [
+        "103:201"
+      ]
+    },
+    {
+      "id": "LabeledSelect",
+      "name": "LabeledSelect",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/labeled-select.tsx"
+      ],
+      "figmaNodeIds": [
+        "67:101"
+      ]
+    },
+    {
+      "id": "LabeledInput",
+      "name": "LabeledInput",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/labeled-input.tsx"
+      ],
+      "figmaNodeIds": [
+        "67:90"
+      ]
+    },
+    {
+      "id": "SelectionActionBar",
+      "name": "SelectionActionBar",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/selection-action-bar.tsx"
+      ],
+      "figmaNodeIds": [
+        "259:489"
+      ]
+    },
+    {
+      "id": "AnalyticsCharts",
+      "name": "AnalyticsCharts",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/analytics-charts.tsx"
+      ],
+      "figmaNodeIds": [
+        "401:547"
+      ]
+    },
+    {
+      "id": "DateRangePicker",
+      "name": "DateRangePicker",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/date-range-picker.tsx"
+      ],
+      "figmaNodeIds": [
+        "105:285"
+      ]
+    },
+    {
+      "id": "Descriptions",
+      "name": "Descriptions",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/descriptions.tsx"
+      ],
+      "figmaNodeIds": [
+        "163:63"
+      ]
+    },
+    {
+      "id": "DialogFooter",
+      "name": "DialogFooter",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/dialog-footer.tsx"
+      ],
+      "figmaNodeIds": [
+        "347:535"
+      ]
+    },
+    {
+      "id": "Divider",
+      "name": "Divider",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/divider.tsx"
+      ],
+      "figmaNodeIds": [
+        "35:2"
+      ]
+    },
+    {
+      "id": "DropdownMenu",
+      "name": "DropdownMenu",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/dropdown-menu.tsx"
+      ],
+      "figmaNodeIds": [
+        "380:315"
+      ]
+    },
+    {
+      "id": "EmptyState",
+      "name": "EmptyState",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/empty-state.tsx"
+      ],
+      "figmaNodeIds": [
+        "236:45"
+      ]
+    },
+    {
+      "id": "ErrorState",
+      "name": "ErrorState",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/error-state.tsx"
+      ],
+      "figmaNodeIds": [
+        "244:130"
+      ]
+    },
+    {
+      "id": "Fieldset",
+      "name": "Fieldset",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/fieldset.tsx"
+      ],
+      "figmaNodeIds": [
+        "68:104"
+      ]
+    },
+    {
+      "id": "Filter",
+      "name": "Filter",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/filter.tsx"
+      ],
+      "figmaNodeIds": [
+        "73:106"
+      ]
+    },
+    {
+      "id": "FileUpload",
+      "name": "FileUpload",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/file-upload.tsx"
+      ],
+      "figmaNodeIds": [
+        "151:363"
+      ]
+    },
+    {
+      "id": "FilterTag",
+      "name": "FilterTag",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/filter-tag.tsx"
+      ],
+      "figmaNodeIds": [
+        "355:374"
+      ]
+    },
+    {
+      "id": "FormGrid / FormFieldRow",
+      "name": "FormGrid / FormFieldRow",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/form-grid.tsx"
+      ],
+      "figmaNodeIds": [
+        "349:553"
+      ]
+    },
+    {
+      "id": "Container / Grid",
+      "name": "Container / Grid",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/grid-container.tsx"
+      ],
+      "figmaNodeIds": [
+        "350:615"
+      ]
+    },
+    {
+      "id": "GroupQuery",
+      "name": "GroupQuery",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/group-query.tsx"
+      ],
+      "figmaNodeIds": [
+        "71:106"
+      ]
+    },
+    {
+      "id": "IconButton / CloseButton",
+      "name": "IconButton / CloseButton",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/icon-button.tsx"
+      ],
+      "figmaNodeIds": [
+        "28:2"
+      ]
+    },
+    {
+      "id": "Input",
+      "name": "Input",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/input.tsx"
+      ],
+      "figmaNodeIds": [
+        "37:2"
+      ]
+    },
+    {
+      "id": "ImageThumbnail",
+      "name": "ImageThumbnail",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/image-thumbnail.tsx"
+      ],
+      "figmaNodeIds": [
+        "178:36"
+      ]
+    },
+    {
+      "id": "InspectionJudgement",
+      "name": "InspectionJudgement",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/inspection-judgement.tsx"
+      ],
+      "figmaNodeIds": [
+        "356:685"
+      ]
+    },
+    {
+      "id": "Label",
+      "name": "Label",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/label.tsx"
+      ],
+      "figmaNodeIds": [
+        "34:2"
+      ]
+    },
+    {
+      "id": "Link",
+      "name": "Link",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/link.tsx"
+      ],
+      "figmaNodeIds": [
+        "29:92"
+      ]
+    },
+    {
+      "id": "List / ListItem",
+      "name": "List / ListItem",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/list.tsx"
+      ],
+      "figmaNodeIds": [
+        "188:52"
+      ]
+    },
+    {
+      "id": "LoadingOverlay",
+      "name": "LoadingOverlay",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/loading-overlay.tsx"
+      ],
+      "figmaNodeIds": [
+        "231:28"
+      ]
+    },
+    {
+      "id": "LoadingSpinner",
+      "name": "LoadingSpinner",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/loading-spinner.tsx"
+      ],
+      "figmaNodeIds": [
+        "25:2"
+      ]
+    },
+    {
+      "id": "Logo",
+      "name": "Logo",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/logo.tsx"
+      ],
+      "figmaNodeIds": [
+        "383:590"
+      ]
+    },
+    {
+      "id": "MultiSelectInput",
+      "name": "MultiSelectInput",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/multi-select-input.tsx"
+      ],
+      "figmaNodeIds": [
+        "152:378"
+      ]
+    },
+    {
+      "id": "Navbar",
+      "name": "Navbar",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/navbar.tsx"
+      ],
+      "figmaNodeIds": [
+        "386:105"
+      ]
+    },
+    {
+      "id": "NoticeBanner",
+      "name": "NoticeBanner",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/notice-banner.tsx"
+      ],
+      "figmaNodeIds": [
+        "250:214"
+      ]
+    },
+    {
+      "id": "NotificationPanel",
+      "name": "NotificationPanel",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/notification-panel.tsx"
+      ],
+      "figmaNodeIds": [
+        "389:370"
+      ]
+    },
+    {
+      "id": "NumberInput",
+      "name": "NumberInput",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/number-input.tsx"
+      ],
+      "figmaNodeIds": [
+        "64:90"
+      ]
+    },
+    {
+      "id": "PageTopTabItem",
+      "name": "PageTopTabItem",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/page-top-tab-item.tsx"
+      ],
+      "figmaNodeIds": [
+        "376:84"
+      ]
+    },
+    {
+      "id": "OverflowList",
+      "name": "OverflowList",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/overflow-list.tsx"
+      ],
+      "figmaNodeIds": [
+        "203:110"
+      ]
+    },
+    {
+      "id": "Pagination",
+      "name": "Pagination",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/pagination.tsx"
+      ],
+      "figmaNodeIds": [
+        "366:52"
+      ]
+    },
+    {
+      "id": "Panel",
+      "name": "Panel",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/panel.tsx"
+      ],
+      "figmaNodeIds": [
+        "274:238"
+      ]
+    },
+    {
+      "id": "PasswordInput",
+      "name": "PasswordInput",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/password-input.tsx"
+      ],
+      "figmaNodeIds": [
+        "64:181"
+      ]
+    },
+    {
+      "id": "Popover",
+      "name": "Popover",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/popover.tsx"
+      ],
+      "figmaNodeIds": [
+        "360:2"
+      ]
+    },
+    {
+      "id": "Progress",
+      "name": "Progress",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/progress.tsx"
+      ],
+      "figmaNodeIds": [
+        "216:2"
+      ]
+    },
+    {
+      "id": "ProgressCircle",
+      "name": "ProgressCircle",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/progress-circle.tsx"
+      ],
+      "figmaNodeIds": [
+        "220:13"
+      ]
+    },
+    {
+      "id": "QuickQuery",
+      "name": "QuickQuery",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/quick-query.tsx"
+      ],
+      "figmaNodeIds": [
+        "82:112"
+      ]
+    },
+    {
+      "id": "Radio",
+      "name": "Radio",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/radio.tsx"
+      ],
+      "figmaNodeIds": [
+        "57:90"
+      ]
+    },
+    {
+      "id": "RadioChoiceDialog",
+      "name": "RadioChoiceDialog",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/radio-choice-dialog.tsx"
+      ],
+      "figmaNodeIds": [
+        "383:318"
+      ]
+    },
+    {
+      "id": "ScrollArea",
+      "name": "ScrollArea",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/scroll-area.tsx"
+      ],
+      "figmaNodeIds": [
+        "351:732"
+      ]
+    },
+    {
+      "id": "SearchHighlight",
+      "name": "SearchHighlight",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/search-highlight.tsx"
+      ],
+      "figmaNodeIds": [
+        "206:155"
+      ]
+    },
+    {
+      "id": "SearchInput",
+      "name": "SearchInput",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/search-input.tsx"
+      ],
+      "figmaNodeIds": [
+        "61:90"
+      ]
+    },
+    {
+      "id": "SegmentedControl",
+      "name": "SegmentedControl",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/segmented-control.tsx"
+      ],
+      "figmaNodeIds": [
+        "68:121"
+      ]
+    },
+    {
+      "id": "MesProductSwitcher",
+      "name": "MesProductSwitcher",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/mes-product-switcher.tsx"
+      ],
+      "figmaNodeIds": [
+        "387:101"
+      ]
+    },
+    {
+      "id": "SectionFrame",
+      "name": "SectionFrame",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/section-frame.tsx"
+      ],
+      "figmaNodeIds": [
+        "267:20"
+      ]
+    },
+    {
+      "id": "SectionHeader",
+      "name": "SectionHeader",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/section-header.tsx"
+      ],
+      "figmaNodeIds": [
+        "265:2"
+      ]
+    },
+    {
+      "id": "IconMenu",
+      "name": "IconMenu",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/icons/icon-menu.tsx"
+      ],
+      "figmaNodeIds": [
+        "20:2"
+      ]
+    },
+    {
+      "id": "QueryDateRange",
+      "name": "QueryDateRange",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/query-date-range.tsx"
+      ],
+      "figmaNodeIds": [
+        "72:106"
+      ]
+    },
+    {
+      "id": "CavityCell",
+      "name": "CavityCell",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/cavity-cell.tsx"
+      ],
+      "figmaNodeIds": [
+        "354:161"
+      ]
+    },
+    {
+      "id": "Select",
+      "name": "Select",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/select.tsx"
+      ],
+      "figmaNodeIds": [
+        "40:2"
+      ]
+    },
+    {
+      "id": "Sidebar",
+      "name": "Sidebar",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/sidebar.tsx"
+      ],
+      "figmaNodeIds": [
+        "393:101"
+      ]
+    },
+    {
+      "id": "Slider",
+      "name": "Slider",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/slider.tsx"
+      ],
+      "figmaNodeIds": [
+        "68:160"
+      ]
+    },
+    {
+      "id": "SideSlidePanel",
+      "name": "SideSlidePanel",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/side-slide-panel.tsx"
+      ],
+      "figmaNodeIds": [
+        "373:138"
+      ]
+    },
+    {
+      "id": "Skeleton",
+      "name": "Skeleton",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/skeleton.tsx"
+      ],
+      "figmaNodeIds": [
+        "36:2"
+      ]
+    },
+    {
+      "id": "StickyHeader / StickyFooter",
+      "name": "StickyHeader / StickyFooter",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/sticky-header-footer.tsx"
+      ],
+      "figmaNodeIds": [
+        "351:742"
+      ]
+    },
+    {
+      "id": "Switch",
+      "name": "Switch",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/switch.tsx"
+      ],
+      "figmaNodeIds": [
+        "57:119"
+      ]
+    },
+    {
+      "id": "Table",
+      "name": "Table",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/table.tsx"
+      ],
+      "figmaNodeIds": [
+        "398:193"
+      ]
+    },
+    {
+      "id": "Tag",
+      "name": "Tag",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/tag.tsx"
+      ],
+      "figmaNodeIds": [
+        "199:65"
+      ]
+    },
+    {
+      "id": "Textarea",
+      "name": "Textarea",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/textarea.tsx"
+      ],
+      "figmaNodeIds": [
+        "63:90"
+      ]
+    },
+    {
+      "id": "TimePicker",
+      "name": "TimePicker",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/time-picker.tsx"
+      ],
+      "figmaNodeIds": [
+        "132:321"
+      ]
+    },
+    {
+      "id": "Timeline",
+      "name": "Timeline",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/timeline.tsx"
+      ],
+      "figmaNodeIds": [
+        "363:161"
+      ]
+    },
+    {
+      "id": "Toast",
+      "name": "Toast",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/toast.tsx"
+      ],
+      "figmaNodeIds": [
+        "255:258"
+      ]
+    },
+    {
+      "id": "TreeSelect",
+      "name": "TreeSelect",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/tree-select.tsx"
+      ],
+      "figmaNodeIds": [
+        "154:435"
+      ]
+    },
+    {
+      "id": "TreeView",
+      "name": "TreeView",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/tree-view.tsx"
+      ],
+      "figmaNodeIds": [
+        "364:204"
+      ]
+    },
+    {
+      "id": "ToggleButton",
+      "name": "ToggleButton",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/toggle-button.tsx"
+      ],
+      "figmaNodeIds": [
+        "30:93"
+      ]
+    },
+    {
+      "id": "Tooltip",
+      "name": "Tooltip",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/tooltip.tsx"
+      ],
+      "figmaNodeIds": [
+        "361:7"
+      ]
+    },
+    {
+      "id": "UserAccountMenu",
+      "name": "UserAccountMenu",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/user-account-menu.tsx"
+      ],
+      "figmaNodeIds": [
+        "385:84"
+      ]
+    },
+    {
+      "id": "IconArrowDownRight",
+      "name": "IconArrowDownRight",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-arrow-down-right.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:15"
+      ]
+    },
+    {
+      "id": "IconArrowLine",
+      "name": "IconArrowLine",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-arrow-line.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:28"
+      ]
+    },
+    {
+      "id": "IconArrow",
+      "name": "IconArrow",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-arrow.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:41"
+      ]
+    },
+    {
+      "id": "IconBell",
+      "name": "IconBell",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-bell.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:54"
+      ]
+    },
+    {
+      "id": "IconBox",
+      "name": "IconBox",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-box.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:71"
+      ]
+    },
+    {
+      "id": "IconCalendar",
+      "name": "IconCalendar",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-calendar.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:84"
+      ]
+    },
+    {
+      "id": "IconChartBar",
+      "name": "IconChartBar",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-chart-bar.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:109"
+      ]
+    },
+    {
+      "id": "IconCompany",
+      "name": "IconCompany",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-company.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:128"
+      ]
+    },
+    {
+      "id": "IconCopy",
+      "name": "IconCopy",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-copy.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:151"
+      ]
+    },
+    {
+      "id": "IconDownload",
+      "name": "IconDownload",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-download.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:167"
+      ]
+    },
+    {
+      "id": "IconExclamationCircle",
+      "name": "IconExclamationCircle",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-exclamation-circle.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:180"
+      ]
+    },
+    {
+      "id": "IconFileNote",
+      "name": "IconFileNote",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-file-note.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:193"
+      ]
+    },
+    {
+      "id": "IconFilter",
+      "name": "IconFilter",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-filter.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:207"
+      ]
+    },
+    {
+      "id": "IconFlatBoxCheck",
+      "name": "IconFlatBoxCheck",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-flat-box-check.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:244"
+      ]
+    },
+    {
+      "id": "IconFlatFileCheck",
+      "name": "IconFlatFileCheck",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-flat-file-check.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:278"
+      ]
+    },
+    {
+      "id": "IconFlatIn",
+      "name": "IconFlatIn",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-flat-in.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:297"
+      ]
+    },
+    {
+      "id": "IconFlatOut",
+      "name": "IconFlatOut",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-flat-out.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:338"
+      ]
+    },
+    {
+      "id": "IconGrid",
+      "name": "IconGrid",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-grid.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:366"
+      ]
+    },
+    {
+      "id": "IconGroupDown",
+      "name": "IconGroupDown",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-group-down.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:400"
+      ]
+    },
+    {
+      "id": "IconMedalCheck",
+      "name": "IconMedalCheck",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-medal-check.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:428"
+      ]
+    },
+    {
+      "id": "IconPlus",
+      "name": "IconPlus",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-plus.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:454"
+      ]
+    },
+    {
+      "id": "IconQaO",
+      "name": "IconQaO",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-qa-o.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:470"
+      ]
+    },
+    {
+      "id": "IconQaTriangle",
+      "name": "IconQaTriangle",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-qa-triangle.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:483"
+      ]
+    },
+    {
+      "id": "IconQaX",
+      "name": "IconQaX",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-qa-x.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:496"
+      ]
+    },
+    {
+      "id": "IconReload",
+      "name": "IconReload",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-reload.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:513"
+      ]
+    },
+    {
+      "id": "IconScan",
+      "name": "IconScan",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-scan.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:526"
+      ]
+    },
+    {
+      "id": "IconSearch",
+      "name": "IconSearch",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-search.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:563"
+      ]
+    },
+    {
+      "id": "IconShare",
+      "name": "IconShare",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-share.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:579"
+      ]
+    },
+    {
+      "id": "IconStar",
+      "name": "IconStar",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-star.tsx",
+        "component-library/src/components/icons/icon-star.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:593",
+        "409:596"
+      ]
+    },
+    {
+      "id": "IconTrash",
+      "name": "IconTrash",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-trash.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:607"
+      ]
+    },
+    {
+      "id": "IconTrendingDown",
+      "name": "IconTrendingDown",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-trending-down.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:620"
+      ]
+    },
+    {
+      "id": "IconTrendingUp",
+      "name": "IconTrendingUp",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-trending-up.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:633"
+      ]
+    },
+    {
+      "id": "IconUserMono",
+      "name": "IconUserMono",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-user-mono.tsx",
+        "component-library/src/components/icons/icon-user-mono.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:647",
+        "409:650"
+      ]
+    },
+    {
+      "id": "IconWrench",
+      "name": "IconWrench",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-wrench.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:661"
+      ]
+    },
+    {
+      "id": "IconXCircle",
+      "name": "IconXCircle",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-x-circle.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:686"
+      ]
+    },
+    {
+      "id": "IconX",
+      "name": "IconX",
+      "kind": "icon",
+      "sources": [
+        "component-library/src/components/icons/icon-x.tsx"
+      ],
+      "figmaNodeIds": [
+        "409:699"
+      ]
+    },
+    {
+      "id": "IconEyeMono",
+      "name": "IconEyeMono",
+      "kind": "icon",
+      "sources": [
+        "component-library/public/icons/mes-icon-eye-on-mono.svg"
+      ],
+      "figmaNodeIds": [
+        "409:713"
+      ]
+    },
+    {
+      "id": "IconCalculator",
+      "name": "IconCalculator",
+      "kind": "icon",
+      "sources": [
+        "component-library/public/icons/mes-icon-calculator.svg"
+      ],
+      "figmaNodeIds": [
+        "409:732"
+      ]
+    },
+    {
+      "id": "IconDragHandle",
+      "name": "IconDragHandle",
+      "kind": "icon",
+      "sources": [
+        "component-library/public/icons/mes-icon-drag-handle.svg"
+      ],
+      "figmaNodeIds": [
+        "409:745"
+      ]
+    },
+    {
+      "id": "IconSetting",
+      "name": "IconSetting",
+      "kind": "icon",
+      "sources": [
+        "component-library/public/icons/mes-icon-setting.svg"
+      ],
+      "figmaNodeIds": [
+        "409:758"
+      ]
+    }
+  ],
+  "inbox": {
+    "pageId": "448:4",
+    "frameId": "448:5",
+    "fieldNodeIds": {
+      "title": "448:6",
+      "state": "448:7",
+      "summary": "448:8",
+      "details": "448:9",
+      "guard": "448:10",
+      "requestId": "448:11",
+      "link": "448:12"
+    }
+  }
+}
