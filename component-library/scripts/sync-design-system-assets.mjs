@@ -172,14 +172,7 @@ function renderDocsIndex(components) {
 function renderReadmeSummary(manifest) {
   return [
     readmeStart,
-    "| 자산 | 등록 수 |",
-    "|---|---:|",
-    `| UI 컴포넌트 | ${manifest.summary.components.total} |`,
-    `| 공개 / 내부 조립용 | ${manifest.summary.components.public} / ${manifest.summary.components.internal} |`,
-    `| Shell·Section·Behavior·Recipe 패턴 | ${manifest.summary.patterns} |`,
-    `| AI 조회용 화면 정의 | ${manifest.summary.screens} |`,
-    `| 신규 UI 선택 규칙 | ${manifest.summary.components.selectionGuardContracts} |`,
-    `| 컴포넌트별 문서 | ${manifest.summary.components.total} |`,
+    `컴포넌트 ${manifest.summary.components.total}종과 화면·팝업을 조합하는 패턴 ${manifest.summary.patterns}종이 등록되어 있습니다.`,
     readmeEnd,
   ].join("\n");
 }

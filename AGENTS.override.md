@@ -14,6 +14,7 @@
 - `intent: reproduce | normalize | audit`에서만 `mes_get_reproduction_audit_context`를 조회해 특정 화면의 실제 웹·Figma·불일치 근거를 확인한다.
 - 자연어 또는 Figma를 바로 JSX로 옮기지 않는다. 먼저 `ScreenRequest`를 만들고 `npm run screen:resolve`로 계약을 확정한다.
 - 신규·구조 변경은 생성 스킬이 연결한 `screen-intake-policy.json`을 읽는다. 화면 전체 맥락을 먼저 확보하고 중요한 미정 사항만 질문한다. 답과 근거는 기존 `requirements`·`evidence.notes`에 보존하며, 답 하나로 Shell·Table을 자동 선택하지 않는다.
+- 가중치·자유도 요청은 생성 스킬의 가중치 절과 [설계](./docs/AI_UI_맥락_규칙.md#design-system-weights)를 읽는다. 기본 1, 영역·스타일/컴포넌트/배치를 분리하고 신규 자산 허용을 별도로 확인한다. 현재 수치별 생성·검사 완화는 설계 단계다. 기존 검사 조건을 메모나 수치로 우회하지 않으며, 지원 범위를 벗어난 요청은 대안 또는 실행 기능 추가를 합의한다.
 - 가장 가까운 등록 화면의 `getImplementationContext(screenId)`를 기준으로 시작한다.
 - 가장 가까운 화면의 명세를 사용할 때는 순서형 `composition.sections`를 읽는다. 신규 요청에서 다른 구성을 선택할 수 있으며 그 순서를 명시한다. 평면 `sectionRefs`만 보고 섹션을 재배치하지 않는다.
 - 각 의미 있는 자산은 정확히 일치하는 승인 자산을 먼저 찾고, 없으면 가장 가까운 후보가 의미·동작·선택 수·상태·접근성·부모 맥락을 보존하는지 판정한다. 보존할 수 없을 때만 신규 자산 proposal로 이동한다.

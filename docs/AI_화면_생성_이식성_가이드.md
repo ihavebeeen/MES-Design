@@ -9,7 +9,7 @@
 | 단계 | 현재 상태 | 의미 |
 |---|---|---|
 | AI 작업 규칙 발견 | 구현됨 | `AGENTS.override.md`와 repo Skill을 Git으로 공유 |
-| AI 도구 인터페이스 | 구현됨 | Codex·Claude Code가 같은 로컬 `mes-ui` MCP 도구 7개를 호출 |
+| AI 도구 인터페이스 | 구현됨 | Codex·Claude Code가 같은 로컬 `mes-ui` MCP 도구를 호출 |
 | 화면 조합 선택 | 검증됨 | 같은 요청·같은 커밋에서 같은 shell/section/behavior/action/component refs와 fingerprint 생성 |
 | 구현 위반 탐지 | 구현됨 | 원시 HTML 상호작용, 잘못된 셸, 미등록 UI import, no-op handler, 임의 px를 severity별 탐지 |
 | TSX 코드 동일성 | 확장 검증됨 | 우측 슬라이드와 중앙 검색 테이블은 stable 결정형 생성, 페이지 엔티티 목록은 provisional 결정형 생성 |
@@ -47,6 +47,7 @@ npm run screen:generate -- .mes-ui-preview/example/contract.json --preview
 - `mes_list_design_system`: 등록 컴포넌트·패턴·화면·생성 템플릿 조회
 - `mes_get_web_generation_context`: 원본 없는 신규 UI에 사용할 실제 웹 반복 조합 문법 조회
 - `mes_get_reproduction_audit_context`: 기존 화면의 실제 웹·Figma·불일치·검증 상태 조회
+- `mes_get_mobile_context`: 보존 중인 모바일 자산·검증 자료 조회. 모바일 추가 작업은 보류 상태 유지
 - `mes_resolve_screen`: ScreenRequest를 결정형 계약으로 해석
 - `mes_generate_screen`: 지원 템플릿의 최종 파일 검사 후 내부 QA 미리보기 생성 (`qaPreviewUrl`, `handoffReady: false`). 사용자 전달은 시각 대조와 `screen:handoff` 이후
 - `mes_handoff_screen`: 실제 확인 후 짧은 `review`를 자동 기록하고 현재 구현과 대조하여 URL 반환. `review` 생략 시 동일 구현의 기록 재사용 (CLI `screen:handoff`와 동일)
@@ -62,7 +63,7 @@ npm run mcp:check
 ## ScreenRequest 작성 순서
 
 1. `intent`: 원본 재현인지, 신규 생성인지, 정규화인지, 감사인지 선택합니다.
-2. 신규 생성은 `webContext`에 선택한 page archetype 또는 overlay grammar와 section recipe를 기록합니다. 누락되거나 target과 맞지 않으면 resolver가 차단합니다.
+2. `webContext`에 참고한 page archetype, overlay grammar와 section recipe를 선택적으로 기록합니다. 사례가 없거나 현재 배치와 달라도 진행할 수 있습니다. 현재 요청이 사용할 MES 자산·API·셸의 적합성은 별도로 검사합니다.
 3. `target.kind`: page / center-modal / side-slide-panel / confirm-dialog 중 업무 맥락에 맞는 셸을 선택합니다.
 4. `nearestScreenId`: 가장 가까운 기존 업무 흐름을 선택합니다.
 5. 기존 화면과 다른 부분만 `composition`에서 override합니다. 빈 객체이면 기준 화면의 조합을 그대로 상속합니다.
