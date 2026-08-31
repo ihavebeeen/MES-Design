@@ -9,7 +9,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "4bfcff32dbc217a48f7455539f732788fe3280b3e03591d6790f19b001c3d427",
+  "fingerprint": "af9c0ee2423f31c9ca06fcd49e7f48379486b0b0bffb79bb7cac1370099aaff3",
   "guidancePolicy": {
     "componentSelection": {
       "coverageMode": "selection-critical-only",
@@ -618,12 +618,12 @@
           "confirm"
         ],
         "useWhen": [
-          "현재 맥락을 차단하고 중앙에서 짧은 조회·선택·편집을 완료",
-          "원본이 중앙 팝업으로 확인됨"
+          "전체 컨셉·정보 관계·진입/종료와 MES 근거를 함께 검토해 중앙 형식을 선택함",
+          "원본 또는 사용자 지정이 중앙 팝업으로 확인됨"
         ],
         "doNotUseWhen": [
-          "긴 등록 흐름",
-          "우측 슬라이드 원본",
+          "배경 유지·건수·입력 길이·폭 하나로 중앙/우측을 결정함",
+          "유지해야 할 우측 슬라이드 원본",
           "짧은 확인만 필요한 작은 대화상자"
         ],
         "allowedParents": [
@@ -645,7 +645,7 @@
         "alternatives": [
           {
             "componentId": "side-slide-panel",
-            "chooseInsteadWhen": "긴 등록·편집 흐름이 우측에서 이어질 때"
+            "chooseInsteadWhen": "전체 맥락과 적용 가능한 MES 계약 또는 사용자 지정이 우측 작업 형식일 때"
           },
           {
             "componentId": "confirm-dialog",
@@ -4093,8 +4093,8 @@
           "save"
         ],
         "useWhen": [
-          "현재 목록 맥락을 유지하며 긴 등록·편집을 우측에서 수행",
-          "원본이 우측 슬라이드 팝업으로 확인됨"
+          "전체 컨셉·정보 관계·진입/종료와 MES 근거를 함께 검토해 우측 형식을 선택함",
+          "원본 또는 사용자 지정이 우측 슬라이드 팝업으로 확인됨"
         ],
         "doNotUseWhen": [
           "중앙 조회·선택 팝업",
@@ -4120,7 +4120,7 @@
         "alternatives": [
           {
             "componentId": "center-modal",
-            "chooseInsteadWhen": "짧은 중앙 조회·선택 작업일 때"
+            "chooseInsteadWhen": "전체 맥락과 적용 가능한 MES 계약 또는 사용자 지정이 중앙 작업 형식일 때"
           },
           {
             "componentId": "confirm-dialog",

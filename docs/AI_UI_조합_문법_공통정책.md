@@ -1,10 +1,10 @@
 # AI UI 조합 문법 공통 정책
 
 > 정책 ID: `mes.ai-composition-grammar`
-> 버전: `1.5.0`
+> 버전: `1.6.0`
 > 상태: 공통 정책 확정
 > 최초 확정일: 2026-08-11
-> 현재 구현 동기화: 2026-08-25
+> 현재 구현 동기화: 2026-08-31
 
 ## 1. 목적
 
@@ -77,7 +77,7 @@ SectionInstance
 - 모든 오버레이에는 전체 목적을 설명하는 root heading이 정확히 하나 필요하다.
 - Section heading은 선택 요소이며 본문에 독립적인 논리 섹션이 있을 때만 사용한다.
 - 단일 테이블·리스트의 이름은 content region heading으로 처리하며 모달용 회색 SectionHeader를 자동 사용하지 않는다.
-- 중앙 모달, 우측 슬라이드, 확인 팝업은 외형이 아니라 업무 길이·배경 맥락 유지·정보 구조로 고른다.
+- 중앙 모달·우측 슬라이드는 전체 컨셉, 사용자 지정, 정보 위계, 진입/종료와 적용 가능한 MES 조합을 함께 보고 고른다. 배경 유지·건수·업무 길이 하나는 Shell 선택 기준이 아니다.
 - Button·Link·Badge는 클릭 결과와 상태 의미로 구분한다.
 - Input·Select·Combobox·Radio·Checkbox·Switch는 값 범위, 선택 수와 commit 시점으로 구분한다.
 - Table은 반복 레코드의 공통 컬럼이 있을 때만 사용하고 반복 입력 Form의 정렬 도구로 사용하지 않는다.
@@ -151,7 +151,7 @@ Behavior는 어떤 Section 또는 Action에 적용되는지 target을 가져야 
 
 AI는 JSX를 작성하기 전에 다음 순서를 지킨다.
 
-1. 요구사항을 ScreenSpec 후보로 정규화한다.
+1. [화면 질문 체계](./AI_UI_맥락_규칙.md#11-화면을-만들기-전의-질문-체계)로 목적·컨셉·정보 관계를 파악한다. 이미 알려진 답은 활용하고 중요한 미정 사항만 질문한 뒤, 기존 ScreenRequest의 requirements·evidence.notes와 구성 필드에 반영한다.
 2. `select.overlay-shell`, `select.heading-context`, `select.action-role`, `select.input-control`, `select.content-boundary`, `select.table-model`, `select.scroll-owner`로 의미 역할과 부모 맥락을 판정한다.
 3. Shell, Section, Behavior, ActionSet, Component마다 의미·동작·상태·부모 맥락에 정확히 맞는 승인 자산을 조회한다.
 4. 정확한 자산이 없으면 가장 가까운 후보의 의미 역할, 동작 결과, 선택 수, 상태 모델, 접근성, 허용 부모와 정보 위계를 비교한다. 이를 보존할 수 있을 때만 `reuse`, `compose`, `extend`한다.

@@ -13,7 +13,7 @@
 | Shell | 화면의 외곽 구조와 스크롤 책임 | CenterModal, SideSlidePanel |
 | Screen | Shell과 Section·Pattern을 순서대로 조합한 결과 | 입고등록, 투입정보 |
 
-화면은 컴포넌트를 임의 배치해서 만들지 않는다. 먼저 Shell을 정하고 Section 순서, Behavior, ActionSet을 선택한 뒤 필요한 Component를 채운다.
+화면은 컴포넌트를 임의 배치해서 만들지 않는다. 먼저 [화면 질문 체계](./AI_UI_맥락_규칙.md#11-화면을-만들기-전의-질문-체계)로 목적·컨셉·정보 관계를 파악하고, Shell과 Section 순서, Behavior, ActionSet을 함께 정한 뒤 필요한 Component를 채운다.
 
 ## 2. 근거 우선순위
 
@@ -58,8 +58,8 @@
 
 ## 5. 팝업과 섹션
 
-- CenterModal은 현재 맥락을 차단하고 짧은 조회·선택·편집을 중앙에서 끝낼 때 사용한다.
-- SideSlidePanel은 목록 맥락을 유지하며 긴 등록·편집을 우측에서 이어갈 때 사용한다.
+- CenterModal과 SideSlidePanel은 사용자 지정·확정 원본·전체 컨셉·정보 위계·진입/종료와 적용 가능한 MES 조합을 함께 검토해 선택한다.
+- 배경 유지 여부·건수·입력 길이·폭 하나를 중앙/우측 선택 공식으로 사용하지 않는다. 기존 등록·선택 조합은 참고 근거이지 업무명만으로 강제할 형식이 아니다.
 - ConfirmDialog는 짧은 확인·경고에 사용한다.
 - 모달 헤더는 팝업 전체의 제목이며 모든 팝업에 필요하다.
 - SectionHeader는 복수 섹션을 구분할 때만 사용한다. 섹션이 하나라면 불필요한 위계를 만들지 않는다.

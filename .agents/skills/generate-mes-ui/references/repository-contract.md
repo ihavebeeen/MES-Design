@@ -19,6 +19,8 @@ Experimental candidates are discovery material, not generation dependencies.
 
 ## Screen request decisions
 
+For new UI and structural changes, read `component-library/src/design-system/registry/screen-intake-policy.json` before choosing these fields. The policy is a conditional question bank, not a screen-type classifier. Read known answers first; clarify only facts that materially affect the composition. Preserve confirmed facts in `requirements`, and sources/assumptions/conflicts in `evidence.notes`. Do not add unrecognized fields to ScreenRequest. These fields are retained by the resolver, but translating the answers into structure, interactions, and rendering remains the generating agent's responsibility.
+
 Choose in this order:
 
 1. `intent`: reproduce, new, normalize, or audit.
@@ -32,6 +34,8 @@ Choose in this order:
 9. `actionSetRef`: footer action semantics.
 
 Do not select by visual resemblance alone. A gray rectangle, title, or repeated row is not sufficient evidence of a component or pattern identity.
+
+Select `target.kind` and `webContext` jointly from the whole-screen concept and applicable MES evidence. Background visibility, record count, input count, width, and task length are contributing facts, not direct shell/pattern selectors. A sample recipe's existing `surfaceSequence` is not an answer-to-layout mapping. If several compositions remain plausible, explain the material trade-off or propose a reversible draft; do not invent missing business facts to force a registered template.
 
 For every meaningful component, section pattern, behavior, shell, and action set, apply `exact-match → compatible-existing → new-asset`. The middle step must compare semantic role, interaction effect, selection cardinality, state model, accessibility, allowed parent, and information hierarchy. A mismatch rejects the candidate; it does not justify disguising that asset with new styles. Only after both existing-asset steps fail may the result become a quarantined `propose-new` decision.
 

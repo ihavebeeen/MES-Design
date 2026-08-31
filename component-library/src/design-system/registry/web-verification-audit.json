@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "auditedAt": null,
-  "sourceFingerprint": "83672fc3eefb9ddcd60a6da6fbcb8a424266c17095330ebc9bad5c00a515edc4",
+  "sourceFingerprint": "a6b7dcb35a8b521474497d91d6cd96951146797df3c318f3e123a18f5a0c7952",
   "browserRun": {
     "command": "npm run test:visual",
     "result": "not-verified-for-current-source",

@@ -1,0 +1,98 @@
+{
+  "purpose": "질문 체계의 수동 검토용 예시와 답 보존 회귀 테스트. expectedQuestions는 작성한 기대값이며 AI가 실제로 질문을 잘 골랐음을 자동 증명하지 않는다. contractFixture는 전달 경로 검사용이지 해당 업무 화면의 구현이나 표준 근거가 아니다.",
+  "cases": [
+    {
+      "id": "vague-request",
+      "request": "입고 화면을 만들어줘.",
+      "facets": [],
+      "answers": [],
+      "expectedQuestions": ["screen.purpose", "screen.workflow", "screen.focus"],
+      "mustNotInfer": ["업무명만 보고 입고등록 슬라이드로 확정", "입력 필드/테이블 컬럼을 먼저 설문"],
+      "next": "주된 작업이 조회인지 등록인지 파악한 뒤 필요한 작업별 질문을 고른다."
+    },
+    {
+      "id": "center-with-background-context",
+      "request": "기존 중앙 선택 팝업의 구성은 유지해. 배경의 현재 대상도 유지해야 해.",
+      "facets": ["select"],
+      "answers": [
+        { "questionId": "screen.direction", "state": "confirmed", "scope": "전체", "value": "기존 중앙 선택 팝업의 구성을 유지한다.", "source": "현재 사용자 요청" },
+        { "questionId": "screen.workflow", "state": "confirmed", "scope": "전체", "value": "팝업 작업 중 배경의 선택 대상을 유지한다.", "source": "현재 사용자 요청" }
+      ],
+      "expectedQuestions": [],
+      "mustNotInfer": ["배경 유지 조건으로 우측 슬라이드로 변경"],
+      "next": "현재 계약에서 알려진 선택/반환 동작도 활용한다. 명시된 중앙 형식을 보존한다.",
+      "contractFixture": "deterministic-center-modal.json",
+      "expectedShellRef": "shell.center-modal"
+    },
+    {
+      "id": "side-with-background-context",
+      "request": "기존 등록 슬라이드의 구성은 유지해. 배경의 현재 대상도 유지해야 해.",
+      "facets": ["edit"],
+      "answers": [
+        { "questionId": "screen.direction", "state": "confirmed", "scope": "전체", "value": "기존 우측 슬라이드의 구성을 유지한다.", "source": "현재 사용자 요청" },
+        { "questionId": "screen.workflow", "state": "confirmed", "scope": "전체", "value": "팝업 작업 중 배경의 선택 대상을 유지한다.", "source": "현재 사용자 요청" }
+      ],
+      "expectedQuestions": [],
+      "mustNotInfer": ["같은 배경 유지 답을 중앙 또는 우측 하나에 고정 매칭"],
+      "next": "두 예시의 배경 유지 답은 같지만 지정된 컨셉과 기존 계약이 다르다.",
+      "contractFixture": "deterministic-side-slide.json",
+      "expectedShellRef": "shell.side-slide-panel"
+    },
+    {
+      "id": "per-item-values",
+      "request": "거래처와 창고는 품목별이고 거래처는 추가할 때 직전 값을 가져와. 창고 기본값은 기존대로 둬. 기존 등록 화면을 수정해.",
+      "facets": ["edit"],
+      "answers": [
+        { "questionId": "task.edit-scope", "state": "confirmed", "scope": "품목 입력", "value": "거래처와 창고는 품목마다 달라질 수 있다.", "source": "현재 사용자 요청" },
+        { "questionId": "task.repeat-change", "state": "confirmed", "scope": "품목 입력", "value": "새 품목은 직전 거래처를 계승하고 창고 기본값은 기존 동작을 유지한다.", "source": "현재 사용자 요청" }
+      ],
+      "expectedQuestions": [],
+      "mustNotInfer": ["여러 품목이므로 Table로 변경", "거래처를 팝업 전체 공통 입력으로 이동", "창고도 거래처처럼 계승"],
+      "next": "이번 변경은 거래처 계승에 한정한다. 기존 동작을 확인할 수 없는 경우에만 창고 기본값을 다시 확인하고 임의로 계승하지 않는다.",
+      "contractFixture": "deterministic-side-slide.json",
+      "expectedShellRef": "shell.side-slide-panel"
+    },
+    {
+      "id": "related-output",
+      "request": "투입정보 아래에 부산물도 보여줘. 같은 컬럼이지만 생산 후 나온 별도 결과야. 생산실적 한 건의 조회용이야.",
+      "facets": ["inspect"],
+      "answers": [
+        { "questionId": "structure.relationships", "state": "confirmed", "scope": "투입품·부산물", "value": "부산물은 투입품과 같은 위계의 투입 대상이 아니라 동일 생산실적의 관련 결과다.", "source": "현재 사용자 요청" }
+      ],
+      "expectedQuestions": [],
+      "mustNotInfer": ["같은 컬럼이므로 두 자료를 하나의 목록에 혼합", "관련 결과이므로 회색 중첩 박스를 반드시 추가"],
+      "next": "관계에 대한 답이 이미 있으므로 다시 묻지 않는다. 기존 팝업의 승인 자산 안에서 영역 구분·제목·간격을 제안한다."
+    },
+    {
+      "id": "display-settings-invariants",
+      "request": "표시 여부·합계 표시·순서를 바꾸는 중앙 설정 팝업. 일부 항목은 고정해야 해.",
+      "facets": ["configure"],
+      "answers": [
+        { "questionId": "screen.direction", "state": "confirmed", "scope": "전체", "value": "중앙 설정 팝업으로 구성한다.", "source": "현재 사용자 요청" }
+      ],
+      "expectedQuestions": ["state.constraints", "task.settings"],
+      "mustNotInfer": ["Boolean이므로 Switch 사용", "모든 열이 합계 가능", "어떤 항목이 고정인지 AI가 업무명으로 추정"],
+      "next": "고정 항목·합계 가능 대상 및 적용 범위/시점이 미정이면 묻는다. 이미 명세에 있다면 해당 질문은 생략한다."
+    },
+    {
+      "id": "focused-spacing-change",
+      "request": "현재 팝업의 검색창과 필터 버튼만 세로 가운데 맞춰줘.",
+      "facets": [],
+      "answers": [],
+      "expectedQuestions": [],
+      "mustNotInfer": ["전체 질문 목록을 다시 시작", "기존 Shell·기능·정보 위계를 변경"],
+      "next": "기존 계약과 구현을 읽고 해당 정렬만 수정·검증한다."
+    },
+    {
+      "id": "reference-scope-conflict",
+      "request": "참고 와이어프레임으로 만들어줘. 기존 MES 구성도 그대로 써줘. 와이어프레임은 새 배치야.",
+      "facets": [],
+      "answers": [
+        { "questionId": "screen.direction", "state": "conflicting", "scope": "전체 배치", "value": "참고 와이어프레임의 배치 유지와 기존 구성 유지 중 우선할 범위가 불명확하다.", "source": "현재 요청과 첨부 설명" }
+      ],
+      "expectedQuestions": ["screen.direction"],
+      "mustNotInfer": ["첨부 시안을 새 공통 표준으로 승격", "확정하지 않은 배치를 사용자 선택이라고 기록"],
+      "next": "기능만 참고할지 배치도 유지할지 확인하고, 해당 답을 구성 입력에 반영한다."
+    }
+  ]
+}

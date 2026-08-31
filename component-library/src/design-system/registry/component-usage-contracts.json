@@ -193,14 +193,14 @@
       "capabilities": ["blocking-overlay", "header-body-footer", "dismiss-restore"],
       "variants": ["compact-400", "compact-480", "medium-600", "standard-960", "wide-1024", "large-1100", "wide-1142", "wide-1400"],
       "requiredStates": ["closed", "open", "dismiss", "confirm"],
-      "useWhen": ["현재 맥락을 차단하고 중앙에서 짧은 조회·선택·편집을 완료", "원본이 중앙 팝업으로 확인됨"],
-      "doNotUseWhen": ["긴 등록 흐름", "우측 슬라이드 원본", "짧은 확인만 필요한 작은 대화상자"],
+      "useWhen": ["전체 컨셉·정보 관계·진입/종료와 MES 근거를 함께 검토해 중앙 형식을 선택함", "원본 또는 사용자 지정이 중앙 팝업으로 확인됨"],
+      "doNotUseWhen": ["배경 유지·건수·입력 길이·폭 하나로 중앙/우측을 결정함", "유지해야 할 우측 슬라이드 원본", "짧은 확인만 필요한 작은 대화상자"],
       "allowedParents": ["shell.center-modal"],
       "constraints": ["임의 overlay와 wrapper로 재구현하지 않는다.", "헤더·본문·푸터와 본문 scroll 책임을 셸이 소유한다."],
       "accessibility": ["제목을 Dialog title로 연결한다.", "Esc·X·backdrop·취소가 동일 dismiss 정책을 사용한다."],
       "evidence": ["batch-work-order", "material-input-settings", "inventory-add"],
       "alternatives": [
-        { "componentId": "side-slide-panel", "chooseInsteadWhen": "긴 등록·편집 흐름이 우측에서 이어질 때" },
+        { "componentId": "side-slide-panel", "chooseInsteadWhen": "전체 맥락과 적용 가능한 MES 계약 또는 사용자 지정이 우측 작업 형식일 때" },
         { "componentId": "confirm-dialog", "chooseInsteadWhen": "짧은 확인 또는 경고만 필요할 때" }
       ]
     },
@@ -209,14 +209,14 @@
       "capabilities": ["full-height-overlay", "ordered-sections", "dismiss-restore"],
       "variants": ["narrow-760", "medium-849", "standard-900", "wide-960"],
       "requiredStates": ["closed", "open", "dismiss", "save"],
-      "useWhen": ["현재 목록 맥락을 유지하며 긴 등록·편집을 우측에서 수행", "원본이 우측 슬라이드 팝업으로 확인됨"],
+      "useWhen": ["전체 컨셉·정보 관계·진입/종료와 MES 근거를 함께 검토해 우측 형식을 선택함", "원본 또는 사용자 지정이 우측 슬라이드 팝업으로 확인됨"],
       "doNotUseWhen": ["중앙 조회·선택 팝업", "짧은 확인", "독립 전체 페이지"],
       "allowedParents": ["shell.side-slide-panel"],
       "constraints": ["760·849·900·960px 승인 preset만 사용한다.", "본문 섹션만 스크롤하고 헤더·푸터는 고정한다."],
       "accessibility": ["제목을 Dialog title로 연결한다.", "Esc·X·backdrop·취소가 동일 dismiss 정책을 사용한다."],
       "evidence": ["receiving", "production-result", "operation-log"],
       "alternatives": [
-        { "componentId": "center-modal", "chooseInsteadWhen": "짧은 중앙 조회·선택 작업일 때" },
+        { "componentId": "center-modal", "chooseInsteadWhen": "전체 맥락과 적용 가능한 MES 계약 또는 사용자 지정이 중앙 작업 형식일 때" },
         { "componentId": "confirm-dialog", "chooseInsteadWhen": "확인 문구와 한두 개 액션만 필요할 때" }
       ]
     },
