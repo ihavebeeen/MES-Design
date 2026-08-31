@@ -1,0 +1,5323 @@
+{
+  "schemaVersion": 1,
+  "status": "research-reference",
+  "reviewedOn": "2026-08-31",
+  "rootSource": {
+    "title": "동진 MES 기능명세서",
+    "url": "https://www.notion.so/3600e77b2015805fa3ffce780cdde0f5"
+  },
+  "authority": {
+    "purpose": "신규 UI에서 업무 정보·관계·조건을 빠뜨리지 않기 위한 참고 지식",
+    "not": "운영 중인 서버의 검증 결과, 전체 데이터 사전, 승인된 신규 화면 또는 실행 가능한 업무 규칙이 아님",
+    "layoutAuthority": "승인 MES 자산과 화면 요청. 명세의 기존 좌우 위치·팝업 수·표/탭 형태는 신규 화면의 고정 규칙으로 가져오지 않는다.",
+    "conditionAuthority": "명세 서술도 해당 수용가·기능·버전의 적용 여부를 확인한 후 사용한다. 새 요구로 업무가 바뀌면 기존 조건을 자동 강제하지 않는다."
+  },
+  "coverage": {
+    "included": "상위 페이지 직접 연결 56개 본문에서 업무 의미 검토 + 설비별 생산량 변경 명세 1개 추가 검토",
+    "depth": "목적·정보 출처·관계·조건·저장 영향 중심. 모든 필드/문구의 완전 전사나 계산식 전수 검증 아님.",
+    "excluded": [
+      "본문이 아닌 Figma/이미지의 시각 대조",
+      "첨부파일과 외부 구형 문서 링크의 재귀적 전수조사",
+      "아카이브의 병합 전 원문과 수정중 팝업 전수조사 본문",
+      "현재 수용가 설정·API·실제 서버의 최신 명세 반영 여부"
+    ]
+  },
+  "sources": [
+    {
+      "id": "dashboard",
+      "title": "대시보드 기능명세서",
+      "url": "https://app.notion.com/p/3600e77b201580449cd8d18ed4c0fcde",
+      "sourceAsOf": "2026-05-14T04:43:12.820Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "7",
+        "7-1",
+        "7-2",
+        "7-3",
+        "8",
+        "8-1",
+        "8-2",
+        "8-3",
+        "9"
+      ]
+    },
+    {
+      "id": "sales-monthly",
+      "title": "판매목표관리(월) 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b20158047be8af0ecbd552dba",
+      "sourceAsOf": "2026-07-16T08:32:20.685Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "3-7",
+        "3-8",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5"
+      ]
+    },
+    {
+      "id": "sales-daily",
+      "title": "판매계획관리(일) 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b201580a9a6d8d6fd0478f1c2",
+      "sourceAsOf": "2026-07-16T08:27:24.880Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4",
+        "5-5",
+        "5-6",
+        "5-7",
+        "5-8"
+      ]
+    },
+    {
+      "id": "purchasing",
+      "title": "구매관리 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b201580079fccdf865d69d4f0",
+      "sourceAsOf": "2026-07-16T08:30:23.436Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "2-9",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "3-7",
+        "3-8",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "4-7"
+      ]
+    },
+    {
+      "id": "sales-billing",
+      "title": "판매관리 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b2015801f8a56f3501a0ff391",
+      "sourceAsOf": "2026-07-20T12:22:27.483Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "2-9",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5"
+      ]
+    },
+    {
+      "id": "collections",
+      "title": "수금관리 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b201580798caec010c0e6180f",
+      "sourceAsOf": "2026-07-16T08:39:44.352Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "2-9",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "3-7",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5"
+      ]
+    },
+    {
+      "id": "production-monthly",
+      "title": "생산목표관리(월) 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b2015800aaccfd96e778a4f52",
+      "sourceAsOf": "2026-07-20T12:24:51.461Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4"
+      ]
+    },
+    {
+      "id": "production-daily",
+      "title": "생산계획관리(일) 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b2015807282b4eb8d653d6778",
+      "sourceAsOf": "2026-07-16T08:31:27.905Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4"
+      ]
+    },
+    {
+      "id": "production-orders",
+      "title": "생산지시 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b201580fb98e3e74a65d3afbf",
+      "sourceAsOf": "2026-07-16T08:30:58.949Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "3-7",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "4-7",
+        "4-8"
+      ]
+    },
+    {
+      "id": "production-results",
+      "title": "생산실적 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b2015800a902ff414cbd977e1",
+      "sourceAsOf": "2026-07-20T12:28:12.605Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "5",
+        "5-1",
+        "5-2",
+        "6",
+        "6-1",
+        "6-2",
+        "7",
+        "7-1",
+        "7-2",
+        "7-3",
+        "7-4",
+        "8",
+        "8-1",
+        "8-2",
+        "9",
+        "9-1",
+        "9-2",
+        "9-3",
+        "10",
+        "10-1",
+        "10-2",
+        "10-3",
+        "10-4",
+        "11",
+        "11-1",
+        "11-2",
+        "11-3",
+        "11-4",
+        "12",
+        "12-1",
+        "12-2",
+        "12-3",
+        "12-4",
+        "12-5",
+        "13",
+        "13-1",
+        "13-2",
+        "13-3",
+        "13-4",
+        "14",
+        "14-1",
+        "14-2",
+        "14-3",
+        "14-4",
+        "14-5",
+        "14-6",
+        "14-7",
+        "15",
+        "15-1",
+        "15-2",
+        "15-3",
+        "15-4",
+        "15-5",
+        "16",
+        "16-1",
+        "16-2",
+        "16-3",
+        "16-4",
+        "16-5",
+        "16-6",
+        "16-7",
+        "16-8",
+        "16-9",
+        "16-10",
+        "16-11",
+        "16-12"
+      ]
+    },
+    {
+      "id": "operation-log",
+      "title": "운전일지 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b20158095afc2cb342100c432",
+      "sourceAsOf": "2026-07-20T12:28:57.190Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "3-7",
+        "3-8",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3"
+      ]
+    },
+    {
+      "id": "self-inspection",
+      "title": "자주검사 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b201580e18077c9c95298e188",
+      "sourceAsOf": "2026-07-20T12:29:44.814Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4",
+        "6",
+        "6-1",
+        "6-2",
+        "7",
+        "7-1",
+        "7-2",
+        "7-3",
+        "8",
+        "8-1",
+        "8-2",
+        "9",
+        "9-1",
+        "9-2"
+      ]
+    },
+    {
+      "id": "inventory",
+      "title": "재고관리 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b201580da9a57e281b9bb9e97",
+      "sourceAsOf": "2026-07-20T12:11:21.414Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4",
+        "5-5",
+        "5-6",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "6-4",
+        "6-5",
+        "6-6",
+        "7",
+        "7-1",
+        "7-2",
+        "7-3",
+        "7-4",
+        "7-5",
+        "7-6",
+        "7-7"
+      ]
+    },
+    {
+      "id": "labels",
+      "title": "라벨관리 기능명세서 - 260514",
+      "url": "https://app.notion.com/p/3600e77b2015806ba965cc6af7868c41",
+      "sourceAsOf": "2026-07-20T12:31:26.942Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "2-9",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3"
+      ]
+    },
+    {
+      "id": "lot-generation",
+      "title": "B) LOT 생성 규칙 기능명세서",
+      "url": "https://app.notion.com/p/3600e77b201580a4a9bac47a35567007",
+      "sourceAsOf": "2026-07-20T12:11:58.694Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+      ]
+    },
+    {
+      "id": "lot-customization",
+      "title": "LOT 번호 구성 커스터마이징 기능명세서",
+      "url": "https://app.notion.com/p/39f0e77b20158192826cc2119a302f20",
+      "sourceAsOf": "2026-07-16T04:17:17.661Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4",
+        "5",
+        "5-1",
+        "6"
+      ]
+    },
+    {
+      "id": "bom-view",
+      "title": "BOM 조회 기능명세서 - 260615",
+      "url": "https://app.notion.com/p/3600e77b2015807b840ede3163b115dc",
+      "sourceAsOf": "2026-07-14T05:06:26.788Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "4-7"
+      ]
+    },
+    {
+      "id": "material-analysis",
+      "title": "원료투입분석 기능명세서 - 260615",
+      "url": "https://app.notion.com/p/3800e77b201581b18d82d5c11461b4f0",
+      "sourceAsOf": "2026-07-03T03:44:31.825Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6"
+      ]
+    },
+    {
+      "id": "purchase-orders",
+      "title": "발주등록 기능명세서 - 260615",
+      "url": "https://app.notion.com/p/3600e77b201580f9a22aeb196701c01b",
+      "sourceAsOf": "2026-07-16T08:40:12.714Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "2-9",
+        "2-10",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "5",
+        "5-1",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3"
+      ]
+    },
+    {
+      "id": "purchase-orders-copy",
+      "title": "발주등록 기능명세서 - 260615 (1)",
+      "url": "https://app.notion.com/p/3ae0e77b20158098b463c9477c9bd2ad",
+      "sourceAsOf": "2026-07-31T01:30:12.593Z",
+      "review": "duplicate-content-comparison",
+      "disposition": "duplicate",
+      "duplicateOf": "purchase-orders",
+      "comparison": "표·본문을 포함한 content 추출 문자열 완전 일치. 제목·상위 페이지 메타데이터는 비교 제외.",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "2-9",
+        "2-10",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "5",
+        "5-1",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3"
+      ]
+    },
+    {
+      "id": "receiving",
+      "title": "입고등록 기능명세서 - 260615",
+      "url": "https://app.notion.com/p/3600e77b2015805aa275d4b65265630a",
+      "sourceAsOf": "2026-07-14T05:05:57.703Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4",
+        "5-5",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "7",
+        "7-1",
+        "7-2",
+        "7-3",
+        "8",
+        "8-1",
+        "8-2",
+        "8-3",
+        "9",
+        "9-1",
+        "9-2",
+        "9-3",
+        "10",
+        "10-1"
+      ]
+    },
+    {
+      "id": "shipping-orders",
+      "title": "출하지시 기능명세서 - 260616",
+      "url": "https://app.notion.com/p/3600e77b201580459e61eca79d45a91f",
+      "sourceAsOf": "2026-07-20T12:33:50.631Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "2-9",
+        "2-10",
+        "2-11",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "5",
+        "5-1"
+      ]
+    },
+    {
+      "id": "shipping-results",
+      "title": "출하실적 기능명세서 - 260617",
+      "url": "https://app.notion.com/p/3820e77b201581e5b66cd17cc0f8834f",
+      "sourceAsOf": "2026-07-20T12:34:31.369Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "2-9",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4",
+        "5-5",
+        "5-6",
+        "5-7",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "7",
+        "7-1",
+        "7-2",
+        "8",
+        "8-1",
+        "8-2"
+      ]
+    },
+    {
+      "id": "sales-shipping-amendment",
+      "title": "판매관리 및 출하실적 로직 수정",
+      "url": "https://app.notion.com/p/3600e77b2015807b892be87f22e375b1",
+      "sourceAsOf": "2026-06-17T02:23:33.990Z",
+      "review": "business-semantic-review",
+      "disposition": "conflicting-amendment",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "2",
+        "2-1",
+        "2-2",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4"
+      ]
+    },
+    {
+      "id": "receiving-inspection",
+      "title": "입고검사 기능명세서 - 260617",
+      "url": "https://app.notion.com/p/3820e77b201581ffb05ef76ef646b033",
+      "sourceAsOf": "2026-07-14T05:06:05.115Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3"
+      ]
+    },
+    {
+      "id": "shipping-inspection",
+      "title": "출고검사 기능명세서 - 0703",
+      "url": "https://app.notion.com/p/3920e77b201580eebfd4fcbbb95bc29c",
+      "sourceAsOf": "2026-07-14T05:06:09.418Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3"
+      ]
+    },
+    {
+      "id": "process-inspection",
+      "title": "공정검사 기능명세서 -0703",
+      "url": "https://app.notion.com/p/3920e77b201580498772c4c8df93527e",
+      "sourceAsOf": "2026-07-20T12:13:05.090Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4",
+        "5-5",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "7",
+        "7-1",
+        "7-2",
+        "7-3",
+        "7-4"
+      ]
+    },
+    {
+      "id": "quality-trends",
+      "title": "경향관리 기능명세서 - 0703",
+      "url": "https://app.notion.com/p/3920e77b20158096b22bfb272e32e895",
+      "sourceAsOf": "2026-07-16T00:38:45.221Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "2-1",
+        "2-2",
+        "3",
+        "3-1",
+        "3-2",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "5",
+        "5-1",
+        "5-2",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "6-4"
+      ]
+    },
+    {
+      "id": "equipment-monitoring",
+      "title": "모니터링 기능명세서 - 0706",
+      "url": "https://app.notion.com/p/3950e77b201580078339c5e933e93d39",
+      "sourceAsOf": "2026-07-20T12:23:31.495Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "3",
+        "3-1",
+        "3-2"
+      ]
+    },
+    {
+      "id": "maintenance",
+      "title": "정비이력관리 기능명세서-260709",
+      "url": "https://app.notion.com/p/3980e77b201580be8e08fb4e9ec03fbc",
+      "sourceAsOf": "2026-07-14T05:48:45.752Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3"
+      ]
+    },
+    {
+      "id": "equipment-inspection",
+      "title": "설비점검관리 기능명세서 - 260709",
+      "url": "https://app.notion.com/p/3980e77b2015813e947fc75bcdbfd534",
+      "sourceAsOf": "2026-07-09T06:33:49.555Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "4",
+        "4-1",
+        "4-2",
+        "5",
+        "5-1",
+        "5-2"
+      ]
+    },
+    {
+      "id": "lot-trace",
+      "title": "LOT 추적 기능명세서 - 260709",
+      "url": "https://app.notion.com/p/3980e77b201581bd8b09d62e6a959b53",
+      "sourceAsOf": "2026-07-09T09:02:32.683Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "3",
+        "3-1",
+        "3-2"
+      ]
+    },
+    {
+      "id": "production-analysis",
+      "title": "생산분석 기능명세서 - 260713",
+      "url": "https://app.notion.com/p/39c0e77b201581c49346efa35582634b",
+      "sourceAsOf": "2026-07-20T12:25:20.903Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "2-8",
+        "2-9",
+        "3",
+        "3-1",
+        "3-2"
+      ]
+    },
+    {
+      "id": "equipment-analysis",
+      "title": "설비가동분석 기능명세서 - 260713",
+      "url": "https://app.notion.com/p/39c0e77b201581b58148cf52cf1fad5c",
+      "sourceAsOf": "2026-07-13T01:09:04.330Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "3",
+        "3-1",
+        "3-2"
+      ]
+    },
+    {
+      "id": "molding-analysis",
+      "title": "사출업종) 1.성형압출분석 기능명세서",
+      "url": "https://app.notion.com/p/3600e77b2015803992f6c9a9b6dbe36e",
+      "sourceAsOf": "2026-08-25T03:34:18.486Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "2",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "6-4",
+        "7",
+        "7-1",
+        "7-2",
+        "7-3",
+        "8",
+        "8-1",
+        "8-2",
+        "8-3",
+        "8-4",
+        "9",
+        "10"
+      ]
+    },
+    {
+      "id": "partners",
+      "title": "거래처 등록 기능명세서 - 260713",
+      "url": "https://app.notion.com/p/39c0e77b20158082ae4dea31f6461b98",
+      "sourceAsOf": "2026-07-16T00:38:23.541Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "6-4"
+      ]
+    },
+    {
+      "id": "items",
+      "title": "품목등록 기능명세서 (일반) - 260715",
+      "url": "https://app.notion.com/p/39e0e77b2015818090f5cb2688285c03",
+      "sourceAsOf": "2026-08-04T08:21:18.863Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "4-7",
+        "4-8",
+        "4-9",
+        "4-10",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4"
+      ]
+    },
+    {
+      "id": "molding-items",
+      "title": "품목등록 기능명세서 (사출모듈) - 260715",
+      "url": "https://app.notion.com/p/39e0e77b201581b0b50ae9e14d402233",
+      "sourceAsOf": "2026-08-21T02:15:22.297Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "2-1",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "3-7",
+        "3-8",
+        "3-9",
+        "3-10",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "4-7",
+        "5",
+        "6",
+        "6-1",
+        "6-2"
+      ]
+    },
+    {
+      "id": "bom-registration",
+      "title": "BOM 등록 기능명세서 - 260715",
+      "url": "https://app.notion.com/p/39e0e77b20158188b4b4c1238c262ba0",
+      "sourceAsOf": "2026-07-16T00:39:49.717Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "3-7",
+        "3-8",
+        "3-9",
+        "3-10",
+        "3-11",
+        "3-12",
+        "3-13",
+        "3-14",
+        "3-15",
+        "4"
+      ]
+    },
+    {
+      "id": "special-prices",
+      "title": "특별단가관리 기능명세서 - 260715",
+      "url": "https://app.notion.com/p/39e0e77b201581ea8a8edb3b8cb855e7",
+      "sourceAsOf": "2026-07-20T12:33:12.695Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "5",
+        "5-1",
+        "5-2",
+        "6"
+      ]
+    },
+    {
+      "id": "warehouses",
+      "title": "창고등록 기능명세서 - 260715",
+      "url": "https://app.notion.com/p/39e0e77b2015810c802dc621c0d66ec1",
+      "sourceAsOf": "2026-07-20T12:34:04.073Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4",
+        "5-5"
+      ]
+    },
+    {
+      "id": "equipment",
+      "title": "설비등록 기능명세서 - 260715",
+      "url": "https://app.notion.com/p/39e0e77b2015819da86fd00665622372",
+      "sourceAsOf": "2026-08-07T02:05:05.741Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4",
+        "5-5",
+        "5-6",
+        "5-7",
+        "5-8",
+        "5-9",
+        "5-10",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "6-4",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "id": "processes",
+      "title": "공정등록 기능명세서 - 260715",
+      "url": "https://app.notion.com/p/39e0e77b2015812b875cdb1b214b937e",
+      "sourceAsOf": "2026-07-20T12:58:02.496Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "6-4",
+        "6-5",
+        "7"
+      ]
+    },
+    {
+      "id": "inspection-forms",
+      "title": "양식관리 기능명세서 - 260715",
+      "url": "https://app.notion.com/p/3790e77b20158054b8f2cfae8daba008",
+      "sourceAsOf": "2026-08-12T01:12:51.794Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "6",
+        "6-1",
+        "6-2",
+        "6-3",
+        "6-4",
+        "7",
+        "7-1",
+        "7-2",
+        "7-3",
+        "7-4",
+        "7-5",
+        "7-6",
+        "8",
+        "8-1",
+        "8-2",
+        "8-3",
+        "9",
+        "9-1",
+        "9-2",
+        "9-3",
+        "10",
+        "10-1",
+        "10-2",
+        "10-3",
+        "10-4",
+        "10-5",
+        "10-6",
+        "10-7",
+        "11",
+        "11-1"
+      ]
+    },
+    {
+      "id": "users",
+      "title": "사용자등록 기능명세서 - 260715",
+      "url": "https://app.notion.com/p/39e0e77b20158140b474d8dba6cb03af",
+      "sourceAsOf": "2026-07-16T08:19:33.165Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "6",
+        "6-1",
+        "6-2",
+        "7",
+        "7-1",
+        "7-2",
+        "7-3",
+        "7-4"
+      ]
+    },
+    {
+      "id": "permissions",
+      "title": "권한설정 기능명세서 - 260715",
+      "url": "https://app.notion.com/p/39e0e77b2015815bb9d9c3b2bd27e82c",
+      "sourceAsOf": "2026-07-20T12:36:24.411Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "5"
+      ]
+    },
+    {
+      "id": "registration-settings",
+      "title": "업무운영설정 - Part1:등록방식",
+      "url": "https://app.notion.com/p/3b20e77b201580e69b34e5f9bc919fe4",
+      "sourceAsOf": "2026-08-21T02:08:13.694Z",
+      "review": "business-semantic-review",
+      "disposition": "scoped-amendment",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "2-7",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "3-6",
+        "3-7",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "5-4",
+        "5-5"
+      ]
+    },
+    {
+      "id": "required-settings",
+      "title": "업무운영설정 - Part2:필수입력항목",
+      "url": "https://app.notion.com/p/3b30e77b201580d4b190e48f15b6074a",
+      "sourceAsOf": "2026-08-21T01:02:37.129Z",
+      "review": "business-semantic-review",
+      "disposition": "scoped-amendment",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "5"
+      ]
+    },
+    {
+      "id": "warehouse-settings",
+      "title": "업무운영설정 - Part3:기본창고",
+      "url": "https://app.notion.com/p/3b30e77b201580e2869bcb42ffefb2e3",
+      "sourceAsOf": "2026-08-19T07:10:06.463Z",
+      "review": "business-semantic-review",
+      "disposition": "scoped-amendment",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "2-1",
+        "2-2",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "3-4",
+        "3-5",
+        "4"
+      ]
+    },
+    {
+      "id": "input-default-settings",
+      "title": "업무운영설정 - Part4:입력기본값",
+      "url": "https://app.notion.com/p/3b30e77b201580148480c522366dec71",
+      "sourceAsOf": "2026-08-19T07:09:50.631Z",
+      "review": "business-semantic-review",
+      "disposition": "scoped-amendment",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "2-1",
+        "2-2",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4",
+        "4-1"
+      ]
+    },
+    {
+      "id": "message-dialogs",
+      "title": "팝업 정책 정의서",
+      "url": "https://app.notion.com/p/37a0e77b2015815bbad6e80517f646fa",
+      "sourceAsOf": "2026-06-30T00:51:36.414Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "id": "stock-reconciliation",
+      "title": "재고조사 반영 기능명세서",
+      "url": "https://app.notion.com/p/3600e77b2015807ab565dda2d43ff4dd",
+      "sourceAsOf": "2026-05-14T04:43:13.689Z",
+      "review": "business-semantic-review",
+      "disposition": "specification",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "7-1",
+        "7-2",
+        "8",
+        "8-1",
+        "8-2",
+        "8-3",
+        "9",
+        "9-1",
+        "9-2",
+        "9-3",
+        "10",
+        "10-1",
+        "10-2",
+        "10-3",
+        "11",
+        "12",
+        "12-1",
+        "12-2",
+        "12-3",
+        "13",
+        "13-1",
+        "13-2",
+        "13-3",
+        "13-4",
+        "14",
+        "15",
+        "16"
+      ]
+    },
+    {
+      "id": "simple-production",
+      "title": "생산실적 간편 등록 변경 기능명세서",
+      "url": "https://app.notion.com/p/3b80e77b201580e68ae3fbc3b3ca9cb2",
+      "sourceAsOf": "2026-08-21T02:17:14.853Z",
+      "review": "business-semantic-review",
+      "disposition": "scoped-amendment",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "4-7",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "6"
+      ]
+    },
+    {
+      "id": "simple-receiving",
+      "title": "입고실적 간편 등록 변경 기능명세서",
+      "url": "https://app.notion.com/p/3b90e77b201580e4a04bc57cc02b4c46",
+      "sourceAsOf": "2026-08-21T02:17:23.433Z",
+      "review": "business-semantic-review",
+      "disposition": "scoped-amendment",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "4-7",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "6"
+      ]
+    },
+    {
+      "id": "simple-shipping",
+      "title": "출하실적 간편 등록 변경 기능명세서",
+      "url": "https://app.notion.com/p/3bb0e77b201581d999d6cf84f43a8f81",
+      "sourceAsOf": "2026-08-21T02:17:28.152Z",
+      "review": "business-semantic-review",
+      "disposition": "scoped-amendment",
+      "relationToRoot": "direct-child",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "2",
+        "3",
+        "3-1",
+        "3-2",
+        "3-3",
+        "4",
+        "4-1",
+        "4-2",
+        "4-3",
+        "4-4",
+        "4-5",
+        "4-6",
+        "4-7",
+        "5",
+        "5-1",
+        "5-2",
+        "5-3",
+        "6"
+      ]
+    },
+    {
+      "id": "archive",
+      "title": "📦 델타문서 아카이브 (병합 완료분 원본 보관)",
+      "url": "https://app.notion.com/p/39f0e77b2015811abfbdcc562d9b4b80",
+      "sourceAsOf": "2026-07-19T23:52:48.534Z",
+      "review": "archive-index-only",
+      "disposition": "archive-index",
+      "relationToRoot": "direct-child",
+      "sectionKeys": []
+    },
+    {
+      "id": "equipment-capacity",
+      "title": "설비별 생산량 설정 추가 기능명세서 - 260806",
+      "url": "https://app.notion.com/p/3b40e77b201581bbafc0cb5e09109d9e?pvs=204",
+      "sourceAsOf": "2026-08-07T02:04:48.090Z",
+      "review": "business-semantic-review",
+      "disposition": "scoped-amendment",
+      "relationToRoot": "nested-reference",
+      "sectionKeys": [
+        "1",
+        "1-1",
+        "1-2",
+        "1-3",
+        "2",
+        "2-1",
+        "2-2",
+        "2-3",
+        "2-4",
+        "2-5",
+        "2-6",
+        "3",
+        "4",
+        "5"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "dashboard.monitor",
+      "label": "전체 현황 파악",
+      "sourceRefs": [
+        {
+          "sourceId": "dashboard",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "5",
+            "6",
+            "7",
+            "8"
+          ]
+        }
+      ],
+      "outcome": "생산·설비·입고·출하 등 운영 상황과 갱신 상태를 파악한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "현황값",
+          "기준 기간",
+          "최근 성공 갱신 시점"
+        ]
+      },
+      "relationships": [
+        "영역별 원천 정보와 갱신 주기가 다르다."
+      ],
+      "conditions": [
+        "일부 영역 1분, 분석 영역 5분 갱신으로 서술된다. 최신값인지 여부를 영역별로 구분한다.",
+        "화면 이탈 시 자동 갱신 중단, 수동 갱신과 중복 조회 방지가 명시된다."
+      ],
+      "decisionSupportCandidates": [
+        "직전값/갱신 실패 상태"
+      ],
+      "relatedTasks": [
+        "production.analyze",
+        "equipment.analyze"
+      ]
+    },
+    {
+      "id": "sales.plan-month",
+      "label": "월 판매목표 수립",
+      "sourceRefs": [
+        {
+          "sourceId": "sales-monthly",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "거래처·기준월·품목별 판매목표를 세운다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "거래처",
+          "기준월",
+          "품목",
+          "목표수량"
+        ]
+      },
+      "relationships": [
+        "품목 기준정보·단가와 출하 실적을 연결해 목표/실적을 비교한다.",
+        "일 판매계획과 월 목표는 별도 관리 대상이다."
+      ],
+      "conditions": [
+        "거래처·기준월에 기존 내역이 있으면 기존 내역을 불러오는 편집 흐름이다."
+      ],
+      "decisionSupportCandidates": [
+        "달성률",
+        "금액"
+      ],
+      "relatedTasks": [
+        "sales.plan-day",
+        "shipping.register"
+      ]
+    },
+    {
+      "id": "sales.plan-day",
+      "label": "일 판매계획 수립",
+      "sourceRefs": [
+        {
+          "sourceId": "sales-daily",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "일자별 납품 계획을 세우고 출하지시로 연결한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "거래처",
+          "계획일",
+          "품목",
+          "계획수량"
+        ]
+      },
+      "relationships": [
+        "출하지시 생성과 실제 출하는 별개 사건이다.",
+        "계획/출하일·품목 조건의 확정 출하량을 실적으로 집계하고 취소 시 차감한다."
+      ],
+      "conditions": [
+        "판매요청 완료 표시는 지시 생성 완료를 뜻하며 배송/출하 완료와 동일하지 않다.",
+        "입상수·기준수량이 있어야 박스·파레트 환산을 사용할 수 있다."
+      ],
+      "decisionSupportCandidates": [
+        "월 목표",
+        "누적 출하",
+        "포장 환산"
+      ],
+      "relatedTasks": [
+        "shipping.order",
+        "sales.plan-month"
+      ]
+    },
+    {
+      "id": "purchasing.register",
+      "label": "상품 구매",
+      "sourceRefs": [
+        {
+          "sourceId": "purchasing",
+          "sections": [
+            "3-2",
+            "3-3",
+            "3-5",
+            "3-6",
+            "4-1"
+          ]
+        }
+      ],
+      "outcome": "상품 구매를 기록하고 직송판매 또는 입고 후 판매로 연결한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "구매처",
+          "발주일",
+          "상품",
+          "수량",
+          "판매구분"
+        ]
+      },
+      "relationships": [
+        "직송판매는 판매관리로, 입고후판매는 발주 대기 데이터로 이어진다.",
+        "품목 후보는 상품 구분의 품목이다."
+      ],
+      "conditions": [
+        "판매처는 직송판매일 때 필수, 입고후판매에서는 비활성/미입력 가능으로 서술된다.",
+        "추가 시 품목·예정일·판매구분 등 비수량 식별정보가 같으면 수량 합산한다.",
+        "일괄등록의 판매처 선행 요구는 단건의 조건부 필수와 충돌 가능성이 있어 별도 확인한다."
+      ],
+      "decisionSupportCandidates": [
+        "규격·단위",
+        "기존 구매 내역"
+      ],
+      "relatedTasks": [
+        "purchase.order",
+        "sales.bill"
+      ]
+    },
+    {
+      "id": "sales.bill",
+      "label": "출하 승인·청구",
+      "sourceRefs": [
+        {
+          "sourceId": "sales-billing",
+          "sections": [
+            "2",
+            "3",
+            "4"
+          ]
+        },
+        {
+          "sourceId": "sales-shipping-amendment",
+          "sections": [
+            "2",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "출하와 구매 직송 내역을 승인하고 청구를 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "거래처",
+          "출하/판매 대상",
+          "승인 상태",
+          "청구금액·잔액"
+        ]
+      },
+      "relationships": [
+        "판매 승인·청구 상태와 물류 실적수량은 별도 정보다.",
+        "청구와 수금은 후속 연결 관계이며 일부 금액 청구가 가능하다."
+      ],
+      "conditions": [
+        "회수와 청구 진행은 후속 상태를 바꾼다. 완료/승인대기 명칭과 수동 완료 처리 여부에 명세 충돌이 있어 그대로 자동 구현하지 않는다.",
+        "통화에 따라 부가세 처리 조건이 달라진다."
+      ],
+      "decisionSupportCandidates": [
+        "출하지시 대비 실적",
+        "청구 내역"
+      ],
+      "relatedTasks": [
+        "shipping.register",
+        "collections.record"
+      ]
+    },
+    {
+      "id": "collections.record",
+      "label": "수금 기록",
+      "sourceRefs": [
+        {
+          "sourceId": "collections",
+          "sections": [
+            "2",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "청구된 금액에 대한 수금과 미수 잔액을 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "청구 대상",
+          "수금일",
+          "수금액",
+          "남은 미수"
+        ]
+      },
+      "relationships": [
+        "청구 1건에 여러 수금 내역이 연결되며 잔액은 청구액에서 누적 수금을 차감한다.",
+        "거래처별 청구/수금 이력을 함께 조회할 수 있다."
+      ],
+      "conditions": [
+        "수금액은 양수이며 잔액 범위를 넘지 않아야 한다.",
+        "잔액 0이면 완료 상태로 서술된다. 완료 건 삭제 처리 설명은 문서 내부 확인 필요."
+      ],
+      "decisionSupportCandidates": [
+        "과거 청구·수금 추이"
+      ],
+      "relatedTasks": [
+        "sales.bill"
+      ]
+    },
+    {
+      "id": "production.plan-month",
+      "label": "월 생산목표 수립",
+      "sourceRefs": [
+        {
+          "sourceId": "production-monthly",
+          "sections": [
+            "3-3",
+            "3-6",
+            "4-4"
+          ]
+        }
+      ],
+      "outcome": "판매와 재고를 참고하여 월별 생산목표를 정한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "기준월",
+          "품목",
+          "목표수량"
+        ]
+      },
+      "relationships": [
+        "판매계획·기초재고·단가는 등록 시점의 스냅샷으로 저장된다.",
+        "생산실적은 목표와 비교하는 별도 집계값이다."
+      ],
+      "conditions": [
+        "참고 필요수량은 판매계획-기초재고이며 음수는 0으로 표시한다. 이것이 입력 목표수량을 강제한다는 의미는 아니다.",
+        "편집에서 기존 자료를 현재 재고로 무조건 덮어쓰지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "판매계획수량",
+        "등록 당시 재고",
+        "필요수량"
+      ],
+      "relatedTasks": [
+        "sales.plan-month",
+        "inventory.manage",
+        "production.plan-day"
+      ]
+    },
+    {
+      "id": "production.plan-day",
+      "label": "일 생산계획 수립",
+      "sourceRefs": [
+        {
+          "sourceId": "production-daily",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "설비·일자별로 생산할 품목과 수량을 계획한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "계획일",
+          "설비",
+          "품목",
+          "계획수량"
+        ]
+      },
+      "relationships": [
+        "생산계획과 생산지시, 지시 후 실제 실적을 구분한다.",
+        "품목·공정·설비 연결이 생산 대상 선택에 관여한다."
+      ],
+      "conditions": [
+        "단가 스냅샷과 동적으로 누적되는 실적을 구분한다.",
+        "기준월과 계획일의 선택 범위를 일 판매계획과 동일하다고 가정하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "기존 계획",
+        "생산실적"
+      ],
+      "relatedTasks": [
+        "production.order",
+        "bom.analyze"
+      ]
+    },
+    {
+      "id": "production.order",
+      "label": "생산지시",
+      "sourceRefs": [
+        {
+          "sourceId": "production-orders",
+          "sections": [
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        {
+          "sourceId": "production-results",
+          "sections": [
+            "4-2"
+          ]
+        },
+        {
+          "sourceId": "required-settings",
+          "sections": [
+            "3"
+          ]
+        }
+      ],
+      "outcome": "계획 또는 직접 입력으로 현장 생산을 지시한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "지시일",
+          "설비",
+          "품목",
+          "지시수량"
+        ]
+      },
+      "relationships": [
+        "설비·품목의 공정 매칭과 담당자·주야간 정보를 연결한다.",
+        "지시수량과 누적 생산실적, 작업 상태를 별도로 관리한다."
+      ],
+      "conditions": [
+        "담당기사·근무조·포장인원의 필수 여부는 적용되는 업무운영설정을 확인한다.",
+        "작업중/완료 지시 삭제 제한과 완료 처리 후 추가 실적 제한이 서술된다.",
+        "지시 담당자와 실적 담당자가 반드시 동일해야 하는 것은 아니다."
+      ],
+      "decisionSupportCandidates": [
+        "일 생산계획",
+        "누적생산·불량"
+      ],
+      "relatedTasks": [
+        "production.plan-day",
+        "production.register",
+        "operations.configure"
+      ]
+    },
+    {
+      "id": "production.register",
+      "label": "생산실적 등록",
+      "sourceRefs": [
+        {
+          "sourceId": "production-results",
+          "sections": [
+            "4",
+            "7",
+            "8",
+            "10",
+            "13",
+            "16"
+          ]
+        },
+        {
+          "sourceId": "simple-production",
+          "sections": [
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "registration-settings",
+          "sections": [
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "required-settings",
+          "sections": [
+            "3"
+          ]
+        },
+        {
+          "sourceId": "warehouse-settings",
+          "sections": [
+            "4"
+          ]
+        },
+        {
+          "sourceId": "input-default-settings",
+          "sections": [
+            "3"
+          ]
+        }
+      ],
+      "outcome": "생산 결과를 기록하고 생산품 증가·투입품 차감을 연결한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "생산일시",
+          "설비",
+          "생산품목",
+          "생산수량",
+          "적용 조건에 따른 투입정보"
+        ]
+      },
+      "relationships": [
+        "생산품과 투입품은 각각 결과와 소모 원료로 역할이 다르다.",
+        "BOM 자동 구성은 생산품목·수량·BOM 변경에 의존하며 구성 후 행 편집/삭제가 가능하다.",
+        "지시 선택 여부와 LOT 관리 여부는 별도 조건이다."
+      ],
+      "conditions": [
+        "간편 등록에서 지시를 선택했다면 설비·품목은 고정된다. 입고/출하의 수정 가능한 초기값과 다르다.",
+        "담당자·근무조·불량수량·투입품 필수 여부는 설정별로 평가한다. 필수 불량수량의 0은 유효값이다.",
+        "투입이 선택이어도 추가한 행은 완성해야 한다. 간편 투입 행 추가는 기존 모든 행 완성이 선행한다.",
+        "일반 등록의 LOT 재고 한도와 BOM 대비 부족 안내를 같은 차단 조건으로 취급하지 않는다.",
+        "간편 저장창고는 선택값으로 서술된다. 일반 등록의 필수 창고를 그대로 강제하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "지시 누적량",
+        "BOM 소요 대비 실제 투입",
+        "생산품/투입품 불량",
+        "라벨·부산물"
+      ],
+      "relatedTasks": [
+        "production.order",
+        "bom.manage",
+        "inventory.manage",
+        "byproduct.manage",
+        "operations.configure",
+        "labels.manage"
+      ]
+    },
+    {
+      "id": "operation-log.record",
+      "label": "운전일지",
+      "sourceRefs": [
+        {
+          "sourceId": "operation-log",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "설비의 작업·비가동 시간과 현장 기록을 남긴다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "설비",
+          "가동일",
+          "주야간/작업자",
+          "작업 구간",
+          "비가동 유형·시간"
+        ]
+      },
+      "relationships": [
+        "공정의 가동·비가동 유형과 기록 시간을 연결한다.",
+        "운전 기록이 설비 분석의 가동/비가동 집계 근거가 된다."
+      ],
+      "conditions": [
+        "시간대 메모와 분석에 집계되는 가동·비가동 구간은 별개다.",
+        "총 시간은 시작/종료 시간에 의존한다."
+      ],
+      "decisionSupportCandidates": [
+        "생산품목",
+        "이전 운전 내역"
+      ],
+      "relatedTasks": [
+        "equipment.analyze",
+        "process.manage"
+      ]
+    },
+    {
+      "id": "self-inspection.record",
+      "label": "자주검사",
+      "sourceRefs": [
+        {
+          "sourceId": "self-inspection",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "inspection-forms",
+          "sections": [
+            "3-5"
+          ]
+        }
+      ],
+      "outcome": "생산 대상의 검사값과 중량 등 품질 결과를 기록한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "생산 대상",
+          "검사일시",
+          "검사자",
+          "항목별 측정값"
+        ]
+      },
+      "relationships": [
+        "생산실적·품목/설비·양식·캐비티 배열 정보를 연결한다.",
+        "검사완료 여부와 합격/일부/불합격/보류 결과는 별도다."
+      ],
+      "conditions": [
+        "검사 결과는 항목 값에서 계산하는 값이며 라디오 외형이라는 이유로 직접 입력 값으로 바꾸지 않는다.",
+        "명세별 보류/미입력 집계 차이는 확인 후 적용한다."
+      ],
+      "decisionSupportCandidates": [
+        "품목 기준중량",
+        "이전 측정값"
+      ],
+      "relatedTasks": [
+        "forms.manage",
+        "equipment.manage",
+        "production.register"
+      ]
+    },
+    {
+      "id": "inventory.manage",
+      "label": "재고 조회·증감·이동",
+      "sourceRefs": [
+        {
+          "sourceId": "inventory",
+          "sections": [
+            "3",
+            "4",
+            "5",
+            "6",
+            "7"
+          ]
+        },
+        {
+          "sourceId": "warehouse-settings",
+          "sections": [
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "품목·LOT·창고별 재고를 파악하고 필요한 조정을 수행한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "대상 품목/LOT",
+          "현재 창고와 수량",
+          "변경 수량",
+          "변경 이유 또는 이동 창고"
+        ]
+      },
+      "relationships": [
+        "입고·생산·출하·투입·반품·부산물 생성이 재고이력으로 연결된다.",
+        "추가 재고는 입고등록에 재고편집(추가) 이력을 생성한다."
+      ],
+      "conditions": [
+        "삭제수량·이동수량은 양수이며 현재고 이하.",
+        "불량 차감에는 공정의 불량유형이 필요하며 공정 미매칭이면 선택 제한이 있다.",
+        "조회/편집 부모 팝업을 닫아도 하위 삭제/이동 팝업에서 이미 저장한 재고 변동은 취소되지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "변동 전후 수량",
+        "발생 출처",
+        "LOT 이력"
+      ],
+      "relatedTasks": [
+        "receiving.register",
+        "shipping.register",
+        "production.register",
+        "stock.reconcile"
+      ]
+    },
+    {
+      "id": "labels.manage",
+      "label": "LOT·라벨 생성과 확정",
+      "sourceRefs": [
+        {
+          "sourceId": "labels",
+          "sections": [
+            "2",
+            "3",
+            "4"
+          ]
+        },
+        {
+          "sourceId": "lot-generation",
+          "sections": [
+            "3",
+            "4",
+            "5",
+            "6",
+            "7"
+          ]
+        },
+        {
+          "sourceId": "lot-customization",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "simple-production",
+          "sections": [
+            "4-7"
+          ]
+        },
+        {
+          "sourceId": "simple-receiving",
+          "sections": [
+            "4-6",
+            "4-7"
+          ]
+        },
+        {
+          "sourceId": "simple-shipping",
+          "sections": [
+            "4-7"
+          ]
+        }
+      ],
+      "outcome": "LOT 식별과 실적 충족 상태, 라벨 발행을 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "LOT 식별",
+          "품목",
+          "기준수량·완료수량",
+          "임시/확정"
+        ]
+      },
+      "relationships": [
+        "생산/입고에 따라 설비/거래처를 참조한다.",
+        "공급사 LOT 텍스트, 시스템 LOT, 등록 행 번호는 서로 다른 식별자다.",
+        "선발행 라벨의 LOT 번호는 이후 실적 입력으로 재생성하지 않는다."
+      ],
+      "conditions": [
+        "임시 LOT도 출력 가능하다. 실적 충족 또는 사용자 확정과 실제 생산 완료를 혼동하지 않는다.",
+        "LOT 포맷은 고객사 구축 설정이다. 사용자 편집 UI를 자동 생성하지 않는다.",
+        "LOT 미사용은 데이터 식별자가 없다는 뜻이 아니라 품목별 단일 LOT를 시스템이 다룬다는 뜻이다.",
+        "담당자의 A/B/C 근무조와 주야간은 별개이며 포맷 변경은 기존 LOT를 다시 쓰지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "배정 실적",
+        "라벨 출력 이력"
+      ],
+      "relatedTasks": [
+        "lot.trace",
+        "production.register",
+        "receiving.register"
+      ]
+    },
+    {
+      "id": "bom.analyze",
+      "label": "BOM 조회·소요재고 분석",
+      "sourceRefs": [
+        {
+          "sourceId": "bom-view",
+          "sections": [
+            "2-4",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "선택 품목의 BOM 구조와 계획 대비 필요한 자재를 파악한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "생산품목·BOM 버전",
+          "하위 구성",
+          "계획수량",
+          "소요량·현재고·부족량"
+        ]
+      },
+      "relationships": [
+        "BOM은 설계상 자재 관계이며 실제 LOT 투입 이력과는 다르다.",
+        "여러 생산품이 같은 자재를 사용하면 필요량을 합산한다."
+      ],
+      "conditions": [
+        "BOM 버전이 있는 품목을 대상으로 하고 선택 품목/버전에 따라 구조가 바뀐다.",
+        "부족량은 소요수량-현재고이며 0 이하 표시 방식이 정해져 있다. 자동 발주 실행을 뜻하지 않는다.",
+        "품목 미선택 분석 진입은 허용하지만 이후 분석 대상 범위는 문서가 불명확하다."
+      ],
+      "decisionSupportCandidates": [
+        "계획 기간",
+        "주문 필요 자재 건수"
+      ],
+      "relatedTasks": [
+        "bom.manage",
+        "production.plan-day",
+        "purchase.order",
+        "lot.trace"
+      ]
+    },
+    {
+      "id": "materials.analyze",
+      "label": "원료 사용량 분석",
+      "sourceRefs": [
+        {
+          "sourceId": "material-analysis",
+          "sections": [
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "생산실적의 표준 사용량과 실제 투입량·금액을 비교한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "대상 생산실적",
+          "원료",
+          "표준량",
+          "실사용량"
+        ]
+      },
+      "relationships": [
+        "BOM×생산수량은 표준량, 실적의 실제 투입은 실사용량이다.",
+        "복수 생산실적 선택 시 관련 투입내역을 합산한다."
+      ],
+      "conditions": [
+        "금액은 해당 원료 단가와 수량에서 계산하며 기간/대상 선택에 따라 다시 조회한다."
+      ],
+      "decisionSupportCandidates": [
+        "재질",
+        "표준/실제 금액"
+      ],
+      "relatedTasks": [
+        "production.register",
+        "bom.manage"
+      ]
+    },
+    {
+      "id": "purchase.order",
+      "label": "발주등록",
+      "sourceRefs": [
+        {
+          "sourceId": "purchase-orders",
+          "sections": [
+            "3-2",
+            "3-4",
+            "3-6",
+            "4-5",
+            "6"
+          ]
+        }
+      ],
+      "outcome": "거래처에 주문할 품목과 수량·입고 조건을 기록한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "거래처",
+          "발주일",
+          "품목",
+          "수량",
+          "입고예정일·구분·창고"
+        ]
+      },
+      "relationships": [
+        "발주 건 아래 품목 조건별 행과 복수 입고실적이 연결된다.",
+        "행 입고율과 건 전체 입고율은 구분하며 명세는 과입고 행을 보정한 평균을 사용한다."
+      ],
+      "conditions": [
+        "품목+예정일+구분+창고가 같을 때 수량을 합산한다.",
+        "수동 완료는 추가 입고 제한 의도가 있는 조작이다.",
+        "입고실적이 있으면 발주 삭제를 차단한다.",
+        "일괄등록 하위 저장은 부모 발주 리스트에 넘기는 단계이며 최종 저장과 다르다."
+      ],
+      "decisionSupportCandidates": [
+        "누적 입고량",
+        "입고율·상태"
+      ],
+      "relatedTasks": [
+        "receiving.register",
+        "purchasing.register"
+      ]
+    },
+    {
+      "id": "receiving.register",
+      "label": "입고등록",
+      "sourceRefs": [
+        {
+          "sourceId": "receiving",
+          "sections": [
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"
+          ]
+        },
+        {
+          "sourceId": "simple-receiving",
+          "sections": [
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "registration-settings",
+          "sections": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "sourceId": "required-settings",
+          "sections": [
+            "3"
+          ]
+        },
+        {
+          "sourceId": "warehouse-settings",
+          "sections": [
+            "3"
+          ]
+        }
+      ],
+      "outcome": "실제로 받은 품목과 수량·창고를 기록하고 입고 재고를 증가시킨다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "입고 대상",
+          "입고일",
+          "거래처",
+          "품목",
+          "수량",
+          "창고"
+        ]
+      },
+      "relationships": [
+        "발주는 입고의 선행정보가 될 수 있으나 선택 없이 등록하는 경로도 있다.",
+        "입고 실적은 재고와 연결되며 상세 입고 행·LOT·공급사 LOT를 구분한다.",
+        "간편 등록의 입고일은 전체 행 공통, 거래처·품목·수량·창고·공급사 LOT·메모는 행별이다."
+      ],
+      "conditions": [
+        "선행 발주 연계 방식과 LOT 관리는 독립 조건이다. 기존 선택 팝업 수를 신규 UI의 필수 단계로 복사하지 않는다.",
+        "발주에서 채운 간편 거래처·품목도 연계 가능한 범위에서 변경 가능하다. 날짜·거래처·품목 변경 시 후보/연계를 재조회한다.",
+        "간편 행 추가는 직전 거래처만 복사한다. 창고는 직전 행이 아니라 기본창고 설정에서 다시 가져온다.",
+        "간편 입력에서 동일 조합·동일 공급사 LOT 중복을 허용하고 자동 합산하지 않는다.",
+        "간편 최종 저장은 전체 행 검증 및 실적·재고 저장을 모두 성공시키거나 모두 취소한다.",
+        "기존 입고 삭제·반품은 후속 투입/출하 이력 및 재고 처리 선택에 의존한다."
+      ],
+      "decisionSupportCandidates": [
+        "기존 입고내역",
+        "발주 잔량·진행상태",
+        "LOT 상세"
+      ],
+      "relatedTasks": [
+        "purchase.order",
+        "inventory.manage",
+        "quality.receive",
+        "operations.configure",
+        "labels.manage"
+      ],
+      "informationModel": {
+        "appliesWhen": "입고실적 간편 등록 변경 명세의 신규 등록을 적용하는 경우. 일반 등록이나 새 업무의 공통 소유 범위로 강제하지 않음.",
+        "basis": {
+          "sourceId": "simple-receiving",
+          "sections": [
+            "4-2",
+            "4-3",
+            "4-4",
+            "4-5",
+            "4-6",
+            "4-7"
+          ]
+        },
+        "fields": [
+          {
+            "id": "receivingDate",
+            "meaning": "실제 입고일",
+            "scope": "submission",
+            "required": "always",
+            "acquisition": [
+              "today-default",
+              "upstream-default",
+              "manual"
+            ],
+            "editable": true,
+            "changeEffects": [
+              "supplier/item 후보와 발주 연계 재평가"
+            ]
+          },
+          {
+            "id": "supplier",
+            "meaning": "입고 거래처",
+            "scope": "row",
+            "required": "always",
+            "acquisition": [
+              "upstream-default",
+              "previous-row-default",
+              "manual"
+            ],
+            "editable": true,
+            "changeEffects": [
+              "품목 후보·발주 연계 재평가"
+            ]
+          },
+          {
+            "id": "item",
+            "meaning": "입고 품목",
+            "scope": "row",
+            "required": "always",
+            "acquisition": [
+              "upstream-default",
+              "manual"
+            ],
+            "editable": true,
+            "changeEffects": [
+              "품목 기준정보·단위 갱신",
+              "발주 연계 재평가"
+            ]
+          },
+          {
+            "id": "quantity",
+            "meaning": "입고 수량",
+            "scope": "row",
+            "required": "always-positive",
+            "acquisition": [
+              "manual"
+            ],
+            "editable": true,
+            "changeEffects": [
+              "입고 수량과 저장될 재고 증가량"
+            ]
+          },
+          {
+            "id": "warehouse",
+            "meaning": "이 행의 입고 창고",
+            "scope": "row",
+            "required": "always",
+            "acquisition": [
+              "tenant-default",
+              "manual"
+            ],
+            "editable": true,
+            "changeEffects": [
+              "재고 증가 대상 창고"
+            ]
+          },
+          {
+            "id": "unit",
+            "meaning": "선택 품목의 단위",
+            "scope": "row",
+            "required": "derived-if-available",
+            "acquisition": [
+              "item-master"
+            ],
+            "editable": false,
+            "changeEffects": []
+          },
+          {
+            "id": "supplierLot",
+            "meaning": "화면명 입고 LOT, 의미는 공급사 LOT 텍스트",
+            "scope": "row",
+            "required": "tenant-setting",
+            "acquisition": [
+              "manual"
+            ],
+            "editable": true,
+            "changeEffects": []
+          },
+          {
+            "id": "memo",
+            "meaning": "해당 행의 메모",
+            "scope": "row",
+            "required": "optional",
+            "acquisition": [
+              "manual"
+            ],
+            "editable": true,
+            "changeEffects": [
+              "하위 저장은 행 임시값 반영",
+              "메인 저장 시 최종 반영"
+            ]
+          }
+        ],
+        "relatedInformation": [
+          {
+            "id": "receivingHistory",
+            "meaning": "과거에 받은 내역",
+            "relation": "decision-reference",
+            "priority": "새 화면 목적이 이력 검토인지 등록인지에 따라 재판정"
+          },
+          {
+            "id": "mesLot",
+            "meaning": "시스템이 관리하는 LOT",
+            "relation": "result-or-internal-identity",
+            "priority": "간편 입력의 직접 입력 항목 아님. LOT 추적 업무에서는 주요 정보"
+          }
+        ],
+        "notEstablished": [
+          "입고담당자를 고정 필수/자동/미사용 설정으로 나누는 정책은 이번 입고 명세에서 확인되지 않음.",
+          "입고일 변경 시의 정확한 발주 기준일 매칭 필드와 다중 매칭 처리 상세는 확인 필요."
+        ]
+      }
+    },
+    {
+      "id": "shipping.order",
+      "label": "출하지시",
+      "sourceRefs": [
+        {
+          "sourceId": "shipping-orders",
+          "sections": [
+            "2-7",
+            "3-2",
+            "3-4",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "sales-shipping-amendment",
+          "sections": [
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "물류에 출하 대상·수량을 지시하고 실적과 영업 승인으로 연결한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "출하예정일",
+          "거래처",
+          "품목",
+          "지시수량",
+          "일반/긴급 구분"
+        ]
+      },
+      "relationships": [
+        "판매계획 기반 일반 지시와 직접 추가한 긴급 지시는 다른 구분이다.",
+        "부분 출하, 실적 충족, 판매 승인/청구는 서로 다른 진행 단계다."
+      ],
+      "conditions": [
+        "같은 거래처·예정일·품목이어도 일반/긴급 구분이 다르면 행 합산하지 않는다.",
+        "실적이 존재하면 지시 삭제를 제한한다.",
+        "수동 완료 UI 존치와 완료 상태 명칭은 개정 문서 충돌이 있으므로 새 화면 구현 전 영향 범위만 확인한다."
+      ],
+      "decisionSupportCandidates": [
+        "포장 환산",
+        "누적 출하량"
+      ],
+      "relatedTasks": [
+        "sales.plan-day",
+        "shipping.register",
+        "sales.bill"
+      ]
+    },
+    {
+      "id": "shipping.register",
+      "label": "출하실적 등록",
+      "sourceRefs": [
+        {
+          "sourceId": "shipping-results",
+          "sections": [
+            "4",
+            "5",
+            "8"
+          ]
+        },
+        {
+          "sourceId": "simple-shipping",
+          "sections": [
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "registration-settings",
+          "sections": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "sourceId": "warehouse-settings",
+          "sections": [
+            "3"
+          ]
+        }
+      ],
+      "outcome": "실제로 보낼 수량을 등록하고 해당 창고의 재고를 차감한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "출하일",
+          "거래처",
+          "창고",
+          "품목",
+          "수량",
+          "적용 모드에 따른 LOT"
+        ]
+      },
+      "relationships": [
+        "일반 등록은 품목→보관창고→해당 LOT→LOT 재고 한도의 연계다.",
+        "간편 등록은 행별 거래처·창고·품목·수량, 공통 출하일을 갖는다.",
+        "지시 목표량과 현재 출하 가능한 재고량은 서로 다른 제한/참고 값이다."
+      ],
+      "conditions": [
+        "간편 창고 변경 시 기존 품목·수량 초기화, 품목 변경 시 수량 초기화.",
+        "간편 행 추가는 직전 거래처만 복사하고 창고는 출하 기본창고로 채운다.",
+        "저장 시점 재고로 재검증한다. 간편 전체 저장/재고 차감 중 한 건 실패하면 전체 취소한다.",
+        "간편 중복 행 허용·합산, 독립 실적의 판매관리 이관은 아직 명세상 미정이다.",
+        "후속 청구 완료 여부가 삭제 가능성에 영향을 준다. 삭제와 반품의 재고 결과는 별도 확인한다."
+      ],
+      "decisionSupportCandidates": [
+        "지시 대비 선택수량·잔여량",
+        "창고 가용 재고",
+        "출하내역"
+      ],
+      "relatedTasks": [
+        "shipping.order",
+        "inventory.manage",
+        "sales.bill",
+        "quality.ship",
+        "operations.configure"
+      ]
+    },
+    {
+      "id": "quality.receive",
+      "label": "입고검사",
+      "sourceRefs": [
+        {
+          "sourceId": "receiving-inspection",
+          "sections": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "sourceId": "inspection-forms",
+          "sections": [
+            "3-5",
+            "10"
+          ]
+        },
+        {
+          "sourceId": "input-default-settings",
+          "sections": [
+            "3"
+          ]
+        }
+      ],
+      "outcome": "입고 대상의 검사값을 기록하고 품질 결과를 확인한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "입고 대상·LOT",
+          "검사일",
+          "검사자",
+          "검사항목별 값·기준"
+        ]
+      },
+      "relationships": [
+        "품목의 입고검사 Y 설정을 만족하는 입고실적에서 LOT 단위 검사 대상이 생긴다.",
+        "양식관리의 항목 정의/판정 기준과 검사자가 기록한 실제 값을 구분한다."
+      ],
+      "conditions": [
+        "원천 입고 정보는 읽기 전용, 검사일·검사자는 변경 가능하다.",
+        "입고검사의 일괄 합격 대상은 검사대기 및 일부/불합 건으로 서술되어 출고검사와 다르다.",
+        "검사완료와 합격은 별개. 보류·미입력의 전체결과 계산은 양식/개별 명세 대조가 필요하다."
+      ],
+      "decisionSupportCandidates": [
+        "공급사 LOT",
+        "품목 상세",
+        "이전 결과"
+      ],
+      "relatedTasks": [
+        "receiving.register",
+        "forms.manage"
+      ]
+    },
+    {
+      "id": "quality.ship",
+      "label": "출고검사",
+      "sourceRefs": [
+        {
+          "sourceId": "shipping-inspection",
+          "sections": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "sourceId": "inspection-forms",
+          "sections": [
+            "3-5"
+          ]
+        },
+        {
+          "sourceId": "input-default-settings",
+          "sections": [
+            "3"
+          ]
+        }
+      ],
+      "outcome": "출하된 대상의 품질 검사를 기록한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "출하 대상",
+          "검사일",
+          "검사자",
+          "검사값·기준"
+        ]
+      },
+      "relationships": [
+        "출고검사 Y 품목의 출하실적에서 검사 대상이 생긴다.",
+        "출고코드·출고 LOT·고객 LOT는 같은 식별자가 아니다."
+      ],
+      "conditions": [
+        "일괄 합격은 검사대기 건만 대상으로 서술된다.",
+        "출하실적 삭제 시 검사결과 함께 삭제, 반품이면 검사결과 유지로 구분된다."
+      ],
+      "decisionSupportCandidates": [
+        "고객 LOT",
+        "기존 출하 정보"
+      ],
+      "relatedTasks": [
+        "shipping.register",
+        "forms.manage"
+      ]
+    },
+    {
+      "id": "quality.process",
+      "label": "공정검사",
+      "sourceRefs": [
+        {
+          "sourceId": "process-inspection",
+          "sections": [
+            "3",
+            "4",
+            "5",
+            "7"
+          ]
+        },
+        {
+          "sourceId": "inspection-forms",
+          "sections": [
+            "3-5",
+            "10"
+          ]
+        },
+        {
+          "sourceId": "equipment",
+          "sections": [
+            "5",
+            "7"
+          ]
+        }
+      ],
+      "outcome": "생산 대상에 대한 반복 가능한 공정검사와 측정 이력을 기록한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "선택 생산실적",
+          "검사일시",
+          "검사자",
+          "항목 판정·중량"
+        ]
+      },
+      "relationships": [
+        "검사대상은 자동 생성이 아니라 사용자가 생산실적을 선택하여 생성한다.",
+        "선택 후보는 생산일·설비·주야간·품목 조합으로 집계하고 동일 대상 반복 검사 이력을 허용한다.",
+        "설비/금형의 배열과 품목 기준중량이 중량검사에 연결된다."
+      ],
+      "conditions": [
+        "공정검사 Y 품목만 후보가 된다.",
+        "중량/특이사항 하위 저장과 검사 최종 저장을 구분한다.",
+        "생산실적 삭제는 관련 공정검사 삭제로 연결된다.",
+        "보류와 미입력 집계는 양식/개별 문서 차이를 확인한다."
+      ],
+      "decisionSupportCandidates": [
+        "기존 검사 횟수",
+        "측정값 요약"
+      ],
+      "relatedTasks": [
+        "production.register",
+        "forms.manage",
+        "equipment.manage"
+      ]
+    },
+    {
+      "id": "quality.analyze",
+      "label": "품질 경향 파악",
+      "sourceRefs": [
+        {
+          "sourceId": "quality-trends",
+          "sections": [
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ]
+        }
+      ],
+      "outcome": "반품·품질 결과·측정치·검사 달성률의 변화를 파악한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "비교 기간",
+          "검사 종류",
+          "품목",
+          "측정치·기준 범위"
+        ]
+      },
+      "relationships": [
+        "입고/출하의 반품과 품질검사의 결과는 서로 다른 지표다.",
+        "검사 완료율은 해당 기준일의 검사대상 대비 완료건수다.",
+        "품목을 선택해야 해당 배열의 측정치가 연결된다."
+      ],
+      "conditions": [
+        "보류를 불합으로 표기하는 문구는 양식의 별도 보류 상태와 구분 확인이 필요하다.",
+        "측정 원천의 자주검사 표제/공정검사 본문 불일치를 그대로 데이터 매핑으로 확정하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "전년도 비교",
+        "이상 측정 위치"
+      ],
+      "relatedTasks": [
+        "quality.receive",
+        "quality.ship",
+        "quality.process"
+      ]
+    },
+    {
+      "id": "equipment.monitor",
+      "label": "설비 실시간 상태 확인",
+      "sourceRefs": [
+        {
+          "sourceId": "equipment-monitoring",
+          "sections": [
+            "2",
+            "3"
+          ]
+        }
+      ],
+      "outcome": "선택 설비의 PLC 정보와 알람 발생/복구 상태를 확인한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "설비",
+          "최근 수신 시각",
+          "수신/가동 표시",
+          "해당 PLC 항목"
+        ]
+      },
+      "relationships": [
+        "설비유형·호기에 따라 수신 태그와 표시할 정보가 달라진다.",
+        "알람 발생시간과 복구시간은 별도 사건이다."
+      ],
+      "conditions": [
+        "명세는 5초 수신, 30초 미수신 시 OFF로 표시한다. 실제 설비 정지를 확정하는 보편 규칙으로 확장하지 않는다.",
+        "구체 태그·단위는 PLC 설정이 필요하며 명세의 예시 카드만으로 생성하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "알람 이력"
+      ],
+      "relatedTasks": [
+        "equipment.manage",
+        "equipment.analyze"
+      ]
+    },
+    {
+      "id": "maintenance.record",
+      "label": "정비이력",
+      "sourceRefs": [
+        {
+          "sourceId": "maintenance",
+          "sections": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ]
+        }
+      ],
+      "outcome": "설비 정비 원인·작업시간·투입자재·비용을 기록한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "설비",
+          "정비일",
+          "담당자",
+          "정비형태",
+          "작업시간"
+        ]
+      },
+      "relationships": [
+        "설비구분과 설비 선택은 상호 연동된다.",
+        "투입자재는 이 명세에서 기타 설비로 등록된 항목이며 일반 생산 BOM 자재와 다르다.",
+        "자재 수량→수리비용 계산, 수리비용 수동 수정→수량 유지의 단방향 관계다."
+      ],
+      "conditions": [
+        "같은 투입자재를 다시 추가해도 합산하지 않는다.",
+        "하위 정비기록·작업시간 저장은 부모 편집값에 반영한다.",
+        "명세상 정비이력 삭제 제한 없음은 다른 재고/실적 삭제에 일반화하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "원인분석",
+        "총비용·정비시간"
+      ],
+      "relatedTasks": [
+        "equipment.manage",
+        "equipment.analyze"
+      ]
+    },
+    {
+      "id": "equipment.inspect",
+      "label": "설비점검",
+      "sourceRefs": [
+        {
+          "sourceId": "equipment-inspection",
+          "sections": [
+            "3",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "inspection-forms",
+          "sections": [
+            "3",
+            "7",
+            "10"
+          ]
+        }
+      ],
+      "outcome": "설비에 매핑된 양식으로 점검하고 기준 대비 정상/이상을 기록한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "대상설비",
+          "점검양식",
+          "점검일·점검자",
+          "측정값"
+        ]
+      },
+      "relationships": [
+        "설비를 선택하면 매핑된 양식 후보가 정해지고 양식에 따라 입력 항목/기준이 결정된다.",
+        "항목 정의, 실제 측정, 집계 결과는 별도 정보다."
+      ],
+      "conditions": [
+        "동일 설비·양식·날짜의 반복 등록을 허용한다.",
+        "필수 기본정보와 달리 미입력 검사값은 '-' 저장을 허용한다.",
+        "기준 없는 텍스트·미입력·보류는 정상/이상 집계에서 제외한다."
+      ],
+      "decisionSupportCandidates": [
+        "기준값",
+        "점검 이력"
+      ],
+      "relatedTasks": [
+        "forms.manage",
+        "equipment.manage"
+      ]
+    },
+    {
+      "id": "lot.trace",
+      "label": "LOT 역추적·영향 추적",
+      "sourceRefs": [
+        {
+          "sourceId": "lot-trace",
+          "sections": [
+            "2",
+            "3"
+          ]
+        }
+      ],
+      "outcome": "실제로 사용된 원료와 해당 원료로 만들어진 결과물을 추적한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "기준 LOT",
+          "추적 방향",
+          "연결된 실적·LOT",
+          "투입량·잔량"
+        ]
+      },
+      "relationships": [
+        "역전개는 실제 투입 하위 LOT, 정전개는 해당 LOT를 사용한 상위 생산 LOT를 보여준다.",
+        "생산/입고/출하 경로에 따라 설비·거래처·담당자 출처가 달라진다."
+      ],
+      "conditions": [
+        "한 LOT를 기준으로 추적한다. 설계상 BOM만으로 실제 추적 관계를 대체하지 않는다.",
+        "삭제 LOT 제외가 명세에 있으므로 삭제 후 감사 추적 요구까지 충족한다고 단정하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "검사 수행 여부",
+        "발생일·출하처"
+      ],
+      "relatedTasks": [
+        "production.register",
+        "inventory.manage",
+        "bom.analyze"
+      ]
+    },
+    {
+      "id": "production.analyze",
+      "label": "생산 성과 분석",
+      "sourceRefs": [
+        {
+          "sourceId": "production-analysis",
+          "sections": [
+            "2",
+            "3"
+          ]
+        },
+        {
+          "sourceId": "molding-analysis",
+          "sections": [
+            "4",
+            "5",
+            "6",
+            "8"
+          ]
+        }
+      ],
+      "outcome": "계획 대비 생산·출하 및 불량 성과를 비교한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "집계 범위",
+          "비교 기준",
+          "수량/금액 단위",
+          "양품·불량·계획"
+        ]
+      },
+      "relationships": [
+        "금액/수량 전환은 표시 단위뿐 아니라 불량률과 TOP 순위 계산 기준도 바꾼다.",
+        "사출 분석은 07시 기준 업무일과 별도 일일 기초데이터를 사용한다."
+      ],
+      "conditions": [
+        "기본 생산분석과 사출 분석의 집계기준·0분모 처리·지표 정의를 혼합하지 않는다.",
+        "사출 비율은 개별 비율의 평균이 아니라 합산한 분자/분모에서 다시 계산한다.",
+        "사용자 입력 계획값은 해당 분석용 대체값이며 원본 계획 자동 수정과 다르다."
+      ],
+      "decisionSupportCandidates": [
+        "상위 품목/설비/작업자",
+        "전월 비교"
+      ],
+      "relatedTasks": [
+        "production.register",
+        "operation-log.record",
+        "production.plan-month"
+      ]
+    },
+    {
+      "id": "equipment.analyze",
+      "label": "설비 가동·정비 분석",
+      "sourceRefs": [
+        {
+          "sourceId": "equipment-analysis",
+          "sections": [
+            "2",
+            "3"
+          ]
+        }
+      ],
+      "outcome": "정비와 운전 기록으로 설비 가동 지표와 고장 경향을 비교한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "기간·공정·설비",
+          "가동/정비시간",
+          "점검건수",
+          "지표 산식"
+        ]
+      },
+      "relationships": [
+        "정상 가동률은 정비이력, 종합 가동률은 운전일지라는 다른 원천을 사용한다.",
+        "긴급 정비가 이 분석 화면에서는 돌발로 표기되는 용어 차이가 있다."
+      ],
+      "conditions": [
+        "점검건수 0일 때 MTBF는 가동시간, MTTR은 0으로 서술된다. 타 지표의 0처리를 추정하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "TOP 비가동 유형",
+        "전월 대비 정비"
+      ],
+      "relatedTasks": [
+        "maintenance.record",
+        "operation-log.record",
+        "equipment.monitor"
+      ]
+    },
+    {
+      "id": "partners.manage",
+      "label": "거래처 기준정보",
+      "sourceRefs": [
+        {
+          "sourceId": "partners",
+          "sections": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ]
+        }
+      ],
+      "outcome": "거래처 식별·거래 조건·담당자·통화 정보를 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "거래처명",
+          "영업담당",
+          "내수/수출",
+          "통화",
+          "사용여부"
+        ]
+      },
+      "relationships": [
+        "사용자 정보가 영업담당 선택에, 거래처 통화/환율이 판매·청구에 연결된다.",
+        "커스텀 항목 정의 변경은 해당 거래처 한 건이 아니라 전체 거래처의 컬럼에 영향을 준다."
+      ],
+      "conditions": [
+        "거래내역이 있으면 삭제 대신 미사용 처리로 안내한다.",
+        "미사용 거래처는 신규 거래 선택 후보에서 제외된다.",
+        "커스텀 항목 이름/타입 재사용 시 과거 의미가 달라질 수 있어 동일 코드=동일 의미라고 간주하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "연락처·주소",
+        "거래 이력"
+      ],
+      "relatedTasks": [
+        "purchase.order",
+        "sales.bill",
+        "users.manage"
+      ]
+    },
+    {
+      "id": "items.manage",
+      "label": "품목 기준정보·표준단가",
+      "sourceRefs": [
+        {
+          "sourceId": "items",
+          "sections": [
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ],
+      "outcome": "품목의 단위·공정·검사 대상 여부와 기간별 생산/판매단가를 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "품목",
+          "품목구분",
+          "단위",
+          "사용여부",
+          "적용할 공정·검사 조건"
+        ]
+      },
+      "relationships": [
+        "생산표준단가와 판매표준단가는 다른 업무에 적용한다.",
+        "단가는 품목×단가구분×적용기간이며 거래처 특별단가는 별도 예외다.",
+        "입고/출고/공정검사 Y 설정이 검사대상 후보 조건과 연결된다."
+      ],
+      "conditions": [
+        "동일 품목·단가구분 기간이 겹치면 새 단가 우선으로 기존 기간을 분할 조정한다.",
+        "유효 단가가 없으면 0으로 계산하는 명세이며 값 없음과 유효 0의 의미를 혼동하지 않는다.",
+        "공정검사 Y를 자동 검사 생성이라고 적은 요약과 공정검사의 수동 생성 명세를 구분 확인한다."
+      ],
+      "decisionSupportCandidates": [
+        "단가 이력",
+        "품목 규격",
+        "커스텀 정보"
+      ],
+      "relatedTasks": [
+        "prices.manage",
+        "forms.manage",
+        "process.manage",
+        "byproduct.manage"
+      ]
+    },
+    {
+      "id": "byproduct.manage",
+      "label": "사출 기준정보·부산물",
+      "sourceRefs": [
+        {
+          "sourceId": "molding-items",
+          "sections": [
+            "2",
+            "4",
+            "5",
+            "6"
+          ]
+        }
+      ],
+      "outcome": "사출 품목의 특성과 생산에 따라 발생하는 부산물 재고 관계를 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "생산품목",
+          "부산물 품목 매핑",
+          "SHEET 유효 투입중량",
+          "생산·불량수량",
+          "NET중량"
+        ]
+      },
+      "relationships": [
+        "부산물은 투입품과 같은 위계의 소모 내역이 아니라 생산으로 생기는 별도 결과다.",
+        "계산 중량은 유효 SHEET 중량에서 생산품/불량품의 제품 중량을 뺀 값이다.",
+        "부산물 LOT는 생산품 LOT와 별도 생성하며 이후 압출 투입에 사용된다."
+      ],
+      "conditions": [
+        "매핑 없음은 오류가 아니며 기존 생산 저장을 따른다.",
+        "매핑된 부산물의 계산값이 0 이하이면 저장 제한으로 서술된다.",
+        "생산과 부산물 생성은 함께 성공/실패한다.",
+        "부산물 후속 사용 여부에 따라 수정 시 재생성/차이 조정, 삭제 제한이 달라진다."
+      ],
+      "decisionSupportCandidates": [
+        "시트 규격·중량",
+        "부산물 재사용 내역"
+      ],
+      "relatedTasks": [
+        "production.register",
+        "inventory.manage",
+        "lot.trace"
+      ]
+    },
+    {
+      "id": "bom.manage",
+      "label": "BOM 등록·복사",
+      "sourceRefs": [
+        {
+          "sourceId": "bom-registration",
+          "sections": [
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "품목·버전별 투입품과 소요수량을 관리하고 필요한 구성만 복사한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "생산품목",
+          "BOM 슬롯·명칭",
+          "투입품목·소요수량",
+          "사용여부"
+        ]
+      },
+      "relationships": [
+        "BOM 1개는 원본 품목+버전과 하위 투입품 목록으로 구성된다.",
+        "복사는 한 원본을 여러 대상 품목/슬롯으로 보내는 관계다."
+      ],
+      "conditions": [
+        "부모 품목을 자기 투입품 후보에서 제외한다.",
+        "통상 빈 슬롯만 선택하고 10개 슬롯 소진 때는 VER10 덮어쓰기 확인 예외가 있다.",
+        "원본 등록자/일시는 복사 대상에서 제외한다."
+      ],
+      "decisionSupportCandidates": [
+        "기존 BOM 구성",
+        "등록된 버전"
+      ],
+      "relatedTasks": [
+        "bom.analyze",
+        "production.register",
+        "items.manage"
+      ]
+    },
+    {
+      "id": "prices.manage",
+      "label": "거래처별 특별단가",
+      "sourceRefs": [
+        {
+          "sourceId": "special-prices",
+          "sections": [
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "items",
+          "sections": [
+            "4-8"
+          ]
+        }
+      ],
+      "outcome": "거래처·품목별 유효 판매단가와 변경 이력을 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "거래처",
+          "품목",
+          "변경단가",
+          "적용시작일"
+        ]
+      },
+      "relationships": [
+        "유효 특별단가가 있으면 판매표준단가보다 우선한다.",
+        "특별단가 변경과 이미 저장된 실적의 단가 스냅샷은 별개다.",
+        "엑셀 매칭은 표시 이름이 아니라 사내 코드가 기준이다."
+      ],
+      "conditions": [
+        "종료일 경계가 당일 00시 종료로 서술되어 시작일-1일 조정과 함께 적용하기 전에 확인 필요.",
+        "변경·삭제 후에도 저장된 실적 단가는 유지한다.",
+        "생산단가는 참고값이며 거래처 판매단가와 동일 통화라고 가정하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "현재 단가",
+        "이력",
+        "생산단가"
+      ],
+      "relatedTasks": [
+        "items.manage",
+        "partners.manage",
+        "sales.bill"
+      ]
+    },
+    {
+      "id": "warehouses.manage",
+      "label": "창고 기준정보",
+      "sourceRefs": [
+        {
+          "sourceId": "warehouses",
+          "sections": [
+            "3",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "warehouse-settings",
+          "sections": [
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "창고 식별·사용 상태와 업무별 기본창고 관계를 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "창고",
+          "창고구분",
+          "사용 상태",
+          "적용 업무의 창고 역할"
+        ]
+      },
+      "relationships": [
+        "한 창고가 여러 역할을 가질 수 있으며 창고와 역할은 같은 개념이 아니다.",
+        "업무운영설정 변경안은 생산 공정별 저장·불량·반품·수불 우선순위를 분리한다."
+      ],
+      "conditions": [
+        "재고가 있으면 창고 삭제 제한. 기본창고의 미사용 처리도 제한된다.",
+        "이전 창고등록의 전역 기본창고와 새 공정별 설정의 적용 범위를 확인한다.",
+        "기본창고 값은 자동 입력의 출처이지 모든 행을 한 창고로 고정하는 규칙이 아니다."
+      ],
+      "decisionSupportCandidates": [
+        "현재 역할·수불 우선순위"
+      ],
+      "relatedTasks": [
+        "operations.configure",
+        "inventory.manage"
+      ]
+    },
+    {
+      "id": "equipment.manage",
+      "label": "설비·금형·생산량 기준정보",
+      "sourceRefs": [
+        {
+          "sourceId": "equipment",
+          "sections": [
+            "3",
+            "4",
+            "5",
+            "7"
+          ]
+        },
+        {
+          "sourceId": "equipment-capacity",
+          "sections": [
+            "1",
+            "2",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "설비/금형의 구성과 품목별 생산 능력을 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "설비",
+          "설비구분·공정",
+          "금형 캐비티 배열",
+          "품목×설비 생산량"
+        ]
+      },
+      "relationships": [
+        "캐비티의 물리적 번호 배치와 검사 입력 진행순서는 별도다.",
+        "생산량 변경 명세는 품목 단일 대표값이 아니라 품목×설비의 개별 값이다.",
+        "생산량 설정의 설비 후보는 선택 품목과 공정이 일치하는 설비다."
+      ],
+      "conditions": [
+        "캐비티 하위 저장은 부모 임시 반영, 부모 취소 시 함께 취소된다.",
+        "생산량 설정은 여러 품목을 오가며 변경한 값을 유지하고 한 번에 저장하며 저장 후 닫지 않는다.",
+        "생산량 전체 적용은 체크 행이 아니라 현재 표시된 모든 설비를 대상으로 서술된다.",
+        "같은 추가/저장 버튼 형태라고 적용 대상을 다른 일괄편집과 동일하게 구현하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "정비·점검 이력",
+        "현재 캐비티/생산량"
+      ],
+      "relatedTasks": [
+        "quality.process",
+        "self-inspection.record",
+        "maintenance.record"
+      ]
+    },
+    {
+      "id": "process.manage",
+      "label": "공정·품목 매칭",
+      "sourceRefs": [
+        {
+          "sourceId": "processes",
+          "sections": [
+            "3",
+            "4",
+            "5",
+            "6",
+            "7"
+          ]
+        }
+      ],
+      "outcome": "공정에 품목을 연결하고 공정별 불량·비가동 유형을 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "공정",
+          "매칭 품목",
+          "불량/비가동 유형"
+        ]
+      },
+      "relationships": [
+        "품목 매칭은 지시 가능 대상, 불량유형은 생산 불량, 비가동유형은 운전 기록에 쓰인다."
+      ],
+      "conditions": [
+        "다른 공정에 매칭된 품목은 선택 불가로 서술된다.",
+        "체크 해제 후 저장은 기존 품목 매칭 제거를 의미한다.",
+        "공정 편집 기본정보 읽기전용 설명과 신규/편집 공통 입력 설명이 혼재한다. 수정 가능 범위를 확인한다.",
+        "코드 재사용/중복 허용은 명세 관찰이며 새 유형 관리 UI의 무조건 권장 설계로 승격하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "매칭 현황",
+        "코드/유형명"
+      ],
+      "relatedTasks": [
+        "production.order",
+        "operation-log.record",
+        "production.register"
+      ]
+    },
+    {
+      "id": "forms.manage",
+      "label": "검사양식·대상별 기준",
+      "sourceRefs": [
+        {
+          "sourceId": "inspection-forms",
+          "sections": [
+            "3",
+            "5",
+            "6",
+            "7",
+            "8",
+            "10",
+            "11"
+          ]
+        }
+      ],
+      "outcome": "검사항목을 정의하고 품목/설비별 정상 기준을 연결한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "양식유형",
+          "관리대상",
+          "항목 타입",
+          "대상별 기준값"
+        ]
+      },
+      "relationships": [
+        "양식의 항목 정의, 적용 품목/설비 매핑, 대상별 기준값, 실제 검사값은 서로 다른 층이다.",
+        "숫자 입력은 단순/범위/AND·OR 조건, 판정 선택형은 정상값 선택, 텍스트는 판정기준 없음으로 구분된다."
+      ],
+      "conditions": [
+        "유형에 따라 관리대상·슬롯 수정 가능 여부가 달라진다.",
+        "기준 미설정은 설정 유도 후 미설정 저장을 허용하는 경로가 있어 전부 차단으로 만들지 않는다.",
+        "기준 일괄 복사에 기존 설정이 포함되면 덮어쓰기 확인이 필요하다.",
+        "검사 이력이 있으면 양식 삭제 제한. 보류의 전체 결과 규칙은 개별 검사 문서와 차이 확인."
+      ],
+      "decisionSupportCandidates": [
+        "기준 설정 완료도",
+        "기존 기준"
+      ],
+      "relatedTasks": [
+        "quality.receive",
+        "quality.ship",
+        "quality.process",
+        "equipment.inspect"
+      ]
+    },
+    {
+      "id": "users.manage",
+      "label": "사용자 기준정보",
+      "sourceRefs": [
+        {
+          "sourceId": "users",
+          "sections": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ]
+        }
+      ],
+      "outcome": "계정 상태·근무조와 계정 관련 조작을 관리한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "사용자 ID·이름",
+          "활성 상태",
+          "해당 조작 권한"
+        ]
+      },
+      "relationships": [
+        "A/B/C 근무조는 주야간과 별개이며 생산 LOT 구성에 연동된다.",
+        "안전교육 확인일은 로그인 시 확인 사건의 기록이다."
+      ],
+      "conditions": [
+        "근무조 미설정은 정상값이다.",
+        "비밀번호 초기화 확인은 즉시 계정 변경 동작이다. 일반 폼 임시 수정처럼 취소 복원된다고 만들지 않는다.",
+        "이 자료는 실제 초기화 비밀번호나 자격증명을 보관하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "부서·직책",
+        "최근 교육 확인"
+      ],
+      "relatedTasks": [
+        "permissions.manage",
+        "labels.manage"
+      ]
+    },
+    {
+      "id": "permissions.manage",
+      "label": "권한·근무조 일괄 설정",
+      "sourceRefs": [
+        {
+          "sourceId": "permissions",
+          "sections": [
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ],
+      "outcome": "그룹/사용자에게 업무별 권한과 근무조를 지정한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "대상 그룹·사용자",
+          "메뉴별 조회/편집/복사/엑셀",
+          "그룹 상속과 개인 추가 구분"
+        ]
+      },
+      "relationships": [
+        "조회가 다른 권한의 전제다.",
+        "개인 권한은 그룹 권한에 추가하는 것으로 상속 권한 해제가 아니다."
+      ],
+      "conditions": [
+        "조회 해제→종속 권한 해제, 종속 권한 설정→조회 자동 설정.",
+        "타 그룹 소속 사용자는 구성원 선택이 제한된다.",
+        "근무조 변경은 선택한 사용자 대상이며 기존값과 변경값을 구분한다."
+      ],
+      "decisionSupportCandidates": [
+        "소속 그룹",
+        "기존 근무조",
+        "상속된 권한"
+      ],
+      "relatedTasks": [
+        "users.manage",
+        "labels.manage"
+      ]
+    },
+    {
+      "id": "operations.configure",
+      "label": "업무운영설정",
+      "sourceRefs": [
+        {
+          "sourceId": "registration-settings",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "required-settings",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        },
+        {
+          "sourceId": "warehouse-settings",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        },
+        {
+          "sourceId": "input-default-settings",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "수용가별 등록 연계·필수항목·창고·입력 기본값을 정한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "설정 적용 업무",
+          "선행정보 연계",
+          "LOT 관리",
+          "필수 항목",
+          "기본값 출처"
+        ]
+      },
+      "relationships": [
+        "선행정보 선택 방식과 LOT 관리/등록 View는 독립 축이다.",
+        "BOM 자동 구성과 투입품 필수 여부도 독립 축이다.",
+        "정보의 필요성, 자동입력 여부, 수정 가능성은 서로 다른 속성이다."
+      ],
+      "conditions": [
+        "설정 저장 후 새로 연 등록 화면에 적용하고 이미 열린 화면의 값을 무조건 바꾸지 않는다.",
+        "생산 담당자 기본값은 로그인 사용자여도 수정 가능하며 지시 담당자와 독립이다.",
+        "작업 시작 기본시간은 화면 진입 시점이며 계속 갱신하거나 저장 시점으로 대체하지 않는다.",
+        "공정별 생산품/투입품 불량창고 등을 단일 불량창고로 합치지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "현재 설정",
+        "영향받는 업무"
+      ],
+      "relatedTasks": [
+        "receiving.register",
+        "production.register",
+        "shipping.register",
+        "warehouses.manage"
+      ]
+    },
+    {
+      "id": "message.explain",
+      "label": "확인·불가·알림·오류 안내",
+      "sourceRefs": [
+        {
+          "sourceId": "message-dialogs",
+          "sections": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "outcome": "사용자가 실행 결과와 제약을 이해하고 다음 행동을 선택하도록 돕는다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "상황",
+          "가능한 행동",
+          "영향 또는 불가 사유"
+        ]
+      },
+      "relationships": [
+        "되돌릴 수 없는 조작 확인, 종속 데이터로 인한 불가, 완료 알림, 시스템 오류는 다른 메시지다."
+      ],
+      "conditions": [
+        "개별 확인 메시지의 권장 행동과 취소 의미를 분리한다.",
+        "이 명세의 메시지 유형을 모든 등록/조회 모달의 고정 레이아웃으로 확장하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "관련 대상과 해결 경로"
+      ],
+      "relatedTasks": []
+    },
+    {
+      "id": "stock.reconcile",
+      "label": "과거 재고조사 반영",
+      "sourceRefs": [
+        {
+          "sourceId": "stock-reconciliation",
+          "sections": [
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "13",
+            "14"
+          ]
+        }
+      ],
+      "outcome": "과거 기준일의 실사 수량을 맞추고 이후 변동을 반영해 현재 재고를 재계산한다.",
+      "focusCandidates": {
+        "status": "design-interpretation-not-fixed-priority",
+        "information": [
+          "기준일",
+          "품목·창고/위치",
+          "조사수량",
+          "기준일 시스템 수량",
+          "현재 반영 결과"
+        ]
+      },
+      "relationships": [
+        "과거 수량 보정과 현재 수량 직접 수정은 다른 작업이다.",
+        "기준일 이후의 정상 변동을 다시 적용하며 현재 잔량이 남은 LOT만 감소 대상이 된다."
+      ],
+      "conditions": [
+        "슈퍼어드민, 오늘 이전 최대 31일 이내 기준일만 지원한다.",
+        "차감 가능 수량이 모자라면 정상 반영 불가.",
+        "품목+창고 비교와 증가분 기본입고창고 저장의 관계, 상세 결과 화면은 별도 확인이 필요하다.",
+        "일반 입고 화면의 행 추가와 동일한 업무로 취급하지 않는다."
+      ],
+      "decisionSupportCandidates": [
+        "증감 차이",
+        "재적용 이력",
+        "실패 대상"
+      ],
+      "relatedTasks": [
+        "inventory.manage",
+        "labels.manage"
+      ]
+    }
+  ],
+  "crossTaskFacts": [
+    {
+      "id": "registration.independent-axes",
+      "appliesTo": [
+        "receiving.register",
+        "production.register",
+        "shipping.register",
+        "operations.configure"
+      ],
+      "statement": "선행정보 연계방식과 LOT 관리는 독립 설정이다.",
+      "sourceRefs": [
+        {
+          "sourceId": "registration-settings",
+          "sections": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "sourceId": "simple-receiving",
+          "sections": [
+            "1-2"
+          ]
+        },
+        {
+          "sourceId": "simple-production",
+          "sections": [
+            "1-2"
+          ]
+        },
+        {
+          "sourceId": "simple-shipping",
+          "sections": [
+            "1-2"
+          ]
+        }
+      ],
+      "dimensions": [
+        {
+          "key": "upstreamLink",
+          "values": [
+            "required",
+            "optional",
+            "none"
+          ],
+          "controls": "진입에서 선행정보 선택을 요구하는지"
+        },
+        {
+          "key": "lotManagement",
+          "values": [
+            "multiple-lots",
+            "single-lot"
+          ],
+          "controls": "LOT 선택/처리 및 기존 일반·간편 View 적용 가능성"
+        }
+      ],
+      "uiImplication": {
+        "status": "design-inference",
+        "text": "발주·지시 없는 업무를 요청받아도 LOT 관리 요구를 별도로 확인한다. 이것만으로 Shell·표·섹션을 결정하지 않는다."
+      }
+    },
+    {
+      "id": "input.provided-is-not-readonly",
+      "appliesTo": [
+        "receiving.register",
+        "production.register",
+        "shipping.register",
+        "operations.configure",
+        "maintenance.record"
+      ],
+      "statement": "자동값의 출처와 편집 가능성은 별개다. 간편 생산의 지시 설비/품목은 고정, 간편 입고/출하 초기값 및 로그인 담당자는 명세 조건 안에서 수정 가능하다.",
+      "sourceRefs": [
+        {
+          "sourceId": "simple-production",
+          "sections": [
+            "4-3",
+            "4-5"
+          ]
+        },
+        {
+          "sourceId": "simple-receiving",
+          "sections": [
+            "4-3"
+          ]
+        },
+        {
+          "sourceId": "simple-shipping",
+          "sections": [
+            "4-3"
+          ]
+        },
+        {
+          "sourceId": "input-default-settings",
+          "sections": [
+            "3"
+          ]
+        }
+      ],
+      "uiImplication": {
+        "status": "design-inference",
+        "text": "필요 여부·획득 경로·수정 권한·소유 범위·등장 시점을 독립적으로 정한다."
+      }
+    },
+    {
+      "id": "save.scope-varies",
+      "appliesTo": [
+        "receiving.register",
+        "shipping.register",
+        "inventory.manage",
+        "equipment.manage",
+        "users.manage"
+      ],
+      "statement": "저장은 부모 임시 반영, 즉시 데이터 변경, 여러 편집값 일괄 확정 중 무엇인지 작업마다 다르다.",
+      "sourceRefs": [
+        {
+          "sourceId": "simple-receiving",
+          "sections": [
+            "4-5",
+            "4-6"
+          ]
+        },
+        {
+          "sourceId": "inventory",
+          "sections": [
+            "3-4",
+            "4-6",
+            "5-6"
+          ]
+        },
+        {
+          "sourceId": "equipment",
+          "sections": [
+            "5-8"
+          ]
+        },
+        {
+          "sourceId": "equipment-capacity",
+          "sections": [
+            "2-6"
+          ]
+        },
+        {
+          "sourceId": "users",
+          "sections": [
+            "5-2"
+          ]
+        }
+      ],
+      "uiImplication": {
+        "status": "design-inference",
+        "text": "팝업 개수는 바꿀 수 있어도 확정 경계와 취소가 되돌리는 범위를 보존해야 한다."
+      }
+    },
+    {
+      "id": "rows.merge-varies",
+      "appliesTo": [
+        "receiving.register",
+        "shipping.register",
+        "purchase.order",
+        "maintenance.record",
+        "production.register"
+      ],
+      "statement": "반복 행 합산 정책은 업무마다 다르다. 발주는 식별 조건이 같으면 합산, 간편 입고/투입/정비 자재는 행 유지, 간편 출하는 미정이다.",
+      "sourceRefs": [
+        {
+          "sourceId": "purchase-orders",
+          "sections": [
+            "3-4"
+          ]
+        },
+        {
+          "sourceId": "simple-receiving",
+          "sections": [
+            "4-4"
+          ]
+        },
+        {
+          "sourceId": "simple-production",
+          "sections": [
+            "4-4"
+          ]
+        },
+        {
+          "sourceId": "maintenance",
+          "sections": [
+            "3-4"
+          ]
+        },
+        {
+          "sourceId": "simple-shipping",
+          "sections": [
+            "4-4"
+          ]
+        }
+      ],
+      "uiImplication": {
+        "status": "design-inference",
+        "text": "같은 반복 입력 컴포넌트를 사용하더라도 추가·복사·합산 의미를 별도로 구성한다."
+      }
+    },
+    {
+      "id": "status.subject-matters",
+      "appliesTo": [
+        "purchase.order",
+        "shipping.order",
+        "labels.manage",
+        "quality.receive",
+        "quality.ship",
+        "quality.process"
+      ],
+      "statement": "발주 이행, 출하 승인, LOT 확정, 검사 완료, 품질 합격은 상태의 대상과 기준이 서로 다르다.",
+      "sourceRefs": [
+        {
+          "sourceId": "purchase-orders",
+          "sections": [
+            "2-6"
+          ]
+        },
+        {
+          "sourceId": "shipping-orders",
+          "sections": [
+            "2-7"
+          ]
+        },
+        {
+          "sourceId": "lot-generation",
+          "sections": [
+            "7"
+          ]
+        },
+        {
+          "sourceId": "receiving-inspection",
+          "sections": [
+            "3-4",
+            "4-2"
+          ]
+        }
+      ],
+      "uiImplication": {
+        "status": "design-inference",
+        "text": "완료라는 공통 라벨만 보고 통합 상태나 동일 액션을 만들지 않는다."
+      }
+    },
+    {
+      "id": "reference.not-execution",
+      "appliesTo": [
+        "bom.analyze",
+        "materials.analyze",
+        "lot.trace",
+        "production.plan-month"
+      ],
+      "statement": "BOM 기준 소요량·조회 시점 재고·등록 당시 스냅샷·실제 LOT 투입은 서로 다른 자료다.",
+      "sourceRefs": [
+        {
+          "sourceId": "bom-view",
+          "sections": [
+            "4"
+          ]
+        },
+        {
+          "sourceId": "material-analysis",
+          "sections": [
+            "4"
+          ]
+        },
+        {
+          "sourceId": "lot-trace",
+          "sections": [
+            "3"
+          ]
+        },
+        {
+          "sourceId": "production-monthly",
+          "sections": [
+            "3-6"
+          ]
+        }
+      ],
+      "uiImplication": {
+        "status": "design-inference",
+        "text": "신규 비교 화면은 기준/실제/예상값과 각 기준시점을 구별하여 설명한다."
+      }
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "matching.exact-keys",
+      "status": "unresolved",
+      "affectsTasks": [
+        "receiving.register",
+        "production.register",
+        "shipping.register"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "registration-settings",
+          "sections": [
+            "3"
+          ]
+        },
+        {
+          "sourceId": "simple-receiving",
+          "sections": [
+            "4-2",
+            "4-7"
+          ]
+        },
+        {
+          "sourceId": "simple-production",
+          "sections": [
+            "4-7"
+          ]
+        },
+        {
+          "sourceId": "simple-shipping",
+          "sections": [
+            "4-7"
+          ]
+        }
+      ],
+      "question": "최종 조건에 여러 발주/지시가 일치할 때 대상 선택·배분과 정확한 날짜 매칭 필드는 무엇인가?",
+      "handling": "자동 연계를 실제 구현할 때만 확인. 이번 자료에서 임의 API 매칭 규칙을 만들지 않음."
+    },
+    {
+      "id": "shipping.completion",
+      "status": "unresolved",
+      "affectsTasks": [
+        "shipping.order",
+        "shipping.register",
+        "sales.bill"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "shipping-orders",
+          "sections": [
+            "2-7",
+            "3-2"
+          ]
+        },
+        {
+          "sourceId": "shipping-results",
+          "sections": [
+            "8-1"
+          ]
+        },
+        {
+          "sourceId": "sales-shipping-amendment",
+          "sections": [
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "question": "100% 달성은 승인대기인가 완료인가? 수동 완료 버튼 유지 문서와 삭제 변경안 중 적용 범위는?",
+      "handling": "기존 서술을 병기. 승인·청구 행동을 만드는 요청에서 확인."
+    },
+    {
+      "id": "shipping.simple-open",
+      "status": "unresolved",
+      "affectsTasks": [
+        "shipping.register",
+        "sales.bill"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "simple-shipping",
+          "sections": [
+            "4-4",
+            "4-6",
+            "5-1",
+            "5-2",
+            "5-3"
+          ]
+        }
+      ],
+      "question": "간편 출하 중복 행 합산, 미연계 실적의 영업 이관, 거래명세서 출력·편집 진입이 미확정이다.",
+      "handling": "해당 행동이 필요한 새 화면에서만 질문. 입고의 정책을 복사해 채우지 않음."
+    },
+    {
+      "id": "receiving.simple-edit",
+      "status": "unresolved",
+      "affectsTasks": [
+        "receiving.register"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "simple-receiving",
+          "sections": [
+            "5-2"
+          ]
+        }
+      ],
+      "question": "간편 입고의 기존 실적 편집 진입 방식은 확인 필요로 남아 있다.",
+      "handling": "신규 등록 설계와 기존 편집 설계를 구분. 편집 요청이 오면 확인."
+    },
+    {
+      "id": "inspection.hold",
+      "status": "unresolved",
+      "affectsTasks": [
+        "quality.receive",
+        "quality.ship",
+        "quality.process",
+        "self-inspection.record",
+        "quality.analyze",
+        "forms.manage"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "inspection-forms",
+          "sections": [
+            "3-5"
+          ]
+        },
+        {
+          "sourceId": "receiving-inspection",
+          "sections": [
+            "3-4"
+          ]
+        },
+        {
+          "sourceId": "shipping-inspection",
+          "sections": [
+            "3-4"
+          ]
+        },
+        {
+          "sourceId": "process-inspection",
+          "sections": [
+            "4-4"
+          ]
+        },
+        {
+          "sourceId": "quality-trends",
+          "sections": [
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "question": "양식관리의 보류 포함 계산과 개별 검사 문서의 3결과 계산, 경향관리의 보류(불합)/측정 원천 표기가 일치하지 않는다.",
+      "handling": "판정 UI의 상태/계산을 확정할 때 적용 버전과 빈 값 처리를 확인."
+    },
+    {
+      "id": "inspection.creation",
+      "status": "unresolved",
+      "affectsTasks": [
+        "items.manage",
+        "quality.process"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "items",
+          "sections": [
+            "3-2"
+          ]
+        },
+        {
+          "sourceId": "process-inspection",
+          "sections": [
+            "1-1",
+            "7-2",
+            "7-3"
+          ]
+        }
+      ],
+      "question": "품목의 공정검사 Y 설명과 공정검사 수동 생성 설명의 연결은 검사후보 자격인가 자동 등록인가?",
+      "handling": "공정검사 상세 문서는 수동 생성으로 서술함을 보존. 새 요구 없이 자동생성을 추가하지 않음."
+    },
+    {
+      "id": "warehouse.transition",
+      "status": "unresolved",
+      "affectsTasks": [
+        "warehouses.manage",
+        "operations.configure"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "warehouses",
+          "sections": [
+            "3",
+            "5"
+          ]
+        },
+        {
+          "sourceId": "warehouse-settings",
+          "sections": [
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "question": "전역 기본창고/수불순위와 공정별 생산 저장·불량·반품창고 설정이 어느 수용가/버전에서 적용되는가?",
+      "handling": "업무운영설정 변경안의 분리 범위를 보존하되 실제 테넌트가 전환됐다고 가정하지 않음."
+    },
+    {
+      "id": "collections.delete",
+      "status": "unresolved",
+      "affectsTasks": [
+        "collections.record"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "collections",
+          "sections": [
+            "2",
+            "3"
+          ]
+        }
+      ],
+      "question": "완료 수금 건 삭제 제한과 삭제 후 상태 변경 설명의 적용 대상은 무엇인가?",
+      "handling": "수금 삭제 기능을 만들 때만 확인. 상태 표시만으로 삭제 허용을 추정하지 않음."
+    },
+    {
+      "id": "prices.end-boundary",
+      "status": "unresolved",
+      "affectsTasks": [
+        "prices.manage"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "special-prices",
+          "sections": [
+            "2-4",
+            "2-5",
+            "3-4"
+          ]
+        }
+      ],
+      "question": "종료일 00시 제외 처리와 신규 시작일-1일로 종료일을 조정하는 규칙 사이의 날짜 경계는 무엇인가?",
+      "handling": "실제 유효기간/금액 계산 구현 전에 확인."
+    },
+    {
+      "id": "equipment.array-reset",
+      "status": "unresolved",
+      "affectsTasks": [
+        "equipment.manage"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "equipment",
+          "sections": [
+            "5-4",
+            "5-6",
+            "5-8"
+          ]
+        }
+      ],
+      "question": "초기화가 번호 배치만 바꾸는가, 번호 생성방향·줄전환 선택까지 바꾸는가?",
+      "handling": "캐비티 편집 구현 시 해당 초기화 동작만 확인."
+    },
+    {
+      "id": "process.editability",
+      "status": "unresolved",
+      "affectsTasks": [
+        "process.manage"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "processes",
+          "sections": [
+            "3-1",
+            "3-2",
+            "3-3"
+          ]
+        }
+      ],
+      "question": "공정 편집 기본정보의 읽기전용 범위와 매칭/유형 편집 가능 범위는 어디까지인가?",
+      "handling": "필드별 편집 범위를 확정하기 전 전부 readonly 또는 전부 editable로 만들지 않음."
+    },
+    {
+      "id": "stock.warehouse",
+      "status": "unresolved",
+      "affectsTasks": [
+        "stock.reconcile"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "stock-reconciliation",
+          "sections": [
+            "6",
+            "8",
+            "14"
+          ]
+        }
+      ],
+      "question": "창고/위치별 실사 비교와 증가분을 기본입고창고에 넣는 규칙은 어떻게 결합되는가?",
+      "handling": "재고조사 반영 업무를 만들 때 확인. UI 세부 결과/로그 구조도 별도 명세 필요."
+    },
+    {
+      "id": "purchasing.bulk-supplier",
+      "status": "unresolved",
+      "affectsTasks": [
+        "purchasing.register"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "purchasing",
+          "sections": [
+            "3-2",
+            "4-1"
+          ]
+        }
+      ],
+      "question": "입고후판매의 판매처 불필수와 일괄등록 진입의 판매처 필수가 동시에 서술되어 있다.",
+      "handling": "일괄 구매를 구현할 때 판매구분별 진입 조건 확인."
+    },
+    {
+      "id": "bom.empty-selection",
+      "status": "unresolved",
+      "affectsTasks": [
+        "bom.analyze"
+      ],
+      "sourceRefs": [
+        {
+          "sourceId": "bom-view",
+          "sections": [
+            "4-1",
+            "4-3"
+          ]
+        }
+      ],
+      "question": "품목 미선택 진입을 허용하지만 분석 목록은 선택 품목 기준으로 설명한다. 미선택이면 전체 계획인가?",
+      "handling": "BOM 재고분석의 최초 조회 범위를 만들 때 확인."
+    }
+  ],
+  "generationUse": {
+    "mode": "read-only-reference",
+    "runtimeWired": false,
+    "lookup": "node scripts/business-knowledge.mjs --task receiving.register",
+    "steps": [
+      "새 화면의 업무 목적·사용자·완료 결과·환경을 먼저 파악한다.",
+      "가까운 업무 자료와 연관 업무만 조회한다. 문서 전체를 매번 프롬프트에 넣지 않는다.",
+      "기존 명세 중 그대로 적용할 사실, 새 요구로 바뀐 사실, 적용 여부 미정을 구분한다.",
+      "정보의 필수성·출처·수정 가능성·소유 범위·등장 시점을 따로 판단한다.",
+      "목적에 따라 주요·보조 정보를 정하고 레이아웃 대안을 제안한다. 과거 배치 자동 복제 금지.",
+      "기존 ScreenRequest의 requirements/evidence.notes에 채택한 근거 ID와 달라진 조건을 기록한다.",
+      "승인 자산 선택·구현 감사·동작/시각 검증은 기존 생성 경로를 따른다."
+    ],
+    "neverInfer": [
+      "자동으로 채워진 값이면 수정 불가",
+      "필수 정보이면 항상 입력창을 새로 노출",
+      "업무에 필요한 정보이면 반드시 큰 박스/회색 헤더로 강조",
+      "배경 화면 참조가 필요하면 슬라이드 팝업",
+      "선행 발주·지시 미선택이면 반드시 간편 등록",
+      "특정 업무의 보조 정보는 다른 업무에서도 보조 정보",
+      "명세에 없는 새로운 업무이면 모든 기존 규칙 폐기"
+    ]
+  },
+  "generationExamples": [
+    {
+      "id": "new-receiving-workspace",
+      "request": "과거 입고내역을 참고하면서 여러 거래처의 물건을 한 번에 받는 화면",
+      "taskRefs": [
+        "receiving.register"
+      ],
+      "preserve": [
+        "행별 거래처/창고/수량",
+        "입고일과 공급사 LOT 조건",
+        "입력값 변경에 따른 후보 재조회",
+        "최종 저장 범위"
+      ],
+      "newDecisions": [
+        "이전 내역을 상시 옆에 둘지 필요할 때 열지",
+        "입력 흐름과 비교 흐름 중 무엇을 우선할지",
+        "데이터 규모와 환경에 맞는 Shell/패턴 조합"
+      ],
+      "notPreserveAutomatically": [
+        "기존 발주 선택 팝업 개수",
+        "기존 좌우 위치",
+        "기존 모든 상세 컬럼"
+      ],
+      "status": "reasoning-example-not-generated-or-user-approved"
+    },
+    {
+      "id": "new-byproduct-investigation",
+      "request": "분쇄재가 왜 예상보다 적게 생겼는지 확인하는 화면",
+      "taskRefs": [
+        "byproduct.manage",
+        "production.register",
+        "lot.trace"
+      ],
+      "preserve": [
+        "생산 결과와 부산물의 별도 관계",
+        "유효 투입과 생산/불량/NET 중량",
+        "후속 사용에 따른 변경 제한"
+      ],
+      "newDecisions": [
+        "부산물은 이번 업무의 주요 정보로 강조",
+        "원료·생산·계산 근거를 함께 비교할 구성",
+        "기록 수정이 필요한지 조회만 필요한지"
+      ],
+      "notPreserveAutomatically": [
+        "부산물을 원래 투입정보 팝업 아래에 배치한 위치",
+        "부산물을 모든 업무에서 보조 정보로 분류"
+      ],
+      "status": "reasoning-example-not-generated-or-user-approved"
+    }
+  ],
+  "unreviewedLinkedPages": [
+    {
+      "parentSourceId": "inventory",
+      "title": "26.5.15 재고관리 기능추가(재고 추가 기능 추가)",
+      "url": "https://app.notion.com/p/3600e77b2015810fb116f2ca6d0ed228",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "inventory",
+      "title": "26.5.15 재고관리 기능추가(재고 추가 기능 추가) (1)",
+      "url": "https://app.notion.com/p/3780e77b2015808ebd5dcf8196f9013b",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "labels",
+      "title": "26.5.15 라벨관리 변경 (담당자 선택 항목 추가)",
+      "url": "https://app.notion.com/p/3600e77b201580f5bdb7e0dae19d3f5e",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "lot-generation",
+      "title": "26.5.15 LOT 규칙 변경 (조정보 추가)💡",
+      "url": "https://app.notion.com/p/3600e77b201581819dbcc24c2813cf22",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "message-dialogs",
+      "title": "(수정중) 팝업 전체 전수조사",
+      "url": "https://app.notion.com/p/38e0e77b201580a6a629c66e5abb74ca",
+      "status": "not-read",
+      "reason": "수정중 팝업 시각 전수조사는 이번 업무 의미 검토 밖"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.26 품목등록 메뉴 기능 추가(표준단가 설정 모달 추가) 💡 (1)",
+      "url": "https://app.notion.com/p/39f0e77b2015817ea773c34841f8c7fa",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.15 BOM등록 기능추가(BOM 복사 기능 추가) (1)",
+      "url": "https://app.notion.com/p/39f0e77b201581bebb73f8633e5b28d2",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.15 재고관리 기능추가(재고 추가 기능 추가) (1)",
+      "url": "https://app.notion.com/p/39f0e77b201581799e4eef1549fe20b5",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.15 재고관리 기능추가(재고 추가 기능 추가) (2)",
+      "url": "https://app.notion.com/p/39f0e77b201581d0a302f4e364d6ac30",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "판매관리 및 출하실적 로직 수정 (1)",
+      "url": "https://app.notion.com/p/39f0e77b201581cc902ced66bd30b2ff",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.15 LOT 규칙 변경 (조정보 추가)💡 (1)",
+      "url": "https://app.notion.com/p/39f0e77b2015818d8441fbdfef183263",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.15 라벨관리 변경 (담당자 선택 항목 추가) (1)",
+      "url": "https://app.notion.com/p/39f0e77b20158124b209dc8450c22933",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.15 권한설정 기능 추가 (조설정 모달) (1)",
+      "url": "https://app.notion.com/p/39f0e77b20158181b8c0c29b136d34bc",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "품목등록 변경 - 생산실적 부산물 자동 생성 기능명세서 - 260617 (1)",
+      "url": "https://app.notion.com/p/39f0e77b201581a590a6edc06720167d",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.26 설비등록 메뉴 기능추가 (캐비티 배열 설정) (1)",
+      "url": "https://app.notion.com/p/39f0e77b201581db8b2ddd0f75b50acb",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "06.04 투입품 추가 기능명세서 (1)",
+      "url": "https://app.notion.com/p/39f0e77b2015817584dae70b6cc51899",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "임시 LOT 수량 등록 팝업 기능명세서 (1)",
+      "url": "https://app.notion.com/p/39f0e77b201581c0b0e1efcdb409bb40",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.26 품목등록 메뉴 기능 추가(표준단가 설정 모달 추가) 💡",
+      "url": "https://app.notion.com/p/3600e77b201580c48694f20fb9a3f591",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "임시 LOT 수량 등록 팝업 기능명세서",
+      "url": "https://app.notion.com/p/3660e77b2015800dbdf6da69e9b9c67a",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.26 설비등록 메뉴 기능추가 (캐비티 배열 설정)",
+      "url": "https://app.notion.com/p/3600e77b20158019965af7d0fdf7f1e0",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.15 BOM등록 기능추가(BOM 복사 기능 추가)",
+      "url": "https://app.notion.com/p/3600e77b2015807f8d8bff9149b2ad08",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "26.5.15 권한설정 기능 추가 (조설정 모달)",
+      "url": "https://app.notion.com/p/3600e77b201580dca0b3f0099ff84738",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "06.04 투입품 추가 기능명세서",
+      "url": "https://app.notion.com/p/3750e77b2015806291e0cfc41ea2e7db",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    },
+    {
+      "parentSourceId": "archive",
+      "title": "품목등록 변경 - 생산실적 부산물 자동 생성 기능명세서 - 260617",
+      "url": "https://app.notion.com/p/3830e77b20158196b05fc93647545996",
+      "status": "not-read",
+      "reason": "병합 완료분/과거 사본으로 상위 명세 본문을 사용. 세부 예외 구현 시 원본 재조회"
+    }
+  ]
+}
