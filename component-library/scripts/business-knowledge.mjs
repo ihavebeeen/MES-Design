@@ -9,7 +9,7 @@ export function validateBusinessKnowledge(data) {
   const check = (condition, message) => { if (!condition) errors.push(message); };
   check(data?.schemaVersion === 1, "Unsupported schemaVersion");
   check(data?.status === "research-reference", "Business knowledge must remain a research reference");
-  check(data?.generationUse?.runtimeWired === false, "Runtime integration needs a separate reviewed change");
+  check(data?.generationUse?.runtimeWired === true && data?.generationUse?.integration === "reference-retrieval-only" && data?.generationUse?.enforcement === "none", "Business knowledge integration must remain advisory retrieval only");
   for (const key of ["sources", "tasks", "crossTaskFacts", "openQuestions", "generationExamples", "unreviewedLinkedPages"]) {
     check(Array.isArray(data?.[key]), `${key} must be an array`);
   }

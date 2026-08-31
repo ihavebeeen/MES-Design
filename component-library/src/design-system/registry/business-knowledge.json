@@ -5079,7 +5079,9 @@
   ],
   "generationUse": {
     "mode": "read-only-reference",
-    "runtimeWired": false,
+    "runtimeWired": true,
+    "integration": "reference-retrieval-only",
+    "enforcement": "none",
     "lookup": "node scripts/business-knowledge.mjs --task receiving.register",
     "steps": [
       "새 화면의 업무 목적·사용자·완료 결과·환경을 먼저 파악한다.",

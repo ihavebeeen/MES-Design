@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "authority": "reference-only",
+  "reviewedOn": "2026-08-31",
+  "scope": ["page", "center-modal", "side-slide-panel", "confirm-dialog", "section"],
+  "policy": {
+    "purpose": "업무 정보와 영역의 관계를 이해하고 신규 화면 구성을 비교하는 참고 자료. 기존 화면의 배치를 강제하는 규칙이 아니다.",
+    "precedence": "현재 요청에서 확인한 업무 조건과 적용 가능한 MES 공통 자산 계약을 따른다. 과거 명세·관찰·아래 해석은 그 조건을 자동으로 덮어쓰지 않는다.",
+    "missing": "일치하는 사례가 없거나 자료가 오래되었어도 생성 차단 사유가 아니다. 현재 작업에 중요한 불확실성만 확인한다.",
+    "difference": "다른 배치·정보 중요도·추가 방식을 선택했다는 이유로 실패나 신규 자산 제안 대상으로 만들지 않는다. 실제 필요한 자산이 없을 때만 기존 3단계 자산 선택을 따른다.",
+    "boundary": "이 자료는 선택 후보를 설명한다. 필수값·readonly·영역 순서·Shell·addMethods를 자동 지정하거나 최종 UI의 적절성을 판정하지 않는다. MES 자산·타입·구현 검사는 별도로 유지한다."
+  },
+  "informationGuide": {
+    "roles": {
+      "primary": "이번 업무의 수행 또는 핵심 판단에 필요한 정보. 직접 입력값뿐 아니라 전달·계산·조회된 값일 수도 있다.",
+      "supporting": "이번 업무의 판단을 돕는 정보. 다른 목적의 화면에서는 주요 정보가 될 수 있다.",
+      "other": "현재 주 작업과의 관련성·노출 이유를 검토할 정보. 담당자 등 특정 필드를 이 범주에 영구 고정하지 않는다."
+    },
+    "independentDimensions": ["이번 업무 목적", "필요한 조건·수용가·상태", "정보 소유 대상(전체/행/연결 대상)", "직접 입력·전달·기본값·계산 여부", "수정 가능 여부", "작업 중·필요 시·완료 후 노출", "다른 영역과의 의존 관계"],
+    "cautions": ["주요 정보라고 가장 큰 박스나 입력창을 만드는 것은 아니다.", "자동으로 채워지는 값과 수정 불가 값은 다르다.", "좌측/상단은 주요, 우측/하단은 보조라는 규칙은 없다.", "기존 명세의 required와 scope도 명시된 적용 조건 안의 참고 사실이다.", "자료의 미확정 조건을 모두 질문하지 않는다. 현재 요청에 영향을 주는 것만 확인한다."],
+    "intakeQuestionRefs": ["screen.purpose", "screen.focus", "structure.relationships", "task.edit-scope", "task.dependencies", "state.constraints"]
+  },
+  "contexts": [
+    {
+      "id": "usage.page-list", "name": "목록에서 대상을 찾아 작업하기", "surfaces": ["page"],
+      "patternRefs": ["screen.entity-list", "recipe.page-entity-list"], "basis": "registered-pattern-interpretation",
+      "purpose": "대상을 찾고 상태를 비교한 뒤 선택·등록·상세 작업으로 이어진다.",
+      "relationship": "조회 조건은 목록의 범위를 정하고, 행 액션은 대상에, 일괄 액션은 선택 집합에 작용한다.",
+      "consider": ["등록 진입이 주 작업인지 기존 기록 점검이 주 작업인지에 따라 초점을 달리 본다.", "진행상태는 미완료 처리 화면에서 주요 정보, 단순 등록 화면에서는 보조 정보일 수 있다."],
+      "alternatives": ["행 비교가 목적이 아니면 표보다 상세·입력 영역 중심의 기존 조합을 함께 검토한다."]
+    },
+    {
+      "id": "usage.master-detail", "name": "대상과 연결 상세를 함께 탐색하기", "surfaces": ["page", "center-modal", "side-slide-panel"],
+      "patternRefs": ["screen.master-detail", "selection.master-detail"], "basis": "registered-pattern-interpretation",
+      "purpose": "현재 대상을 바꿔가며 그 대상에 속한 정보를 확인한다.",
+      "relationship": "대상 선택이 상세의 범위를 바꾼다. 두 영역은 같은 목록의 복제가 아니다.",
+      "consider": ["어느 영역에서 주된 판단·편집을 하는지 확인한다.", "대상 변경 시 상세의 선택·편집값을 유지할지 확인한다."],
+      "alternatives": ["동시 비교가 필요하지 않다면 상세 진입 방식도 가능하다. 이 관계만으로 좌우 분할을 강제하지 않는다."]
+    },
+    {
+      "id": "usage.analysis", "name": "지표와 근거 데이터를 함께 해석하기", "surfaces": ["page"],
+      "patternRefs": ["screen.analytics-dashboard"], "basis": "registered-pattern-interpretation",
+      "purpose": "기간·대상별 결과를 비교하고 차이의 근거를 확인한다.",
+      "relationship": "요약 지표와 차트·표가 같은 비교 기준을 설명한다.",
+      "consider": ["요약을 빠르게 읽는 작업과 원인 행을 찾는 작업은 주된 정보가 다르다.", "정해진 계산식·단위는 적용 여부를 확인하고 새로 창작하지 않는다."],
+      "alternatives": ["KPI 카드나 차트를 항상 넣지 않는다. 실제 비교·판단에 도움이 되는 기존 표현을 선택한다."]
+    },
+    {
+      "id": "usage.monitor", "name": "현재 변화와 대응 대상 찾기", "surfaces": ["page"],
+      "patternRefs": [], "basis": "web-generation-context.json#generation.page.monitoring-dashboard",
+      "purpose": "현재 상태의 변화와 대응할 대상을 발견한다.",
+      "relationship": "현재 상태·최신 여부와 과거 추이는 서로 다른 판단을 돕는다.",
+      "consider": ["무엇을 먼저 발견해야 하는지, 발견 후 어떤 작업으로 이어지는지 확인한다."],
+      "alternatives": ["과거 성과 비교가 중심이면 분석 구성을 검토한다. 실시간 카드 화면의 관찰은 단건 사례이지 필수 배치가 아니다."]
+    },
+    {
+      "id": "usage.select-return", "name": "사용할 대상을 찾고 선택 결과 전달하기", "surfaces": ["center-modal", "side-slide-panel", "page"],
+      "patternRefs": ["recipe.center-modal-search-table", "selection.enable-actions"], "basis": "registered-pattern-interpretation",
+      "purpose": "현재 작업에 필요한 대상을 식별하여 선택 결과를 전달한다.",
+      "relationship": "검색은 후보를 좁히고, 선택과 확인은 전달할 대상을 정한다.",
+      "consider": ["식별 정보와 선택 판단을 돕는 잔량·상태를 구분한다.", "선택 가능 수와 확정 시점은 이번 요구로 판단한다."],
+      "alternatives": ["현재 MES 중앙 선택 팝업을 참고하되 선택 업무라는 이유만으로 중앙 배치를 확정하지 않는다."]
+    },
+    {
+      "id": "usage.edit-record", "name": "한 대상의 정보를 작성·수정하기", "surfaces": ["page", "center-modal", "side-slide-panel"],
+      "patternRefs": ["section.form-grid", "dismiss.restore-committed"], "basis": "registered-pattern-interpretation",
+      "purpose": "대상의 정보를 작성하고 확인한 뒤 변경을 저장한다.",
+      "relationship": "대상 식별값, 실제 편집값, 판단용 연결 정보의 역할을 구분한다.",
+      "consider": ["필수성·기본값·수정 가능성은 각각 판단한다.", "작업 결과에 필요한 정보가 이미 전달됐다면 같은 값을 다시 입력하게 할 필요는 없다."],
+      "alternatives": ["등록이라는 이름이나 필드 개수만으로 슬라이드·중앙·전체 페이지를 고르지 않는다."]
+    },
+    {
+      "id": "usage.confirm-effect", "name": "실행 대상과 결과를 이해하고 결정하기", "surfaces": ["confirm-dialog", "center-modal"],
+      "patternRefs": ["shell.confirm-dialog"], "basis": "registered-pattern-interpretation",
+      "purpose": "어떤 대상에 어떤 영향이 생기는지 확인하고 실행 여부를 결정한다.",
+      "relationship": "대상 식별·영향 설명·확정 액션이 같은 결정을 설명한다.",
+      "consider": ["단순 확인인지, 대상별 정보 확인이나 추가 입력이 필요한지 구분한다."],
+      "alternatives": ["대상별 표나 입력이 필요하면 이를 지원하는 MES 조합을 검토한다. 확인이라는 문구만으로 작은 확인창에 모두 넣지 않는다."]
+    },
+    {
+      "id": "usage.custom-values", "name": "같은 대상의 기본 속성과 추가 속성", "surfaces": ["page", "center-modal", "side-slide-panel"],
+      "patternRefs": ["section.custom-field-values", "recipe.side-slide-custom-fields"], "basis": "registered-pattern-interpretation",
+      "purpose": "대상의 기본 속성과 설정된 커스텀 속성 값을 함께 다룬다.",
+      "relationship": "기본/커스텀은 속성의 정의 방식 차이이며 중요도 차이를 뜻하지 않는다.",
+      "consider": ["커스텀 속성도 현재 업무에서는 필수일 수 있다.", "속성 정의 추가와 값 입력, 업무 레코드 추가는 다른 동작이다."],
+      "alternatives": ["원본 좌우 구성은 참고 사례다. 새 요청에 맞는 묶음은 승인 자산으로 조합하되 커스텀이라 항상 보조 영역으로 보내지 않는다."]
+    },
+    {
+      "id": "usage.inspection", "name": "대상을 확인하면서 항목별 검사·판정", "surfaces": ["page", "center-modal", "side-slide-panel"],
+      "patternRefs": ["section.inspection-items", "recipe.side-slide-inspection"], "basis": "registered-pattern-interpretation",
+      "purpose": "검사 대상과 기준을 확인하고 측정·판정 결과를 남긴다.",
+      "relationship": "대상 정보는 판정의 맥락을 제공하고 검사항목은 실제 수행 내용일 수 있다.",
+      "consider": ["우측 판정 영역이 주 작업일 수 있다. 좌측이 항상 더 중요한 것은 아니다.", "항목 추가 가능 여부와 측정·판정 방식은 업무 조건에 따라 다르다."],
+      "alternatives": ["검사 결과 조회와 새 검사 수행은 같은 정보라도 읽기·입력·강조가 달라질 수 있다."]
+    },
+    {
+      "id": "usage.entry-list", "name": "작성값과 반복 목록의 관계", "surfaces": ["page", "center-modal", "side-slide-panel"],
+      "patternRefs": ["section.added-record-list", "section.staged-record-entry", "section.editable-row-list", "recipe.side-slide-entry-list"], "basis": "user-clarification-and-registered-pattern",
+      "purpose": "여러 레코드를 작성·검토하고 한 작업으로 저장한다.",
+      "relationship": "상단 전체 공통값, 다음 한 행의 작성값, 하단 행별 값을 구분한다. 상하 위치만으로 소유 범위가 정해지지 않는다.",
+      "consider": ["빈 행 추가는 목록 안에서 작성·비교하는 흐름의 후보다.", "상단 값 추가는 한 건을 작성한 뒤 목록에 쌓는 흐름의 후보다.", "둘 다 필요할 수 있다. 추가 경로와 추가 후 수정 가능 컬럼은 별도 판단이다.", "직전값 계승·기본값·필수성은 추가 방식만으로 정하지 않는다."],
+      "alternatives": ["테이블과 반복 폼 모두 비교한다. 한 유형의 관찰을 다른 추가 방식의 금지 근거로 삼지 않는다."]
+    },
+    {
+      "id": "usage.group-permissions", "name": "그룹·구성원·공유 권한의 관계", "surfaces": ["page", "center-modal", "side-slide-panel"],
+      "patternRefs": ["section.member-selection", "section.permission-matrix", "recipe.side-slide-group-settings"], "basis": "registered-pattern-interpretation",
+      "purpose": "어떤 그룹에 누가 속하고 어떤 권한을 공유하는지 설정한다.",
+      "relationship": "그룹, 구성원 집합, 메뉴별 권한은 서로 다른 대상이며 하나의 일반 행 추가 목록이 아니다.",
+      "consider": ["권한 설정이 주 작업인지 구성원 배정이 주 작업인지에 따라 초점을 판단한다.", "개인 권한과 그룹 권한의 우선순위 등 미확인 업무 정책을 화면 배치에서 추론하지 않는다."],
+      "alternatives": ["기존 특수 슬라이드 구성은 참고 예다. 모든 설정 화면을 이 구성으로 묶지 않는다."]
+    },
+    {
+      "id": "usage.heading-scope", "name": "전체 제목·논리 섹션·단일 영역 제목", "surfaces": ["page", "center-modal", "side-slide-panel", "confirm-dialog"],
+      "patternRefs": ["frame.standard-section", "section.search-table-composition"], "basis": "context-rules.json#heading",
+      "purpose": "제목이 무엇의 범위를 설명하는지 알아볼 수 있게 한다.",
+      "relationship": "화면/팝업 전체, 여러 요소를 묶는 논리 섹션, 단일 목록의 이름은 설명 범위가 다르다.",
+      "consider": ["단순히 덜 강조할 제목인지, 별도 범위의 제목인지 먼저 구분한다.", "단일 목록의 이름만 필요한 경우 배경 없는 ContentRegionHeading을 검토한다."],
+      "alternatives": ["섹션 수만으로 회색 헤더를 반복하지 않는다. 실제 헤더 API·사용 조건은 공통 자산 계약을 따른다."]
+    },
+    {
+      "id": "usage.related-result", "name": "주 작업과 연결된 이력·LOT·결과", "surfaces": ["page", "center-modal", "side-slide-panel"],
+      "patternRefs": [], "basis": "user-clarification-and-business-knowledge",
+      "purpose": "주 작업에 연결된 기록을 판단 보조 또는 결과 확인에 활용한다.",
+      "relationship": "같은 컬럼을 써도 투입품과 부산물, 등록 대상과 과거 이력은 대등·하위·관련 결과 관계가 다를 수 있다.",
+      "consider": ["현재 필요한 정보인지, 요청 시 열어볼 정보인지, 완료 후 확인할 결과인지 구분한다.", "입고에서는 보조인 LOT가 추적 화면에서는 핵심일 수 있다."],
+      "alternatives": ["관계를 표현하려고 중첩 박스나 새 안내문을 자동 추가하지 않는다. 제목·순서·분리·상세 진입 중 MES 자산에 맞는 표현을 비교한다."]
+    }
+  ]
+}

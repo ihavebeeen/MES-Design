@@ -82,11 +82,12 @@ assert.ok(resolveScreenRequest(invalidGenerationRequest).quality.issues.some((en
 
 const missingWebContext = structuredClone(generationRequest);
 delete missingWebContext.webContext;
-assert.ok(resolveScreenRequest(missingWebContext).quality.issues.some((entry) => entry.code === "generation.web-context-required"));
+assert.equal(resolveScreenRequest(missingWebContext).quality.blockerCount, 0, "참고 사례를 고르지 않아도 유효한 MES 조합은 생성할 수 있어야 합니다.");
 
 const mismatchedWebContext = structuredClone(generationRequest);
 mismatchedWebContext.webContext.overlayGrammarRef = "generation.overlay.bounded-selection";
-assert.ok(resolveScreenRequest(mismatchedWebContext).quality.issues.some((entry) => entry.code === "generation.overlay-surface-mismatch"));
+assert.equal(resolveScreenRequest(mismatchedWebContext).quality.blockerCount, 0);
+assert.ok(resolveScreenRequest(mismatchedWebContext).quality.issues.some((entry) => entry.code === "generation.overlay-surface-mismatch" && entry.severity === "info"));
 
 const centerRequest = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-center-modal.json"), "utf8"));
 const centerContract = resolveScreenRequest(centerRequest);

@@ -12,7 +12,9 @@ test("lookup returns a scoped reference, not the whole catalog or a layout", () 
   const result = getBusinessTaskContext(data, "receiving.register");
   assert.equal(result.task.id, "receiving.register");
   assert.ok(result.sources.length < data.sources.length);
-  assert.equal(result.generationUse.runtimeWired, false);
+  assert.equal(result.generationUse.runtimeWired, true);
+  assert.equal(result.generationUse.integration, "reference-retrieval-only");
+  assert.equal(result.generationUse.enforcement, "none");
   assert.equal(result.status, "research-reference");
   assert.equal(result.task.shell, undefined);
   assert.equal(result.task.focusCandidates.status, "design-interpretation-not-fixed-priority");

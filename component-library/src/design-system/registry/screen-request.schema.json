@@ -42,6 +42,7 @@
     },
     "webContext": {
       "type": "object",
+      "description": "선택적으로 기록하는 관찰 사례 참조. 사례의 부재·미등록·다른 배치는 생성 차단 조건이 아니며 실제 구성은 composition/generation에서 정한다.",
       "additionalProperties": false,
       "properties": {
         "pageArchetypeRef": { "type": "string", "pattern": "^generation\\.page\\.[a-z0-9-]+$" },

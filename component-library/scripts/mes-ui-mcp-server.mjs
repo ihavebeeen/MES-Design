@@ -9,6 +9,7 @@ import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-p
 import { generateScreenTsx, generatedSourceFingerprint } from "./generate-screen-tsx.mjs";
 import { readRegistryBundle, resolveScreenRequest } from "./resolve-screen-request.mjs";
 import { recordScreenReview, verifyScreenHandoff } from "./screen-handoff.mjs";
+import { getScreenReferences } from "./screen-reference-context.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -180,15 +181,18 @@ export function createMesUiMcpServer() {
     "mes_get_web_generation_context",
     {
       title: "MES 신규 UI 생성 맥락 조회",
-      description: "원본 화면이 없는 신규 MES UI를 만들기 위해 실제 웹에서 반복된 페이지·팝업·섹션·동작 조합 문법만 조회합니다. Figma 대조와 미검증 수치는 반환하지 않습니다.",
+      description: "신규 UI의 업무 정보·정보 관계와 페이지·팝업·섹션 사용 사례를 참고용으로 조회합니다. 배치·필수값을 강제하지 않으며 Figma 대조와 미검증 수치는 반환하지 않습니다.",
       inputSchema: z.object({
-        category: z.enum(["all", "pages", "overlays", "sections", "behaviors"]).default("all"),
+        category: z.enum(["all", "pages", "overlays", "sections", "behaviors", "references"]).default("all"),
         query: z.string().trim().optional().describe("신규 화면의 업무명·화면 성격·가까운 메뉴명"),
+        targetKind: z.enum(["page", "center-modal", "side-slide-panel", "confirm-dialog"]).optional().describe("참고 사례 탐색 범위. 화면 유형을 확정하는 명령이 아닙니다."),
+        taskIds: z.array(z.string().min(1)).max(12).optional().describe("알고 있는 업무 참고 ID. 미등록 업무도 생성할 수 있습니다."),
+        usageIds: z.array(z.string().min(1)).max(12).optional().describe("알고 있는 사용 맥락 참고 ID. 다른 형식의 사례도 참고할 수 있습니다."),
         limit: z.number().int().min(1).max(100).default(50),
       }),
       annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
     },
-    safeTool(async ({ category, query, limit }) => {
+    safeTool(async ({ category, query, limit, targetKind, taskIds, usageIds }) => {
       const registry = readRegistryBundle();
       const inventory = registry.webUiUsageInventory;
       const context = registry.webGenerationContext;
@@ -205,6 +209,7 @@ export function createMesUiMcpServer() {
         purpose: context.purpose,
         policy: context.policy,
         decisionOrder: context.decisionOrder,
+        referenceContext: getScreenReferences({ query, targetKind, taskIds, usageIds, limit: Math.min(limit, 6) }),
         pageArchetypes: category === "all" || category === "pages" ? select(context.pageArchetypes, (entry) => archetypeRefs.has(entry.observedArchetypeRef)) : [],
         overlayGrammars: category === "all" || category === "overlays" ? select(context.overlayGrammars, (entry) => entry.evidenceFlowIds.some((id) => flowIds.has(id))) : [],
         sectionRecipes: category === "all" || category === "sections" ? select(context.sectionRecipes, (entry) => entry.evidenceFlowIds.some((id) => flowIds.has(id))) : [],

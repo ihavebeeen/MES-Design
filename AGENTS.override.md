@@ -10,12 +10,12 @@
 
 - 화면, 팝업, 테이블 흐름을 생성하거나 수정할 때 `.agents/skills/generate-mes-ui/SKILL.md`를 먼저 따른다.
 - `mes-ui` MCP가 연결되어 있으면 등록 자산 조회, 계약 해석, 결정형 생성, 구현 감사에 해당 MCP 도구를 우선 사용한다. MCP가 없을 때만 동일 기능의 npm 명령을 사용한다.
-- `intent: new`에서는 업무명이나 가장 가까운 메뉴명으로 `mes_get_web_generation_context`를 조회한다. 반복된 실제 웹 조합 문법만 생성에 사용하고 Figma 대조·미검증 수치는 읽지 않는다.
+- `intent: new`에서는 업무명이나 가장 가까운 메뉴명으로 `mes_get_web_generation_context`를 조회한다. 업무 정보와 페이지·팝업·섹션 맥락은 참고용이며 과거의 주요/보조 분류·배치·추가 방식을 강제하지 않는다. 일치 사례가 없어도 생성할 수 있다. Figma 대조·미검증 수치는 읽지 않는다.
 - `intent: reproduce | normalize | audit`에서만 `mes_get_reproduction_audit_context`를 조회해 특정 화면의 실제 웹·Figma·불일치 근거를 확인한다.
 - 자연어 또는 Figma를 바로 JSX로 옮기지 않는다. 먼저 `ScreenRequest`를 만들고 `npm run screen:resolve`로 계약을 확정한다.
 - 신규·구조 변경은 생성 스킬이 연결한 `screen-intake-policy.json`을 읽는다. 화면 전체 맥락을 먼저 확보하고 중요한 미정 사항만 질문한다. 답과 근거는 기존 `requirements`·`evidence.notes`에 보존하며, 답 하나로 Shell·Table을 자동 선택하지 않는다.
 - 가장 가까운 등록 화면의 `getImplementationContext(screenId)`를 기준으로 시작한다.
-- 가장 가까운 화면에 `screen-specs.json` 명세가 있으면 순서형 `composition.sections`를 보존한다. 평면 `sectionRefs`만 보고 섹션을 재배치하지 않는다.
+- 가장 가까운 화면의 명세를 사용할 때는 순서형 `composition.sections`를 읽는다. 신규 요청에서 다른 구성을 선택할 수 있으며 그 순서를 명시한다. 평면 `sectionRefs`만 보고 섹션을 재배치하지 않는다.
 - 각 의미 있는 자산은 정확히 일치하는 승인 자산을 먼저 찾고, 없으면 가장 가까운 후보가 의미·동작·선택 수·상태·접근성·부모 맥락을 보존하는지 판정한다. 보존할 수 없을 때만 신규 자산 proposal로 이동한다.
 - 등록 컴포넌트와 패턴을 우선 사용한다. `<button>`, `<input>`, `<select>`, `<textarea>` 같은 원시 상호작용 요소를 화면 코드에 직접 만들지 않는다.
 - 별도 폴더·임시 HTML·채팅 시안·localhost도 동일한 MES 적용 범위다. 저장소 수정 금지/기존 화면과 다른 배치는 공용 자산 대체 허가가 아니다. 생성 스킬의 `references/delivery-gate.md`에 따라 최종 파일 검사 → 내부 QA → `screen:handoff`를 거친다. 신규는 선택한 MES 자산/규칙과 렌더링·동작을 확인하고, 원본 재현·정규화·감사는 원본도 대조한다. 검사 누락·오류·차단·미확인은 전달 통과가 아니다. 도구/권한 제약은 대안과 필요한 승인을 먼저 확인한다.

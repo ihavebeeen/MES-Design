@@ -15,6 +15,8 @@ Read in this order:
 
 Experimental candidates are discovery material, not generation dependencies.
 
+Business information in `business-knowledge.json` and cross-surface usage in `usage-contexts.json` are **reference-only**, not another source of mandatory layout/field rules. Retrieve the relevant subset through `mes_get_web_generation_context` or `npm run screen:references`; the resolver also attaches `referenceContext` separately from implementation. Current task conditions determine primary/supporting roles. Unknown references do not block new tasks, and context differences do not waive MES component/API checks. These annotations are excluded from the executable contract fingerprint; adopted changes belong in the existing request/configuration and remain fingerprinted.
+
 `new` and `reproduce` are separate retrieval modes. A new screen contract must contain `webGenerationContext` and must not contain `reproductionAuditContext`. A reproduce/normalize/audit contract may include both.
 
 ## Screen request decisions
@@ -24,7 +26,7 @@ For new UI and structural changes, read `component-library/src/design-system/reg
 Choose in this order:
 
 1. `intent`: reproduce, new, normalize, or audit.
-2. For `new`, `webContext`: one page archetype or overlay grammar plus zero or more ordered section recipes. Missing and target-incompatible grammar is a blocker; `single-case` produces a warning.
+2. Optional `webContext`: observed page/overlay/section examples to consider. Missing examples are allowed; unknown, cross-surface or single-case references produce information only, not a required exception approval.
 3. `target.kind`: page, center-modal, side-slide-panel, or confirm-dialog.
 4. `nearestScreenId`: the registered workflow with the closest semantic structure.
 5. `recipeRefs`: broad popup or page composition.
@@ -39,7 +41,7 @@ Select `target.kind` and `webContext` jointly from the whole-screen concept and 
 
 For every meaningful component, section pattern, behavior, shell, and action set, apply `exact-match → compatible-existing → new-asset`. The middle step must compare semantic role, interaction effect, selection cardinality, state model, accessibility, allowed parent, and information hierarchy. A mismatch rejects the candidate; it does not justify disguising that asset with new styles. Only after both existing-asset steps fail may the result become a quarantined `propose-new` decision.
 
-The resolved contract must include `decisionTrace`. It is the machine-readable answer to why a shell, section, behavior, action set, or component was selected and which alternatives were rejected. An implementation without this trace is not auditable.
+The resolved contract includes `decisionTrace` for selection provenance. Many reasons describe explicit request selection or inheritance, not the AI's full business reasoning. Record material adopted decisions in existing requirements/notes; neither the trace nor `referenceContext` proves contextual design quality.
 
 ## Fidelity and normalization
 

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-08-31T06:37:19.037Z",
+  "recordedAt": "2026-08-31T07:21:15.234Z",
   "outcome": "passed",
-  "durationMs": 337843,
+  "durationMs": 314821,
   "assetManifestFingerprint": "833812eaffdc2ecd5a85213e61272f30a0605ca96b7252066909c0fd38370541",
   "verificationSourceFingerprint": "95f08cb0f3f832eb2d92471208b72f047942d9200c8725933950bd03594e6003",
   "testInventory": {
@@ -20,49 +20,49 @@
       "id": "asset-sync",
       "command": "npm run sync:assets",
       "status": "passed",
-      "durationMs": 673,
+      "durationMs": 509,
       "exitCode": 0
     },
     {
       "id": "verification-inventory",
       "command": "node scripts/audit-web-verification-coverage.mjs --write",
       "status": "passed",
-      "durationMs": 1514,
+      "durationMs": 1412,
       "exitCode": 0
     },
     {
       "id": "design-system-check",
       "command": "npm run check:design-system",
       "status": "passed",
-      "durationMs": 59586,
+      "durationMs": 54217,
       "exitCode": 0
     },
     {
       "id": "design-system-lint",
       "command": "npm run lint:design-system",
       "status": "passed",
-      "durationMs": 6870,
+      "durationMs": 6160,
       "exitCode": 0
     },
     {
       "id": "playwright",
       "command": "npm run test:visual",
       "status": "passed",
-      "durationMs": 245613,
+      "durationMs": 227907,
       "exitCode": 0
     },
     {
       "id": "production-build",
       "command": "npm run build",
       "status": "passed",
-      "durationMs": 22337,
+      "durationMs": 23138,
       "exitCode": 0
     },
     {
       "id": "verification-record",
-      "command": "node scripts/audit-web-verification-coverage.mjs --write --record-passed --duration-ms=245613",
+      "command": "node scripts/audit-web-verification-coverage.mjs --write --record-passed --duration-ms=227907",
       "status": "passed",
-      "durationMs": 1250,
+      "durationMs": 1477,
       "exitCode": 0
     }
   ]

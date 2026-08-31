@@ -92,6 +92,12 @@ try {
   assert(webGeneration.nearestObservedExamples.pages.some((entry) => entry.id === "web.production-result"), "생산실적과 가까운 실제 웹 예시를 찾지 못했습니다.");
   assert(webGeneration.overlayGrammars.some((entry) => entry.id === "generation.overlay.select-then-register"), "선택 후 등록 팝업 문법을 찾지 못했습니다.");
   assert(!("figmaReconciliation" in webGeneration), "신규 UI 생성 컨텍스트에 Figma 감사 정보가 섞였습니다.");
+  const references = structured(await client.callTool({ name: "mes_get_web_generation_context", arguments: { category: "references", taskIds: ["receiving.register"], usageIds: ["usage.entry-list"], targetKind: "page" } }));
+  assert(references.referenceContext.enforcement === "none", "업무/사용 맥락은 참고 전용이어야 합니다.");
+  assert(references.referenceContext.business[0]?.task.id === "receiving.register", "업무 참고 연결이 누락됐습니다.");
+  assert(references.referenceContext.usage[0]?.id === "usage.entry-list", "페이지에서도 입력/목록 맥락을 참고할 수 있어야 합니다.");
+  const unknownReferences = await client.callTool({ name: "mes_get_web_generation_context", arguments: { category: "references", taskIds: ["new-unregistered-task"] } });
+  assert(!unknownReferences.isError && structured(unknownReferences).referenceContext.business.length === 0, "미등록 업무를 차단하거나 임의 대체하면 안 됩니다.");
   const reproductionAudit = structured(await client.callTool({ name: "mes_get_reproduction_audit_context", arguments: { query: "생산실적" } }));
   assert(reproductionAudit.mode === "reproduction-audit-only", "재현·감사 전용 모드 표시가 없습니다.");
   assert(reproductionAudit.pages.some((entry) => entry.id === "web.production-result"), "재현·감사에서 생산실적 실제 웹 근거를 찾지 못했습니다.");
@@ -101,6 +107,11 @@ try {
   assert(contract.quality.status === "release-ready", `계약 상태가 release-ready가 아닙니다: ${contract.quality.status}`);
   assert(contract.decisionTrace?.shell?.selectedId === "shell.side-slide-panel", "Resolver decision trace에 선택 셸이 없습니다.");
   assert(contract.decisionTrace?.sections?.length === 3, "Resolver decision trace의 순서형 섹션이 예상과 다릅니다.");
+  assert(contract.referenceContext?.enforcement === "none", "Resolver 참고 주석이 누락됐습니다.");
+  const withoutReferences = structuredClone(request);
+  delete withoutReferences.webContext;
+  const noReferenceContract = structured(await client.callTool({ name: "mes_resolve_screen", arguments: { request: withoutReferences } }));
+  assert(noReferenceContract.quality.blockerCount === 0, "참고 사례 미선택을 MCP Resolver가 차단했습니다.");
   assert(contract.implementation?.webGenerationContext?.policy?.authority === "observed-generation-guidance", "Resolver가 신규 UI 생성 문법을 전달하지 않았습니다.");
   assert(contract.implementation?.webGenerationContext?.overlayGrammars?.some((entry) => entry.id === "generation.overlay.select-then-register"), "Resolver가 가까운 실제 웹 팝업 문법을 전달하지 않았습니다.");
   assert(contract.implementation?.reproductionAuditContext === null, "신규 UI 계약에 재현·감사 정보가 섞였습니다.");

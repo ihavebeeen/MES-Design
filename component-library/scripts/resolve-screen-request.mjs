@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { validateGenerationSpec } from "./screen-generation-contract.mjs";
 import { isSlideComposition, slideCompositionSections } from "./generate-slide-composition.mjs";
 import { validateHostPage, validateVerificationScope, verificationContext } from "./screen-application-context.mjs";
+import { getRequestReferences } from "./screen-reference-context.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -190,6 +191,8 @@ const expectedShellComponents = {
 export function contractFingerprint(contract) {
   const payload = { ...contract };
   delete payload.fingerprint;
+  // Research is an annotated reference, not executable configuration or a delivery requirement.
+  delete payload.referenceContext;
   return hash(payload);
 }
 
@@ -248,19 +251,15 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const selectedWebOverlayGrammar = request?.webContext?.overlayGrammarRef ? webOverlayGrammarMap.get(request.webContext.overlayGrammarRef) : undefined;
   const selectedWebSectionRecipes = (request?.webContext?.sectionRecipeRefs ?? []).map((id) => webSectionRecipeMap.get(id)).filter(Boolean);
 
-  if (request?.intent === "new" && !request?.webContext) {
-    issues.push(issue("blocker", "generation.web-context-required", "신규 UI는 JSX 전에 webContext 생성 문법을 선택해야 합니다."));
-  }
-  if (request?.webContext?.pageArchetypeRef && !selectedWebPageArchetype) issues.push(issue("blocker", "registry.unknown-web-page-archetype", `등록되지 않은 page archetype '${request.webContext.pageArchetypeRef}'입니다.`, request.webContext.pageArchetypeRef));
-  if (request?.webContext?.overlayGrammarRef && !selectedWebOverlayGrammar) issues.push(issue("blocker", "registry.unknown-web-overlay-grammar", `등록되지 않은 overlay grammar '${request.webContext.overlayGrammarRef}'입니다.`, request.webContext.overlayGrammarRef));
-  for (const id of request?.webContext?.sectionRecipeRefs ?? []) if (!webSectionRecipeMap.has(id)) issues.push(issue("blocker", "registry.unknown-web-section-recipe", `등록되지 않은 section recipe '${id}'입니다.`, id));
-  if (request?.intent === "new" && request?.target?.kind === "page" && !request?.webContext?.pageArchetypeRef) issues.push(issue("blocker", "generation.page-archetype-required", "신규 page에는 webContext.pageArchetypeRef가 필요합니다."));
-  if (request?.intent === "new" && ["center-modal", "side-slide-panel"].includes(request?.target?.kind) && !request?.webContext?.overlayGrammarRef) issues.push(issue("blocker", "generation.overlay-grammar-required", "신규 overlay에는 webContext.overlayGrammarRef가 필요합니다."));
-  if (request?.target?.kind === "page" && request?.webContext?.overlayGrammarRef) issues.push(issue("blocker", "generation.overlay-grammar-on-page", "page target에는 overlay grammar를 선택할 수 없습니다."));
-  if (request?.target?.kind !== "page" && request?.webContext?.pageArchetypeRef) issues.push(issue("blocker", "generation.page-archetype-on-overlay", "overlay target에는 page archetype을 선택할 수 없습니다."));
-  if (selectedWebOverlayGrammar && !selectedWebOverlayGrammar.surfaceSequence.includes(request?.target?.kind)) issues.push(issue("blocker", "generation.overlay-surface-mismatch", `overlay grammar '${selectedWebOverlayGrammar.id}'가 target '${request?.target?.kind}'를 포함하지 않습니다.`, selectedWebOverlayGrammar.id));
+  // Observed layouts are optional references. Only actual MES asset/configuration errors block generation.
+  if (request?.webContext?.pageArchetypeRef && !selectedWebPageArchetype) issues.push(issue("info", "registry.unknown-web-page-archetype", `참고 page archetype '${request.webContext.pageArchetypeRef}'를 찾지 못했습니다. 현재 구성을 변경하지 않습니다.`, request.webContext.pageArchetypeRef));
+  if (request?.webContext?.overlayGrammarRef && !selectedWebOverlayGrammar) issues.push(issue("info", "registry.unknown-web-overlay-grammar", `참고 overlay grammar '${request.webContext.overlayGrammarRef}'를 찾지 못했습니다. 현재 구성을 변경하지 않습니다.`, request.webContext.overlayGrammarRef));
+  for (const id of request?.webContext?.sectionRecipeRefs ?? []) if (!webSectionRecipeMap.has(id)) issues.push(issue("info", "registry.unknown-web-section-recipe", `참고 section recipe '${id}'를 찾지 못했습니다.`, id));
+  if (request?.target?.kind === "page" && request?.webContext?.overlayGrammarRef) issues.push(issue("info", "generation.overlay-grammar-on-page", "페이지에서 팝업 사례를 참고했습니다. 사례의 Shell을 자동 적용하지 않습니다."));
+  if (request?.target?.kind !== "page" && request?.webContext?.pageArchetypeRef) issues.push(issue("info", "generation.page-archetype-on-overlay", "팝업에서 페이지 사례를 참고했습니다. 사례의 배치를 자동 적용하지 않습니다."));
+  if (selectedWebOverlayGrammar && !selectedWebOverlayGrammar.surfaceSequence.includes(request?.target?.kind)) issues.push(issue("info", "generation.overlay-surface-mismatch", `참고 '${selectedWebOverlayGrammar.id}'와 현재 형식이 다릅니다. 선택한 MES Shell·조합 자체를 검증합니다.`, selectedWebOverlayGrammar.id));
   for (const entry of [selectedWebPageArchetype, selectedWebOverlayGrammar, ...selectedWebSectionRecipes].filter(Boolean)) {
-    if (entry.confidence === "single-case") issues.push(issue("warning", "generation.web-context-single-case", `web context '${entry.id}'는 단건 관찰 근거이므로 자동 기본값이 아닙니다.`, entry.id));
+    if (entry.confidence === "single-case") issues.push(issue("info", "generation.web-context-single-case", `web context '${entry.id}'는 단건 관찰 근거이므로 자동 기본값이 아닙니다.`, entry.id));
   }
   generationGuidance.selection = {
     pageArchetype: selectedWebPageArchetype ?? null,
@@ -327,7 +326,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     issues.push(issue("blocker", "composition.shell-mismatch", `target.kind '${request?.target?.kind}'에는 shell '${expectedShell ?? "없음"}'이 필요하지만 '${shellRef ?? "없음"}'이 선택됐습니다.`, shellRef));
   }
   if (selectedWebOverlayGrammar?.shellRef && selectedWebOverlayGrammar.shellRef !== shellRef) {
-    issues.push(issue("blocker", "generation.web-shell-mismatch", `선택한 web overlay grammar '${selectedWebOverlayGrammar.id}'에는 shell '${selectedWebOverlayGrammar.shellRef}'가 필요하지만 '${shellRef ?? "없음"}'이 선택됐습니다.`, selectedWebOverlayGrammar.id));
+    issues.push(issue("info", "generation.web-shell-mismatch", `참고 사례 '${selectedWebOverlayGrammar.id}'의 Shell과 현재 '${shellRef ?? "없음"}'이 다릅니다. 참고 사례는 Shell 선택을 강제하지 않습니다.`, selectedWebOverlayGrammar.id));
   }
 
   if (actionSetRef && !actionSetMap.has(actionSetRef)) issues.push(issue("blocker", "registry.unknown-action-set", `등록되지 않은 action set '${actionSetRef}'입니다.`, actionSetRef));
@@ -491,7 +490,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       issues,
     },
   };
-  return { ...contract, fingerprint: contractFingerprint(contract) };
+  return { ...contract, fingerprint: contractFingerprint(contract), referenceContext: getRequestReferences(request, selectedPatternRefs) };
 }
 
 function parseArguments(argv) {

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "auditedAt": "2026-08-31T06:37:19.016Z",
+  "auditedAt": "2026-08-31T07:21:15.203Z",
   "sourceFingerprint": "95f08cb0f3f832eb2d92471208b72f047942d9200c8725933950bd03594e6003",
   "browserRun": {
     "command": "npm run test:visual",
@@ -8,8 +8,8 @@
     "testCount": 83,
     "passed": 83,
     "failed": 0,
-    "durationMs": 245613,
-    "recordedAt": "2026-08-31T06:37:19.016Z",
+    "durationMs": 227907,
+    "recordedAt": "2026-08-31T07:21:15.203Z",
     "testInventoryFingerprint": "be6c153d9a408eafc58baf5ab79116fbe52d2c595fc5c5db17aa6df41c1d3b1c",
     "includesDeferredMobile": true
   },
