@@ -115,13 +115,52 @@ try {
     assert.ok(auditScreenImplementation(c, source, readRegistryBundle()).findings.some((f) => f.code === "shell.page-chrome"));
   });
   write(original);
-  check("배경 없는 팝업은 코드 단위 검사와 달리 전체 미리보기에서 차단", () => {
+  check("배경 없는 팝업 자체는 실제 파일 검사·미리보기·범위 한정 전달 가능", () => {
     const req = structuredClone(request);
     delete req.hostPage;
     const c = resolveScreenRequest(req);
     assert.equal(auditScreenImplementation(c, original).blockerCount, 0);
-    assert.ok(auditScreenFile(c, sourcePath).findings.some(f => f.code === "host.invalid"));
+    assertStaticPass(auditScreenFile(c, sourcePath));
+    const surface = createScreenPreviewPlan(c, sourcePath);
+    assert.equal(surface.verification.scope, "surface");
+    writeScreenPreview(surface);
+    assert.throws(() => verifyScreenHandoff(surface), /시각 대조 결과/);
+    // Synthetic reviewer record tests scope enforcement, not actual visual QA.
+    recordScreenReview(surface, { reviewer: "scope-regression-only", rendered: true, interactions: true });
+    const result = verifyScreenHandoff(surface);
+    assert.equal(result.verification.parentIntegration, "out-of-scope");
+    assert.match(result.limitation, /저장 연동은 확인하지 않았습니다/);
+    const surfaceContractPath = resolve(directory, "surface-contract.json");
+    json(surfaceContractPath, c);
+    const delivery = cli("screen-handoff.mjs", [surfaceContractPath, sourcePath]);
+    assert.equal(delivery.status, 0, delivery.stderr);
+    assert.equal(JSON.parse(delivery.stdout).verification.scope, "surface");
+    write(original + '\nconst Bad = () => <input type="date"/>;');
+    assert.throws(() => writeScreenPreview(surface), /최종 구현 검사/);
+    write(original); writeScreenPreview(surface);
+    assert.throws(() => recordScreenReview(surface, { reviewer: "scope-regression-only", rendered: true, interactions: true, unchecked: ["수량 입력 미확인"] }), /미확인 항목/);
+    rmSync(surface.absolutePath);
+    rmSync(paths.visual);
+  });
+  check("연동을 요청했을 때만 배경 누락 차단, 잘못된 범위도 차단", () => {
+    const req = { ...request, verificationScope: "connected-flow" };
+    delete req.hostPage;
+    const c = resolveScreenRequest(req);
+    assert.ok(c.quality.issues.some(f => f.code === "request.verification-scope"));
+    assert.ok(auditScreenFile(c, sourcePath).blockerCount > 0);
     assert.throws(() => createScreenPreviewPlan(c, sourcePath), /hostPage/);
+    assert.ok(resolveScreenRequest({ ...request, verificationScope: "skip" }).quality.issues.some(f => f.code === "request.verification-scope"));
+  });
+  check("팝업 자체 확인 기록은 연동 확인으로 재사용 불가", () => {
+    const surface = createScreenPreviewPlan(resolveScreenRequest({ ...request, verificationScope: "surface" }), sourcePath);
+    writeScreenPreview(surface);
+    recordScreenReview(surface, { reviewer: "scope-regression-only", rendered: true, interactions: true });
+    const saved = readFileSync(paths.visual, "utf8");
+    rmSync(surface.absolutePath);
+    writeScreenPreview(plan);
+    assert.equal(readFileSync(paths.visual, "utf8"), saved);
+    assert.throws(() => verifyScreenHandoff(plan), /현재 미리보기|확인 범위/);
+    rmSync(paths.visual);
   });
   check("배경 경로/알 수 없는 옵션/페이지 중첩은 요청 단계에서 차단", () => {
     for (const host of [{ ...request.hostPage, sourcePath: "../outside.tsx" }, { ...request.hostPage, skipCheck: true }, { ...request.hostPage, saveBehavior: "invent" }]) {

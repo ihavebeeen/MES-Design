@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "policyId": "mes.ai-context-rules",
-  "policyVersion": "1.4.0",
+  "policyVersion": "1.4.1",
   "status": "active",
   "authority": "common-policy",
   "applicationFrame": {
     "requiredComponents": ["sidebar", "page-top-tab-item"],
     "scope": "MES desktop full pages and the parent page behind overlays",
-    "overlayOwnership": "Parent owns navigation/tabs. Overlay owns its dialog shell, never a second navigation frame.",
-    "exceptions": "A standalone/mobile/kiosk surface needs a separately approved and supported contract; no skip flag."
+    "overlayOwnership": "Parent owns navigation/tabs; popup-only previews use a labeled MES frame without inventing business data. Parent knowledge is required only for requested integration. Overlay owns its dialog shell, never a second navigation frame.",
+    "exceptions": "Different application chrome (e.g. mobile/kiosk) needs an approved and supported contract, not a skip flag. Popup-only work inside the MES preview frame is not a chrome exception."
   },
   "decisionAxes": [
     "semantic-scope",

@@ -1,8 +1,28 @@
 import { existsSync, realpathSync } from "node:fs";
 import { isAbsolute, relative, resolve, sep } from "node:path";
 
+export const surfacePreviewFrame = "src/components/preview/surface-preview-frame.tsx";
+
+export function verificationContext(request) {
+  const scope = request?.verificationScope ?? (request?.hostPage ? "connected-flow" : "surface");
+  return {
+    scope,
+    hostConnected: Boolean(request?.hostPage),
+    parentIntegration: request?.target?.kind === "page" ? "not-applicable" : scope === "connected-flow" ? "included" : "out-of-scope",
+  };
+}
+
+export function validateVerificationScope(request) {
+  if (request?.verificationScope !== undefined && !["surface", "connected-flow"].includes(request.verificationScope)) return ["verificationScope는 surface 또는 connected-flow여야 합니다."];
+  if (verificationContext(request).scope === "connected-flow") {
+    if (request?.target?.kind === "page") return ["connected-flow는 부모 페이지와 팝업의 연결 검증 범위입니다."];
+    if (!request?.hostPage) return ["목록/팝업 연동 검증에는 hostPage가 필요합니다. 팝업 자체 작업과 구분하세요."];
+  }
+  return [];
+}
+
 export function validateHostPage(host, kind) {
-  if (host === undefined) return []; // Code-only fragment audits are allowed, not whole-screen delivery.
+  if (host === undefined) return []; // Surface work does not require a business parent.
   const errors = [];
   if (!host || typeof host !== "object" || Array.isArray(host)) return ["hostPage 객체가 필요합니다."];
   if (kind === "page") errors.push("page는 자체 공통 틀을 사용하며 hostPage를 중첩하지 않습니다.");
@@ -17,7 +37,7 @@ export function validateHostPage(host, kind) {
 export function hostPagePath(request, root) {
   const errors = validateHostPage(request.hostPage, request.target?.kind);
   if (errors.length) throw new Error(errors.join("\n"));
-  if (!request.hostPage) throw new Error("팝업 전체 화면 미리보기에는 hostPage가 필요합니다. 배경 업무 페이지와 열기 위치를 연결하세요.");
+  if (!request.hostPage) throw new Error("목록/팝업 연동 검증에는 hostPage가 필요합니다.");
   const path = resolve(root, request.hostPage.sourcePath);
   if (!existsSync(path)) throw new Error(`배경 업무 페이지를 찾을 수 없습니다: ${request.hostPage.sourcePath}`);
   const rel = relative(realpathSync(resolve(root, "src")), realpathSync(path));

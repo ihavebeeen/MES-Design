@@ -90,6 +90,7 @@ function buildPlan(files) {
     "scripts/generate-screen-preview.mjs", "scripts/generate-screen-tsx.mjs", "scripts/screen-application-context.mjs",
     "scripts/audit-screen-implementation.mjs", "scripts/screen-handoff.mjs", "scripts/screen-implementation-graph.mjs", "scripts/resolve-screen-request.mjs",
     "tests/visual/application-flow.spec.mts", "tests/helpers/application-flow.mjs", "src/components/visual-tests/application-host-fixture.tsx",
+    "src/components/preview/surface-preview-frame.tsx",
     "src/design-system/registry/context-rules.json", "src/design-system/registry/screen-request.schema.json",
   ]);
 
@@ -102,7 +103,7 @@ function buildPlan(files) {
 
   for (const file of files) {
     if (applicationFiles.has(file) || file.startsWith("tests/fixtures/screen-requests/")) runApplicationFlow = true;
-    if (file === "src/components/visual-tests/application-host-fixture.tsx") continue;
+    if (["src/components/visual-tests/application-host-fixture.tsx", "src/components/preview/surface-preview-frame.tsx"].includes(file)) continue;
     if (sourceToComponents.has(file)) componentIds.add(sourceToComponents.get(file));
     if (sourceToPatterns.has(file)) patternIds.add(sourceToPatterns.get(file));
     for (const screenId of sourceToScreens.get(file) ?? []) screenIds.add(screenId);

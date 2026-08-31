@@ -6,6 +6,64 @@ test.beforeAll(() => { fixtures = prepareApplicationFlowFixtures(); });
 test.afterAll(() => { fixtures?.cleanup(); });
 test.use({ viewport: { width: 1440, height: 900 } });
 
+test("중앙 팝업 단독: 메인 목록 없이 열기·선택·취소·저장 확인", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.goto(fixtures.cases.find(entry => entry.kind === "center-surface")!.plan.route);
+  const dialog = page.getByRole("dialog", { name: "품목 선택", exact: true });
+  const frame = page.locator('[data-mes-preview-frame="surface"]');
+  await expect(dialog).toBeVisible();
+  await expect(page.locator('[data-mes-parent-integration="out-of-scope"]')).toHaveCount(1);
+  await expect(page.locator("[data-mes-host-page]")).toHaveCount(0);
+  await expect(frame.locator('[aria-label="사이드바 접기"]')).toHaveCount(1);
+  await expect(frame.locator('[aria-label="북마크"]')).toHaveCount(1);
+  await expect(frame.locator("table")).toHaveCount(0);
+  await expect(frame).toHaveAttribute("inert", "");
+  const box = await dialog.boundingBox();
+  expect(Math.abs(box!.x + box!.width / 2 - 720)).toBeLessThan(2);
+  await dialog.getByRole("checkbox").nth(1).check();
+  await dialog.getByRole("button", { name: "취소", exact: true }).click();
+  const trigger = page.getByRole("button", { name: "팝업 다시 열기", exact: true });
+  await expect(trigger).toBeFocused();
+  await expect(page.getByText("팝업 단독 확인", { exact: true })).toBeVisible();
+  await expect(page.getByText("배경 업무 목록·선택값 전달·저장 연동은 검증 범위에 포함하지 않습니다.")).toBeVisible();
+  await trigger.click();
+  await expect(dialog.getByRole("checkbox").nth(1)).not.toBeChecked();
+  await dialog.getByRole("checkbox").nth(1).check();
+  await dialog.getByRole("button", { name: "저장", exact: true }).click();
+  await expect(dialog).toBeHidden();
+  await trigger.click();
+  await expect(dialog.getByRole("checkbox").nth(1)).toBeChecked();
+  await dialog.getByRole("button", { name: "닫기", exact: true }).click();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+});
+
+test("우측 팝업 단독: 실제 부모 없이 우측 배치·입력 취소·재열기", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.goto(fixtures.cases.find(entry => entry.kind === "slide-surface")!.plan.route);
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  const box = await dialog.boundingBox();
+  expect(box!.y).toBe(0);
+  expect(Math.abs(box!.x + box!.width - 1440)).toBeLessThan(2);
+  await page.getByLabel("입고일", { exact: true }).fill("2026.08.31");
+  await dialog.getByRole("button", { name: "닫기", exact: true }).click();
+  const trigger = page.getByRole("button", { name: "팝업 다시 열기", exact: true });
+  await expect(trigger).toBeFocused();
+  await trigger.click();
+  await expect(page.getByLabel("입고일", { exact: true })).toHaveValue("");
+  await page.getByLabel("입고일", { exact: true }).fill("2026.08.30");
+  await page.getByLabel("입고일", { exact: true }).press("Escape");
+  await trigger.click();
+  await expect(page.getByLabel("입고일", { exact: true })).toHaveValue("");
+  await dialog.getByRole("button", { name: "취소", exact: true }).click();
+  await expect(page.locator("[data-mes-host-page]")).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+});
+
 test("중앙 팝업: 배경 공통 틀·상태 보존, 취소/X/Escape, 저장 전달", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));

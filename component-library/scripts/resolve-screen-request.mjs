@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateGenerationSpec } from "./screen-generation-contract.mjs";
-import { validateHostPage } from "./screen-application-context.mjs";
+import { validateHostPage, validateVerificationScope, verificationContext } from "./screen-application-context.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -69,6 +69,7 @@ export function readRegistryBundle() {
 
 function validateRequestShape(request) {
   const issues = [];
+  for (const message of validateVerificationScope(request)) issues.push(issue("blocker", "request.verification-scope", message));
   for (const message of validateHostPage(request?.hostPage, request?.target?.kind)) issues.push(issue("blocker", "request.host-page", message));
   const checkKnownKeys = (value, allowed, path) => {
     if (!value || typeof value !== "object" || Array.isArray(value)) return;
@@ -90,6 +91,7 @@ function validateRequestShape(request) {
     "normalizationDecisions",
     "generation",
     "hostPage",
+    "verificationScope",
     "output",
   ]);
   for (const key of Object.keys(request ?? {})) {
@@ -378,7 +380,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
 
   const selectionSource = (explicit, structured, fallback) => explicit ? "request" : structured ? "screen-spec" : fallback;
   const decisionTrace = {
-    applicationFrame: { requiredComponents: registry.contextRules.applicationFrame?.requiredComponents ?? [], owner: request?.target?.kind === "page" ? "target-page" : "host-page", hostPage: request?.hostPage ?? null, reason: "MES 공통 메뉴·탭은 페이지가 소유하고 팝업은 그 위에 열린다. hostPage 없는 팝업 코드는 단독 검사만 가능하며 전체 미리보기/전달은 차단한다." },
+    applicationFrame: { requiredComponents: registry.contextRules.applicationFrame?.requiredComponents ?? [], owner: request?.target?.kind === "page" ? "target-page" : request?.hostPage ? "host-page" : "preview-frame", hostPage: request?.hostPage ?? null, verification: verificationContext(request), reason: "요청한 작업 범위만 검증한다. 팝업 자체 작업은 MES 공통 미리보기 틀에서 확인할 수 있으며, 업무 페이지와의 연동 검증에만 hostPage가 필요하다." },
     webContext: {
       pageArchetype: selectedWebPageArchetype ? { selectedId: selectedWebPageArchetype.id, confidence: selectedWebPageArchetype.confidence, reason: "ScreenRequest가 신규 UI의 page 문법을 명시했습니다." } : null,
       overlayGrammar: selectedWebOverlayGrammar ? { selectedId: selectedWebOverlayGrammar.id, confidence: selectedWebOverlayGrammar.confidence, reason: "ScreenRequest가 신규 UI의 overlay 흐름을 명시했습니다." } : null,

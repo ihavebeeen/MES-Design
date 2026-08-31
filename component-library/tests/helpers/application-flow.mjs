@@ -22,10 +22,12 @@ export function prepareApplicationFlowFixtures() {
     rmSync(directory, { recursive: true, force: true });
   };
   try {
-    for (const [kind, file] of [["center", "deterministic-center-modal"], ["slide", "deterministic-side-slide"], ["page", "deterministic-entity-list"]]) {
+    for (const [kind, file] of [["center", "deterministic-center-modal"], ["slide", "deterministic-side-slide"], ["page", "deterministic-entity-list"], ["center-surface", "deterministic-center-modal"], ["slide-surface", "deterministic-side-slide"]]) {
       const request = JSON.parse(readFileSync(resolve(root, `tests/fixtures/screen-requests/${file}.json`), "utf8"));
       request.requestId = `${prefix}-${kind}`;
       request.output.route = `/preview/${request.requestId}`;
+      if (kind.endsWith("-surface")) delete request.hostPage;
+      if (kind === "slide-surface") request.verificationScope = "surface";
       const contract = resolveScreenRequest(request);
       const outputPath = resolve(directory, `${kind}.tsx`);
       const plan = createScreenPreviewPlan(contract, outputPath);

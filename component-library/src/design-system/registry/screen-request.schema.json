@@ -85,11 +85,15 @@
       }
     },
     "generation": { "$ref": "#/$defs/generation" },
+    "verificationScope": {
+      "enum": ["surface", "connected-flow"],
+      "description": "Requested verification scope, not a DS bypass. surface checks the page/popup itself; connected-flow additionally checks the business parent interaction and requires hostPage. Defaults to connected-flow when hostPage exists, otherwise surface. Never narrow a requested integration task to avoid a failure."
+    },
     "hostPage": {
       "type": "object",
       "additionalProperties": false,
       "required": ["sourcePath", "componentName", "triggerLabel", "saveBehavior"],
-      "description": "Required for overlay preview/handoff. Parent stays mounted and receives overlayActions, saveVersion, savedData props. No invented fallback background.",
+      "description": "Optional for popup-only work; required for connected-flow. Parent stays mounted and receives overlayActions, saveVersion, savedData props. Without it use the labeled MES preview frame, never invent a business list.",
       "properties": {
         "sourcePath": { "type": "string", "pattern": "^src/(?:[\\w-]+/)*[\\w-]+\\.(?:tsx|jsx)$" },
         "componentName": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" },

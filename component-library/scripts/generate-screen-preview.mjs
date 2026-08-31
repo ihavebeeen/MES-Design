@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { recordPreviewAudit } from "./screen-handoff.mjs";
-import { hostPagePath, validateHostPage } from "./screen-application-context.mjs";
+import { hostPagePath, surfacePreviewFrame, validateHostPage, validateVerificationScope, verificationContext } from "./screen-application-context.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const defaultProjectRoot = resolve(scriptDirectory, "..");
@@ -31,6 +31,8 @@ export function generateScreenPreviewSource(contract, componentImport) {
   const componentName = contract?.request?.output?.componentName;
   const targetKind = contract?.request?.target?.kind;
   if (!componentName) throw new Error("미리보기 생성에 output.componentName이 필요합니다.");
+  const errors = [...validateHostPage(contract.request.hostPage, targetKind), ...validateVerificationScope(contract.request)];
+  if (errors.length) throw new Error(errors.join(" "));
 
   if (targetKind === "page") {
     return `import { ${componentName} } from ${JSON.stringify(componentImport)};\n\nexport default function GeneratedScreenPreviewPage() {\n  return <${componentName} />;\n}\n`;
@@ -41,31 +43,29 @@ export function generateScreenPreviewSource(contract, componentImport) {
   }
 
   const host = contract.request.hostPage;
-  const errors = validateHostPage(host, targetKind);
-  if (!host || errors.length) throw new Error(`팝업에는 hostPage 연결이 필요합니다. ${errors.join(" ")}`);
-  const hostImport = `@/${host.sourcePath.slice(4).replace(/\.(?:tsx|jsx)$/, "")}`;
+  const verification = verificationContext(contract.request);
+  const hostImport = `@/${(host?.sourcePath ?? surfacePreviewFrame).slice(4).replace(/\.(?:tsx|jsx)$/, "")}`;
   return `"use client";
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { ${host.componentName} as HostPage } from ${JSON.stringify(hostImport)};
+import { ${host?.componentName ?? "SurfacePreviewFrame"} as HostPage } from ${JSON.stringify(hostImport)};
 import { ${componentName} } from ${JSON.stringify(componentImport)};
 
 export default function GeneratedScreenPreviewPage() {
   const [open, setOpen] = React.useState(true);
-  const [saved, setSaved] = React.useState<{ version: number; data: unknown }>({ version: 0, data: undefined });
+  ${host ? 'const [saved, setSaved] = React.useState<{ version: number; data: unknown }>({ version: 0, data: undefined });' : ''}
   const trigger = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => { if (!open) trigger.current?.focus(); }, [open]);
   return (
-    <main data-mes-application="overlay" className="min-h-screen bg-white">
-      <div data-mes-host-page=${JSON.stringify(host.componentName)} aria-hidden={open || undefined} inert={open || undefined}>
+    <main data-mes-application="overlay" data-mes-verification-scope=${JSON.stringify(verification.scope)} data-mes-parent-integration=${JSON.stringify(verification.parentIntegration)} className="min-h-screen bg-white">
+      <div ${host ? `data-mes-host-page=${JSON.stringify(host.componentName)}` : 'data-mes-preview-frame="surface"'} aria-hidden={open || undefined} inert={open || undefined}>
         <HostPage
-          overlayActions={<Button ref={trigger} variant="fillMain" disabled={open} onClick={() => setOpen(true)}>{${JSON.stringify(host.triggerLabel)}}</Button>}
-          saveVersion={saved.version}
-          savedData={saved.data}
+          overlayActions={<Button ref={trigger} variant="fillMain" disabled={open} onClick={() => setOpen(true)}>{${JSON.stringify(host?.triggerLabel ?? "팝업 다시 열기")}}</Button>}
+          ${host ? 'saveVersion={saved.version}\n          savedData={saved.data}' : ''}
         />
       </div>
-      <${componentName} open={open} onOpenChange={setOpen}${host.saveBehavior === "notify-parent" ? " onSave={(data) => setSaved(current => ({ version: current.version + 1, data }))}" : ""} />
+      <${componentName} open={open} onOpenChange={setOpen}${host?.saveBehavior === "notify-parent" ? " onSave={(data) => setSaved(current => ({ version: current.version + 1, data }))}" : ""} />
     </main>
   );
 }
@@ -84,7 +84,7 @@ export function createScreenPreviewPlan(contract, outputPath, options = {}) {
   const absolutePath = resolve(projectRoot, ...relativePath.split("/"));
   checkRealContainment(projectRoot, absolutePath);
   const componentImport = normalizeSourceImport(projectRoot, outputPath);
-  if (contract.request.target.kind !== "page") {
+  if (contract.request.hostPage) {
     const host = hostPagePath(contract.request, projectRoot);
     if (host === resolve(projectRoot, outputPath)) throw new Error("팝업 자체를 배경 페이지로 지정할 수 없습니다.");
   }
@@ -94,6 +94,7 @@ export function createScreenPreviewPlan(contract, outputPath, options = {}) {
     contract: structuredClone(contract),
     outputPath: resolve(projectRoot, outputPath),
     purpose: "internal-qa",
+    verification: verificationContext(contract.request),
     projectRoot,
     route,
     relativePath,
@@ -134,7 +135,7 @@ export function writeScreenPreview(plan) {
     created = true;
   }
   // No public catalog registration: rendering is internal QA, not a handoff pass.
-  return { created, purpose: "internal-qa", handoffReady: false, ...review };
+  return { created, purpose: "internal-qa", handoffReady: false, verification: canonical.verification, ...review };
 }
 
 function runCli() {
@@ -150,6 +151,7 @@ function runCli() {
   const plan = createScreenPreviewPlan(contract, sourcePath);
   const result = writeScreenPreview(plan);
   console.log(`[screen:preview:internal-qa] ${result.created ? "created" : "existing"} · ${plan.relativePath} · QA 전용 ${plan.url}\n실제 렌더링·동작 확인 후 screen:handoff --reviewed 필요. 기록 자동 저장 위치: ${result.paths.visual}`);
+  console.log(`[screen:preview:scope] ${JSON.stringify(result.verification)}`);
 }
 
 if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {

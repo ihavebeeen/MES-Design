@@ -50,6 +50,7 @@ npm run build
 - resolver의 `decisionTrace`가 선택·제외 근거를 설명해야 하며, 구조화된 각 섹션은 같은 순서의 `data-section-id`로 구현 감사에 노출한다.
 - 경고 한 건으로 화면 전체를 실패시키지 않는다. `blocker`, `warning`, `info`로 분리하고 blocker만 즉시 중단한다.
 - 요청 범위 밖 변경은 먼저 필요성을 설명하고 승인받는다.
+- 팝업 자체 수정은 `verificationScope: surface`, 부모 선택/저장 연결 작업은 `connected-flow`로 구분한다. 배경을 몰라도 팝업은 MES 공통 미리보기 틀에서 확인·전달할 수 있다. 연동 검증에만 `hostPage`가 필수다. 미확인/실패 차단은 요청 범위에 적용하며, 실제 렌더링되는 부분의 MES 자산 검사는 어느 범위에서도 유지한다. 연동 요청을 임의로 단독 확인으로 축소하지 않는다.
 
 ## 완료 표현
 

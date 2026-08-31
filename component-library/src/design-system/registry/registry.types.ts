@@ -467,6 +467,7 @@ export interface ScreenRequest {
   name: string;
   intent: ScreenRequestIntent;
   lifecycle: "draft" | "release";
+  verificationScope?: "surface" | "connected-flow";
   hostPage?: {
     sourcePath: string;
     componentName: string;

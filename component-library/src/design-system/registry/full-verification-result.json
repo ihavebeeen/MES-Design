@@ -1,68 +1,54 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-08-31T05:14:31.953Z",
-  "outcome": "passed",
-  "durationMs": 266717,
+  "recordedAt": "2026-08-31T05:43:16.204Z",
+  "outcome": "failed",
+  "durationMs": 274766,
   "assetManifestFingerprint": "af9c0ee2423f31c9ca06fcd49e7f48379486b0b0bffb79bb7cac1370099aaff3",
-  "verificationSourceFingerprint": "3a03ed2fffa80ed1a189dbcd187849653f4a0da13cf0c96dd6a86ebe480ee4bf",
+  "verificationSourceFingerprint": "0827d25506c9bdd74470fd083795e1c5aad833317d860df0397345f5898d201a",
   "testInventory": {
-    "count": 75,
+    "count": 77,
     "files": {
-      "tests/visual/application-flow.spec.mts": "d2145d3a210e109a48965ed34dffcc8d97f14ff96d77cda8ba2d50b63bdf356f",
+      "tests/visual/application-flow.spec.mts": "e972eb78d92011e8f24b4a475837a425ac2656a9327a108abb802fe06eba4496",
       "tests/visual/design-system.visual.spec.ts": "8da3b0bf45babf6e7e9e6d0c43cfa4df34d9c8a76a072d4a3bd7037e6f8b64e9",
       "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14"
     },
-    "fingerprint": "c46c64b77c4e4c38d1f92cd10c8a68babf1286eae453165a4b722ba615069452"
+    "fingerprint": "d85a0d8842da8793117713d76ff5363087b272775532c1119c4c3a0afbd8fa50"
   },
   "stages": [
     {
       "id": "asset-sync",
       "command": "npm run sync:assets",
       "status": "passed",
-      "durationMs": 394,
+      "durationMs": 721,
       "exitCode": 0
     },
     {
       "id": "verification-inventory",
       "command": "node scripts/audit-web-verification-coverage.mjs --write",
       "status": "passed",
-      "durationMs": 856,
+      "durationMs": 1538,
       "exitCode": 0
     },
     {
       "id": "design-system-check",
       "command": "npm run check:design-system",
       "status": "passed",
-      "durationMs": 36469,
+      "durationMs": 58523,
       "exitCode": 0
     },
     {
       "id": "design-system-lint",
       "command": "npm run lint:design-system",
       "status": "passed",
-      "durationMs": 5218,
+      "durationMs": 5315,
       "exitCode": 0
     },
     {
       "id": "playwright",
       "command": "npm run test:visual",
-      "status": "passed",
-      "durationMs": 200564,
-      "exitCode": 0
-    },
-    {
-      "id": "production-build",
-      "command": "npm run build",
-      "status": "passed",
-      "durationMs": 22259,
-      "exitCode": 0
-    },
-    {
-      "id": "verification-record",
-      "command": "node scripts/audit-web-verification-coverage.mjs --write --record-passed --duration-ms=200564",
-      "status": "passed",
-      "durationMs": 957,
-      "exitCode": 0
+      "status": "failed",
+      "durationMs": 208667,
+      "exitCode": 1
     }
   ]
 }

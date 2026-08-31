@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { contractFingerprint, readRegistryBundle } from "./resolve-screen-request.mjs";
 import { digest, implementationRoot, inspectImplementation, renderingDependencies } from "./screen-implementation-graph.mjs";
-import { hostPagePath, missingApplicationChrome } from "./screen-application-context.mjs";
+import { hostPagePath, missingApplicationChrome, surfacePreviewFrame, validateVerificationScope, verificationContext } from "./screen-application-context.mjs";
 
 function finding(severity, code, message) {
   return { severity, code, message };
@@ -11,6 +11,7 @@ function finding(severity, code, message) {
 
 export function auditScreenImplementation(contract, source, registry = readRegistryBundle(), options = {}) {
   const findings = [];
+  for (const message of validateVerificationScope(contract.request)) findings.push(finding("blocker", "request.verification-scope", message));
 
   if (contract.fingerprint !== contractFingerprint(contract)) findings.push(finding("blocker", "contract.fingerprint", "계약 내용과 fingerprint가 일치하지 않습니다. screen:resolve를 다시 실행하세요."));
   if (contract.quality?.blockerCount > 0) findings.push(finding("blocker", "contract.blocked", "blocker가 있는 계약은 구현 근거로 사용할 수 없습니다."));
@@ -71,6 +72,7 @@ export function auditScreenImplementation(contract, source, registry = readRegis
   const warnings = findings.filter((entry) => entry.severity === "warning");
   return {
     scope: "static-implementation-only",
+    verification: verificationContext(contract.request),
     handoffReady: false,
     sourceFingerprint: digest(source),
     dependencies: implementation.files,
@@ -92,11 +94,14 @@ export function auditScreenFile(contract, sourcePath, options = {}) {
     "scripts/screen-implementation-graph.mjs", "scripts/audit-screen-implementation.mjs", "scripts/screen-handoff.mjs", "scripts/generate-screen-preview.mjs", "scripts/screen-application-context.mjs"];
   if (contract.request?.target?.kind !== "page") {
     try {
-      const hostPath = hostPagePath(contract.request, root);
+      const errors = validateVerificationScope(contract.request);
+      if (errors.length) throw new Error(errors.join(" "));
+      const host = contract.request.hostPage;
+      const hostPath = host ? hostPagePath(contract.request, root) : resolve(root, surfacePreviewFrame);
       const parent = inspectImplementation(readFileSync(hostPath, "utf8"), registry, { projectRoot: root, sourcePath: hostPath });
-      support.push(contract.request.hostPage.sourcePath);
+      support.push(host?.sourcePath ?? surfacePreviewFrame);
       result.findings.push(...parent.findings);
-      if (!parent.exports.has(contract.request.hostPage.componentName)) result.findings.push(finding("blocker", "host.entry-export", "배경 페이지의 실제 export가 없습니다."));
+      if (!parent.exports.has(host?.componentName ?? "SurfacePreviewFrame")) result.findings.push(finding("blocker", "host.entry-export", "배경 페이지/미리보기 틀의 실제 export가 없습니다."));
       for (const asset of missingApplicationChrome(parent, registry)) result.findings.push(finding("blocker", "host.page-chrome", `팝업 배경 페이지에 ${asset} 실제 사용이 필요합니다.`));
     } catch (error) {
       result.findings.push(finding("blocker", "host.invalid", String(error)));

@@ -345,8 +345,9 @@ export function createMesUiMcpServer() {
         previewPath: preview.relativePath,
         previewRoute: preview.route,
         qaPreviewUrl: preview.url,
+        verification: preview.verification,
         handoffReady: false,
-        nextStep: "실제 렌더링·동작 확인 후 mes_handoff_screen의 review로 짧게 기록. 원본 재현/정규화는 sourceCompared도 필요. 동일 구현 재전달은 기존 기록 재사용.",
+        nextStep: "verification.scope에 해당하는 렌더링·동작 확인 후 mes_handoff_screen의 review로 기록. surface는 팝업 자체, connected-flow는 부모 연동까지 확인. 원본 재현은 sourceCompared도 필요. 단독 확인을 연동 완료로 표현하지 마세요.",
         visualReviewPath: previewResult.paths.visual,
         previewCreated: previewResult.created,
         contractStatus: contract.quality.status,
@@ -387,7 +388,7 @@ export function createMesUiMcpServer() {
     "mes_handoff_screen",
     {
       title: "MES 미리보기 전달 검사",
-      description: "최종 구현과 실제 렌더링·동작 확인을 연결한 뒤 URL을 반환합니다. review는 실제 확인 후에만 전달하며 자동 저장됩니다. 신규 UI는 캡처/장문 기록 불필요, 원본 재현은 sourceCompared 필요. review 생략 시 동일 코드의 기록을 재사용합니다.",
+      description: "요청 verificationScope의 실제 구현·렌더링·동작 확인 후 URL과 확인 범위를 반환합니다. surface는 팝업 자체(배경 미연결 허용), connected-flow는 부모 연동 포함(hostPage 필요). review는 해당 범위를 관찰한 뒤에만 전달. 원본 재현은 sourceCompared 필요. 생략하면 동일 코드/범위 기록 재사용.",
       inputSchema: z.object({ request: requestSchema, sourcePath: sourcePathSchema, review: z.object({
         reviewer: z.string().min(1), rendered: z.boolean(), interactions: z.boolean(), sourceCompared: z.boolean().optional(),
         viewport: z.object({ width: z.number().positive(), height: z.number().positive() }).optional(), note: z.string().optional(),
@@ -402,7 +403,7 @@ export function createMesUiMcpServer() {
       if (review) recordScreenReview(plan, review);
       const result = verifyScreenHandoff(plan);
       return toolResult("현재 구현과 제출된 시각 대조 기록의 전달 검사 통과", {
-        status: result.status, previewUrl: plan.url, fingerprint: result.fingerprint,
+        status: result.status, verification: result.verification, previewUrl: plan.url, fingerprint: result.fingerprint,
         visualEvidenceFingerprint: result.visualEvidenceFingerprint, limitation: result.limitation,
       });
     }),

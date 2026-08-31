@@ -55,6 +55,7 @@ const transport = new StdioClientTransport({
   stderr: "pipe",
 });
 const client = new Client({ name: "mes-ui-mcp-smoke-test", version: "0.1.0" });
+let surfaceArtifacts = [];
 
 try {
   await client.connect(transport);
@@ -153,9 +154,32 @@ try {
   });
   assert(trackedSourceResult.isError, "MCP가 임시 생성 화면을 Git 추적 소스 경로에 쓰는 것을 차단하지 않았습니다.");
 
-  console.log(`[mcp:check] 도구 ${toolNames.length}개 · 생성 ${generated.sourceFingerprint.slice(0, 12)} · 내부 QA ${generated.previewRoute} · 감사 ${audited.status} · 안전 차단 7개 + 짧은 기록/재사용 통과`);
+  const surfaceRequest = structuredClone(request);
+  delete surfaceRequest.hostPage;
+  surfaceRequest.verificationScope = "surface";
+  surfaceRequest.requestId += "-surface";
+  surfaceRequest.output.route = `/preview/${surfaceRequest.requestId}`;
+  const surfaceOutput = `src/generated-previews/${surfaceRequest.requestId}.tsx`;
+  const owned = [join(projectRoot, surfaceOutput), join(projectRoot, "src/app", surfaceRequest.output.route), join(projectRoot, ".mes-ui-preview", surfaceRequest.requestId)];
+  assert(owned.every(path => !existsSync(path)), "MCP 단독 확인 테스트의 기존 파일 보존");
+  surfaceArtifacts = owned;
+  const missingConnection = await client.callTool({ name: "mes_generate_screen", arguments: { request: { ...surfaceRequest, verificationScope: "connected-flow" } } });
+  assert(missingConnection.isError, "MCP가 배경 없는 연동 요청을 통과시켰습니다.");
+  assert(!existsSync(owned[0]), "연동 차단 후 출력 파일이 생겼습니다.");
+  const surfaceGeneration = await client.callTool({ name: "mes_generate_screen", arguments: { request: surfaceRequest } });
+  assert(!surfaceGeneration.isError, JSON.stringify(surfaceGeneration));
+  assert(structured(surfaceGeneration).verification.parentIntegration === "out-of-scope", "MCP 생성 결과에 연동 제외 표시 누락");
+  const surfaceHandoff = await client.callTool({ name: "mes_handoff_screen", arguments: { request: surfaceRequest, sourcePath: surfaceOutput, review } });
+  assert(!surfaceHandoff.isError, JSON.stringify(surfaceHandoff));
+  assert(structured(surfaceHandoff).verification.scope === "surface", "MCP 전달 결과의 단독 확인 범위 누락");
+  assert(/저장 연동은 확인하지 않았습니다/.test(structured(surfaceHandoff).limitation), "MCP 전달 한계 표시 누락");
+  writeFileSync(owned[0], '<input type="date" />');
+  assert((await client.callTool({ name: "mes_handoff_screen", arguments: { request: surfaceRequest, sourcePath: surfaceOutput } })).isError, "단독 모드에서 원시 UI 대체/이전 통과 재사용 차단 실패");
+
+  console.log(`[mcp:check] 도구 ${toolNames.length}개 · 생성 ${generated.sourceFingerprint.slice(0, 12)} · 내부 QA ${generated.previewRoute} · 감사 ${audited.status} · 안전 차단 7개 + 짧은 기록/재사용 + 단독/연동 범위 통과`);
 } finally {
   await client.close();
+  for (const path of surfaceArtifacts) if (existsSync(path)) rmSync(path, { recursive: true });
   if (existsSync(outputPath)) rmSync(outputPath);
   if (existsSync(previewDirectory)) rmSync(previewDirectory, { recursive: true });
   if (existsSync(reviewDirectory)) rmSync(reviewDirectory, { recursive: true });

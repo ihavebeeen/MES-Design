@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { auditScreenFile } from "./audit-screen-implementation.mjs";
 import { digest, implementationRoot } from "./screen-implementation-graph.mjs";
+import { verificationContext } from "./screen-application-context.mjs";
 
 export const visualChecks = ["shell", "pageChrome", "dateInput", "spacing", "colorFontRadius", "layoutHierarchy", "interactions"];
 export function reviewPaths(contract, projectRoot = implementationRoot) {
@@ -75,6 +76,7 @@ function verifyObservation(visual, current, receipt, plan, base) {
   requireEvidence(visual.viewport?.width > 0 && visual.viewport?.height > 0, "확인 viewport가 필요합니다.");
   requireEvidence(visual.previewFingerprint === receipt.previewFingerprint, "확인이 현재 미리보기와 연결되지 않았습니다.");
   if (visual.schemaVersion === 2) {
+    requireEvidence(JSON.stringify(visual.verification) === JSON.stringify(verificationContext(plan.contract.request)), "확인 범위가 현재 요청과 다릅니다.");
     requireEvidence(visual.renderFingerprint === current.renderFingerprint, "렌더링/계약이 변경됐습니다. 영향을 받은 부분을 재확인하세요.");
     requireEvidence(visual.rendered === true && visual.interactions === true, "MES 렌더링·동작 미확인/실패");
     if (sourceComparisonRequired(plan.contract)) {
@@ -110,6 +112,7 @@ export function recordScreenReview(plan, observation) {
   // Invalidate old success before reading optional evidence (which can fail).
   writeJson(paths.visual, { schemaVersion: 2, rendered: false, interactions: false, status: "recording" });
   const visual = { schemaVersion: 2, renderFingerprint: current.renderFingerprint, previewFingerprint: receipt.previewFingerprint,
+    verification: verificationContext(plan.contract.request),
     reviewer: observation.reviewer, comparedAt: new Date().toISOString(), viewport: observation.viewport ?? plan.contract.request.target.viewport,
     rendered: observation.rendered, interactions: observation.interactions, sourceCompared: observation.sourceCompared ?? false,
     note: observation.note ?? "", captures: (observation.captures ?? []).map((path) => ({ path: resolve(plan.projectRoot, path), sha256: digest(readFileSync(resolve(plan.projectRoot, path))) })),
@@ -126,8 +129,9 @@ export function verifyScreenHandoff(plan, visualPath = reviewPaths(plan.contract
   const visual = readJson(visualPath);
   verifyObservation(visual, current, receipt, plan, dirname(visualPath));
   return { status: "handoff-ready", fingerprint: current.fingerprint, previewFingerprint: receipt.previewFingerprint,
+    verification: verificationContext(plan.contract.request),
     visualEvidenceFingerprint: digest(JSON.stringify(visual)), automatic: current, visual,
-    limitation: "시각 판정은 비교자의 기록입니다. 픽셀 일치나 기록의 진실성을 자동 증명하지 않습니다. 이 결과는 현재 파일에만 유효합니다." };
+    limitation: `${verificationContext(plan.contract.request).parentIntegration === "out-of-scope" ? "팝업 자체 확인 범위이며 배경 업무 목록·선택값 전달·저장 연동은 확인하지 않았습니다. " : ""}시각 판정은 비교자의 기록입니다. 픽셀 일치·기록의 진실성·실제 서버 저장을 자동 증명하지 않습니다. 이 결과는 현재 파일과 요청 범위에만 유효합니다.` };
 }
 
 async function runCli() {
@@ -153,7 +157,7 @@ async function runCli() {
       recordScreenReview(plan, { reviewer: flags["--reviewer"] ?? "agent", rendered: true, interactions: true, sourceCompared: Boolean(flags["--source-compared"]), note: flags["--note"] ?? "", warningResolutions });
     } else requireEvidence(!Object.keys(flags).length && !warningResolutions.length, "새 확인 옵션에는 --reviewed가 필요합니다.");
     const result = verifyScreenHandoff(plan, visualPath ? resolve(visualPath) : undefined);
-    console.log(JSON.stringify({ status: result.status, fingerprint: result.fingerprint, previewUrl: plan.url, limitation: result.limitation }, null, 2));
+    console.log(JSON.stringify({ status: result.status, verification: result.verification, fingerprint: result.fingerprint, previewUrl: plan.url, limitation: result.limitation }, null, 2));
   } catch (error) { console.error(String(error)); process.exitCode = 1; }
 }
 
