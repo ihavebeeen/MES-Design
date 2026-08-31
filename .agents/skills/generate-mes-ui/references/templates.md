@@ -1,5 +1,13 @@
 # Deterministic templates
 
+## Whole-screen host for overlays
+
+Every managed overlay preview/handoff requires `ScreenRequest.hostPage`: `sourcePath` (local `src/...tsx`), `componentName` (actual export), `triggerLabel`, and `saveBehavior` (`notify-parent` or explicitly `none`). This applies to center/slide/confirmation shells. A page target owns its own shared navigation/tabs and must not specify a second host.
+
+The host is the actual intended business page or a scoped adapter built with MES assets, not an invented generic list. It accepts `overlayActions: ReactNode`, `saveVersion: number`, `savedData: unknown`. Place the action slot at its real launch location; apply save notifications/payload to the intended data region without remounting the host. The generated wrapper keeps host and dialog mounted, blocks background interaction while open and returns focus on close. The dialog accepts `open`, `onOpenChange`, and `onSave` when notification is requested. Emit `onSave` only after successful save; do not report success on validation/API failure. No API or backend persistence is supplied by the preview wrapper.
+
+Missing host details stop whole-screen preview delivery; inspect existing code/context or ask only the material missing choice. Code-only in-memory diagnostics may still inspect a dialog fragment, but cannot authorize handoff. Old blank-background wrappers must be regenerated/reviewed; do not overwrite unrelated local previews automatically. The host fixture in tests is test-only, never a universal generation background.
+
 ## `side-slide-form-editable-list.v1`
 
 Use for a full-height right panel composed of ordered form sections and exactly one repeating input-row section. It generates `SideSlidePanel`, `SectionFrame`, `FormGrid`, `EditableRowListSection`, `EditableRowGrid`, committed-draft restore, row mutation, and cancel/save actions.

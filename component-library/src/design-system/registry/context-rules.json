@@ -1,9 +1,15 @@
 {
   "schemaVersion": 1,
   "policyId": "mes.ai-context-rules",
-  "policyVersion": "1.3.0",
+  "policyVersion": "1.4.0",
   "status": "active",
   "authority": "common-policy",
+  "applicationFrame": {
+    "requiredComponents": ["sidebar", "page-top-tab-item"],
+    "scope": "MES desktop full pages and the parent page behind overlays",
+    "overlayOwnership": "Parent owns navigation/tabs. Overlay owns its dialog shell, never a second navigation frame.",
+    "exceptions": "A standalone/mobile/kiosk surface needs a separately approved and supported contract; no skip flag."
+  },
   "decisionAxes": [
     "semantic-scope",
     "parent-context",

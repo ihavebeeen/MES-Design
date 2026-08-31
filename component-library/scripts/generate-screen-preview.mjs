@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { recordPreviewAudit } from "./screen-handoff.mjs";
+import { hostPagePath, validateHostPage } from "./screen-application-context.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const defaultProjectRoot = resolve(scriptDirectory, "..");
@@ -39,7 +40,36 @@ export function generateScreenPreviewSource(contract, componentImport) {
     throw new Error(`미리보기를 지원하지 않는 target.kind입니다: ${targetKind ?? "없음"}`);
   }
 
-  return `"use client";\n\nimport * as React from "react";\nimport { Button } from "@/components/ui/button";\nimport { ${componentName} } from ${JSON.stringify(componentImport)};\n\nexport default function GeneratedScreenPreviewPage() {\n  const [open, setOpen] = React.useState(true);\n\n  return (\n    <main className="min-h-screen bg-mes-gray-10">\n      {!open && (\n        <div className="flex min-h-screen items-center justify-center">\n          <Button variant="fillMain" onClick={() => setOpen(true)}>다시 열기</Button>\n        </div>\n      )}\n      <${componentName} open={open} onOpenChange={setOpen} />\n    </main>\n  );\n}\n`;
+  const host = contract.request.hostPage;
+  const errors = validateHostPage(host, targetKind);
+  if (!host || errors.length) throw new Error(`팝업에는 hostPage 연결이 필요합니다. ${errors.join(" ")}`);
+  const hostImport = `@/${host.sourcePath.slice(4).replace(/\.(?:tsx|jsx)$/, "")}`;
+  return `"use client";
+
+import * as React from "react";
+import { Button } from "@/components/ui/button";
+import { ${host.componentName} as HostPage } from ${JSON.stringify(hostImport)};
+import { ${componentName} } from ${JSON.stringify(componentImport)};
+
+export default function GeneratedScreenPreviewPage() {
+  const [open, setOpen] = React.useState(true);
+  const [saved, setSaved] = React.useState<{ version: number; data: unknown }>({ version: 0, data: undefined });
+  const trigger = React.useRef<HTMLButtonElement>(null);
+  React.useEffect(() => { if (!open) trigger.current?.focus(); }, [open]);
+  return (
+    <main data-mes-application="overlay" className="min-h-screen bg-white">
+      <div data-mes-host-page=${JSON.stringify(host.componentName)} aria-hidden={open || undefined} inert={open || undefined}>
+        <HostPage
+          overlayActions={<Button ref={trigger} variant="fillMain" disabled={open} onClick={() => setOpen(true)}>{${JSON.stringify(host.triggerLabel)}}</Button>}
+          saveVersion={saved.version}
+          savedData={saved.data}
+        />
+      </div>
+      <${componentName} open={open} onOpenChange={setOpen}${host.saveBehavior === "notify-parent" ? " onSave={(data) => setSaved(current => ({ version: current.version + 1, data }))}" : ""} />
+    </main>
+  );
+}
+`;
 }
 
 export function createScreenPreviewPlan(contract, outputPath, options = {}) {
@@ -54,6 +84,10 @@ export function createScreenPreviewPlan(contract, outputPath, options = {}) {
   const absolutePath = resolve(projectRoot, ...relativePath.split("/"));
   checkRealContainment(projectRoot, absolutePath);
   const componentImport = normalizeSourceImport(projectRoot, outputPath);
+  if (contract.request.target.kind !== "page") {
+    const host = hostPagePath(contract.request, projectRoot);
+    if (host === resolve(projectRoot, outputPath)) throw new Error("팝업 자체를 배경 페이지로 지정할 수 없습니다.");
+  }
   const source = generateScreenPreviewSource(contract, componentImport);
   const baseUrl = (options.baseUrl ?? "http://localhost:3000").replace(/\/$/, "");
   return {

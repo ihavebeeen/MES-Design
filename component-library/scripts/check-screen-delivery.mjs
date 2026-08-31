@@ -102,19 +102,52 @@ try {
       assert.ok(auditScreenImplementation(contract, original + `\nconst Fake = () => ${jsx};`).blockerCount > 0);
     }
   });
-  check("페이지 틀은 선택한 등록 패턴을 따름 (전역 Sidebar 강제 아님)", () => {
+  check("페이지 패턴별 요구와 별도로 공통 메뉴·탭 누락 차단", () => {
     const req = JSON.parse(readFileSync(resolve(root, "tests/fixtures/screen-requests/deterministic-entity-list.json")));
     const c = resolveScreenRequest(req);
     const registry = readRegistryBundle();
-    // Synthetic alternative contract only; this does not approve a production pattern.
+    // A content pattern cannot waive the shared MES desktop frame.
     for (const p of registry.patterns.filter((p) => c.composition.selectedPatternRefs.includes(p.id) && p.placement === "page")) {
       p.requiredComponents = p.requiredComponents.filter((id) => !["sidebar", "page-top-tab-item"].includes(id));
     }
     const source = generateScreenTsx(c).replace("<PageTopTabItem", "<div").replace("<Sidebar", "<div");
-    assert.equal(auditScreenImplementation(c, source, registry).blockerCount, 0);
+    assert.ok(auditScreenImplementation(c, source, registry).findings.some((f) => f.code === "shell.page-chrome"));
     assert.ok(auditScreenImplementation(c, source, readRegistryBundle()).findings.some((f) => f.code === "shell.page-chrome"));
   });
   write(original);
+  check("배경 없는 팝업은 코드 단위 검사와 달리 전체 미리보기에서 차단", () => {
+    const req = structuredClone(request);
+    delete req.hostPage;
+    const c = resolveScreenRequest(req);
+    assert.equal(auditScreenImplementation(c, original).blockerCount, 0);
+    assert.ok(auditScreenFile(c, sourcePath).findings.some(f => f.code === "host.invalid"));
+    assert.throws(() => createScreenPreviewPlan(c, sourcePath), /hostPage/);
+  });
+  check("배경 경로/알 수 없는 옵션/페이지 중첩은 요청 단계에서 차단", () => {
+    for (const host of [{ ...request.hostPage, sourcePath: "../outside.tsx" }, { ...request.hostPage, skipCheck: true }, { ...request.hostPage, saveBehavior: "invent" }]) {
+      assert.ok(resolveScreenRequest({ ...request, hostPage: host }).quality.issues.some(f => f.code === "request.host-page"));
+    }
+    const req = JSON.parse(readFileSync(resolve(root, "tests/fixtures/screen-requests/deterministic-entity-list.json")));
+    assert.ok(resolveScreenRequest({ ...req, hostPage: request.hostPage }).quality.issues.some(f => f.code === "request.host-page"));
+  });
+  check("배경의 가짜 메뉴/탭·누락 export와 코드 변경 검사", () => {
+    const host = readFileSync(resolve(root, request.hostPage.sourcePath), "utf8");
+    const hostPath = resolve(directory, "host.tsx");
+    const c = resolveScreenRequest({ ...request, hostPage: { ...request.hostPage, sourcePath: `src/generated-previews/${id}/host.tsx` } });
+    writeFileSync(hostPath, host);
+    const before = auditScreenFile(c, sourcePath);
+    assert.equal(before.blockerCount, 0, JSON.stringify(before.findings));
+    writeFileSync(hostPath, host.replace("생성 흐름 검증용 페이지", "변경된 배경"));
+    const after = auditScreenFile(c, sourcePath);
+    assert.notEqual(before.fingerprint, after.fingerprint);
+    assert.notEqual(before.renderFingerprint, after.renderFingerprint);
+    writeFileSync(hostPath, host.replace("<Sidebar ", "<div ").replace("<PageTopTabItem ", "<div "));
+    assert.ok(auditScreenFile(c, sourcePath).findings.some(f => f.code === "host.page-chrome"));
+    writeFileSync(hostPath, host.replace("export function ApplicationHostFixture", "function ApplicationHostFixture"));
+    assert.ok(auditScreenFile(c, sourcePath).findings.some(f => f.code === "host.entry-export"));
+    writeFileSync(hostPath, 'export const ApplicationHostFixture = () => <input type="date"/>;');
+    assert.ok(auditScreenFile(c, sourcePath).findings.some(f => f.code === "native.input"));
+  });
   check("검사 결과 없으면 전달 차단", () => {
     rmSync(paths.audit);
     assert.throws(() => verifyScreenHandoff(plan), /검사 결과가 없습니다/);

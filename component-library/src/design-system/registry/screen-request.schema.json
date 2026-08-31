@@ -85,6 +85,18 @@
       }
     },
     "generation": { "$ref": "#/$defs/generation" },
+    "hostPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourcePath", "componentName", "triggerLabel", "saveBehavior"],
+      "description": "Required for overlay preview/handoff. Parent stays mounted and receives overlayActions, saveVersion, savedData props. No invented fallback background.",
+      "properties": {
+        "sourcePath": { "type": "string", "pattern": "^src/(?:[\\w-]+/)*[\\w-]+\\.(?:tsx|jsx)$" },
+        "componentName": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" },
+        "triggerLabel": { "type": "string", "minLength": 1 },
+        "saveBehavior": { "enum": ["notify-parent", "none"] }
+      }
+    },
     "output": {
       "type": "object",
       "additionalProperties": false,

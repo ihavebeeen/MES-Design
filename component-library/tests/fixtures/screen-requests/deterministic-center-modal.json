@@ -4,6 +4,12 @@
   "name": "결정적 중앙 조회 팝업 fixture",
   "intent": "new",
   "lifecycle": "draft",
+  "hostPage": {
+    "sourcePath": "src/components/visual-tests/application-host-fixture.tsx",
+    "componentName": "ApplicationHostFixture",
+    "triggerLabel": "품목 선택 열기",
+    "saveBehavior": "notify-parent"
+  },
   "target": {
     "kind": "center-modal",
     "title": "품목 선택",

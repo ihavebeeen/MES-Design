@@ -467,6 +467,12 @@ export interface ScreenRequest {
   name: string;
   intent: ScreenRequestIntent;
   lifecycle: "draft" | "release";
+  hostPage?: {
+    sourcePath: string;
+    componentName: string;
+    triggerLabel: string;
+    saveBehavior: "notify-parent" | "none";
+  };
   target: {
     kind: ScreenTargetKind;
     title: string;
@@ -739,6 +745,12 @@ export interface ContextRuleRegistry {
   policyVersion: string;
   status: "active";
   authority: "common-policy";
+  applicationFrame: {
+    requiredComponents: string[];
+    scope: string;
+    overlayOwnership: string;
+    exceptions: string;
+  };
   decisionAxes: string[];
   globalGates: string[];
   rules: ContextRuleEntry[];

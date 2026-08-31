@@ -68,7 +68,7 @@ assert.equal(sideSlidePreview.manifestEntry.persistence, "local");
 assert.equal(sideSlidePreview.manifestEntry.reviewStatus, "draft");
 assert.equal(sideSlidePreview.manifestEntry.generationInfluence, "blocked");
 assert.match(sideSlidePreview.source, /<DeterministicReceivingDialog open=\{open\} onOpenChange=\{setOpen\}/);
-assert.match(sideSlidePreview.source, /다시 열기/);
+assert.match(sideSlidePreview.source, /<HostPage/);
 
 const wrongSectionOrder = generatedFirst
   .replace('data-section-id="basicInformation"', 'data-section-id="__swap__"')
@@ -108,7 +108,7 @@ assert.equal(pageContract.quality.status, "review-ready");
 assert.equal(pageContract.decisionTrace.webContext.pageArchetype.selectedId, "generation.page.entity-list");
 assert.ok(pageContract.quality.issues.some((entry) => entry.code === "generation.template-provisional"));
 assert.equal(pageFirst, pageSecond, "전체 페이지 템플릿이 결정적으로 생성되지 않았습니다.");
-assert.equal(generatedSourceFingerprint(pageFirst), "6b4e78b9c46ebeaa4015bc2df87f62ade89cf5d29f9ca07a55d7b261cb0d287d");
+assert.equal(generatedSourceFingerprint(pageFirst), "dc08b5ccd7bccf2d874da35cf4b9d1e59440b6beb21aac85103acffe6a35124e");
 assert.match(pageFirst, /<EntityListPattern/);
 assert.match(pageFirst, /<SearchTableSection/);
 assert.equal(auditScreenImplementation(pageContract, pageFirst).blockerCount, 0);

@@ -92,7 +92,7 @@ function verifyObservation(visual, current, receipt, plan, base) {
     verifyArtifacts(visual.renderedArtifacts, base);
     for (const name of visualChecks) {
       const check = visual.checks?.[name];
-      const allowsNA = name === "dateInput" || (name === "pageChrome" && plan.contract.request.target.kind !== "page");
+      const allowsNA = name === "dateInput";
       requireEvidence(check && (check.status === "passed" || (allowsNA && check.status === "not-applicable")), `${name} 미검증/실패`);
     }
   }

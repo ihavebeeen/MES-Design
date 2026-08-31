@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { contractFingerprint, readRegistryBundle } from "./resolve-screen-request.mjs";
 import { digest, implementationRoot, inspectImplementation, renderingDependencies } from "./screen-implementation-graph.mjs";
+import { hostPagePath, missingApplicationChrome } from "./screen-application-context.mjs";
 
 function finding(severity, code, message) {
   return { severity, code, message };
@@ -26,13 +27,14 @@ export function auditScreenImplementation(contract, source, registry = readRegis
   if (!implementation.exports?.has(contract.request?.output?.componentName)) findings.push(finding("blocker", "source.entry-export", "계약의 화면 componentName에 해당하는 값 export가 없습니다."));
 
   const page = contract.request?.target?.kind === "page";
+  if (page) for (const asset of missingApplicationChrome(implementation, registry)) findings.push(finding("blocker", "shell.page-chrome", `MES 전체 페이지에 ${asset} 실제 사용이 필요합니다.`));
   const selected = new Set(contract.composition?.selectedPatternRefs ?? []);
   const frames = registry.patterns.filter((p) => page
     ? selected.has(p.id) && p.placement === "page" && ["screen", "recipe"].includes(p.kind)
     : p.id === contract.composition?.shellRef);
   if (!frames.length) findings.push(finding("blocker", "shell.contract-missing", "적용할 페이지/팝업 틀의 등록 계약이 필요합니다."));
   for (const frame of frames) {
-    // Required assets come from the selected pattern, not a universal sidebar rule.
+    // Content/shell requirements augment the common desktop page frame.
     for (const id of frame.requiredComponents ?? []) {
       const asset = registry.components.find((entry) => entry.id === id);
       if (!asset || !implementation.uses.has(asset.name)) findings.push(finding("blocker", page ? "shell.page-chrome" : "shell.missing", `선택한 ${frame.id}의 공통 자산 ${asset?.name ?? id} 실제 사용이 필요합니다.`));
@@ -87,7 +89,19 @@ export function auditScreenFile(contract, sourcePath, options = {}) {
   const registry = readRegistryBundle();
   const result = auditScreenImplementation(contract, readFileSync(path, "utf8"), registry, { ...options, sourcePath: path });
   const support = ["package-lock.json", "tsconfig.json", "next.config.ts", "postcss.config.mjs", "src/app/layout.tsx", "src/app/globals.css",
-    "scripts/screen-implementation-graph.mjs", "scripts/audit-screen-implementation.mjs", "scripts/screen-handoff.mjs", "scripts/generate-screen-preview.mjs"];
+    "scripts/screen-implementation-graph.mjs", "scripts/audit-screen-implementation.mjs", "scripts/screen-handoff.mjs", "scripts/generate-screen-preview.mjs", "scripts/screen-application-context.mjs"];
+  if (contract.request?.target?.kind !== "page") {
+    try {
+      const hostPath = hostPagePath(contract.request, root);
+      const parent = inspectImplementation(readFileSync(hostPath, "utf8"), registry, { projectRoot: root, sourcePath: hostPath });
+      support.push(contract.request.hostPage.sourcePath);
+      result.findings.push(...parent.findings);
+      if (!parent.exports.has(contract.request.hostPage.componentName)) result.findings.push(finding("blocker", "host.entry-export", "배경 페이지의 실제 export가 없습니다."));
+      for (const asset of missingApplicationChrome(parent, registry)) result.findings.push(finding("blocker", "host.page-chrome", `팝업 배경 페이지에 ${asset} 실제 사용이 필요합니다.`));
+    } catch (error) {
+      result.findings.push(finding("blocker", "host.invalid", String(error)));
+    }
+  }
   const route = contract.request?.output?.route;
   if (!/^\/preview\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(route ?? "")) throw new Error("최종 파일 검사에는 관리되는 /preview/<id> 진입점이 필요합니다.");
   // Next implicitly composes route layouts; these are not TS import dependencies.

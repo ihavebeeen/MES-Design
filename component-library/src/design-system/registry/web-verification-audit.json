@@ -1,25 +1,26 @@
 {
   "schemaVersion": 1,
-  "auditedAt": null,
-  "sourceFingerprint": "37bc4f97b509a838c83760df854fafc03d56663633d230f237c5c5b11c55a704",
+  "auditedAt": "2026-08-31T05:14:31.931Z",
+  "sourceFingerprint": "3a03ed2fffa80ed1a189dbcd187849653f4a0da13cf0c96dd6a86ebe480ee4bf",
   "browserRun": {
     "command": "npm run test:visual",
-    "result": "not-verified-for-current-source",
-    "testCount": 72,
-    "passed": null,
-    "failed": null,
-    "durationMs": null,
-    "recordedAt": null,
-    "testInventoryFingerprint": "68eccfa02982925891309493d072572a126232e0e98c9b99777dbaf17f319ca6",
+    "result": "passed",
+    "testCount": 75,
+    "passed": 75,
+    "failed": 0,
+    "durationMs": 200564,
+    "recordedAt": "2026-08-31T05:14:31.931Z",
+    "testInventoryFingerprint": "c46c64b77c4e4c38d1f92cd10c8a68babf1286eae453165a4b722ba615069452",
     "includesDeferredMobile": true
   },
   "testInventory": {
-    "count": 72,
+    "count": 75,
     "files": {
+      "tests/visual/application-flow.spec.mts": "d2145d3a210e109a48965ed34dffcc8d97f14ff96d77cda8ba2d50b63bdf356f",
       "tests/visual/design-system.visual.spec.ts": "8da3b0bf45babf6e7e9e6d0c43cfa4df34d9c8a76a072d4a3bd7037e6f8b64e9",
       "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14"
     },
-    "fingerprint": "68eccfa02982925891309493d072572a126232e0e98c9b99777dbaf17f319ca6"
+    "fingerprint": "c46c64b77c4e4c38d1f92cd10c8a68babf1286eae453165a4b722ba615069452"
   },
   "summary": {
     "components": {

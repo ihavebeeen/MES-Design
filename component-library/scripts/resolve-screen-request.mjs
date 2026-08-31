@@ -3,6 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateGenerationSpec } from "./screen-generation-contract.mjs";
+import { validateHostPage } from "./screen-application-context.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -68,6 +69,7 @@ export function readRegistryBundle() {
 
 function validateRequestShape(request) {
   const issues = [];
+  for (const message of validateHostPage(request?.hostPage, request?.target?.kind)) issues.push(issue("blocker", "request.host-page", message));
   const checkKnownKeys = (value, allowed, path) => {
     if (!value || typeof value !== "object" || Array.isArray(value)) return;
     for (const key of Object.keys(value)) {
@@ -87,6 +89,7 @@ function validateRequestShape(request) {
     "requirements",
     "normalizationDecisions",
     "generation",
+    "hostPage",
     "output",
   ]);
   for (const key of Object.keys(request ?? {})) {
@@ -336,7 +339,8 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const resolvedPatterns = selectedPatternRefs.map((id) => patternMap.get(id)).filter(Boolean);
   const expectedShellComponent = expectedShellComponents[request?.target?.kind];
   const overlayComponentIds = new Set(Object.values(expectedShellComponents));
-  const requiredComponentIds = unique([...resolvedPatterns.flatMap((pattern) => pattern.requiredComponents), ...sections.flatMap((section) => section.componentRefs ?? [])]).filter(
+  const pageChrome = request?.target?.kind === "page" ? registry.contextRules.applicationFrame?.requiredComponents ?? [] : [];
+  const requiredComponentIds = unique([...pageChrome, ...resolvedPatterns.flatMap((pattern) => pattern.requiredComponents), ...sections.flatMap((section) => section.componentRefs ?? [])]).filter(
     (id) => !expectedShellComponent || !overlayComponentIds.has(id) || id === expectedShellComponent,
   );
   const resolvedComponents = [];
@@ -374,6 +378,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
 
   const selectionSource = (explicit, structured, fallback) => explicit ? "request" : structured ? "screen-spec" : fallback;
   const decisionTrace = {
+    applicationFrame: { requiredComponents: registry.contextRules.applicationFrame?.requiredComponents ?? [], owner: request?.target?.kind === "page" ? "target-page" : "host-page", hostPage: request?.hostPage ?? null, reason: "MES 공통 메뉴·탭은 페이지가 소유하고 팝업은 그 위에 열린다. hostPage 없는 팝업 코드는 단독 검사만 가능하며 전체 미리보기/전달은 차단한다." },
     webContext: {
       pageArchetype: selectedWebPageArchetype ? { selectedId: selectedWebPageArchetype.id, confidence: selectedWebPageArchetype.confidence, reason: "ScreenRequest가 신규 UI의 page 문법을 명시했습니다." } : null,
       overlayGrammar: selectedWebOverlayGrammar ? { selectedId: selectedWebOverlayGrammar.id, confidence: selectedWebOverlayGrammar.confidence, reason: "ScreenRequest가 신규 UI의 overlay 흐름을 명시했습니다." } : null,

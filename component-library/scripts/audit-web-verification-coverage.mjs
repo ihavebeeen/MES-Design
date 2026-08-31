@@ -53,7 +53,7 @@ function collectTestInventory() {
   const output = `${result.stdout}\n${result.stderr}`;
   const count = Number(output.match(/Total:\s*(\d+)\s+tests?/)?.[1]);
   if (!Number.isFinite(count)) throw new Error("Playwright 테스트 개수를 읽지 못했습니다.");
-  const testFiles = walkFiles(path.join(projectRoot, "tests", "visual")).filter((filePath) => filePath.endsWith(".spec.ts"));
+  const testFiles = walkFiles(path.join(projectRoot, "tests", "visual")).filter((filePath) => /\.spec\.[cm]?ts$/.test(filePath));
   return {
     count,
     files: Object.fromEntries(testFiles.sort().map((filePath) => [path.relative(projectRoot, filePath).replaceAll("\\", "/"), fileFingerprint(filePath)])),
@@ -194,7 +194,7 @@ function buildAudit() {
     }),
   );
   const visualTestDirectory = path.join(projectRoot, "tests", "visual");
-  const visualTestFiles = walkFiles(visualTestDirectory).filter((filePath) => filePath.endsWith(".spec.ts"));
+  const visualTestFiles = walkFiles(visualTestDirectory).filter((filePath) => /\.spec\.[cm]?ts$/.test(filePath));
   const snapshotFiles = walkFiles(visualTestDirectory).filter((filePath) => filePath.includes("-snapshots") && filePath.endsWith(".png"));
   const visualEvidenceFingerprints = {
     testSources: Object.fromEntries(visualTestFiles.sort().map((filePath) => [path.relative(projectRoot, filePath).replaceAll("\\", "/"), fileFingerprint(filePath)])),

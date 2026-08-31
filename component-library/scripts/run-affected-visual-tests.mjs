@@ -85,6 +85,13 @@ function buildPlan(files) {
   const screenIds = new Set();
   let runAllWeb = full;
   let runAllMobile = false;
+  let runApplicationFlow = full;
+  const applicationFiles = new Set([
+    "scripts/generate-screen-preview.mjs", "scripts/generate-screen-tsx.mjs", "scripts/screen-application-context.mjs",
+    "scripts/audit-screen-implementation.mjs", "scripts/screen-handoff.mjs", "scripts/screen-implementation-graph.mjs", "scripts/resolve-screen-request.mjs",
+    "tests/visual/application-flow.spec.mts", "tests/helpers/application-flow.mjs", "src/components/visual-tests/application-host-fixture.tsx",
+    "src/design-system/registry/context-rules.json", "src/design-system/registry/screen-request.schema.json",
+  ]);
 
   const sourceToComponents = new Map(registry.components.map((entry) => [entry.source, entry.id]));
   const sourceToPatterns = new Map(registry.patterns.map((entry) => [entry.source, entry.id]));
@@ -94,6 +101,8 @@ function buildPlan(files) {
   }
 
   for (const file of files) {
+    if (applicationFiles.has(file) || file.startsWith("tests/fixtures/screen-requests/")) runApplicationFlow = true;
+    if (file === "src/components/visual-tests/application-host-fixture.tsx") continue;
     if (sourceToComponents.has(file)) componentIds.add(sourceToComponents.get(file));
     if (sourceToPatterns.has(file)) patternIds.add(sourceToPatterns.get(file));
     for (const screenId of sourceToScreens.get(file) ?? []) screenIds.add(screenId);
@@ -132,6 +141,7 @@ function buildPlan(files) {
     testNames: [...testNames].sort(),
     runAllWeb,
     runAllMobile,
+    runApplicationFlow: runApplicationFlow || runAllWeb || componentIds.size > 0 || patternIds.size > 0,
   };
 }
 
@@ -142,6 +152,7 @@ function printPlan(plan) {
   else if (plan.testNames.length > 0) console.log(`[visual:changed] 실행할 웹 검사 ${plan.testNames.length}개 · ${plan.testNames.join(" / ")}`);
   else console.log("[visual:changed] 실행할 웹 화면 검사가 없습니다.");
   if (plan.runAllMobile) console.log("[visual:changed] 모바일 변경 감지 · 모바일 검사 실행");
+  if (plan.runApplicationFlow) console.log("[visual:changed] 전체 화면 연결 검사 · 페이지/중앙/슬라이드 실행");
 }
 
 const files = changedFiles();
@@ -151,7 +162,7 @@ printPlan(plan);
 if (planOnly || files.length === 0) process.exit(0);
 
 const playwrightCli = path.join(projectRoot, "node_modules", "@playwright", "test", "cli.js");
-if (installBrowser && (plan.runAllWeb || plan.testNames.length > 0 || plan.runAllMobile)) {
+if (installBrowser && (plan.runAllWeb || plan.testNames.length > 0 || plan.runAllMobile || plan.runApplicationFlow)) {
   run(process.execPath, [playwrightCli, "install", "chromium"], { capture: false, cwd: projectRoot });
 }
 if (plan.runAllWeb) {
@@ -162,4 +173,7 @@ if (plan.runAllWeb) {
 }
 if (plan.runAllMobile) {
   run(process.execPath, [playwrightCli, "test", "tests/visual/mobile-design-system.spec.ts"], { capture: false, cwd: projectRoot });
+}
+if (plan.runApplicationFlow) {
+  run(process.execPath, [playwrightCli, "test", "tests/visual/application-flow.spec.mts"], { capture: false, cwd: projectRoot });
 }

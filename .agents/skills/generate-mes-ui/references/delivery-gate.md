@@ -34,13 +34,13 @@ MCP `mes_handoff_screen` accepts the same request/sourcePath and optional `revie
 
 Audit fingerprints include registry/checker/config and implementation dependencies. Rendering fingerprints include the source path, transitive local code/styles/assets, layout/config/lockfile, contract and selected pattern records. A changed audit requires re-audit; identical rendering and wrapper can reuse observations. A later audit timestamp alone never invalidates comparison. Render/contract changes need affected checks again; new warnings need reasons. This does not rerender the entire catalog.
 
-Confirm applicable navigation/tabs, MES date API, spacing, colors/font/radius, section hierarchy and alignment. Exercise inputs/selection/cancel/X and check console errors/overflow. Report automatic checks, actual observations and unchecked limits separately.
+Confirm shared navigation/tabs on every full desktop page and the parent behind overlays, MES date API, spacing, colors/font/radius, hierarchy and alignment. Exercise parent trigger, draft cancellation/X/Escape, reopen, save notification/data update, preserved parent search/selection/scroll and focus return. Report automatic checks, actual observations and unchecked limits separately. Legacy detailed checks cannot mark popup pageChrome not-applicable.
 
 ## Enforcement boundary
 
 | Program-enforced in managed commands | Agent/reviewer responsibility |
 |---|---|
-| Actual JSX/call import binding and exports, not names/comments; page/shell required components from selected registry patterns | Correct semantic choice; no universal sidebar rule |
+| Actual JSX/call bindings and exports; shared desktop chrome plus selected content/shell requirements; popup host source/export/chrome and transitive fingerprints | Correct host/trigger/data placement; no duplicated navigation inside a dialog; runtime reachability remains browser-checked |
 | Raw controls, custom screen CSS, HTML injection and unsupported dynamic rendering fail closed; explicit local boolean asChild API read from source permits false and a single literal-href anchor | Other slot/polymorphic as combinations need scoped checker support/tests, not a skip flag; unsupported does not mean inherently invalid design |
 | Inline layout mechanics, stylesheet-defined tokens, passive roles and tabIndex=-1 allowed | Use actual MES variants for visual states; style/role suitability is not automatically proven |
 | Registered DS internals can use native HTML; local helpers are inspected | Internal DS implementation quality remains covered by existing DS tests |
