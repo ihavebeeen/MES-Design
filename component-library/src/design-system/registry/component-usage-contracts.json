@@ -196,7 +196,7 @@
       "useWhen": ["전체 컨셉·정보 관계·진입/종료와 MES 근거를 함께 검토해 중앙 형식을 선택함", "원본 또는 사용자 지정이 중앙 팝업으로 확인됨"],
       "doNotUseWhen": ["배경 유지·건수·입력 길이·폭 하나로 중앙/우측을 결정함", "유지해야 할 우측 슬라이드 원본", "짧은 확인만 필요한 작은 대화상자"],
       "allowedParents": ["shell.center-modal"],
-      "constraints": ["임의 overlay와 wrapper로 재구현하지 않는다.", "헤더·본문·푸터와 본문 scroll 책임을 셸이 소유한다."],
+      "constraints": ["임의 overlay와 wrapper로 재구현하지 않는다.", "헤더·본문·푸터와 본문 scroll 책임을 셸이 소유한다.", "기본 취소는 fillGray, 확인은 fillMain이며 버튼 160×40px·간격10px을 유지한다. 명시적 actions·footer는 우선한다."],
       "accessibility": ["제목을 Dialog title로 연결한다.", "Esc·X·backdrop·취소가 동일 dismiss 정책을 사용한다."],
       "evidence": ["batch-work-order", "material-input-settings", "inventory-add"],
       "alternatives": [
@@ -212,7 +212,7 @@
       "useWhen": ["전체 컨셉·정보 관계·진입/종료와 MES 근거를 함께 검토해 우측 형식을 선택함", "원본 또는 사용자 지정이 우측 슬라이드 팝업으로 확인됨"],
       "doNotUseWhen": ["중앙 조회·선택 팝업", "짧은 확인", "독립 전체 페이지"],
       "allowedParents": ["shell.side-slide-panel"],
-      "constraints": ["760·849·900·960px 승인 preset만 사용한다.", "본문 섹션만 스크롤하고 헤더·푸터는 고정한다."],
+      "constraints": ["760·849·900·960px 승인 preset만 사용한다.", "본문 섹션만 스크롤하고 헤더·푸터는 고정한다.", "기본 취소는 fillGray, 확인은 fillMain이며 버튼 160×40px·간격10px을 유지한다. 명시적 actions·footer는 우선한다."],
       "accessibility": ["제목을 Dialog title로 연결한다.", "Esc·X·backdrop·취소가 동일 dismiss 정책을 사용한다."],
       "evidence": ["receiving", "production-result", "operation-log"],
       "alternatives": [
@@ -228,7 +228,7 @@
       "useWhen": ["팝업 안에서 복수 섹션의 내용을 구분", "섹션 제목 우측에 로컬 액션이 있음"],
       "doNotUseWhen": ["모달 전체 제목", "섹션이 하나뿐이고 별도 위계가 필요 없음", "일반 페이지에서 근거 없는 긴 회색 밴드"],
       "allowedParents": ["frame.standard-section"],
-      "constraints": ["SectionFrame의 title slot을 통해 사용한다.", "텍스트 hug가 아니라 사용 가능한 섹션 폭을 채운다."],
+      "constraints": ["SectionFrame의 title slot을 통해 사용한다.", "텍스트 hug가 아니라 사용 가능한 섹션 폭을 채운다.", "제목 밴드와 바로 옆 버튼은 28px이며 외곽 높이는 내용에 맞춘다. 일반 Button.small의 32px 규격은 유지한다."],
       "accessibility": ["시각 제목이 section의 접근 가능한 이름이 되도록 연결한다."],
       "evidence": ["receiving", "production-result", "custom-information"],
       "alternatives": [
@@ -272,7 +272,7 @@
       "useWhen": ["중앙 모달이나 우측 패널의 하단 액션", "등록된 action set을 버튼 배열로 렌더링"],
       "doNotUseWhen": ["페이지 상단·본문 로컬 액션", "화면마다 임의 버튼 순서를 구성"],
       "allowedParents": ["shell.center-modal", "shell.side-slide-panel", "shell.confirm-dialog"],
-      "constraints": ["action-set 레지스트리의 라벨·순서·dismiss 의미를 따른다.", "취소와 X는 동일 복원 경로를 사용한다."],
+      "constraints": ["action-set 레지스트리의 라벨·순서·dismiss 의미를 따른다.", "취소와 X는 동일 복원 경로를 사용한다.", "variant 생략 시 첫째 fillBlack·둘째 fillMain·셋째 fillGray를 사용한다. 명시적 variant가 우선하며 기본 버튼은 160×40px·간격10px이다."],
       "accessibility": ["탭 순서는 시각 순서와 일치한다.", "primaryDisabled는 실제 버튼 disabled와 연결한다."],
       "evidence": ["batch-work-order", "receiving", "production-quantity-reregistration"],
       "alternatives": []

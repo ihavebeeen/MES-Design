@@ -28,6 +28,7 @@
 - primaryDisabled는 실제 버튼 disabled와 연결한다.
 - action-set 레지스트리의 라벨·순서·dismiss 의미를 따른다.
 - 취소와 X는 동일 복원 경로를 사용한다.
+- variant 생략 시 첫째 fillBlack·둘째 fillMain·셋째 fillGray를 사용한다. 명시적 variant가 우선하며 기본 버튼은 160×40px·간격10px이다.
 
 ## 근거
 

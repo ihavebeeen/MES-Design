@@ -29,6 +29,7 @@
 - Esc·X·backdrop·취소가 동일 dismiss 정책을 사용한다.
 - 760·849·900·960px 승인 preset만 사용한다.
 - 본문 섹션만 스크롤하고 헤더·푸터는 고정한다.
+- 기본 취소는 fillGray, 확인은 fillMain이며 버튼 160×40px·간격10px을 유지한다. 명시적 actions·footer는 우선한다.
 
 ## 근거
 

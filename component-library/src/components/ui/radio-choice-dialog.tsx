@@ -41,8 +41,8 @@ import { IconX } from "../icons/icon-x";
  *     Gray-130), 가로 전체 중앙정렬.
  * - 푸터(72px): 흰 배경, 상하 padding 16px, 버튼 2개 가로 정렬 gap 10px, 각 버튼
  *   고정 너비 160px/높이 40px — Button 컴포넌트 size="basic"과 폰트/radius 동일,
- *   variant는 "취소"=fillGray(Gray-40 배경/Gray-130 텍스트), "다음"=fillBlack
- *   (Gray-130 배경/흰 텍스트) 그대로 매칭돼 기존 Button 컴포넌트 재사용.
+ *   variant는 "취소"=fillGray, "다음"=fillMain(Figma 383:323 사용자 수정본)
+ *   (Primary-60 배경/흰 텍스트). 기존 Button 컴포넌트를 재사용한다.
  *
  * ── 2. 라디오 아이콘 ───────────────────────────────────────────
  * mes/icon-radio 사용 — 기존 `radio.tsx`(node 9873:82508 실측)와 sel/unsel 색상이
@@ -184,7 +184,7 @@ function RadioChoiceDialog({
             >
               {cancelLabel}
             </Button>
-            <Button variant="fillBlack" size="basic" className="w-40" onClick={onConfirm}>
+            <Button variant="fillMain" size="basic" className="w-40" onClick={onConfirm}>
               {confirmLabel}
             </Button>
           </div>

@@ -53,7 +53,7 @@ function SectionFrame({
       )}
       {...props}
     >
-      {title !== undefined && <SectionHeader action={action} className={action ? undefined : "h-7"}>{title}</SectionHeader>}
+      {title !== undefined && <SectionHeader action={action}>{title}</SectionHeader>}
       <div className={cn(title !== undefined && "mt-3", contentClassName)}>{children}</div>
     </section>
   );

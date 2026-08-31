@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 export interface DialogAction {
   id: string;
   label: string;
+  /** 생략 시 위치별 fillBlack / fillMain / fillGray. 4번째부터는 fillBlack. */
   variant?: ButtonProps["variant"];
   disabled?: boolean;
   onClick?: () => void;
@@ -15,6 +16,9 @@ export interface DialogFooterProps {
   actions: DialogAction[];
   className?: string;
 }
+
+// Figma 347:591 사용자 수정본. 명시적인 variant는 항상 우선한다.
+const defaultActionVariants: ButtonProps["variant"][] = ["fillBlack", "fillMain", "fillGray"];
 
 /**
  * 중앙 모달과 우측 패널이 공유하는 액션 푸터.
@@ -27,10 +31,10 @@ function DialogFooter({ actions, className }: DialogFooterProps) {
   return (
     <div className={cn("flex w-full shrink-0 items-center justify-center py-4", className)}>
       <div className="flex flex-wrap items-center justify-center gap-2.5">
-        {actions.map((action) => (
+        {actions.map((action, index) => (
           <Button
             key={action.id}
-            variant={action.variant ?? "fillBlack"}
+            variant={action.variant ?? defaultActionVariants[index] ?? "fillBlack"}
             size="basic"
             disabled={action.disabled}
             className={cn("w-[160px]", action.className)}

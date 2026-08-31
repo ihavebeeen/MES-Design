@@ -29,6 +29,7 @@
 - Esc·X·backdrop·취소가 동일 dismiss 정책을 사용한다.
 - 임의 overlay와 wrapper로 재구현하지 않는다.
 - 헤더·본문·푸터와 본문 scroll 책임을 셸이 소유한다.
+- 기본 취소는 fillGray, 확인은 fillMain이며 버튼 160×40px·간격10px을 유지한다. 명시적 actions·footer는 우선한다.
 
 ## 근거
 

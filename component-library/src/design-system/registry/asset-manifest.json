@@ -9,7 +9,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "833812eaffdc2ecd5a85213e61272f30a0605ca96b7252066909c0fd38370541",
+  "fingerprint": "6177b843e1f905a1584cf2ca4195f10e2867b07bcd52ad6133a5586413128658",
   "guidancePolicy": {
     "componentSelection": {
       "coverageMode": "selection-critical-only",
@@ -639,7 +639,8 @@
         ],
         "constraints": [
           "임의 overlay와 wrapper로 재구현하지 않는다.",
-          "헤더·본문·푸터와 본문 scroll 책임을 셸이 소유한다."
+          "헤더·본문·푸터와 본문 scroll 책임을 셸이 소유한다.",
+          "기본 취소는 fillGray, 확인은 fillMain이며 버튼 160×40px·간격10px을 유지한다. 명시적 actions·footer는 우선한다."
         ],
         "accessibility": [
           "제목을 Dialog title로 연결한다.",
@@ -682,7 +683,7 @@
         "shell.center-modal"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "9733aafcc80ae1ca4268d215f4c8fd4d3877fed4ed728d526984d3497fa85169",
+        "sourceFingerprint": "43d4a0e00a16c2b50166f4efa0e5010264a9d42d5e661cc015ddc218c1fb3e06",
         "symbols": [
           "CenterModalSize",
           "CenterModalProps",
@@ -1353,7 +1354,8 @@
         ],
         "constraints": [
           "action-set 레지스트리의 라벨·순서·dismiss 의미를 따른다.",
-          "취소와 X는 동일 복원 경로를 사용한다."
+          "취소와 X는 동일 복원 경로를 사용한다.",
+          "variant 생략 시 첫째 fillBlack·둘째 fillMain·셋째 fillGray를 사용한다. 명시적 variant가 우선하며 기본 버튼은 160×40px·간격10px이다."
         ],
         "accessibility": [
           "탭 순서는 시각 순서와 일치한다.",
@@ -1368,7 +1370,7 @@
       },
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "b9ea8f819aa4890eae5c3cf7c80c111577bd22f6dbafde55c27ee6819c1d05fb",
+        "sourceFingerprint": "c8842e82e45bc03d47e743d79aedd78ee2b6cc77122bb40785aff7fbaaf967e4",
         "symbols": [
           "DialogAction",
           "DialogFooterProps",
@@ -1386,7 +1388,7 @@
         "stateMarkers": [
           "disabled"
         ],
-        "summary": "중앙 모달과 우측 패널이 공유하는 액션 푸터.",
+        "summary": "생략 시 위치별 fillBlack / fillMain / fillGray.",
         "aria": []
       }
     },
@@ -3210,7 +3212,7 @@
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "a94acfeed072685b7f438994f7e10e507d7bff8febaa26b7d2505f2b00d2e99c",
+        "sourceFingerprint": "b83c8f7107290dd949c0f5e9d5429b690efb7de21fd6677b57d14f7ab908d482",
         "symbols": [
           "RadioChoiceOption",
           "RadioChoiceDialogProps",
@@ -3583,7 +3585,7 @@
         "recipe.side-slide-inspection"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "91d15f616433287f7af2b3ac805084fc67153f79148659643cab34d442a300bc",
+        "sourceFingerprint": "7784f6271ef39e6e4d4f573ab6d95ebcf3ae807252b3b442ff554f52b195ca0b",
         "symbols": [
           "SectionFrameDivider",
           "SectionFramePadding",
@@ -3651,7 +3653,8 @@
         ],
         "constraints": [
           "SectionFrame의 title slot을 통해 사용한다.",
-          "텍스트 hug가 아니라 사용 가능한 섹션 폭을 채운다."
+          "텍스트 hug가 아니라 사용 가능한 섹션 폭을 채운다.",
+          "제목 밴드와 바로 옆 버튼은 28px이며 외곽 높이는 내용에 맞춘다. 일반 Button.small의 32px 규격은 유지한다."
         ],
         "accessibility": [
           "시각 제목이 section의 접근 가능한 이름이 되도록 연결한다."
@@ -3676,7 +3679,7 @@
         "frame.standard-section"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "5f0f92b7983d9bbfcd0814a7626488a97bb99f268490f826fd23df8d619604e7",
+        "sourceFingerprint": "55e3bc74ab443f6934ac02d2ae27513c034e8e0755dbedd47e5bf92d25d72d5d",
         "symbols": [
           "SectionHeaderProps",
           "SectionHeader"
@@ -3687,7 +3690,7 @@
           "className"
         ],
         "stateMarkers": [],
-        "summary": "모달 내부 섹션의 회색 제목 밴드와 우측 액션을 한 행으로 묶는다.",
+        "summary": "제목 옆 버튼은 28px.",
         "aria": []
       }
     },
@@ -4147,7 +4150,8 @@
         ],
         "constraints": [
           "760·849·900·960px 승인 preset만 사용한다.",
-          "본문 섹션만 스크롤하고 헤더·푸터는 고정한다."
+          "본문 섹션만 스크롤하고 헤더·푸터는 고정한다.",
+          "기본 취소는 fillGray, 확인은 fillMain이며 버튼 160×40px·간격10px을 유지한다. 명시적 actions·footer는 우선한다."
         ],
         "accessibility": [
           "제목을 Dialog title로 연결한다.",
@@ -4185,7 +4189,7 @@
         "shell.side-slide-panel"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "1452d53e5ef17f905aaf8bd4f5ae3d40561428b7ce57c9d60445fe1539508dc6",
+        "sourceFingerprint": "427c8b383facb0eb6d4415cce8f04b659e7b50097b2031efe217c01389f4fa92",
         "symbols": [
           "SideSlidePanelSize",
           "SideSlidePanelProps",

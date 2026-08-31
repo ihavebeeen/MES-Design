@@ -131,7 +131,7 @@
           "src/components/ui/center-modal.tsx:161",
           "src/components/ui/confirm-dialog.tsx:141",
           "src/components/ui/descriptions.tsx:32",
-          "src/components/ui/dialog-footer.tsx:29",
+          "src/components/ui/dialog-footer.tsx:33",
           "src/components/ui/form-grid.tsx:19",
           "src/components/ui/input.tsx:27"
         ]
@@ -1183,10 +1183,10 @@
       },
       {
         "value": "32px",
-        "count": 75,
+        "count": 74,
         "arbitraryCount": 0,
         "layers": {
-          "canonical": 24,
+          "canonical": 23,
           "pattern": 42,
           "evidence": 9
         },
@@ -1231,7 +1231,7 @@
           "evidence": 6
         },
         "examples": [
-          "src/components/ui/dialog-footer.tsx:36",
+          "src/components/ui/dialog-footer.tsx:40",
           "src/components/ui/group-query.tsx:157",
           "src/components/ui/logo.tsx:21",
           "src/components/ui/quick-query.tsx:405",
@@ -1401,10 +1401,10 @@
       },
       {
         "value": "28px",
-        "count": 16,
+        "count": 17,
         "arbitraryCount": 0,
         "layers": {
-          "canonical": 7,
+          "canonical": 8,
           "pattern": 7,
           "evidence": 2
         },
@@ -1413,10 +1413,10 @@
           "src/components/ui/date-range-picker.tsx:122",
           "src/components/ui/page-top-tab-item.tsx:72",
           "src/components/ui/page-top-tab-item.tsx:89",
-          "src/components/ui/section-frame.tsx:56",
           "src/components/ui/section-header.tsx:14",
-          "src/components/ui/tree-select.tsx:32",
-          "src/components/patterns/completed-popup-expanded-content.tsx:343"
+          "src/components/ui/section-header.tsx:14",
+          "src/components/ui/section-header.tsx:15",
+          "src/components/ui/tree-select.tsx:32"
         ]
       },
       {
@@ -4352,5 +4352,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "5b66506f9a3e64f5"
+  "fingerprint": "ba8c8708be482dec"
 }

@@ -56,7 +56,7 @@ const centerModalSizeClasses: Record<CenterModalSize, string> = {
  *   ConfirmDialog의 "간격은 한쪽만 책임진다" 패턴과 동일). `flex-1 overflow-y-auto`로
  *   내용이 넘치면 이 영역만 스크롤(헤더/푸터는 항상 고정).
  * - 푸터: 상하 padding 16px, 가운데 정렬(justify-center), 버튼 2개 gap 10px, 버튼 각각
- *   고정 너비 **160px**. 취소 버튼은 `variant="fillGray"`, 저장 버튼은 `variant="fillBlack"`.
+ *   고정 너비 **160px**. 취소는 fillGray, 저장은 fillMain(Figma 370:329 사용자 수정본).
  *
  * ── 2. 판단값(원본에 명시 안 됨) ──────────────────────────────────
  * - 오버레이 딤 색상: 스펙 페이지와 완성 화면 회귀 기준에서 확인한 `rgba(0,0,0,0.6)`을
@@ -138,7 +138,7 @@ function CenterModal({
 
   const baseActions: DialogAction[] = actions ?? [
     { id: "cancel", label: cancelLabel, variant: "fillGray", onClick: dismiss },
-    { id: "confirm", label: confirmLabel, variant: "fillBlack", onClick: onConfirm },
+    { id: "confirm", label: confirmLabel, variant: "fillMain", onClick: onConfirm },
   ];
   const resolvedActions = baseActions.map((action) => action.id === "cancel"
     ? { ...action, onClick: dismiss }

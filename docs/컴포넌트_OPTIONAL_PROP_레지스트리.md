@@ -9,6 +9,9 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 
 | Component | Prop | Type / Default | 목적 | 근거·사용 화면 |
 |---|---|---|---|---|
+| `SectionHeader` | `action` | `ReactNode`, 기본 없음 | 제목 밴드와 직접 배치한 버튼·링크 버튼은 28px, 외곽은 내용 높이. 입력 등 별도 액션의 고유 크기와 일반 `Button.small` 32px은 유지한다. | 사용자 수정 Figma `DAHeMHiVwqZCzONVAWbMXb`, `265:10` |
+| `DialogAction` | `variant` | `ButtonProps["variant"]`, 위치별 `fillBlack / fillMain / fillGray` | 생략한 액션만 위치별 기본값 적용. 명시적 값·폭·콜백은 유지하며 4번째 이후 생략값은 기존 `fillBlack` 유지. | 사용자 수정 Figma `347:591` |
+| `CenterModal`, `SideSlidePanel` | `actions` 기본값 | 취소 `fillGray`, 확인 `fillMain` | 사용자 수정본의 확인 버튼 색상 적용. 명시적 `actions`·`footer` 우선순위와 160×40px 규격 유지. `RadioChoiceDialog`의 다음 버튼도 `fillMain` 적용. | 사용자 수정 Figma `370:329`, `373:155`, `383:323` |
 | `Checkbox` | `uncheckedAppearance` | `"outline" \| "grayCheck"`, 기본 `outline` | `grayCheck`는 회색 체크 표시를 유지하면서 상태는 미선택으로 처리한다. 검정 체크+선택 행 배경과 의미를 분리하기 위한 MES 표 전용 외형이다. | 일괄작업지시, Figma `20274:73333` |
 | `DatePicker` | `separator` | `"." \| "-"`, 기본 `.` | 화면 원본에 따라 날짜 구분자를 보존한다. | Figma `11210:50866` 외 완성 화면 |
 | `DatePicker` | `iconPosition` | `start \| end`, 기본 `end` | 기간 조회 영역처럼 달력 아이콘이 날짜 앞에 오는 변형을 지원한다. | Figma `11210:50866` |
