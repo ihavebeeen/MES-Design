@@ -15,6 +15,8 @@ Read in this order:
 
 Experimental candidates are discovery material, not generation dependencies.
 
+`component-library/experiments/` contains inactive historical pilots. Do not import, resolve, register, or cite them as generation evidence unless the user explicitly starts a task to redesign and reactivate a named experiment.
+
 Business information in `business-knowledge.json` and cross-surface usage in `usage-contexts.json` are **reference-only**, not another source of mandatory layout/field rules. Retrieve the relevant subset through `mes_get_web_generation_context` or `npm run screen:references`; the resolver also attaches `referenceContext` separately from implementation. Current task conditions determine primary/supporting roles. Unknown references do not block new tasks, and context differences do not waive MES component/API checks. These annotations are excluded from the executable contract fingerprint; adopted changes belong in the existing request/configuration and remain fingerprinted.
 
 `new` and `reproduce` are separate retrieval modes. A new screen contract must contain `webGenerationContext` and must not contain `reproductionAuditContext`. A reproduce/normalize/audit contract may include both.

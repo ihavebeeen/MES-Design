@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 
-export const taskContextPath = fileURLToPath(new URL("../src/design-system/registry/task-contexts.json", import.meta.url));
+export const taskContextPath = fileURLToPath(new URL("./task-contexts.json", import.meta.url));
 export const readTaskContexts = () => JSON.parse(readFileSync(taskContextPath, "utf8"));
 const text = z.string().trim().min(1);
 export const businessContextSchema = z.object({
