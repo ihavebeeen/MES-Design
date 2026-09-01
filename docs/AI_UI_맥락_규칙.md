@@ -61,7 +61,7 @@ Resolver는 이 조건과 메모를 보존하지만 문장의 의미를 판정�
 
 이 원칙은 슬라이드뿐 아니라 전체 페이지·중앙/확인 팝업·각 섹션에도 적용한다. `usage-contexts.json`의 목적·영역 관계·고려사항과 업무별 주요/보조 후보는 참고용이다. 미등록 업무나 다른 배치도 기존 MES 자산으로 구성할 수 있다. Resolver의 `referenceContext`는 후보 조회 결과이며 현재 요청을 변경하거나 사례 일치를 강제하지 않는다. 연결 방식과 한계는 위 조회 문서에서 관리한다.
 
-`usage-contexts.json#assetSelectionGuide`는 이 판단의 기록 순서를 제공한다. 각 팝업 맥락은 `componentRefs`로 검토할 자산을 제시하고 `connection`으로 해당 자산들이 같은 대상·비교 단위·저장 단위·작업 순서 안에서 연결되는 이유를 설명한다. 그 결과로 `patternRefs`를 비교하며, 패턴을 먼저 정한 뒤 Component를 끼워 맞추지 않는다.
+`component-usage-contracts.json`은 모든 컴포넌트의 기본 선택 맥락과 선택에 민감한 자산의 상세 계약을 제공하고, `patterns.json`은 모든 패턴의 조합 맥락을 제공한다. `usage-contexts.json#assetSelectionGuide`는 여러 자산이 함께 쓰이는 대표 관계와 판단 기록 순서를 보충한다. `componentRefs`와 `connection`으로 같은 대상·비교 단위·저장 단위·작업 순서 안에서 자산이 연결되는 이유를 확인한 뒤 `patternRefs`를 비교하며, 패턴을 먼저 정한 뒤 Component를 끼워 맞추지 않는다.
 
 ### 1.3 전체 페이지와 팝업 배경
 

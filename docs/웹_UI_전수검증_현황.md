@@ -63,15 +63,15 @@
 - navigation: Breadcrumb, Logo, Navbar, Pagination, TreeView, UserAccountMenu
 - overlay: DropdownMenu, Popover, Tooltip
 
-### 3. 정식이지만 상세 사용 기준이 없는 공용 요소
+### 3. 컴포넌트 선택 맥락
 
-총 24개다. 현재 사용은 가능하지만 AI가 선택 이유까지 판단하려면 상세 기준을 추가해야 한다.
+전체 90개 중 90개에 역할·사용·비사용·대안 맥락이 연결돼 있다. 상세 계약은 구조·동작 선택에 민감한 25개에 추가 적용한다.
 
-- AlarmListItem, BeforeAfterComparison, Combobox, ConfirmDialog, LabeledSelect, LabeledInput, SelectionActionBar, AnalyticsCharts, FilterTag, FormGrid / FormFieldRow, InspectionJudgement, NoticeBanner, NotificationPanel, PageTopTabItem, Progress, RadioChoiceDialog, MesProductSwitcher, IconMenu, QueryDateRange, CavityCell, Sidebar, Switch, Tag, Toast
+- 맥락 누락 없음
 
-### 4. 상세 조합 기준이 없는 화면 구성
+### 4. 패턴 맥락과 상세 실행 계약
 
-총 62개다. 현재 화면에서 사용되는 항목부터 순서, 허용 요소, 스크롤과 동작 기준을 추가한다.
+전체 73개 패턴에 조합 맥락이 있다. 그중 11개는 슬롯·스크롤·구현 marker까지 자동 검사하며, 나머지 62개는 맥락 후보로 사용하되 필요할 때만 실행 계약을 추가한다.
 
 ### 5. 실제 화면이나 생성 방식에서 사용되지 않는 구성
 
@@ -83,7 +83,7 @@
 - 추가된 목록 · 직접 편집 선택 (section.added-record-list)
 - 소속 사용자 선택 (section.member-selection)
 - 메뉴별 권한 (section.permission-matrix)
-- 중앙 · 폼/정보 중심 (popup.center.form)
+- 중앙 · 단건 정보·처리 (popup.center.form)
 - 중앙 · 시간 휠 + 계산 (popup.center.time-selector)
 - 마스터-디테일 화면 (screen.master-detail)
 - 테이블 컬럼 설정 (table.column-settings)
@@ -99,9 +99,9 @@
 
 ## 다음 검증 순서
 
-1. 현재 화면에서 많이 사용하는 정식 요소 중 상세 사용 기준이 없는 항목을 먼저 정리한다.
+1. 신규 UI 생성에서 잘못 선택된 자산이 있으면 기본 맥락 또는 상세 계약 중 필요한 층을 보강한다.
 2. 검토 단계 요소는 실제 사용 화면이 생길 때 원본·상태·사용 위치를 확인하고 정식 여부를 판정한다.
-3. 화면 구성을 실제 사용 빈도순으로 상세화한다.
+3. 구조·동작 오류가 반복되는 패턴만 상세 실행 계약으로 승격한다.
 4. 새 자산·테스트·기준 이미지가 바뀌면 이전 통과 기록을 현재 결과로 재사용하지 않는다.
 
 ## 판정 범위

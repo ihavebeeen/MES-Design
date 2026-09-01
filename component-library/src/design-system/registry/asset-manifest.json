@@ -9,11 +9,12 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "593db6a93ba745e1e7aa18ba9e395932a744930a505103221980ca3fd2a62211",
+  "fingerprint": "73dd2603e28310adf04a6abc5061f391efc7807227fb450726e00937e4c90559",
   "guidancePolicy": {
     "componentSelection": {
-      "coverageMode": "selection-critical-only",
-      "unlistedComponentMode": "source-api-only",
+      "contextCoverageMode": "all-components",
+      "contractCoverageMode": "selection-critical-only",
+      "unlistedComponentMode": "error",
       "webEvidenceRole": "reference-only",
       "singleScreenRule": "do-not-promote",
       "allowedParentMismatchSeverity": "warning",
@@ -38,6 +39,7 @@
       "internal": 2,
       "stable": 42,
       "provisional": 48,
+      "selectionContexts": 90,
       "selectionGuardContracts": 25
     },
     "patterns": 73,
@@ -56,7 +58,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/accordion.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "accordion",
+        "capabilities": [
+          "progressive-disclosure"
+        ],
+        "useWhen": [
+          "같은 영역 안의 여러 설명·설정 묶음을 제목별로 접고 펼쳐 탐색한다."
+        ],
+        "doNotUseWhen": [
+          "내용을 동시에 비교해야 하거나 숨기면 업무 누락 위험이 있는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "collapsible",
+            "chooseInsteadWhen": "독립 영역 하나만 접고 펼칠 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -95,7 +115,25 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/alarm-list-item.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "alarm-list-item",
+        "capabilities": [
+          "alarm-summary"
+        ],
+        "useWhen": [
+          "알람의 상태·시각·대상을 반복 목록에서 빠르게 확인한다."
+        ],
+        "doNotUseWhen": [
+          "일반 업무 레코드나 단순 안내 문구를 표시하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "notice-banner",
+            "chooseInsteadWhen": "현재 화면 전체에 영향을 주는 안내일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -141,7 +179,25 @@
       "tier": 4,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/avatar.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "avatar",
+        "capabilities": [
+          "person-identity-summary"
+        ],
+        "useWhen": [
+          "사용자·작업자를 사진이나 이니셜로 축약 식별한다."
+        ],
+        "doNotUseWhen": [
+          "이름 없이 장식 이미지만 필요하거나 업무 대상을 표시하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "image-thumbnail",
+            "chooseInsteadWhen": "사람이 아닌 품목·첨부 이미지일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -177,6 +233,31 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/badge.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "badge",
+        "capabilities": [
+          "status-display",
+          "category-display"
+        ],
+        "useWhen": [
+          "행이나 항목의 상태·분류를 짧게 표시"
+        ],
+        "doNotUseWhen": [
+          "클릭해 상세로 이동",
+          "필터를 제거하는 조작",
+          "긴 설명 문구"
+        ],
+        "alternatives": [
+          {
+            "componentId": "link",
+            "chooseInsteadWhen": "상세 화면을 여는 값일 때"
+          },
+          {
+            "componentId": "filter-tag",
+            "chooseInsteadWhen": "적용된 조건을 제거할 수 있어야 할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "badge",
         "capabilities": [
@@ -267,6 +348,33 @@
       "documentationRoute": "/components/before-after-comparison",
       "documentationFile": "docs/components/before-after-comparison.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "before-after-comparison",
+        "capabilities": [
+          "before-after-values",
+          "delta-comparison",
+          "compact-decision-support"
+        ],
+        "useWhen": [
+          "동일 항목의 기존값·변경값·증감 또는 영향을 같은 기준에서 확인함",
+          "저장·재등록·적용 전에 변경 결과를 짧게 판단해야 함"
+        ],
+        "doNotUseWhen": [
+          "서로 다른 엔티티 목록을 탐색·선택함",
+          "변경값 하나만 강조하면 충분해 열 비교가 불필요함",
+          "원본과 대상 사이에 항목을 이동·복사하는 상호작용이 필요함"
+        ],
+        "alternatives": [
+          {
+            "componentId": "section-frame",
+            "chooseInsteadWhen": "비교 구조 없이 하나의 결과 문구나 수치만 강조하면 충분할 때"
+          },
+          {
+            "componentId": "table",
+            "chooseInsteadWhen": "여러 독립 레코드를 열 기준으로 탐색·선택해야 할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "before-after-comparison",
         "capabilities": [
@@ -358,7 +466,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/breadcrumb.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "breadcrumb",
+        "capabilities": [
+          "hierarchy-navigation"
+        ],
+        "useWhen": [
+          "현재 위치의 상위 계층과 되돌아갈 경로를 함께 보여준다."
+        ],
+        "doNotUseWhen": [
+          "MES의 고정 메뉴·상단 업무 탭을 대신하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "page-top-tab-item",
+            "chooseInsteadWhen": "동일 업무군의 열린 화면을 전환할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -399,6 +525,33 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/button.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "button",
+        "capabilities": [
+          "semantic-action",
+          "icon-label-action",
+          "disabled-action"
+        ],
+        "useWhen": [
+          "사용자가 즉시 실행하는 명시적 동작",
+          "DialogFooter 또는 조회 툴바의 액션"
+        ],
+        "doNotUseWhen": [
+          "다른 화면이나 상세로 이동하는 링크 의미",
+          "상태값을 표시하는 경우",
+          "아이콘만 필요한 32px 이하 동작"
+        ],
+        "alternatives": [
+          {
+            "componentId": "link",
+            "chooseInsteadWhen": "이동 또는 상세 열기 의미일 때"
+          },
+          {
+            "componentId": "icon-button",
+            "chooseInsteadWhen": "아이콘만으로 의미가 확정된 소형 동작일 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "button",
         "capabilities": [
@@ -547,7 +700,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/button-group.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "button-group",
+        "capabilities": [
+          "related-action-group"
+        ],
+        "useWhen": [
+          "서로 관련된 동작을 하나의 조작 단위로 묶고 경계를 보여준다."
+        ],
+        "doNotUseWhen": [
+          "서로 독립된 저장·취소 동작이나 단일 선택 상태를 표현하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "segmented-control",
+            "chooseInsteadWhen": "동작 실행이 아니라 하나의 보기 상태를 선택할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -579,7 +750,29 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/cascader",
       "documentationFile": "docs/components/cascader.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "cascader",
+        "capabilities": [
+          "hierarchical-choice"
+        ],
+        "useWhen": [
+          "공장·공정·설비처럼 상위 선택이 다음 선택지를 결정하는 계층 값을 고른다."
+        ],
+        "doNotUseWhen": [
+          "평면 선택지 하나 또는 여러 독립 값을 선택하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "한 단계의 단일 선택일 때"
+          },
+          {
+            "componentId": "tree-select",
+            "chooseInsteadWhen": "계층 전체를 펼쳐 탐색하는 편이 중요한 경우"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -615,7 +808,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/card.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "card",
+        "capabilities": [
+          "grouped-summary"
+        ],
+        "useWhen": [
+          "하나의 대상·지표·요약을 다른 항목과 독립된 덩어리로 보여준다."
+        ],
+        "doNotUseWhen": [
+          "정렬된 열 비교가 필요하거나 단순히 영역을 꾸미기 위한 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "table",
+            "chooseInsteadWhen": "여러 레코드를 같은 열 기준으로 비교할 때"
+          },
+          {
+            "componentId": "section-frame",
+            "chooseInsteadWhen": "논리 섹션의 범위만 구분할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "screen.analytics-dashboard"
@@ -653,6 +868,33 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/center-modal.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "center-modal",
+        "capabilities": [
+          "blocking-overlay",
+          "header-body-footer",
+          "dismiss-restore"
+        ],
+        "useWhen": [
+          "현재 작업 위에서 제한된 선택·비교·처리·설정을 집중해 마친 뒤 원래 흐름으로 돌아감",
+          "내부 자산의 관계가 중앙의 제한된 작업 공간과 맞고 원본 또는 사용자 지정도 중앙 팝업을 지지함"
+        ],
+        "doNotUseWhen": [
+          "배경 유지·건수·입력 길이·폭 하나로 중앙/우측을 결정함",
+          "유지해야 할 우측 슬라이드 원본",
+          "짧은 확인만 필요한 작은 대화상자"
+        ],
+        "alternatives": [
+          {
+            "componentId": "side-slide-panel",
+            "chooseInsteadWhen": "전체 맥락과 적용 가능한 MES 계약 또는 사용자 지정이 우측 작업 형식일 때"
+          },
+          {
+            "componentId": "confirm-dialog",
+            "chooseInsteadWhen": "짧은 확인 또는 경고만 필요할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "center-modal",
         "capabilities": [
@@ -788,6 +1030,30 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/checkbox.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "checkbox",
+        "capabilities": [
+          "boolean-selection",
+          "row-selection",
+          "master-selection",
+          "indeterminate"
+        ],
+        "useWhen": [
+          "복수 항목 선택",
+          "테이블 행·그룹·전체 선택",
+          "독립적인 참/거짓 값"
+        ],
+        "doNotUseWhen": [
+          "하나만 선택 가능한 옵션",
+          "단순 상태 표시"
+        ],
+        "alternatives": [
+          {
+            "componentId": "radio",
+            "chooseInsteadWhen": "단일 선택만 허용할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "checkbox",
         "capabilities": [
@@ -899,7 +1165,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/collapsible.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "collapsible",
+        "capabilities": [
+          "single-region-disclosure"
+        ],
+        "useWhen": [
+          "보조 정보나 상세 설정 한 영역을 필요할 때만 펼친다."
+        ],
+        "doNotUseWhen": [
+          "여러 동급 영역을 탐색하거나 핵심 입력을 기본적으로 숨기는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "accordion",
+            "chooseInsteadWhen": "여러 제목 영역 중 하나씩 탐색할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -935,7 +1219,29 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/combobox.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "combobox",
+        "capabilities": [
+          "searchable-single-choice"
+        ],
+        "useWhen": [
+          "선택지가 많아 검색하면서 하나를 골라야 한다."
+        ],
+        "doNotUseWhen": [
+          "자유 문자열을 저장하거나 선택지가 짧아 바로 비교 가능한 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "짧은 유한 선택지일 때"
+          },
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "허용 값이 제한되지 않을 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -987,6 +1293,29 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/confirm-dialog.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "confirm-dialog",
+        "capabilities": [
+          "short-decision-overlay",
+          "consequence-summary",
+          "confirm-or-dismiss"
+        ],
+        "useWhen": [
+          "현재 행동의 대상·영향·변경 결과를 짧게 이해하고 실행 여부를 결정함",
+          "한두 개 결론 또는 작은 변경 전후 비교가 의사결정에 충분함"
+        ],
+        "doNotUseWhen": [
+          "여러 대상을 검색·선택함",
+          "긴 입력이나 여러 섹션 편집이 필요함",
+          "결정에 필요한 비교 구조를 짧은 문구로 축약하면 의미가 사라짐"
+        ],
+        "alternatives": [
+          {
+            "componentId": "center-modal",
+            "chooseInsteadWhen": "추가 입력·다수 비교·독립 스크롤이 필요할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "confirm-dialog",
         "capabilities": [
@@ -1096,7 +1425,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/date-picker.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "date-picker",
+        "capabilities": [
+          "single-date-choice"
+        ],
+        "useWhen": [
+          "업무 값으로 날짜 하루를 직접 선택한다."
+        ],
+        "doNotUseWhen": [
+          "목록 조회 기간이나 시작·종료 범위를 한 번에 정하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "query-date-range",
+            "chooseInsteadWhen": "메인 목록 조회 기간일 때"
+          },
+          {
+            "componentId": "date-range-picker",
+            "chooseInsteadWhen": "저장되는 날짜 범위를 고를 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inventory-add",
@@ -1148,7 +1499,25 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/labeled-select",
       "documentationFile": "docs/components/labeled-select.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "labeled-select",
+        "capabilities": [
+          "compact-labeled-choice"
+        ],
+        "useWhen": [
+          "조밀한 툴바·행에서 라벨과 단일 선택을 하나의 결합 컨트롤로 보여준다."
+        ],
+        "doNotUseWhen": [
+          "일반 폼의 라벨 정렬을 개별적으로 구성해야 하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "form-grid",
+            "chooseInsteadWhen": "여러 필드를 같은 라벨 열로 정렬할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inventory-add",
@@ -1190,7 +1559,25 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/labeled-input",
       "documentationFile": "docs/components/labeled-input.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "labeled-input",
+        "capabilities": [
+          "compact-labeled-entry"
+        ],
+        "useWhen": [
+          "조밀한 툴바·행에서 라벨과 짧은 입력을 하나의 결합 컨트롤로 보여준다."
+        ],
+        "doNotUseWhen": [
+          "여러 폼 필드의 위계·필수 표시·오류를 함께 관리하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "form-grid",
+            "chooseInsteadWhen": "여러 필드를 폼 구조로 정렬할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inventory-edit"
@@ -1225,7 +1612,25 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/selection-action-bar",
       "documentationFile": "docs/components/selection-action-bar.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "selection-action-bar",
+        "capabilities": [
+          "selection-scoped-actions"
+        ],
+        "useWhen": [
+          "목록 선택이 생겼을 때 선택 건수와 그 대상에만 적용되는 동작을 노출한다."
+        ],
+        "doNotUseWhen": [
+          "항상 가능한 페이지 공통 동작이나 저장·취소 푸터인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "main-list-footer-actions",
+            "chooseInsteadWhen": "메인 목록의 고정 좌·우 하단 동작일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inventory-edit"
@@ -1263,7 +1668,25 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/analytics-charts",
       "documentationFile": "docs/components/analytics-charts.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "analytics-charts",
+        "capabilities": [
+          "quantitative-visualization"
+        ],
+        "useWhen": [
+          "추세·분포·구성비처럼 표만으로 파악하기 어려운 수치 관계를 시각화한다."
+        ],
+        "doNotUseWhen": [
+          "정확한 개별 값 확인이나 단순 장식을 위한 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "table",
+            "chooseInsteadWhen": "정확한 행·열 값을 비교하는 것이 중심일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1301,6 +1724,25 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/date-range-picker.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "date-range-picker",
+        "capabilities": [
+          "date-range-query"
+        ],
+        "useWhen": [
+          "조회 대상의 시작일과 종료일을 한 범위로 선택"
+        ],
+        "doNotUseWhen": [
+          "단일 날짜 업무 필드",
+          "원본에 기간 조회가 없는 화면"
+        ],
+        "alternatives": [
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "저장되는 단일 날짜 필드이며 화면 근거가 있을 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "date-range-picker",
         "capabilities": [
@@ -1384,7 +1826,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/descriptions.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "descriptions",
+        "capabilities": [
+          "read-only-label-value-summary"
+        ],
+        "useWhen": [
+          "하나의 대상에 속한 여러 읽기 전용 이름-값을 요약한다."
+        ],
+        "doNotUseWhen": [
+          "값을 직접 편집하거나 여러 레코드를 비교하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "form-grid",
+            "chooseInsteadWhen": "같은 정보 묶음에 편집 필드가 함께 있을 때"
+          },
+          {
+            "componentId": "table",
+            "chooseInsteadWhen": "여러 레코드를 비교할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "screen.master-detail",
@@ -1422,6 +1886,27 @@
       "documentationRoute": "/components/dialog-footer",
       "documentationFile": "docs/components/dialog-footer.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "dialog-footer",
+        "capabilities": [
+          "dialog-actions",
+          "semantic-action-set"
+        ],
+        "useWhen": [
+          "중앙 모달이나 우측 패널의 하단 액션",
+          "등록된 action set을 버튼 배열로 렌더링"
+        ],
+        "doNotUseWhen": [
+          "페이지 상단·본문 로컬 액션",
+          "화면마다 임의 버튼 순서를 구성"
+        ],
+        "alternatives": [
+          {
+            "componentId": "main-list-footer-actions",
+            "chooseInsteadWhen": "메인 리스트 하단 바의 우측 액션을 구성할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "dialog-footer",
         "capabilities": [
@@ -1510,6 +1995,27 @@
       "documentationRoute": "/components/main-list-footer-actions",
       "documentationFile": "docs/components/main-list-footer-actions.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "main-list-footer-actions",
+        "capabilities": [
+          "main-list-actions",
+          "bottom-right-actions"
+        ],
+        "useWhen": [
+          "메인 리스트 하단 바의 우하단 액션",
+          "32px 버튼 1~3개를 한 묶음으로 배치"
+        ],
+        "doNotUseWhen": [
+          "중앙 모달이나 우측 패널의 하단 액션",
+          "본문 내부의 로컬 버튼 묶음"
+        ],
+        "alternatives": [
+          {
+            "componentId": "dialog-footer",
+            "chooseInsteadWhen": "모달 또는 우측 패널 하단의 40px 닫기·저장 액션일 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "main-list-footer-actions",
         "capabilities": [
@@ -1591,7 +2097,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/divider.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "divider",
+        "capabilities": [
+          "visual-separation"
+        ],
+        "useWhen": [
+          "같은 컨테이너 안에서 역할이 다른 인접 영역의 경계를 최소한으로 표시한다."
+        ],
+        "doNotUseWhen": [
+          "논리 섹션의 제목·범위 설명이 필요하거나 장식선을 반복하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "section-frame",
+            "chooseInsteadWhen": "제목을 가진 논리 섹션을 구분할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1623,7 +2147,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/dropdown-menu.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "dropdown-menu",
+        "capabilities": [
+          "compact-action-menu"
+        ],
+        "useWhen": [
+          "공간을 아끼면서 관련된 여러 보조 동작을 트리거 아래 제공한다."
+        ],
+        "doNotUseWhen": [
+          "주요 행동을 숨기거나 저장되는 값 하나를 선택하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "업무 값 하나를 선택할 때"
+          },
+          {
+            "componentId": "button-group",
+            "chooseInsteadWhen": "자주 쓰는 동작을 항상 노출할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1666,6 +2212,32 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/empty-state.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "empty-state",
+        "capabilities": [
+          "empty-feedback",
+          "empty-action"
+        ],
+        "useWhen": [
+          "조회 결과나 편집 목록이 비었고 다음 행동을 안내해야 함"
+        ],
+        "doNotUseWhen": [
+          "로딩 중",
+          "오류가 발생함",
+          "실제 데이터가 존재함",
+          "Figma 근거 없이 빈 공간을 꾸밈"
+        ],
+        "alternatives": [
+          {
+            "componentId": "loading-spinner",
+            "chooseInsteadWhen": "데이터를 불러오는 중일 때"
+          },
+          {
+            "componentId": "error-state",
+            "chooseInsteadWhen": "요청 실패를 안내할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "empty-state",
         "capabilities": [
@@ -1748,7 +2320,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/error-state.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "error-state",
+        "capabilities": [
+          "blocking-error-feedback"
+        ],
+        "useWhen": [
+          "영역이나 화면의 데이터를 불러오거나 처리하지 못해 정상 내용을 대신해야 한다."
+        ],
+        "doNotUseWhen": [
+          "개별 필드 오류나 잠깐 나타나는 실패 알림인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "toast",
+            "chooseInsteadWhen": "작업 실패를 잠깐 알리고 기존 내용을 유지할 때"
+          },
+          {
+            "componentId": "notice-banner",
+            "chooseInsteadWhen": "내용은 유지하면서 지속 안내할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1781,7 +2375,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/fieldset.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "fieldset",
+        "capabilities": [
+          "related-field-group"
+        ],
+        "useWhen": [
+          "같은 질문·설정에 속한 입력들을 하나의 접근 가능한 그룹으로 묶는다."
+        ],
+        "doNotUseWhen": [
+          "시각적 여백이나 임의 박스를 만들기 위한 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "section-frame",
+            "chooseInsteadWhen": "입력 그룹보다 넓은 논리 섹션을 설명할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1814,6 +2426,32 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/filter.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "filter",
+        "capabilities": [
+          "structured-filter",
+          "multi-filter",
+          "active-filter-tags"
+        ],
+        "useWhen": [
+          "목록에 구조화된 복수 조건을 추가",
+          "필터 카테고리와 값을 단계적으로 선택"
+        ],
+        "doNotUseWhen": [
+          "자유 검색어 입력",
+          "단일 업무 필드 값 선택"
+        ],
+        "alternatives": [
+          {
+            "componentId": "search-input",
+            "chooseInsteadWhen": "자유 문자열로 현재 목록을 찾을 때"
+          },
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "저장되는 단일 값을 선택할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "filter",
         "capabilities": [
@@ -1936,7 +2574,29 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/file-upload",
       "documentationFile": "docs/components/file-upload.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "file-upload",
+        "capabilities": [
+          "file-selection-upload"
+        ],
+        "useWhen": [
+          "업무 레코드에 첨부할 파일을 선택하고 업로드 상태를 관리한다."
+        ],
+        "doNotUseWhen": [
+          "기존 이미지나 파일을 보기만 하거나 외부 링크를 여는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "image-thumbnail",
+            "chooseInsteadWhen": "이미 업로드된 이미지를 확인할 때"
+          },
+          {
+            "componentId": "link",
+            "chooseInsteadWhen": "파일을 열거나 다운로드만 할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -1969,7 +2629,29 @@
       "tier": 1,
       "documentationMode": "internal",
       "documentationFile": "docs/components/filter-tag.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "filter-tag",
+        "capabilities": [
+          "removable-filter-condition"
+        ],
+        "useWhen": [
+          "현재 적용된 필터 조건을 짧게 보여주고 개별 제거할 수 있게 한다."
+        ],
+        "doNotUseWhen": [
+          "업무 상태나 분류를 정적으로 표시하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "badge",
+            "chooseInsteadWhen": "제거 동작 없는 상태 표시일 때"
+          },
+          {
+            "componentId": "tag",
+            "chooseInsteadWhen": "필터가 아닌 일반 키워드·분류일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2008,6 +2690,33 @@
       "documentationRoute": "/components/form-grid",
       "documentationFile": "docs/components/form-grid.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "form-grid",
+        "capabilities": [
+          "label-control-pairs",
+          "read-write-field-alignment",
+          "required-marker"
+        ],
+        "useWhen": [
+          "하나의 대상 또는 같은 정보 묶음의 이름-값 관계를 읽거나 편집함",
+          "입력값과 그 값을 판단하는 읽기 정보가 동일한 필드 위계로 정렬되어야 함"
+        ],
+        "doNotUseWhen": [
+          "여러 레코드를 같은 열 기준으로 비교함",
+          "시간순·공정순 반복 기록을 목록으로 스캔함",
+          "단일 결론을 강조하기 위한 장식 영역"
+        ],
+        "alternatives": [
+          {
+            "componentId": "table",
+            "chooseInsteadWhen": "복수 레코드를 같은 열 기준으로 비교·선택할 때"
+          },
+          {
+            "componentId": "before-after-comparison",
+            "chooseInsteadWhen": "동일 항목의 변경 전후와 차이를 대조할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "form-grid",
         "capabilities": [
@@ -2122,7 +2831,25 @@
       "tier": 2,
       "documentationMode": "foundation",
       "documentationFile": "docs/components/grid-container.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "grid-container",
+        "capabilities": [
+          "responsive-page-grid"
+        ],
+        "useWhen": [
+          "전체 페이지의 열·너비·반응형 배치를 공통 그리드로 정렬한다."
+        ],
+        "doNotUseWhen": [
+          "컴포넌트 내부의 작은 정렬이나 승인된 팝업 구조를 임의 재배치하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "form-grid",
+            "chooseInsteadWhen": "라벨과 폼 컨트롤을 정렬할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2154,6 +2881,28 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/group-query.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "group-query",
+        "capabilities": [
+          "grouping-levels",
+          "grouping-order"
+        ],
+        "useWhen": [
+          "그룹형 표의 그룹 기준과 순서를 선택",
+          "다단 그룹 접기 구조의 조회 조건"
+        ],
+        "doNotUseWhen": [
+          "일반 필터 조건",
+          "정렬만 바꾸는 경우",
+          "그룹형 표가 아닌 목록"
+        ],
+        "alternatives": [
+          {
+            "componentId": "filter",
+            "chooseInsteadWhen": "행 포함 여부를 조건으로 좁힐 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "group-query",
         "capabilities": [
@@ -2252,7 +3001,26 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/icon-button.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "icon-button",
+        "capabilities": [
+          "compact-icon-action",
+          "dismiss-action"
+        ],
+        "useWhen": [
+          "의미가 확정된 아이콘 하나로 소형 동작이나 닫기를 실행한다."
+        ],
+        "doNotUseWhen": [
+          "아이콘만으로 의미가 불명확하거나 주요 업무 행동인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "button",
+            "chooseInsteadWhen": "텍스트 라벨이 필요한 명시적 행동일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.standard-price-settings",
@@ -2295,6 +3063,38 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/input.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "input",
+        "capabilities": [
+          "text-entry",
+          "numeric-text-entry",
+          "readonly-display"
+        ],
+        "useWhen": [
+          "자유 텍스트 입력",
+          "화면 계약상 숫자 문자열을 직접 입력",
+          "읽기 전용 필드"
+        ],
+        "doNotUseWhen": [
+          "정해진 선택지 중 하나를 고름",
+          "검색 전용 입력",
+          "증감 버튼이 필수인 수량 입력"
+        ],
+        "alternatives": [
+          {
+            "componentId": "search-input",
+            "chooseInsteadWhen": "목록 검색 전용일 때"
+          },
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "허용 값이 제한돼 있을 때"
+          },
+          {
+            "componentId": "number-input",
+            "chooseInsteadWhen": "증감 조작이 업무상 필요하고 별도 근거가 있을 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "input",
         "capabilities": [
@@ -2414,7 +3214,25 @@
       "tier": 3,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/image-thumbnail.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "image-thumbnail",
+        "capabilities": [
+          "image-preview"
+        ],
+        "useWhen": [
+          "품목·첨부 이미지의 작은 미리보기를 목록이나 상세에 표시한다."
+        ],
+        "doNotUseWhen": [
+          "사용자를 식별하거나 원본 크기 편집이 중심인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "avatar",
+            "chooseInsteadWhen": "사용자·작업자를 축약 식별할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2457,7 +3275,29 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/inspection-judgement",
       "documentationFile": "docs/components/inspection-judgement.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "inspection-judgement",
+        "capabilities": [
+          "inspection-result-choice"
+        ],
+        "useWhen": [
+          "검사항목의 정상·이상 등 승인된 판정값을 일관된 상태와 동작으로 입력한다."
+        ],
+        "doNotUseWhen": [
+          "일반 단일 선택이나 결과를 정적으로 표시하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "radio",
+            "chooseInsteadWhen": "검사 의미가 아닌 일반 소수 단일 선택일 때"
+          },
+          {
+            "componentId": "badge",
+            "chooseInsteadWhen": "이미 확정된 판정 결과만 표시할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "popup.side.inspection-items",
@@ -2499,7 +3339,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/label.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "label",
+        "capabilities": [
+          "field-label"
+        ],
+        "useWhen": [
+          "입력·선택 컨트롤의 이름과 필수 여부를 연결한다."
+        ],
+        "doNotUseWhen": [
+          "섹션 제목이나 독립 설명 텍스트인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "content-region-heading",
+            "chooseInsteadWhen": "단일 콘텐츠 영역의 제목일 때"
+          },
+          {
+            "componentId": "section-header",
+            "chooseInsteadWhen": "여러 요소를 묶는 논리 섹션 제목일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2532,6 +3394,32 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/link.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "link",
+        "capabilities": [
+          "navigation",
+          "open-detail",
+          "inline-reference"
+        ],
+        "useWhen": [
+          "다른 화면·상세·관련 목록으로 이동",
+          "표 셀에서 연결된 건수나 식별자를 여는 경우"
+        ],
+        "doNotUseWhen": [
+          "상태값 표시",
+          "저장·삭제 등 즉시 실행 동작"
+        ],
+        "alternatives": [
+          {
+            "componentId": "button",
+            "chooseInsteadWhen": "현재 화면에서 동작을 실행할 때"
+          },
+          {
+            "componentId": "badge",
+            "chooseInsteadWhen": "상태나 분류만 표시할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "link",
         "capabilities": [
@@ -2613,7 +3501,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/list.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "list",
+        "capabilities": [
+          "non-tabular-repeated-items"
+        ],
+        "useWhen": [
+          "열 정렬이 필요 없는 반복 항목을 순서대로 읽거나 선택한다."
+        ],
+        "doNotUseWhen": [
+          "여러 속성을 같은 열 기준으로 비교해야 하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "table",
+            "chooseInsteadWhen": "열 비교·정렬·합계가 필요할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2645,7 +3551,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/loading-overlay.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "loading-overlay",
+        "capabilities": [
+          "blocking-loading-state"
+        ],
+        "useWhen": [
+          "현재 영역의 입력·조작을 잠시 막아야 하는 비동기 처리 중임을 표시한다."
+        ],
+        "doNotUseWhen": [
+          "일부 작은 콘텐츠만 로딩되거나 배경 작업을 방해할 필요가 없는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "loading-spinner",
+            "chooseInsteadWhen": "작은 영역의 진행만 표시할 때"
+          },
+          {
+            "componentId": "skeleton",
+            "chooseInsteadWhen": "콘텐츠 구조를 유지하며 로딩할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2677,7 +3605,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/loading-spinner.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "loading-spinner",
+        "capabilities": [
+          "inline-loading-state"
+        ],
+        "useWhen": [
+          "버튼·셀·작은 영역에서 완료 시점을 알 수 없는 짧은 처리를 표시한다."
+        ],
+        "doNotUseWhen": [
+          "전체 작업을 막거나 콘텐츠 구조를 미리 보여줘야 하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "loading-overlay",
+            "chooseInsteadWhen": "영역 전체 조작을 막아야 할 때"
+          },
+          {
+            "componentId": "progress",
+            "chooseInsteadWhen": "진행률을 수치로 알 수 있을 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2709,7 +3659,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/logo.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "logo",
+        "capabilities": [
+          "product-identity"
+        ],
+        "useWhen": [
+          "MES 제품·브랜드 식별이 필요한 공통 탐색 영역에 표시한다."
+        ],
+        "doNotUseWhen": [
+          "장식 이미지나 업무 콘텐츠 이미지인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "mes-product-switcher",
+            "chooseInsteadWhen": "제품 식별과 제품 전환이 함께 필요할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2740,7 +3708,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/multi-select-input.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "multi-select-input",
+        "capabilities": [
+          "multiple-choice-input"
+        ],
+        "useWhen": [
+          "제한된 후보 중 여러 값을 선택하고 선택 결과를 입력 영역에서 확인한다."
+        ],
+        "doNotUseWhen": [
+          "하나만 고르거나 테이블 행 자체를 복수 선택하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "단일 값 선택일 때"
+          },
+          {
+            "componentId": "checkbox",
+            "chooseInsteadWhen": "소수 옵션을 모두 펼쳐 비교할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2777,7 +3767,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/navbar.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "navbar",
+        "capabilities": [
+          "global-navigation-bar"
+        ],
+        "useWhen": [
+          "제품 전역의 브랜드·주요 이동·사용자 동작을 한 줄에 제공하는 제품 구조일 때 사용한다."
+        ],
+        "doNotUseWhen": [
+          "기존 MES Sidebar와 상단 업무 탭을 임의로 대체하거나 팝업 내부에 중복하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "sidebar",
+            "chooseInsteadWhen": "MES 데스크톱의 주 메뉴 탐색일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2809,7 +3817,29 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/notice-banner.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "notice-banner",
+        "capabilities": [
+          "persistent-context-notice"
+        ],
+        "useWhen": [
+          "현재 화면·영역에 영향을 주는 안내나 주의사항을 내용과 함께 지속 표시한다."
+        ],
+        "doNotUseWhen": [
+          "단순 장식 설명, 잠깐 나타나는 성공 알림, 처리 불가능한 오류 대체 화면인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "toast",
+            "chooseInsteadWhen": "짧게 나타났다 사라지는 작업 결과일 때"
+          },
+          {
+            "componentId": "error-state",
+            "chooseInsteadWhen": "정상 내용을 대신하는 오류일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2843,7 +3873,29 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/notification-panel.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "notification-panel",
+        "capabilities": [
+          "notification-history-overlay"
+        ],
+        "useWhen": [
+          "여러 알림을 현재 화면 위에서 시간순으로 확인하고 상태를 관리한다."
+        ],
+        "doNotUseWhen": [
+          "단일 즉시 알림이나 업무 선택 팝업인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "toast",
+            "chooseInsteadWhen": "한 번의 짧은 알림일 때"
+          },
+          {
+            "componentId": "alarm-list-item",
+            "chooseInsteadWhen": "알람 목록의 개별 행을 구성할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -2888,6 +3940,26 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/number-input.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "number-input",
+        "capabilities": [
+          "bounded-number-entry",
+          "stepper"
+        ],
+        "useWhen": [
+          "증가·감소 버튼이 업무 흐름에 실제로 필요한 수량 입력"
+        ],
+        "doNotUseWhen": [
+          "Figma나 업무 근거 없이 단순 숫자 입력을 꾸미는 경우",
+          "표 안의 조밀한 숫자 편집"
+        ],
+        "alternatives": [
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "숫자를 직접 입력하는 것만 필요할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "number-input",
         "capabilities": [
@@ -2973,7 +4045,25 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/page-top-tab-item.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "page-top-tab-item",
+        "capabilities": [
+          "workspace-tab-navigation"
+        ],
+        "useWhen": [
+          "MES에서 열린 업무 화면을 식별하고 같은 작업 영역 안에서 전환한다."
+        ],
+        "doNotUseWhen": [
+          "폼 내부 선택이나 팝업의 단계·섹션을 전환하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "segmented-control",
+            "chooseInsteadWhen": "한 화면 내부의 보기 상태를 전환할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "recipe.page-entity-list",
@@ -3020,7 +4110,29 @@
       "tier": 4,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/overflow-list.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "overflow-list",
+        "capabilities": [
+          "overflow-item-summary"
+        ],
+        "useWhen": [
+          "제한된 공간에서 일부 항목과 숨겨진 나머지 개수를 함께 보여준다."
+        ],
+        "doNotUseWhen": [
+          "모든 항목을 비교·선택해야 하거나 단순 상태 하나를 표시하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "list",
+            "chooseInsteadWhen": "항목 전체를 세로로 보여줄 때"
+          },
+          {
+            "componentId": "tag",
+            "chooseInsteadWhen": "개별 분류 하나를 표시할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3052,7 +4164,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/pagination.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "pagination",
+        "capabilities": [
+          "paged-navigation"
+        ],
+        "useWhen": [
+          "서버나 업무 계약이 명시적으로 페이지 단위 이동과 총 페이지 개념을 제공한다."
+        ],
+        "doNotUseWhen": [
+          "MES 메인 목록처럼 무한 스크롤을 사용하는 화면이나 팝업 내부 단순 목록"
+        ],
+        "alternatives": [
+          {
+            "componentId": "scroll-area",
+            "chooseInsteadWhen": "연속 스크롤 영역이 데이터 탐색을 소유할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3090,7 +4220,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/panel.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "panel",
+        "capabilities": [
+          "bounded-content-region"
+        ],
+        "useWhen": [
+          "같은 화면 안의 독립된 도구·요약 영역에 배경과 경계가 실제로 필요하다."
+        ],
+        "doNotUseWhen": [
+          "임의로 모든 섹션을 박스화하거나 승인된 SectionFrame을 대체하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "section-frame",
+            "chooseInsteadWhen": "MES 논리 섹션 구조를 구성할 때"
+          },
+          {
+            "componentId": "card",
+            "chooseInsteadWhen": "독립 요약 항목을 반복할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "screen.master-detail"
@@ -3118,7 +4270,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/password-input.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "password-input",
+        "capabilities": [
+          "secret-text-entry"
+        ],
+        "useWhen": [
+          "비밀번호·보안 문자열을 가리고 표시 전환과 함께 입력한다."
+        ],
+        "doNotUseWhen": [
+          "일반 텍스트나 마스킹이 필요 없는 코드 입력인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "일반 텍스트 입력일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3154,7 +4324,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/popover.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "popover",
+        "capabilities": [
+          "anchored-transient-content"
+        ],
+        "useWhen": [
+          "특정 트리거에 연결된 짧은 정보·설정을 화면 이동 없이 잠시 보여준다."
+        ],
+        "doNotUseWhen": [
+          "독립 저장 흐름이나 긴 목록·여러 섹션 작업인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "tooltip",
+            "chooseInsteadWhen": "상호작용 없는 짧은 설명만 필요할 때"
+          },
+          {
+            "componentId": "dropdown-menu",
+            "chooseInsteadWhen": "보조 동작 목록일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "recipe.side-slide-inspection"
@@ -3185,7 +4377,29 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/progress.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "progress",
+        "capabilities": [
+          "linear-progress-status"
+        ],
+        "useWhen": [
+          "완료 비율이나 단계 진행량을 수평 길이와 수치로 비교한다."
+        ],
+        "doNotUseWhen": [
+          "완료 시점을 알 수 없거나 단순 상태 라벨이면 충분한 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "loading-spinner",
+            "chooseInsteadWhen": "진행률을 알 수 없는 처리일 때"
+          },
+          {
+            "componentId": "badge",
+            "chooseInsteadWhen": "진행 상태명만 표시할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.purchase-lookup",
@@ -3228,7 +4442,25 @@
       "tier": 4,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/progress-circle.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "progress-circle",
+        "capabilities": [
+          "compact-progress-status"
+        ],
+        "useWhen": [
+          "좁은 요약 영역에서 하나의 완료 비율을 원형으로 강조한다."
+        ],
+        "doNotUseWhen": [
+          "여러 진행량을 정밀 비교하거나 가로 공간이 충분한 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "progress",
+            "chooseInsteadWhen": "진행량과 라벨을 선형으로 읽는 편이 명확할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3265,6 +4497,28 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/quick-query.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "quick-query",
+        "capabilities": [
+          "saved-query",
+          "query-preset",
+          "preset-management"
+        ],
+        "useWhen": [
+          "사용자가 저장한 조회 조건을 반복 적용",
+          "목록 화면의 빠른 조회 슬롯"
+        ],
+        "doNotUseWhen": [
+          "일회성 필터 조건",
+          "업무 데이터를 저장하는 입력"
+        ],
+        "alternatives": [
+          {
+            "componentId": "filter",
+            "chooseInsteadWhen": "새로운 구조화 조건을 직접 고를 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "quick-query",
         "capabilities": [
@@ -3374,6 +4628,30 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/radio.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "radio",
+        "capabilities": [
+          "single-choice"
+        ],
+        "useWhen": [
+          "서로 배타적인 소수 옵션을 동시에 보여주고 하나를 선택"
+        ],
+        "doNotUseWhen": [
+          "복수 선택",
+          "옵션이 많아 공간을 차지하는 경우",
+          "단순 아이콘 표시"
+        ],
+        "alternatives": [
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "옵션이 많거나 공간이 제한될 때"
+          },
+          {
+            "componentId": "checkbox",
+            "chooseInsteadWhen": "복수 선택이 가능할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "radio",
         "capabilities": [
@@ -3457,7 +4735,29 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/radio-choice-dialog.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "radio-choice-dialog",
+        "capabilities": [
+          "single-choice-dialog"
+        ],
+        "useWhen": [
+          "짧은 배타적 선택지 하나를 팝업에서 고른 뒤 확정해야 한다."
+        ],
+        "doNotUseWhen": [
+          "일반 폼 안에서 바로 비교할 수 있거나 여러 값을 선택하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "radio",
+            "chooseInsteadWhen": "별도 팝업 없이 현재 폼에서 선택할 때"
+          },
+          {
+            "componentId": "center-modal",
+            "chooseInsteadWhen": "추가 정보·검색·복수 입력이 필요한 경우"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3506,7 +4806,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/scroll-area.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "scroll-area",
+        "capabilities": [
+          "bounded-scroll-ownership"
+        ],
+        "useWhen": [
+          "헤더·푸터를 유지하면서 특정 본문 영역만 스크롤 책임을 가져야 한다."
+        ],
+        "doNotUseWhen": [
+          "부모 셸이나 Table이 이미 스크롤을 소유하거나 불필요한 중첩 스크롤이 생기는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "table",
+            "chooseInsteadWhen": "표 본문 자체가 데이터 스크롤을 소유할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "table.frozen-column-grid"
@@ -3538,7 +4856,25 @@
       "tier": 3,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/search-highlight.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "search-highlight",
+        "capabilities": [
+          "query-match-highlight"
+        ],
+        "useWhen": [
+          "검색 결과 텍스트 안에서 입력 검색어와 일치하는 부분을 강조한다."
+        ],
+        "doNotUseWhen": [
+          "상태·위험·중요도를 표현하거나 검색어가 없는 일반 텍스트인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "badge",
+            "chooseInsteadWhen": "상태나 분류를 별도 표식으로 표시할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3575,6 +4911,31 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/search-input.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "search-input",
+        "capabilities": [
+          "list-search",
+          "clear-query"
+        ],
+        "useWhen": [
+          "현재 목록·표의 검색어 입력",
+          "조회 툴바 우측 검색 슬롯"
+        ],
+        "doNotUseWhen": [
+          "필터 조건 추가",
+          "업무 필드 값 입력"
+        ],
+        "alternatives": [
+          {
+            "componentId": "filter",
+            "chooseInsteadWhen": "구조화된 조건을 선택할 때"
+          },
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "저장되는 업무 값을 입력할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "search-input",
         "capabilities": [
@@ -3691,7 +5052,29 @@
       "tier": 4,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/segmented-control.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "segmented-control",
+        "capabilities": [
+          "exclusive-view-switch"
+        ],
+        "useWhen": [
+          "같은 화면·데이터의 소수 보기 모드 중 하나를 즉시 전환한다."
+        ],
+        "doNotUseWhen": [
+          "업무 값을 저장하거나 서로 다른 페이지·열린 업무 탭을 이동하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "radio",
+            "chooseInsteadWhen": "폼에 저장되는 단일 선택 값일 때"
+          },
+          {
+            "componentId": "page-top-tab-item",
+            "chooseInsteadWhen": "열린 업무 화면을 전환할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "visualization.production-gantt"
@@ -3739,7 +5122,29 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/mes-product-switcher",
       "documentationFile": "docs/components/mes-product-switcher.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "mes-product-switcher",
+        "capabilities": [
+          "product-switching"
+        ],
+        "useWhen": [
+          "MES 공통 탐색에서 현재 제품을 식별하고 다른 제품으로 전환한다."
+        ],
+        "doNotUseWhen": [
+          "업무 필드의 품목·공장 등을 선택하거나 단순 로고만 표시하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "logo",
+            "chooseInsteadWhen": "제품 전환 없이 식별만 필요할 때"
+          },
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "업무 데이터 값을 선택할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -3779,6 +5184,25 @@
       "documentationRoute": "/components/section-frame",
       "documentationFile": "docs/components/section-frame.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "section-frame",
+        "capabilities": [
+          "section-boundary",
+          "padding-owner",
+          "divider-owner",
+          "background-owner"
+        ],
+        "useWhen": [
+          "셸 본문을 의미 있는 복수 섹션으로 분할",
+          "섹션 padding·divider·background 책임을 한 곳에 둠"
+        ],
+        "doNotUseWhen": [
+          "화면 전체 셸",
+          "표 안의 임의 장식 박스",
+          "업무 의미가 없는 wrapper"
+        ],
+        "alternatives": []
+      },
       "usageContract": {
         "componentId": "section-frame",
         "capabilities": [
@@ -3876,6 +5300,32 @@
       "documentationRoute": "/components/section-header",
       "documentationFile": "docs/components/section-header.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "section-header",
+        "capabilities": [
+          "section-heading",
+          "section-action-slot"
+        ],
+        "useWhen": [
+          "팝업 안에서 복수 섹션의 내용을 구분",
+          "섹션 제목 우측에 로컬 액션이 있음"
+        ],
+        "doNotUseWhen": [
+          "모달 전체 제목",
+          "섹션이 하나뿐이고 별도 위계가 필요 없음",
+          "일반 페이지에서 근거 없는 긴 회색 밴드"
+        ],
+        "alternatives": [
+          {
+            "componentId": "center-modal",
+            "chooseInsteadWhen": "모달 전체 제목을 표현할 때"
+          },
+          {
+            "componentId": "content-region-heading",
+            "chooseInsteadWhen": "별도 섹션 경계 없이 단일 테이블·리스트·작업영역의 이름만 표시할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "section-header",
         "capabilities": [
@@ -3961,6 +5411,28 @@
       "documentationRoute": "/components/content-region-heading",
       "documentationFile": "docs/components/content-region-heading.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "content-region-heading",
+        "capabilities": [
+          "content-region-label",
+          "plain-heading"
+        ],
+        "useWhen": [
+          "팝업·페이지 안에서 단일 테이블·리스트·작업영역의 이름을 표시",
+          "별도 SectionFrame 경계 없이 콘텐츠 이름만 필요"
+        ],
+        "doNotUseWhen": [
+          "모달 전체 제목",
+          "서로 다른 논리 섹션을 SectionFrame과 회색 밴드로 구분",
+          "제목 없이도 컬럼 헤더와 주변 맥락만으로 내용이 명확"
+        ],
+        "alternatives": [
+          {
+            "componentId": "section-header",
+            "chooseInsteadWhen": "한 오버레이 안의 서로 다른 논리 섹션을 명시적인 경계와 함께 나눌 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "content-region-heading",
         "capabilities": [
@@ -4043,7 +5515,25 @@
       "tier": 2,
       "documentationMode": "internal",
       "documentationFile": "docs/components/icon-menu.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "icon-menu",
+        "capabilities": [
+          "mes-icon-asset"
+        ],
+        "useWhen": [
+          "등록된 MES 메뉴·업무 의미와 일치하는 벡터 아이콘을 표시한다."
+        ],
+        "doNotUseWhen": [
+          "의미가 다른 아이콘을 장식으로 재사용하거나 동작 컴포넌트를 대신하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "icon-button",
+            "chooseInsteadWhen": "아이콘으로 실제 동작을 실행할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4075,7 +5565,29 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/query-date-range",
       "documentationFile": "docs/components/query-date-range.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "query-date-range",
+        "capabilities": [
+          "list-query-date-range"
+        ],
+        "useWhen": [
+          "MES 목록 조회 조건에서 시작일·종료일을 하나의 32px 기간 컨트롤로 제공한다."
+        ],
+        "doNotUseWhen": [
+          "업무 레코드에 저장되는 단일 날짜나 일반 폼의 날짜 범위인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "date-picker",
+            "chooseInsteadWhen": "날짜 하루를 업무 값으로 저장할 때"
+          },
+          {
+            "componentId": "date-range-picker",
+            "chooseInsteadWhen": "폼에서 날짜 범위를 저장할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inspection-records",
@@ -4118,7 +5630,25 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/cavity-cell",
       "documentationFile": "docs/components/cavity-cell.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "cavity-cell",
+        "capabilities": [
+          "spatial-position-cell"
+        ],
+        "useWhen": [
+          "캐비티 번호·선택·교환처럼 공간 배열 안의 한 위치 상태를 표현한다."
+        ],
+        "doNotUseWhen": [
+          "일반 표 셀이나 순서 목록의 항목인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "table",
+            "chooseInsteadWhen": "공간 위치보다 행·열 값 비교가 중심일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4152,6 +5682,32 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/select.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "select",
+        "capabilities": [
+          "single-choice",
+          "option-list"
+        ],
+        "useWhen": [
+          "유한한 선택지 중 하나를 고름",
+          "선택 행에서 편집 가능한 코드·구분 값을 선택"
+        ],
+        "doNotUseWhen": [
+          "여러 값을 동시에 선택",
+          "자유 입력",
+          "라디오로 모든 옵션을 한눈에 비교해야 함"
+        ],
+        "alternatives": [
+          {
+            "componentId": "radio",
+            "chooseInsteadWhen": "소수 옵션을 한눈에 비교해야 할 때"
+          },
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "허용 값이 제한되지 않을 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "select",
         "capabilities": [
@@ -4267,7 +5823,25 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/sidebar.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "sidebar",
+        "capabilities": [
+          "primary-mes-navigation"
+        ],
+        "useWhen": [
+          "MES 데스크톱 전체 페이지에서 제품의 1차 메뉴와 현재 메뉴 상태를 제공한다."
+        ],
+        "doNotUseWhen": [
+          "팝업 내부에 중복하거나 독립 임시 탐색 UI로 다시 만드는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "navbar",
+            "chooseInsteadWhen": "별도 제품이 승인된 전역 상단 탐색 구조를 사용할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "recipe.page-entity-list",
@@ -4331,7 +5905,29 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/slider",
       "documentationFile": "docs/components/slider.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "slider",
+        "capabilities": [
+          "continuous-range-choice"
+        ],
+        "useWhen": [
+          "정밀 숫자 입력보다 범위 안의 상대적 값 조절이 중요한 경우 사용한다."
+        ],
+        "doNotUseWhen": [
+          "정확한 생산·수량·단가 값을 입력하거나 유한 옵션을 고르는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "number-input",
+            "chooseInsteadWhen": "정확한 숫자와 증감 조작이 필요할 때"
+          },
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "정확한 값을 직접 입력할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4370,6 +5966,33 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/side-slide-panel.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "side-slide-panel",
+        "capabilities": [
+          "full-height-overlay",
+          "ordered-sections",
+          "dismiss-restore"
+        ],
+        "useWhen": [
+          "기본정보와 확장정보·검사·반복 항목처럼 여러 섹션을 한 등록·편집 흐름으로 이어서 처리함",
+          "내부 자산의 순서와 관계가 전체 높이의 연속 작업 공간과 맞고 원본 또는 사용자 지정도 우측 슬라이드를 지지함"
+        ],
+        "doNotUseWhen": [
+          "중앙 조회·선택 팝업",
+          "짧은 확인",
+          "독립 전체 페이지"
+        ],
+        "alternatives": [
+          {
+            "componentId": "center-modal",
+            "chooseInsteadWhen": "전체 맥락과 적용 가능한 MES 계약 또는 사용자 지정이 중앙 작업 형식일 때"
+          },
+          {
+            "componentId": "confirm-dialog",
+            "chooseInsteadWhen": "확인 문구와 한두 개 액션만 필요할 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "side-slide-panel",
         "capabilities": [
@@ -4486,7 +6109,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/skeleton.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "skeleton",
+        "capabilities": [
+          "content-shape-loading"
+        ],
+        "useWhen": [
+          "데이터를 기다리는 동안 최종 콘텐츠의 대략적인 구조와 자리를 유지한다."
+        ],
+        "doNotUseWhen": [
+          "처리 진행률을 보여주거나 짧은 버튼 동작만 로딩되는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "loading-spinner",
+            "chooseInsteadWhen": "작은 처리 상태만 표시할 때"
+          },
+          {
+            "componentId": "loading-overlay",
+            "chooseInsteadWhen": "영역 조작을 차단해야 할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4517,7 +6162,25 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/sticky-header-footer.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "sticky-header-footer",
+        "capabilities": [
+          "fixed-edge-regions"
+        ],
+        "useWhen": [
+          "긴 스크롤 본문에서도 영역 제목·주요 동작을 상단이나 하단에 계속 유지한다."
+        ],
+        "doNotUseWhen": [
+          "셸이 이미 고정 헤더·푸터를 소유하거나 콘텐츠가 짧은 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "scroll-area",
+            "chooseInsteadWhen": "고정 영역 사이의 본문 스크롤 책임만 필요할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4548,7 +6211,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/switch.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "switch",
+        "capabilities": [
+          "immediate-boolean-setting"
+        ],
+        "useWhen": [
+          "켜짐·꺼짐이 즉시 적용되는 독립 설정을 변경한다."
+        ],
+        "doNotUseWhen": [
+          "복수 항목 선택, 저장 전 선택값, 단순 상태 표시인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "checkbox",
+            "chooseInsteadWhen": "다른 입력과 함께 저장되는 참·거짓 값이거나 복수 선택일 때"
+          },
+          {
+            "componentId": "badge",
+            "chooseInsteadWhen": "상태를 보기만 할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.standard-price-settings",
@@ -4592,6 +6277,30 @@
       "documentationMode": "interactive",
       "documentationFile": "docs/components/table.md",
       "guidanceMode": "selection-guard",
+      "selectionContext": {
+        "componentId": "table",
+        "capabilities": [
+          "aligned-columns",
+          "row-selection",
+          "grouping",
+          "totals",
+          "inline-editing"
+        ],
+        "useWhen": [
+          "열 정렬이 중요한 복수 행 비교",
+          "스캔·정렬·선택·그룹 집계가 필요한 목록"
+        ],
+        "doNotUseWhen": [
+          "몇 개의 독립 입력 행을 정렬하기 위한 용도",
+          "카드형 정보가 더 자연스러운 비정형 내용"
+        ],
+        "alternatives": [
+          {
+            "componentId": "list",
+            "chooseInsteadWhen": "열 비교가 필요 없는 단순 목록일 때"
+          }
+        ]
+      },
       "usageContract": {
         "componentId": "table",
         "capabilities": [
@@ -4744,7 +6453,29 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/tag.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "tag",
+        "capabilities": [
+          "keyword-category-label"
+        ],
+        "useWhen": [
+          "항목의 키워드·분류·속성을 짧은 라벨로 나열한다."
+        ],
+        "doNotUseWhen": [
+          "업무 상태 색 의미나 제거 가능한 필터 조건인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "badge",
+            "chooseInsteadWhen": "상태·위험도를 의미 색과 함께 표시할 때"
+          },
+          {
+            "componentId": "filter-tag",
+            "chooseInsteadWhen": "적용 조건을 제거할 수 있어야 할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "table.column-settings"
@@ -4784,7 +6515,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/textarea.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "textarea",
+        "capabilities": [
+          "multi-line-text-entry"
+        ],
+        "useWhen": [
+          "비고·사유·설명처럼 여러 줄이 될 수 있는 자유 텍스트를 입력한다."
+        ],
+        "doNotUseWhen": [
+          "짧은 코드·수량이나 정해진 선택지를 입력하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "한 줄의 짧은 텍스트일 때"
+          },
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "허용 값이 정해져 있을 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4814,7 +6567,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/time-picker.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "time-picker",
+        "capabilities": [
+          "time-of-day-choice"
+        ],
+        "useWhen": [
+          "업무 기록의 시각 또는 시작·종료 시간을 직접 선택한다."
+        ],
+        "doNotUseWhen": [
+          "날짜만 필요하거나 이미 계산된 시간을 표시하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "date-picker",
+            "chooseInsteadWhen": "날짜 하루를 선택할 때"
+          },
+          {
+            "componentId": "input",
+            "chooseInsteadWhen": "시간 형식이 아닌 자유 값을 입력할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.time-selector",
@@ -4860,7 +6635,29 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/timeline",
       "documentationFile": "docs/components/timeline.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "timeline",
+        "capabilities": [
+          "chronological-events"
+        ],
+        "useWhen": [
+          "한 대상의 상태 변화·작업 이력을 시간 순서와 연결 관계로 읽는다."
+        ],
+        "doNotUseWhen": [
+          "열 기준 비교나 단순 날짜 목록이면 충분한 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "table",
+            "chooseInsteadWhen": "여러 이벤트 속성을 같은 열로 비교할 때"
+          },
+          {
+            "componentId": "list",
+            "chooseInsteadWhen": "순서만 있는 단순 반복 항목일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4888,7 +6685,29 @@
       "tier": 1,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/toast.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "toast",
+        "capabilities": [
+          "transient-operation-feedback"
+        ],
+        "useWhen": [
+          "사용자 동작의 성공·실패·간단한 결과를 기존 흐름을 막지 않고 잠깐 알린다."
+        ],
+        "doNotUseWhen": [
+          "확인이 필요한 결정, 지속 안내, 정상 콘텐츠를 대체하는 오류인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "confirm-dialog",
+            "chooseInsteadWhen": "사용자의 결정이 필요할 때"
+          },
+          {
+            "componentId": "notice-banner",
+            "chooseInsteadWhen": "지속적으로 보여야 할 안내일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4929,7 +6748,29 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/tree-select",
       "documentationFile": "docs/components/tree-select.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "tree-select",
+        "capabilities": [
+          "tree-structured-choice"
+        ],
+        "useWhen": [
+          "계층 구조를 펼쳐 보면서 하나 또는 승인된 복수 대상을 선택한다."
+        ],
+        "doNotUseWhen": [
+          "평면 옵션이나 단계별 선택만으로 충분한 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "cascader",
+            "chooseInsteadWhen": "상위에서 하위로 단계별 경로 선택이 중심일 때"
+          },
+          {
+            "componentId": "select",
+            "chooseInsteadWhen": "평면 단일 선택일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -4973,7 +6814,29 @@
       "documentationMode": "interactive",
       "documentationRoute": "/components/tree-view",
       "documentationFile": "docs/components/tree-view.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "tree-view",
+        "capabilities": [
+          "hierarchical-navigation-display"
+        ],
+        "useWhen": [
+          "메뉴·구조·분류의 부모-자식 관계를 펼치고 이동하거나 대상을 지정한다."
+        ],
+        "doNotUseWhen": [
+          "값 선택 입력이나 평면 목록인 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "tree-select",
+            "chooseInsteadWhen": "폼 값으로 계층 대상을 선택할 때"
+          },
+          {
+            "componentId": "list",
+            "chooseInsteadWhen": "계층 없는 반복 항목일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -5001,7 +6864,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/toggle-button.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "toggle-button",
+        "capabilities": [
+          "pressed-action-state"
+        ],
+        "useWhen": [
+          "버튼 형태의 동작이 활성·비활성 상태를 유지하며 같은 기능을 전환한다."
+        ],
+        "doNotUseWhen": [
+          "독립 boolean 설정이나 여러 보기 중 하나를 선택하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "switch",
+            "chooseInsteadWhen": "켜짐·꺼짐 설정 자체가 중심일 때"
+          },
+          {
+            "componentId": "segmented-control",
+            "chooseInsteadWhen": "소수 보기 모드 중 하나를 고를 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -5040,7 +6925,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/tooltip.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "tooltip",
+        "capabilities": [
+          "brief-hover-help"
+        ],
+        "useWhen": [
+          "아이콘·축약 라벨의 의미를 포인터·키보드 포커스 시 짧게 보충한다."
+        ],
+        "doNotUseWhen": [
+          "업무 수행에 필수인 정보나 상호작용 콘텐츠를 숨기는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "popover",
+            "chooseInsteadWhen": "조작 가능한 내용이나 더 긴 보조 정보가 필요할 때"
+          },
+          {
+            "componentId": "notice-banner",
+            "chooseInsteadWhen": "항상 보여야 하는 안내일 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
@@ -5074,7 +6981,29 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/user-account-menu.md",
-      "guidanceMode": "source-api-only",
+      "guidanceMode": "selection-context",
+      "selectionContext": {
+        "componentId": "user-account-menu",
+        "capabilities": [
+          "account-action-menu"
+        ],
+        "useWhen": [
+          "현재 로그인 사용자 식별과 계정·로그아웃 관련 동작을 공통 탐색 영역에서 제공한다."
+        ],
+        "doNotUseWhen": [
+          "업무 담당자를 선택하거나 일반 동작 메뉴를 제공하는 경우"
+        ],
+        "alternatives": [
+          {
+            "componentId": "dropdown-menu",
+            "chooseInsteadWhen": "계정이 아닌 일반 보조 동작 목록일 때"
+          },
+          {
+            "componentId": "avatar",
+            "chooseInsteadWhen": "사용자 식별만 필요할 때"
+          }
+        ]
+      },
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {

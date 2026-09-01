@@ -2,7 +2,7 @@
 
 공개 88개, 내부 조립용 2개를 같은 형식으로 기록한다.
 
-상태·Tier·공개 범위는 `components.json`, 신규 UI 선택 규칙은 `component-usage-contracts.json`, API는 실제 구현 파일에서 생성한다. 선택 규칙이 없는 단순 컴포넌트는 API 문서만 유지한다.
+상태·Tier·공개 범위는 `components.json`, 모든 신규 UI 선택 맥락과 선택 중요 자산의 상세 계약은 `component-usage-contracts.json`, API는 실제 구현 파일에서 생성한다.
 
 ## 동작
 

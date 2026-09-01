@@ -86,11 +86,12 @@ function bulletLines(values, fallback, limit = 4) {
 }
 
 function componentDocument(asset) {
+  const context = asset.selectionContext;
   const contract = asset.usageContract;
   const sourceSummary = /figma|체크리스트|추후|임시|provisional|디자인 없음|구현 없음|\b20\d{2}\b/i.test(asset.sourceFacts.summary) ? "" : asset.sourceFacts.summary;
-  const role = firstSentence(contract?.useWhen?.[0]) || firstSentence(asset.rules?.[0]) || sourceSummary || categoryPurpose[asset.category];
-  const useWhen = contract?.useWhen ?? asset.rules ?? [];
-  const doNotUseWhen = contract?.doNotUseWhen ?? [];
+  const role = firstSentence(context?.useWhen?.[0]) || firstSentence(asset.rules?.[0]) || sourceSummary || categoryPurpose[asset.category];
+  const useWhen = context?.useWhen ?? asset.rules ?? [];
+  const doNotUseWhen = context?.doNotUseWhen ?? [];
   const states = contract?.requiredStates?.length ? contract.requiredStates : asset.sourceFacts.stateMarkers;
   const variants = contract?.variants ?? [];
   const accessibility = contract?.accessibility ?? [];
@@ -98,18 +99,14 @@ function componentDocument(asset) {
   const evidence = contract?.evidence ?? [];
   const visibilityLabel = asset.visibility === "public" ? "공개" : "내부 조립용";
   const route = asset.documentationRoute ? `\`${asset.documentationRoute}\`` : "웹 탐색에 노출하지 않음";
-  const selectionGuidance = contract ? [
+  const selectionGuidance = context ? [
     "## 생성 선택 기준",
     "",
     ...bulletLines(useWhen, "등록된 화면·패턴에서 같은 의미가 필요할 때 사용합니다."),
     "",
     "선택하지 않는 경우:",
     ...bulletLines(doNotUseWhen, "역할이 다른 기존 컴포넌트를 선택합니다."),
-  ] : [
-    "## 생성 선택 기준",
-    "",
-    "이 컴포넌트는 전역 선택 가드 대상이 아닙니다. 실제 코드 API와 부모 패턴 계약만 따르며, 별도 사용처 전수조사를 만들지 않습니다.",
-  ];
+  ] : [];
 
   return [
     `# ${asset.name}`,
@@ -138,9 +135,10 @@ function componentDocument(asset) {
     "",
     `- 구현: \`${asset.source}\``,
     `- 웹 문서: ${route}`,
-    `- 생성 선택 규칙: ${contract ? "적용됨" : "적용 안 함(API 문서만 사용)"}`,
+    `- 생성 선택 맥락: ${context ? "적용됨" : "누락"}`,
+    `- 상세 선택 계약: ${contract ? "적용됨" : "기본 맥락만 적용"}`,
     `- 참고 화면: ${evidence.length ? evidence.map((item) => `\`${item}\``).join(", ") : "없음"}`,
-    `- 참고 화면의 역할: ${contract ? "선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님" : "해당 없음"}`,
+    `- 참고 화면의 역할: ${evidence.length ? "선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님" : "직접 화면 근거 없이 의미·API 맥락으로 정의"}`,
     "",
     "이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.",
     "",
@@ -155,7 +153,7 @@ function renderDocsIndex(components) {
     "",
     `공개 ${components.filter((item) => item.visibility === "public").length}개, 내부 조립용 ${components.filter((item) => item.visibility === "internal").length}개를 같은 형식으로 기록한다.`,
     "",
-    "상태·Tier·공개 범위는 `components.json`, 신규 UI 선택 규칙은 `component-usage-contracts.json`, API는 실제 구현 파일에서 생성한다. 선택 규칙이 없는 단순 컴포넌트는 API 문서만 유지한다.",
+    "상태·Tier·공개 범위는 `components.json`, 모든 신규 UI 선택 맥락과 선택 중요 자산의 상세 계약은 `component-usage-contracts.json`, API는 실제 구현 파일에서 생성한다.",
     "",
   ];
   for (const key of Object.keys(groups).sort()) {
@@ -197,6 +195,7 @@ function buildOutputs() {
   const catalog = readJson("component-catalog.json");
   const selectionFeedback = readJson("generation-selection-feedback.json");
   const contractById = new Map(registry.componentUsageContracts.map((contract) => [contract.componentId, contract]));
+  const contextById = new Map(registry.componentSelectionContexts.map((context) => [context.componentId, context]));
   const catalogRegistryIds = new Set(catalog.groups.flatMap((group) => group.itemIds.map((id) => catalog.registryAliases[id] ?? id)));
   const patternsByComponent = new Map();
   for (const pattern of registry.patterns) {
@@ -221,7 +220,8 @@ function buildOutputs() {
       kind: "component",
       ...component,
       documentationFile: `docs/components/${component.id}.md`,
-      guidanceMode: contractById.has(component.id) ? "selection-guard" : "source-api-only",
+      guidanceMode: contractById.has(component.id) ? "selection-guard" : "selection-context",
+      selectionContext: contextById.get(component.id) ?? null,
       usageContract: contractById.get(component.id) ?? null,
       usedByPatternIds: unique(patternsByComponent.get(component.id) ?? []).sort(),
       sourceFacts: facts,
@@ -247,7 +247,7 @@ function buildOutputs() {
     patternRefs: screen.patternRefs,
   }));
   const fingerprint = hash({
-    components: components.map(({ sourceFacts, usageContract, ...item }) => ({ ...item, sourceFingerprint: sourceFacts.sourceFingerprint, usageContract })),
+    components: components.map(({ sourceFacts, selectionContext, usageContract, ...item }) => ({ ...item, sourceFingerprint: sourceFacts.sourceFingerprint, selectionContext, usageContract })),
     patterns,
     screens,
     catalog,
@@ -269,7 +269,7 @@ function buildOutputs() {
       }
     },
     summary: {
-      components: { total: components.length, public: components.filter((item) => item.visibility === "public").length, internal: components.filter((item) => item.visibility === "internal").length, stable: components.filter((item) => item.status === "stable").length, provisional: components.filter((item) => item.status === "provisional").length, selectionGuardContracts: components.filter((item) => item.usageContract).length },
+      components: { total: components.length, public: components.filter((item) => item.visibility === "public").length, internal: components.filter((item) => item.visibility === "internal").length, stable: components.filter((item) => item.status === "stable").length, provisional: components.filter((item) => item.status === "provisional").length, selectionContexts: components.filter((item) => item.selectionContext).length, selectionGuardContracts: components.filter((item) => item.usageContract).length },
       patterns: patterns.length,
       screens: screens.length,
     },

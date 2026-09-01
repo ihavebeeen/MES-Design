@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 type MaturityFilter = "all" | "stable" | "provisional";
 
 const componentById = new Map(componentData.components.map((component) => [component.id, component]));
-const usageById = new Map(usageData.contracts.map((contract) => [contract.componentId, contract]));
+const usageById = new Map([...usageData.baselineContexts, ...usageData.contracts].map((context) => [context.componentId, context]));
 const tocById = new Map(TOC_LINKS.map((item) => [item.id, item]));
 
 function contextLabel(parent: string) {
@@ -132,7 +132,8 @@ export function ComponentCatalogOverview() {
               const component = componentById.get(registryId);
               const usage = usageById.get(registryId);
               const label = tocById.get(id);
-              const contexts = [...new Set((usage?.allowedParents ?? []).map(contextLabel))].slice(0, 3);
+              const allowedParents = usage && "allowedParents" in usage && Array.isArray(usage.allowedParents) ? usage.allowedParents as string[] : [];
+              const contexts = [...new Set(allowedParents.map(contextLabel))].slice(0, 3);
               const description = usage?.useWhen?.[0] ?? component?.rules?.[0] ?? group.description;
               return (
                 <NextLink key={id} href={idToHref(id)} className="group overflow-hidden rounded-mes-panel border border-mes-gray-30 bg-white transition hover:border-mes-primary-60 hover:shadow-sm" data-component-card={id}>

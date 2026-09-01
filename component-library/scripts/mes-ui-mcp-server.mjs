@@ -132,6 +132,15 @@ function componentContractEntries(registry) {
   }));
 }
 
+function componentContextEntries(registry) {
+  return registry.componentSelectionContexts.map((entry) => ({
+    ...entry,
+    id: entry.componentId,
+    name: entry.componentId,
+    kind: "component-selection-context",
+  }));
+}
+
 function patternContractEntries(registry) {
   return registry.patternContracts.map((entry) => ({
     ...entry,
@@ -167,6 +176,7 @@ export function createMesUiMcpServer() {
     safeTool(async ({ query, limit }) => {
       const registry = readRegistryBundle();
       const mobile = mobileEntries(registry);
+      const componentContexts = componentContextEntries(registry);
       const componentContracts = componentContractEntries(registry);
       const patternContracts = patternContractEntries(registry);
       const screenSpecs = screenSpecEntries(registry);
@@ -175,6 +185,7 @@ export function createMesUiMcpServer() {
           components: registry.components.length,
           patterns: registry.patterns.length,
           screens: registry.screens.length,
+          componentSelectionContexts: componentContexts.length,
           componentUsageContracts: componentContracts.length,
           patternContracts: patternContracts.length,
           screenSpecs: screenSpecs.length,
@@ -187,6 +198,7 @@ export function createMesUiMcpServer() {
         components: filterEntries(registry.components, query, limit),
         patterns: filterEntries(registry.patterns, query, limit),
         screens: filterEntries(registry.screens, query, limit),
+        componentSelectionContexts: filterDetailedEntries(componentContexts, query, limit),
         componentUsageContracts: filterDetailedEntries(componentContracts, query, limit),
         patternContracts: filterDetailedEntries(patternContracts, query, limit),
         screenSpecs: filterDetailedEntries(screenSpecs, query, limit),

@@ -89,38 +89,41 @@ export function validateSemanticAssetDraft(draft) {
   return findings;
 }
 
-function compactCandidate(component, contract, match) {
+function compactCandidate(component, context, contract, match) {
   return {
     componentRef: component.id,
     name: component.name,
     status: component.status,
     match,
-    contractCoverage: contract ? "selection-guard" : "source-api-only",
-    capabilities: contract?.capabilities ?? [],
+    contextCoverage: context ? "selection-context" : "missing",
+    contractCoverage: contract ? "selection-guard" : "context-only",
+    capabilities: context?.capabilities ?? [],
     allowedParents: contract?.allowedParents ?? [],
-    useWhen: contract?.useWhen ?? [],
-    doNotUseWhen: contract?.doNotUseWhen ?? [],
+    useWhen: context?.useWhen ?? [],
+    doNotUseWhen: context?.doNotUseWhen ?? [],
+    alternatives: context?.alternatives ?? [],
   };
 }
 
-function reviewElement(element, componentMap, usageMap) {
+function reviewElement(element, componentMap, contextMap, contractMap) {
   const parents = new Set(element.parentRefs ?? []);
   const exact = [];
   const compatible = [];
   const declared = [];
 
-  for (const contract of usageMap.values()) {
-    if (!contract.capabilities.includes(element.capability)) continue;
-    const component = componentMap.get(contract.componentId);
+  for (const context of contextMap.values()) {
+    if (!context.capabilities.includes(element.capability)) continue;
+    const component = componentMap.get(context.componentId);
     if (!component) continue;
-    const parentMatch = parents.size > 0 && contract.allowedParents.some((parent) => parents.has(parent));
-    (parentMatch ? exact : compatible).push(compactCandidate(component, contract, parentMatch ? "capability-and-parent" : "capability-only"));
+    const contract = contractMap.get(context.componentId);
+    const parentMatch = Boolean(contract && parents.size > 0 && contract.allowedParents.some((parent) => parents.has(parent)));
+    (parentMatch ? exact : compatible).push(compactCandidate(component, context, contract, parentMatch ? "capability-and-parent" : "capability-context"));
   }
 
   for (const componentRef of element.candidateComponentRefs ?? []) {
     if (exact.some((entry) => entry.componentRef === componentRef) || compatible.some((entry) => entry.componentRef === componentRef)) continue;
     const component = componentMap.get(componentRef);
-    if (component) declared.push(compactCandidate(component, usageMap.get(componentRef), "declared-for-review"));
+    if (component) declared.push(compactCandidate(component, contextMap.get(componentRef), contractMap.get(componentRef), "declared-for-review"));
   }
 
   const byStability = (a, b) => Number(b.status === "stable") - Number(a.status === "stable") || a.componentRef.localeCompare(b.componentRef);
@@ -130,14 +133,16 @@ function reviewElement(element, componentMap, usageMap) {
 
   const selectedRef = element.selectedComponentRef;
   const selected = selectedRef ? componentMap.get(selectedRef) : null;
-  const selectedContract = selectedRef ? usageMap.get(selectedRef) : null;
-  const selectedCapabilityMatch = Boolean(selectedContract?.capabilities.includes(element.capability));
+  const selectedContext = selectedRef ? contextMap.get(selectedRef) : null;
+  const selectedContract = selectedRef ? contractMap.get(selectedRef) : null;
+  const selectedCapabilityMatch = Boolean(selectedContext?.capabilities.includes(element.capability));
   const selectedParentMatch = Boolean(selectedContract && parents.size > 0 && selectedContract.allowedParents.some((parent) => parents.has(parent)));
   let selectedMatch = "none";
   if (selected) {
     if (selectedCapabilityMatch && selectedParentMatch) selectedMatch = "exact";
-    else if (selectedCapabilityMatch) selectedMatch = "compatible-needs-parent-review";
-    else if (!selectedContract) selectedMatch = "manual-source-api-review";
+    else if (selectedCapabilityMatch && selectedContract && parents.size > 0) selectedMatch = "compatible-needs-parent-review";
+    else if (selectedCapabilityMatch) selectedMatch = "context-match";
+    else if (!selectedContext) selectedMatch = "missing-context";
     else selectedMatch = "semantic-mismatch";
   } else if (selectedRef) selectedMatch = "unknown";
 
@@ -165,6 +170,41 @@ function reviewElement(element, componentMap, usageMap) {
   };
 }
 
+function targetPlacementMatches(targetKind, placement) {
+  const allowed = {
+    page: new Set(["page", "section", "cross-shell"]),
+    "center-modal": new Set(["center", "section", "cross-shell"]),
+    "side-slide-panel": new Set(["right-slide", "section", "cross-shell"]),
+    "confirm-dialog": new Set(["center", "section", "cross-shell"]),
+  };
+  return !placement || allowed[targetKind]?.has(placement);
+}
+
+function reviewPatternCandidates(draft, elementReviews, patterns) {
+  const parentRefs = new Set(draft.elements.flatMap((element) => element.parentRefs ?? []));
+  const selectedComponents = new Set(elementReviews.flatMap((review) => [
+    review.selectedComponentRef,
+    ...review.exactCandidates.map((entry) => entry.componentRef),
+    ...review.compatibleCandidates.map((entry) => entry.componentRef),
+  ]).filter(Boolean));
+  return patterns.map((pattern) => {
+    const directParent = parentRefs.has(pattern.id);
+    const matchedComponents = pattern.requiredComponents.filter((componentId) => selectedComponents.has(componentId));
+    return {
+      patternRef: pattern.id,
+      name: pattern.name,
+      kind: pattern.kind,
+      placement: pattern.placement ?? null,
+      directParent,
+      matchedComponents,
+      requiredComponents: pattern.requiredComponents,
+      contextRules: pattern.rules,
+      score: Number(directParent) * 100 + matchedComponents.length,
+    };
+  }).filter((entry) => targetPlacementMatches(draft.targetKind, entry.placement) && (entry.directParent || entry.matchedComponents.length > 0))
+    .sort((left, right) => right.score - left.score || left.patternRef.localeCompare(right.patternRef));
+}
+
 export function reviewScreenAssetSelection(draft, registry) {
   const findings = validateSemanticAssetDraft(draft);
   if (findings.some((entry) => entry.severity === "blocker")) {
@@ -181,8 +221,10 @@ export function reviewScreenAssetSelection(draft, registry) {
   }
 
   const componentMap = new Map(registry.components.map((entry) => [entry.id, entry]));
-  const usageMap = new Map(registry.componentUsageContracts.map((entry) => [entry.componentId, entry]));
-  const elementReviews = draft.elements.map((element) => reviewElement(element, componentMap, usageMap));
+  const contextMap = new Map(registry.componentSelectionContexts.map((entry) => [entry.componentId, entry]));
+  const contractMap = new Map(registry.componentUsageContracts.map((entry) => [entry.componentId, entry]));
+  const elementReviews = draft.elements.map((element) => reviewElement(element, componentMap, contextMap, contractMap));
+  const patternCandidates = reviewPatternCandidates(draft, elementReviews, registry.patterns);
   const representedCategories = new Set(draft.elements.map((element) => element.category));
   const notApplicable = new Set(draft.notApplicableCategories ?? []);
   const unreviewedCategories = SEMANTIC_ASSET_CATEGORIES.filter((category) => !representedCategories.has(category) && !notApplicable.has(category));
@@ -195,7 +237,7 @@ export function reviewScreenAssetSelection(draft, registry) {
     if (review.selectedMatch === "unknown") findings.push(finding("warning", "asset-selection.unknown-selected", `'${review.label}'에 선택한 component '${review.selectedComponentRef}'가 등록되어 있지 않습니다.`, review.id));
     else if (review.selectedMatch === "semantic-mismatch") findings.push(finding("warning", "asset-selection.semantic-mismatch", `'${review.label}'의 capability '${review.capability}'와 선택한 component '${review.selectedComponentRef}'의 사용 계약이 맞지 않습니다.`, review.id));
     else if (review.selectedMatch === "compatible-needs-parent-review") findings.push(finding("warning", "asset-selection.parent-review", `'${review.label}'의 component '${review.selectedComponentRef}'는 의미는 가깝지만 현재 parent 맥락은 사용 계약에 없습니다.`, review.id));
-    else if (review.selectedMatch === "manual-source-api-review") findings.push(finding("info", "asset-selection.source-api-review", `'${review.label}'의 component '${review.selectedComponentRef}'는 상세 선택 계약이 없는 단순 자산이므로 실제 API와 기본 문서를 확인하세요.`, review.id));
+    else if (review.selectedMatch === "missing-context") findings.push(finding("warning", "asset-selection.missing-context", `'${review.label}'의 component '${review.selectedComponentRef}'에 선택 맥락이 없습니다.`, review.id));
 
     if (review.decision === "propose-new" && (review.exactCandidates.length > 0 || review.compatibleCandidates.length > 0)) {
       findings.push(finding("warning", "asset-selection.premature-new-asset", `'${review.label}'에는 기존 후보가 있습니다. 의미·동작 차이를 확인한 뒤 신규 자산 여부를 결정하세요.`, review.id));
@@ -224,6 +266,7 @@ export function reviewScreenAssetSelection(draft, registry) {
     notApplicableCategories: [...notApplicable],
     unreviewedCategories,
     elements: elementReviews,
+    patternCandidates,
     blockerCount,
     warningCount,
     infoCount: findings.filter((entry) => entry.severity === "info").length,

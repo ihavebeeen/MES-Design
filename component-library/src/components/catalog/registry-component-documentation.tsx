@@ -4,7 +4,8 @@ import { ContentRegionHeading } from "@/components/ui/content-region-heading";
 import { SectionHeader } from "@/components/ui/section-header";
 
 const componentById = new Map(componentData.components.map((component) => [component.id, component]));
-const usageById = new Map(usageData.contracts.map((contract) => [contract.componentId, contract]));
+const usageById = new Map([...usageData.baselineContexts, ...usageData.contracts].map((context) => [context.componentId, context]));
+const detailedUsageById = new Map(usageData.contracts.map((contract) => [contract.componentId, contract]));
 
 function List({ items, fallback }: { items?: string[]; fallback: string }) {
   const values = items?.length ? items : [fallback];
@@ -29,6 +30,7 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
   const component = activeId ? componentById.get(activeId) : undefined;
   if (!component || component.documentationMode !== "registry") return null;
   const usage = usageById.get(component.id);
+  const detailed = detailedUsageById.get(component.id);
 
   return (
     <section className="flex w-full max-w-[960px] flex-col gap-5 border-b border-mes-gray-30 pb-8" data-registry-component={component.id}>
@@ -54,11 +56,11 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
         </article>
         <article className="rounded-mes-panel border border-mes-gray-30 bg-white p-4">
           <h3 className="mb-2 text-[14px] font-semibold text-mes-gray-130">상태와 제약</h3>
-          <List items={[...(usage?.requiredStates ?? []), ...(usage?.constraints ?? [])]} fallback="상태와 제약은 구현 파일의 공개 Props와 등록 화면 근거를 따릅니다." />
+          <List items={[...(detailed?.requiredStates ?? []), ...(detailed?.constraints ?? [])]} fallback="상태와 제약은 구현 파일의 공개 Props와 등록 화면 근거를 따릅니다." />
         </article>
         <article className="rounded-mes-panel border border-mes-gray-30 bg-white p-4">
           <h3 className="mb-2 text-[14px] font-semibold text-mes-gray-130">접근성과 근거</h3>
-          <List items={[...(usage?.accessibility ?? []), ...(usage?.evidence ?? [])]} fallback="네이티브 의미와 구현에 선언된 ARIA 속성을 유지하고 실제 사용 화면에서 검증합니다." />
+          <List items={[...(detailed?.accessibility ?? []), ...(detailed?.evidence ?? [])]} fallback="네이티브 의미와 구현에 선언된 ARIA 속성을 유지하고 실제 사용 화면에서 검증합니다." />
         </article>
       </div>
       <p className="text-[12px] text-mes-gray-60">구현: {component.source} · 상세 문서: docs/components/{component.id}.md</p>

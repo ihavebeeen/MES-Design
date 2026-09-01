@@ -324,6 +324,7 @@ const footerActionAudits = mapByUniqueId("footer-action-audit", (footerActionAud
 const generatedCandidates = mapByUniqueId("generated-screen-evaluations", generatedScreenRegistry.candidates ?? []);
 const interactionAudits = mapByUniqueId("interaction-audit", (interactionAuditRegistry.screens ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
 const componentUsageContracts = mapByUniqueId("component-usage-contracts", (componentUsageContractRegistry.contracts ?? []).map((entry) => ({ ...entry, id: entry.componentId })));
+const componentBaselineContexts = mapByUniqueId("component-baseline-contexts", (componentUsageContractRegistry.baselineContexts ?? []).map((entry) => ({ ...entry, id: entry.componentId })));
 const generationSelectionFeedback = mapByUniqueId("generation-selection-feedback", generationSelectionFeedbackRegistry.entries ?? []);
 const patternContracts = mapByUniqueId("pattern-contracts", (patternContractRegistry.contracts ?? []).map((entry) => ({ ...entry, id: entry.patternId })));
 const screenSpecs = mapByUniqueId("screen-specs", (screenSpecRegistry.specs ?? []).map((entry) => ({ ...entry, id: entry.screenId })));
@@ -474,13 +475,35 @@ for (const discrepancy of webUsageDiscrepancies.values()) {
 }
 
 const componentUsagePolicy = componentUsageContractRegistry.policy;
-if (componentUsagePolicy?.coverageMode !== "selection-critical-only") errors.push("component-usage-contracts: coverageMode는 selection-critical-only여야 합니다.");
-if (componentUsagePolicy?.unlistedComponentMode !== "source-api-only") errors.push("component-usage-contracts: 미등록 단순 컴포넌트는 source-api-only여야 합니다.");
+if (componentUsagePolicy?.contextCoverageMode !== "all-components") errors.push("component-usage-contracts: contextCoverageMode는 all-components여야 합니다.");
+if (componentUsagePolicy?.contractCoverageMode !== "selection-critical-only") errors.push("component-usage-contracts: contractCoverageMode는 selection-critical-only여야 합니다.");
+if (componentUsagePolicy?.unlistedComponentMode !== "error") errors.push("component-usage-contracts: 맥락 없는 컴포넌트는 오류로 처리해야 합니다.");
 if (componentUsagePolicy?.webEvidenceRole !== "reference-only") errors.push("component-usage-contracts: 실제 MES 웹 근거는 reference-only여야 합니다.");
 if (componentUsagePolicy?.singleScreenRule !== "do-not-promote") errors.push("component-usage-contracts: 단일 화면 관찰을 공통 규칙으로 승격하면 안 됩니다.");
 if (!new Set(["warning", "blocker"]).has(componentUsagePolicy?.allowedParentMismatchSeverity)) errors.push("component-usage-contracts: allowedParentMismatchSeverity가 잘못되었습니다.");
 if (!Array.isArray(componentUsagePolicy?.promotionRequirements) || componentUsagePolicy.promotionRequirements.length < 2) errors.push("component-usage-contracts: 공통 규칙 승격 조건이 필요합니다.");
 if (componentUsagePolicy?.feedbackLedger !== "generation-selection-feedback.json") errors.push("component-usage-contracts: 생성 피드백 원장 연결이 필요합니다.");
+
+const allComponentSelectionContexts = new Map(componentBaselineContexts);
+for (const [componentId, contract] of componentUsageContracts) {
+  if (allComponentSelectionContexts.has(componentId)) errors.push(`component-usage-contract '${componentId}': baselineContext와 상세 contract에 중복 등록되었습니다.`);
+  allComponentSelectionContexts.set(componentId, contract);
+}
+for (const componentId of components.keys()) {
+  if (!allComponentSelectionContexts.has(componentId)) errors.push(`component '${componentId}': 신규 UI 선택에 사용할 맥락이 없습니다.`);
+}
+for (const componentId of allComponentSelectionContexts.keys()) {
+  if (!components.has(componentId)) errors.push(`component selection context '${componentId}': 미등록 component를 참조합니다.`);
+}
+for (const context of componentBaselineContexts.values()) {
+  for (const field of ["capabilities", "useWhen", "doNotUseWhen"]) {
+    if (!Array.isArray(context[field]) || context[field].length === 0 || context[field].some((value) => typeof value !== "string" || !value.trim())) errors.push(`component baseline context '${context.componentId}': ${field}가 필요합니다.`);
+  }
+  if (!Array.isArray(context.alternatives)) errors.push(`component baseline context '${context.componentId}': alternatives 배열이 필요합니다.`);
+  for (const alternative of context.alternatives ?? []) {
+    if (!components.has(alternative.componentId) || !alternative.chooseInsteadWhen) errors.push(`component baseline context '${context.componentId}': alternative '${alternative.componentId ?? ""}'가 잘못되었습니다.`);
+  }
+}
 
 for (const contract of componentUsageContracts.values()) {
   if (!components.has(contract.componentId)) errors.push(`component-usage-contract '${contract.componentId}': 미등록 component를 참조합니다.`);
@@ -790,6 +813,9 @@ for (const candidate of generatedCandidates.values()) {
 for (const component of components.values()) checkSource("component", component);
 for (const pattern of patterns.values()) {
   checkSource("pattern", pattern);
+  if (!Array.isArray(pattern.rules) || pattern.rules.length === 0 || pattern.rules.some((rule) => typeof rule !== "string" || !rule.trim())) {
+    errors.push(`pattern '${pattern.id}': 신규 UI 조합 판단에 사용할 맥락 규칙이 필요합니다.`);
+  }
   for (const componentId of pattern.requiredComponents ?? []) {
     if (!components.has(componentId)) {
       errors.push(`pattern '${pattern.id}': 미등록 component '${componentId}'를 참조합니다.`);
@@ -866,5 +892,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Design system registry check passed: ${components.size} components, ${patterns.size} patterns, ${screens.size} screens, ${generationTemplates.size} generation templates, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates, ${webUsagePages.size} observed web pages, ${webUsageFlows.size} observed web entry flows. Project state: ${completionPolicyRegistry.projectState}, open completion blockers: ${projectCompletionBlockerCount}.`
+  `Design system registry check passed: ${components.size}/${allComponentSelectionContexts.size} component contexts, ${patterns.size} pattern contexts, ${componentUsageContracts.size} detailed component contracts, ${patternContracts.size} detailed pattern contracts, ${screens.size} screens, ${generationTemplates.size} generation templates, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates, ${webUsagePages.size} observed web pages, ${webUsageFlows.size} observed web entry flows. Project state: ${completionPolicyRegistry.projectState}, open completion blockers: ${projectCompletionBlockerCount}.`
 );

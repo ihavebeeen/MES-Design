@@ -71,6 +71,7 @@ function buildAudit() {
   const interactionScreens = readJson("interaction-audit.json").screens;
   const interactionByScreen = new Map(interactionScreens.map((entry) => [entry.screenId, entry]));
   const componentContracts = new Set(registry.componentUsageContracts.map((entry) => entry.componentId));
+  const componentContexts = new Set(registry.componentSelectionContexts.map((entry) => entry.componentId));
   const patternContracts = new Set(registry.patternContracts.map((entry) => entry.patternId));
   const screenSpecs = new Set(registry.screenSpecs.map((entry) => entry.screenId));
   const visualByScreen = new Map();
@@ -109,11 +110,12 @@ function buildAudit() {
   const components = registry.components.map((component) => {
     const usedByPatternIds = unique(componentsByPattern.get(component.id) ?? []).sort();
     const hasUsageContract = componentContracts.has(component.id);
+    const hasSelectionContext = componentContexts.has(component.id);
     const outstanding = [];
     if (!existsFromProject(component.source)) outstanding.push("source-missing");
     if (component.status === "provisional") outstanding.push("needs-approval-evidence");
     if (!component.documentationRoute) outstanding.push("documentation-route-missing");
-    if (!hasUsageContract) outstanding.push("detailed-usage-rule-missing");
+    if (!hasSelectionContext) outstanding.push("selection-context-missing");
     if (usedByPatternIds.length === 0) outstanding.push("no-registered-pattern-usage");
     return {
       id: component.id,
@@ -124,9 +126,10 @@ function buildAudit() {
       sourceExists: existsFromProject(component.source),
       documentationRoute: component.documentationRoute ?? null,
       hasFreeformRules: Boolean(component.rules?.length),
+      hasSelectionContext,
       hasDetailedUsageRule: hasUsageContract,
       usedByPatternIds,
-      reviewState: component.status === "stable" && hasUsageContract ? "approved-with-detailed-rule" : component.status === "stable" ? "approved-basic" : "needs-review",
+      reviewState: component.status === "stable" && hasUsageContract ? "approved-with-detailed-rule" : component.status === "stable" && hasSelectionContext ? "approved-with-context" : "needs-review",
       outstanding,
     };
   });
@@ -148,6 +151,7 @@ function buildAudit() {
       kind: pattern.kind,
       source: pattern.source,
       sourceExists: existsFromProject(pattern.source),
+      hasSelectionContext: Boolean(pattern.rules?.length),
       hasDetailedCompositionRule: hasDetailedRule,
       usedByScreenIds,
       generationTemplateIds,
@@ -206,6 +210,7 @@ function buildAudit() {
     patterns: registry.patterns,
     screens: registry.screens,
     componentUsageContracts: registry.componentUsageContracts,
+    componentSelectionContexts: registry.componentSelectionContexts,
     patternContracts: registry.patternContracts,
     screenSpecs: registry.screenSpecs,
     visualCases,
@@ -260,6 +265,7 @@ function buildAudit() {
         stable: components.filter((entry) => entry.status === "stable").length,
         provisional: components.filter((entry) => entry.status === "provisional").length,
         documented: components.filter((entry) => entry.documentationRoute).length,
+        selectionContexts: components.filter((entry) => entry.hasSelectionContext).length,
         detailedUsageRules: components.filter((entry) => entry.hasDetailedUsageRule).length,
         sourceMissing: components.filter((entry) => !entry.sourceExists).length,
       },
@@ -267,6 +273,7 @@ function buildAudit() {
         total: patterns.length,
         usedByScreens: patterns.filter((entry) => entry.usedByScreenIds.length > 0).length,
         unusedByScreens: patterns.filter((entry) => entry.usedByScreenIds.length === 0).length,
+        selectionContexts: patterns.filter((entry) => entry.hasSelectionContext).length,
         detailedCompositionRules: patterns.filter((entry) => entry.hasDetailedCompositionRule).length,
         withVisualEvidence: patterns.filter((entry) => entry.directVisualCaseIds.length > 0 || entry.hasIndirectScreenVisualEvidence).length,
         sourceMissing: patterns.filter((entry) => !entry.sourceExists).length,
@@ -288,7 +295,7 @@ function buildAudit() {
 function renderMarkdown(audit) {
   const missingVisual = audit.screens.filter((entry) => entry.visualCaseIds.length === 0);
   const provisionalComponents = audit.components.filter((entry) => entry.status === "provisional");
-  const stableWithoutRules = audit.components.filter((entry) => entry.status === "stable" && !entry.hasDetailedUsageRule);
+  const componentsWithoutContexts = audit.components.filter((entry) => !entry.hasSelectionContext);
   const patternsWithoutRules = audit.patterns.filter((entry) => !entry.hasDetailedCompositionRule);
   const unusedPatterns = audit.patterns.filter((entry) => entry.usedByScreenIds.length === 0 && entry.generationTemplateIds.length === 0);
   const browserVerified = audit.browserRun.result === "passed";
@@ -330,15 +337,15 @@ function renderMarkdown(audit) {
     "",
     ...Object.entries(Object.groupBy(provisionalComponents, (entry) => entry.category)).sort(([left], [right]) => left.localeCompare(right)).map(([category, entries]) => `- ${category}: ${entries.map((entry) => entry.name).join(", ")}`),
     "",
-    "### 3. 정식이지만 상세 사용 기준이 없는 공용 요소",
+    "### 3. 컴포넌트 선택 맥락",
     "",
-    `총 ${stableWithoutRules.length}개다. 현재 사용은 가능하지만 AI가 선택 이유까지 판단하려면 상세 기준을 추가해야 한다.`,
+    `전체 ${audit.summary.components.total}개 중 ${audit.summary.components.selectionContexts}개에 역할·사용·비사용·대안 맥락이 연결돼 있다. 상세 계약은 구조·동작 선택에 민감한 ${audit.summary.components.detailedUsageRules}개에 추가 적용한다.`,
     "",
-    `- ${stableWithoutRules.map((entry) => entry.name).join(", ")}`,
+    ...(componentsWithoutContexts.length ? componentsWithoutContexts.map((entry) => `- 맥락 누락: ${entry.name} (${entry.id})`) : ["- 맥락 누락 없음"]),
     "",
-    "### 4. 상세 조합 기준이 없는 화면 구성",
+    "### 4. 패턴 맥락과 상세 실행 계약",
     "",
-    `총 ${patternsWithoutRules.length}개다. 현재 화면에서 사용되는 항목부터 순서, 허용 요소, 스크롤과 동작 기준을 추가한다.`,
+    `전체 ${audit.summary.patterns.total}개 패턴에 조합 맥락이 있다. 그중 ${audit.summary.patterns.detailedCompositionRules}개는 슬롯·스크롤·구현 marker까지 자동 검사하며, 나머지 ${patternsWithoutRules.length}개는 맥락 후보로 사용하되 필요할 때만 실행 계약을 추가한다.`,
     "",
     "### 5. 실제 화면이나 생성 방식에서 사용되지 않는 구성",
     "",
@@ -348,9 +355,9 @@ function renderMarkdown(audit) {
     "",
     "## 다음 검증 순서",
     "",
-    "1. 현재 화면에서 많이 사용하는 정식 요소 중 상세 사용 기준이 없는 항목을 먼저 정리한다.",
+    "1. 신규 UI 생성에서 잘못 선택된 자산이 있으면 기본 맥락 또는 상세 계약 중 필요한 층을 보강한다.",
     "2. 검토 단계 요소는 실제 사용 화면이 생길 때 원본·상태·사용 위치를 확인하고 정식 여부를 판정한다.",
-    "3. 화면 구성을 실제 사용 빈도순으로 상세화한다.",
+    "3. 구조·동작 오류가 반복되는 패턴만 상세 실행 계약으로 승격한다.",
     "4. 새 자산·테스트·기준 이미지가 바뀌면 이전 통과 기록을 현재 결과로 재사용하지 않는다.",
     "",
     "## 판정 범위",

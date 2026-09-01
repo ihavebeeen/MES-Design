@@ -123,3 +123,28 @@ test("검토하지 않은 범주는 누락 가능성만 알리고 차단하지 �
   assert.ok(result.unreviewedCategories.includes("actions"));
   assert.ok(result.findings.some((entry) => entry.code === "asset-selection.category-unreviewed" && entry.severity === "info"));
 });
+
+test("모든 등록 컴포넌트는 최소 선택 맥락을 가지며 상세 계약이 없어도 의미 후보가 된다", () => {
+  assert.equal(registry.componentSelectionContexts.length, registry.components.length);
+  const result = reviewScreenAssetSelection(draft([{
+    id: "workerIdentity",
+    label: "작업자 식별",
+    category: "data-display",
+    capability: "person-identity-summary",
+    parentRefs: ["section.form-grid"],
+    basis: "supported",
+    impact: "presentation",
+    decision: "selected",
+    selectedComponentRef: "avatar",
+  }]), registry);
+  assert.equal(result.elements[0].selectedMatch, "context-match");
+  assert.equal(result.elements[0].compatibleCandidates.find((entry) => entry.componentRef === "avatar")?.contractCoverage, "context-only");
+  assert.ok(!result.findings.some((entry) => entry.code === "asset-selection.missing-context"));
+});
+
+test("컴포넌트 후보를 찾은 뒤 관련 패턴과 각 패턴의 맥락 규칙을 반환한다", () => {
+  const result = reviewScreenAssetSelection(draft([riskStatus]), registry);
+  assert.ok(result.patternCandidates.length > 0);
+  assert.ok(result.patternCandidates.every((entry) => entry.contextRules.length > 0));
+  assert.ok(result.patternCandidates.some((entry) => entry.patternRef === "section.search-table-composition"));
+});

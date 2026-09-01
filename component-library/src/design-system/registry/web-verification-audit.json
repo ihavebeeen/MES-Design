@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "auditedAt": null,
-  "sourceFingerprint": "118c1fc81fd53dd385acf791306f5d85c91d52f0b33c176fed132223dc76963b",
+  "sourceFingerprint": "103830e6b04e80b4643bf44f6eaf7a2cf50d35b9cdf3e2b94db22cdd945a835b",
   "browserRun": {
     "command": "npm run test:visual",
     "result": "not-verified-for-current-source",
@@ -10,19 +10,19 @@
     "failed": null,
     "durationMs": null,
     "recordedAt": null,
-    "testInventoryFingerprint": "ded260de66b70a48e529b12740f004441061db93adead81f657c4b6d6daedac1",
+    "testInventoryFingerprint": "00035b1124dbeb0a4faab6e3fff87c40d7dbcd83c66e92c15314e80a92e1c05d",
     "includesDeferredMobile": true
   },
   "testInventory": {
     "count": 92,
     "files": {
       "tests/visual/application-flow.spec.mts": "e972eb78d92011e8f24b4a475837a425ac2656a9327a108abb802fe06eba4496",
-      "tests/visual/design-system.visual.spec.ts": "8da3b0bf45babf6e7e9e6d0c43cfa4df34d9c8a76a072d4a3bd7037e6f8b64e9",
+      "tests/visual/design-system.visual.spec.ts": "cd162e4b1c9cf65d5a2e706ba775f3488304020f2e51b318671bfa3529ff5c9b",
       "tests/visual/figma-component-defaults.spec.ts": "f9a842afc72cfef542c0e242507b6acbbbd1e66b55c7c9a1f3a1719fedf23cc3",
       "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
       "tests/visual/slide-compositions.spec.mts": "2c018a1a7334f1f0e0a13f7d1977b3556142863dec93841498f5d55a778a9299"
     },
-    "fingerprint": "ded260de66b70a48e529b12740f004441061db93adead81f657c4b6d6daedac1"
+    "fingerprint": "00035b1124dbeb0a4faab6e3fff87c40d7dbcd83c66e92c15314e80a92e1c05d"
   },
   "summary": {
     "components": {
@@ -30,13 +30,15 @@
       "stable": 42,
       "provisional": 48,
       "documented": 88,
-      "detailedUsageRules": 22,
+      "selectionContexts": 90,
+      "detailedUsageRules": 25,
       "sourceMissing": 0
     },
     "patterns": {
       "total": 73,
       "usedByScreens": 46,
       "unusedByScreens": 27,
+      "selectionContexts": 73,
       "detailedCompositionRules": 11,
       "withVisualEvidence": 46,
       "sourceMissing": 0
@@ -59,12 +61,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/accordion",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -77,11 +79,11 @@
       "sourceExists": true,
       "documentationRoute": "/components/alarm-list-item",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -94,12 +96,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/avatar",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -112,6 +114,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/badge",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "onboarding.product-tour",
@@ -131,14 +134,13 @@
       "sourceExists": true,
       "documentationRoute": "/components/before-after-comparison",
       "hasFreeformRules": true,
-      "hasDetailedUsageRule": false,
+      "hasSelectionContext": true,
+      "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.before-after-confirmation"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
     },
     {
       "id": "breadcrumb",
@@ -149,12 +151,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/breadcrumb",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -167,6 +169,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/button-size",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "action-set.cancel-confirm",
@@ -228,12 +231,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/button-group",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -246,12 +249,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/cascader",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -264,14 +267,14 @@
       "sourceExists": true,
       "documentationRoute": "/components/card",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "screen.analytics-dashboard"
       ],
       "reviewState": "needs-review",
       "outstanding": [
-        "needs-approval-evidence",
-        "detailed-usage-rule-missing"
+        "needs-approval-evidence"
       ]
     },
     {
@@ -283,6 +286,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/center-modal",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "dismiss.restore-committed",
@@ -316,6 +320,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/checkbox",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.dual-pane",
@@ -344,12 +349,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/collapsible",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -362,11 +367,11 @@
       "sourceExists": true,
       "documentationRoute": "/components/combobox",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -379,17 +384,16 @@
       "sourceExists": true,
       "documentationRoute": "/components/confirm-dialog",
       "hasFreeformRules": true,
-      "hasDetailedUsageRule": false,
+      "hasSelectionContext": true,
+      "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.before-after-confirmation",
         "popup.center.equipment-discharge-settings",
         "popup.center.standard-price-settings",
         "shell.confirm-dialog"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
     },
     {
       "id": "date-picker",
@@ -400,6 +404,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/date-picker",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.inventory-add",
@@ -407,8 +412,7 @@
       ],
       "reviewState": "needs-review",
       "outstanding": [
-        "needs-approval-evidence",
-        "detailed-usage-rule-missing"
+        "needs-approval-evidence"
       ]
     },
     {
@@ -420,15 +424,14 @@
       "sourceExists": true,
       "documentationRoute": "/components/labeled-select",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.inventory-add",
         "popup.center.inventory-edit"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-context",
+      "outstanding": []
     },
     {
       "id": "labeled-input",
@@ -439,14 +442,13 @@
       "sourceExists": true,
       "documentationRoute": "/components/labeled-input",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.inventory-edit"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-context",
+      "outstanding": []
     },
     {
       "id": "selection-action-bar",
@@ -457,14 +459,13 @@
       "sourceExists": true,
       "documentationRoute": "/components/selection-action-bar",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.inventory-edit"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-context",
+      "outstanding": []
     },
     {
       "id": "analytics-charts",
@@ -475,11 +476,11 @@
       "sourceExists": true,
       "documentationRoute": "/components/analytics-charts",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -492,6 +493,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/date-range-picker",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "screen.analytics-dashboard"
@@ -510,6 +512,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/descriptions",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "screen.master-detail",
@@ -517,8 +520,7 @@
       ],
       "reviewState": "needs-review",
       "outstanding": [
-        "needs-approval-evidence",
-        "detailed-usage-rule-missing"
+        "needs-approval-evidence"
       ]
     },
     {
@@ -530,6 +532,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/dialog-footer",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [],
       "reviewState": "approved-with-detailed-rule",
@@ -546,6 +549,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/main-list-footer-actions",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [],
       "reviewState": "approved-with-detailed-rule",
@@ -562,12 +566,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/divider",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -580,12 +584,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/dropdown-menu",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -598,6 +602,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/empty-state",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
@@ -615,12 +620,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/error-state",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -633,12 +638,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/fieldset",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -651,6 +656,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/filter",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.equipment-discharge-settings",
@@ -681,12 +687,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/file-upload",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -699,12 +705,12 @@
       "sourceExists": true,
       "documentationRoute": null,
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
         "documentation-route-missing",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -717,7 +723,8 @@
       "sourceExists": true,
       "documentationRoute": "/components/form-grid",
       "hasFreeformRules": true,
-      "hasDetailedUsageRule": false,
+      "hasSelectionContext": true,
+      "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.side.group-settings",
         "recipe.side-slide-custom-fields",
@@ -729,10 +736,8 @@
         "section.form-grid",
         "section.staged-record-entry"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-detailed-rule",
+      "outstanding": []
     },
     {
       "id": "grid-container",
@@ -743,12 +748,12 @@
       "sourceExists": true,
       "documentationRoute": "/foundations/grid-container",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -761,6 +766,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/group-query",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "recipe.page-entity-list",
@@ -781,6 +787,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/icon-button",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.standard-price-settings",
@@ -789,8 +796,7 @@
       ],
       "reviewState": "needs-review",
       "outstanding": [
-        "needs-approval-evidence",
-        "detailed-usage-rule-missing"
+        "needs-approval-evidence"
       ]
     },
     {
@@ -802,6 +808,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/input",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.cavity-layout",
@@ -840,12 +847,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/image-thumbnail",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -858,16 +865,15 @@
       "sourceExists": true,
       "documentationRoute": "/components/inspection-judgement",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.side.inspection-items",
         "recipe.side-slide-inspection",
         "section.inspection-items"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-context",
+      "outstanding": []
     },
     {
       "id": "label",
@@ -878,12 +884,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/label",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -896,6 +902,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/link",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.purchase-lookup",
@@ -915,12 +922,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/list",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -933,12 +940,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/loading-overlay",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -951,12 +958,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/loading-spinner",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -969,12 +976,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/logo",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -987,12 +994,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/multi-select-input",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1005,12 +1012,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/navbar",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1023,11 +1030,11 @@
       "sourceExists": true,
       "documentationRoute": "/components/notice-banner",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1040,11 +1047,11 @@
       "sourceExists": true,
       "documentationRoute": "/components/notification-panel",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1057,6 +1064,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/number-input",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
@@ -1074,16 +1082,15 @@
       "sourceExists": true,
       "documentationRoute": "/components/page-top-tab-item",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "recipe.page-entity-list",
         "screen.entity-list",
         "screen.form-management-workflow"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-context",
+      "outstanding": []
     },
     {
       "id": "overflow-list",
@@ -1094,12 +1101,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/overflow-list",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1112,12 +1119,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/pagination",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1130,14 +1137,14 @@
       "sourceExists": true,
       "documentationRoute": "/components/panel",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "screen.master-detail"
       ],
       "reviewState": "needs-review",
       "outstanding": [
-        "needs-approval-evidence",
-        "detailed-usage-rule-missing"
+        "needs-approval-evidence"
       ]
     },
     {
@@ -1149,12 +1156,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/password-input",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1167,15 +1174,14 @@
       "sourceExists": true,
       "documentationRoute": "/components/popover",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
-        "recipe.side-slide-custom-fields",
         "recipe.side-slide-inspection"
       ],
       "reviewState": "needs-review",
       "outstanding": [
-        "needs-approval-evidence",
-        "detailed-usage-rule-missing"
+        "needs-approval-evidence"
       ]
     },
     {
@@ -1187,15 +1193,14 @@
       "sourceExists": true,
       "documentationRoute": "/components/progress",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.purchase-lookup",
         "workflow.stepper"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-context",
+      "outstanding": []
     },
     {
       "id": "progress-circle",
@@ -1206,12 +1211,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/progress-circle",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1224,6 +1229,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/quick-query",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "recipe.page-entity-list",
@@ -1242,6 +1248,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/radio",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.cavity-layout",
@@ -1260,11 +1267,11 @@
       "sourceExists": true,
       "documentationRoute": "/components/radio-choice-dialog",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1277,14 +1284,14 @@
       "sourceExists": true,
       "documentationRoute": "/components/scroll-area",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "table.frozen-column-grid"
       ],
       "reviewState": "needs-review",
       "outstanding": [
-        "needs-approval-evidence",
-        "detailed-usage-rule-missing"
+        "needs-approval-evidence"
       ]
     },
     {
@@ -1296,12 +1303,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/search-highlight",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1314,6 +1321,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/search-input",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.equipment-discharge-settings",
@@ -1347,14 +1355,14 @@
       "sourceExists": true,
       "documentationRoute": "/components/segmented-control",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "visualization.production-gantt"
       ],
       "reviewState": "needs-review",
       "outstanding": [
-        "needs-approval-evidence",
-        "detailed-usage-rule-missing"
+        "needs-approval-evidence"
       ]
     },
     {
@@ -1366,11 +1374,11 @@
       "sourceExists": true,
       "documentationRoute": "/components/mes-product-switcher",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1383,6 +1391,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/section-frame",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "frame.standard-section",
@@ -1405,6 +1414,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/section-header",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "frame.standard-section"
@@ -1421,6 +1431,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/content-region-heading",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.equipment-discharge-settings",
@@ -1440,12 +1451,12 @@
       "sourceExists": true,
       "documentationRoute": null,
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
         "documentation-route-missing",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1458,6 +1469,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/query-date-range",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.inspection-records",
@@ -1466,10 +1478,8 @@
         "screen.entity-list",
         "section.page-query-table"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-context",
+      "outstanding": []
     },
     {
       "id": "cavity-cell",
@@ -1480,11 +1490,11 @@
       "sourceExists": true,
       "documentationRoute": "/components/cavity-cell",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1497,6 +1507,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/select",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.dual-pane",
@@ -1531,16 +1542,15 @@
       "sourceExists": true,
       "documentationRoute": "/components/sidebar",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "recipe.page-entity-list",
         "screen.entity-list",
         "screen.form-management-workflow"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-context",
+      "outstanding": []
     },
     {
       "id": "slider",
@@ -1551,12 +1561,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/slider",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1569,6 +1579,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/side-slide-panel",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "dismiss.restore-committed",
@@ -1597,12 +1608,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/skeleton",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1615,12 +1626,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/sticky-header-footer",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1633,15 +1644,14 @@
       "sourceExists": true,
       "documentationRoute": "/components/switch",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.standard-price-settings",
         "table.column-settings"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-context",
+      "outstanding": []
     },
     {
       "id": "table",
@@ -1652,6 +1662,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/table-full",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.dual-pane",
@@ -1702,14 +1713,13 @@
       "sourceExists": true,
       "documentationRoute": "/components/tag",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "table.column-settings"
       ],
-      "reviewState": "approved-basic",
-      "outstanding": [
-        "detailed-usage-rule-missing"
-      ]
+      "reviewState": "approved-with-context",
+      "outstanding": []
     },
     {
       "id": "textarea",
@@ -1720,12 +1730,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/textarea",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1738,6 +1748,7 @@
       "sourceExists": true,
       "documentationRoute": "/components/time-picker",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.time-selector",
@@ -1745,8 +1756,7 @@
       ],
       "reviewState": "needs-review",
       "outstanding": [
-        "needs-approval-evidence",
-        "detailed-usage-rule-missing"
+        "needs-approval-evidence"
       ]
     },
     {
@@ -1758,12 +1768,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/timeline",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1776,11 +1786,11 @@
       "sourceExists": true,
       "documentationRoute": "/components/toast",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "approved-basic",
+      "reviewState": "approved-with-context",
       "outstanding": [
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1793,12 +1803,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/tree-select",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1811,12 +1821,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/tree-view",
       "hasFreeformRules": true,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1829,12 +1839,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/toggle-button",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1847,12 +1857,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/tooltip",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     },
@@ -1865,12 +1875,12 @@
       "sourceExists": true,
       "documentationRoute": "/components/user-account-menu",
       "hasFreeformRules": false,
+      "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
       "reviewState": "needs-review",
       "outstanding": [
         "needs-approval-evidence",
-        "detailed-usage-rule-missing",
         "no-registered-pattern-usage"
       ]
     }
@@ -1878,10 +1888,11 @@
   "patterns": [
     {
       "id": "recipe.side-slide-custom-fields",
-      "name": "좌우 분할 · 커스텀 정보 조합",
+      "name": "좌우 분할 · 기본정보 + 커스텀 정보 조합",
       "kind": "recipe",
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [
@@ -1896,10 +1907,11 @@
     },
     {
       "id": "recipe.side-slide-inspection",
-      "name": "좌우 분할 · 검사항목 조합",
+      "name": "좌우 분할 · 대상정보 + 검사항목 조합",
       "kind": "recipe",
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [
@@ -1914,10 +1926,11 @@
     },
     {
       "id": "recipe.side-slide-entry-list",
-      "name": "상하 분할 · 입력 + 목록 조합",
+      "name": "세로 3영역 · 기본정보 + 항목작성 + 누적목록",
       "kind": "recipe",
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [
@@ -1936,6 +1949,7 @@
       "kind": "recipe",
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [
@@ -1954,6 +1968,7 @@
       "kind": "popup",
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -1972,6 +1987,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -1990,6 +2006,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -2008,6 +2025,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -2026,6 +2044,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -2044,6 +2063,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -2058,10 +2078,11 @@
     },
     {
       "id": "popup.center.form",
-      "name": "중앙 · 폼/정보 중심",
+      "name": "중앙 · 단건 정보·처리",
       "kind": "popup",
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -2076,10 +2097,11 @@
     },
     {
       "id": "popup.center.table",
-      "name": "중앙 · 단일 테이블 선택/편집",
+      "name": "중앙 · 목록 조회·선택·행 처리",
       "kind": "popup",
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "batch-work-order",
@@ -2100,6 +2122,7 @@
       "kind": "popup",
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "bom-copy"
@@ -2118,6 +2141,7 @@
       "kind": "popup",
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "material-input-settings"
@@ -2136,6 +2160,7 @@
       "kind": "popup",
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -2150,10 +2175,11 @@
     },
     {
       "id": "popup.side.add-list",
-      "name": "우측 슬라이드 · 추가 + 하단 리스트",
+      "name": "우측 슬라이드 · 기본정보 + 항목작성 + 누적목록",
       "kind": "popup",
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "production-result",
@@ -2173,6 +2199,7 @@
       "kind": "popup",
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "custom-information"
@@ -2191,6 +2218,7 @@
       "kind": "popup",
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "self-inspection"
@@ -2209,6 +2237,7 @@
       "kind": "popup",
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "operation-log"
@@ -2227,6 +2256,7 @@
       "kind": "recipe",
       "source": "scripts/generate-screen-tsx.mjs",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [
@@ -2245,6 +2275,7 @@
       "kind": "recipe",
       "source": "scripts/generate-screen-tsx.mjs",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [
@@ -2263,6 +2294,7 @@
       "kind": "recipe",
       "source": "scripts/generate-screen-tsx.mjs",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [
@@ -2281,6 +2313,7 @@
       "kind": "screen",
       "source": "src/components/patterns/entity-list-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "grouped-production-list"
@@ -2301,6 +2334,7 @@
       "kind": "screen",
       "source": "src/components/patterns/master-detail-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -2319,6 +2353,7 @@
       "kind": "screen",
       "source": "src/components/patterns/analytics-dashboard-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "process-inspection-trend",
@@ -2338,6 +2373,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "process-inspection-trend"
@@ -2356,6 +2392,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "process-inspection-trend"
@@ -2374,6 +2411,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "process-inspection-trend"
@@ -2392,6 +2430,7 @@
       "kind": "table",
       "source": "src/components/ui/table.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "grouped-production-list",
@@ -2411,6 +2450,7 @@
       "kind": "table",
       "source": "src/components/patterns/table-column-settings.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -2429,6 +2469,7 @@
       "kind": "popup",
       "source": "src/components/patterns/inspection-criteria-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "form-inspection-criteria"
@@ -2447,6 +2488,7 @@
       "kind": "popup",
       "source": "src/components/patterns/production-quantity-reregistration-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "production-quantity-reregistration"
@@ -2465,6 +2507,7 @@
       "kind": "section-frame",
       "source": "src/components/ui/section-frame.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "custom-information",
@@ -2489,6 +2532,7 @@
       "kind": "section-pattern",
       "source": "src/components/ui/form-grid.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "cavity-layout-settings",
@@ -2513,6 +2557,7 @@
       "kind": "behavior",
       "source": "src/components/ui/side-slide-panel.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "batch-work-order",
@@ -2544,6 +2589,7 @@
       "kind": "shell",
       "source": "src/components/ui/center-modal.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "batch-work-order",
@@ -2579,6 +2625,7 @@
       "kind": "shell",
       "source": "src/components/ui/side-slide-panel.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "custom-information",
@@ -2607,6 +2654,7 @@
       "kind": "shell",
       "source": "src/components/ui/confirm-dialog.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "production-quantity-reregistration",
@@ -2626,6 +2674,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/section-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "batch-work-order",
@@ -2658,6 +2707,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/entity-list-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [],
       "generationTemplateIds": [
@@ -2674,6 +2724,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/section-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "operation-log",
@@ -2694,6 +2745,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/section-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "self-inspection"
@@ -2710,6 +2762,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/section-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "bom-copy",
@@ -2729,6 +2782,7 @@
       "kind": "section-pattern",
       "source": "src/components/patterns/section-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "defect-quantity-input"
@@ -2747,6 +2801,7 @@
       "kind": "behavior",
       "source": "src/design-system/behavior-patterns.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "batch-work-order",
@@ -2770,6 +2825,7 @@
       "kind": "behavior",
       "source": "src/design-system/behavior-patterns.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "bom-copy",
@@ -2797,6 +2853,7 @@
       "kind": "behavior",
       "source": "src/design-system/behavior-patterns.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "equipment-discharge-settings",
@@ -2818,6 +2875,7 @@
       "kind": "behavior",
       "source": "src/design-system/behavior-patterns.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "defect-quantity-input",
@@ -2840,6 +2898,7 @@
       "kind": "action-set",
       "source": "src/design-system/action-sets.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "batch-work-order",
@@ -2882,6 +2941,7 @@
       "kind": "action-set",
       "source": "src/design-system/action-sets.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "standard-price-settings"
@@ -2900,6 +2960,7 @@
       "kind": "action-set",
       "source": "src/design-system/action-sets.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "defect-quantity-input"
@@ -2918,6 +2979,7 @@
       "kind": "action-set",
       "source": "src/design-system/action-sets.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "inventory-edit"
@@ -2936,6 +2998,7 @@
       "kind": "action-set",
       "source": "src/design-system/action-sets.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "purchase-order-lookup"
@@ -2954,6 +3017,7 @@
       "kind": "action-set",
       "source": "src/design-system/action-sets.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -2972,6 +3036,7 @@
       "kind": "action-set",
       "source": "src/design-system/action-sets.ts",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "production-quantity-reregistration"
@@ -2990,6 +3055,7 @@
       "kind": "workflow",
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -3008,6 +3074,7 @@
       "kind": "selection",
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -3026,6 +3093,7 @@
       "kind": "table",
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -3044,6 +3112,7 @@
       "kind": "table",
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -3062,6 +3131,7 @@
       "kind": "table",
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -3080,6 +3150,7 @@
       "kind": "visualization",
       "source": "src/components/patterns/process-flow-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -3098,6 +3169,7 @@
       "kind": "visualization",
       "source": "src/components/patterns/production-gantt-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -3116,6 +3188,7 @@
       "kind": "onboarding",
       "source": "src/components/patterns/product-tour-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
@@ -3134,6 +3207,7 @@
       "kind": "screen",
       "source": "src/components/patterns/original-mes-screen-assets.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "form-management"
@@ -3152,6 +3226,7 @@
       "kind": "screen",
       "source": "src/components/patterns/exact-production-result-screen.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "production-result-responsive"
@@ -3170,6 +3245,7 @@
       "kind": "popup",
       "source": "src/components/patterns/source-popup-gallery.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "cavity-layout-settings"
@@ -3188,6 +3264,7 @@
       "kind": "popup",
       "source": "src/components/patterns/exact-inventory-add-modal.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "inventory-add"
@@ -3206,6 +3283,7 @@
       "kind": "popup",
       "source": "src/components/patterns/source-popup-gallery.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "inventory-edit"
@@ -3224,6 +3302,7 @@
       "kind": "popup",
       "source": "src/components/patterns/exact-purchase-modals.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "purchase-order-lookup"
@@ -3242,6 +3321,7 @@
       "kind": "popup",
       "source": "src/components/patterns/equipment-inspection-records-modal.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "equipment-inspection-records"
@@ -3260,6 +3340,7 @@
       "kind": "popup",
       "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "equipment-discharge-settings"
@@ -3278,6 +3359,7 @@
       "kind": "popup",
       "source": "src/components/patterns/standard-price-settings-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "standard-price-settings"
@@ -3296,6 +3378,7 @@
       "kind": "popup",
       "source": "src/components/patterns/team-settings-pattern.tsx",
       "sourceExists": true,
+      "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "team-settings"

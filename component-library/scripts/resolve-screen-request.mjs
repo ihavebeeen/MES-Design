@@ -61,6 +61,10 @@ export function readRegistryBundle() {
     generationTemplates: generationTemplates.templates,
     mobileAssets,
     componentUsagePolicy: componentUsageContracts.policy,
+    componentSelectionContexts: [
+      ...(componentUsageContracts.baselineContexts ?? []),
+      ...componentUsageContracts.contracts.map(({ componentId, capabilities, useWhen, doNotUseWhen, alternatives }) => ({ componentId, capabilities, useWhen, doNotUseWhen, alternatives })),
+    ],
     componentUsageContracts: componentUsageContracts.contracts,
     patternContracts: patternContracts.contracts,
     screenSpecs: screenSpecs.specs,
@@ -211,6 +215,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const actionSetMap = new Map(registry.actionSets.map((entry) => [entry.id, entry]));
   const generationTemplateMap = new Map(registry.generationTemplates.map((entry) => [entry.id, entry]));
   const componentUsageContractMap = new Map(registry.componentUsageContracts.map((entry) => [entry.componentId, entry]));
+  const componentSelectionContextMap = new Map(registry.componentSelectionContexts.map((entry) => [entry.componentId, entry]));
   const patternContractMap = new Map(registry.patternContracts.map((entry) => [entry.patternId, entry]));
   const screenSpecMap = new Map(registry.screenSpecs.map((entry) => [entry.screenId, entry]));
   const webPageArchetypeMap = new Map(registry.webGenerationContext.pageArchetypes.map((entry) => [entry.id, entry]));
@@ -437,14 +442,16 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     behaviors: behaviorRefs.map((id) => ({ id, reason: composition.behaviorRefs !== undefined ? "요청이 명시했습니다." : nearestScreenSpec ? "ScreenSpec의 상태·동작 계약을 상속했습니다." : "가까운 화면의 patternRefs를 상속했습니다." })),
     actionSet: actionSetRef ? { selectedId: actionSetRef, reason: composition.actionSetRef !== undefined ? "요청이 명시했습니다." : nearestScreenSpec ? "ScreenSpec의 하단 동작 의미를 상속했습니다." : "가까운 화면의 action set을 상속했습니다." } : null,
     components: resolvedComponents.map((component) => {
-      const usage = componentUsageContractMap.get(component.id);
+      const usage = componentSelectionContextMap.get(component.id);
+      const detailedContract = componentUsageContractMap.get(component.id);
       return {
         selectedId: component.id,
-        reason: usage?.useWhen ?? ["선택된 패턴의 requiredComponents에 포함됩니다."],
+        reason: usage?.useWhen ?? ["선택 맥락 누락 — 레지스트리 검사가 먼저 실패해야 합니다."],
         doNotUseWhen: usage?.doNotUseWhen ?? [],
         alternatives: usage?.alternatives ?? [],
-        contractCoverage: usage ? "selection-guard" : "source-api-only",
-        evidenceRole: usage ? registry.componentUsagePolicy.webEvidenceRole : null,
+        contextCoverage: usage ? "selection-context" : "missing",
+        contractCoverage: detailedContract ? "selection-guard" : "context-only",
+        evidenceRole: registry.componentUsagePolicy.webEvidenceRole,
       };
     }),
     ...(assetSelectionReview ? { assetSelection: assetSelectionReview } : {}),
@@ -464,6 +471,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       contextRules: registry.contextRules,
       generationTemplates: registry.generationTemplates,
       componentUsageContracts: registry.componentUsageContracts,
+      componentSelectionContexts: registry.componentSelectionContexts,
       componentUsagePolicy: registry.componentUsagePolicy,
       patternContracts: registry.patternContracts,
       screenSpecs: registry.screenSpecs,
@@ -499,6 +507,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       hostPagePatternContract: hostPagePatternContract ?? null,
       components: resolvedComponents.map(({ id, name, category, source, status, rules }) => ({ id, name, category, source, status, rules: rules ?? [] })),
       componentUsagePolicy: registry.componentUsagePolicy,
+      componentSelectionContexts: resolvedComponents.map(({ id }) => componentSelectionContextMap.get(id)),
       componentUsageContracts: resolvedComponents.map(({ id }) => componentUsageContractMap.get(id)).filter(Boolean),
       actionSet: actionSetRef ? actionSetMap.get(actionSetRef) ?? null : null,
       contextRules: applicableContextRules,

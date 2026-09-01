@@ -34,7 +34,8 @@
 
 - 구현: `src/components/ui/select.tsx`
 - 웹 문서: `/components/select`
-- 생성 선택 규칙: 적용됨
+- 생성 선택 맥락: 적용됨
+- 상세 선택 계약: 적용됨
 - 참고 화면: `receiving`, `batch-work-order`, `team-settings`
 - 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 

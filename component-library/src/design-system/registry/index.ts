@@ -128,6 +128,11 @@ export function getComponentUsageContract(componentId: string) {
   return componentUsageContractRegistry.contracts.find((contract) => contract.componentId === componentId);
 }
 
+export function getComponentSelectionContext(componentId: string) {
+  return componentUsageContractRegistry.contracts.find((contract) => contract.componentId === componentId)
+    ?? componentUsageContractRegistry.baselineContexts.find((context) => context.componentId === componentId);
+}
+
 export function getPatternUsageContract(patternId: string) {
   return patternUsageContractRegistry.contracts.find((contract) => contract.patternId === patternId);
 }
@@ -279,6 +284,7 @@ export function getImplementationContext(screenId: string) {
     patterns,
     patternContracts: patterns.map(({ id }) => getPatternUsageContract(id)).filter(Boolean),
     components: componentIds.map(getComponent).filter(Boolean),
+    componentSelectionContexts: componentIds.map(getComponentSelectionContext).filter(Boolean),
     componentUsageContracts: componentIds.map(getComponentUsageContract).filter(Boolean),
     contextRules,
     contextDecisions: contextRuleRegistry.decisions.filter((decision) =>

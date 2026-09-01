@@ -43,6 +43,7 @@ export interface AssetManifestRegistry {
       internal: number;
       stable: number;
       provisional: number;
+      selectionContexts: number;
       selectionGuardContracts: number;
     };
     patterns: number;
@@ -79,17 +80,27 @@ export interface ComponentUsageContractEntry {
   alternatives: Array<{ componentId: string; chooseInsteadWhen: string }>;
 }
 
+export interface ComponentSelectionContextEntry {
+  componentId: string;
+  capabilities: string[];
+  useWhen: string[];
+  doNotUseWhen: string[];
+  alternatives: Array<{ componentId: string; chooseInsteadWhen: string }>;
+}
+
 export interface ComponentUsageContractRegistry {
   schemaVersion: 1;
   policy: {
-    coverageMode: "selection-critical-only";
-    unlistedComponentMode: "source-api-only";
+    contextCoverageMode: "all-components";
+    contractCoverageMode: "selection-critical-only";
+    unlistedComponentMode: "error";
     webEvidenceRole: "reference-only";
     singleScreenRule: "do-not-promote";
     allowedParentMismatchSeverity: "warning" | "blocker";
     promotionRequirements: string[];
     feedbackLedger: string;
   };
+  baselineContexts: ComponentSelectionContextEntry[];
   contracts: ComponentUsageContractEntry[];
 }
 
