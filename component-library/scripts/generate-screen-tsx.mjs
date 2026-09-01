@@ -240,6 +240,7 @@ function generateMesPageEntityList(contract) {
           </>
         }
         table={<div data-section-id=${quote(section.id)} className="h-full min-h-0 overflow-y-auto"><Table columns={COLUMNS} rows={filteredRows} selectable={${section.selectable !== false}} selectedIds={selectedIds} onSelectedIdsChange={setSelectedIds} selectionColor="black" unselectedCheckboxAppearance="grayCheck" horizontalScroll={false} className="rounded-none border-x-0 border-t-0" /></div>}
+        footerStart={<><Button size="small" variant="lineBlacktxt" startIcon={<IconCopy size={16} />}>복사</Button><Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button></>}
       />
       <QuickQueryPresetDialog open={quickSettingsOpen} onOpenChange={setQuickSettingsOpen} slots={quickSlots} onDelete={(id) => setQuickSlots((current) => current.map((slot) => slot.id === id ? { ...slot, name: null } : slot))} onSaveSlot={(id, name) => setQuickSlots((current) => current.map((slot) => slot.id === id ? { ...slot, name } : slot))} currentPreview={{ grouping: levels.filter(Boolean).map((level) => GROUP_OPTIONS.find((option) => option.id === level)?.label).filter(Boolean).join(" > ") }} />
     </>
@@ -255,6 +256,7 @@ import { QuickQuery, QuickQueryPresetDialog, type QuickQuerySlot } from "@/compo
 import { SearchInput } from "@/components/ui/search-input";
 import { Sidebar } from "@/components/ui/sidebar";
 import { Table, type TableColumn, type TableRowData } from "@/components/ui/table";
+import { IconCopy, IconDownload } from "@/components/icons";
 import { EntityListPattern } from "@/components/patterns/entity-list-pattern";`;
   return `"use client";\n\n${imports}\n\n${model.source}\n\n${groupOptions}\n\n${component}\n`;
 }

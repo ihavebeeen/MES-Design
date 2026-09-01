@@ -6,6 +6,11 @@ export interface EntityListPatternProps {
   tabs: React.ReactNode;
   header: React.ReactNode;
   table: React.ReactNode;
+  /** 메인 목록 하단 좌측의 복사·다운로드 같은 공통 유틸리티. */
+  footerStart?: React.ReactNode;
+  /** 메인 목록 하단 우측의 화면별 업무 액션. */
+  footerEnd?: React.ReactNode;
+  /** 기존 화면 호환용. 신규 화면은 footerStart/footerEnd를 사용한다. */
   footer?: React.ReactNode;
   className?: string;
 }
@@ -19,9 +24,18 @@ function EntityListPattern({
   tabs,
   header,
   table,
+  footerStart,
+  footerEnd,
   footer,
   className,
 }: EntityListPatternProps) {
+  const resolvedFooter = footer ?? (footerStart || footerEnd ? (
+    <>
+      <div className="flex items-center gap-2.5">{footerStart}</div>
+      <div className="ml-auto flex items-center gap-2.5">{footerEnd}</div>
+    </>
+  ) : null);
+
   return (
     <div
       className={cn(
@@ -34,9 +48,9 @@ function EntityListPattern({
         <div className="flex h-[38px] shrink-0 items-center bg-black">{tabs}</div>
         <header className="h-[96px] shrink-0">{header}</header>
         <div className="min-h-0 flex-1 overflow-auto">{table}</div>
-        {footer && (
+        {resolvedFooter && (
           <footer className="flex h-[46px] shrink-0 items-center justify-between border-t border-mes-gray-30 px-5">
-            {footer}
+            {resolvedFooter}
           </footer>
         )}
       </div>

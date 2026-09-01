@@ -93,7 +93,8 @@
     "recordOnly": "사용자에게 실제로 물은 답, 중요한 근거·가정·충돌만 남긴다. 모든 질문에 빈 레코드를 만들지 않는다.",
     "writeBack": [
       "사용자 답의 업무 사실을 requirements에 보존한다. 다르면 기존 가정을 교체한다.",
-      "화면 전체의 주인공, 정보 관계, 읽기·작업 순서와 승인 MES 근거를 함께 검토한 뒤 target, webContext, composition, generation을 갱신한다.",
+      "화면 전체의 주인공, 정보 관계, 읽기·작업 순서를 먼저 확정하고 각 필요 능력을 MES 컴포넌트 맥락과 대조한다. 선택한 컴포넌트의 연결이 성립한 뒤 이를 지원하는 Section·Recipe·Shell 후보를 비교해 target, webContext, composition, generation을 갱신한다.",
+      "팝업 유형·Form·Table을 먼저 정하고 내용을 끼워 맞추지 않는다. 선택한 컴포넌트의 맥락, 서로 연결되는 이유, 가까운 대안을 선택하지 않은 이유를 기존 requirements와 evidence.notes에 남긴다.",
       "각 Shell/Section/Behavior/Component에 3단계 자산 선택을 적용한다. 특정 자산에 맞추려고 사용자 답을 바꾸지 않는다.",
       "사용자 답을 구현하는 동안 새 모호함을 발견하면 관련 질문만 다시 연다. 시각 검토에서 구성 변경이 필요하면 같은 입력을 수정한다."
     ],
@@ -234,7 +235,7 @@
       "lookIn": ["계산·비교 명세", "사용자 예시"],
       "affects": ["동시 가시성", "비교 정렬", "요약 위계"],
       "writeTo": ["requirements", "composition.sections"], "ifUnknown": "ask-before-affected-work",
-      "guard": "비교라는 단어만으로 좌우 분할·표·차트를 선택하거나 계산 규칙을 창작하지 않는다."
+      "guard": "비교라는 단어만으로 좌우 분할·표·차트를 선택하거나 계산 규칙을 창작하지 않는다. 여러 항목의 동일 열 비교면 Table/BeforeAfterComparison, 단일 결론이면 요약 영역 등 컴포넌트 맥락과 대안을 먼저 비교한다."
     },
     {
       "id": "task.monitoring", "stage": "task", "facets": ["monitor"],

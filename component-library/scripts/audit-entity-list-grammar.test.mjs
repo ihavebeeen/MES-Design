@@ -4,12 +4,12 @@ import { patternContractFindings } from "./audit-screen-implementation.mjs";
 import { readRegistryBundle } from "./resolve-screen-request.mjs";
 import { inspectImplementation } from "./screen-implementation-graph.mjs";
 
-const required = ["EntityListPattern", "QueryDateRange", "GroupQuery", "Filter", "QuickQuery", "SearchInput", "Table"];
+const required = ["EntityListPattern", "QueryDateRange", "GroupQuery", "Filter", "QuickQuery", "SearchInput", "Table", "IconCopy", "IconDownload"];
 const registry = readRegistryBundle();
 const patternContract = registry.patternContracts.find((entry) => entry.patternId === "section.page-query-table");
 
 function inspect(extra = [], componentProps = []) {
-  return { uses: new Set([...required, ...extra]), componentProps: new Set(componentProps) };
+  return { uses: new Set([...required, ...extra]), componentProps: new Set(["EntityListPattern.footerStart", ...componentProps]) };
 }
 
 test("MES 메인 목록 문법과 더블클릭 팝업 진입은 통과한다", () => {
@@ -45,9 +45,11 @@ test("주석·문자열 속 onRowDoubleClick 문구는 실제 Table 연결 근�
     import { QuickQuery } from "@/components/ui/quick-query";
     import { SearchInput } from "@/components/ui/search-input";
     import { Table } from "@/components/ui/table";
+    import { IconCopy, IconDownload } from "@/components/icons";
+    import { Button } from "@/components/ui/button";
     export function Host() {
       const note = "onRowDoubleClick={openRow}";
-      return <EntityListPattern navigation={null} tabs={null} header={<><QueryDateRange start={null} end={null} onStartChange={() => undefined} onEndChange={() => undefined} /><GroupQuery options={[]} levels={[]} onLevelChange={() => undefined} /><Filter categories={[]} value={{}} onChange={() => undefined} /><QuickQuery presets={[]} activeId={null} onApply={() => undefined} onClearActive={() => undefined} onSettingsClick={() => undefined} /><SearchInput value={note} onChange={() => undefined} /></>} table={<Table columns={[]} rows={[]} />} />;
+      return <EntityListPattern navigation={null} tabs={null} header={<><QueryDateRange start={null} end={null} onStartChange={() => undefined} onEndChange={() => undefined} /><GroupQuery options={[]} levels={[]} onLevelChange={() => undefined} /><Filter categories={[]} value={{}} onChange={() => undefined} /><QuickQuery presets={[]} activeId={null} onApply={() => undefined} onClearActive={() => undefined} onSettingsClick={() => undefined} /><SearchInput value={note} onChange={() => undefined} /></>} table={<Table columns={[]} rows={[]} />} footerStart={<><Button startIcon={<IconCopy />}>복사</Button><Button startIcon={<IconDownload />}>다운로드</Button></>} />;
     }
   `;
   const implementation = inspectImplementation(source, registry);

@@ -20,21 +20,48 @@ test("usage references cover all desktop surfaces and point to real patterns/que
   const ids = sources.usage.contexts.map(c => c.id);
   assert.equal(new Set(ids).size, ids.length);
   const patterns = new Set(registry.patterns.map(p => p.id));
+  const components = new Set(registry.components.map(c => c.id));
   for (const c of sources.usage.contexts) {
     assert.ok(c.name && c.purpose && c.relationship && c.basis);
     assert.ok(c.consider.length && c.alternatives.length);
     for (const ref of c.patternRefs) assert.ok(patterns.has(ref), `${c.id}: unknown pattern ${ref}`);
+    for (const ref of c.componentRefs ?? []) assert.ok(components.has(ref), `${c.id}: unknown component ${ref}`);
+    if (c.id.startsWith("usage.popup.")) {
+      assert.ok(c.componentRefs.length > 0, `${c.id}: component context is required`);
+      assert.ok(c.connection.length > 0, `${c.id}: component connection is required`);
+    }
     assert.equal(c.required, undefined);
     assert.equal(c.shellRef, undefined);
   }
   const questions = new Set(read("src/design-system/registry/screen-intake-policy.json").questions.map(q => q.id));
   for (const ref of sources.usage.informationGuide.intakeQuestionRefs) assert.ok(questions.has(ref));
+  assert.ok(sources.usage.assetSelectionGuide.purpose.includes("개별 컴포넌트의 맥락"));
   for (const targetKind of ["page", "center-modal", "side-slide-panel", "confirm-dialog"]) {
     const result = getScreenReferences({ targetKind }, sources);
     assert.equal(result.enforcement, "none");
     assert.ok(result.usage.length > 0);
     assert.ok(result.usage.every(c => c.surfaces.includes(targetKind)));
   }
+});
+
+test("popup references explain component context before the resulting composition", () => {
+  const result = getScreenReferences({
+    targetKind: "confirm-dialog",
+    usageIds: ["usage.popup.change-comparison"],
+  }, sources);
+  assert.deepEqual(result.usage.map(context => context.id), ["usage.popup.change-comparison"]);
+  assert.ok(result.assetSelectionGuide.order.length >= 4);
+  assert.ok(result.usage[0].componentRefs.includes("before-after-comparison"));
+  assert.ok(result.usage[0].connection.some(line => line.includes("BeforeAfterComparison")));
+  assert.ok(result.usage[0].patternRefs.includes("popup.center.before-after-confirmation"));
+  assert.equal(result.enforcement, "none");
+});
+
+test("every registered popup pattern is linked to at least one usage context", () => {
+  const linkedPatterns = new Set(sources.usage.contexts.flatMap(context => context.patternRefs));
+  const popupPatterns = registry.patterns.filter(pattern => pattern.id.startsWith("popup."));
+  assert.ok(popupPatterns.length > 0);
+  assert.deepEqual(popupPatterns.filter(pattern => !linkedPatterns.has(pattern.id)).map(pattern => pattern.id), []);
 });
 
 test("business retrieval returns cited candidates without fixing primary/supporting roles", () => {

@@ -107,7 +107,8 @@
       "constraints": ["페이지 조회 도구는 회색 section toolbar 안에 넣지 않는다.", "table이 세로 무한 스크롤을 소유한다.", "상세·슬라이드 팝업 진입은 행 더블클릭과 키보드 Enter를 사용한다."],
       "evidence": ["grouped-production-list", "production-result-responsive"],
       "goldenScreenIds": ["grouped-production-list", "production-result-responsive"],
-      "implementationMarkers": ["EntityListPattern", "QueryDateRange", "GroupQuery", "Filter", "QuickQuery", "SearchInput", "Table"],
+      "implementationMarkers": ["EntityListPattern", "QueryDateRange", "GroupQuery", "Filter", "QuickQuery", "SearchInput", "Table", "IconCopy", "IconDownload"],
+      "requiredComponentProps": ["EntityListPattern.footerStart"],
       "forbiddenImplementationMarkers": ["SearchTableSection", "Pagination"],
       "entryBehaviorContracts": {
         "row-double-click": {

@@ -144,6 +144,7 @@ export interface PatternUsageContractEntry {
   goldenScreenIds: string[];
   implementationMarkers: string[];
   forbiddenImplementationMarkers?: string[];
+  requiredComponentProps?: string[];
   entryBehaviorContracts?: Partial<Record<"row-double-click" | "explicit-action", {
     requiredComponentProps: string[];
   }>>;

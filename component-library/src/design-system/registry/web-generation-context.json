@@ -33,9 +33,9 @@
   "decisionOrder": [
     "업무 결과가 조회·등록·편집·선택·분석·모니터링 중 무엇인지 판정한다.",
     "전체 페이지인지 현재 페이지 위의 작업인지 판정한다.",
-    "사용자 지정·화면 전체의 주된 작업·정보 위계·진입/종료를 함께 확인한다. 배경 유지나 작업 길이만으로 중앙/우측 형식을 선택하지 않는다.",
-    "가장 가까운 page archetype과 overlay grammar를 선택한다.",
-    "필요한 Section recipe를 업무 순서대로 조합한다.",
+    "현재 작업에 필요한 정보·행동과 그 이유, 소유 대상, 비교·선택·누적 관계를 확인한다.",
+    "각 필요 능력을 MES 컴포넌트 맥락과 대조하고 선택한 컴포넌트들이 어떻게 연결되는지 설명한다.",
+    "그 연결을 지원하는 Section recipe와 page archetype 또는 overlay grammar를 함께 비교한다. 배경 유지나 작업 길이만으로 중앙/우측 형식을 선택하지 않는다.",
     "선택·행 변경·취소 복원·스크롤 소유 Behavior를 연결한다.",
     "디자인 토큰과 공용 컴포넌트 계약을 적용한다.",
     "기존 문법으로 설명되지 않는 차이만 신규 후보로 격리한다."
@@ -96,11 +96,11 @@
   "overlayGrammars": [
     {
       "id": "generation.overlay.context-preserving-form",
-      "name": "현재 목록을 유지하는 등록·편집 슬라이드",
+      "name": "여러 정보 역할을 이어서 처리하는 등록·편집 슬라이드",
       "confidence": "repeated",
       "evidenceCount": 23,
       "surfaceSequence": ["side-slide-panel"],
-      "useWhen": ["목록을 떠나지 않고 신규 등록·편집을 수행할 때", "기본정보 뒤에 세부 목록이나 커스텀 정보가 이어질 때"],
+      "useWhen": ["기본정보와 커스텀 정보·검사항목·반복 기록처럼 서로 다른 역할의 자산을 한 저장 단위로 이어서 처리할 때", "선택한 FormGrid·SectionFrame·Table 등 자산 연결이 전체 높이의 연속 작업 공간과 맞을 때"],
       "doNotUseWhen": ["대상을 먼저 검색·선택해야 할 때", "짧은 확인만 필요할 때", "양쪽 자료를 비교해야 할 때"],
       "shellRef": "shell.side-slide-panel",
       "recipeRefs": ["recipe.side-slide-form-editable-list", "popup.side.add-list", "popup.side.custom-columns", "popup.side.inspection-items", "popup.side.time-records"],
@@ -152,12 +152,12 @@
   "sectionRecipes": [
     {
       "id": "generation.section.basic-detail-list",
-      "name": "기본정보·업무정보·상세목록",
+      "name": "기본정보·항목작성·누적목록",
       "confidence": "repeated",
       "evidenceCount": 13,
       "sectionOrder": ["basic-information", "domain-information", "detail-list"],
       "patternRefs": ["frame.standard-section", "section.form-grid", "section.editable-row-list"],
-      "useWhen": ["등록 단위의 공통 필드와 반복되는 품목·수량·상세 행이 함께 있을 때"],
+      "useWhen": ["상단 FormGrid가 작업 전체의 공통 기준을, 중앙 FormGrid가 다음 한 건을, 하단 Table 또는 반복 행이 저장할 결과 목록을 담당할 때"],
       "evidenceFlowIds": ["flow.sales-target-create", "flow.sales-plan-create", "flow.product-purchase-create", "flow.production-target-create", "flow.production-plan-create", "flow.production-order-create", "flow.production-result-create", "flow.purchase-order-create", "flow.receiving-create", "flow.emergency-shipment-create", "flow.maintenance-create", "flow.bom-create", "flow.process-create"]
     },
     {
@@ -167,7 +167,7 @@
       "evidenceCount": 5,
       "sectionOrder": ["basic-information", "custom-information"],
       "patternRefs": ["frame.standard-section", "section.form-grid"],
-      "useWhen": ["마스터 데이터의 표준 필드와 사용자 정의 필드를 나눠 편집할 때"],
+      "useWhen": ["FormGrid로 표현되는 MES 공통 스키마와 수용가·대상 유형·사용자 정의에 따른 확장 스키마를 동시에 편집할 때"],
       "evidenceFlowIds": ["flow.partner-create", "flow.item-create", "flow.warehouse-create", "flow.equipment-create", "flow.user-create"]
     },
     {
@@ -177,7 +177,7 @@
       "evidenceCount": 3,
       "sectionOrder": ["basic-information", "inspection-items"],
       "patternRefs": ["section.form-grid", "section.inspection-items"],
-      "useWhen": ["검사 기준 또는 검사항목별 판정 입력이 업무의 중심일 때"],
+      "useWhen": ["대상 식별 FormGrid를 보면서 수용가·품목·설비·공정에 맞는 InspectionJudgement 또는 측정 Input을 수행할 때"],
       "evidenceFlowIds": ["flow.incoming-inspection-start", "flow.equipment-inspection-create", "flow.form-create"]
     },
     {

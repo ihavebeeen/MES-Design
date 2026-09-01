@@ -8,11 +8,20 @@ const normalize = (value) => String(value ?? "").normalize("NFKC").toLocaleLower
 export function validateUsageContexts(data) {
   const errors = [];
   if (data?.schemaVersion !== 1 || data?.authority !== "reference-only" || !Array.isArray(data?.contexts)) return ["Invalid usage context reference"];
+  if (!data?.assetSelectionGuide || !Array.isArray(data.assetSelectionGuide.order) || !Array.isArray(data.assetSelectionGuide.decisionRecord)) {
+    errors.push("Missing asset selection guide");
+  }
   const ids = new Set();
   for (const context of data.contexts) {
     if (!context || ["id", "name", "purpose", "relationship", "basis"].some(key => typeof context[key] !== "string" || !context[key].trim())) errors.push("Missing context identity/meaning");
     for (const key of ["surfaces", "patternRefs", "consider", "alternatives"]) {
       if (!Array.isArray(context?.[key]) || context[key].some(value => typeof value !== "string")) errors.push(`Invalid context ${key}`);
+    }
+    for (const key of ["componentRefs", "connection"]) {
+      if (context?.[key] !== undefined && (!Array.isArray(context[key]) || context[key].some(value => typeof value !== "string" || !value.trim()))) errors.push(`Invalid context ${key}`);
+    }
+    if (context?.id?.startsWith("usage.popup.") && (!context.componentRefs?.length || !context.connection?.length)) {
+      errors.push(`Popup context '${context.id}' needs componentRefs and connection`);
     }
     if (ids.has(context?.id)) errors.push(`Duplicate usage context: ${context?.id}`);
     ids.add(context?.id);
@@ -79,6 +88,7 @@ export function getScreenReferences(options = {}, sources = loadReferenceSources
     status: !sources.business && !sources.usage ? "unavailable" : notices.length ? "partial" : "available",
     policy: sources.usage?.policy ?? { purpose: "업무·화면 사용 사례는 참고용이다. 자료 부재로 생성을 막거나 기존 사례를 강제하지 않는다." },
     informationGuide: sources.usage?.informationGuide ?? null,
+    assetSelectionGuide: sources.usage?.assetSelectionGuide ?? null,
     businessAuthority: sources.business?.authority ?? null,
     business, usage: rankedContexts.slice(0, limit).map(({ context }) => context),
     matches: { business: matchingTasks.length, usage: rankedContexts.length, limit },

@@ -109,7 +109,7 @@ assert.equal(pageContract.quality.status, "review-ready");
 assert.equal(pageContract.decisionTrace.webContext.pageArchetype.selectedId, "generation.page.entity-list");
 assert.ok(pageContract.quality.issues.some((entry) => entry.code === "generation.template-provisional"));
 assert.equal(pageFirst, pageSecond, "전체 페이지 템플릿이 결정적으로 생성되지 않았습니다.");
-assert.equal(generatedSourceFingerprint(pageFirst), "e3e8cbe2c78d62969ce72ca7304b06456dcfea4e8d8c24074d3e3f09293294cd");
+assert.equal(generatedSourceFingerprint(pageFirst), "8e96b963fc8041186110e25c04cc7922c765250779dc756cc3c0c89c78ccb1a2");
 assert.match(pageFirst, /<EntityListPattern/);
 assert.match(pageFirst, /<QueryDateRange/);
 assert.match(pageFirst, /<GroupQuery/);

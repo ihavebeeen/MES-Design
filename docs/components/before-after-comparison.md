@@ -4,30 +4,38 @@
 
 ## 역할
 
-선택·정렬이 없는 변경 전후 요약 비교에만 사용한다.
+동일 항목의 기존값·변경값·증감 또는 영향을 같은 기준에서 확인함
 
 ## 생성 선택 기준
 
-이 컴포넌트는 전역 선택 가드 대상이 아닙니다. 실제 코드 API와 부모 패턴 계약만 따르며, 별도 사용처 전수조사를 만들지 않습니다.
+- 동일 항목의 기존값·변경값·증감 또는 영향을 같은 기준에서 확인함
+- 저장·재등록·적용 전에 변경 결과를 짧게 판단해야 함
+
+선택하지 않는 경우:
+- 서로 다른 엔티티 목록을 탐색·선택함
+- 변경값 하나만 강조하면 충분해 열 비교가 불필요함
+- 원본과 대상 사이에 항목을 이동·복사하는 상호작용이 필요함
 
 ## API와 상태
 
 - 공개 심볼: `BeforeAfterComparisonMetric`, `BeforeAfterComparisonSnapshot`, `BeforeAfterComparisonProps`, `BeforeAfterComparison`
 - 주요 Props: `key`, `label`, `id`, `values`, `emphasized`, `metrics`, `snapshots`, `className`
-- 상태: 정적 표시
-- 변형: 등록된 별도 variant 없음
+- 상태: `static`
+- 변형: `single-value`, `multi-row`
 
 ## 접근성과 제약
 
-- 구현에 선언된 `aria-label`, `role` 의미를 제거하지 않습니다.
-- 공개 Props와 구현된 상태 범위 밖으로 임의 확장하지 않습니다.
+- 증감 방향을 색상만으로 전달하지 않는다.
+- 기존값과 변경값의 열 또는 라벨 관계를 읽을 수 있어야 한다.
+- 기존값·변경값·차이의 단위와 방향을 일관되게 표시한다.
+- 표현이 작은 표처럼 보여도 일반 목록 조회·검색·선택 기능을 붙이지 않는다.
 
 ## 근거
 
 - 구현: `src/components/ui/before-after-comparison.tsx`
 - 웹 문서: `/components/before-after-comparison`
-- 생성 선택 규칙: 적용 안 함(API 문서만 사용)
-- 참고 화면: 없음
-- 참고 화면의 역할: 해당 없음
+- 생성 선택 규칙: 적용됨
+- 참고 화면: `production-quantity-reregistration`
+- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

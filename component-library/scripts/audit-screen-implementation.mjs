@@ -18,6 +18,9 @@ export function patternContractFindings(patternContract, implementation, { entry
   for (const marker of patternContract.forbiddenImplementationMarkers ?? []) {
     if (implementation.uses.has(marker)) findings.push(finding("blocker", "composition.pattern-forbidden-marker", `선택한 pattern '${patternContract.patternId}'에서 '${marker}' 대체 사용은 허용되지 않습니다.`));
   }
+  for (const prop of patternContract.requiredComponentProps ?? []) {
+    if (!implementation.componentProps?.has(prop)) findings.push(finding("blocker", "composition.pattern-prop", `선택한 pattern '${patternContract.patternId}'에는 실제 MES component prop '${prop}' 연결이 필요합니다.`));
+  }
   const entryContract = entryBehavior ? patternContract.entryBehaviorContracts?.[entryBehavior] : undefined;
   for (const prop of entryContract?.requiredComponentProps ?? []) {
     if (!implementation.componentProps?.has(prop)) findings.push(finding("blocker", "composition.pattern-interaction", `선택한 pattern '${patternContract.patternId}'의 entryBehavior '${entryBehavior}'에는 실제 MES component prop '${prop}' 연결이 필요합니다.`));

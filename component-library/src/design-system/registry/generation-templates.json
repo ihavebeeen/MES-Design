@@ -22,8 +22,8 @@
       "overwrite": "forbid",
       "body": {
         "kind": "custom-fields",
-        "title": "좌우 분할 · 커스텀 정보",
-        "description": "좌측 기본 정보와 우측 커스텀 필드 값. 항목 추가는 필드 정의를 늘리는 동작입니다.",
+        "title": "좌우 분할 · 기본정보 + 커스텀 정보",
+        "description": "좌측 FormGrid의 MES 공통 스키마와 우측 FormGrid의 수용가·대상 유형별 확장 스키마를 함께 편집하는 조합입니다.",
         "referenceNode": "10594:34597",
         "sourcePatternRef": "popup.side.custom-columns"
       }
@@ -49,8 +49,8 @@
       "overwrite": "forbid",
       "body": {
         "kind": "inspection",
-        "title": "좌우 분할 · 검사항목",
-        "description": "좌측 대상 정보와 우측 검사·판정. 항목 추가 유무는 해당 업무 설정을 따릅니다.",
+        "title": "좌우 분할 · 대상정보 + 검사항목",
+        "description": "좌측 FormGrid로 검사 대상을 확인하고 우측 InspectionJudgement·Input으로 대상별 검사·판정을 수행하는 조합입니다.",
         "referenceNode": "19414:93662",
         "sourcePatternRef": "popup.side.inspection-items"
       }
@@ -77,8 +77,8 @@
       "overwrite": "forbid",
       "body": {
         "kind": "entry-list",
-        "title": "상하 분할 · 입력 + 목록",
-        "description": "상단 정보/입력 영역과 하단 목록. 빈 행 추가, 상단 값 추가, 두 방식 병행을 별도로 선택합니다.",
+        "title": "세로 3영역 · 기본정보 + 항목작성 + 누적목록",
+        "description": "상단 FormGrid는 전체 기본정보, 중앙 FormGrid는 다음 한 건, 하단 Table은 누적 결과를 담당합니다. 빈 행 추가와 중앙 작성값 추가는 별도로 선택합니다.",
         "referenceNode": "19079:63364",
         "sourcePatternRef": "popup.side.add-list"
       }

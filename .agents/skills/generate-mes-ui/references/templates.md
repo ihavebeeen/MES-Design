@@ -10,9 +10,9 @@ For center/slide/confirmation popup-only work, host knowledge is optional. Witho
 
 ## Slide body composition and independent list behavior
 
-Choose the shared `SideSlidePanel` and its body placement separately from editing behavior. The user-confirmed body families are custom fields (left/basic + right/custom values), inspection (left/target + right/judgements), top/bottom input/list, and special group settings (basic + members + permissions). Operation logs remain a business example, not the fourth universal body family.
+Match section components and their relationships before choosing `SideSlidePanel` and a body placement. The user-confirmed body families are custom fields (left/MES common schema + right/customer or target-specific extensible schema), inspection (left/inspection subject and context + right/customer/item/equipment/process-specific items and judgements), three vertical regions (whole-work basic information + next-record editor + accumulated records), an allowed two-region variant (whole-work basic information + directly edited records), and special group settings (group + members + permissions). Operation logs remain a business example, not another universal body family.
 
-Usage references apply across pages, center popups and slide popups: inspect `usage-contexts.json` through the reference lookup. Basic/custom is a field-definition distinction, not importance; inspection may be the main task on the right; upper input may be whole-list context or only the next row's draft. These interpretations help compare compositions, never enforce a shell or add mode. Existing template capabilities remain actual API constraints, not universal business/layout rules.
+Usage references apply across pages, center popups and slide popups: inspect `usage-contexts.json` through the reference lookup. Read `assetSelectionGuide` first, then use the relevant context's `componentRefs` and `connection` to explain why components belong together before selecting its pattern. Basic/custom is a field-definition distinction, not importance; inspection may be the main task on the right; upper basic information and the next row's draft are different roles. These interpretations help compare compositions, never enforce a shell or add mode. Existing template capabilities remain actual API constraints, not universal business/layout rules.
 
 `side-slide-custom-fields.v1`, `side-slide-inspection.v1`, `side-slide-entry-list.v1`, and `side-slide-group-settings.v1` are provisional deterministic composition templates. Their roles and references are in `generation-templates.json`. Examples in `slide-composition-examples.json` use sample data, not complete source-screen replicas or backend persistence.
 
@@ -43,7 +43,7 @@ See `component-library/tests/fixtures/screen-requests/deterministic-side-slide.j
 
 ## `center-modal-search-table.v1`
 
-Use for a center modal whose main content is a filter/search toolbar and one selectable data table. It generates `CenterModal`, the registered search-table section, committed-draft dismissal, and the resolved dialog action set.
+Use only after the task needs aligned candidate comparison and selection: `Filter`/`SearchInput` narrow the candidate set, `Table` displays comparable identifying/judgement columns, selection state determines the returned records and action availability, and `CenterModal` bounds that temporary selection task. It generates `CenterModal`, the registered search-table section, committed-draft dismissal, and the resolved dialog action set. Do not choose it merely because a popup contains rows or because a Table is convenient.
 
 Required pattern refs:
 

@@ -542,6 +542,12 @@ for (const contract of patternContracts.values()) {
       for (const marker of markers) if ((contract.implementationMarkers ?? []).includes(marker)) errors.push(`pattern-contract '${contract.patternId}': '${marker}'를 필수·금지 marker에 동시에 둘 수 없습니다.`);
     }
   }
+  for (const field of ["requiredComponentProps"]) {
+    if (contract[field] === undefined) continue;
+    if (!Array.isArray(contract[field]) || contract[field].some((value) => typeof value !== "string" || value.trim().length === 0) || new Set(contract[field]).size !== contract[field].length) {
+      errors.push(`pattern-contract '${contract.patternId}': ${field}는 중복 없는 비어 있지 않은 문자열 배열이어야 합니다.`);
+    }
+  }
   if (contract.entryBehaviorContracts !== undefined) {
     if (!contract.entryBehaviorContracts || typeof contract.entryBehaviorContracts !== "object" || Array.isArray(contract.entryBehaviorContracts)) {
       errors.push(`pattern-contract '${contract.patternId}': entryBehaviorContracts는 객체여야 합니다.`);
