@@ -40,6 +40,7 @@ export const TOC_LINKS: { id: string; label: string; labelEn?: string }[] = [
   { id: "button-icon", label: "버튼 아이콘", labelEn: "Button Icon" },
   { id: "button-color", label: "버튼 컬러", labelEn: "Button Color" },
   { id: "icon-button", label: "아이콘 버튼 / 닫기 버튼", labelEn: "IconButton / CloseButton" },
+  { id: "main-list-footer-actions", label: "메인 목록 하단 액션", labelEn: "Main List Footer Actions" },
   { id: "divider", label: "구분선", labelEn: "Divider" },
   { id: "tooltip", label: "툴팁", labelEn: "Tooltip" },
   { id: "loading-spinner", label: "로딩 스피너", labelEn: "LoadingSpinner" },

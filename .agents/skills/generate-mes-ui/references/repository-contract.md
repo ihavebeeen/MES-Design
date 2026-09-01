@@ -37,6 +37,10 @@ Choose in this order:
 8. `behaviorRefs`: selection, mutation, dismissal, and master-detail behavior.
 9. `actionSetRef`: footer action semantics.
 
+For a popup connected to the executable `section.page-query-table` pattern, the host page remains a separately validated MES page surface. Record `hostPage.pagePatternRef` and its popup `entryBehavior`; use `row-double-click` by default. `explicit-action` is an exception and needs `entryReason` tied to a registered screen or explicit user decision. `webContext` stays reference-only; overlay composition never supplies or replaces the host page's query/table grammar.
+
+Resolve executable choices before implementation. Each selected pattern contract can declare required implementation markers, prohibited substitutes and behavior-specific component props. The resolver copies only the selected target/host contracts into the screen contract, the implementation follows them, and the final audit checks those declarations. An unselected pattern contributes no pattern-specific requirement. These checks prevent implementation drift after selection; they do not replace the contextual selection process or make a universal prohibition out of one screen's rule.
+
 Do not select by visual resemblance alone. A gray rectangle, title, or repeated row is not sufficient evidence of a component or pattern identity.
 
 Select `target.kind` and `webContext` jointly from the whole-screen concept and applicable MES evidence. Background visibility, record count, input count, width, and task length are contributing facts, not direct shell/pattern selectors. A sample recipe's existing `surfaceSequence` is not an answer-to-layout mapping. If several compositions remain plausible, explain the material trade-off or propose a reversible draft; do not invent missing business facts to force a registered template.

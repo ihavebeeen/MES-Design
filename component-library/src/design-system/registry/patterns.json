@@ -285,8 +285,8 @@
       "kind": "recipe",
       "placement": "page",
       "source": "scripts/generate-screen-tsx.mjs",
-      "requiredComponents": ["sidebar", "page-top-tab-item", "filter", "search-input", "table", "pagination"],
-      "rules": ["Navigation→상단 탭→페이지 제목→조회 toolbar→표→페이지네이션 순서를 생성한다.", "조회 결과는 검색·필터·페이지 상태에서 결정적으로 파생한다.", "page target에는 overlay shell과 dialog action set을 만들지 않는다."]
+      "requiredComponents": ["sidebar", "page-top-tab-item", "query-date-range", "group-query", "filter", "quick-query", "search-input", "table", "button"],
+      "rules": ["Navigation→상단 탭→제목·기간 조회→그룹화·필터·빠른 조회·검색→무한 스크롤 표→하단 업무 액션 순서를 생성한다.", "메인 목록에는 팝업 내부용 SearchTableSection과 페이지네이션을 사용하지 않는다.", "조회 결과는 검색·필터 상태에서 결정적으로 파생한다.", "page target에는 overlay shell과 dialog action set을 만들지 않는다."]
     },
     {
       "id": "screen.entity-list",
@@ -294,8 +294,8 @@
       "kind": "screen",
       "placement": "page",
       "source": "src/components/patterns/entity-list-pattern.tsx",
-      "requiredComponents": ["sidebar", "page-top-tab-item", "filter", "search-input", "table", "pagination"],
-      "rules": ["조회 조건, 검색, 목록, 페이지네이션 순서를 유지한다."]
+      "requiredComponents": ["sidebar", "page-top-tab-item", "query-date-range", "group-query", "filter", "quick-query", "search-input", "table", "button"],
+      "rules": ["제목·기간 조회, 그룹화·필터·빠른 조회·검색, 무한 스크롤 목록 순서를 유지한다.", "메인 목록 행의 상세·슬라이드 팝업은 행 더블클릭으로 연다.", "페이지네이션과 팝업 내부용 검색 테이블 외형을 메인 목록에 사용하지 않는다."]
     },
     {
       "id": "screen.master-detail",
@@ -440,6 +440,15 @@
       "source": "src/components/patterns/section-patterns.tsx",
       "requiredComponents": ["filter", "search-input", "table"],
       "rules": ["toolbar와 table의 순서, 중앙 정렬, 단일 scroll 책임을 소유한다."]
+    },
+    {
+      "id": "section.page-query-table",
+      "name": "메인 목록 조회 도구·무한 스크롤 표",
+      "kind": "section-pattern",
+      "placement": "page",
+      "source": "src/components/patterns/entity-list-pattern.tsx",
+      "requiredComponents": ["query-date-range", "group-query", "filter", "quick-query", "search-input", "table"],
+      "rules": ["제목·기간 조회와 그룹화·필터·빠른 조회·검색을 두 줄의 페이지 조회 영역으로 구성한다.", "표가 세로 스크롤을 소유하고 페이지네이션은 사용하지 않는다.", "팝업 내부 SearchTableSection의 회색 toolbar·section title 외형을 메인 목록에 사용하지 않는다."]
     },
     {
       "id": "section.editable-row-list",

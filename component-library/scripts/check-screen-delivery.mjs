@@ -169,6 +169,24 @@ try {
     const req = JSON.parse(readFileSync(resolve(root, "tests/fixtures/screen-requests/deterministic-entity-list.json")));
     assert.ok(resolveScreenRequest({ ...req, hostPage: request.hostPage }).quality.issues.some(f => f.code === "request.host-page"));
   });
+  check("엔티티 목록 연결 팝업은 진입 동작과 액션 예외 근거를 계약에서 확정", () => {
+    const entityRequest = { ...request, hostPage: { ...request.hostPage, pagePatternRef: "section.page-query-table" } };
+    assert.ok(resolveScreenRequest(entityRequest).quality.issues.some((f) => f.code === "request.host-entry-behavior"));
+    assert.ok(resolveScreenRequest({ ...entityRequest, hostPage: { ...entityRequest.hostPage, entryBehavior: "explicit-action" } }).quality.issues.some((f) => f.code === "request.host-entry-evidence"));
+    const resolved = resolveScreenRequest({ ...entityRequest, hostPage: { ...entityRequest.hostPage, entryBehavior: "row-double-click" } });
+    assert.equal(resolved.quality.issues.some((f) => f.code.startsWith("request.host-entry")), false);
+    assert.equal(resolved.implementation.hostPagePatternContract.patternId, "section.page-query-table");
+    assert.ok(resolved.implementation.hostPagePatternContract.implementationMarkers.includes("EntityListPattern"));
+  });
+  check("팝업 단독 검수는 선택한 배경 패턴의 진입 동작을 요구하지 않는다", () => {
+    const entityRequest = { ...request, verificationScope: "surface", hostPage: { ...request.hostPage, pagePatternRef: "section.page-query-table" } };
+    const resolved = resolveScreenRequest(entityRequest);
+    assert.equal(resolved.quality.issues.some((f) => f.code.startsWith("request.host-entry")), false);
+  });
+  check("미등록 배경 패턴은 구현 전에 차단한다", () => {
+    const unresolved = resolveScreenRequest({ ...request, hostPage: { ...request.hostPage, pagePatternRef: "section.unknown" } });
+    assert.ok(unresolved.quality.issues.some((f) => f.code === "request.host-page-pattern"));
+  });
   check("배경의 가짜 메뉴/탭·누락 export와 코드 변경 검사", () => {
     const host = readFileSync(resolve(root, request.hostPage.sourcePath), "utf8");
     const hostPath = resolve(directory, "host.tsx");

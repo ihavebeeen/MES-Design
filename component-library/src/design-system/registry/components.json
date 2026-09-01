@@ -300,6 +300,17 @@
       "documentationRoute": "/components/dialog-footer"
     },
     {
+      "id": "main-list-footer-actions",
+      "name": "MainListFooterActions",
+      "category": "system",
+      "source": "src/components/ui/main-list-footer-actions.tsx",
+      "status": "stable",
+      "visibility": "public",
+      "tier": 1,
+      "documentationMode": "registry",
+      "documentationRoute": "/components/main-list-footer-actions"
+    },
+    {
       "id": "divider",
       "name": "Divider",
       "category": "layout",

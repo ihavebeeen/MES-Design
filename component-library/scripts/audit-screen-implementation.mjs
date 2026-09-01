@@ -9,6 +9,22 @@ function finding(severity, code, message) {
   return { severity, code, message };
 }
 
+export function patternContractFindings(patternContract, implementation, { entryBehavior } = {}) {
+  if (!patternContract) return [];
+  const findings = [];
+  for (const marker of patternContract.implementationMarkers ?? []) {
+    if (!implementation.uses.has(marker)) findings.push(finding("blocker", "composition.pattern-marker", `선택한 pattern '${patternContract.patternId}'의 실제 MES JSX/호출 '${marker}'를 찾지 못했습니다.`));
+  }
+  for (const marker of patternContract.forbiddenImplementationMarkers ?? []) {
+    if (implementation.uses.has(marker)) findings.push(finding("blocker", "composition.pattern-forbidden-marker", `선택한 pattern '${patternContract.patternId}'에서 '${marker}' 대체 사용은 허용되지 않습니다.`));
+  }
+  const entryContract = entryBehavior ? patternContract.entryBehaviorContracts?.[entryBehavior] : undefined;
+  for (const prop of entryContract?.requiredComponentProps ?? []) {
+    if (!implementation.componentProps?.has(prop)) findings.push(finding("blocker", "composition.pattern-interaction", `선택한 pattern '${patternContract.patternId}'의 entryBehavior '${entryBehavior}'에는 실제 MES component prop '${prop}' 연결이 필요합니다.`));
+  }
+  return findings;
+}
+
 export function auditScreenImplementation(contract, source, registry = readRegistryBundle(), options = {}) {
   const findings = [];
   for (const message of validateVerificationScope(contract.request)) findings.push(finding("blocker", "request.verification-scope", message));
@@ -17,7 +33,7 @@ export function auditScreenImplementation(contract, source, registry = readRegis
   if (contract.quality?.blockerCount > 0) findings.push(finding("blocker", "contract.blocked", "blocker가 있는 계약은 구현 근거로 사용할 수 없습니다."));
   if (!contract.decisionTrace) findings.push(finding("blocker", "contract.decision-trace", "선택·제외 근거가 없는 계약입니다. screen:resolve를 다시 실행하세요."));
 
-  let implementation = { uses: new Set(), sections: [], actions: new Set(), files: [] };
+  let implementation = { uses: new Set(), componentProps: new Set(), sections: [], actions: new Set(), files: [] };
   try {
     implementation = inspectImplementation(source, registry, options);
     findings.push(...implementation.findings);
@@ -55,9 +71,7 @@ export function auditScreenImplementation(contract, source, registry = readRegis
   }
 
   for (const patternContract of contract.implementation?.patternContracts ?? []) {
-    for (const marker of patternContract.implementationMarkers ?? []) {
-      if (!implementation.uses.has(marker)) findings.push(finding("blocker", "composition.pattern-marker", `pattern '${patternContract.patternId}'의 실제 MES JSX/호출 '${marker}'를 찾지 못했습니다.`));
-    }
+    findings.push(...patternContractFindings(patternContract, implementation));
   }
 
   const actionSetRef = contract.composition?.actionSetRef;
@@ -103,6 +117,9 @@ export function auditScreenFile(contract, sourcePath, options = {}) {
       result.findings.push(...parent.findings);
       if (!parent.exports.has(host?.componentName ?? "SurfacePreviewFrame")) result.findings.push(finding("blocker", "host.entry-export", "배경 페이지/미리보기 틀의 실제 export가 없습니다."));
       for (const asset of missingApplicationChrome(parent, registry)) result.findings.push(finding("blocker", "host.page-chrome", `팝업 배경 페이지에 ${asset} 실제 사용이 필요합니다.`));
+      result.findings.push(...patternContractFindings(contract.implementation?.hostPagePatternContract, parent, {
+        entryBehavior: verificationContext(contract.request).parentIntegration === "included" ? host?.entryBehavior : undefined,
+      }));
     } catch (error) {
       result.findings.push(finding("blocker", "host.invalid", String(error)));
     }

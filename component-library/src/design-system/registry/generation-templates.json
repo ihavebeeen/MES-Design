@@ -148,7 +148,7 @@
       "targetKind": "page",
       "recipeRef": "recipe.page-entity-list",
       "source": "scripts/generate-screen-tsx.mjs",
-      "requiredPatternRefs": ["recipe.page-entity-list", "screen.entity-list", "section.search-table-composition", "selection.enable-actions"],
+      "requiredPatternRefs": ["recipe.page-entity-list", "screen.entity-list", "section.page-query-table", "selection.enable-actions"],
       "supportedSectionKinds": ["search-table"],
       "output": "tsx",
       "overwrite": "forbid"

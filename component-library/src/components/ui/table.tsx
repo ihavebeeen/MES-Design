@@ -246,6 +246,8 @@ export interface TableProps<T> {
   onSelectedIdsChange?: (ids: string[]) => void;
   /** 체크 상태와 독립적인 활성 행 변경. 제공된 경우 행 본문 클릭·Enter·Space로 호출한다. */
   onActiveIdChange?: (id: string) => void;
+  /** 목록 행을 열 때 사용한다. 마우스 더블클릭과 키보드 Enter로 호출하며 단일 클릭 선택과 분리한다. */
+  onRowDoubleClick?: (id: string) => void;
   /** 선택 기능이 없는 조회/요약 표에서는 체크박스 열 전체를 제거한다. */
   selectable?: boolean;
   /** Figma에서 전체선택 체크박스 대신 `선택` 텍스트를 쓰는 표의 헤더 라벨. */
@@ -355,6 +357,7 @@ function DataRow<T>({
   unselectedCheckboxAppearance,
   onToggle,
   onActivate,
+  onOpen,
   masterToggleAreaWidth,
   selectable,
   edgePadding,
@@ -374,6 +377,7 @@ function DataRow<T>({
   unselectedCheckboxAppearance: CheckboxUncheckedAppearance;
   onToggle: (id: string) => void;
   onActivate?: (id: string) => void;
+  onOpen?: (id: string) => void;
   masterToggleAreaWidth: number;
   selectable: boolean;
   edgePadding: number;
@@ -388,16 +392,27 @@ function DataRow<T>({
   const dividerColor = isActive || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
   return (
     <div
-        role={onActivate ? "row" : undefined}
-      tabIndex={onActivate && !row.disabled ? 0 : undefined}
-        aria-selected={onActivate ? isActive : undefined}
+      role={onActivate || onOpen ? "row" : undefined}
+      tabIndex={(onActivate || onOpen) && !row.disabled ? 0 : undefined}
+      aria-selected={onActivate ? isActive : undefined}
       onClick={(event) => {
         if (!onActivate || row.disabled) return;
         if ((event.target as HTMLElement).closest("button, input, [role='checkbox']")) return;
         onActivate(row.id);
       }}
+      onDoubleClick={(event) => {
+        if (!onOpen || row.disabled) return;
+        if ((event.target as HTMLElement).closest("button, input, [role='checkbox']")) return;
+        onOpen(row.id);
+      }}
       onKeyDown={(event) => {
-        if (!onActivate || row.disabled || (event.key !== "Enter" && event.key !== " ")) return;
+        if (row.disabled) return;
+        if (event.key === "Enter" && onOpen) {
+          event.preventDefault();
+          onOpen(row.id);
+          return;
+        }
+        if (!onActivate || event.key !== " ") return;
         event.preventDefault();
         onActivate(row.id);
       }}
@@ -413,7 +428,7 @@ function DataRow<T>({
               ? "bg-mes-primary-20"
             : "bg-white",
         row.disabled && "pointer-events-none",
-        onActivate && !row.disabled && "cursor-pointer"
+        (onActivate || onOpen) && !row.disabled && "cursor-pointer"
       )}
       style={{ paddingInline: edgePadding }}
     >
@@ -646,6 +661,7 @@ function renderGroupNode<T>({
   onToggleGroupSelect,
   onToggleOne,
   onActivate,
+  onOpen,
   levelColors,
   masterToggleAreaWidth,
   selectable,
@@ -670,6 +686,7 @@ function renderGroupNode<T>({
   onToggleGroupSelect: (rowIds: string[], nextChecked: boolean) => void;
   onToggleOne: (id: string) => void;
   onActivate?: (id: string) => void;
+  onOpen?: (id: string) => void;
   levelColors: string[];
   masterToggleAreaWidth: number;
   selectable: boolean;
@@ -724,6 +741,7 @@ function renderGroupNode<T>({
                 onToggleGroupSelect,
                 onToggleOne,
                 onActivate,
+                onOpen,
                 levelColors,
                 masterToggleAreaWidth,
                 selectable,
@@ -751,6 +769,7 @@ function renderGroupNode<T>({
                 unselectedCheckboxAppearance={unselectedCheckboxAppearance}
                 onToggle={onToggleOne}
                 onActivate={onActivate}
+                onOpen={onOpen}
                 masterToggleAreaWidth={masterToggleAreaWidth}
                 selectable={selectable}
                 edgePadding={edgePadding}
@@ -789,6 +808,7 @@ function Table<T>({
   unselectedTextTone = "default",
   onSelectedIdsChange,
   onActiveIdChange,
+  onRowDoubleClick,
   selectable = true,
   selectionHeaderLabel,
   totals,
@@ -958,6 +978,7 @@ function Table<T>({
                 onToggleGroupSelect: toggleGroup,
                 onToggleOne: toggleOne,
                 onActivate: onActiveIdChange,
+                onOpen: onRowDoubleClick,
                 levelColors: groupLevelColors,
                 masterToggleAreaWidth,
                 selectable,
@@ -985,6 +1006,7 @@ function Table<T>({
                 unselectedCheckboxAppearance={unselectedCheckboxAppearance}
                 onToggle={toggleOne}
                 onActivate={onActiveIdChange}
+                onOpen={onRowDoubleClick}
                 masterToggleAreaWidth={masterToggleAreaWidth}
                 selectable={selectable}
                 edgePadding={edgePadding}

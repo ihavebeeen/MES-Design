@@ -73,7 +73,7 @@
           "slot": "body",
           "patternRef": "section.search-table-composition",
           "supportingPatternRefs": ["table.grouped-list"],
-          "componentRefs": ["sidebar", "page-top-tab-item", "date-range-picker", "group-query", "filter", "quick-query", "search-input", "table", "pagination"],
+          "componentRefs": ["sidebar", "page-top-tab-item", "query-date-range", "group-query", "filter", "quick-query", "search-input", "table"],
           "behaviorRefs": ["selection.master-detail"],
           "scrollOwner": "table"
         }

@@ -45,6 +45,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `Table` | `activeId` | `string \| null`, 기본 `undefined` | 체크 상태와 별도로 활성 행을 지정한다. 생략하면 실제 선택 행이 활성 행 배경을 가진다. | 완성 화면 상태 분리용 |
 | `Table` | `activeRowAppearance` | `subtle \| solid`, 기본 `subtle` | 일반 선택 행의 옅은 배경과, 흰 글자·Primary-60으로 표시하는 강한 활성 행을 구분한다. | 공정검사 경향관리, Figma `11751:102729` |
 | `Table` | `onActiveIdChange` | `(id: string) => void`, 기본 `undefined` | 체크 상태를 바꾸지 않고 행 본문 클릭·Enter·Space로 활성 master 행을 변경한다. 입력·체크 컨트롤 클릭은 활성화를 전파하지 않는다. | `selection.master-detail` Behavior |
+| `Table` | `onRowDoubleClick` | `(id: string) => void`, 기본 `undefined` | 메인 목록에서 행 단일 클릭 선택과 레코드 열기를 분리한다. 마우스 더블클릭 또는 키보드 Enter로 해당 행의 상세·슬라이드 팝업을 연다. 행 내부 버튼·입력·체크박스에서는 호출하지 않는다. | MES 메인 목록 → 상세 팝업 진입 규칙 |
 | `Table` | `selectionColor` | `main \| gray \| black`, 기본 `black` | 선택된 체크박스 색을 지정한다. | MES Checkbox 색 variant |
 | `Table` | `unselectedCheckboxAppearance` | `outline \| grayCheck`, 기본 `outline` | 미선택 행을 회색 체크로 표시하는 MES 표 상태를 지원한다. | 일괄작업지시, Figma `20274:73333` |
 | `Table` | `selectionHeaderIndeterminate` | `boolean`, 기본 `true` | 일부 행 선택 시 헤더에 부분선택 표시를 쓸지 결정한다. 회색=미선택 규칙을 쓰는 일괄작업지시는 `false`다. | 일괄작업지시, Figma `20274:73333` |

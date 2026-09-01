@@ -66,6 +66,7 @@ try {
   const request = JSON.parse(readFileSync(fixturePath, "utf8"));
   const catalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "side-slide", limit: 10 } }));
   const expectedTemplates = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/generation-templates.json"), "utf8")).templates;
+  const expectedComponentContracts = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/component-usage-contracts.json"), "utf8")).contracts;
   assert(catalog.counts.generationTemplates === expectedTemplates.length, "MCP 생성 템플릿 개수가 등록 원장과 다릅니다.");
   const expectedSlideIds = expectedTemplates.filter(entry => entry.id.includes("side-slide")).map(entry => entry.id).sort();
   assert(JSON.stringify(catalog.generationTemplates.map(entry => entry.id).sort()) === JSON.stringify(expectedSlideIds), "MCP 조회에서 슬라이드 조합 생성기가 누락됐습니다.");
@@ -75,14 +76,20 @@ try {
     assert(resolved.quality.blockerCount === 0, "MCP가 새 본문 조합을 해석하지 못했습니다: " + slideRequest.requestId);
     assert(resolved.implementation.generationTemplate.id === slideRequest.generation.templateId, "MCP에서 다른 생성기가 선택됐습니다.");
   }
-  assert(catalog.counts.componentUsageContracts === 21, "컴포넌트 사용 계약 개수가 예상과 다릅니다.");
-  assert(catalog.counts.patternContracts === 10, "패턴 계약 개수가 예상과 다릅니다.");
+  assert(catalog.counts.componentUsageContracts === expectedComponentContracts.length, "컴포넌트 사용 계약 개수가 등록 원장과 다릅니다.");
+  assert(catalog.counts.patternContracts === 11, "패턴 계약 개수가 예상과 다릅니다.");
   assert(catalog.counts.screenSpecs === 3, "순서형 ScreenSpec 개수가 예상과 다릅니다.");
   assert(catalog.counts.webGenerationPageArchetypes === 4, "신규 생성용 페이지 문법 수가 예상과 다릅니다.");
   assert(catalog.counts.webGenerationOverlayGrammars === 4, "신규 생성용 팝업 문법 수가 예상과 다릅니다.");
   assert(catalog.counts.webGenerationSectionRecipes === 4, "신규 생성용 섹션 문법 수가 예상과 다릅니다.");
   assert(catalog.componentUsageContracts.some((entry) => entry.componentId === "side-slide-panel" && entry.useWhen.length > 0), "MCP 목록이 컴포넌트 사용 계약 상세를 반환하지 않았습니다.");
+  const listFooterCatalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "main-list-footer-actions", limit: 10 } }));
+  assert(listFooterCatalog.componentUsageContracts.some((entry) => entry.componentId === "main-list-footer-actions" && entry.useWhen.length > 0), "MCP 목록이 메인 리스트 하단 액션 계약을 반환하지 않았습니다.");
   assert(catalog.patternContracts.some((entry) => entry.patternId === "shell.side-slide-panel" && entry.slots.length > 0), "MCP 목록이 패턴 슬롯 계약 상세를 반환하지 않았습니다.");
+  const pageQueryCatalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "section.page-query-table", limit: 10 } }));
+  const pageQueryContract = pageQueryCatalog.patternContracts.find((entry) => entry.patternId === "section.page-query-table");
+  assert(pageQueryContract?.forbiddenImplementationMarkers?.includes("Pagination"), "MCP 목록이 선택 패턴의 금지 대체 계약을 반환하지 않았습니다.");
+  assert(pageQueryContract?.entryBehaviorContracts?.["row-double-click"]?.requiredComponentProps?.includes("Table.onRowDoubleClick"), "MCP 목록이 선택 패턴의 진입 동작 계약을 반환하지 않았습니다.");
   assert(catalog.counts.mobileAssets > 0, "모바일 자산이 MCP 목록에 포함되지 않았습니다.");
   const mobile = structured(await client.callTool({ name: "mes_get_mobile_context", arguments: { category: "screens" } }));
   assert(mobile.screenTypes.main.count === 12, "모바일 메인 화면 유형 수가 예상과 다릅니다.");

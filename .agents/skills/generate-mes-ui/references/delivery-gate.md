@@ -40,7 +40,7 @@ Confirm the requested surface's MES controls/styles/layout, cancellation/X/Escap
 
 | Program-enforced in managed commands | Agent/reviewer responsibility |
 |---|---|
-| Actual JSX/call bindings and exports; shared desktop chrome and selected shell; declared host or neutral preview-frame source and fingerprints; connected-flow requires a host | Choose scope from the user's task; inspect only relevant parent facts; do not narrow scope to evade errors; correct runtime host/trigger/data placement |
+| Actual JSX/call bindings, component-bound props and exports; shared desktop chrome and selected shell; declared host or neutral preview-frame source and fingerprints; connected-flow requires a host; selected target/host pattern contracts enforce their required assets, prohibited substitutes and behavior props | Choose scope and patterns from the user's task; inspect only relevant parent facts; do not narrow scope to evade errors; correct runtime host/trigger/data placement and truthful exception evidence |
 | Raw controls, custom screen CSS, HTML injection and unsupported dynamic rendering fail closed; explicit local boolean asChild API read from source permits false and a single literal-href anchor | Other slot/polymorphic as combinations need scoped checker support/tests, not a skip flag; unsupported does not mean inherently invalid design |
 | Inline layout mechanics, stylesheet-defined tokens, passive roles and tabIndex=-1 allowed | Use actual MES variants for visual states; style/role suitability is not automatically proven |
 | Registered DS internals can use native HTML; local helpers are inspected | Internal DS implementation quality remains covered by existing DS tests |

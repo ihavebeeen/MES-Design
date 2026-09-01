@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-01",
+  "figmaFileKey": "DAHeMHiVwqZCzONVAWbMXb",
+  "dialogFooter": {
+    "documentId": "347:535",
+    "componentSetId": "347:591",
+    "variantId": "347:540",
+    "buttons": [
+      { "label": "닫기", "variant": "fillGray", "color": "#D7DCE5", "size": "160x40" },
+      { "label": "저장", "variant": "fillBlack", "color": "#011327", "size": "160x40" }
+    ]
+  },
+  "mainListFooterActions": {
+    "documentId": "495:103",
+    "componentSetId": "495:107",
+    "variantIds": ["495:111", "495:108", "495:113"],
+    "buttonSize": "160x32",
+    "defaultOrder": ["fillBlack", "fillMain", "fillGray"]
+  },
+  "validation": {
+    "figmaStructure": "pass",
+    "disconnectedInstances": 0,
+    "invisibleStrokes": 0,
+    "eslint": "pass",
+    "playwright": "9 passed"
+  }
+}

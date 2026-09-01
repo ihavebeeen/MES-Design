@@ -77,6 +77,46 @@
       "expectedAssetRefs": ["button", "icon-button"],
       "ruleRefs": ["button"],
       "resolution": "화면 구현에서는 등록 Button 또는 IconButton만 사용하도록 구현 감사 규칙과 연결했다."
+    },
+    {
+      "id": "selection-feedback.popup-list-used-as-main-list",
+      "status": "resolved",
+      "source": "user-review",
+      "problem": "팝업 내부용 검색 테이블의 회색 toolbar와 section title 외형을 메인 목록 화면에 사용했다.",
+      "wrongAssetRefs": ["section.search-table-composition", "search-table-section"],
+      "expectedAssetRefs": ["screen.entity-list", "section.page-query-table"],
+      "ruleRefs": ["filter", "search-input", "table"],
+      "resolution": "메인 목록 전용 section.page-query-table을 선택한 계약에 SearchTableSection 대체 금지를 선언하고, 해당 패턴을 선택한 구현에서만 검사한다."
+    },
+    {
+      "id": "selection-feedback.pagination-used-on-main-list",
+      "status": "resolved",
+      "source": "user-review",
+      "problem": "무한 스크롤을 사용하는 MES 메인 목록에 Pagination을 추가했다.",
+      "wrongAssetRefs": ["pagination"],
+      "expectedAssetRefs": ["table"],
+      "ruleRefs": ["table"],
+      "resolution": "페이지 목록 생성 템플릿에서 pageSize와 Pagination을 제거하고, 선택된 section.page-query-table 계약에 table-owned infinite-scroll과 Pagination 대체 금지를 선언했다."
+    },
+    {
+      "id": "selection-feedback.main-list-query-tools-omitted",
+      "status": "resolved",
+      "source": "user-review",
+      "problem": "메인 목록에서 기간 조회, 그룹화, 필터, 빠른 조회, 검색의 공통 조회 도구 구성을 생략했다.",
+      "wrongAssetRefs": ["omitted.query-date-range", "omitted.group-query", "omitted.filter", "omitted.quick-query", "omitted.search-input"],
+      "expectedAssetRefs": ["query-date-range", "group-query", "filter", "quick-query", "search-input"],
+      "ruleRefs": ["date-range-picker", "group-query", "filter", "quick-query", "search-input"],
+      "resolution": "section.page-query-table 선택 계약에 다섯 조회 자산을 선언하고 생성 결과가 그 계약을 따르는지 검사한다."
+    },
+    {
+      "id": "selection-feedback-row-action-replaced-double-click",
+      "status": "resolved",
+      "source": "user-review",
+      "problem": "메인 목록의 행 더블클릭 팝업 진입을 별도 점검 Button 열로 대체했다.",
+      "wrongAssetRefs": ["button"],
+      "expectedAssetRefs": ["table.onRowDoubleClick"],
+      "ruleRefs": ["table"],
+      "resolution": "Table에 단일 클릭 활성화와 분리된 onRowDoubleClick API를 추가하고, 선택된 host pattern의 row-double-click 계약이 실제 prop 연결을 요구한다."
     }
   ]
 }

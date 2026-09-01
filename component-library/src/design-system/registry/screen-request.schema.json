@@ -99,7 +99,21 @@
         "sourcePath": { "type": "string", "pattern": "^src/(?:[\\w-]+/)*[\\w-]+\\.(?:tsx|jsx)$" },
         "componentName": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" },
         "triggerLabel": { "type": "string", "minLength": 1 },
-        "saveBehavior": { "enum": ["notify-parent", "none"] }
+        "saveBehavior": { "enum": ["notify-parent", "none"] },
+        "pagePatternRef": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Executable host-page grammar. Unlike webContext references, this participates in validation."
+        },
+        "entryBehavior": {
+          "enum": ["row-double-click", "explicit-action"],
+          "description": "How an existing list record opens this popup. Required for connected-flow when the selected page pattern declares entry behavior contracts."
+        },
+        "entryReason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Registered-screen or explicit user-approval evidence required when entryBehavior is explicit-action."
+        }
       }
     },
     "output": {
@@ -166,14 +180,13 @@
     "pageEntityListGeneration": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["templateId", "pageTitle", "navigationLabel", "navigationItemLabel", "tabLabel", "pageSize", "sections"],
+      "required": ["templateId", "pageTitle", "navigationLabel", "navigationItemLabel", "tabLabel", "sections"],
       "properties": {
         "templateId": { "const": "page-entity-list.v1" },
         "pageTitle": { "type": "string", "minLength": 1 },
         "navigationLabel": { "type": "string", "minLength": 1 },
         "navigationItemLabel": { "type": "string", "minLength": 1 },
         "tabLabel": { "type": "string", "minLength": 1 },
-        "pageSize": { "type": "integer", "minimum": 1, "maximum": 100 },
         "sections": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/searchTableSection" } }
       }
     },

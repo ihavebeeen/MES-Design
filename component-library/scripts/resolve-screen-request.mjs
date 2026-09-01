@@ -209,6 +209,22 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const webPageArchetypeMap = new Map(registry.webGenerationContext.pageArchetypes.map((entry) => [entry.id, entry]));
   const webOverlayGrammarMap = new Map(registry.webGenerationContext.overlayGrammars.map((entry) => [entry.id, entry]));
   const webSectionRecipeMap = new Map(registry.webGenerationContext.sectionRecipes.map((entry) => [entry.id, entry]));
+  const hostPagePattern = request?.hostPage?.pagePatternRef ? patternMap.get(request.hostPage.pagePatternRef) : undefined;
+  const hostPagePatternContract = request?.hostPage?.pagePatternRef ? patternContractMap.get(request.hostPage.pagePatternRef) : undefined;
+  if (request?.hostPage?.pagePatternRef) {
+    if (!hostPagePattern) issues.push(issue("blocker", "request.host-page-pattern", `hostPage.pagePatternRef '${request.hostPage.pagePatternRef}'는 등록된 실행 패턴이 아닙니다.`, request.hostPage.pagePatternRef));
+    else if (!["page", "section"].includes(hostPagePattern.placement)) issues.push(issue("blocker", "request.host-page-pattern", `hostPage.pagePatternRef '${request.hostPage.pagePatternRef}'는 페이지/섹션 패턴이 아닙니다.`, request.hostPage.pagePatternRef));
+    if (!hostPagePatternContract) issues.push(issue("blocker", "request.host-page-pattern", `hostPage.pagePatternRef '${request.hostPage.pagePatternRef}'의 실행 계약이 없습니다.`, request.hostPage.pagePatternRef));
+    const entryContracts = hostPagePatternContract?.entryBehaviorContracts;
+    const validatesParentEntry = verificationContext(request).parentIntegration === "included";
+    if (validatesParentEntry && entryContracts && Object.keys(entryContracts).length > 0) {
+      if (!request.hostPage.entryBehavior) issues.push(issue("blocker", "request.host-entry-behavior", `선택한 host pattern '${request.hostPage.pagePatternRef}'은 entryBehavior 확정이 필요합니다.`, request.hostPage.pagePatternRef));
+      else if (!entryContracts[request.hostPage.entryBehavior]) issues.push(issue("blocker", "request.host-entry-behavior", `entryBehavior '${request.hostPage.entryBehavior}'는 선택한 host pattern에서 지원하지 않습니다.`, request.hostPage.pagePatternRef));
+      else if (request.hostPage.entryBehavior === "explicit-action" && !request.hostPage.entryReason?.trim()) {
+        issues.push(issue("blocker", "request.host-entry-evidence", "행별 명시 액션 예외는 등록 화면 또는 사용자 승인 근거가 필요합니다.", request.hostPage.pagePatternRef));
+      }
+    }
+  }
   const nearestScreen = request?.target?.nearestScreenId ? screenMap.get(request.target.nearestScreenId) : undefined;
   const nearestScreenSpec = request?.target?.nearestScreenId ? screenSpecMap.get(request.target.nearestScreenId) : undefined;
   const observedPages = request?.target?.nearestScreenId
@@ -382,7 +398,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
 
   const selectionSource = (explicit, structured, fallback) => explicit ? "request" : structured ? "screen-spec" : fallback;
   const decisionTrace = {
-    applicationFrame: { requiredComponents: registry.contextRules.applicationFrame?.requiredComponents ?? [], owner: request?.target?.kind === "page" ? "target-page" : request?.hostPage ? "host-page" : "preview-frame", hostPage: request?.hostPage ?? null, verification: verificationContext(request), reason: "요청한 작업 범위만 검증한다. 팝업 자체 작업은 MES 공통 미리보기 틀에서 확인할 수 있으며, 업무 페이지와의 연동 검증에만 hostPage가 필요하다." },
+    applicationFrame: { requiredComponents: registry.contextRules.applicationFrame?.requiredComponents ?? [], owner: request?.target?.kind === "page" ? "target-page" : request?.hostPage ? "host-page" : "preview-frame", hostPage: request?.hostPage ?? null, hostPagePattern: hostPagePattern ? { selectedId: hostPagePattern.id, reason: "hostPage가 실행할 페이지 패턴을 명시했습니다." } : null, verification: verificationContext(request), reason: "요청한 작업 범위만 검증한다. 팝업 자체 작업은 MES 공통 미리보기 틀에서 확인할 수 있으며, 업무 페이지와의 연동 검증에만 hostPage가 필요하다." },
     webContext: {
       pageArchetype: selectedWebPageArchetype ? { selectedId: selectedWebPageArchetype.id, confidence: selectedWebPageArchetype.confidence, reason: "ScreenRequest가 신규 UI의 page 문법을 명시했습니다." } : null,
       overlayGrammar: selectedWebOverlayGrammar ? { selectedId: selectedWebOverlayGrammar.id, confidence: selectedWebOverlayGrammar.confidence, reason: "ScreenRequest가 신규 UI의 overlay 흐름을 명시했습니다." } : null,
@@ -456,6 +472,16 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     implementation: {
       patterns: resolvedPatterns.map(({ id, name, kind, placement, source, rules }) => ({ id, name, kind, placement, source, rules })),
       patternContracts: resolvedPatterns.map(({ id }) => patternContractMap.get(id)).filter(Boolean),
+      hostPagePattern: hostPagePattern ? {
+        id: hostPagePattern.id,
+        name: hostPagePattern.name,
+        kind: hostPagePattern.kind,
+        placement: hostPagePattern.placement,
+        source: hostPagePattern.source,
+        rules: hostPagePattern.rules,
+        requiredComponents: hostPagePattern.requiredComponents,
+      } : null,
+      hostPagePatternContract: hostPagePatternContract ?? null,
       components: resolvedComponents.map(({ id, name, category, source, status, rules }) => ({ id, name, category, source, status, rules: rules ?? [] })),
       componentUsagePolicy: registry.componentUsagePolicy,
       componentUsageContracts: resolvedComponents.map(({ id }) => componentUsageContractMap.get(id)).filter(Boolean),

@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-01",
+  "figmaFileKey": "DAHeMHiVwqZCzONVAWbMXb",
+  "page": {
+    "id": "9:776",
+    "name": "10 System"
+  },
+  "board": {
+    "id": "9:777",
+    "name": "Category Board / system"
+  },
+  "buildArea": {
+    "id": "9:812",
+    "width": 1344,
+    "height": 1898,
+    "primaryAxisSizingMode": "AUTO"
+  },
+  "movedDocuments": [
+    {
+      "id": "347:535",
+      "name": "Component Doc / DialogFooter",
+      "previousParent": "9:587",
+      "width": 1296,
+      "height": 621
+    },
+    {
+      "id": "355:374",
+      "name": "Component Doc / FilterTag",
+      "previousParent": "9:274",
+      "width": 1296,
+      "height": 461
+    },
+    {
+      "id": "356:685",
+      "name": "Component Doc / InspectionJudgement",
+      "previousParent": "9:274",
+      "width": 1296,
+      "height": 689
+    }
+  ],
+  "validation": {
+    "documentsVisible": 3,
+    "disconnectedInstances": 0,
+    "invisibleStrokes": 0,
+    "visualInspection": "pass"
+  }
+}

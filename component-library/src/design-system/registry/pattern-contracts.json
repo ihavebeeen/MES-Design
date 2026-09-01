@@ -92,6 +92,33 @@
       "implementationMarkers": ["SearchTableSection", "SearchInput", "Table"]
     },
     {
+      "patternId": "section.page-query-table",
+      "slots": [
+        { "id": "period-query", "required": true, "accepts": ["date-range-picker", "query-action"] },
+        { "id": "query-toolbar", "required": true, "accepts": ["group-query", "filter", "quick-query", "search"] },
+        { "id": "table", "required": true, "accepts": ["table-model"] }
+      ],
+      "stateModel": ["idle", "querying", "empty", "selected", "editing"],
+      "behaviorTargets": ["query.change", "table.selection", "table.active-row", "table.row-open", "table.inline-edit"],
+      "scrollOwner": "table",
+      "allowedActionSets": [],
+      "useWhen": ["MES 전체 페이지에서 업무 엔티티를 조건 조회하고 표에서 후속 작업으로 진입"],
+      "doNotUseWhen": ["중앙 모달·슬라이드 팝업 내부의 검색 목록", "페이지네이션 기반 목록"],
+      "constraints": ["페이지 조회 도구는 회색 section toolbar 안에 넣지 않는다.", "table이 세로 무한 스크롤을 소유한다.", "상세·슬라이드 팝업 진입은 행 더블클릭과 키보드 Enter를 사용한다."],
+      "evidence": ["grouped-production-list", "production-result-responsive"],
+      "goldenScreenIds": ["grouped-production-list", "production-result-responsive"],
+      "implementationMarkers": ["EntityListPattern", "QueryDateRange", "GroupQuery", "Filter", "QuickQuery", "SearchInput", "Table"],
+      "forbiddenImplementationMarkers": ["SearchTableSection", "Pagination"],
+      "entryBehaviorContracts": {
+        "row-double-click": {
+          "requiredComponentProps": ["Table.onRowDoubleClick"]
+        },
+        "explicit-action": {
+          "requiredComponentProps": []
+        }
+      }
+    },
+    {
       "patternId": "section.editable-row-list",
       "slots": [
         { "id": "entry-editor", "required": false, "accepts": ["form-grid"] },

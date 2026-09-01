@@ -6,7 +6,7 @@
 
 For center/slide/confirmation popup-only work, host knowledge is optional. Without it, the managed wrapper uses `SurfacePreviewFrame`: existing MES navigation/tabs, a scope notice and reopen action, no invented business list/records. This is preview infrastructure, not a new business pattern. Actual popup assets, styles, layout and interactions still need inspection before delivery. The result records parent integration as out-of-scope. No real backend persistence is supplied or implied.
 
-`connected-flow` requires `hostPage`: `sourcePath` (local `src/...tsx`), `componentName` (actual export), `triggerLabel`, `saveBehavior` (`notify-parent` or explicitly `none`). Use the intended page or a scoped MES adapter. It accepts `overlayActions: ReactNode`, `saveVersion: number`, `savedData: unknown`; place the action/data at their real locations. The wrapper keeps it mounted, blocks background interaction and returns focus on close. The popup accepts `open`, `onOpenChange`, and `onSave` when requested; emit success only after successful validation/save. Inspect only the relevant connection, not all details of the parent page. Missing necessary connection facts block that integration scope, not unrelated popup-only work. An explicitly supplied broken host is not silently discarded: it is rendered and must pass inspection even in surface mode. Tests' `ApplicationHostFixture` is not business evidence. Regenerate/review old wrappers only for the current task; preserve unrelated previews.
+`connected-flow` requires `hostPage`: `sourcePath` (local `src/...tsx`), `componentName` (actual export), `triggerLabel`, `saveBehavior` (`notify-parent` or explicitly `none`). When the executable host uses `section.page-query-table`, set `pagePatternRef` to that ID and `entryBehavior` to `row-double-click` or the registered/user-approved `explicit-action`; the latter needs `entryReason`. Do not infer enforcement from the reference-only `webContext`. Use the intended page or a scoped MES adapter. It accepts `overlayActions: ReactNode`, `saveVersion: number`, `savedData: unknown`; place the action/data at their real locations. The wrapper keeps it mounted, blocks background interaction and returns focus on close. The popup accepts `open`, `onOpenChange`, and `onSave` when requested; emit success only after successful validation/save. Inspect only the relevant connection, not all details of the parent page. Missing necessary connection facts block that integration scope, not unrelated popup-only work. An explicitly supplied broken host is not silently discarded: it is rendered and must pass inspection even in surface mode. Tests' `ApplicationHostFixture` is not business evidence. Regenerate/review old wrappers only for the current task; preserve unrelated previews.
 
 ## Slide body composition and independent list behavior
 
@@ -58,16 +58,16 @@ The single `generation.section` defines the section ID, heading, filters, column
 
 ## `page-entity-list.v1`
 
-Use for a desktop entity-list page with page chrome, filter/search controls, one data table, selection, and pagination. It generates `EntityListPattern`, registered navigation/chrome components, the search-table composition, and pagination.
+Use for a desktop entity-list page with page chrome, period query, grouping, filter, quick query, search and one table-owned infinite-scroll data area. It generates `EntityListPattern` and the registered navigation/query/table components. It never uses the popup-only `SearchTableSection` surface or `Pagination`.
 
 Required pattern refs:
 
 - `recipe.page-entity-list`
 - `screen.entity-list`
-- `section.search-table-composition`
+- `section.page-query-table`
 - `selection.enable-actions`
 
-This template is currently `provisional`, not stable. It is deterministic and audit-blocker free, but `Pagination` and the exact original-page evidence still require stabilization; arbitrary-pixel review warnings are therefore retained instead of being hidden. See `component-library/tests/fixtures/screen-requests/deterministic-entity-list.json`.
+This template is currently `provisional`, not stable. It is deterministic and audit-blocker free; exact original-page evidence remains a separate reproduction concern. A connected popup host declares its entry behavior explicitly. For the standard entity list, row single-click selects/activates and actual `Table.onRowDoubleClick` (keyboard Enter equivalent) opens the row. See `component-library/tests/fixtures/screen-requests/deterministic-entity-list.json`.
 
 For all templates, section order comes from the resolved structured ScreenSpec. Do not hand-edit generated TSX to reorder sections; update the request, resolve it again, and regenerate.
 

@@ -43,17 +43,18 @@
         "SectionHeader",
         "SectionFrame",
         "DialogFooter",
+        "MainListFooterActions",
         "CenterModal",
         "SideSlidePanel",
         "ConfirmDialog",
         "RadioChoiceDialog"
       ],
-      "rule": "현재 사용자 수정본의 fillMain/fillBlack 등 버튼 종류·색상·위계와 팝업 하단40px를 유지한다. 이전 코드의 기본값보다 최신 사용자 수정이 우선이다. Button small32px는 전역 축소하지 않는다."
+      "rule": "현재 사용자 수정본의 버튼 종류·색상·위계를 유지한다. DialogFooter는 40px, MainListFooterActions는 32px이며 서로 대체하지 않는다. 이전 코드의 기본값보다 최신 사용자 수정이 우선이다."
     },
     {
       "id": "dialog-footer-user-design",
-      "assetIds": ["DialogFooter", "CenterModal", "SideSlidePanel", "RadioChoiceDialog"],
-      "rule": "2026-08-31 사용자 확정본: DialogFooter Action1=fillBlack, Action2=fillMain, Action3=fillGray 순서. 관련 모달·패널·선택 팝업 16곳의 확인 버튼은 fillMain. 취소/저장/다음 등 사용처 문구와 기존 취소 버튼은 유지. Action2/3 교체 속성도 사용자 마스터에 연결한다. 이후 사용자 수정이 있으면 그 현재 값을 우선한다."
+      "assetIds": ["DialogFooter", "MainListFooterActions", "CenterModal", "SideSlidePanel", "RadioChoiceDialog"],
+      "rule": "2026-09-01 사용자 확정본: DialogFooter는 모달 전용 기본 2버튼이며 닫기=fillGray, 저장=fillBlack(gray130), 160x40, gap10이다. MainListFooterActions는 메인 리스트 우하단 전용 1~3개 조합이며 fillBlack/fillMain/fillGray, 160x32, gap10이다. 두 컴포넌트를 합치거나 서로의 크기·색상 규칙을 적용하지 않는다. 특수 모달의 명시적 액션은 호출부 값을 유지한다."
     },
     {
       "id": "source-exceptions",
@@ -326,6 +327,17 @@
       ],
       "figmaNodeIds": [
         "347:535"
+      ]
+    },
+    {
+      "id": "MainListFooterActions",
+      "name": "MainListFooterActions",
+      "kind": "component",
+      "sources": [
+        "component-library/src/components/ui/main-list-footer-actions.tsx"
+      ],
+      "figmaNodeIds": [
+        "495:103"
       ]
     },
     {

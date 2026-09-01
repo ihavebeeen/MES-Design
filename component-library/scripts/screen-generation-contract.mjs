@@ -144,12 +144,11 @@ function validateSearchTableSection(section, path, issues) {
 
 function validateSearchTableTemplate(generation, issues, page) {
   const allowedKeys = page
-    ? new Set(["templateId", "pageTitle", "navigationLabel", "navigationItemLabel", "tabLabel", "pageSize", "sections"])
+    ? new Set(["templateId", "pageTitle", "navigationLabel", "navigationItemLabel", "tabLabel", "sections"])
     : new Set(["templateId", "modalSize", "sections"]);
   checkKnownKeys(generation, allowedKeys, "generation", issues);
   if (page) {
     for (const key of ["pageTitle", "navigationLabel", "navigationItemLabel", "tabLabel"]) if (typeof generation[key] !== "string" || generation[key] === "") issues.push(`generation.${key}가 필요합니다.`);
-    if (!Number.isInteger(generation.pageSize) || generation.pageSize < 1 || generation.pageSize > 100) issues.push("generation.pageSize는 1~100 정수여야 합니다.");
   } else if (!modalSizes.has(generation.modalSize)) issues.push("generation.modalSize 값이 잘못되었습니다.");
   if (!Array.isArray(generation.sections) || generation.sections.length !== 1) issues.push("이 템플릿은 search-table section을 정확히 하나 요구합니다.");
   else validateSearchTableSection(generation.sections[0], "generation.sections[0]", issues);

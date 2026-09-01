@@ -6,6 +6,7 @@ import { Link } from "@/components/ui/link";
 import { SectionHeader } from "@/components/ui/section-header";
 import { SectionFrame } from "@/components/ui/section-frame";
 import { DialogFooter } from "@/components/ui/dialog-footer";
+import { MainListFooterActions } from "@/components/ui/main-list-footer-actions";
 import { CenterModal } from "@/components/ui/center-modal";
 import { SideSlidePanel } from "@/components/ui/side-slide-panel";
 import { RadioChoiceDialog } from "@/components/ui/radio-choice-dialog";
@@ -33,9 +34,11 @@ export default function FigmaComponentDefaultsPage() {
       </SectionFrame>
       <div><Button size="small">일반 32px 버튼</Button></div>
       <div id="footer-cases">
-        {[0, 1, 2, 3, 4].map((count) => (
-          <div key={count} data-testid={`footer-${count}`}>
-            <DialogFooter actions={Array.from({ length: count }, (_, index) => ({ id: String(index), label: `액션 ${index + 1}` }))} />
+        <div data-testid="footer-0"><DialogFooter actions={[]} /></div>
+        <div data-testid="dialog-footer-default"><DialogFooter actions={[{ id: "close", label: "닫기" }, { id: "save", label: "저장" }]} /></div>
+        {[1, 2, 3].map((count) => (
+          <div key={count} data-testid={`list-footer-${count}`}>
+            <MainListFooterActions actions={Array.from({ length: count }, (_, index) => ({ id: String(index), label: `액션 ${index + 1}` }))} />
           </div>
         ))}
         <div data-testid="footer-overrides">

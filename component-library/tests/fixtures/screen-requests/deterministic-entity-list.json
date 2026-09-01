@@ -21,9 +21,9 @@
         "id": "receivingList",
         "title": "입고실적 리스트",
         "slot": "body",
-        "patternRef": "section.search-table-composition",
+        "patternRef": "section.page-query-table",
         "supportingPatternRefs": [],
-        "componentRefs": ["sidebar", "page-top-tab-item", "filter", "search-input", "table", "pagination"],
+        "componentRefs": ["sidebar", "page-top-tab-item", "query-date-range", "group-query", "filter", "quick-query", "search-input", "table"],
         "behaviorRefs": ["selection.enable-actions"],
         "scrollOwner": "table"
       }
@@ -32,7 +32,7 @@
   },
   "requirements": [
     "Navigation과 상단 탭 뒤에 조회 목록을 표시한다.",
-    "검색·필터·페이지 변경이 같은 행 데이터에서 파생된다.",
+    "검색·필터가 같은 행 데이터에서 파생되고 표 자체가 세로 무한 스크롤을 소유한다.",
     "page target에는 modal shell과 dialog footer를 만들지 않는다."
   ],
   "generation": {
@@ -41,7 +41,6 @@
     "navigationLabel": "자재관리",
     "navigationItemLabel": "입고실적",
     "tabLabel": "입고실적",
-    "pageSize": 10,
     "sections": [
       {
         "id": "receivingList",

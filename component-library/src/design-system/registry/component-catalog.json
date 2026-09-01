@@ -6,7 +6,7 @@
       "label": "동작",
       "labelEn": "Actions",
       "description": "저장, 조회, 이동처럼 사용자가 실행하는 명시적 동작",
-      "itemIds": ["button-size", "button-icon", "button-color", "icon-button", "link", "button-group", "toggle-button"]
+      "itemIds": ["button-size", "button-icon", "button-color", "icon-button", "link", "button-group", "toggle-button", "main-list-footer-actions"]
     },
     {
       "id": "form",

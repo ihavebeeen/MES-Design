@@ -516,6 +516,7 @@ for (const entry of generationSelectionFeedback.values()) {
 }
 
 const allowedContractScrollOwners = new Set(["shell-body", "section", "table", "none"]);
+const allowedEntryBehaviors = new Set(["row-double-click", "explicit-action"]);
 for (const contract of patternContracts.values()) {
   if (!patterns.has(contract.patternId)) errors.push(`pattern-contract '${contract.patternId}': 미등록 pattern을 참조합니다.`);
   for (const field of ["slots", "stateModel", "behaviorTargets", "allowedActionSets", "useWhen", "doNotUseWhen", "constraints", "evidence", "goldenScreenIds", "implementationMarkers"]) {
@@ -532,6 +533,30 @@ for (const contract of patternContracts.values()) {
   }
   for (const actionSetId of contract.allowedActionSets ?? []) if (!actionSets.has(actionSetId)) errors.push(`pattern-contract '${contract.patternId}': 미등록 action-set '${actionSetId}'를 참조합니다.`);
   for (const screenId of [...(contract.evidence ?? []), ...(contract.goldenScreenIds ?? [])]) if (!screens.has(screenId)) errors.push(`pattern-contract '${contract.patternId}': 미등록 screen '${screenId}'를 참조합니다.`);
+  if (contract.forbiddenImplementationMarkers !== undefined) {
+    if (!Array.isArray(contract.forbiddenImplementationMarkers)) {
+      errors.push(`pattern-contract '${contract.patternId}': forbiddenImplementationMarkers는 배열이어야 합니다.`);
+    } else {
+      const markers = contract.forbiddenImplementationMarkers;
+      if (markers.some((marker) => typeof marker !== "string" || marker.trim().length === 0) || new Set(markers).size !== markers.length) errors.push(`pattern-contract '${contract.patternId}': forbiddenImplementationMarkers는 중복 없는 비어 있지 않은 문자열이어야 합니다.`);
+      for (const marker of markers) if ((contract.implementationMarkers ?? []).includes(marker)) errors.push(`pattern-contract '${contract.patternId}': '${marker}'를 필수·금지 marker에 동시에 둘 수 없습니다.`);
+    }
+  }
+  if (contract.entryBehaviorContracts !== undefined) {
+    if (!contract.entryBehaviorContracts || typeof contract.entryBehaviorContracts !== "object" || Array.isArray(contract.entryBehaviorContracts)) {
+      errors.push(`pattern-contract '${contract.patternId}': entryBehaviorContracts는 객체여야 합니다.`);
+    } else {
+      for (const [behavior, entryContract] of Object.entries(contract.entryBehaviorContracts)) {
+        if (!allowedEntryBehaviors.has(behavior)) errors.push(`pattern-contract '${contract.patternId}': 알 수 없는 entry behavior '${behavior}'입니다.`);
+        if (!entryContract || typeof entryContract !== "object" || Array.isArray(entryContract) || Object.keys(entryContract).some((key) => key !== "requiredComponentProps")) {
+          errors.push(`pattern-contract '${contract.patternId}/${behavior}': requiredComponentProps만 선언할 수 있습니다.`);
+          continue;
+        }
+        const props = entryContract.requiredComponentProps;
+        if (!Array.isArray(props) || props.some((prop) => typeof prop !== "string" || prop.trim().length === 0) || new Set(props).size !== props.length) errors.push(`pattern-contract '${contract.patternId}/${behavior}': requiredComponentProps는 중복 없는 문자열 배열이어야 합니다.`);
+      }
+    }
+  }
 }
 
 const targetShells = { page: null, "center-modal": "shell.center-modal", "side-slide-panel": "shell.side-slide-panel", "confirm-dialog": "shell.confirm-dialog" };

@@ -50,8 +50,11 @@
       "useWhen": ["업무 엔티티를 조건으로 조회하고 표에서 선택·출력·등록 작업으로 이어질 때"],
       "doNotUseWhen": ["지표와 차트가 주 결과일 때", "설비 상태를 실시간 카드로 감시할 때", "마스터 결과와 상세 결과가 동시에 필요할 때"],
       "regionOrder": ["navigation", "page-tabs", "query-tools", "data-table", "footer-actions"],
-      "patternRefs": ["recipe.page-entity-list", "screen.entity-list", "section.search-table-composition"],
-      "componentRefs": ["sidebar", "page-top-tab-item", "date-range-picker", "group-query", "filter", "quick-query", "search-input", "table", "button"]
+      "patternRefs": ["recipe.page-entity-list", "screen.entity-list", "section.page-query-table"],
+      "componentRefs": ["sidebar", "page-top-tab-item", "query-date-range", "group-query", "filter", "quick-query", "search-input", "table", "button"],
+      "surfaceBoundary": "메인 목록은 페이지 조회 문법을 사용하며 팝업 내부 SearchTableSection 외형을 재사용하지 않는다.",
+      "dataLoading": "table-owned infinite-scroll; pagination 금지",
+      "overlayEntry": "행 단일 클릭은 선택·활성화, 행 더블클릭 또는 키보드 Enter는 해당 행의 상세·슬라이드 팝업 열기"
     },
     {
       "id": "generation.page.analysis-dashboard",

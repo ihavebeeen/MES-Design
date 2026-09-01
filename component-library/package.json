@@ -36,7 +36,7 @@
     "check:screen-delivery": "node scripts/check-screen-delivery.mjs",
     "mcp:start": "node scripts/mes-ui-mcp-server.mjs",
     "mcp:check": "node scripts/check-mes-ui-mcp.mjs",
-    "check:screen-contracts": "node scripts/check-screen-request-fixtures.mjs && npm run check:screen-delivery && node --test scripts/slide-composition.test.mjs && node scripts/sync-slide-composition-examples.mjs",
+    "check:screen-contracts": "node scripts/check-screen-request-fixtures.mjs && node --test scripts/audit-entity-list-grammar.test.mjs && npm run check:screen-delivery && node --test scripts/slide-composition.test.mjs && node scripts/sync-slide-composition-examples.mjs",
     "check:design-system": "npm run check:docs && npm run check:business-knowledge && npm run check:patterns && npm run check:registry && npm run check:assets && npm run check:experimental && npm run check:experimental-decisions && npm run check:design-values && npm run check:composition-inventory && npm run check:tier-coverage && npm run check:web-coverage && npm run check:screen-contracts && npm run mcp:check",
     "test:visual": "playwright test",
     "test:visual:changed": "node scripts/run-affected-visual-tests.mjs",

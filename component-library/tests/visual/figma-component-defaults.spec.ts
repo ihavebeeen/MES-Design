@@ -26,17 +26,30 @@ test("Figma: 제목·액션·외곽 28px, 일반 small 버튼 32px", async ({ pa
   await expect(page.getByTestId("section-frame").getByRole("button")).toHaveCSS("background-color", colors.black);
 });
 
-test("Figma: 푸터 0~3개 기본 조합·크기·간격 및 4번째 호환값", async ({ page }) => {
+test("Figma: 모달 푸터 기본 닫기·저장 조합", async ({ page }) => {
   await expect(page.getByTestId("footer-0")).toBeEmpty();
-  for (const count of [1, 2, 3, 4]) {
-    const footer = page.getByTestId(`footer-${count}`);
+  const footer = page.getByTestId("dialog-footer-default");
+  const buttons = footer.getByRole("button");
+  await expect(buttons).toHaveCount(2);
+  await expect(buttons.nth(0)).toHaveText("닫기");
+  await expect(buttons.nth(0)).toHaveCSS("background-color", colors.gray);
+  await expect(buttons.nth(1)).toHaveText("저장");
+  await expect(buttons.nth(1)).toHaveCSS("background-color", colors.black);
+  for (const button of [buttons.nth(0), buttons.nth(1)]) {
+    await expect(button).toHaveCSS("width", "160px");
+    await expect(button).toHaveCSS("height", "40px");
+  }
+});
+
+test("Figma: 메인 리스트 우하단 액션은 32px 별도 조합", async ({ page }) => {
+  for (const count of [1, 2, 3]) {
+    const footer = page.getByTestId(`list-footer-${count}`);
     const buttons = footer.getByRole("button");
     await expect(buttons).toHaveCount(count);
-    await expect(footer.locator(":scope > div")).toHaveCSS("height", "72px");
     for (let i = 0; i < count; i++) {
-      await expect(buttons.nth(i)).toHaveCSS("background-color", [colors.black, colors.blue, colors.gray, colors.black][i]);
+      await expect(buttons.nth(i)).toHaveCSS("background-color", [colors.black, colors.blue, colors.gray][i]);
       await expect(buttons.nth(i)).toHaveCSS("width", "160px");
-      await expect(buttons.nth(i)).toHaveCSS("height", "40px");
+      await expect(buttons.nth(i)).toHaveCSS("height", "32px");
       await expect(buttons.nth(i)).toHaveCSS("border-radius", "4px");
       if (i > 0) {
         const [previous, current] = await Promise.all([buttons.nth(i - 1).boundingBox(), buttons.nth(i).boundingBox()]);
@@ -57,14 +70,14 @@ test("Figma: 명시적 색상·폭·클릭·비활성은 유지", async ({ page 
   await expect(page.getByTestId("event")).toHaveText("사용자 지정");
 });
 
-for (const [kind, title, label] of [["center", "중앙 모달", "저장"], ["side", "우측 패널", "저장"], ["radio", "선택 모달", "다음"]]) {
-  test(`Figma: ${kind} 확인 파랑·취소 회색 및 동작 유지`, async ({ page }, testInfo) => {
+for (const [kind, title, label] of [["center", "중앙 모달", "저장"], ["side", "우측 패널", "저장"]]) {
+  test(`Figma: ${kind} 저장 gray130·닫기 회색 및 동작 유지`, async ({ page }, testInfo) => {
     await page.getByRole("button", { name: `${kind} 열기`, exact: true }).click();
     const dialog = page.getByRole("dialog", { name: title, exact: true });
     const confirm = dialog.getByRole("button", { name: label, exact: true });
-    const cancel = dialog.getByRole("button", { name: "취소", exact: true });
+    const cancel = dialog.getByRole("button", { name: "닫기", exact: true }).last();
     await page.mouse.move(0, 0);
-    await expect(confirm).toHaveCSS("background-color", colors.blue);
+    await expect(confirm).toHaveCSS("background-color", colors.black);
     await expect(cancel).toHaveCSS("background-color", colors.gray);
     for (const button of [confirm, cancel]) {
       await expect(button).toHaveCSS("width", "160px");
@@ -87,7 +100,7 @@ for (const kind of ["center", "side"]) {
     for (const via of ["close", "escape"]) {
       await page.getByRole("button", { name: `${kind} 열기`, exact: true }).click();
       const dialog = page.getByRole("dialog");
-      if (via === "close") await dialog.getByRole("button", { name: "닫기", exact: true }).click();
+      if (via === "close") await dialog.getByRole("button", { name: "닫기", exact: true }).first().click();
       else await page.keyboard.press("Escape");
       await expect(dialog).toBeHidden();
       await expect(page.getByTestId("event")).toHaveText("취소");

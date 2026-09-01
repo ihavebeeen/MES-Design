@@ -194,15 +194,73 @@ function generateCenterModalSearchTable(contract) {
   return `"use client";\n\n${imports}\n\n${model.source}\n\n${initialDraft}\n\n${props}\n\n${component}\n`;
 }
 
-function generatePageEntityList(contract) {
+function generateMesPageEntityList(contract) {
   const request = contract.request;
   const generation = request.generation;
   const section = generation.sections[0];
   const componentName = request.output.componentName;
   const model = createSearchTableModel(componentName, section);
-  const component = `export function ${componentName}() {\n  const [query, setQuery] = React.useState(\"\");\n  const [filters, setFilters] = React.useState<Record<string, string[]>>({});\n  const [selectedIds, setSelectedIds] = React.useState<string[]>([]);\n  const [page, setPage] = React.useState(1);\n  const [collapsed, setCollapsed] = React.useState(false);\n  const filteredRows = React.useMemo(() => INITIAL_ROWS.filter(({ data }) => matchesSearch(data, query) && matchesFilters(data, filters)), [query, filters]);\n  const totalPages = Math.max(1, Math.ceil(filteredRows.length / ${generation.pageSize}));\n  const pageRows = filteredRows.slice((page - 1) * ${generation.pageSize}, page * ${generation.pageSize});\n  React.useEffect(() => { if (page > totalPages) setPage(totalPages); }, [page, totalPages]);\n\n  return (\n    <EntityListPattern\n      className=\"h-screen w-full\"\n      navigation={\n        <Sidebar\n          collapsed={collapsed}\n          onCollapseClick={() => setCollapsed(value => !value)}\n          items={[{ key: \"current\", label: ${quote(generation.navigationLabel)}, icon: <span aria-hidden=\"true\">•</span>, children: [{ key: \"list\", label: ${quote(generation.navigationItemLabel)} }] }]}\n          expandedKey=\"current\"\n          activeSubKey=\"list\"\n        />\n      }\n      tabs={<PageTopTabItem label=${quote(generation.tabLabel)} active closable={false} />}\n      header={<div className=\"flex h-full items-center border-b border-mes-gray-30 px-5 text-[20px] font-bold text-mes-gray-130\">${generation.pageTitle}</div>}\n      table={\n        <SearchTableSection\n          data-section-id=${quote(section.id)}\n          title=${quote(section.title)}\n          variant=\"page\"\n          className=\"px-5 pt-3\"\n          toolbar={\n            <div className=\"flex h-11 shrink-0 items-center justify-between gap-3 bg-mes-gray-20 px-3\">\n              <Filter categories={FILTER_CATEGORIES} value={filters} onChange={(categoryId, optionIds) => { setFilters((current) => ({ ...current, [categoryId]: optionIds })); setPage(1); }} />\n              <SearchInput value={query} onChange={(value) => { setQuery(value); setPage(1); }} placeholder=${quote(section.searchPlaceholder ?? "검색어를 입력하세요")} size=\"compact\" />\n            </div>\n          }\n          table={<Table columns={COLUMNS} rows={pageRows} selectable={${section.selectable !== false}} selectedIds={selectedIds} onSelectedIdsChange={setSelectedIds} selectionColor=\"black\" unselectedCheckboxAppearance=\"grayCheck\" horizontalScroll={false} />}\n        />\n      }\n      footer={<><span className=\"text-[13px] text-mes-gray-70\">총 {filteredRows.length}건</span><Pagination page={page} totalPages={totalPages} onPageChange={setPage} /></>}\n    />\n  );\n}`;
-  const imports = `import * as React from \"react\";\nimport { Filter } from \"@/components/ui/filter\";\nimport { PageTopTabItem } from \"@/components/ui/page-top-tab-item\";\nimport { Pagination } from \"@/components/ui/pagination\";\nimport { SearchInput } from \"@/components/ui/search-input\";\nimport { Sidebar } from \"@/components/ui/sidebar\";\nimport { Table, type TableColumn, type TableRowData } from \"@/components/ui/table\";\nimport { EntityListPattern } from \"@/components/patterns/entity-list-pattern\";\nimport { SearchTableSection } from \"@/components/patterns/section-patterns\";`;
-  return `"use client";\n\n${imports}\n\n${model.source}\n\n${component}\n`;
+  const groupOptions = `const GROUP_OPTIONS: GroupQueryOption[] = [\n${section.columns.map((column) => `  { id: ${quote(column.key)}, label: ${quote(column.label)} },`).join("\n")}\n];`;
+  const component = `export function ${componentName}() {
+  const [query, setQuery] = React.useState("");
+  const [filters, setFilters] = React.useState<Record<string, string[]>>({});
+  const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+  const [levels, setLevels] = React.useState<(string | null)[]>([null, null, null]);
+  const [quickId, setQuickId] = React.useState<string | null>(null);
+  const [quickSettingsOpen, setQuickSettingsOpen] = React.useState(false);
+  const [quickSlots, setQuickSlots] = React.useState<QuickQuerySlot[]>([
+    { id: "quick-1", name: null }, { id: "quick-2", name: null }, { id: "quick-3", name: null },
+  ]);
+  const [startDate, setStartDate] = React.useState<Date | null>(new Date());
+  const [endDate, setEndDate] = React.useState<Date | null>(new Date());
+  const [collapsed, setCollapsed] = React.useState(false);
+  const filteredRows = React.useMemo(() => INITIAL_ROWS.filter(({ data }) => matchesSearch(data, query) && matchesFilters(data, filters)), [query, filters]);
+
+  return (
+    <>
+      <EntityListPattern
+        className="h-screen w-full"
+        navigation={<Sidebar collapsed={collapsed} onCollapseClick={() => setCollapsed((value) => !value)} items={[{ key: "current", label: ${quote(generation.navigationLabel)}, icon: <span aria-hidden="true">•</span>, children: [{ key: "list", label: ${quote(generation.navigationItemLabel)} }] }]} expandedKey="current" activeSubKey="list" />}
+        tabs={<PageTopTabItem label=${quote(generation.tabLabel)} active closable={false} />}
+        header={
+          <>
+            <div className="flex h-12 items-center border-b border-mes-gray-30 px-5">
+              <h2 className="text-xl font-bold text-mes-gray-130">${generation.pageTitle}</h2>
+              <div className="ml-auto flex items-center gap-2.5">
+                <QueryDateRange start={startDate} end={endDate} onStartChange={setStartDate} onEndChange={setEndDate} />
+                <Button size="small">조회</Button>
+              </div>
+            </div>
+            <div className="flex h-12 items-center gap-2.5 border-b border-mes-gray-30 px-5">
+              <GroupQuery options={GROUP_OPTIONS} levels={levels} onLevelChange={(index, value) => setLevels((current) => current.map((item, itemIndex) => itemIndex === index ? value : item))} />
+              <Filter categories={FILTER_CATEGORIES} value={filters} onChange={(categoryId, optionIds) => setFilters((current) => ({ ...current, [categoryId]: optionIds }))} />
+              <QuickQuery presets={quickSlots.filter((slot) => slot.name).map((slot) => ({ id: slot.id, label: slot.name! }))} activeId={quickId} onApply={setQuickId} onClearActive={() => setQuickId(null)} onSettingsClick={() => setQuickSettingsOpen(true)} className="ml-auto" />
+              <SearchInput value={query} onChange={setQuery} placeholder=${quote(section.searchPlaceholder ?? "검색어를 입력하세요")} size="compact" background="white" />
+            </div>
+          </>
+        }
+        table={<div data-section-id=${quote(section.id)} className="h-full min-h-0 overflow-y-auto"><Table columns={COLUMNS} rows={filteredRows} selectable={${section.selectable !== false}} selectedIds={selectedIds} onSelectedIdsChange={setSelectedIds} selectionColor="black" unselectedCheckboxAppearance="grayCheck" horizontalScroll={false} className="rounded-none border-x-0 border-t-0" /></div>}
+      />
+      <QuickQueryPresetDialog open={quickSettingsOpen} onOpenChange={setQuickSettingsOpen} slots={quickSlots} onDelete={(id) => setQuickSlots((current) => current.map((slot) => slot.id === id ? { ...slot, name: null } : slot))} onSaveSlot={(id, name) => setQuickSlots((current) => current.map((slot) => slot.id === id ? { ...slot, name } : slot))} currentPreview={{ grouping: levels.filter(Boolean).map((level) => GROUP_OPTIONS.find((option) => option.id === level)?.label).filter(Boolean).join(" > ") }} />
+    </>
+  );
+}`;
+  const imports = `import * as React from "react";
+import { Button } from "@/components/ui/button";
+import { Filter } from "@/components/ui/filter";
+import { GroupQuery, type GroupQueryOption } from "@/components/ui/group-query";
+import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
+import { QueryDateRange } from "@/components/ui/query-date-range";
+import { QuickQuery, QuickQueryPresetDialog, type QuickQuerySlot } from "@/components/ui/quick-query";
+import { SearchInput } from "@/components/ui/search-input";
+import { Sidebar } from "@/components/ui/sidebar";
+import { Table, type TableColumn, type TableRowData } from "@/components/ui/table";
+import { EntityListPattern } from "@/components/patterns/entity-list-pattern";`;
+  return `"use client";\n\n${imports}\n\n${model.source}\n\n${groupOptions}\n\n${component}\n`;
+}
+
+function generatePageEntityList(contract) {
+  return generateMesPageEntityList(contract);
 }
 
 export function generateScreenTsx(contract) {

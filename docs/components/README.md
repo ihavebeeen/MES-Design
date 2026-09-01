@@ -1,6 +1,6 @@
 # 컴포넌트 문서
 
-공개 87개, 내부 조립용 2개를 같은 형식으로 기록한다.
+공개 88개, 내부 조립용 2개를 같은 형식으로 기록한다.
 
 상태·Tier·공개 범위는 `components.json`, 신규 UI 선택 규칙은 `component-usage-contracts.json`, API는 실제 구현 파일에서 생성한다. 선택 규칙이 없는 단순 컴포넌트는 API 문서만 유지한다.
 
@@ -119,5 +119,6 @@
 
 - [DialogFooter](./dialog-footer.md) — Tier 1, stable
 - [InspectionJudgement](./inspection-judgement.md) — Tier 3, stable
+- [MainListFooterActions](./main-list-footer-actions.md) — Tier 1, stable
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

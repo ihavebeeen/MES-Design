@@ -272,10 +272,27 @@
       "useWhen": ["중앙 모달이나 우측 패널의 하단 액션", "등록된 action set을 버튼 배열로 렌더링"],
       "doNotUseWhen": ["페이지 상단·본문 로컬 액션", "화면마다 임의 버튼 순서를 구성"],
       "allowedParents": ["shell.center-modal", "shell.side-slide-panel", "shell.confirm-dialog"],
-      "constraints": ["action-set 레지스트리의 라벨·순서·dismiss 의미를 따른다.", "취소와 X는 동일 복원 경로를 사용한다.", "variant 생략 시 첫째 fillBlack·둘째 fillMain·셋째 fillGray를 사용한다. 명시적 variant가 우선하며 기본 버튼은 160×40px·간격10px이다."],
+      "constraints": ["action-set 레지스트리의 라벨·순서·dismiss 의미를 따른다.", "닫기와 X는 동일 복원 경로를 사용한다.", "기본 조합은 닫기 fillGray·저장 fillBlack(gray130)이며 버튼은 160×40px·간격10px이다. 명시적 variant가 우선한다."],
       "accessibility": ["탭 순서는 시각 순서와 일치한다.", "primaryDisabled는 실제 버튼 disabled와 연결한다."],
       "evidence": ["batch-work-order", "receiving", "production-quantity-reregistration"],
-      "alternatives": []
+      "alternatives": [
+        { "componentId": "main-list-footer-actions", "chooseInsteadWhen": "메인 리스트 하단 바의 우측 액션을 구성할 때" }
+      ]
+    },
+    {
+      "componentId": "main-list-footer-actions",
+      "capabilities": ["main-list-actions", "bottom-right-actions"],
+      "variants": ["one", "two", "three"],
+      "requiredStates": ["default", "disabled"],
+      "useWhen": ["메인 리스트 하단 바의 우하단 액션", "32px 버튼 1~3개를 한 묶음으로 배치"],
+      "doNotUseWhen": ["중앙 모달이나 우측 패널의 하단 액션", "본문 내부의 로컬 버튼 묶음"],
+      "allowedParents": ["screen.entity-list", "screen.master-detail"],
+      "constraints": ["버튼은 160×32px·간격10px를 사용한다.", "기본 순서는 fillBlack·fillMain·fillGray이며 화면별 명시적 variant가 우선한다."],
+      "accessibility": ["탭 순서는 시각 순서와 일치한다.", "버튼 라벨은 실행 결과를 명시한다."],
+      "evidence": ["sales-transaction-statement"],
+      "alternatives": [
+        { "componentId": "dialog-footer", "chooseInsteadWhen": "모달 또는 우측 패널 하단의 40px 닫기·저장 액션일 때" }
+      ]
     },
     {
       "componentId": "quick-query",

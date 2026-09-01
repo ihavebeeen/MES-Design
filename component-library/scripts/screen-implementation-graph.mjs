@@ -106,6 +106,7 @@ function inspectModule(path, source, approved, root) {
   const checker = program.getTypeChecker();
   const findings = [];
   const uses = new Set();
+  const componentProps = new Set();
   const sections = [];
   const actions = new Set();
   const imports = [];
@@ -162,6 +163,16 @@ function inspectModule(path, source, approved, root) {
         if (!ts.isJsxAttribute(attribute)) { if (lower) add("native.spread", "원시 요소에 spread로 상호작용/스타일을 주입할 수 없습니다."); continue; }
         const name = attribute.name.getText(file);
         const value = attribute.initializer;
+        if (actual) {
+          const expression = value && ts.isJsxExpression(value) ? value.expression : null;
+          const emptyHandler = expression && ts.isArrowFunction(expression)
+            && ((ts.isBlock(expression.body) && expression.body.statements.length === 0) || expression.body.getText(file) === "undefined");
+          // Record a prop only when it is attached to an actual approved JSX binding.
+          // Event props additionally need a concrete, non-empty expression. This keeps
+          // comments, strings, unused imports and bare boolean props from becoming
+          // interaction evidence.
+          if (!/^on[A-Z]/.test(name) || (expression && !emptyHandler)) componentProps.add(`${actual.name}.${name}`);
+        }
         if (name === "data-section-id" && value && ts.isStringLiteral(value)) sections.push({ id: value.text, position: node.pos });
         if (name === "dangerouslySetInnerHTML" || name === "as") add("source.render-override", `${name}의 실제 렌더링을 지원 검사로 확인해야 합니다.`);
         if (name === "asChild") {
@@ -199,7 +210,7 @@ function inspectModule(path, source, approved, root) {
   visit(file);
   const fileSymbol = checker.getSymbolAtLocation(file);
   const exports = new Set((fileSymbol ? checker.getExportsOfModule(fileSymbol) : []).filter((s) => s.flags & (ts.SymbolFlags.Value | ts.SymbolFlags.Alias)).map((s) => s.name));
-  return { findings, uses, sections, actions, imports, exports };
+  return { findings, uses, componentProps, sections, actions, imports, exports };
 }
 
 export function inspectImplementation(source, registry, { sourcePath = resolve(implementationRoot, "src/generated-previews/__audit__.tsx"), projectRoot = implementationRoot } = {}) {
@@ -220,6 +231,7 @@ export function inspectImplementation(source, registry, { sourcePath = resolve(i
   walk(resolve(sourcePath), source);
   const records = [...modules.values()];
   return { exports: records[0]?.exports ?? new Set(), findings: records.flatMap((r) => r.findings), uses: new Set(records.flatMap((r) => [...r.uses])),
+    componentProps: new Set(records.flatMap((r) => [...r.componentProps])),
     sections: records.flatMap((r) => r.sections), actions: new Set(records.flatMap((r) => [...r.actions])), files: [...files].sort(([a], [b]) => a.localeCompare(b)) };
 }
 

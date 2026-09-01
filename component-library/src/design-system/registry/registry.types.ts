@@ -143,6 +143,10 @@ export interface PatternUsageContractEntry {
   evidence: string[];
   goldenScreenIds: string[];
   implementationMarkers: string[];
+  forbiddenImplementationMarkers?: string[];
+  entryBehaviorContracts?: Partial<Record<"row-double-click" | "explicit-action", {
+    requiredComponentProps: string[];
+  }>>;
 }
 
 export interface PatternUsageContractRegistry {
@@ -473,6 +477,9 @@ export interface ScreenRequest {
     componentName: string;
     triggerLabel: string;
     saveBehavior: "notify-parent" | "none";
+    pagePatternRef?: string;
+    entryBehavior?: "row-double-click" | "explicit-action";
+    entryReason?: string;
   };
   target: {
     kind: ScreenTargetKind;
@@ -522,7 +529,6 @@ export interface ScreenRequest {
         navigationLabel: string;
         navigationItemLabel: string;
         tabLabel: string;
-        pageSize: number;
         sections: [ScreenTemplateSearchTableSection];
       };
   output: {

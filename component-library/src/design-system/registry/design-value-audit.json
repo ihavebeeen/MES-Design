@@ -7,18 +7,18 @@
     "evidence": "exact-* 및 원본 재현 화면"
   },
   "summary": {
-    "scannedFiles": 133,
-    "totalOccurrences": 3657,
-    "arbitraryUtilities": 1297,
+    "scannedFiles": 134,
+    "totalOccurrences": 3659,
+    "arbitraryUtilities": 1298,
     "hardcodedColors": 68,
     "reviewCandidates": 0,
     "unregisteredCandidates": 0
   },
   "layers": {
     "canonical": {
-      "files": 86,
-      "occurrences": 1254,
-      "arbitraryUtilities": 426,
+      "files": 87,
+      "occurrences": 1256,
+      "arbitraryUtilities": 427,
       "hardcodedColors": 21
     },
     "pattern": {
@@ -118,10 +118,10 @@
       },
       {
         "value": "10px",
-        "count": 132,
+        "count": 133,
         "arbitraryCount": 67,
         "layers": {
-          "canonical": 40,
+          "canonical": 41,
           "pattern": 69,
           "evidence": 23
         },
@@ -192,7 +192,7 @@
           "src/components/ui/file-upload.tsx:44",
           "src/components/ui/inspection-judgement.tsx:37",
           "src/components/ui/slider.tsx:41",
-          "src/components/ui/table.tsx:918",
+          "src/components/ui/table.tsx:938",
           "src/components/ui/timeline.tsx:12"
         ]
       },
@@ -1032,11 +1032,11 @@
           "src/components/ui/before-after-comparison.tsx:34",
           "src/components/ui/before-after-comparison.tsx:41",
           "src/components/ui/before-after-comparison.tsx:43",
-          "src/components/ui/table.tsx:458",
-          "src/components/ui/table.tsx:863",
-          "src/components/ui/table.tsx:927",
-          "src/components/ui/table.tsx:930",
-          "src/components/ui/table.tsx:935"
+          "src/components/ui/table.tsx:473",
+          "src/components/ui/table.tsx:883",
+          "src/components/ui/table.tsx:947",
+          "src/components/ui/table.tsx:950",
+          "src/components/ui/table.tsx:955"
         ]
       },
       {
@@ -1223,10 +1223,10 @@
       },
       {
         "value": "160px",
-        "count": 34,
-        "arbitraryCount": 16,
+        "count": 35,
+        "arbitraryCount": 17,
         "layers": {
-          "canonical": 7,
+          "canonical": 8,
           "pattern": 21,
           "evidence": 6
         },
@@ -1234,11 +1234,11 @@
           "src/components/ui/dialog-footer.tsx:40",
           "src/components/ui/group-query.tsx:157",
           "src/components/ui/logo.tsx:21",
+          "src/components/ui/main-list-footer-actions.tsx:37",
           "src/components/ui/quick-query.tsx:405",
           "src/components/ui/quick-query.tsx:408",
           "src/components/ui/radio-choice-dialog.tsx:179",
-          "src/components/ui/radio-choice-dialog.tsx:187",
-          "src/components/patterns/completed-application-patterns.tsx:111"
+          "src/components/ui/radio-choice-dialog.tsx:187"
         ]
       },
       {
@@ -1472,7 +1472,7 @@
           "src/components/ui/sidebar.tsx:273",
           "src/components/ui/sidebar.tsx:305",
           "src/components/ui/sidebar.tsx:361",
-          "src/components/ui/table.tsx:927",
+          "src/components/ui/table.tsx:947",
           "src/components/patterns/analytics-dashboard-pattern.tsx:47",
           "src/components/patterns/business-operation-settings-pattern.tsx:404"
         ]
@@ -1802,7 +1802,7 @@
         "examples": [
           "src/components/ui/image-thumbnail.tsx:59",
           "src/components/ui/sidebar.tsx:231",
-          "src/components/ui/table.tsx:850",
+          "src/components/ui/table.tsx:870",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:127",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:131",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:140",
@@ -2547,7 +2547,7 @@
         },
         "examples": [
           "src/components/ui/progress.tsx:48",
-          "src/components/ui/table.tsx:440"
+          "src/components/ui/table.tsx:455"
         ]
       },
       {
@@ -3976,7 +3976,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/ui/table.tsx:261",
+          "src/components/ui/table.tsx:263",
           "src/components/patterns/exact-production-result-screen.tsx:111"
         ]
       },
@@ -4113,7 +4113,7 @@
           "canonical": 1
         },
         "examples": [
-          "src/components/ui/table.tsx:261"
+          "src/components/ui/table.tsx:263"
         ]
       },
       {
@@ -4146,7 +4146,7 @@
           "canonical": 1
         },
         "examples": [
-          "src/components/ui/table.tsx:261"
+          "src/components/ui/table.tsx:263"
         ]
       },
       {
@@ -4352,5 +4352,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "ba8c8708be482dec"
+  "fingerprint": "097de05cbfb0b83d"
 }

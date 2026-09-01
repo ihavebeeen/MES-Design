@@ -84,7 +84,7 @@ function SideSlidePanel({
   onOpenChange,
   title,
   children,
-  cancelLabel = "취소",
+  cancelLabel = "닫기",
   onCancel,
   confirmLabel = "저장",
   onConfirm,
@@ -109,7 +109,7 @@ function SideSlidePanel({
 
   const baseActions: DialogAction[] = actions ?? [
     { id: "cancel", label: cancelLabel, variant: "fillGray", onClick: dismiss },
-    { id: "confirm", label: confirmLabel, variant: "fillMain", onClick: onConfirm },
+    { id: "confirm", label: confirmLabel, variant: "fillBlack", onClick: onConfirm },
   ];
   const resolvedActions = baseActions.map((action) => action.id === "cancel"
     ? { ...action, onClick: dismiss }
