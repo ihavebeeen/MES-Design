@@ -25,6 +25,10 @@ Business information in `business-knowledge.json` and cross-surface usage in `us
 
 For new UI and structural changes, read `component-library/src/design-system/registry/screen-intake-policy.json` before choosing these fields. The policy is a conditional question bank, not a screen-type classifier. Read known answers first; clarify only facts that materially affect the composition. Preserve confirmed facts in `requirements`, and sources/assumptions/conflicts in `evidence.notes`. Do not add unrecognized fields to ScreenRequest. These fields are retained by the resolver, but translating the answers into structure, interactions, and rendering remains the generating agent's responsibility.
 
+After the whole-screen composition is understood but before the final request is written, run the semantic asset matcher. `mes_match_screen_assets` (or `npm run screen:match-assets`) compares a concise element inventory with `component-usage-contracts.json` by capability and actual parent chain. It returns exact, compatible and manually declared candidates without choosing one. The inventory covers meaningful reusable or behavioral elements; it is not a DOM inventory and does not replace hierarchy/layout decisions.
+
+The final ScreenRequest may preserve adopted results in `assetDecisions`. `selectedComponentRef` must also appear through the actual structured section `componentRefs` or selected pattern requirements; the resolver reports a disconnected record. Unreviewed categories and candidate suggestions are informational. Semantic mismatch, parent mismatch, a premature new-asset proposal, or an assumed business behavior being turned into a selected UI are warnings that may be corrected or explicitly accepted. Only malformed matching input is a blocker. This keeps the stage useful without turning one component contract into a universal layout rule.
+
 Choose in this order:
 
 1. `intent`: reproduce, new, normalize, or audit.

@@ -23,6 +23,7 @@ const expectedTools = [
   "mes_get_web_generation_context",
   "mes_handoff_screen",
   "mes_list_design_system",
+  "mes_match_screen_assets",
   "mes_resolve_screen",
 ];
 const expectedSourceFingerprint = "cbf73874ac6cf26241cda1a23f0300796e79342552f5b4843162548e33180fb3";
@@ -85,6 +86,18 @@ try {
   assert(catalog.componentUsageContracts.some((entry) => entry.componentId === "side-slide-panel" && entry.useWhen.length > 0), "MCP 목록이 컴포넌트 사용 계약 상세를 반환하지 않았습니다.");
   const listFooterCatalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "main-list-footer-actions", limit: 10 } }));
   assert(listFooterCatalog.componentUsageContracts.some((entry) => entry.componentId === "main-list-footer-actions" && entry.useWhen.length > 0), "MCP 목록이 메인 리스트 하단 액션 계약을 반환하지 않았습니다.");
+  const assetMatch = structured(await client.callTool({ name: "mes_match_screen_assets", arguments: {
+    schemaVersion: 1,
+    targetKind: "page",
+    notApplicableCategories: ["overlay-behavior"],
+    elements: [
+      { id: "riskStatus", label: "위험상태", category: "status-feedback", capability: "status-display", parentRefs: ["section.search-table-composition"], basis: "confirmed", impact: "presentation", decision: "deferred" },
+      { id: "footerActions", label: "메인 리스트 하단 액션", category: "actions", capability: "main-list-actions", parentRefs: ["screen.entity-list"], basis: "supported", impact: "business-behavior", decision: "selected", selectedComponentRef: "main-list-footer-actions" },
+    ],
+  } }));
+  assert(assetMatch.policy.automaticSelection === false, "MCP 의미 자산 매칭이 후보를 자동 선택하면 안 됩니다.");
+  assert(assetMatch.elements.find((entry) => entry.id === "riskStatus")?.recommendation?.componentRef === "badge", "상태 표시의 Badge 후보를 찾지 못했습니다.");
+  assert(assetMatch.elements.find((entry) => entry.id === "footerActions")?.selectedMatch === "exact", "메인 리스트 하단 액션의 parent 맥락 매칭이 잘못되었습니다.");
   assert(catalog.patternContracts.some((entry) => entry.patternId === "shell.side-slide-panel" && entry.slots.length > 0), "MCP 목록이 패턴 슬롯 계약 상세를 반환하지 않았습니다.");
   const pageQueryCatalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "section.page-query-table", limit: 10 } }));
   const pageQueryContract = pageQueryCatalog.patternContracts.find((entry) => entry.patternId === "section.page-query-table");

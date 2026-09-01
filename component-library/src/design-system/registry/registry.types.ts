@@ -406,6 +406,10 @@ export interface WebGenerationContextRegistry {
 export type ScreenRequestIntent = "reproduce" | "new" | "normalize" | "audit";
 export type ScreenTargetKind = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
 export type NormalizationClassification = "source-error" | "implementation-error" | "intentional-exception" | "normalization-candidate";
+export type SemanticAssetCategory = "application-frame" | "navigation-query" | "content-structure" | "data-display" | "status-feedback" | "input-selection" | "actions" | "overlay-behavior";
+export type SemanticAssetBasis = "confirmed" | "supported" | "assumed" | "unresolved";
+export type SemanticAssetImpact = "presentation" | "business-behavior";
+export type SemanticAssetDecision = "selected" | "deferred" | "not-applicable" | "propose-new";
 export type ScreenTemplateControl = "input" | "select";
 export type ScreenGenerationTemplateId = import("../slide-composition").SlideCompositionTemplateId | "side-slide-form-editable-list.v1" | "center-modal-search-table.v1" | "page-entity-list.v1";
 
@@ -496,6 +500,23 @@ export interface ScreenRequest {
     pageArchetypeRef?: string;
     overlayGrammarRef?: string;
     sectionRecipeRefs?: string[];
+  };
+  assetDecisions?: {
+    schemaVersion: 1;
+    notApplicableCategories?: SemanticAssetCategory[];
+    elements: Array<{
+      id: string;
+      label: string;
+      category: SemanticAssetCategory;
+      capability: string;
+      parentRefs: string[];
+      basis: SemanticAssetBasis;
+      impact: SemanticAssetImpact;
+      decision: SemanticAssetDecision;
+      selectedComponentRef?: string;
+      candidateComponentRefs?: string[];
+      reason?: string;
+    }>;
   };
   composition: {
     recipeRefs?: string[];

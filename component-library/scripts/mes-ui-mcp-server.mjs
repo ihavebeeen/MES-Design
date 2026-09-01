@@ -10,12 +10,32 @@ import { generateScreenTsx, generatedSourceFingerprint } from "./generate-screen
 import { readRegistryBundle, resolveScreenRequest } from "./resolve-screen-request.mjs";
 import { recordScreenReview, verifyScreenHandoff } from "./screen-handoff.mjs";
 import { getScreenReferences } from "./screen-reference-context.mjs";
+import { reviewScreenAssetSelection, SEMANTIC_ASSET_CATEGORIES } from "./screen-asset-selection.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
 const requestSchema = z.record(z.string(), z.unknown()).describe("screen-request.schema.json을 따르는 ScreenRequest 객체");
 const sourcePathSchema = z.string().min(1).describe("component-library 기준 src/ 아래의 상대 TSX/JSX 경로");
 const previewSourcePathSchema = sourcePathSchema.optional().describe("생략하면 src/generated-previews/<request-id>.tsx를 사용합니다.");
+const semanticAssetElementSchema = z.object({
+  id: z.string().regex(/^[a-z][A-Za-z0-9.-]*$/),
+  label: z.string().min(1),
+  category: z.enum(SEMANTIC_ASSET_CATEGORIES),
+  capability: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  parentRefs: z.array(z.string().min(1)),
+  basis: z.enum(["confirmed", "supported", "assumed", "unresolved"]),
+  impact: z.enum(["presentation", "business-behavior"]),
+  decision: z.enum(["selected", "deferred", "not-applicable", "propose-new"]),
+  selectedComponentRef: z.string().min(1).optional(),
+  candidateComponentRefs: z.array(z.string().min(1)).optional(),
+  reason: z.string().min(1).optional(),
+}).strict();
+const semanticAssetDraftSchema = z.object({
+  schemaVersion: z.literal(1),
+  targetKind: z.enum(["page", "center-modal", "side-slide-panel", "confirm-dialog"]),
+  notApplicableCategories: z.array(z.enum(SEMANTIC_ASSET_CATEGORIES)).optional(),
+  elements: z.array(semanticAssetElementSchema),
+}).strict();
 
 function toolResult(summary, data) {
   return {
@@ -290,6 +310,23 @@ export function createMesUiMcpServer() {
         ...selected,
         sourceFindings: assets.sourceFindings,
       });
+    }),
+  );
+
+  server.registerTool(
+    "mes_match_screen_assets",
+    {
+      title: "MES 화면 의미 자산 매칭",
+      description: "ScreenRequest 확정 전에 화면의 의미 요소를 MES component capability와 parent 맥락에 대조합니다. 후보와 불확실성을 반환하며 자동 선택하거나 미검토 범주만으로 생성을 차단하지 않습니다.",
+      inputSchema: semanticAssetDraftSchema,
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    safeTool(async (draft) => {
+      const result = reviewScreenAssetSelection(draft, readRegistryBundle());
+      return {
+        ...toolResult(`의미 자산 매칭 ${result.status} · 자동 선택 없음`, result),
+        isError: result.blockerCount > 0,
+      };
     }),
   );
 

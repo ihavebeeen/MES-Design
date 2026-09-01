@@ -54,6 +54,7 @@
         }
       }
     },
+    "assetDecisions": { "$ref": "#/$defs/assetDecisions" },
     "composition": {
       "type": "object",
       "additionalProperties": false,
@@ -127,6 +128,52 @@
     }
   },
   "$defs": {
+    "assetDecisions": {
+      "type": "object",
+      "description": "ScreenRequest 확정 전에 검토한 의미 요소와 채택 결정을 보존한다. 후보 추천은 자동 선택이나 생성 차단이 아니다.",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "elements"],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "notApplicableCategories": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/semanticAssetCategory" },
+          "uniqueItems": true
+        },
+        "elements": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/semanticAssetElement" }
+        }
+      }
+    },
+    "semanticAssetCategory": {
+      "enum": ["application-frame", "navigation-query", "content-structure", "data-display", "status-feedback", "input-selection", "actions", "overlay-behavior"]
+    },
+    "semanticAssetElement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "category", "capability", "parentRefs", "basis", "impact", "decision"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][A-Za-z0-9.-]*$" },
+        "label": { "type": "string", "minLength": 1 },
+        "category": { "$ref": "#/$defs/semanticAssetCategory" },
+        "capability": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "parentRefs": { "$ref": "#/$defs/refList" },
+        "basis": { "enum": ["confirmed", "supported", "assumed", "unresolved"] },
+        "impact": { "enum": ["presentation", "business-behavior"] },
+        "decision": { "enum": ["selected", "deferred", "not-applicable", "propose-new"] },
+        "selectedComponentRef": { "type": "string", "minLength": 1 },
+        "candidateComponentRefs": { "$ref": "#/$defs/refList" },
+        "reason": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "decision": { "const": "selected" } }, "required": ["decision"] },
+          "then": { "required": ["selectedComponentRef"] },
+          "else": { "not": { "required": ["selectedComponentRef"] } }
+        }
+      ]
+    },
     "slideCompositionGeneration": {"type":"object","properties":{"templateId":{"type":"string","enum":["side-slide-custom-fields.v1","side-slide-inspection.v1","side-slide-entry-list.v1","side-slide-group-settings.v1"]},"panelSize":{"type":"string","enum":["narrow-760","medium-849","standard-900","wide-960"]},"sections":{"minItems":2,"type":"array","items":{"oneOf":[{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"title":{"type":"string","minLength":1},"kind":{"type":"string","const":"form-grid"},"fields":{"minItems":1,"type":"array","items":{"type":"object","properties":{"key":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"label":{"type":"string","minLength":1},"control":{"type":"string","enum":["input","select"]},"defaultValue":{"type":"string"},"required":{"type":"boolean"},"readOnly":{"type":"boolean"},"placeholder":{"type":"string"},"inputMode":{"type":"string","enum":["text","numeric","decimal"]},"validation":{"type":"string","enum":["non-empty","positive-number"]},"options":{"minItems":1,"type":"array","items":{"type":"string","minLength":1}}},"required":["key","label","control","defaultValue"],"additionalProperties":false}},"columns":{"anyOf":[{"type":"number","const":1},{"type":"number","const":2}]},"density":{"type":"string","enum":["compact","comfortable"]},"divider":{"type":"string","enum":["none","bottom"]}},"required":["id","title","kind","fields"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"title":{"type":"string","minLength":1},"kind":{"type":"string","const":"custom-fields"},"fields":{"type":"array","items":{"type":"object","properties":{"key":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"label":{"type":"string","minLength":1},"control":{"type":"string","enum":["input","select"]},"defaultValue":{"type":"string"},"required":{"type":"boolean"},"readOnly":{"type":"boolean"},"placeholder":{"type":"string"},"inputMode":{"type":"string","enum":["text","numeric","decimal"]},"validation":{"type":"string","enum":["non-empty","positive-number"]},"options":{"minItems":1,"type":"array","items":{"type":"string","minLength":1}}},"required":["key","label","control","defaultValue"],"additionalProperties":false}},"availableFields":{"type":"array","items":{"type":"object","properties":{"key":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"label":{"type":"string","minLength":1},"control":{"type":"string","enum":["input","select"]},"defaultValue":{"type":"string"},"required":{"type":"boolean"},"readOnly":{"type":"boolean"},"placeholder":{"type":"string"},"inputMode":{"type":"string","enum":["text","numeric","decimal"]},"validation":{"type":"string","enum":["non-empty","positive-number"]},"options":{"minItems":1,"type":"array","items":{"type":"string","minLength":1}}},"required":["key","label","control","defaultValue"],"additionalProperties":false}}},"required":["id","title","kind","fields","availableFields"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"title":{"type":"string","minLength":1},"kind":{"type":"string","const":"inspection-items"},"items":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"label":{"type":"string","minLength":1},"value":{"type":"string","enum":["pass","hold","fail","none"]}},"required":["id","label","value"],"additionalProperties":false}},"availableItems":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"label":{"type":"string","minLength":1},"value":{"type":"string","enum":["pass","hold","fail","none"]}},"required":["id","label","value"],"additionalProperties":false}}},"required":["id","title","kind","items","availableItems"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"title":{"type":"string","minLength":1},"kind":{"type":"string","const":"entry-form"},"fields":{"minItems":1,"type":"array","items":{"type":"object","properties":{"key":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"label":{"type":"string","minLength":1},"control":{"type":"string","enum":["input","select"]},"defaultValue":{"type":"string"},"required":{"type":"boolean"},"readOnly":{"type":"boolean"},"placeholder":{"type":"string"},"inputMode":{"type":"string","enum":["text","numeric","decimal"]},"validation":{"type":"string","enum":["non-empty","positive-number"]},"options":{"minItems":1,"type":"array","items":{"type":"string","minLength":1}}},"required":["key","label","control","defaultValue"],"additionalProperties":false}},"inheritOnAdd":{"type":"array","items":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"}}},"required":["id","title","kind","fields","inheritOnAdd"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"title":{"type":"string","minLength":1},"kind":{"type":"string","const":"record-list"},"columns":{"minItems":1,"type":"array","items":{"type":"object","properties":{"key":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"label":{"type":"string","minLength":1},"control":{"type":"string","enum":["input","select"]},"defaultValue":{"type":"string"},"required":{"type":"boolean"},"readOnly":{"type":"boolean"},"placeholder":{"type":"string"},"inputMode":{"type":"string","enum":["text","numeric","decimal"]},"validation":{"type":"string","enum":["non-empty","positive-number"]},"options":{"minItems":1,"type":"array","items":{"type":"string","minLength":1}},"align":{"type":"string","enum":["left","center","right"]}},"required":["key","label","control","defaultValue"],"additionalProperties":false}},"addMethods":{"minItems":1,"type":"array","items":{"type":"string","enum":["blank-row","entry-form"]}},"editableFields":{"type":"array","items":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"}},"rows":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"values":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"additionalProperties":{"type":"string"}}},"required":["id","values"],"additionalProperties":false}},"minRecords":{"type":"integer","minimum":0,"maximum":9007199254740991}},"required":["id","title","kind","columns","addMethods","editableFields","rows","minRecords"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"title":{"type":"string","minLength":1},"kind":{"type":"string","const":"member-selection"},"members":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"name":{"type":"string","minLength":1},"email":{"type":"string"},"department":{"type":"string"},"group":{"type":"string"},"disabled":{"type":"boolean"}},"required":["id","name","email","department","group"],"additionalProperties":false}},"selectedIds":{"type":"array","items":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"}}},"required":["id","title","kind","members","selectedIds"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"title":{"type":"string","minLength":1},"kind":{"type":"string","const":"permission-matrix"},"columns":{"minItems":1,"type":"array","items":{"type":"object","properties":{"key":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"label":{"type":"string","minLength":1}},"required":["key","label"],"additionalProperties":false}},"rows":{"minItems":1,"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"label":{"type":"string","minLength":1},"parentId":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"values":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][A-Za-z0-9]*$"},"additionalProperties":{"type":"boolean"}}},"required":["id","label"],"additionalProperties":false}}},"required":["id","title","kind","columns","rows"],"additionalProperties":false}]}}},"required":["templateId","panelSize","sections"],"additionalProperties":false},
     "refList": {
       "type": "array",

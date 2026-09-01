@@ -6,6 +6,7 @@ import { validateGenerationSpec } from "./screen-generation-contract.mjs";
 import { isSlideComposition, slideCompositionSections } from "./generate-slide-composition.mjs";
 import { validateHostPage, validateVerificationScope, verificationContext } from "./screen-application-context.mjs";
 import { getRequestReferences } from "./screen-reference-context.mjs";
+import { reviewScreenAssetSelection } from "./screen-asset-selection.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -88,6 +89,7 @@ function validateRequestShape(request) {
     "target",
     "evidence",
     "webContext",
+    "assetDecisions",
     "composition",
     "requirements",
     "normalizationDecisions",
@@ -103,6 +105,7 @@ function validateRequestShape(request) {
   checkKnownKeys(request?.target?.viewport, new Set(["width", "height"]), "target.viewport");
   checkKnownKeys(request?.evidence, new Set(["figmaNode", "sourceRoute", "notes"]), "evidence");
   checkKnownKeys(request?.webContext, new Set(["pageArchetypeRef", "overlayGrammarRef", "sectionRecipeRefs"]), "webContext");
+  checkKnownKeys(request?.assetDecisions, new Set(["schemaVersion", "notApplicableCategories", "elements"]), "assetDecisions");
   checkKnownKeys(request?.composition, new Set(["recipeRefs", "shellRef", "sectionRefs", "sections", "behaviorRefs", "actionSetRef"]), "composition");
   checkKnownKeys(request?.output, new Set(["route", "componentName"]), "output");
   if (request?.schemaVersion !== 1) issues.push(issue("blocker", "request.schema-version", "schemaVersion은 1이어야 합니다."));
@@ -198,6 +201,10 @@ export function contractFingerprint(contract) {
 
 export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const issues = validateRequestShape(request);
+  const assetSelectionReview = request?.assetDecisions
+    ? reviewScreenAssetSelection({ ...request.assetDecisions, targetKind: request?.target?.kind }, registry)
+    : null;
+  if (assetSelectionReview) issues.push(...assetSelectionReview.findings);
   const componentMap = new Map(registry.components.map((entry) => [entry.id, entry]));
   const patternMap = new Map(registry.patterns.map((entry) => [entry.id, entry]));
   const screenMap = new Map(registry.screens.map((entry) => [entry.id, entry]));
@@ -375,6 +382,13 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
 
   const selectedPatternSet = new Set(selectedPatternRefs);
   const requiredComponentSet = new Set(requiredComponentIds);
+  if (assetSelectionReview) {
+    for (const element of assetSelectionReview.elements) {
+      if (element.decision === "selected" && element.selectedComponentRef && !requiredComponentSet.has(element.selectedComponentRef)) {
+        issues.push(issue("warning", "asset-selection.selected-not-linked", `'${element.label}'에 선택한 component '${element.selectedComponentRef}'가 실제 composition의 componentRefs 또는 requiredComponents에 연결되지 않았습니다.`, element.id));
+      }
+    }
+  }
   const applicableContextRules = registry.contextRules.rules.filter((rule) =>
     rule.allowedParents.some((id) => selectedPatternSet.has(id))
     || rule.implementationRefs.some((reference) =>
@@ -433,6 +447,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
         evidenceRole: usage ? registry.componentUsagePolicy.webEvidenceRole : null,
       };
     }),
+    ...(assetSelectionReview ? { assetSelection: assetSelectionReview } : {}),
   };
 
   const blockers = issues.filter((entry) => entry.severity === "blocker");
