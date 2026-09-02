@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "auditedAt": null,
-  "sourceFingerprint": "103830e6b04e80b4643bf44f6eaf7a2cf50d35b9cdf3e2b94db22cdd945a835b",
+  "sourceFingerprint": "e6c7e3c2e42ee3f4f752f8c094df37b6d8a06d5c600c029c870364542fb03e97",
   "browserRun": {
     "command": "npm run test:visual",
     "result": "not-verified-for-current-source",
@@ -10,19 +10,19 @@
     "failed": null,
     "durationMs": null,
     "recordedAt": null,
-    "testInventoryFingerprint": "00035b1124dbeb0a4faab6e3fff87c40d7dbcd83c66e92c15314e80a92e1c05d",
+    "testInventoryFingerprint": "d61a9debc1b0071ae24b2c09a9881c59b20e6fb2b69731d1e5526a2026c44813",
     "includesDeferredMobile": true
   },
   "testInventory": {
     "count": 92,
     "files": {
       "tests/visual/application-flow.spec.mts": "e972eb78d92011e8f24b4a475837a425ac2656a9327a108abb802fe06eba4496",
-      "tests/visual/design-system.visual.spec.ts": "cd162e4b1c9cf65d5a2e706ba775f3488304020f2e51b318671bfa3529ff5c9b",
+      "tests/visual/design-system.visual.spec.ts": "04803a2406bd410e72e7c971a199a82c3e254c7c611ec26c35030ab5de9fed8e",
       "tests/visual/figma-component-defaults.spec.ts": "f9a842afc72cfef542c0e242507b6acbbbd1e66b55c7c9a1f3a1719fedf23cc3",
       "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
       "tests/visual/slide-compositions.spec.mts": "2c018a1a7334f1f0e0a13f7d1977b3556142863dec93841498f5d55a778a9299"
     },
-    "fingerprint": "00035b1124dbeb0a4faab6e3fff87c40d7dbcd83c66e92c15314e80a92e1c05d"
+    "fingerprint": "d61a9debc1b0071ae24b2c09a9881c59b20e6fb2b69731d1e5526a2026c44813"
   },
   "summary": {
     "components": {

@@ -18,7 +18,7 @@
 ## API와 상태
 
 - 공개 심볼: `MainListFooterAction`, `MainListFooterActionsProps`, `MainListFooterActions`
-- 주요 Props: `id`, `label`, `variant`, `disabled`, `onClick`, `className`, `actions`
+- 주요 Props: `id`, `label`, `variant`, `startIcon`, `endIcon`, `disabled`, `onClick`, `className`, `actions`
 - 상태: `default`, `disabled`
 - 변형: `one`, `two`, `three`
 

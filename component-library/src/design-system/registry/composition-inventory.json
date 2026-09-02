@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx",
   "summary": {
     "scannedFiles": 43,
-    "totalLines": 8486,
+    "totalLines": 8504,
     "shellInstances": {
       "CenterModal": 13,
       "SideSlidePanel": 9,
@@ -937,7 +937,7 @@
       "source": "src/components/patterns/entity-list-pattern.tsx",
       "name": "entity-list-pattern.tsx",
       "observedRole": "composition-source",
-      "lines": 48,
+      "lines": 62,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -2360,7 +2360,7 @@
       "source": "src/components/patterns/sales-transaction-statement-pattern.tsx",
       "name": "sales-transaction-statement-pattern.tsx",
       "observedRole": "composition-source",
-      "lines": 349,
+      "lines": 353,
       "exportedSymbols": [],
       "shells": [
         {
@@ -2381,7 +2381,7 @@
       "uiComponents": [
         {
           "name": "Button",
-          "jsxCount": 11
+          "jsxCount": 8
         },
         {
           "name": "CenterModal",
@@ -2398,6 +2398,10 @@
         {
           "name": "IconButton",
           "jsxCount": 2
+        },
+        {
+          "name": "MainListFooterActions",
+          "jsxCount": 1
         },
         {
           "name": "QueryDateRange",
@@ -3135,5 +3139,5 @@
       ]
     }
   ],
-  "fingerprint": "78f1dec69a537c7e"
+  "fingerprint": "40b95d9c9fb79b52"
 }

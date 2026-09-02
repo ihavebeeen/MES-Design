@@ -9,7 +9,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "73dd2603e28310adf04a6abc5061f391efc7807227fb450726e00937e4c90559",
+  "fingerprint": "42846301e887d69d7fc7f36dfc3f61fd8c180e669c9086c09b8f8af15fc26a86",
   "guidancePolicy": {
     "componentSelection": {
       "contextCoverageMode": "all-components",
@@ -2063,7 +2063,7 @@
       },
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "778bc1ff4a6e3e8571cedea29729fef4748960e87338aca6e4af197fcf0ae9db",
+        "sourceFingerprint": "e1d458ebb3c5eee5092e62e3e1a073054670e8c500d6581822381e06110c5d8a",
         "symbols": [
           "MainListFooterAction",
           "MainListFooterActionsProps",
@@ -2073,6 +2073,8 @@
           "id",
           "label",
           "variant",
+          "startIcon",
+          "endIcon",
           "disabled",
           "onClick",
           "className",

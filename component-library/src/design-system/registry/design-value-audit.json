@@ -8,7 +8,7 @@
   },
   "summary": {
     "scannedFiles": 134,
-    "totalOccurrences": 3659,
+    "totalOccurrences": 3657,
     "arbitraryUtilities": 1298,
     "hardcodedColors": 68,
     "reviewCandidates": 0,
@@ -23,7 +23,7 @@
     },
     "pattern": {
       "files": 33,
-      "occurrences": 1969,
+      "occurrences": 1967,
       "arbitraryUtilities": 658,
       "hardcodedColors": 43
     },
@@ -38,11 +38,11 @@
     "spacing": [
       {
         "value": "8px",
-        "count": 237,
+        "count": 236,
         "arbitraryCount": 0,
         "layers": {
           "canonical": 81,
-          "pattern": 129,
+          "pattern": 128,
           "evidence": 27
         },
         "examples": [
@@ -118,11 +118,11 @@
       },
       {
         "value": "10px",
-        "count": 133,
+        "count": 135,
         "arbitraryCount": 67,
         "layers": {
           "canonical": 41,
-          "pattern": 69,
+          "pattern": 71,
           "evidence": 23
         },
         "examples": [
@@ -1223,18 +1223,18 @@
       },
       {
         "value": "160px",
-        "count": 35,
+        "count": 32,
         "arbitraryCount": 17,
         "layers": {
           "canonical": 8,
-          "pattern": 21,
+          "pattern": 18,
           "evidence": 6
         },
         "examples": [
           "src/components/ui/dialog-footer.tsx:40",
           "src/components/ui/group-query.tsx:157",
           "src/components/ui/logo.tsx:21",
-          "src/components/ui/main-list-footer-actions.tsx:37",
+          "src/components/ui/main-list-footer-actions.tsx:40",
           "src/components/ui/quick-query.tsx:405",
           "src/components/ui/quick-query.tsx:408",
           "src/components/ui/radio-choice-dialog.tsx:179",
@@ -1314,7 +1314,7 @@
           "src/components/ui/side-slide-panel.tsx:23",
           "src/components/patterns/analytics-dashboard-pattern.tsx:40",
           "src/components/patterns/cavity-settings-pattern.tsx:13",
-          "src/components/patterns/entity-list-pattern.tsx:28",
+          "src/components/patterns/entity-list-pattern.tsx:42",
           "src/components/patterns/exact-form-management-screen.tsx:119",
           "src/components/patterns/exact-production-analytics-screen.tsx:46"
         ]
@@ -1613,7 +1613,7 @@
           "src/components/ui/sidebar.tsx:462",
           "src/components/ui/sidebar.tsx:462",
           "src/components/ui/toast.tsx:77",
-          "src/components/patterns/entity-list-pattern.tsx:38"
+          "src/components/patterns/entity-list-pattern.tsx:52"
         ]
       },
       {
@@ -1685,13 +1685,13 @@
         },
         "examples": [
           "src/components/patterns/analytics-dashboard-pattern.tsx:40",
-          "src/components/patterns/entity-list-pattern.tsx:28",
+          "src/components/patterns/entity-list-pattern.tsx:42",
           "src/components/patterns/exact-form-management-screen.tsx:119",
           "src/components/patterns/exact-production-analytics-screen.tsx:46",
           "src/components/patterns/inspection-trend-analysis-pattern.tsx:49",
           "src/components/patterns/master-detail-pattern.tsx:29",
           "src/components/patterns/original-mes-screen-assets.tsx:275",
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:293"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:294"
         ]
       },
       {
@@ -1746,7 +1746,7 @@
           "src/components/ui/cavity-cell.tsx:13",
           "src/components/ui/page-top-tab-item.tsx:62",
           "src/components/patterns/analytics-dashboard-pattern.tsx:46",
-          "src/components/patterns/entity-list-pattern.tsx:34",
+          "src/components/patterns/entity-list-pattern.tsx:48",
           "src/components/patterns/exact-form-management-screen.tsx:128",
           "src/components/patterns/exact-production-analytics-screen.tsx:49",
           "src/components/patterns/exact-production-result-screen.tsx:106",
@@ -1842,7 +1842,7 @@
           "src/components/patterns/inspection-criteria-pattern.tsx:290",
           "src/components/patterns/material-input-information-pattern.tsx:146",
           "src/components/patterns/mes-screen-fixtures.tsx:291",
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:222"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:223"
         ]
       },
       {
@@ -2225,7 +2225,7 @@
         },
         "examples": [
           "src/components/ui/skeleton.tsx:15",
-          "src/components/patterns/entity-list-pattern.tsx:35",
+          "src/components/patterns/entity-list-pattern.tsx:49",
           "src/components/patterns/master-detail-pattern.tsx:36"
         ]
       },
@@ -3074,7 +3074,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:268"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:269"
         ]
       },
       {
@@ -3173,7 +3173,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:325"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:326"
         ]
       },
       {
@@ -3184,7 +3184,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:269"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:270"
         ]
       },
       {
@@ -3206,7 +3206,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:268"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:269"
         ]
       },
       {
@@ -3316,7 +3316,7 @@
           "pattern": 1
         },
         "examples": [
-          "src/components/patterns/sales-transaction-statement-pattern.tsx:267"
+          "src/components/patterns/sales-transaction-statement-pattern.tsx:268"
         ]
       },
       {
@@ -4352,5 +4352,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "097de05cbfb0b83d"
+  "fingerprint": "115ebdfedb666e62"
 }

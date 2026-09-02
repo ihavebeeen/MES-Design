@@ -8,6 +8,7 @@ import { CenterModal } from "@/components/ui/center-modal";
 import { Filter } from "@/components/ui/filter";
 import { GroupQuery, type GroupQueryOption } from "@/components/ui/group-query";
 import { IconButton } from "@/components/ui/icon-button";
+import { MainListFooterActions } from "@/components/ui/main-list-footer-actions";
 import { QueryDateRange } from "@/components/ui/query-date-range";
 import { QuickQuery, QuickQueryPresetDialog, type QuickQuerySlot } from "@/components/ui/quick-query";
 import { SearchInput } from "@/components/ui/search-input";
@@ -331,11 +332,14 @@ function SalesTransactionStatementScreen() {
               <Button size="small" variant="lineBlacktxt" startIcon={<IconCopy size={16} />}>복사</Button>
               <Button size="small" variant="lineBlacktxt" startIcon={<IconDownload size={16} />}>다운로드</Button>
             </div>
-            <div data-testid="sales-footer-actions" className="flex gap-2">
-              <Button size="small" variant="fillBlack" className="w-40" onClick={() => setModalOpen(true)}>거래명세서 출력</Button>
-              <Button size="small" variant="fillBlack" className="w-40" onClick={() => setBulkApprovalOpen(true)}>일괄 출하승인</Button>
-              <Button size="small" variant="fillMain" className="w-40 bg-mes-primary-70 hover:bg-mes-primary-70" startIcon={<IconPlus size={16} />}>청구 등록</Button>
-            </div>
+            <MainListFooterActions
+              data-testid="sales-footer-actions"
+              actions={[
+                { id: "print-statement", label: "거래명세서 출력", onClick: () => setModalOpen(true) },
+                { id: "bulk-shipment-approval", label: "일괄 출하승인", onClick: () => setBulkApprovalOpen(true) },
+                { id: "register-billing", label: "청구 등록", startIcon: <IconPlus size={16} /> },
+              ]}
+            />
           </>
         }
       />

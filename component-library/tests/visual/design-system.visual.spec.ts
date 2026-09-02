@@ -1163,7 +1163,7 @@ test("판매관리 거래명세서는 원본 목록과 1300px 출력 팝업 계�
     return { box: await button.boundingBox(), background: await button.evaluate((element) => getComputedStyle(element).backgroundColor) };
   }));
   expect(footerActionStyles.map((style) => style.box?.width)).toEqual([160, 160, 160]);
-  expect(footerActionStyles.map((style) => style.background)).toEqual(["rgb(1, 19, 39)", "rgb(1, 19, 39)", "rgb(9, 88, 217)"]);
+  expect(footerActionStyles.map((style) => style.background)).toEqual(["rgb(1, 19, 39)", "rgb(21, 115, 251)", "rgb(215, 220, 229)"]);
 
   const paneWidths = await modal.locator("[data-testid='statement-modal-body'] > section").evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().width));
   expect(paneWidths).toEqual([650, 650]);
@@ -1206,7 +1206,7 @@ test("판매관리 거래명세서는 원본 목록과 1300px 출력 팝업 계�
   await page.getByRole("button", { name: "일괄 출하승인", exact: true }).click();
   const bulkApprovalDialog = page.getByRole("dialog", { name: "일괄 출하승인", exact: true });
   await expect(bulkApprovalDialog).toBeVisible();
-  await bulkApprovalDialog.getByRole("button", { name: "취소", exact: true }).click();
+  await bulkApprovalDialog.getByRole("button", { name: "닫기", exact: true }).last().click();
   await expect(bulkApprovalDialog).toBeHidden();
 });
 
@@ -1241,7 +1241,7 @@ test("일괄 출하승인은 원본 960px 선택·상태 변경과 670px 품목 
 
   await checks.nth(3).check();
   await bulkDialog.getByRole("radio", { name: "승인", exact: true }).check();
-  await bulkDialog.getByRole("button", { name: "취소", exact: true }).click();
+  await bulkDialog.getByRole("button", { name: "닫기", exact: true }).last().click();
   await page.getByRole("button", { name: "일괄 출하승인 열기", exact: true }).click();
   await expect(bulkDialog.getByRole("checkbox").nth(3)).not.toBeChecked();
   await expect(bulkDialog.getByRole("radio", { name: "승인대기", exact: true })).toBeChecked();
@@ -1370,7 +1370,7 @@ test("품목 생산량 설정은 원본 중앙 팝업 치수와 품목·설비 �
   await expect(equipmentPanel.getByLabel("EQ001 시간당 생산량")).toHaveValue("42000");
   await expect(equipmentPanel.getByLabel("EQ009 시간당 생산량")).toHaveValue("42000");
 
-  await dialog.getByRole("button", { name: "취소", exact: true }).click();
+  await dialog.getByRole("button", { name: "닫기", exact: true }).last().click();
   await expect(dialog).toBeHidden();
   await page.getByRole("button", { name: "품목 생산량 설정 다시 열기", exact: true }).click();
   await expect(dialog).toBeVisible();
@@ -1378,7 +1378,7 @@ test("품목 생산량 설정은 원본 중앙 팝업 치수와 품목·설비 �
   await expect(equipmentPanel.getByLabel("EQ003 시간당 생산량")).toHaveValue("36000");
 
   await equipmentPanel.getByLabel("EQ001 시간당 생산량").fill("99999");
-  await dialog.getByRole("button", { name: "닫기", exact: true }).click();
+  await dialog.getByRole("button", { name: "닫기", exact: true }).last().click();
   await expect(dialog).toBeHidden();
   await page.getByRole("button", { name: "품목 생산량 설정 다시 열기", exact: true }).click();
   await expect(dialog).toBeVisible();
@@ -1454,7 +1454,7 @@ test("표준단가 설정은 품목 선택·단가 입력·이력 상태를 독�
   await expect(page.locator('[role="dialog"]').filter({ hasText: "표준단가 설정" }).first()).toBeVisible();
   await deleteDialog.getByRole("button", { name: "취소", exact: true }).click();
 
-  await dialog.getByRole("button", { name: "취소", exact: true }).click();
+  await dialog.getByRole("button", { name: "닫기", exact: true }).last().click();
   await page.getByRole("button", { name: "표준단가 설정 다시 열기", exact: true }).click();
   await expect(dialog).toBeVisible();
   await expect(editor.getByRole("switch", { name: "초코칩쿠키 900 TRAY 단가 동기화" })).toBeChecked();
@@ -1504,7 +1504,7 @@ test("조 설정은 권한 그룹·구성원 선택·조 변경 상태를 원본
   await content.getByRole("link", { name: "구성원 선택 바로가기", exact: true }).click();
   await expect(content.getByText("김성형", { exact: true })).toBeVisible();
 
-  await dialog.getByRole("button", { name: "취소", exact: true }).click();
+  await dialog.getByRole("button", { name: "닫기", exact: true }).last().click();
   await page.getByRole("button", { name: "조 설정 다시 열기", exact: true }).click();
   await expect(dialog).toBeVisible();
   await expect(content.getByLabel("김성형 변경 조")).toHaveText("A조");

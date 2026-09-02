@@ -19,7 +19,7 @@ for (const name of ["CustomFieldsExample", "InspectionExample", "EntryListExampl
     expect(rect.x + rect.width).toBe(1440);
     expect(await dialog.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
     const ids = await dialog.locator("[data-section-id]").evaluateAll(els => els.map(el => el.getAttribute("data-section-id")));
-    expect(ids).toEqual(fixture.request.generation.sections.map(s => s.id));
+    expect(ids).toEqual(fixture.request.generation.sections.map((section: { id: string }) => section.id));
     const sections = await dialog.locator("[data-section-id]").evaluateAll(els => els.map(el => ({ x: el.getBoundingClientRect().x, y: el.getBoundingClientRect().y, width: el.getBoundingClientRect().width })));
     if (name === "CustomFieldsExample" || name === "InspectionExample") {
       expect(sections[0].y).toBe(sections[1].y);
