@@ -20,6 +20,7 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 - 실제 생성 선택 오류: `generation-selection-feedback.json`
 - 패턴과 조합 계약: `patterns.json`, `pattern-contracts.json`
 - 화면 순서와 구성: `screens.json`, `screen-specs.json`
+- Figma 대표 화면에서 추출한 목적·배치·시각 기초 레시피: `foundation-recipes.json`
 - Tier 후보와 판정: `tier-candidates.json`, `tier-coverage-audit.json`
 - 검증 결과: `full-verification-result.json`, `web-verification-audit.json`
 - 컴포넌트 문서: `docs/components/`
@@ -44,6 +45,7 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 - 실제 웹은 반복 사용 위치와 연결 구조의 참고 근거다. 단일 구현값을 표준으로 자동 승격하지 않는다.
 - `component-usage-contracts.json`은 모든 컴포넌트의 역할·사용 조건·비사용 조건·대안을 제공한다. 선택에 민감한 자산만 부모·상태·제약을 상세 계약으로 추가한다.
 - 모든 패턴은 `patterns.json`의 맥락 규칙으로 비교한다. 컴포넌트와 연결 관계를 먼저 확인하고 그 결과를 수용하는 패턴을 선택한다.
+- 신규 UI는 목적·정보 관계·컴포넌트 연결을 확정한 뒤 `foundation-recipes.json`에서 가장 가까운 기초 레시피를 비교한다. 이 원장은 초기 디자인의 목적·배치·분위기 근거이며 실제 렌더링은 현재 승인 컴포넌트가 우선한다. 초기 메인 표에 세로선이 없더라도 현재 Table의 세로 구분선 등 현재 기본 계약을 제거하지 않는다. 과거 외형을 맞추는 로컬 CSS를 추가하지 않는다. 채택한 특징과 제외한 특징의 이유만 기존 `evidence.notes`에 기록한다.
 - **핵심 선택 규칙을 기본으로 적용하고, 생성 피드백을 통해 필요한 규칙만 추가 보강**한다. 피드백은 `generation-selection-feedback.json`에 기록한다.
 - 한 화면에서만 관찰된 사용 방식은 사용자 확정 또는 공식 공통 명세가 없으면 전역 규칙으로 승격하지 않는다.
 - 모든 의미 있는 Component·Section·Behavior·Shell·ActionSet은 `정확히 일치하는 승인 자산 조회 → 유사 후보의 의미 적합성 판정 → 신규 자산 제안` 순서로 선택한다. 외형이 비슷해도 의미·동작·선택 수·상태·접근성·부모 맥락이 충돌하면 대체 사용하지 않는다.

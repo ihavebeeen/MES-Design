@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mes.figma-foundation-recipes",
+  "status": "active",
+  "authority": "reference-only",
+  "source": {
+    "fileKey": "F4n5Zr04PAbiRjfIFQAo6v",
+    "sectionNode": "20274:73333",
+    "sectionName": "Section 4",
+    "inspectedOn": "2026-09-02",
+    "desktopViewport": { "width": 1920, "height": 960 },
+    "scope": "웹 MES의 목록·분석·중앙 팝업·우측 슬라이드 팝업 대표 화면",
+    "designEra": "legacy-foundation"
+  },
+  "policy": {
+    "purpose": "원본 화면을 복제 템플릿으로 고정하지 않고, 각 화면의 업무 목적·정보 관계·배치 성격·시각 분위기를 신규 UI 구성의 기초 레시피로 제공한다.",
+    "selection": "현재 화면의 목적과 정보 관계를 먼저 확정하고 컴포넌트 연결을 설명한 뒤, 가장 가까운 기초 레시피를 비교한다. 업무명이 같거나 외형이 닮았다는 이유만으로 선택하지 않는다.",
+    "adaptation": "레시피의 구조와 시각 언어는 참고하되 현재 정보량·행동·상태·사용 환경에 맞게 섹션 수, 폭, 노출 순서와 강조 수준을 조정한다.",
+    "nonBinding": "레시피에 없는 화면도 만들 수 있고 여러 레시피를 조합할 수 있다. 단일 프레임의 배치와 고립된 측정값은 공통 규칙이 아니다.",
+    "fidelity": "이 초기 Figma 묶음은 업무 목적·정보 관계·배치 성격의 근거다. 여기서 파생한 신규 UI와 재구성 화면의 실제 컨트롤 외형·상태·동작은 현재 승인된 MES 컴포넌트 계약을 따른다.",
+    "currentAssetPrecedence": "초기 Figma와 현재 승인 컴포넌트가 충돌하면 현재 컴포넌트의 기본값·variant·상태·상호작용이 우선한다. 예를 들어 초기 메인 표에 세로 구분선이 없어도 현재 Table이 세로 구분선을 기본 계약으로 제공하면 이를 제거하지 않는다.",
+    "legacyTranslation": "초기 화면의 필드·영역·관계·밀도·배치 분위기는 보존하되, 버튼·입력·선택·날짜·표·탭·팝업 셸은 현재 레지스트리에 등록된 자산으로 번역한다. 과거 외형을 맞추기 위한 로컬 CSS나 컴포넌트 기본값 덮어쓰기는 만들지 않는다.",
+    "normalization": "반복되는 값은 승인 토큰과 컴포넌트 기본값을 사용한다. 고립된 3px·9px·13px 값은 그대로 복제하지 않는다.",
+    "recording": "ScreenRequest에는 채택한 레시피와 적용한 특징, 적용하지 않은 특징의 이유만 evidence.notes에 짧게 남긴다. 매번 별도 보고서를 만들지 않는다."
+  },
+  "visualLanguage": {
+    "character": [
+      "장식보다 업무 정보와 작업 속도를 우선하는 고밀도 운영 UI",
+      "흰색 작업면과 옅은 회색 구획을 기본으로 하고 파란색은 선택·활성·주요 진행 상태에 제한한다.",
+      "진한 남색은 주요 확정 액션, 옅은 회색은 보조·취소·비활성 상태에 사용한다.",
+      "카드와 둥근 박스를 반복하기보다 정렬선·얇은 구분선·섹션 위계로 영역을 구분한다."
+    ],
+    "density": {
+      "page": "상단 탐색과 조회 영역은 짧고 고정하며 목록·분석 영역이 남은 높이를 사용한다.",
+      "table": "짧은 행, 안정된 열 정렬, 숫자 우측 정렬, 선택 행 배경과 상태 강조를 함께 사용한다.",
+      "form": "라벨과 컨트롤을 규칙적인 열로 배치하고 설명 문구보다 현재 대상·필수 상태·입력 흐름을 우선한다.",
+      "overlay": "헤더와 하단 액션은 고정하고 실제 콘텐츠가 스크롤을 소유한다. 내용보다 큰 빈 공간을 만들지 않는다."
+    },
+    "hierarchy": [
+      "페이지 탭 → 화면 제목·조회 조건 → 작업 도구 → 본문 → 하단 유틸리티/업무 액션 순서를 유지한다.",
+      "팝업 제목은 전체 작업을 설명하고, 섹션 제목은 서로 다른 논리 영역이 둘 이상일 때만 사용한다.",
+      "단일 목록·표·작업영역의 이름은 배경 없는 내용 영역 제목을 우선한다.",
+      "주요 정보는 크기만 키우지 않고 위치·정렬·편집 가능 상태·관련 액션의 근접성으로 강조한다."
+    ],
+    "applicationFrame": [
+      "일반 데스크톱 페이지는 좌측 메뉴와 상단 탭을 유지한다.",
+      "중앙 팝업과 우측 슬라이드는 같은 애플리케이션 화면 위에 겹치며 배경 공통 틀을 새로 만들지 않는다.",
+      "페이지 본문은 남은 공간을 채우고 하단 액션 바는 좌측 유틸리티와 우측 업무 액션을 분리한다."
+    ],
+    "controlsAndStates": [
+      "공통 입력·선택·날짜·버튼 높이는 승인된 MES 컴포넌트 기본값을 사용한다.",
+      "초기 Figma에 현재 컴포넌트와 다른 외형이 있더라도 현재 등록 자산의 구조·구분선·상태 표현을 유지한다.",
+      "메인 표는 현재 Table과 메인 목록 패턴의 열 구분선·행 상태·무한 스크롤 계약을 사용한다.",
+      "선택 상태는 컨트롤 상태와 행 배경을 함께 바꾸고, 입력 가능한 행은 정적 행과 명확히 구분한다.",
+      "상태·위험·완료는 의미가 있을 때 Tag나 상태 색을 사용하되 일반 텍스트를 전부 배지로 만들지 않는다.",
+      "취소와 X는 미확정 변경을 버리고 같은 경로로 닫는다."
+    ],
+    "avoid": [
+      "팝업 전용 검색·필터 막대를 메인 목록 문법으로 사용하기",
+      "정보 관계 없이 좌우·상하 분할을 먼저 선택하기",
+      "모든 섹션을 회색 박스나 카드로 감싸기",
+      "업무 근거 없는 안내 박스·장식 카드·페이지네이션 추가",
+      "화면마다 새로운 폰트 크기·간격·radius를 만들기"
+    ]
+  },
+  "recipeFamilies": [
+    {
+      "id": "foundation.page.dense-entity-list",
+      "name": "고밀도 업무 목록",
+      "surfaces": ["page"],
+      "purpose": "많은 업무 대상을 같은 열 기준으로 빠르게 찾고 상태를 비교한 뒤 선택·상세·등록 작업으로 이어간다.",
+      "informationRelationship": "조회 조건이 목록 범위를 정하고, 그룹 행은 하위 행의 묶음을 설명하며, 하단 액션은 선택 집합 또는 전체 목록에 작용한다.",
+      "composition": ["좌측 메뉴와 상단 탭", "화면 제목과 기간 조회", "그룹화·필터·빠른 조회·검색", "남은 높이를 채우는 무한 스크롤 표", "좌측 유틸리티와 우측 업무 액션이 분리된 하단 바"],
+      "visualTraits": ["얕은 조회 영역", "30px 안팎의 조밀한 행", "선택 행의 옅은 파란 배경", "그룹 깊이를 들여쓰기와 펼침 상태로 표현", "페이지네이션 없음"],
+      "useWhen": ["행과 열의 정렬된 비교가 주 작업일 때", "반복 조회와 다중 선택·상세 진입이 필요할 때"],
+      "adaptWhen": ["그룹화가 불필요하면 그룹 레벨만 제거한다.", "기간이 업무 기준이 아니면 다른 승인 조회 조건으로 교체한다.", "행별 상태가 없으면 상태 태그를 억지로 추가하지 않는다."],
+      "patternRefs": ["recipe.page-entity-list", "section.page-query-table", "table.grouped-list"],
+      "componentRefs": ["sidebar", "page-top-tab-item", "query-date-range", "filter", "search-input", "table", "checkbox", "button"]
+    },
+    {
+      "id": "foundation.page.trace-master-detail",
+      "name": "추적·계층 탐색",
+      "surfaces": ["page"],
+      "purpose": "기준 대상이나 LOT를 선택하고 연결된 상·하위 품목, 이력 또는 상세 구성을 따라가며 원인을 찾는다.",
+      "informationRelationship": "좌측 또는 상위 선택이 우측·하위 상세 범위를 바꾸고, 계층은 같은 수준의 목록이 아니라 연결 관계를 나타낸다.",
+      "composition": ["공통 애플리케이션 틀", "대상·범위 조회", "기준 대상 목록", "트리 또는 연결 상세", "필요한 방향 전환·상세 액션"],
+      "visualTraits": ["구획은 얇은 세로선과 정렬로 분리", "트리 깊이는 들여쓰기와 연결 아이콘으로 표현", "선택 대상은 옅은 파란 면으로 유지", "상세 정보는 표와 트리를 혼동하지 않음"],
+      "useWhen": ["한 대상의 구성 또는 전·후방 연결을 연속해서 탐색할 때", "기준 대상 변경과 상세 갱신을 같은 화면에서 반복할 때"],
+      "adaptWhen": ["동시 탐색이 필요 없으면 상세 팝업이나 단일 목록을 검토한다.", "계층이 없으면 TreeView를 사용하지 않는다."],
+      "patternRefs": ["screen.master-detail", "selection.master-detail"],
+      "componentRefs": ["sidebar", "page-top-tab-item", "search-input", "table", "tree-view", "radio", "button"]
+    },
+    {
+      "id": "foundation.page.operational-analysis",
+      "name": "운영 현황·분석",
+      "surfaces": ["page"],
+      "purpose": "기간·설비·품목별 성과와 이상 변화를 요약하고, 비교 근거를 차트와 표에서 확인한다.",
+      "informationRelationship": "요약 수치가 현재 상태를 먼저 알리고 차트·표가 변화와 원인을 설명한다. 모든 블록은 같은 기간·대상 기준을 공유한다.",
+      "composition": ["공통 애플리케이션 틀", "핵심 요약 지표", "기간·대상 조회", "주요 추이 차트", "원인·순위·상세 표"],
+      "visualTraits": ["옅은 회색 카드 안의 간결한 핵심 수치", "파랑을 기본 계열로 사용하고 위험·불량만 제한적으로 빨강 사용", "카드 radius와 간격을 반복 토큰으로 통일", "차트보다 지표 제목과 단위를 먼저 읽을 수 있음"],
+      "useWhen": ["현재 수치와 기간 변화의 해석이 모두 필요할 때", "요약과 근거 데이터를 같은 기준으로 비교할 때"],
+      "adaptWhen": ["실제 계산 근거가 없는 KPI 카드를 만들지 않는다.", "차트가 비교를 돕지 않으면 표나 요약으로 단순화한다.", "장식용 차트와 아이콘을 추가하지 않는다."],
+      "patternRefs": ["screen.analytics-dashboard", "summary.inspection-achievement-stack"],
+      "componentRefs": ["sidebar", "page-top-tab-item", "card", "analytics-charts", "progress", "table", "date-picker", "select"]
+    },
+    {
+      "id": "foundation.modal.bulk-row-work",
+      "name": "복수 행 일괄 처리",
+      "surfaces": ["center-modal"],
+      "purpose": "여러 업무 행을 같은 기준으로 조회·선택하고 선택 행의 입력값을 편집해 한 번에 확정한다.",
+      "informationRelationship": "조회 영역은 후보 범위를 정하고, 선택 상태가 행 입력 활성화와 저장 대상을 결정한다. 입력값은 해당 행에 귀속된다.",
+      "composition": ["팝업 제목", "짧은 조회·필터·검색 영역", "선택 및 행 편집 표", "하단 취소·저장"],
+      "visualTraits": ["넓지만 화면 전체를 덮지 않는 중앙 팝업", "도구 막대와 표를 수직 중앙 정렬", "선택 행만 입력 컨트롤과 파란 행 배경을 노출", "표 아래 불필요한 빈 공간 최소화"],
+      "useWhen": ["같은 열 기준의 복수 행 비교와 선택 편집이 동시에 필요할 때", "저장 단위가 선택된 행 집합일 때"],
+      "adaptWhen": ["단일 행 입력이면 좁은 폼을 검토한다.", "표시만 하는 목록이면 입력 컨트롤과 선택을 제거한다.", "메인 목록의 그룹화·빠른 조회 문법을 그대로 복사하지 않는다."],
+      "patternRefs": ["popup.center.table", "recipe.center-modal-search-table", "selection.enable-actions"],
+      "componentRefs": ["center-modal", "filter", "search-input", "table", "checkbox", "input", "select", "button"]
+    },
+    {
+      "id": "foundation.modal.reference-and-selection",
+      "name": "참고 목록·선택 확정",
+      "surfaces": ["center-modal"],
+      "purpose": "현재 작업에 필요한 후보·라벨·점검·내역을 확인하고 필요한 항목이나 설정을 선택해 상위 작업으로 돌려준다.",
+      "informationRelationship": "목록은 독립 관리 화면이 아니라 상위 작업의 선택·확정을 돕는 참고 자료이며, 선택 결과만 상위 상태에 반영된다.",
+      "composition": ["팝업 제목", "대상 식별 또는 간단 조회", "목록·표", "필요 시 상태 안내", "선택·저장·취소 액션"],
+      "visualTraits": ["목록 크기에 맞춘 제한된 폭과 높이", "검색과 필터는 실제 탐색이 필요할 때만 노출", "표 내부 상태와 선택을 작게 강조", "안내 영역은 실행 결과나 되돌릴 수 없는 조건이 있을 때만 사용"],
+      "useWhen": ["상위 작업을 유지한 채 후보를 조회·선택해야 할 때", "여러 행을 같은 열로 확인해야 할 때"],
+      "adaptWhen": ["읽기 전용 상세가 한두 필드면 표보다 키-값 상세를 검토한다.", "선택 결과가 없으면 저장 액션을 만들지 않는다."],
+      "patternRefs": ["popup.center.table", "popup.center.navigation-detail", "section.search-table-composition"],
+      "componentRefs": ["center-modal", "content-region-heading", "table", "checkbox", "filter", "search-input", "button"]
+    },
+    {
+      "id": "foundation.modal.compact-decision",
+      "name": "단건 판단·간단 입력",
+      "surfaces": ["center-modal", "confirm-dialog"],
+      "purpose": "한 대상의 처리 방식, 수량, 시간 또는 되돌리기 어려운 결정을 짧게 확인하고 확정한다.",
+      "informationRelationship": "대상 식별과 선택지가 한 저장 단위에 속하며, 선택에 따라 필요한 보조 입력만 나타난다.",
+      "composition": ["짧은 제목", "대상 또는 처리 설명", "라디오·입력·비교 중 필요한 한 가지 중심 표현", "영향 안내", "확정·취소"],
+      "visualTraits": ["내용에 맞춘 좁은 폭", "큰 빈 공간 없음", "중요 선택을 상단에서 먼저 읽음", "선택되지 않은 영역은 비활성 상태로 명확히 구분"],
+      "useWhen": ["사용자의 판단 대상이 하나이고 정보량이 제한적일 때", "두세 선택지 또는 한 수치 입력으로 작업이 끝날 때"],
+      "adaptWhen": ["여러 행 비교가 필요하면 표 기반 팝업으로 전환한다.", "단순 닫기 상세에는 저장 버튼을 추가하지 않는다.", "안내 문구를 장식적으로 반복하지 않는다."],
+      "patternRefs": ["popup.center.form", "shell.confirm-dialog"],
+      "componentRefs": ["center-modal", "radio", "input", "button"]
+    },
+    {
+      "id": "foundation.modal.comparison-and-analysis",
+      "name": "동시 비교·계산 결과",
+      "surfaces": ["center-modal"],
+      "purpose": "서로 연결된 두 데이터 집합, 기준과 실제값 또는 다수 측정값을 동시에 비교해 부족·차이·판정 결과를 확인한다.",
+      "informationRelationship": "좌우 또는 상하 영역이 같은 비교 기준을 공유하며, 요약 결과는 두 영역에서 계산된 값에 근거한다.",
+      "composition": ["팝업 제목", "공통 조회 기준", "비교 영역 또는 측정 그리드", "계산·판정 요약", "필요한 확정 액션"],
+      "visualTraits": ["비교 영역의 폭과 열 기준을 대칭적으로 정렬", "차이·부족 값만 제한적으로 강조", "요약은 하단의 옅은 강조면으로 분리", "측정 셀은 반복 크기와 선택 상태를 유지"],
+      "useWhen": ["두 자료를 동시에 보아야 결론을 낼 수 있을 때", "계산·판정 결과의 근거를 같은 화면에서 확인해야 할 때"],
+      "adaptWhen": ["단일 증감이면 큰 이중 패널 대신 BeforeAfterComparison 또는 요약을 검토한다.", "비교 기준이 다르면 억지로 대칭 표를 만들지 않는다."],
+      "patternRefs": ["popup.center.dual-pane", "section.measurement-heatmap-analysis"],
+      "componentRefs": ["center-modal", "table", "radio", "input", "button"]
+    },
+    {
+      "id": "foundation.slide.staged-entry-list",
+      "name": "기본정보·한 건 작성·누적 목록",
+      "surfaces": ["side-slide-panel"],
+      "purpose": "작업 전체의 공통 기준을 확인하고 다음 한 건을 작성해 저장 대상 목록에 반복해서 쌓는다.",
+      "informationRelationship": "상단 기본정보는 전체 작업에, 중앙 입력은 다음 한 건에, 하단 목록은 이미 추가된 결과에 속한다.",
+      "composition": ["고정 팝업 헤더", "기본정보", "한 건 작성 영역과 추가 액션", "누적 목록", "고정 취소·저장"],
+      "visualTraits": ["우측 절반 안팎의 세로 작업면", "섹션 사이 간격과 옅은 구획", "입력 열을 규칙적으로 정렬", "목록이 남은 높이의 스크롤을 소유"],
+      "useWhen": ["공통 기준 아래 여러 결과 행을 반복 입력할 때", "저장 전에 누적 결과를 검토·삭제해야 할 때"],
+      "adaptWhen": ["중앙 작성 단계가 없으면 기본정보+목록의 2영역으로 줄인다.", "행 간 정렬 비교가 없으면 Table 대신 승인된 반복 행 조합을 검토한다.", "안내 박스는 실제 업무 설명이 필요할 때만 사용한다."],
+      "patternRefs": ["recipe.side-slide-entry-list", "popup.side.add-list", "section.staged-record-entry", "section.added-record-list"],
+      "componentRefs": ["side-slide-panel", "section-frame", "form-grid", "input", "select", "table", "button"]
+    },
+    {
+      "id": "foundation.slide.context-dependent-secondary",
+      "name": "대상 정보·조건별 확장 영역",
+      "surfaces": ["side-slide-panel"],
+      "purpose": "공통 대상 정보를 유지하면서 수용가·품목·설비·업무 유형에 따라 달라지는 검사·커스텀 정보·분류 값을 함께 작성한다.",
+      "informationRelationship": "좌측은 현재 대상과 공통 입력, 우측은 대상 또는 수용가 조건에 따라 달라지는 별도 정의의 정보다. 두 영역을 함께 보아야 작업 맥락이 유지된다.",
+      "composition": ["고정 팝업 헤더", "공통 대상·기본정보", "조건별 검사·커스텀·분류 영역", "필요한 추가/편집 액션", "고정 취소·저장"],
+      "visualTraits": ["두 영역 사이 한 줄 경계", "각 영역 제목의 위계를 동일한 방식으로 유지", "회색 섹션 밴드는 논리 구획이 있을 때만 사용", "우측 영역이 비어도 장식용 카드로 채우지 않음"],
+      "useWhen": ["고정 스키마와 조건별 확장 스키마를 동시에 편집할 때", "검사 대상을 보면서 대상별 검사항목을 판정할 때"],
+      "adaptWhen": ["정보 간 관계가 약하면 좌우 분할을 선택하지 않는다.", "우측 값이 단순 참고 한두 개면 같은 FormGrid 안의 보조 필드도 검토한다.", "좌우 분할이라는 외형만 빌려오지 않는다."],
+      "patternRefs": ["recipe.side-slide-custom-fields", "recipe.side-slide-inspection", "popup.side.custom-columns", "popup.side.inspection-items"],
+      "componentRefs": ["side-slide-panel", "section-frame", "form-grid", "input", "select", "radio", "button"]
+    }
+  ],
+  "sourceFrames": [
+    { "node": "11210:44855", "name": "판매계획 리스트-펼침", "purpose": "그룹 계층을 펼쳐 계획·실사용·상태를 비교", "character": "고밀도 그룹 목록", "recipeRefs": ["foundation.page.dense-entity-list"] },
+    { "node": "11210:48628", "name": "판매계획 리스트-접힘", "purpose": "같은 목록의 요약 계층과 전체 화면 틀 확인", "character": "접힌 그룹과 고정 하단 액션", "recipeRefs": ["foundation.page.dense-entity-list"] },
+    { "node": "11210:45915", "name": "공정검사 리스트", "purpose": "검사 대상·상태·결과를 행 기준으로 조회", "character": "상태 중심 업무 목록", "recipeRefs": ["foundation.page.dense-entity-list"] },
+    { "node": "11210:53641", "name": "출하지시 리스트 A", "purpose": "출하지시와 실적 진행률을 관리", "character": "기간 조회와 진행 상태 목록", "recipeRefs": ["foundation.page.dense-entity-list"] },
+    { "node": "11210:54766", "name": "출하지시 리스트 B", "purpose": "출하지시 목록의 대안 상태 보존", "character": "동일 문법의 변형", "recipeRefs": ["foundation.page.dense-entity-list"] },
+    { "node": "11210:46674", "name": "LOT 추적 리스트", "purpose": "LOT의 정전개·역전개 연결을 추적", "character": "방향 선택형 추적 목록", "recipeRefs": ["foundation.page.trace-master-detail"] },
+    { "node": "11210:52263", "name": "BOM 조회 리스트", "purpose": "품목을 선택하고 BOM 계층을 탐색", "character": "목록과 트리의 master-detail", "recipeRefs": ["foundation.page.trace-master-detail"] },
+    { "node": "11210:47263", "name": "대시보드", "purpose": "생산 실적·불량·가동률의 현재 현황 요약", "character": "차트 중심 운영 대시보드", "recipeRefs": ["foundation.page.operational-analysis"] },
+    { "node": "11210:47757", "name": "생산분석 현황", "purpose": "계획·실적·불량을 요약하고 상세 비교", "character": "KPI+표+차트 분석", "recipeRefs": ["foundation.page.operational-analysis"] },
+    { "node": "11210:48123", "name": "공정검사 경향관리", "purpose": "검사 달성률과 측정 추이를 비교", "character": "검사 KPI와 경향 분석", "recipeRefs": ["foundation.page.operational-analysis"] },
+    { "node": "11210:50866", "name": "생산계획 연동 일괄작업지시", "purpose": "계획 행을 선택해 지시 값을 입력하고 일괄 저장", "character": "선택 행 편집형 중앙 팝업", "recipeRefs": ["foundation.modal.bulk-row-work"] },
+    { "node": "11210:50481", "name": "판매목표 연동 일괄출하지시", "purpose": "판매예정 행을 선택해 출하지시를 일괄 확정", "character": "선택 행 편집형 중앙 팝업", "recipeRefs": ["foundation.modal.bulk-row-work"] },
+    { "node": "11210:52026", "name": "발주 일괄등록", "purpose": "여러 품목의 발주 정보를 공통·행별로 입력", "character": "공통값 적용+행 편집 중앙 팝업", "recipeRefs": ["foundation.modal.bulk-row-work"] },
+    { "node": "11210:51118", "name": "투입품목 설정/조회", "purpose": "BOM 유형을 고르고 재고 LOT와 투입수량을 선택", "character": "탐색 레일+선택 표", "recipeRefs": ["foundation.modal.reference-and-selection"] },
+    { "node": "11210:49488", "name": "라벨정보 확정", "purpose": "분할 수량과 LOT 생성 방식을 확인·확정", "character": "설정 가능한 참고 표", "recipeRefs": ["foundation.modal.reference-and-selection"] },
+    { "node": "11210:49627", "name": "냉각기 점검표", "purpose": "점검 이력과 측정값을 조회·선택", "character": "점검 목록 중앙 팝업", "recipeRefs": ["foundation.modal.reference-and-selection"] },
+    { "node": "11210:53155", "name": "출하등록 내역", "purpose": "출하 대상 LOT와 상태를 확인하고 선택", "character": "내역 선택 중앙 팝업", "recipeRefs": ["foundation.modal.reference-and-selection"] },
+    { "node": "11210:52744", "name": "품목 상세정보", "purpose": "한 품목의 포장 속성을 읽기 전용으로 확인", "character": "소형 키-값 상세", "recipeRefs": ["foundation.modal.compact-decision"] },
+    { "node": "11210:52829", "name": "취소/반품", "purpose": "삭제·반품 방식과 후속 재고 처리를 선택", "character": "조건부 단건 판단", "recipeRefs": ["foundation.modal.compact-decision"] },
+    { "node": "11210:52992", "name": "생산수량 입력", "purpose": "수기·자동 계산 방식에 따라 생산수량을 확정", "character": "선택에 따라 입력이 바뀌는 소형 팝업", "recipeRefs": ["foundation.modal.compact-decision"] },
+    { "node": "13328:32356", "name": "작업시간 설정", "purpose": "시작·종료 시간을 선택", "character": "시간 휠 소형 팝업", "recipeRefs": ["foundation.modal.compact-decision"] },
+    { "node": "11210:53064", "name": "입고수량등록", "purpose": "입고수량을 행별로 나누고 합계를 확정", "character": "소형 반복 행 편집", "recipeRefs": ["foundation.modal.compact-decision", "foundation.modal.comparison-and-analysis"] },
+    { "node": "11210:50177", "name": "BOM 기준 재고 분석", "purpose": "생산계획과 원부자재 소요·현재고·부족을 대조", "character": "이중 표와 부족 요약", "recipeRefs": ["foundation.modal.comparison-and-analysis"] },
+    { "node": "11210:51787", "name": "중량검사", "purpose": "Cavity별 측정값과 검사 결과를 판정", "character": "기준 요약+측정 그리드", "recipeRefs": ["foundation.modal.comparison-and-analysis"] },
+    { "node": "11210:48851", "name": "생산실적 등록", "purpose": "지시·실적 공통정보 아래 실적 행을 반복 추가", "character": "세로 단계형 우측 슬라이드", "recipeRefs": ["foundation.slide.staged-entry-list"] },
+    { "node": "11210:49261", "name": "입고등록", "purpose": "거래처·입고일을 기준으로 LOT별 품목을 누적 등록", "character": "기본정보+한 건 입력+누적 목록", "recipeRefs": ["foundation.slide.staged-entry-list"] },
+    { "node": "11210:51420", "name": "자주검사", "purpose": "검사 대상 정보를 보며 대상별 검사항목을 판정", "character": "대상정보+검사항목 좌우 분할", "recipeRefs": ["foundation.slide.context-dependent-secondary"] },
+    { "node": "11210:51570", "name": "정보유형", "purpose": "품목 기본정보와 사용자 정의 정보 스키마를 함께 설정", "character": "고정정보+커스텀정보 좌우 분할", "recipeRefs": ["foundation.slide.context-dependent-secondary"] },
+    { "node": "11210:53517", "name": "운전일지", "purpose": "기본 운전정보와 설비별 커스텀 비가동 분류를 기록", "character": "공통 일지+조건별 분류 좌우 분할", "recipeRefs": ["foundation.slide.context-dependent-secondary"] }
+  ],
+  "unresolvedFrames": [
+    { "node": "11210:52919", "name": "불량수량 입력 팝업", "reason": "Figma design-context 캡처에서 콘텐츠가 확인되지 않아 기초 레시피 근거로 사용하지 않음" }
+  ]
+}

@@ -415,6 +415,64 @@ export interface WebGenerationContextRegistry {
   };
 }
 
+export interface FoundationRecipeEntry {
+  id: string;
+  name: string;
+  surfaces: Array<"page" | "center-modal" | "side-slide-panel" | "confirm-dialog">;
+  purpose: string;
+  informationRelationship: string;
+  composition: string[];
+  visualTraits: string[];
+  useWhen: string[];
+  adaptWhen: string[];
+  patternRefs: string[];
+  componentRefs: string[];
+}
+
+export interface FoundationRecipeRegistry {
+  schemaVersion: 1;
+  policyId: "mes.figma-foundation-recipes";
+  status: "active";
+  authority: "reference-only";
+  source: {
+    fileKey: string;
+    sectionNode: string;
+    sectionName: string;
+    inspectedOn: string;
+    desktopViewport: { width: number; height: number };
+    scope: string;
+    designEra: "legacy-foundation";
+  };
+  policy: {
+    purpose: string;
+    selection: string;
+    adaptation: string;
+    nonBinding: string;
+    fidelity: string;
+    currentAssetPrecedence: string;
+    legacyTranslation: string;
+    normalization: string;
+    recording: string;
+  };
+  visualLanguage: {
+    character: string[];
+    density: Record<string, string>;
+    hierarchy: string[];
+    applicationFrame: string[];
+    controlsAndStates: string[];
+    avoid: string[];
+  };
+  recipeFamilies: FoundationRecipeEntry[];
+  sourceFrames: Array<{
+    node: string;
+    name: string;
+    purpose: string;
+    character: string;
+    recipeRefs: string[];
+  }>;
+  unresolvedFrames: Array<{ node: string; name: string; reason: string }>;
+}
+
 export type ScreenRequestIntent = "reproduce" | "new" | "normalize" | "audit";
 export type ScreenTargetKind = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
 export type NormalizationClassification = "source-error" | "implementation-error" | "intentional-exception" | "normalization-candidate";

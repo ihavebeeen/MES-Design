@@ -29,6 +29,7 @@ import screenSpecData from "./screen-specs.json";
 import webUiUsageInventoryData from "./web-ui-usage-inventory.json";
 import webFigmaReconciliationData from "./web-figma-reconciliation.json";
 import webGenerationContextData from "./web-generation-context.json";
+import foundationRecipeData from "./foundation-recipes.json";
 import type {
   ComponentRegistry,
   AssetManifestRegistry,
@@ -61,6 +62,7 @@ import type {
   WebUiUsageInventoryRegistry,
   WebFigmaReconciliationRegistry,
   WebGenerationContextRegistry,
+  FoundationRecipeRegistry,
 } from "./registry.types";
 
 export type * from "./registry.types";
@@ -95,6 +97,7 @@ export const screenSpecRegistry = screenSpecData as ScreenSpecRegistry;
 export const webUiUsageInventoryRegistry = webUiUsageInventoryData as WebUiUsageInventoryRegistry;
 export const webFigmaReconciliationRegistry = webFigmaReconciliationData as WebFigmaReconciliationRegistry;
 export const webGenerationContextRegistry = webGenerationContextData as WebGenerationContextRegistry;
+export const foundationRecipeRegistry = foundationRecipeData as FoundationRecipeRegistry;
 
 export function getComponent(id: string) {
   return componentRegistry.components.find((component) => component.id === id);
@@ -141,6 +144,21 @@ export function getScreenSpec(screenId: string) {
   return screenSpecRegistry.specs.find((spec) => spec.screenId === screenId);
 }
 
+export function getFoundationRecipe(id: string) {
+  return foundationRecipeRegistry.recipeFamilies.find((recipe) => recipe.id === id);
+}
+
+export function getFoundationRecipes(reference = "", targetKind?: "page" | "center-modal" | "side-slide-panel" | "confirm-dialog") {
+  const normalized = reference.trim().toLocaleLowerCase("ko-KR");
+  const matches = (recipe: FoundationRecipeRegistry["recipeFamilies"][number]) => normalized !== "" && JSON.stringify({
+    recipe,
+    sourceFrames: foundationRecipeRegistry.sourceFrames.filter((frame) => frame.recipeRefs.includes(recipe.id)),
+  }).toLocaleLowerCase("ko-KR").includes(normalized);
+  return foundationRecipeRegistry.recipeFamilies.filter((recipe) =>
+    (!targetKind || recipe.surfaces.includes(targetKind)) && (normalized === "" || matches(recipe)),
+  );
+}
+
 /** 원본 없는 신규 UI 생성에 사용할 실제 MES의 반복 조합 문법을 조회한다. */
 export function getWebGenerationContext(reference = "") {
   const normalized = reference.trim().toLocaleLowerCase("ko-KR");
@@ -172,6 +190,8 @@ export function getWebGenerationContext(reference = "") {
       normalized === "" || entry.evidenceFlowIds.some((id) => flowIds.has(id)) || matches(entry),
     ),
     behaviorRules: webGenerationContextRegistry.behaviorRules.filter((entry) => normalized === "" || matches(entry)),
+    foundationRecipes: getFoundationRecipes(reference),
+    foundationVisualLanguage: foundationRecipeRegistry.visualLanguage,
     nearestObservedExamples: { pages, entryFlows: flows },
     coverage: webGenerationContextRegistry.coverage,
   };
@@ -232,6 +252,8 @@ export function getScreenRequestOptions() {
     behaviors: patternRegistry.patterns.filter(({ kind }) => kind === "behavior"),
     actionSets: actionSetRegistry.actionSets,
     templates: generationTemplateRegistry.templates,
+    foundationRecipes: foundationRecipeRegistry.recipeFamilies,
+    foundationVisualLanguage: foundationRecipeRegistry.visualLanguage,
     structuredScreenSpecs: screenSpecRegistry.specs.map(({ screenId, targetKind, shellRef, sections, actionSetRef }) => ({
       screenId,
       targetKind,
@@ -251,6 +273,7 @@ export function getGenerationContext() {
     rules: contextRuleRegistry.rules,
     holds: contextRuleRegistry.holds,
     webGenerationContext: webGenerationContextRegistry,
+    foundationRecipes: foundationRecipeRegistry,
   };
 }
 
@@ -292,5 +315,9 @@ export function getImplementationContext(screenId: string) {
     ),
     contextGlobalGates: contextRuleRegistry.globalGates,
     webGenerationContext: getWebGenerationContext(screenId),
+    foundationRecipes: foundationRecipeRegistry.recipeFamilies.filter((recipe) =>
+      recipe.patternRefs.some((patternRef) => screen.patternRefs.includes(patternRef)),
+    ),
+    foundationVisualLanguage: foundationRecipeRegistry.visualLanguage,
   };
 }

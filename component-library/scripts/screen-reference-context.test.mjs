@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
-import { getScreenReferences, getRequestReferences, loadReferenceSources, validateUsageContexts } from "./screen-reference-context.mjs";
+import { getScreenReferences, getRequestReferences, loadReferenceSources, validateFoundationRecipes, validateUsageContexts } from "./screen-reference-context.mjs";
 import { contractFingerprint, readRegistryBundle, resolveScreenRequest } from "./resolve-screen-request.mjs";
 import { generateScreenTsx } from "./generate-screen-tsx.mjs";
 import { auditScreenImplementation } from "./audit-screen-implementation.mjs";
@@ -42,6 +42,36 @@ test("usage references cover all desktop surfaces and point to real patterns/que
     assert.ok(result.usage.length > 0);
     assert.ok(result.usage.every(c => c.surfaces.includes(targetKind)));
   }
+});
+
+test("Figma foundation recipes preserve purpose, visual character and valid MES references without enforcing a layout", () => {
+  assert.deepEqual(validateFoundationRecipes(sources.foundation), []);
+  assert.equal(sources.foundation.authority, "reference-only");
+  assert.equal(sources.foundation.source.sectionNode, "20274:73333");
+  assert.equal(sources.foundation.source.designEra, "legacy-foundation");
+  assert.ok(sources.foundation.policy.currentAssetPrecedence.includes("현재 승인 컴포넌트"));
+  assert.ok(sources.foundation.policy.currentAssetPrecedence.includes("세로 구분선"));
+  assert.ok(sources.foundation.policy.legacyTranslation.includes("로컬 CSS"));
+  assert.ok(sources.foundation.recipeFamilies.length >= 9);
+  assert.ok(sources.foundation.sourceFrames.length >= 25);
+  assert.ok(sources.foundation.visualLanguage.character.length > 0);
+  assert.ok(sources.foundation.visualLanguage.avoid.some(line => line.includes("좌우·상하 분할")));
+  const patterns = new Set(registry.patterns.map(pattern => pattern.id));
+  const components = new Set(registry.components.map(component => component.id));
+  for (const recipe of sources.foundation.recipeFamilies) {
+    assert.ok(recipe.purpose && recipe.informationRelationship);
+    assert.ok(recipe.composition.length && recipe.visualTraits.length && recipe.adaptWhen.length);
+    for (const ref of recipe.patternRefs) assert.ok(patterns.has(ref), `${recipe.id}: unknown pattern ${ref}`);
+    for (const ref of recipe.componentRefs) assert.ok(components.has(ref), `${recipe.id}: unknown component ${ref}`);
+  }
+  const result = getScreenReferences({
+    targetKind: "side-slide-panel",
+    foundationRecipeIds: ["foundation.slide.context-dependent-secondary"],
+  }, sources);
+  assert.deepEqual(result.foundationRecipes.map(recipe => recipe.id), ["foundation.slide.context-dependent-secondary"]);
+  assert.equal(result.enforcement, "none");
+  assert.ok(result.limitation.includes("목적·정보 관계·컴포넌트 연결을 먼저"));
+  assert.ok(result.limitation.includes("현재 승인된 MES 컴포넌트가 우선"));
 });
 
 test("popup references explain component context before the resulting composition", () => {

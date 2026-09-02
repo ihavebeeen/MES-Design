@@ -166,7 +166,7 @@ export function createMesUiMcpServer() {
     "mes_list_design_system",
     {
       title: "MES 디자인 시스템 조회",
-      description: "화면 설계 전에 등록된 MES 컴포넌트, 패턴, 사용 계약, 순서형 화면 명세, 결정형 생성 템플릿을 조회합니다.",
+      description: "화면 설계 전에 등록된 MES 컴포넌트, 패턴, 사용 계약, 기초 화면 레시피, 순서형 화면 명세, 결정형 생성 템플릿을 조회합니다.",
       inputSchema: z.object({
         query: z.string().trim().optional().describe("ID·이름·종류 검색어"),
         limit: z.number().int().min(1).max(100).default(30),
@@ -194,6 +194,7 @@ export function createMesUiMcpServer() {
           webGenerationPageArchetypes: registry.webGenerationContext.pageArchetypes.length,
           webGenerationOverlayGrammars: registry.webGenerationContext.overlayGrammars.length,
           webGenerationSectionRecipes: registry.webGenerationContext.sectionRecipes.length,
+          foundationRecipes: registry.foundationRecipes.recipeFamilies.length,
         },
         components: filterEntries(registry.components, query, limit),
         patterns: filterEntries(registry.patterns, query, limit),
@@ -204,6 +205,7 @@ export function createMesUiMcpServer() {
         screenSpecs: filterDetailedEntries(screenSpecs, query, limit),
         generationTemplates: filterEntries(registry.generationTemplates, query, limit),
         mobile: filterEntries(mobile, query, limit),
+        foundationRecipes: filterDetailedEntries(registry.foundationRecipes.recipeFamilies, query, limit),
       };
       return toolResult("MES 디자인 시스템 조회 완료", result);
     }),
@@ -213,7 +215,7 @@ export function createMesUiMcpServer() {
     "mes_get_web_generation_context",
     {
       title: "MES 신규 UI 생성 맥락 조회",
-      description: "신규 UI의 업무 정보·정보 관계와 페이지·팝업·섹션 사용 사례를 참고용으로 조회합니다. 배치·필수값을 강제하지 않으며 Figma 대조와 미검증 수치는 반환하지 않습니다.",
+      description: "신규 UI의 업무 정보·정보 관계, 페이지·팝업·섹션 사용 사례와 Figma 기초 화면에서 추출한 시각·구성 레시피를 참고용으로 조회합니다. 배치·필수값을 강제하지 않습니다.",
       inputSchema: z.object({
         category: z.enum(["all", "pages", "overlays", "sections", "behaviors", "references"]).default("all"),
         query: z.string().trim().optional().describe("신규 화면의 업무명·화면 성격·가까운 메뉴명"),
@@ -236,12 +238,16 @@ export function createMesUiMcpServer() {
       const flowIds = new Set(flows.map((flow) => flow.id));
       const archetypeRefs = new Set(pages.map((page) => page.archetypeRef));
       const select = (entries, evidence = () => false) => entries.filter((entry) => matches(entry) || evidence(entry)).slice(0, limit);
+      const referenceContext = getScreenReferences({ query, targetKind, taskIds, usageIds, limit: Math.min(limit, 6) });
       return toolResult("MES 신규 UI 생성 맥락 조회 완료", {
         status: context.status,
         purpose: context.purpose,
         policy: context.policy,
         decisionOrder: context.decisionOrder,
-        referenceContext: getScreenReferences({ query, targetKind, taskIds, usageIds, limit: Math.min(limit, 6) }),
+        referenceContext,
+        foundationPolicy: referenceContext.foundationPolicy,
+        foundationVisualLanguage: referenceContext.foundationVisualLanguage,
+        foundationRecipes: referenceContext.foundationRecipes,
         pageArchetypes: category === "all" || category === "pages" ? select(context.pageArchetypes, (entry) => archetypeRefs.has(entry.observedArchetypeRef)) : [],
         overlayGrammars: category === "all" || category === "overlays" ? select(context.overlayGrammars, (entry) => entry.evidenceFlowIds.some((id) => flowIds.has(id))) : [],
         sectionRecipes: category === "all" || category === "sections" ? select(context.sectionRecipes, (entry) => entry.evidenceFlowIds.some((id) => flowIds.has(id))) : [],

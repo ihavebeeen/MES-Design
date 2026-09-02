@@ -51,6 +51,7 @@ export function readRegistryBundle() {
   const webUiUsageInventory = readJson(join(registryDirectory, "web-ui-usage-inventory.json"));
   const webFigmaReconciliation = readJson(join(registryDirectory, "web-figma-reconciliation.json"));
   const webGenerationContext = readJson(join(registryDirectory, "web-generation-context.json"));
+  const foundationRecipes = readJson(join(registryDirectory, "foundation-recipes.json"));
 
   return {
     components: components.components,
@@ -71,6 +72,7 @@ export function readRegistryBundle() {
     webUiUsageInventory,
     webFigmaReconciliation,
     webGenerationContext,
+    foundationRecipes,
   };
 }
 

@@ -36,6 +36,7 @@ const screenSpecRegistry = readJson("screen-specs.json");
 const webUiUsageInventoryRegistry = readJson("web-ui-usage-inventory.json");
 const webFigmaReconciliationRegistry = readJson("web-figma-reconciliation.json");
 const webGenerationContextRegistry = readJson("web-generation-context.json");
+const foundationRecipeRegistry = readJson("foundation-recipes.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -94,6 +95,7 @@ checkVersion("screen-specs", screenSpecRegistry);
 checkVersion("web-ui-usage-inventory", webUiUsageInventoryRegistry);
 checkVersion("web-figma-reconciliation", webFigmaReconciliationRegistry);
 checkVersion("web-generation-context", webGenerationContextRegistry);
+checkVersion("foundation-recipes", foundationRecipeRegistry);
 
 const mobileAssets = new Set([
   ...(mobileAssetRegistry.foundations ?? []).map((entry) => entry.id),
@@ -317,6 +319,7 @@ for (const [componentId, component] of components) {
 }
 const patterns = mapByUniqueId("patterns", patternRegistry.patterns ?? []);
 const screens = mapByUniqueId("screens", screenRegistry.screens ?? []);
+const foundationRecipes = mapByUniqueId("foundation-recipes", foundationRecipeRegistry.recipeFamilies ?? []);
 const generationTemplates = mapByUniqueId("generation-templates", generationTemplateRegistry.templates ?? []);
 const visualCases = mapByUniqueId("visual-regression", visualRegistry.cases ?? []);
 const sourceEvidence = mapByUniqueId("source-evidence", sourceEvidenceRegistry.sources ?? []);
@@ -333,6 +336,42 @@ const webUsagePages = mapByUniqueId("web-ui-usage-inventory pages", webUiUsageIn
 const webUsageFlows = mapByUniqueId("web-ui-usage-inventory entry flows", webUiUsageInventoryRegistry.entryFlows ?? []);
 const webUsageConnections = mapByUniqueId("web-ui-usage-inventory connections", webUiUsageInventoryRegistry.connectedObservations ?? []);
 const webUsageDiscrepancies = mapByUniqueId("web-ui-usage-inventory discrepancies", webUiUsageInventoryRegistry.discrepancies ?? []);
+
+if (foundationRecipeRegistry.policyId !== "mes.figma-foundation-recipes") errors.push("foundation-recipes: policyId가 잘못되었습니다.");
+if (foundationRecipeRegistry.authority !== "reference-only" || foundationRecipeRegistry.status !== "active") errors.push("foundation-recipes: reference-only active 원장이어야 합니다.");
+if (!/^\d+:\d+$/.test(foundationRecipeRegistry.source?.sectionNode ?? "")) errors.push("foundation-recipes: source.sectionNode가 필요합니다.");
+if (!/^\d{4}-\d{2}-\d{2}$/.test(foundationRecipeRegistry.source?.inspectedOn ?? "")) errors.push("foundation-recipes: inspectedOn은 YYYY-MM-DD 형식이어야 합니다.");
+if (foundationRecipeRegistry.source?.desktopViewport?.width !== 1920 || foundationRecipeRegistry.source?.desktopViewport?.height !== 960) errors.push("foundation-recipes: 분석한 데스크톱 viewport가 필요합니다.");
+if (foundationRecipeRegistry.source?.designEra !== "legacy-foundation") errors.push("foundation-recipes: 초기 디자인 근거는 legacy-foundation으로 표시해야 합니다.");
+for (const field of ["purpose", "selection", "adaptation", "nonBinding", "fidelity", "currentAssetPrecedence", "legacyTranslation", "normalization", "recording"]) {
+  if (typeof foundationRecipeRegistry.policy?.[field] !== "string" || !foundationRecipeRegistry.policy[field].trim()) errors.push(`foundation-recipes: policy.${field}가 필요합니다.`);
+}
+if (!foundationRecipeRegistry.policy.currentAssetPrecedence.includes("현재") || !foundationRecipeRegistry.policy.currentAssetPrecedence.includes("우선")) errors.push("foundation-recipes: 현재 승인 컴포넌트 우선순위가 명시되어야 합니다.");
+if (!foundationRecipeRegistry.policy.legacyTranslation.includes("로컬 CSS")) errors.push("foundation-recipes: 과거 외형 복제를 위한 로컬 CSS 금지 규칙이 필요합니다.");
+for (const field of ["character", "hierarchy", "applicationFrame", "controlsAndStates", "avoid"]) {
+  if (!Array.isArray(foundationRecipeRegistry.visualLanguage?.[field]) || foundationRecipeRegistry.visualLanguage[field].length === 0) errors.push(`foundation-recipes: visualLanguage.${field}가 필요합니다.`);
+}
+const allowedFoundationSurfaces = new Set(["page", "center-modal", "side-slide-panel", "confirm-dialog"]);
+for (const recipe of foundationRecipes.values()) {
+  for (const field of ["purpose", "informationRelationship"]) if (typeof recipe[field] !== "string" || !recipe[field].trim()) errors.push(`foundation-recipes '${recipe.id}': ${field}가 필요합니다.`);
+  for (const field of ["surfaces", "composition", "visualTraits", "useWhen", "adaptWhen", "patternRefs", "componentRefs"]) {
+    if (!Array.isArray(recipe[field]) || recipe[field].length === 0) errors.push(`foundation-recipes '${recipe.id}': ${field}가 필요합니다.`);
+  }
+  for (const surface of recipe.surfaces ?? []) if (!allowedFoundationSurfaces.has(surface)) errors.push(`foundation-recipes '${recipe.id}': 알 수 없는 surface '${surface}'`);
+  for (const ref of recipe.patternRefs ?? []) if (!patterns.has(ref)) errors.push(`foundation-recipes '${recipe.id}': 미등록 pattern '${ref}'`);
+  for (const ref of recipe.componentRefs ?? []) if (!components.has(ref)) errors.push(`foundation-recipes '${recipe.id}': 미등록 component '${ref}'`);
+}
+const foundationSourceNodes = new Set();
+for (const frame of foundationRecipeRegistry.sourceFrames ?? []) {
+  if (!/^\d+:\d+$/.test(frame.node ?? "")) errors.push(`foundation-recipes source frame: node '${frame.node ?? ""}' 형식이 잘못되었습니다.`);
+  if (foundationSourceNodes.has(frame.node)) errors.push(`foundation-recipes source frame: 중복 node '${frame.node}'`);
+  foundationSourceNodes.add(frame.node);
+  for (const ref of frame.recipeRefs ?? []) if (!foundationRecipes.has(ref)) errors.push(`foundation-recipes source frame '${frame.node}': 미등록 recipe '${ref}'`);
+}
+for (const frame of foundationRecipeRegistry.unresolvedFrames ?? []) {
+  if (!/^\d+:\d+$/.test(frame.node ?? "") || !frame.reason) errors.push("foundation-recipes unresolved frame: node와 reason이 필요합니다.");
+  if (foundationSourceNodes.has(frame.node)) errors.push(`foundation-recipes: '${frame.node}'가 sourceFrames와 unresolvedFrames에 동시에 있습니다.`);
+}
 
 if (webUiUsageInventoryRegistry.status !== "observed-in-progress") errors.push("web-ui-usage-inventory: status는 observed-in-progress여야 합니다.");
 if (webUiUsageInventoryRegistry.usagePolicy?.authority !== "observed-not-canonical") errors.push("web-ui-usage-inventory: 실제 웹 관찰값은 observed-not-canonical이어야 합니다.");

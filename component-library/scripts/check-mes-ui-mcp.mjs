@@ -86,6 +86,7 @@ try {
   assert(catalog.counts.webGenerationPageArchetypes === 4, "신규 생성용 페이지 문법 수가 예상과 다릅니다.");
   assert(catalog.counts.webGenerationOverlayGrammars === 4, "신규 생성용 팝업 문법 수가 예상과 다릅니다.");
   assert(catalog.counts.webGenerationSectionRecipes === 4, "신규 생성용 섹션 문법 수가 예상과 다릅니다.");
+  assert(catalog.counts.foundationRecipes === 9, "Figma 기초 화면 레시피 수가 예상과 다릅니다.");
   assert(catalog.componentUsageContracts.some((entry) => entry.componentId === "side-slide-panel" && entry.useWhen.length > 0), "MCP 목록이 컴포넌트 사용 계약 상세를 반환하지 않았습니다.");
   assert(catalog.componentSelectionContexts.some((entry) => entry.componentId === "side-slide-panel" && entry.useWhen.length > 0), "MCP 목록이 컴포넌트 선택 맥락을 반환하지 않았습니다.");
   const listFooterCatalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "main-list-footer-actions", limit: 10 } }));
@@ -109,6 +110,8 @@ try {
   assert(pageQueryContract?.forbiddenImplementationMarkers?.includes("Pagination"), "MCP 목록이 선택 패턴의 금지 대체 계약을 반환하지 않았습니다.");
   assert(pageQueryContract?.entryBehaviorContracts?.["row-double-click"]?.requiredComponentProps?.includes("Table.onRowDoubleClick"), "MCP 목록이 선택 패턴의 진입 동작 계약을 반환하지 않았습니다.");
   assert(catalog.counts.mobileAssets > 0, "모바일 자산이 MCP 목록에 포함되지 않았습니다.");
+  const foundationCatalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "foundation.slide", limit: 10 } }));
+  assert(foundationCatalog.foundationRecipes.length === 2, "MCP 목록에서 우측 슬라이드 기초 레시피를 찾지 못했습니다.");
   const mobile = structured(await client.callTool({ name: "mes_get_mobile_context", arguments: { category: "screens" } }));
   assert(mobile.screenTypes.main.count === 12, "모바일 메인 화면 유형 수가 예상과 다릅니다.");
   assert(mobile.screenTypes.slidePopup.count === 13, "모바일 슬라이드 팝업 유형 수가 예상과 다릅니다.");
@@ -116,6 +119,8 @@ try {
   assert(webGeneration.policy.authority === "observed-generation-guidance", "신규 UI 생성 문법의 권한이 잘못 노출됐습니다.");
   assert(webGeneration.nearestObservedExamples.pages.some((entry) => entry.id === "web.production-result"), "생산실적과 가까운 실제 웹 예시를 찾지 못했습니다.");
   assert(webGeneration.overlayGrammars.some((entry) => entry.id === "generation.overlay.select-then-register"), "선택 후 등록 팝업 문법을 찾지 못했습니다.");
+  assert(webGeneration.foundationVisualLanguage.character.length > 0, "신규 UI 생성 맥락에 MES 시각 언어가 누락됐습니다.");
+  assert(webGeneration.foundationRecipes.some((entry) => entry.id === "foundation.slide.staged-entry-list"), "생산실적과 가까운 기초 레시피를 찾지 못했습니다.");
   assert(!("figmaReconciliation" in webGeneration), "신규 UI 생성 컨텍스트에 Figma 감사 정보가 섞였습니다.");
   const references = structured(await client.callTool({ name: "mes_get_web_generation_context", arguments: { category: "references", taskIds: ["receiving.register"], usageIds: ["usage.entry-list"], targetKind: "page" } }));
   assert(references.referenceContext.enforcement === "none", "업무/사용 맥락은 참고 전용이어야 합니다.");

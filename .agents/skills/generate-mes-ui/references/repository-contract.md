@@ -9,9 +9,10 @@ Read in this order:
 3. `component-library/src/design-system/registry/screens.json`, `screen-specs.json`, and `source-assets.json` for nearest-screen composition and ordered section instances.
 4. `component-library/src/design-system/registry/patterns.json` and `pattern-contracts.json` for shell, section, behavior, action-set, slots, state, and boundary contracts.
 5. `component-library/src/design-system/registry/components.json` and `component-usage-contracts.json` for approved implementation sources, maturity, use/exclusion conditions, parents, and alternatives.
-6. For `reproduce`, `normalize`, or `audit`, `web-ui-usage-inventory.json`, `web-figma-reconciliation.json`, `source-evidence.json`, and `visual-regression.json` for target-specific fidelity claims.
-7. `component-library/src/design-system/registry/generation-templates.json` for deterministic TSX support and maturity.
-8. `component-library/src/design-system/registry/generated-screen-evaluations.json` only as quarantined prototype history unless `influence` is `approved`.
+6. For `new`, `component-library/src/design-system/registry/foundation-recipes.json` for reference-only purpose, composition character and visual-language candidates after the task and asset connections are understood. It is not an executable template or selector. It represents a legacy design era: current registered MES component defaults, variants, states and interactions take precedence over conflicting source-frame visuals.
+7. For `reproduce`, `normalize`, or `audit`, `web-ui-usage-inventory.json`, `web-figma-reconciliation.json`, `source-evidence.json`, and `visual-regression.json` for target-specific fidelity claims.
+8. `component-library/src/design-system/registry/generation-templates.json` for deterministic TSX support and maturity.
+9. `component-library/src/design-system/registry/generated-screen-evaluations.json` only as quarantined prototype history unless `influence` is `approved`.
 
 Experimental candidates are discovery material, not generation dependencies.
 
@@ -56,6 +57,7 @@ The resolved contract includes `decisionTrace` for selection provenance. Many re
 ## Fidelity and normalization
 
 - Figma is authoritative for source content, hierarchy, state, and measured geometry.
+- The `foundation-recipes.json` source section is an explicit exception to treating old control styling as current authority. Preserve its purpose, information relationships and composition character, but render controls through the current registry. Do not remove current Table separators, current input states or current shell behavior because the legacy frame predates them.
 - Registry rules are authoritative for approved reusable components and normalized system values.
 - When they differ, record the difference as `source-error`, `implementation-error`, `intentional-exception`, or `normalization-candidate` before changing it.
 - Exact reproduction requires a Figma node and browser/visual evidence. Without those, label the result as a prototype or implementation, not verified.
