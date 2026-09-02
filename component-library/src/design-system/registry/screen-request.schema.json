@@ -37,7 +37,11 @@
       "properties": {
         "figmaNode": { "type": "string", "pattern": "^\\d+:\\d+$" },
         "sourceRoute": { "type": "string", "minLength": 1 },
-        "notes": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+        "notes": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "decisions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/decisionEvidence" }
+        }
       }
     },
     "webContext": {
@@ -114,6 +118,11 @@
           "type": "string",
           "minLength": 1,
           "description": "Registered-screen or explicit user-approval evidence required when entryBehavior is explicit-action."
+        },
+        "entryEvidenceRef": {
+          "type": "string",
+          "pattern": "^[a-z][A-Za-z0-9.-]*$",
+          "description": "evidence.decisions에서 실제 진입 동작 근거를 가리킨다."
         }
       }
     },
@@ -128,6 +137,31 @@
     }
   },
   "$defs": {
+    "decisionEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "questionId", "state", "sourceType", "sourceRef", "statement"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][A-Za-z0-9.-]*$" },
+        "questionId": { "type": "string", "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z0-9-]+)+$" },
+        "state": { "enum": ["confirmed", "supported", "assumed", "unresolved"] },
+        "sourceType": { "enum": ["user-request", "functional-spec", "registered-contract", "figma-source", "mes-reference", "agent-proposal"] },
+        "sourceRef": { "type": "string", "minLength": 1 },
+        "statement": { "type": "string", "minLength": 1 },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["option", "reason"],
+            "properties": {
+              "option": { "type": "string", "minLength": 1 },
+              "reason": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
     "assetDecisions": {
       "type": "object",
       "description": "ScreenRequest 확정 전에 검토한 의미 요소와 채택 결정을 보존한다. 후보 추천은 자동 선택이나 생성 차단이 아니다.",
@@ -164,6 +198,7 @@
         "decision": { "enum": ["selected", "deferred", "not-applicable", "propose-new"] },
         "selectedComponentRef": { "type": "string", "minLength": 1 },
         "candidateComponentRefs": { "$ref": "#/$defs/refList" },
+        "evidenceRef": { "type": "string", "pattern": "^[a-z][A-Za-z0-9.-]*$" },
         "reason": { "type": "string", "minLength": 1 }
       },
       "allOf": [

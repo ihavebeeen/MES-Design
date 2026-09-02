@@ -52,12 +52,13 @@ test("메인 리스트 하단 액션은 parent 맥락까지 맞는 복합 자산
     impact: "business-behavior",
     decision: "selected",
     selectedComponentRef: "main-list-footer-actions",
+    evidenceRef: "footerActionEvidence",
   }]), registry);
   assert.equal(result.elements[0].selectedMatch, "exact");
   assert.equal(result.warningCount, 0);
 });
 
-test("미확정 업무 동작의 자산 선택은 질문 대상으로 남기고 blocker로 만들지 않는다", () => {
+test("미확정 업무 동작의 자산 선택은 질문 대상으로 남기고 blocker로 처리한다", () => {
   const result = reviewScreenAssetSelection(draft([{
     id: "footerActions",
     label: "메인 리스트 하단 액션",
@@ -68,9 +69,25 @@ test("미확정 업무 동작의 자산 선택은 질문 대상으로 남기고 
     impact: "business-behavior",
     decision: "selected",
     selectedComponentRef: "main-list-footer-actions",
+    evidenceRef: "footerActionEvidence",
   }]), registry);
-  assert.equal(result.blockerCount, 0);
-  assert.ok(result.findings.some((entry) => entry.code === "asset-selection.unconfirmed-business-decision"));
+  assert.ok(result.blockerCount > 0);
+  assert.ok(result.findings.some((entry) => entry.code === "asset-selection.unconfirmed-business-decision" && entry.severity === "blocker"));
+});
+
+test("선택한 업무 동작에 판단 근거 연결이 없으면 차단한다", () => {
+  const result = reviewScreenAssetSelection(draft([{
+    id: "footerActions",
+    label: "메인 리스트 하단 액션",
+    category: "actions",
+    capability: "main-list-actions",
+    parentRefs: ["screen.entity-list"],
+    basis: "supported",
+    impact: "business-behavior",
+    decision: "selected",
+    selectedComponentRef: "main-list-footer-actions",
+  }]), registry);
+  assert.ok(result.findings.some((entry) => entry.code === "asset-selection.business-evidence" && entry.severity === "blocker"));
 });
 
 test("기존 후보가 없는 의미는 신규 자산을 강제하지 않고 추가 검색 대상으로 남긴다", () => {
@@ -103,6 +120,18 @@ test("ScreenRequest에 채택한 자산은 실제 composition 연결 여부까�
       impact: "business-behavior",
       decision: "selected",
       selectedComponentRef: "main-list-footer-actions",
+      evidenceRef: "footerActionEvidence",
+    }],
+  };
+  request.evidence = {
+    ...(request.evidence ?? {}),
+    decisions: [{
+      id: "footerActionEvidence",
+      questionId: "screen.workflow",
+      state: "supported",
+      sourceType: "registered-contract",
+      sourceRef: "context-rules.json#main-list-footer-actions",
+      statement: "선택한 목록 대상에 실제 업무 액션을 적용한다.",
     }],
   };
 
@@ -122,6 +151,42 @@ test("검토하지 않은 범주는 누락 가능성만 알리고 차단하지 �
   assert.equal(result.blockerCount, 0);
   assert.ok(result.unreviewedCategories.includes("actions"));
   assert.ok(result.findings.some((entry) => entry.code === "asset-selection.category-unreviewed" && entry.severity === "info"));
+});
+
+test("팝업 방향을 사용자 확정으로 기록하려면 실제 사용자 원문이 필요하다", () => {
+  const request = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json"), "utf8"));
+  request.assetDecisions = { schemaVersion: 1, elements: [] };
+  request.evidence = {
+    ...(request.evidence ?? {}),
+    decisions: [{
+      id: "screenDirectionEvidence",
+      questionId: "screen.direction",
+      state: "confirmed",
+      sourceType: "registered-contract",
+      sourceRef: "context-rules.json#overlay",
+      statement: "우측 슬라이드 팝업을 사용한다.",
+    }],
+  };
+  const result = resolveScreenRequest(request, registry);
+  assert.ok(result.quality.issues.some((entry) => entry.code === "request.false-confirmed-evidence"));
+});
+
+test("지원 근거로 팝업 방향을 선택할 때 가까운 대안 비교가 필요하다", () => {
+  const request = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json"), "utf8"));
+  request.assetDecisions = { schemaVersion: 1, elements: [] };
+  request.evidence = {
+    ...(request.evidence ?? {}),
+    decisions: [{
+      id: "screenDirectionEvidence",
+      questionId: "screen.direction",
+      state: "supported",
+      sourceType: "registered-contract",
+      sourceRef: "context-rules.json#overlay",
+      statement: "목록 맥락을 유지하는 연속 작업을 위해 우측 패널을 검토한다.",
+    }],
+  };
+  const result = resolveScreenRequest(request, registry);
+  assert.ok(result.quality.issues.some((entry) => entry.code === "request.screen-direction-comparison"));
 });
 
 test("모든 등록 컴포넌트는 최소 선택 맥락을 가지며 상세 계약이 없어도 의미 후보가 된다", () => {

@@ -27,7 +27,7 @@ export function validateHostPage(host, kind) {
   const errors = [];
   if (!host || typeof host !== "object" || Array.isArray(host)) return ["hostPage 객체가 필요합니다."];
   if (kind === "page") errors.push("page는 자체 공통 틀을 사용하며 hostPage를 중첩하지 않습니다.");
-  for (const key of Object.keys(host)) if (!["sourcePath", "componentName", "triggerLabel", "saveBehavior", "pagePatternRef", "entryBehavior", "entryReason"].includes(key)) errors.push(`알 수 없는 hostPage.${key}`);
+  for (const key of Object.keys(host)) if (!["sourcePath", "componentName", "triggerLabel", "saveBehavior", "pagePatternRef", "entryBehavior", "entryReason", "entryEvidenceRef"].includes(key)) errors.push(`알 수 없는 hostPage.${key}`);
   if (typeof host.sourcePath !== "string" || !/^src\/(?:[\w-]+\/)*[\w-]+\.(?:tsx|jsx)$/.test(host.sourcePath)) errors.push("hostPage.sourcePath는 src/ 아래 TSX/JSX 경로여야 합니다.");
   if (!/^[A-Z][A-Za-z0-9]*$/.test(host.componentName ?? "")) errors.push("hostPage.componentName은 PascalCase export여야 합니다.");
   if (typeof host.triggerLabel !== "string" || !host.triggerLabel.trim()) errors.push("hostPage.triggerLabel이 필요합니다.");
@@ -35,6 +35,7 @@ export function validateHostPage(host, kind) {
   if (host.pagePatternRef !== undefined && (typeof host.pagePatternRef !== "string" || !host.pagePatternRef.trim())) errors.push("hostPage.pagePatternRef는 비어 있지 않은 문자열이어야 합니다.");
   if (host.entryBehavior !== undefined && !["row-double-click", "explicit-action"].includes(host.entryBehavior)) errors.push("hostPage.entryBehavior는 row-double-click 또는 explicit-action이어야 합니다.");
   if (host.entryReason !== undefined && (typeof host.entryReason !== "string" || !host.entryReason.trim())) errors.push("hostPage.entryReason은 비어 있지 않은 문자열이어야 합니다.");
+  if (host.entryEvidenceRef !== undefined && (typeof host.entryEvidenceRef !== "string" || !/^[a-z][A-Za-z0-9.-]*$/.test(host.entryEvidenceRef))) errors.push("hostPage.entryEvidenceRef는 유효한 판단 근거 ID여야 합니다.");
   return errors;
 }
 

@@ -9,6 +9,10 @@ function finding(severity, code, message) {
   return { severity, code, message };
 }
 
+function uniqueFindings(findings) {
+  return [...new Map(findings.map((entry) => [`${entry.severity}\u0000${entry.code}\u0000${entry.message}`, entry])).values()];
+}
+
 export function patternContractFindings(patternContract, implementation, { entryBehavior } = {}) {
   if (!patternContract) return [];
   const findings = [];
@@ -24,6 +28,29 @@ export function patternContractFindings(patternContract, implementation, { entry
   const entryContract = entryBehavior ? patternContract.entryBehaviorContracts?.[entryBehavior] : undefined;
   for (const prop of entryContract?.requiredComponentProps ?? []) {
     if (!implementation.componentProps?.has(prop)) findings.push(finding("blocker", "composition.pattern-interaction", `선택한 pattern '${patternContract.patternId}'의 entryBehavior '${entryBehavior}'에는 실제 MES component prop '${prop}' 연결이 필요합니다.`));
+  }
+  return findings;
+}
+
+export function declaredBehaviorFindings(contract, implementation) {
+  if (!implementation.componentProps?.has("Table.selectable")) return [];
+  const findings = [];
+  const selectedRefs = new Set(contract.composition?.selectedPatternRefs ?? []);
+  if (![...selectedRefs].some((id) => id.startsWith("selection."))) {
+    findings.push(finding("blocker", "behavior.selection-undeclared", "Table.selectable을 사용했지만 선택 결과가 무엇을 바꾸는지 설명하는 selection.* 동작 계약이 없습니다."));
+  }
+  if (contract.request?.assetDecisions) {
+    const decisions = contract.request.evidence?.decisions ?? [];
+    const selection = decisions.find((entry) => entry.questionId === "task.selection");
+    if (!selection || ["assumed", "unresolved"].includes(selection.state)) {
+      findings.push(finding("blocker", "behavior.selection-evidence", "체크박스 선택을 구현하려면 단건/다건과 선택 후 동작을 확정하거나 지원 근거로 기록해야 합니다."));
+    }
+    if (contract.request?.target?.kind !== "page" && contract.request?.hostPage?.saveBehavior === "notify-parent") {
+      const editScope = decisions.find((entry) => entry.questionId === "task.edit-scope");
+      if (!editScope || ["assumed", "unresolved"].includes(editScope.state)) {
+        findings.push(finding("blocker", "behavior.edit-scope-evidence", "선택 대상에 값을 저장하는 팝업은 공통값/대상별 값의 소유 범위를 확정하거나 지원 근거로 기록해야 합니다."));
+      }
+    }
   }
   return findings;
 }
@@ -45,6 +72,7 @@ export function auditScreenImplementation(contract, source, registry = readRegis
   }
   if (implementation.uses.size === 0) findings.push(finding("blocker", "component.no-mes-usage", "실제로 JSX/호출에서 사용하는 MES 자산을 확인하지 못했습니다."));
   if (!implementation.exports?.has(contract.request?.output?.componentName)) findings.push(finding("blocker", "source.entry-export", "계약의 화면 componentName에 해당하는 값 export가 없습니다."));
+  findings.push(...declaredBehaviorFindings(contract, implementation));
 
   const page = contract.request?.target?.kind === "page";
   if (page) for (const asset of missingApplicationChrome(implementation, registry)) findings.push(finding("blocker", "shell.page-chrome", `MES 전체 페이지에 ${asset} 실제 사용이 필요합니다.`));
@@ -85,8 +113,9 @@ export function auditScreenImplementation(contract, source, registry = readRegis
   const arbitraryPixelValues = [...source.matchAll(/\[(\d+(?:\.\d+)?)px\]/g)].map((match) => match[0]);
   if (arbitraryPixelValues.length > 0) findings.push(finding("warning", "style.arbitrary-pixel", `임의 px 값 ${[...new Set(arbitraryPixelValues)].join(", ")}이 있습니다. Figma 근거 또는 정규화 판정을 확인하세요.`));
 
-  const blockers = findings.filter((entry) => entry.severity === "blocker");
-  const warnings = findings.filter((entry) => entry.severity === "warning");
+  const distinctFindings = uniqueFindings(findings);
+  const blockers = distinctFindings.filter((entry) => entry.severity === "blocker");
+  const warnings = distinctFindings.filter((entry) => entry.severity === "warning");
   return {
     scope: "static-implementation-only",
     verification: verificationContext(contract.request),
@@ -96,7 +125,7 @@ export function auditScreenImplementation(contract, source, registry = readRegis
     status: blockers.length > 0 ? "blocked" : warnings.length > 0 ? "review-ready" : "audit-ready",
     blockerCount: blockers.length,
     warningCount: warnings.length,
-    findings,
+    findings: distinctFindings,
   };
 }
 
@@ -118,6 +147,7 @@ export function auditScreenFile(contract, sourcePath, options = {}) {
       const parent = inspectImplementation(readFileSync(hostPath, "utf8"), registry, { projectRoot: root, sourcePath: hostPath });
       support.push(host?.sourcePath ?? surfacePreviewFrame);
       result.findings.push(...parent.findings);
+      if (host?.pagePatternRef) result.findings.push(...declaredBehaviorFindings(contract, parent));
       if (!parent.exports.has(host?.componentName ?? "SurfacePreviewFrame")) result.findings.push(finding("blocker", "host.entry-export", "배경 페이지/미리보기 틀의 실제 export가 없습니다."));
       for (const asset of missingApplicationChrome(parent, registry)) result.findings.push(finding("blocker", "host.page-chrome", `팝업 배경 페이지에 ${asset} 실제 사용이 필요합니다.`));
       result.findings.push(...patternContractFindings(contract.implementation?.hostPagePatternContract, parent, {
@@ -143,6 +173,7 @@ export function auditScreenFile(contract, sourcePath, options = {}) {
       }
     }
   }
+  result.findings = uniqueFindings(result.findings);
   result.blockerCount = result.findings.filter((f) => f.severity === "blocker").length;
   result.warningCount = result.findings.filter((f) => f.severity === "warning").length;
   result.status = result.blockerCount ? "blocked" : result.warningCount ? "review-ready" : "audit-ready";

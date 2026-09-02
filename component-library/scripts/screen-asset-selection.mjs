@@ -42,6 +42,7 @@ export function validateSemanticAssetDraft(draft) {
     "decision",
     "selectedComponentRef",
     "candidateComponentRefs",
+    "evidenceRef",
     "reason",
   ]);
 
@@ -84,6 +85,8 @@ export function validateSemanticAssetDraft(draft) {
     if (!decisions.has(element.decision)) findings.push(finding("blocker", "asset-selection.decision", `${path}.decision이 잘못되었습니다.`));
     if (element.decision === "selected" && (typeof element.selectedComponentRef !== "string" || element.selectedComponentRef === "")) findings.push(finding("blocker", "asset-selection.selected-ref", `${path}의 selected 결정에는 selectedComponentRef가 필요합니다.`));
     if (element.decision !== "selected" && element.selectedComponentRef !== undefined) findings.push(finding("blocker", "asset-selection.selected-ref", `${path}의 selectedComponentRef는 decision이 selected일 때만 사용합니다.`));
+    if (element.evidenceRef !== undefined && (typeof element.evidenceRef !== "string" || !/^[a-z][A-Za-z0-9.-]*$/.test(element.evidenceRef))) findings.push(finding("blocker", "asset-selection.evidence-ref", `${path}.evidenceRef는 유효한 판단 근거 ID여야 합니다.`));
+    if (element.decision === "selected" && element.impact === "business-behavior" && !element.evidenceRef) findings.push(finding("blocker", "asset-selection.business-evidence", `${path}의 업무 동작 선택에는 evidenceRef가 필요합니다.`));
     if (element.reason !== undefined && (typeof element.reason !== "string" || element.reason.trim() === "")) findings.push(finding("blocker", "asset-selection.reason", `${path}.reason은 비어 있지 않은 문자열이어야 합니다.`));
   }
   return findings;
@@ -162,6 +165,7 @@ function reviewElement(element, componentMap, contextMap, contractMap) {
     impact: element.impact,
     decision: element.decision,
     selectedComponentRef: selectedRef ?? null,
+    evidenceRef: element.evidenceRef ?? null,
     selectedMatch,
     exactCandidates: exact,
     compatibleCandidates: compatible,
@@ -248,7 +252,7 @@ export function reviewScreenAssetSelection(draft, registry) {
     }
 
     if (review.impact === "business-behavior" && ["assumed", "unresolved"].includes(review.basis) && review.decision === "selected") {
-      findings.push(finding("warning", "asset-selection.unconfirmed-business-decision", `'${review.label}'은 미확정 업무 동작인데 component가 선택됐습니다. UI 선택 전에 업무 의도를 확인하거나 가정임을 유지하세요.`, review.id));
+      findings.push(finding("blocker", "asset-selection.unconfirmed-business-decision", `'${review.label}'은 미확정 업무 동작인데 component가 선택됐습니다. 확인 전에는 deferred로 유지하세요.`, review.id));
     }
   }
 

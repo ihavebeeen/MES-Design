@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { auditScreenFile, auditScreenImplementation } from "./audit-screen-implementation.mjs";
+import { auditScreenFile, auditScreenImplementation, declaredBehaviorFindings } from "./audit-screen-implementation.mjs";
 import { generateScreenTsx } from "./generate-screen-tsx.mjs";
 import { createScreenPreviewPlan, writeScreenPreview } from "./generate-screen-preview.mjs";
 import { readRegistryBundle, resolveScreenRequest } from "./resolve-screen-request.mjs";
@@ -32,7 +32,18 @@ let count = 0;
 function check(label, run) { run(); count += 1; console.log(`[screen:delivery] ${label}`); }
 const cli = (script, args) => spawnSync(process.execPath, [resolve(root, "scripts", script), ...args], { cwd: root, encoding: "utf8" });
 try {
+  check("connected-flow 미리보기는 실제 진입을 확인하도록 닫힌 상태에서 시작", () => assert.match(plan.source, /useState\(false\)/));
   check("정상 MES 컴포넌트와 DS 내부 원시 HTML 통과", () => assertStaticPass(auditScreenFile(contract, sourcePath)));
+  check("계약 없는 체크박스 선택과 미확정 일괄 편집 차단", () => {
+    const tableImplementation = { componentProps: new Set(["Table.selectable"]) };
+    const withoutSelection = structuredClone(contract);
+    withoutSelection.composition.selectedPatternRefs = withoutSelection.composition.selectedPatternRefs.filter((id) => !id.startsWith("selection."));
+    withoutSelection.request.assetDecisions = { schemaVersion: 1, elements: [] };
+    withoutSelection.request.evidence = { decisions: [] };
+    assert.ok(declaredBehaviorFindings(withoutSelection, tableImplementation).some((finding) => finding.code === "behavior.selection-undeclared"));
+    assert.ok(declaredBehaviorFindings(withoutSelection, tableImplementation).some((finding) => finding.code === "behavior.selection-evidence"));
+    assert.ok(declaredBehaviorFindings(withoutSelection, tableImplementation).some((finding) => finding.code === "behavior.edit-scope-evidence"));
+  });
   check("실제 import alias 사용 통과", () => assert.equal(auditScreenImplementation(contract, original.replace("{ SideSlidePanel }", "{ SideSlidePanel as Panel }").replaceAll("<SideSlidePanel", "<Panel").replaceAll("</SideSlidePanel", "</Panel")).blockerCount, 0));
   check("실제 namespace import 사용 통과", () => assert.equal(auditScreenImplementation(contract, original.replace("{ SideSlidePanel }", "* as PanelKit").replaceAll("<SideSlidePanel", "<PanelKit.SideSlidePanel").replaceAll("</SideSlidePanel", "</PanelKit.SideSlidePanel")).blockerCount, 0));
   check("등록 파일의 존재하지 않는 export 이름 차단", () => {
@@ -122,6 +133,7 @@ try {
     assert.equal(auditScreenImplementation(c, original).blockerCount, 0);
     assertStaticPass(auditScreenFile(c, sourcePath));
     const surface = createScreenPreviewPlan(c, sourcePath);
+    assert.match(surface.source, /useState\(true\)/);
     assert.equal(surface.verification.scope, "surface");
     writeScreenPreview(surface);
     assert.throws(() => verifyScreenHandoff(surface), /시각 대조 결과/);
@@ -173,6 +185,17 @@ try {
     const entityRequest = { ...request, hostPage: { ...request.hostPage, pagePatternRef: "section.page-query-table" } };
     assert.ok(resolveScreenRequest(entityRequest).quality.issues.some((f) => f.code === "request.host-entry-behavior"));
     assert.ok(resolveScreenRequest({ ...entityRequest, hostPage: { ...entityRequest.hostPage, entryBehavior: "explicit-action" } }).quality.issues.some((f) => f.code === "request.host-entry-evidence"));
+    const explicit = structuredClone(entityRequest);
+    explicit.evidence = { ...(explicit.evidence ?? {}), decisions: [{
+      id: "entryEvidence",
+      questionId: "screen.workflow",
+      state: "confirmed",
+      sourceType: "user-request",
+      sourceRef: '사용자 원문: "행의 등록 버튼으로 팝업을 열어줘"',
+      statement: "행별 명시 액션으로 팝업을 연다.",
+    }] };
+    explicit.hostPage = { ...explicit.hostPage, entryBehavior: "explicit-action", entryReason: "사용자가 행별 등록 버튼을 지정했다.", entryEvidenceRef: "entryEvidence" };
+    assert.equal(resolveScreenRequest(explicit).quality.issues.some((f) => f.code === "request.host-entry-evidence"), false);
     const resolved = resolveScreenRequest({ ...entityRequest, hostPage: { ...entityRequest.hostPage, entryBehavior: "row-double-click" } });
     assert.equal(resolved.quality.issues.some((f) => f.code.startsWith("request.host-entry")), false);
     assert.equal(resolved.implementation.hostPagePatternContract.patternId, "section.page-query-table");

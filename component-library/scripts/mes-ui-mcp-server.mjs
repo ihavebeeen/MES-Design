@@ -28,6 +28,7 @@ const semanticAssetElementSchema = z.object({
   decision: z.enum(["selected", "deferred", "not-applicable", "propose-new"]),
   selectedComponentRef: z.string().min(1).optional(),
   candidateComponentRefs: z.array(z.string().min(1)).optional(),
+  evidenceRef: z.string().regex(/^[a-z][A-Za-z0-9.-]*$/).optional(),
   reason: z.string().min(1).optional(),
 }).strict();
 const semanticAssetDraftSchema = z.object({

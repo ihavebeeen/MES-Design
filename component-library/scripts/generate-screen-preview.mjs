@@ -53,7 +53,7 @@ import { ${host?.componentName ?? "SurfacePreviewFrame"} as HostPage } from ${JS
 import { ${componentName} } from ${JSON.stringify(componentImport)};
 
 export default function GeneratedScreenPreviewPage() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(${verification.scope === "connected-flow" ? "false" : "true"});
   ${host ? 'const [saved, setSaved] = React.useState<{ version: number; data: unknown }>({ version: 0, data: undefined });' : ''}
   const trigger = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => { if (!open) trigger.current?.focus(); }, [open]);

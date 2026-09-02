@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "auditedAt": null,
-  "sourceFingerprint": "e6c7e3c2e42ee3f4f752f8c094df37b6d8a06d5c600c029c870364542fb03e97",
+  "sourceFingerprint": "fedb0e02bd0eff2d180fc52e4809168da2a71ee3a99650c558572ab1510d80c0",
   "browserRun": {
     "command": "npm run test:visual",
     "result": "not-verified-for-current-source",
@@ -10,7 +10,7 @@
     "failed": null,
     "durationMs": null,
     "recordedAt": null,
-    "testInventoryFingerprint": "d61a9debc1b0071ae24b2c09a9881c59b20e6fb2b69731d1e5526a2026c44813",
+    "testInventoryFingerprint": "78596183bb290735ad297fddeb4f091fae8d425d6c18bfd1e4e184b120e81209",
     "includesDeferredMobile": true
   },
   "testInventory": {
@@ -20,9 +20,9 @@
       "tests/visual/design-system.visual.spec.ts": "04803a2406bd410e72e7c971a199a82c3e254c7c611ec26c35030ab5de9fed8e",
       "tests/visual/figma-component-defaults.spec.ts": "f9a842afc72cfef542c0e242507b6acbbbd1e66b55c7c9a1f3a1719fedf23cc3",
       "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
-      "tests/visual/slide-compositions.spec.mts": "2c018a1a7334f1f0e0a13f7d1977b3556142863dec93841498f5d55a778a9299"
+      "tests/visual/slide-compositions.spec.mts": "f971816786edc93bea1e2ffce454e0ddd34a09c2d9c2ec3e8b9020230b0309cb"
     },
-    "fingerprint": "d61a9debc1b0071ae24b2c09a9881c59b20e6fb2b69731d1e5526a2026c44813"
+    "fingerprint": "78596183bb290735ad297fddeb4f091fae8d425d6c18bfd1e4e184b120e81209"
   },
   "summary": {
     "components": {

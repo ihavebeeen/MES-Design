@@ -109,7 +109,7 @@ function validateRequestShape(request) {
   }
   checkKnownKeys(request?.target, new Set(["kind", "title", "nearestScreenId", "viewport"]), "target");
   checkKnownKeys(request?.target?.viewport, new Set(["width", "height"]), "target.viewport");
-  checkKnownKeys(request?.evidence, new Set(["figmaNode", "sourceRoute", "notes"]), "evidence");
+  checkKnownKeys(request?.evidence, new Set(["figmaNode", "sourceRoute", "notes", "decisions"]), "evidence");
   checkKnownKeys(request?.webContext, new Set(["pageArchetypeRef", "overlayGrammarRef", "sectionRecipeRefs"]), "webContext");
   checkKnownKeys(request?.assetDecisions, new Set(["schemaVersion", "notApplicableCategories", "elements"]), "assetDecisions");
   checkKnownKeys(request?.composition, new Set(["recipeRefs", "shellRef", "sectionRefs", "sections", "behaviorRefs", "actionSetRef"]), "composition");
@@ -131,6 +131,40 @@ function validateRequestShape(request) {
   if (!/^[A-Z][A-Za-z0-9]*$/.test(request?.output?.componentName ?? "")) issues.push(issue("blocker", "request.component-name", "output.componentName은 PascalCase여야 합니다."));
   if (request?.evidence?.figmaNode && !/^\d+:\d+$/.test(request.evidence.figmaNode)) issues.push(issue("blocker", "request.figma-node", "evidence.figmaNode는 123:456 형식이어야 합니다."));
   if (request?.evidence?.notes !== undefined && (!Array.isArray(request.evidence.notes) || request.evidence.notes.some((value) => typeof value !== "string" || value === "") || unique(request.evidence.notes).length !== request.evidence.notes.length)) issues.push(issue("blocker", "request.evidence-notes", "evidence.notes는 중복 없는 문자열 배열이어야 합니다."));
+  const decisionEvidence = new Map();
+  if (request?.evidence?.decisions !== undefined) {
+    if (!Array.isArray(request.evidence.decisions)) issues.push(issue("blocker", "request.decision-evidence", "evidence.decisions는 배열이어야 합니다."));
+    else for (const [index, evidence] of request.evidence.decisions.entries()) {
+      const path = `evidence.decisions[${index}]`;
+      checkKnownKeys(evidence, new Set(["id", "questionId", "state", "sourceType", "sourceRef", "statement", "alternatives"]), path);
+      if (!evidence || typeof evidence !== "object" || Array.isArray(evidence)) {
+        issues.push(issue("blocker", "request.decision-evidence", `${path}는 객체여야 합니다.`));
+        continue;
+      }
+      if (!/^[a-z][A-Za-z0-9.-]*$/.test(evidence.id ?? "") || decisionEvidence.has(evidence.id)) issues.push(issue("blocker", "request.decision-evidence-id", `${path}.id는 중복 없는 판단 근거 ID여야 합니다.`));
+      else decisionEvidence.set(evidence.id, evidence);
+      if (!/^[a-z][a-z0-9-]*(?:\.[a-z0-9-]+)+$/.test(evidence.questionId ?? "")) issues.push(issue("blocker", "request.decision-evidence-question", `${path}.questionId가 잘못되었습니다.`));
+      if (!["confirmed", "supported", "assumed", "unresolved"].includes(evidence.state)) issues.push(issue("blocker", "request.decision-evidence-state", `${path}.state가 잘못되었습니다.`));
+      if (!["user-request", "functional-spec", "registered-contract", "figma-source", "mes-reference", "agent-proposal"].includes(evidence.sourceType)) issues.push(issue("blocker", "request.decision-evidence-source", `${path}.sourceType이 잘못되었습니다.`));
+      if (typeof evidence.sourceRef !== "string" || !evidence.sourceRef.trim() || typeof evidence.statement !== "string" || !evidence.statement.trim()) issues.push(issue("blocker", "request.decision-evidence-content", `${path}에는 sourceRef와 statement가 필요합니다.`));
+      if (evidence.alternatives !== undefined && (!Array.isArray(evidence.alternatives) || evidence.alternatives.some((entry) => !entry || typeof entry.option !== "string" || !entry.option.trim() || typeof entry.reason !== "string" || !entry.reason.trim()))) issues.push(issue("blocker", "request.decision-evidence-alternatives", `${path}.alternatives 형식이 잘못되었습니다.`));
+      if (evidence.state === "confirmed" && !["user-request", "functional-spec"].includes(evidence.sourceType)) issues.push(issue("blocker", "request.false-confirmed-evidence", `${path}는 사용자 원문 또는 기능명세 근거가 아니므로 confirmed로 기록할 수 없습니다.`));
+      if (evidence.sourceType === "user-request" && !/^사용자 원문:\s*["“].+["”]$/.test(evidence.sourceRef ?? "")) issues.push(issue("blocker", "request.user-quote-evidence", `${path}의 사용자 근거는 '사용자 원문: "…"' 형식의 실제 문장을 보존해야 합니다.`));
+      if (evidence.sourceType === "agent-proposal" && !["assumed", "unresolved"].includes(evidence.state)) issues.push(issue("blocker", "request.agent-proposal-evidence", `${path}의 agent-proposal은 confirmed/supported 근거가 될 수 없습니다.`));
+    }
+  }
+  if (request?.assetDecisions && request?.target?.kind !== "page") {
+    const direction = [...decisionEvidence.values()].find((entry) => entry.questionId === "screen.direction");
+    if (!direction || ["assumed", "unresolved"].includes(direction.state)) issues.push(issue("blocker", "request.screen-direction-evidence", "팝업 유형 선택에는 확정 또는 지원 근거인 screen.direction 판단이 필요합니다."));
+    else if (direction.state === "supported" && (!Array.isArray(direction.alternatives) || direction.alternatives.length === 0)) issues.push(issue("blocker", "request.screen-direction-comparison", "지원 근거로 팝업 유형을 선택할 때는 검토 후 제외한 대안과 이유를 남겨야 합니다."));
+  }
+  const evidenceRanks = { unresolved: 0, assumed: 1, supported: 2, confirmed: 3 };
+  for (const element of request?.assetDecisions?.elements ?? []) {
+    if (element.decision !== "selected" || element.impact !== "business-behavior") continue;
+    const evidence = decisionEvidence.get(element.evidenceRef);
+    if (!evidence) issues.push(issue("blocker", "request.asset-decision-evidence", `업무 동작 자산 '${element.id}'의 evidenceRef '${element.evidenceRef ?? "없음"}'를 evidence.decisions에서 찾을 수 없습니다.`, element.id));
+    else if (evidenceRanks[evidence.state] < evidenceRanks[element.basis]) issues.push(issue("blocker", "request.asset-decision-evidence", `업무 동작 자산 '${element.id}'의 basis가 연결된 근거보다 강합니다.`, element.id));
+  }
   if (request?.webContext?.pageArchetypeRef !== undefined && (typeof request.webContext.pageArchetypeRef !== "string" || request.webContext.pageArchetypeRef === "")) issues.push(issue("blocker", "request.web-page-archetype", "webContext.pageArchetypeRef는 비어 있지 않은 문자열이어야 합니다."));
   if (request?.webContext?.overlayGrammarRef !== undefined && (typeof request.webContext.overlayGrammarRef !== "string" || request.webContext.overlayGrammarRef === "")) issues.push(issue("blocker", "request.web-overlay-grammar", "webContext.overlayGrammarRef는 비어 있지 않은 문자열이어야 합니다."));
   if (request?.webContext?.sectionRecipeRefs !== undefined && (!Array.isArray(request.webContext.sectionRecipeRefs) || request.webContext.sectionRecipeRefs.some((value) => typeof value !== "string" || value === "") || unique(request.webContext.sectionRecipeRefs).length !== request.webContext.sectionRecipeRefs.length)) issues.push(issue("blocker", "request.web-section-recipes", "webContext.sectionRecipeRefs는 중복 없는 문자열 배열이어야 합니다."));
@@ -207,6 +241,7 @@ export function contractFingerprint(contract) {
 
 export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const issues = validateRequestShape(request);
+  const decisionEvidence = new Map((request?.evidence?.decisions ?? []).map((entry) => [entry.id, entry]));
   const assetSelectionReview = request?.assetDecisions
     ? reviewScreenAssetSelection({ ...request.assetDecisions, targetKind: request?.target?.kind }, registry)
     : null;
@@ -234,8 +269,8 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     if (validatesParentEntry && entryContracts && Object.keys(entryContracts).length > 0) {
       if (!request.hostPage.entryBehavior) issues.push(issue("blocker", "request.host-entry-behavior", `선택한 host pattern '${request.hostPage.pagePatternRef}'은 entryBehavior 확정이 필요합니다.`, request.hostPage.pagePatternRef));
       else if (!entryContracts[request.hostPage.entryBehavior]) issues.push(issue("blocker", "request.host-entry-behavior", `entryBehavior '${request.hostPage.entryBehavior}'는 선택한 host pattern에서 지원하지 않습니다.`, request.hostPage.pagePatternRef));
-      else if (request.hostPage.entryBehavior === "explicit-action" && !request.hostPage.entryReason?.trim()) {
-        issues.push(issue("blocker", "request.host-entry-evidence", "행별 명시 액션 예외는 등록 화면 또는 사용자 승인 근거가 필요합니다.", request.hostPage.pagePatternRef));
+      else if (request.hostPage.entryBehavior === "explicit-action" && (!request.hostPage.entryReason?.trim() || !decisionEvidence.has(request.hostPage.entryEvidenceRef))) {
+        issues.push(issue("blocker", "request.host-entry-evidence", "행별 명시 액션 예외는 entryReason과 evidence.decisions에 연결된 entryEvidenceRef가 필요합니다.", request.hostPage.pagePatternRef));
       }
     }
   }
