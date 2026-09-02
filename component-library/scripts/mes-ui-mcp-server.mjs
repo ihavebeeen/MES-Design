@@ -29,6 +29,7 @@ const semanticAssetElementSchema = z.object({
   selectedComponentRef: z.string().min(1).optional(),
   candidateComponentRefs: z.array(z.string().min(1)).optional(),
   evidenceRef: z.string().regex(/^[a-z][A-Za-z0-9.-]*$/).optional(),
+  decisionSubject: z.string().regex(/^[a-z][a-z0-9-]*(?:\.[a-z0-9-]+)+$/).optional(),
   reason: z.string().min(1).optional(),
 }).strict();
 const semanticAssetDraftSchema = z.object({

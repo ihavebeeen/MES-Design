@@ -97,7 +97,7 @@ try {
     notApplicableCategories: ["overlay-behavior"],
     elements: [
       { id: "riskStatus", label: "위험상태", category: "status-feedback", capability: "status-display", parentRefs: ["section.search-table-composition"], basis: "confirmed", impact: "presentation", decision: "deferred" },
-      { id: "footerActions", label: "메인 리스트 하단 액션", category: "actions", capability: "main-list-actions", parentRefs: ["screen.entity-list"], basis: "supported", impact: "business-behavior", decision: "selected", selectedComponentRef: "main-list-footer-actions", evidenceRef: "footerActionEvidence" },
+      { id: "footerActions", label: "메인 리스트 하단 액션", category: "actions", capability: "main-list-actions", parentRefs: ["screen.entity-list"], basis: "supported", impact: "business-behavior", decision: "selected", selectedComponentRef: "main-list-footer-actions", evidenceRef: "footerActionEvidence", decisionSubject: "host-list.footer-actions" },
     ],
   } }));
   assert(assetMatch.policy.automaticSelection === false, "MCP 의미 자산 매칭이 후보를 자동 선택하면 안 됩니다.");

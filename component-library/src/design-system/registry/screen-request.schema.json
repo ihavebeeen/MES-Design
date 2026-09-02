@@ -148,6 +148,20 @@
         "sourceType": { "enum": ["user-request", "functional-spec", "registered-contract", "figma-source", "mes-reference", "agent-proposal"] },
         "sourceRef": { "type": "string", "minLength": 1 },
         "statement": { "type": "string", "minLength": 1 },
+        "decisionSubject": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z0-9-]+)+$",
+          "description": "여러 독립 근거가 함께 설명하는 실제 선택 대상"
+        },
+        "factor": {
+          "enum": ["explicit-direction", "task-purpose", "information-role", "workflow", "information-relationship", "interaction-continuity", "space-density", "pattern-context", "selection-cardinality", "selection-result", "batch-action", "safety-reversibility"],
+          "description": "같은 결론을 지지하는 서로 다른 판단 축"
+        },
+        "selectedOption": {
+          "type": "string",
+          "minLength": 1,
+          "description": "이 근거가 지지하는 실제 선택값"
+        },
         "alternatives": {
           "type": "array",
           "items": {
@@ -199,6 +213,7 @@
         "selectedComponentRef": { "type": "string", "minLength": 1 },
         "candidateComponentRefs": { "$ref": "#/$defs/refList" },
         "evidenceRef": { "type": "string", "pattern": "^[a-z][A-Za-z0-9.-]*$" },
+        "decisionSubject": { "type": "string", "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z0-9-]+)+$" },
         "reason": { "type": "string", "minLength": 1 }
       },
       "allOf": [
@@ -206,6 +221,10 @@
           "if": { "properties": { "decision": { "const": "selected" } }, "required": ["decision"] },
           "then": { "required": ["selectedComponentRef"] },
           "else": { "not": { "required": ["selectedComponentRef"] } }
+        },
+        {
+          "if": { "properties": { "decision": { "const": "selected" }, "impact": { "const": "business-behavior" } }, "required": ["decision", "impact"] },
+          "then": { "required": ["evidenceRef", "decisionSubject"] }
         }
       ]
     },

@@ -136,7 +136,7 @@ function validateRequestShape(request) {
     if (!Array.isArray(request.evidence.decisions)) issues.push(issue("blocker", "request.decision-evidence", "evidence.decisions는 배열이어야 합니다."));
     else for (const [index, evidence] of request.evidence.decisions.entries()) {
       const path = `evidence.decisions[${index}]`;
-      checkKnownKeys(evidence, new Set(["id", "questionId", "state", "sourceType", "sourceRef", "statement", "alternatives"]), path);
+      checkKnownKeys(evidence, new Set(["id", "questionId", "state", "sourceType", "sourceRef", "statement", "decisionSubject", "factor", "selectedOption", "alternatives"]), path);
       if (!evidence || typeof evidence !== "object" || Array.isArray(evidence)) {
         issues.push(issue("blocker", "request.decision-evidence", `${path}는 객체여야 합니다.`));
         continue;
@@ -151,12 +151,28 @@ function validateRequestShape(request) {
       if (evidence.state === "confirmed" && !["user-request", "functional-spec"].includes(evidence.sourceType)) issues.push(issue("blocker", "request.false-confirmed-evidence", `${path}는 사용자 원문 또는 기능명세 근거가 아니므로 confirmed로 기록할 수 없습니다.`));
       if (evidence.sourceType === "user-request" && !/^사용자 원문:\s*["“].+["”]$/.test(evidence.sourceRef ?? "")) issues.push(issue("blocker", "request.user-quote-evidence", `${path}의 사용자 근거는 '사용자 원문: "…"' 형식의 실제 문장을 보존해야 합니다.`));
       if (evidence.sourceType === "agent-proposal" && !["assumed", "unresolved"].includes(evidence.state)) issues.push(issue("blocker", "request.agent-proposal-evidence", `${path}의 agent-proposal은 confirmed/supported 근거가 될 수 없습니다.`));
+      if (evidence.decisionSubject !== undefined && !/^[a-z][a-z0-9-]*(?:\.[a-z0-9-]+)+$/.test(evidence.decisionSubject)) issues.push(issue("blocker", "request.decision-subject", `${path}.decisionSubject가 잘못되었습니다.`));
+      if (evidence.factor !== undefined && !["explicit-direction", "task-purpose", "information-role", "workflow", "information-relationship", "interaction-continuity", "space-density", "pattern-context", "selection-cardinality", "selection-result", "batch-action", "safety-reversibility"].includes(evidence.factor)) issues.push(issue("blocker", "request.decision-factor", `${path}.factor가 잘못되었습니다.`));
+      if (evidence.selectedOption !== undefined && (typeof evidence.selectedOption !== "string" || !evidence.selectedOption.trim())) issues.push(issue("blocker", "request.decision-option", `${path}.selectedOption은 비어 있지 않은 문자열이어야 합니다.`));
     }
   }
   if (request?.assetDecisions && request?.target?.kind !== "page") {
-    const direction = [...decisionEvidence.values()].find((entry) => entry.questionId === "screen.direction");
-    if (!direction || ["assumed", "unresolved"].includes(direction.state)) issues.push(issue("blocker", "request.screen-direction-evidence", "팝업 유형 선택에는 확정 또는 지원 근거인 screen.direction 판단이 필요합니다."));
-    else if (direction.state === "supported" && (!Array.isArray(direction.alternatives) || direction.alternatives.length === 0)) issues.push(issue("blocker", "request.screen-direction-comparison", "지원 근거로 팝업 유형을 선택할 때는 검토 후 제외한 대안과 이유를 남겨야 합니다."));
+    const shellEvidence = [...decisionEvidence.values()].filter((entry) => entry.decisionSubject === "screen.shell" && entry.selectedOption === request.target.kind);
+    const explicitDirection = shellEvidence.some((entry) => entry.factor === "explicit-direction" && entry.state === "confirmed" && ["user-request", "functional-spec"].includes(entry.sourceType));
+    if (shellEvidence.length === 0) {
+      issues.push(issue("blocker", "request.screen-direction-evidence", "팝업 유형 선택에는 target.kind와 연결된 screen.shell 근거 묶음이 필요합니다. 다른 질문의 한 문장을 팝업 유형 근거로 재사용할 수 없습니다."));
+    } else if (!explicitDirection) {
+      const usable = shellEvidence.filter((entry) => ["confirmed", "supported"].includes(entry.state));
+      const factors = new Set(usable.map((entry) => entry.factor).filter(Boolean));
+      const hasPurposeOrFlow = ["task-purpose", "workflow"].some((factor) => factors.has(factor));
+      const hasInformationStructure = ["information-role", "information-relationship"].some((factor) => factors.has(factor));
+      const hasPresentationFit = ["interaction-continuity", "space-density", "pattern-context"].some((factor) => factors.has(factor));
+      if (usable.length < 3 || !hasPurposeOrFlow || !hasInformationStructure || !hasPresentationFit) {
+        issues.push(issue("blocker", "request.screen-direction-basis-set", "사용자가 팝업 유형을 직접 지정하지 않았다면 업무 목적/흐름, 정보 역할/관계, 상호작용·공간·기존 패턴 적합성을 포함한 복수 근거가 필요합니다."));
+      }
+      const alternatives = usable.flatMap((entry) => entry.alternatives ?? []);
+      if (alternatives.length === 0) issues.push(issue("blocker", "request.screen-direction-comparison", "지원 근거로 팝업 유형을 선택할 때는 가까운 대안과 선택하지 않은 이유를 함께 남겨야 합니다."));
+    }
   }
   const evidenceRanks = { unresolved: 0, assumed: 1, supported: 2, confirmed: 3 };
   for (const element of request?.assetDecisions?.elements ?? []) {
@@ -164,6 +180,7 @@ function validateRequestShape(request) {
     const evidence = decisionEvidence.get(element.evidenceRef);
     if (!evidence) issues.push(issue("blocker", "request.asset-decision-evidence", `업무 동작 자산 '${element.id}'의 evidenceRef '${element.evidenceRef ?? "없음"}'를 evidence.decisions에서 찾을 수 없습니다.`, element.id));
     else if (evidenceRanks[evidence.state] < evidenceRanks[element.basis]) issues.push(issue("blocker", "request.asset-decision-evidence", `업무 동작 자산 '${element.id}'의 basis가 연결된 근거보다 강합니다.`, element.id));
+    else if (!element.decisionSubject || evidence.decisionSubject !== element.decisionSubject) issues.push(issue("blocker", "request.asset-decision-subject", `업무 동작 자산 '${element.id}'의 판단 대상과 evidenceRef의 decisionSubject가 일치해야 합니다. 다른 결정의 근거를 재사용할 수 없습니다.`, element.id));
   }
   if (request?.webContext?.pageArchetypeRef !== undefined && (typeof request.webContext.pageArchetypeRef !== "string" || request.webContext.pageArchetypeRef === "")) issues.push(issue("blocker", "request.web-page-archetype", "webContext.pageArchetypeRef는 비어 있지 않은 문자열이어야 합니다."));
   if (request?.webContext?.overlayGrammarRef !== undefined && (typeof request.webContext.overlayGrammarRef !== "string" || request.webContext.overlayGrammarRef === "")) issues.push(issue("blocker", "request.web-overlay-grammar", "webContext.overlayGrammarRef는 비어 있지 않은 문자열이어야 합니다."));

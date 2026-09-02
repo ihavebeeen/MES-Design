@@ -53,6 +53,7 @@ test("메인 리스트 하단 액션은 parent 맥락까지 맞는 복합 자산
     decision: "selected",
     selectedComponentRef: "main-list-footer-actions",
     evidenceRef: "footerActionEvidence",
+    decisionSubject: "host-list.footer-actions",
   }]), registry);
   assert.equal(result.elements[0].selectedMatch, "exact");
   assert.equal(result.warningCount, 0);
@@ -70,6 +71,7 @@ test("미확정 업무 동작의 자산 선택은 질문 대상으로 남기고 
     decision: "selected",
     selectedComponentRef: "main-list-footer-actions",
     evidenceRef: "footerActionEvidence",
+    decisionSubject: "host-list.footer-actions",
   }]), registry);
   assert.ok(result.blockerCount > 0);
   assert.ok(result.findings.some((entry) => entry.code === "asset-selection.unconfirmed-business-decision" && entry.severity === "blocker"));
@@ -86,6 +88,7 @@ test("선택한 업무 동작에 판단 근거 연결이 없으면 차단한다"
     impact: "business-behavior",
     decision: "selected",
     selectedComponentRef: "main-list-footer-actions",
+    decisionSubject: "host-list.footer-actions",
   }]), registry);
   assert.ok(result.findings.some((entry) => entry.code === "asset-selection.business-evidence" && entry.severity === "blocker"));
 });
@@ -121,6 +124,7 @@ test("ScreenRequest에 채택한 자산은 실제 composition 연결 여부까�
       decision: "selected",
       selectedComponentRef: "main-list-footer-actions",
       evidenceRef: "footerActionEvidence",
+      decisionSubject: "host-list.footer-actions",
     }],
   };
   request.evidence = {
@@ -132,6 +136,9 @@ test("ScreenRequest에 채택한 자산은 실제 composition 연결 여부까�
       sourceType: "registered-contract",
       sourceRef: "context-rules.json#main-list-footer-actions",
       statement: "선택한 목록 대상에 실제 업무 액션을 적용한다.",
+      decisionSubject: "host-list.footer-actions",
+      factor: "batch-action",
+      selectedOption: "main-list-footer-actions",
     }],
   };
 
@@ -144,6 +151,41 @@ test("ScreenRequest에 채택한 자산은 실제 composition 연결 여부까�
   const linked = resolveScreenRequest(request, registry);
   assert.equal(linked.quality.blockerCount, 0);
   assert.ok(!linked.quality.issues.some((entry) => entry.code === "asset-selection.selected-not-linked"));
+});
+
+test("다른 업무 결정을 위한 한 근거를 컴포넌트 선택에 재사용하면 차단한다", () => {
+  const request = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-entity-list.json"), "utf8"));
+  request.assetDecisions = {
+    schemaVersion: 1,
+    elements: [{
+      id: "footerActions",
+      label: "메인 리스트 하단 액션",
+      category: "actions",
+      capability: "main-list-actions",
+      parentRefs: ["screen.entity-list"],
+      basis: "supported",
+      impact: "business-behavior",
+      decision: "selected",
+      selectedComponentRef: "main-list-footer-actions",
+      evidenceRef: "individualEditEvidence",
+      decisionSubject: "host-list.footer-actions",
+    }],
+  };
+  request.evidence = {
+    decisions: [{
+      id: "individualEditEvidence",
+      questionId: "task.detail",
+      state: "supported",
+      sourceType: "registered-contract",
+      sourceRef: "usage-contexts.json#usage.form-work",
+      statement: "개별 건의 상세를 확인하고 조치를 편집한다.",
+      decisionSubject: "record.edit-target",
+      factor: "task-purpose",
+      selectedOption: "single-record",
+    }],
+  };
+  const result = resolveScreenRequest(request, registry);
+  assert.ok(result.quality.issues.some((entry) => entry.code === "request.asset-decision-subject"));
 });
 
 test("검토하지 않은 범주는 누락 가능성만 알리고 차단하지 않는다", () => {
@@ -183,10 +225,120 @@ test("지원 근거로 팝업 방향을 선택할 때 가까운 대안 비교가
       sourceType: "registered-contract",
       sourceRef: "context-rules.json#overlay",
       statement: "목록 맥락을 유지하는 연속 작업을 위해 우측 패널을 검토한다.",
+      decisionSubject: "screen.shell",
+      factor: "workflow",
+      selectedOption: "side-slide-panel",
     }],
   };
   const result = resolveScreenRequest(request, registry);
   assert.ok(result.quality.issues.some((entry) => entry.code === "request.screen-direction-comparison"));
+});
+
+test("screen.direction 이름만 같고 실제 선택 대상이 다른 근거는 팝업 유형을 확정하지 못한다", () => {
+  const request = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json"), "utf8"));
+  request.assetDecisions = { schemaVersion: 1, elements: [] };
+  request.evidence = {
+    ...(request.evidence ?? {}),
+    decisions: [{
+      id: "weightEvidence",
+      questionId: "screen.direction",
+      state: "confirmed",
+      sourceType: "user-request",
+      sourceRef: "사용자 원문: \"MES 디자인 시스템만 사용해.\"",
+      statement: "디자인 시스템 가중치 1을 적용한다.",
+    }],
+  };
+  const result = resolveScreenRequest(request, registry);
+  assert.ok(result.quality.issues.some((entry) => entry.code === "request.screen-direction-evidence"));
+});
+
+test("사용자가 팝업 유형을 직접 지정하지 않았다면 하나의 업무 근거만으로 Shell을 선택하지 못한다", () => {
+  const request = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json"), "utf8"));
+  request.assetDecisions = { schemaVersion: 1, elements: [] };
+  request.evidence = {
+    ...(request.evidence ?? {}),
+    decisions: [{
+      id: "individualEditEvidence",
+      questionId: "task.detail",
+      state: "supported",
+      sourceType: "registered-contract",
+      sourceRef: "usage-contexts.json#usage.form-work",
+      statement: "개별 건의 상세를 확인하고 조치를 입력한다.",
+      decisionSubject: "screen.shell",
+      factor: "task-purpose",
+      selectedOption: "side-slide-panel",
+      alternatives: [{ option: "center-modal", reason: "집중 편집 경계도 가능한 대안이다." }],
+    }],
+  };
+  const result = resolveScreenRequest(request, registry);
+  assert.ok(result.quality.issues.some((entry) => entry.code === "request.screen-direction-basis-set"));
+});
+
+test("사용자 직접 지정이 없는 Shell은 서로 다른 판단 축과 대안 비교가 모여야 통과한다", () => {
+  const request = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json"), "utf8"));
+  request.assetDecisions = { schemaVersion: 1, elements: [] };
+  request.evidence = {
+    ...(request.evidence ?? {}),
+    decisions: [
+      {
+        id: "shellPurpose",
+        questionId: "screen.workflow",
+        state: "supported",
+        sourceType: "registered-contract",
+        sourceRef: "usage-contexts.json#usage.form-work",
+        statement: "목록의 대상을 바꿔가며 상세 조치를 이어간다.",
+        decisionSubject: "screen.shell",
+        factor: "workflow",
+        selectedOption: "side-slide-panel",
+      },
+      {
+        id: "shellInformation",
+        questionId: "structure.relationships",
+        state: "supported",
+        sourceType: "registered-contract",
+        sourceRef: "usage-contexts.json#usage.form-work",
+        statement: "대상 식별 정보와 조치 입력은 같은 건에 속한다.",
+        decisionSubject: "screen.shell",
+        factor: "information-relationship",
+        selectedOption: "side-slide-panel",
+      },
+      {
+        id: "shellPattern",
+        questionId: "screen.direction",
+        state: "supported",
+        sourceType: "registered-contract",
+        sourceRef: "pattern-contracts.json#shell.side-slide-panel",
+        statement: "배경 목록을 유지하며 대상 전환을 이어가는 패턴과 맞는다.",
+        decisionSubject: "screen.shell",
+        factor: "pattern-context",
+        selectedOption: "side-slide-panel",
+        alternatives: [{ option: "center-modal", reason: "한 건에 집중하는 작업 경계보다 목록 연속성이 더 중요하다." }],
+      },
+    ],
+  };
+  const result = resolveScreenRequest(request, registry);
+  assert.ok(!result.quality.issues.some((entry) => entry.code.startsWith("request.screen-direction")));
+});
+
+test("사용자가 팝업 유형을 직접 지정하면 해당 선택과 연결된 단일 명시 근거로 통과한다", () => {
+  const request = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json"), "utf8"));
+  request.assetDecisions = { schemaVersion: 1, elements: [] };
+  request.evidence = {
+    ...(request.evidence ?? {}),
+    decisions: [{
+      id: "explicitShell",
+      questionId: "screen.direction",
+      state: "confirmed",
+      sourceType: "user-request",
+      sourceRef: "사용자 원문: \"우측 슬라이드 팝업으로 만들어줘.\"",
+      statement: "우측 슬라이드 팝업을 사용한다.",
+      decisionSubject: "screen.shell",
+      factor: "explicit-direction",
+      selectedOption: "side-slide-panel",
+    }],
+  };
+  const result = resolveScreenRequest(request, registry);
+  assert.ok(!result.quality.issues.some((entry) => entry.code.startsWith("request.screen-direction")));
 });
 
 test("모든 등록 컴포넌트는 최소 선택 맥락을 가지며 상세 계약이 없어도 의미 후보가 된다", () => {

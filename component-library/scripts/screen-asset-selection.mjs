@@ -43,6 +43,7 @@ export function validateSemanticAssetDraft(draft) {
     "selectedComponentRef",
     "candidateComponentRefs",
     "evidenceRef",
+    "decisionSubject",
     "reason",
   ]);
 
@@ -87,6 +88,8 @@ export function validateSemanticAssetDraft(draft) {
     if (element.decision !== "selected" && element.selectedComponentRef !== undefined) findings.push(finding("blocker", "asset-selection.selected-ref", `${path}의 selectedComponentRef는 decision이 selected일 때만 사용합니다.`));
     if (element.evidenceRef !== undefined && (typeof element.evidenceRef !== "string" || !/^[a-z][A-Za-z0-9.-]*$/.test(element.evidenceRef))) findings.push(finding("blocker", "asset-selection.evidence-ref", `${path}.evidenceRef는 유효한 판단 근거 ID여야 합니다.`));
     if (element.decision === "selected" && element.impact === "business-behavior" && !element.evidenceRef) findings.push(finding("blocker", "asset-selection.business-evidence", `${path}의 업무 동작 선택에는 evidenceRef가 필요합니다.`));
+    if (element.decisionSubject !== undefined && !/^[a-z][a-z0-9-]*(?:\.[a-z0-9-]+)+$/.test(element.decisionSubject)) findings.push(finding("blocker", "asset-selection.decision-subject", `${path}.decisionSubject가 잘못되었습니다.`));
+    if (element.decision === "selected" && element.impact === "business-behavior" && !element.decisionSubject) findings.push(finding("blocker", "asset-selection.business-decision-subject", `${path}의 업무 동작 선택에는 다른 판단과 구분되는 decisionSubject가 필요합니다.`));
     if (element.reason !== undefined && (typeof element.reason !== "string" || element.reason.trim() === "")) findings.push(finding("blocker", "asset-selection.reason", `${path}.reason은 비어 있지 않은 문자열이어야 합니다.`));
   }
   return findings;
@@ -166,6 +169,7 @@ function reviewElement(element, componentMap, contextMap, contractMap) {
     decision: element.decision,
     selectedComponentRef: selectedRef ?? null,
     evidenceRef: element.evidenceRef ?? null,
+    decisionSubject: element.decisionSubject ?? null,
     selectedMatch,
     exactCandidates: exact,
     compatibleCandidates: compatible,
