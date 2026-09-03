@@ -1,11 +1,18 @@
 ---
 name: generate-mes-ui
-description: Generate, reproduce, normalize, or audit MES screens in this repository using the registered components, composition patterns, context rules, and visual evidence. Use whenever a user asks to make or change a MES page, center modal, side slide panel, confirmation dialog, table workflow, or generated-screen prototype.
+description: Generate, reproduce, normalize, or apply requested fixes to MES screens in this repository using the registered components, composition patterns, context rules, and visual evidence. Use whenever a user asks to make or change a MES page, center modal, side slide panel, confirmation dialog, table workflow, or generated-screen prototype. Do not use for evaluation-only requests; route review, critique, QA, acceptance, and promotion-readiness work to audit-mes-ui.
 ---
 
 # Generate MES UI
 
 Create MES UI through the repository contract. Do not translate prose or Figma directly into free-form JSX.
+
+## Boundary with AUDIT
+
+- This skill owns creation, reproduction, normalization, requested fixes, and the mandatory verification needed to hand off its own implementation.
+- `audit-mes-ui` owns evaluation-only requests, independent findings, broader UX/accessibility review, and promotion-readiness recommendations.
+- The delivery gate in this skill is not a substitute for an independent AUDIT. It proves only the declared implementation scope before handoff.
+- When the user requests both evaluation and correction, run `audit-mes-ui` first, implement the accepted findings here, then run `audit-mes-ui` again on the changed render.
 
 ## Scope and stop conditions
 
@@ -24,9 +31,9 @@ Match the required components and their relationship before writing a side-slide
 ## Workflow
 
 1. Read `AGENTS.override.md`, then read `references/repository-contract.md` and `references/delivery-gate.md`. For a deterministic template request, also read `references/templates.md`.
-2. Classify the request intent before retrieving examples. If the `mes-ui` MCP server is connected, call `mes_list_design_system`, then:
+2. Route evaluation-only requests to `audit-mes-ui`; do not modify the UI merely because an audit found an issue. For authorized creation or change work, classify the implementation intent before retrieving examples. If the `mes-ui` MCP server is connected, call `mes_list_design_system`, then:
    - for `new`, call `mes_get_web_generation_context` with the 업무명 or closest menu. It also returns `referenceContext`: scoped business information, page/popup/section usage examples, and Figma foundation recipes. These are explicitly **reference-only** and do not contain reproduction audit claims. Use `category: references` with optional `targetKind`, `taskIds`, or `usageIds` for a narrower lookup;
-   - for `reproduce`, `normalize`, or `audit`, call `mes_get_reproduction_audit_context` to retrieve the specific runtime and Figma comparison evidence.
+   - for `reproduce` or `normalize`, call `mes_get_reproduction_audit_context` to retrieve the specific runtime and Figma comparison evidence.
    When MCP is unavailable, use `npm run screen:references -- --query "입고등록" --surface side-slide-panel` from `component-library/` for the same business/usage references (`--list`, `--task`, `--usage` narrow the lookup). The existing `getWebGenerationContext` / `getReproductionAuditContext` exports still provide web observations.
 3. Before choosing a layout for `new` or a structural change, read the [screen intake policy](../../../component-library/src/design-system/registry/screen-intake-policy.json). Establish the whole-screen purpose, focus, workflow, concept/reference boundaries, and information relationships first. Use its conditional questions only for material gaps after inspecting supplied facts and relevant contracts; multiple task facets can coexist. Ask 1–3 related questions at a time, not a fixed questionnaire. Known answers, standard tokens, and established cancel behavior do not need reconfirmation. For a small change, revisit only affected answers. For `reproduce`, inspect the target node metadata and design context; ask only about missing behavior or evidence conflicts, not a new layout preference.
    Preserve material answers, sources, assumptions, and scope in existing `requirements` and `evidence.notes` using the policy's note format. Put decision-bearing facts in `evidence.decisions` and link selected business behavior through `assetDecisions.elements[].evidenceRef`. A `confirmed` user fact must preserve an exact current-user sentence as `sourceRef: 사용자 원문: "…"`; never paraphrase an assistant suggestion, an earlier generated request, a nearest screen, or a design-system example as a user request. Those sources can be `supported` references or `assumed` proposals only. Do not add an intake MD or a separate composition-plan file. At this stage establish the needed information, actions, ownership, comparison and state relationships; do not yet turn `popup`, `form`, `table`, `좌우`, or `상하` into the answer.

@@ -1,0 +1,7 @@
+interface:
+  display_name: "MES UI 평가"
+  short_description: "MES 화면을 POC·구현·승격 모드로 구분하여 평가합니다"
+  default_prompt: "Use $audit-mes-ui to review this MES screen, first choosing poc, implementation, or promotion to match my request."
+
+policy:
+  allow_implicit_invocation: true
