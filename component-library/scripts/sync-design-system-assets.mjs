@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { generatedTextMatches } from "./generated-text.mjs";
+import { generatedTextMatches, normalizeLineEndings } from "./generated-text.mjs";
 import { readRegistryBundle } from "./resolve-screen-request.mjs";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -34,10 +34,11 @@ function firstSentence(value) {
   return (match?.[1] ?? clean).slice(0, 180);
 }
 
-function sourceFacts(component) {
+function sourceFacts(component, readSource) {
   const absolutePath = path.join(projectRoot, component.source);
   if (!fs.existsSync(absolutePath)) throw new Error(`${component.id}: 구현 파일이 없습니다 (${component.source}).`);
-  const source = fs.readFileSync(absolutePath, "utf8");
+  // Git checkout may change line endings without changing the component.
+  const source = normalizeLineEndings(readSource(absolutePath));
   const symbols = unique([
     ...[...source.matchAll(/export\s+(?:interface|type|function|class|const)\s+([A-Za-z0-9_]+)/g)].map((match) => match[1]),
     ...[...source.matchAll(/export\s*\{([^}]+)\}/g)].flatMap((match) => match[1].split(",").map((item) => item.trim().split(/\s+as\s+/)[1] ?? item.trim().split(/\s+as\s+/)[0])),
@@ -190,7 +191,7 @@ function walkFiles(directory) {
   });
 }
 
-function buildOutputs() {
+export function buildOutputs({ readSource = (filePath) => fs.readFileSync(filePath, "utf8") } = {}) {
   const registry = readRegistryBundle();
   const catalog = readJson("component-catalog.json");
   const selectionFeedback = readJson("generation-selection-feedback.json");
@@ -215,7 +216,7 @@ function buildOutputs() {
     if (component.visibility === "public" && !component.documentationRoute) throw new Error(`${component.id}: 공개 자산에 documentationRoute가 없습니다.`);
     if (component.visibility === "public" && component.documentationMode !== "foundation" && !catalogRegistryIds.has(component.id)) throw new Error(`${component.id}: 공개 컴포넌트가 카탈로그에 없습니다.`);
     if (component.visibility === "internal" && catalogRegistryIds.has(component.id)) throw new Error(`${component.id}: 내부 컴포넌트가 공개 카탈로그에 포함됐습니다.`);
-    const facts = sourceFacts(component);
+    const facts = sourceFacts(component, readSource);
     return {
       kind: "component",
       ...component,
@@ -288,42 +289,46 @@ function staleSourceFiles() {
   return walkFiles(path.join(projectRoot, "src")).filter((filePath) => /\.removed-|\.bak$/i.test(filePath));
 }
 
-const mode = process.argv[2];
-const output = buildOutputs();
-const staleFiles = staleSourceFiles();
-if (staleFiles.length) throw new Error(`활성 src에 폐기 파일이 남아 있습니다:\n${staleFiles.join("\n")}`);
+function main() {
+  const mode = process.argv[2];
+  const output = buildOutputs();
+  const staleFiles = staleSourceFiles();
+  if (staleFiles.length) throw new Error(`활성 src에 폐기 파일이 남아 있습니다:\n${staleFiles.join("\n")}`);
 
-if (mode === "--write") {
-  fs.mkdirSync(docsDirectory, { recursive: true });
-  fs.writeFileSync(manifestPath, output.manifest, "utf8");
-  fs.writeFileSync(docsIndexPath, output.docsIndex, "utf8");
-  fs.writeFileSync(readmePath, output.readme, "utf8");
-  for (const [filePath, content] of output.docs) fs.writeFileSync(filePath, content, "utf8");
-  for (const filePath of fs.readdirSync(docsDirectory).filter((name) => name.endsWith(".md") && name !== "README.md").map((name) => path.join(docsDirectory, name))) {
-    if (!output.docs.has(filePath)) fs.rmSync(filePath);
-  }
-  console.log(`[assets] 원장·문서 갱신 · components ${output.components.length} · public ${output.components.filter((item) => item.visibility === "public").length} · internal ${output.components.filter((item) => item.visibility === "internal").length}`);
-} else if (mode === "--check") {
-  const mismatches = [];
-  const currentManifest = fs.existsSync(manifestPath) ? fs.readFileSync(manifestPath, "utf8") : "";
-  if (!generatedTextMatches(currentManifest, output.manifest)) mismatches.push(path.relative(repositoryRoot, manifestPath));
-  const currentIndex = fs.existsSync(docsIndexPath) ? fs.readFileSync(docsIndexPath, "utf8") : "";
-  if (!generatedTextMatches(currentIndex, output.docsIndex)) mismatches.push(path.relative(repositoryRoot, docsIndexPath));
-  const currentReadme = fs.readFileSync(readmePath, "utf8");
-  if (!generatedTextMatches(currentReadme, output.readme)) mismatches.push(path.relative(repositoryRoot, readmePath));
-  for (const [filePath, content] of output.docs) {
-    const current = fs.existsSync(filePath) ? fs.readFileSync(filePath, "utf8") : "";
-    if (!generatedTextMatches(current, content)) mismatches.push(path.relative(repositoryRoot, filePath));
-  }
-  const existingDocs = fs.existsSync(docsDirectory) ? fs.readdirSync(docsDirectory).filter((name) => name.endsWith(".md") && name !== "README.md") : [];
-  if (existingDocs.length !== output.docs.size) mismatches.push("docs/components (파일 수 불일치)");
-  if (mismatches.length) {
-    console.error(`자산 원장 또는 컴포넌트 문서가 현재 코드와 다릅니다. npm run sync:assets를 실행하세요.\n- ${mismatches.slice(0, 20).join("\n- ")}`);
-    process.exitCode = 1;
+  if (mode === "--write") {
+    fs.mkdirSync(docsDirectory, { recursive: true });
+    fs.writeFileSync(manifestPath, output.manifest, "utf8");
+    fs.writeFileSync(docsIndexPath, output.docsIndex, "utf8");
+    fs.writeFileSync(readmePath, output.readme, "utf8");
+    for (const [filePath, content] of output.docs) fs.writeFileSync(filePath, content, "utf8");
+    for (const filePath of fs.readdirSync(docsDirectory).filter((name) => name.endsWith(".md") && name !== "README.md").map((name) => path.join(docsDirectory, name))) {
+      if (!output.docs.has(filePath)) fs.rmSync(filePath);
+    }
+    console.log(`[assets] 원장·문서 갱신 · components ${output.components.length} · public ${output.components.filter((item) => item.visibility === "public").length} · internal ${output.components.filter((item) => item.visibility === "internal").length}`);
+  } else if (mode === "--check") {
+    const mismatches = [];
+    const currentManifest = fs.existsSync(manifestPath) ? fs.readFileSync(manifestPath, "utf8") : "";
+    if (!generatedTextMatches(currentManifest, output.manifest)) mismatches.push(path.relative(repositoryRoot, manifestPath));
+    const currentIndex = fs.existsSync(docsIndexPath) ? fs.readFileSync(docsIndexPath, "utf8") : "";
+    if (!generatedTextMatches(currentIndex, output.docsIndex)) mismatches.push(path.relative(repositoryRoot, docsIndexPath));
+    const currentReadme = fs.readFileSync(readmePath, "utf8");
+    if (!generatedTextMatches(currentReadme, output.readme)) mismatches.push(path.relative(repositoryRoot, readmePath));
+    for (const [filePath, content] of output.docs) {
+      const current = fs.existsSync(filePath) ? fs.readFileSync(filePath, "utf8") : "";
+      if (!generatedTextMatches(current, content)) mismatches.push(path.relative(repositoryRoot, filePath));
+    }
+    const existingDocs = fs.existsSync(docsDirectory) ? fs.readdirSync(docsDirectory).filter((name) => name.endsWith(".md") && name !== "README.md") : [];
+    if (existingDocs.length !== output.docs.size) mismatches.push("docs/components (파일 수 불일치)");
+    if (mismatches.length) {
+      console.error(`자산 원장 또는 컴포넌트 문서가 현재 코드와 다릅니다. npm run sync:assets를 실행하세요.\n- ${mismatches.slice(0, 20).join("\n- ")}`);
+      process.exitCode = 1;
+    } else {
+      console.log(`[assets] 원장·문서 정상 · components ${output.components.length} · docs ${output.docs.size}`);
+    }
   } else {
-    console.log(`[assets] 원장·문서 정상 · components ${output.components.length} · docs ${output.docs.size}`);
+    console.error("사용법: node scripts/sync-design-system-assets.mjs --write|--check");
+    process.exitCode = 1;
   }
-} else {
-  console.error("사용법: node scripts/sync-design-system-assets.mjs --write|--check");
-  process.exitCode = 1;
 }
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

@@ -16,7 +16,7 @@
     "check:business-knowledge": "node scripts/business-knowledge.mjs --check && node --test scripts/business-knowledge.test.mjs && npm run check:context-references",
     "check:registry": "node scripts/check-design-system-registry.mjs",
     "sync:assets": "node scripts/sync-design-system-assets.mjs --write",
-    "check:assets": "node scripts/sync-design-system-assets.mjs --check",
+    "check:assets": "node --test scripts/sync-design-system-assets.test.mjs && node scripts/sync-design-system-assets.mjs --check",
     "audit:design-values": "node scripts/audit-design-values.mjs --write",
     "check:design-values": "node scripts/audit-design-values.mjs --check",
     "audit:composition": "node scripts/audit-composition-inventory.mjs --write",

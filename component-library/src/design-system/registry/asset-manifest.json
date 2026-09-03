@@ -9,7 +9,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "42846301e887d69d7fc7f36dfc3f61fd8c180e669c9086c09b8f8af15fc26a86",
+  "fingerprint": "5fa02e9ac5fb78564064ab46d3c4d3da684eb7211906115f0ad05b43f1892234",
   "guidancePolicy": {
     "componentSelection": {
       "contextCoverageMode": "all-components",
@@ -137,7 +137,7 @@
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "77d16ceeef85d168ac3e449bdc770a530e5e1c56ed78ab085bbe3b30649e3338",
+        "sourceFingerprint": "eb114b9eacdbbe4f8810696ed584531a553927d3ea91ed1223e83f0684109578",
         "symbols": [
           "AlarmTone",
           "AlarmListItemProps",
@@ -318,7 +318,7 @@
         "popup.center.team-settings"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "ceabe8c90c0cd4d8c1aa002f0dd7a1775f7f58813ed43da32643bd4d178ab002",
+        "sourceFingerprint": "f15285ce470445caec4ab51392ea9a7ba42a8bf5ab46144cc15e11ded3358426",
         "symbols": [
           "BadgeProps",
           "Badge",
@@ -669,7 +669,7 @@
         "workflow.stepper"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "5cc6fdcd088ebc20639d2a66d1e94b457d16f9d0ffef8162c49a13b031b4abc7",
+        "sourceFingerprint": "0a0e60a4a3483a2e5bcb940f369777a1426359048195ae2a06cf37eb10952eba",
         "symbols": [
           "ButtonProps",
           "Button",
@@ -976,7 +976,7 @@
         "shell.center-modal"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "a9bcb925c92cb9b23eb87cd6e21a15e0c2326a03dbb2c7ab7a4ac8bfe8342c80",
+        "sourceFingerprint": "f7f67d5ce99efb9ea7d03ce381cfbf0773a57d8b1a0ac92ff01c371a22b4f5c5",
         "symbols": [
           "CenterModalSize",
           "CenterModalProps",
@@ -1126,7 +1126,7 @@
         "table.grouped-list"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "222ba85529ea2d0a09e1937d2a0fd4aae9495eb896345eaaa8fa2705f158fedc",
+        "sourceFingerprint": "7bcb402d1253e753cc7c12a2df50e3bbc29327c3b6f8ace78ae9eadec4b4ef50",
         "symbols": [
           "CheckboxColor",
           "CheckboxUncheckedAppearance",
@@ -1245,7 +1245,7 @@
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "93b6bded4b787e844ab471a3eb07744c753250cf3a2d355ed60e85bc2b3391f7",
+        "sourceFingerprint": "c5fbd8704ff1dd1c0728a9535668a0356e504ece06a34e229843e3725931eca8",
         "symbols": [
           "ComboboxOption",
           "ComboboxProps",
@@ -1373,7 +1373,7 @@
         "shell.confirm-dialog"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "ecc39874250fbe53e96394d884565701dac2f286da6fe7069ef5d6c0a342b15b",
+        "sourceFingerprint": "9da7f9258a168131a713ecda0f176bd39234902bd1ff3b2d66ce4a82b0d34d0b",
         "symbols": [
           "ConfirmDialogAction",
           "ConfirmDialogTone",
@@ -2657,7 +2657,7 @@
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "4f39ef529e73afd65739a47e28cbd911494fbf5b10aa8c4b76d2161ea8f39bef",
+        "sourceFingerprint": "c10d6cbd8a43368d46dfbf2045c7165133f6acf119b6ab84783acda91df824b6",
         "symbols": [
           "FilterTagProps",
           "FilterTag"
@@ -2959,7 +2959,7 @@
         "section.page-query-table"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "607faa35b5fd43b70ff402b58118938c5917d7726e2ee4a3661c4081755d0da2",
+        "sourceFingerprint": "94806deca73aac56bd77cef708cf1fb0e26f6aed5889c8f28bd55dab0e5c10b3",
         "symbols": [
           "GroupQueryOption",
           "GroupQueryProps",
@@ -3185,7 +3185,7 @@
         "section.staged-record-entry"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "6f6d4329bfcf56f451d9c1c6152f78efde599ea61e9bd793d86506fedc0a48b8",
+        "sourceFingerprint": "63d390917527ed066043639c24c56a9fe31b52f29cf0ca675f934c70fa807e27",
         "symbols": [
           "InputProps",
           "Input",
@@ -3845,7 +3845,7 @@
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "fe0ed2e8a25b3ef7b165acdc7d3ad10101a4771bce3538aeccc1f0781fda5874",
+        "sourceFingerprint": "704267126dbe7f0ac3c45f49cd154b80ab64eb4444e71e572a3df4cb770fb960",
         "symbols": [
           "NoticeBannerProps",
           "NoticeBanner"
@@ -3901,7 +3901,7 @@
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "d4b16037bb9a6d94262d7cfb415bea250acc3bcb397d2cf9db16eb551b830b0e",
+        "sourceFingerprint": "01c0f584045c6d6c36d27bf61116b0ce9a7688474b67a5f7c0a19654f025c837",
         "symbols": [
           "NotificationPanelItem",
           "NotificationSettingItem",
@@ -4073,7 +4073,7 @@
         "screen.form-management-workflow"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "972a390f1698fba98424c5af7acb2a9fd38a715cb454d3efb13e2f721dd03c7b",
+        "sourceFingerprint": "ee4b4ad5963dc8a2a7b3b61ed6354617afbb57604a79cdb9b409deef5b3951e0",
         "symbols": [
           "PageTopTabItemProps",
           "PageTopTabItem"
@@ -4408,7 +4408,7 @@
         "workflow.stepper"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "5178b2da8fe4145a91dc7604867942e3ce795c1cd84ca8cf908cbfb132b91c41",
+        "sourceFingerprint": "2355990ce2415f1d6b34701c78d61e49197eebf0c7e509307f73c7c97ab4988b",
         "symbols": [
           "ProgressProps",
           "Progress"
@@ -4574,7 +4574,7 @@
         "section.page-query-table"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "69620b18c59e077211d94b6a9b4fc6f26d339dd966ad6f93e5d83a35675edcfe",
+        "sourceFingerprint": "9239eea35e3271d6015adede46d35ae478d360566283a6f7cb7b1a0c736b0099",
         "symbols": [
           "QuickQueryPreset",
           "QuickQueryProps",
@@ -4709,7 +4709,7 @@
         "screen.form-management-workflow"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "a929f911671ee7deefd4e971e9de2c380ef4ff89128e247c9e3c6e35e406d102",
+        "sourceFingerprint": "e49d501eb48c6c040928a9f68c7bc94a806d3a6bece9a68922cc9bcbbac74903",
         "symbols": [
           "RadioProps",
           "Radio"
@@ -4763,7 +4763,7 @@
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "b83c8f7107290dd949c0f5e9d5429b690efb7de21fd6677b57d14f7ab908d482",
+        "sourceFingerprint": "c0841f9bfef98ebe216bd7415535a011904302e79a142aea2f68bd2f51c59593",
         "symbols": [
           "RadioChoiceOption",
           "RadioChoiceDialogProps",
@@ -5015,7 +5015,7 @@
         "section.search-table-composition"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "4ea5032ffc4067f4f514ef0224b04649bb0835b338f8f20f87d6d16ddf087c00",
+        "sourceFingerprint": "40466f5d6a152f6984704ff08548ad077f713906ae00385e211f56a6d77b7a19",
         "symbols": [
           "SearchInputProps",
           "SearchInput"
@@ -5788,7 +5788,7 @@
         "section.measurement-heatmap-analysis"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "77699c50893256e42df6e54f21d65986c961565961156e9d9670abc1ccc71fa4",
+        "sourceFingerprint": "7c7e4a2d1e36f0205169ccec2a613e628c6ee2e1bca4e24c53d9896390623c54",
         "symbols": [
           "SelectTriggerProps",
           "Select",
@@ -5851,7 +5851,7 @@
         "screen.form-management-workflow"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "a6bac27606b8ee05dab247dc2f36ee81bb1fbac5ec8279c0b5ec2f8d34fe0dc8",
+        "sourceFingerprint": "1e8d579dd31f7624f3eb2551a2d4e29f324fc612bb5c6d9b62e704fa10b8f5fe",
         "symbols": [
           "SidebarSubItem",
           "SidebarNavItem",
@@ -6399,7 +6399,7 @@
         "table.row-expand-detail"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "8896424ecf2a0b3896c68e8014cb7e927b04fbc11a84b4f01710a29629c2bd9f",
+        "sourceFingerprint": "d227be482519cb234f80ca36c66e683cfdc652123f4641cfeabf9879aa83e6a8",
         "symbols": [
           "TableColumn",
           "TableRowData",
@@ -6483,7 +6483,7 @@
         "table.column-settings"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "3a584399ee94f7a3b1e36a5884efcb2fe2d655db7be0113c7e91b49cf62318bd",
+        "sourceFingerprint": "dde6c22e8717c4d80898cfc077e69cf4c8384e4bfd6c3aa64640e895bd25ae27",
         "symbols": [
           "TagColor",
           "TagSize",
@@ -6713,7 +6713,7 @@
       "usageContract": null,
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "aee2258c72674e36ec53ba3da6d9d4a8356ea9849fbe54ca8c5ab87cd1c4654a",
+        "sourceFingerprint": "45bedc548e10dbe289e0a5ba92aa47ef78da0607507d9620b16d0c23c182f689",
         "symbols": [
           "ToastVariant",
           "ToastProps",
