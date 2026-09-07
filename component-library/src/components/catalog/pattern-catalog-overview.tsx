@@ -4,6 +4,7 @@ import patternData from "@/design-system/registry/patterns.json";
 import patternContractData from "@/design-system/registry/pattern-contracts.json";
 import sourceAssetData from "@/design-system/registry/source-assets.json";
 import { PATTERN_NODES, TIER_BY_ID, idToHref, type SidebarNode } from "@/lib/sidebar-data";
+import { getAssetScopeLabel } from "@/lib/catalog-labels";
 
 const allPatterns = [...patternData.patterns, ...sourceAssetData.patterns];
 const patternById = new Map(allPatterns.map((pattern) => [pattern.id, pattern]));
@@ -84,7 +85,7 @@ export function PatternCatalogOverview() {
       {cards.map((card) => {
         return <NextLink href={idToHref(card.id)} key={card.id} className="group overflow-hidden rounded-mes-panel border border-mes-gray-30 bg-white hover:border-mes-primary-60 hover:shadow-sm" data-pattern-card={card.id}>
           <div className="flex h-28 items-center justify-center border-b border-mes-gray-30 bg-mes-gray-10 p-3" data-pattern-thumbnail={card.id}><PatternThumbnail id={card.id} /></div>
-          <div className="min-h-24 p-4"><div className="flex items-start justify-between gap-2"><div><h3 className="text-[14px] font-bold text-mes-gray-130 group-hover:text-mes-primary-70">{card.label}</h3>{card.labelEn && <p className="mt-0.5 text-[11px] text-mes-gray-60">{card.labelEn}</p>}</div>{TIER_BY_ID[card.id] && <span className="rounded-full bg-mes-primary-10 px-2 py-0.5 text-[10px] font-semibold text-mes-primary-70">T{TIER_BY_ID[card.id]}</span>}</div></div>
+          <div className="min-h-24 p-4"><div className="flex items-start justify-between gap-2"><div><h3 className="text-[14px] font-bold text-mes-gray-130 group-hover:text-mes-primary-70">{card.label}</h3>{card.labelEn && <p className="mt-0.5 text-[11px] text-mes-gray-60">{card.labelEn}</p>}</div>{TIER_BY_ID[card.id] && <span className="rounded-full bg-mes-primary-10 px-2 py-0.5 text-[10px] font-semibold text-mes-primary-70">{getAssetScopeLabel(TIER_BY_ID[card.id])}</span>}</div></div>
         </NextLink>;
       })}
     </div>

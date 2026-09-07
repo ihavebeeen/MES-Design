@@ -23,6 +23,7 @@ import {
   StepperPattern,
   TransferListPattern,
 } from "@/components/patterns";
+import { getAssetScopeLabel } from "@/lib/catalog-labels";
 
 const meta: Record<string, { title: string; code: string; tier: number; kind: "컴포넌트" | "패턴" }> = {
   slider: { title: "범위 슬라이더", code: "Slider", tier: 3, kind: "컴포넌트" },
@@ -89,9 +90,9 @@ export function PromotedStandardCatalog({ activeId }: { activeId?: string }) {
       <header className="border-l-4 border-mes-primary-60 pl-3">
         <div className="flex items-center gap-2">
           <h2 className="text-[17px] font-bold text-mes-gray-130">{item.title}</h2>
-          <span className="rounded-full bg-mes-primary-20 px-2 py-0.5 text-[11px] font-medium text-mes-primary-60">Tier {item.tier} · 정식 {item.kind}</span>
+          <span className="rounded-full bg-mes-primary-20 px-2 py-0.5 text-[11px] font-medium text-mes-primary-60">{getAssetScopeLabel(item.tier)} {item.kind}</span>
         </div>
-        <p className="text-[12px] text-mes-gray-60">{item.code} · 표준 레지스트리 provisional</p>
+        <p className="text-[12px] text-mes-gray-60">{item.code} · {item.kind === "컴포넌트" ? "등록된 실제 구현" : "등록된 조합 예시"}</p>
       </header>
       {item.kind === "컴포넌트" && <div><h3 className="text-[16px] font-bold text-mes-gray-130">실제 컴포넌트와 variants</h3><p className="mt-1 text-[12px] text-mes-gray-60">등록된 구현의 주요 상태와 구성을 비교합니다.</p></div>}
       <div className={item.kind === "컴포넌트" ? "min-w-0 rounded-mes-control border border-mes-gray-30 bg-mes-gray-10 p-4" : "min-w-0 rounded-mes-control border border-mes-gray-30 bg-white p-6"}>

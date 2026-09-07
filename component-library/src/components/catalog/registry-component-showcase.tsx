@@ -19,6 +19,7 @@ import { QueryDateRange } from "@/components/ui/query-date-range";
 import { SectionFrame } from "@/components/ui/section-frame";
 import { SectionHeader } from "@/components/ui/section-header";
 import { SelectionActionBar } from "@/components/ui/selection-action-bar";
+import { getAssetScopeLabel, getAssetStatusLabel } from "@/lib/catalog-labels";
 import { getCatalogRegistryId } from "@/lib/component-catalog-data";
 
 /** client-page에 전용 데모가 없는 레지스트리 컴포넌트만 이곳에서 실제 구현으로 렌더링한다. */
@@ -108,8 +109,8 @@ export function RegistryComponentShowcase({ activeId }: { activeId?: string }) {
       <header className="border-l-4 border-mes-primary-60 pl-3">
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-[17px] font-bold text-mes-gray-130">{component.name}</h2>
-          <span className="rounded-full bg-mes-primary-10 px-2 py-0.5 text-[11px] font-semibold text-mes-primary-70">Tier {component.tier}</span>
-          <span className="rounded-full bg-mes-success-10 px-2 py-0.5 text-[11px] font-semibold text-mes-success-70">검증 완료</span>
+          <span className="rounded-full bg-mes-primary-10 px-2 py-0.5 text-[11px] font-semibold text-mes-primary-70">{getAssetScopeLabel(component.tier)} 자산</span>
+          <span className="rounded-full bg-mes-success-10 px-2 py-0.5 text-[11px] font-semibold text-mes-success-70">{getAssetStatusLabel(component.status)}</span>
         </div>
         <p className="mt-1 text-[12px] text-mes-gray-60">{component.id} · {component.category}</p>
       </header>

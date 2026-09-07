@@ -61,8 +61,10 @@ test("컴포넌트 개요는 역할·검증 상태·검색으로 탐색한다", 
   await expect(catalog.locator("[data-component-thumbnail]")).toHaveCount(componentCatalogCardCount);
   await expect(catalog.locator("[data-thumbnail-missing]")).toHaveCount(0);
   await expect(catalog.locator("[data-context-coverage-summary]")).toHaveCount(0);
-  await expect(catalog.getByRole("button", { name: "검증 완료", exact: true })).toBeVisible();
-  await expect(catalog.getByRole("button", { name: "확인 중", exact: true })).toBeVisible();
+  await expect(catalog.getByRole("button", { name: "기준 확정", exact: true })).toBeVisible();
+  await expect(catalog.getByRole("button", { name: "검토 필요", exact: true })).toBeVisible();
+  await expect(catalog.locator('[data-component-card="button-size"]')).toContainText("기본");
+  await expect(catalog.locator('[data-component-card="button-size"]')).not.toContainText("T1");
   await expect(catalog.getByText("성숙도", { exact: false })).toHaveCount(0);
   await expect(catalog.locator('[data-component-card="button-size"]')).not.toContainText("주로 사용");
   await expect(catalog.locator('[data-component-card="button-size"]')).not.toContainText("피할 때");
@@ -111,6 +113,8 @@ test("컴포넌트 상세는 실제 예시와 API 다음에 선택 맥락을 표
   const switcherContext = page.locator('[data-component-context="mes-product-switcher"]');
   await expect(switcherExample).toBeVisible();
   await expect(switcherExample.getByText("실제 컴포넌트와 variants", { exact: true })).toBeVisible();
+  await expect(switcherExample).toContainText("기본 자산");
+  await expect(switcherExample).toContainText("기준 확정");
   await expect(switcherExample.getByText("펼친 사이드바", { exact: true })).toBeVisible();
   await expect(switcherExample.getByText("접힌 사이드바", { exact: true })).toBeVisible();
   await expect(switcherApi).toContainText('import { MesProductSwitcher }');

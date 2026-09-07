@@ -172,6 +172,7 @@ import {
   BREADCRUMB_MAP,
   ALL_SEARCHABLE_ITEMS,
 } from "@/lib/sidebar-data";
+import { getAssetScopeLabel, getAssetStatusLabel } from "@/lib/catalog-labels";
 
 /** Sidebar 데모용 1-depth 항목 — MES 설정만 2-depth 실측값을 갖고 있음(주석 참고) */
 const SIDEBAR_NAV_ITEMS: SidebarNavItem[] = [
@@ -207,7 +208,7 @@ const SIDEBAR_NAV_ITEMS: SidebarNavItem[] = [
  * 함 — 개별 컴포넌트가 shrink-0 방어를 빠뜨리더라도 최악의 경우가 "스크롤바"로 끝나게
  * 하는 마지막 안전망.
  */
-/** 사이드바 항목 옆에 티어 숫자를 작게 표기하는 뱃지 — `TIER_BY_ID`에 없는 id는 렌더링 안 함 */
+/** 사이드바 항목 옆에 자산 범위를 표기한다. 내부 tier 숫자는 화면에 직접 노출하지 않는다. */
 function TierBadge({ id }: { id: string }) {
   const tier = TIER_BY_ID[id];
   if (!tier) return null;
@@ -218,7 +219,7 @@ function TierBadge({ id }: { id: string }) {
         TIER_COLOR[tier]
       )}
     >
-      T{tier}
+      {getAssetScopeLabel(tier)}
     </span>
   );
 }
@@ -270,7 +271,7 @@ function SidebarTreeNode({ node, activeId }: { node: SidebarNode; activeId?: str
       >
         <TierBadge id={node.id} />
         <span className="flex min-w-0 flex-1 flex-col"><span className="truncate">{node.label}</span>{node.labelEn && <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">{node.labelEn}</span>}</span>
-        {PROVISIONAL_BADGE_IDS.has(node.id) && <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">임시</span>}
+        {PROVISIONAL_BADGE_IDS.has(node.id) && <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">검토 필요</span>}
       </NextLink>
     );
   }
@@ -281,7 +282,7 @@ function SidebarTreeNode({ node, activeId }: { node: SidebarNode; activeId?: str
         <NextLink key={child.id} href={idToHref(child.id)} className={cn("ml-3 flex items-center gap-1.5 rounded-md border-l border-mes-gray-30 py-1.5 pl-3 text-[13px] transition-colors", activeId === child.id ? "border-mes-primary-60 font-semibold text-mes-text-brand" : "text-mes-gray-70 hover:text-mes-gray-130")}>
           <TierBadge id={child.id} />
           <span className="flex min-w-0 flex-1 flex-col"><span className="truncate">{child.label}</span>{child.labelEn && <span className="truncate text-[11px] font-normal leading-tight text-mes-gray-60">{child.labelEn}</span>}</span>
-          {PROVISIONAL_BADGE_IDS.has(child.id) && <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">임시</span>}
+          {PROVISIONAL_BADGE_IDS.has(child.id) && <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">검토 필요</span>}
         </NextLink>
       ))}
     </div>
@@ -313,7 +314,7 @@ function OverviewCard({
         <TierBadge id={id} />
         {PROVISIONAL_BADGE_IDS.has(id) && (
           <span className="shrink-0 rounded-full bg-mes-bg-brand-subtle-strong px-1.5 py-0 text-[10px] font-medium leading-[1.6] text-mes-text-brand">
-            임시
+            검토 필요
           </span>
         )}
       </div>
@@ -561,7 +562,7 @@ function Section({
   titleEn?: string;
   children: React.ReactNode;
 }) {
-  const badge = PROVISIONAL_BADGE_IDS.has(id) ? "임시" : undefined;
+  const badge = PROVISIONAL_BADGE_IDS.has(id) ? getAssetStatusLabel("provisional") : undefined;
   const registerSection = useContext(SectionRegistryContext);
   const currentId = useContext(ActiveIdContext);
   const childArray = useMemo(() => Children.toArray(children), [children]);
@@ -1696,9 +1697,9 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
               </div>
               <nav className="flex flex-col gap-3">
                 {tierSections.map((section) => (
-                  <section key={`${group.title}-${section.tier ?? "common"}`} aria-label={section.tier ? `Tier ${section.tier}` : "공통·미분류"}>
+                  <section key={`${group.title}-${section.tier ?? "common"}`} aria-label={section.tier ? `${getAssetScopeLabel(section.tier)} 자산` : "공통 자산"}>
                     <div className="mb-1 flex items-center justify-between border-b border-mes-gray-30 px-2 pb-1 text-[11px] font-semibold uppercase tracking-wide text-mes-gray-60">
-                      <span>{section.tier ? `Tier ${section.tier}` : "공통·미분류"}</span><span>{section.itemCount}</span>
+                      <span>{section.tier ? `${getAssetScopeLabel(section.tier)} 자산` : "공통 자산"}</span><span>{section.itemCount}</span>
                     </div>
                     <div className="flex flex-col gap-0.5">{section.nodes.map((node) => <SidebarTreeNode key={node.kind === "leaf" ? node.id : `${node.label}-${node.children.map((child) => child.id).join("-")}`} node={node} activeId={activeId} />)}</div>
                   </section>
@@ -2175,7 +2176,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         <div className="flex flex-col gap-0.5 border-l-4 border-mes-primary-60 pl-3">
           <h2 className="flex items-center gap-2 text-[17px] font-bold leading-tight text-mes-gray-130">
             그룹 조회
-            <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">임시</span>
+            <span className="rounded-full bg-mes-bg-brand-subtle-strong px-2 py-0.5 text-[11px] font-medium text-mes-text-brand">검토 필요</span>
           </h2>
           <span className="text-[12px] leading-tight text-mes-gray-60">GroupQuery</span>
         </div>

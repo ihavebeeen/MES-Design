@@ -4,6 +4,7 @@ import usageData from "@/design-system/registry/component-usage-contracts.json";
 import patternData from "@/design-system/registry/patterns.json";
 import sourceAssetData from "@/design-system/registry/source-assets.json";
 import { Accordion } from "@/components/ui/accordion";
+import { getAssetScopeLabel, getAssetStatusLabel } from "@/lib/catalog-labels";
 import { getCatalogRegistryId } from "@/lib/component-catalog-data";
 
 const componentById = new Map(componentData.components.map((component) => [component.id, component]));
@@ -55,8 +56,8 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
         {[
           ["ID", component.id],
           ["분류", component.category],
-          ["Tier", String(component.tier)],
-          ["검증 상태", component.status === "stable" ? "검증 완료" : "확인 중"],
+          ["자산 범위", `${getAssetScopeLabel(component.tier)} (내부값 T${component.tier})`],
+          ["기준 상태", `${getAssetStatusLabel(component.status)} (${component.status})`],
           ["구현", component.source],
           ["상세 문서", `docs/components/${component.id}.md`],
         ].map(([label, value]) => (
