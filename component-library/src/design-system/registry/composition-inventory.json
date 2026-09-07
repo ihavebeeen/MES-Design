@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx + registered screen/section sources",
   "summary": {
     "scannedFiles": 46,
-    "totalLines": 14285,
+    "totalLines": 14301,
     "shellInstances": {
       "CenterModal": 14,
       "SideSlidePanel": 14,
@@ -1216,7 +1216,7 @@
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "name": "completed-popup-patterns.tsx",
       "observedRole": "catalog-or-recipe",
-      "lines": 1052,
+      "lines": 1068,
       "exportedSymbols": [
         "PopupRenderer"
       ],
@@ -1251,7 +1251,7 @@
       "uiComponents": [
         {
           "name": "Button",
-          "jsxCount": 14
+          "jsxCount": 13
         },
         {
           "name": "Card",
@@ -3727,5 +3727,5 @@
       ]
     }
   ],
-  "fingerprint": "7efe5e1c1b0820b0"
+  "fingerprint": "729a6b94f7dc398c"
 }

@@ -451,6 +451,14 @@ test("생산실적 등록 슬라이드 팝업", async ({ page }) => {
   expect(overflow.horizontal).toBe(0);
   expect(overflow.vertical).toBeGreaterThanOrEqual(0);
 
+  const addButton = dialog.getByRole("button", { name: "실적 추가" });
+  const addButtonBox = await addButton.boundingBox();
+  const addCardBox = await addButton.locator("..").boundingBox();
+  expect(addButtonBox).not.toBeNull();
+  expect(addCardBox).not.toBeNull();
+  expect(Math.abs(addButtonBox!.y + addButtonBox!.height / 2 - (addCardBox!.y + addCardBox!.height))).toBeLessThanOrEqual(1);
+  await expect(addButton.locator('[data-mes-icon="arrow-line"]')).toHaveCount(1);
+
   await hideDevelopmentOverlay(page);
   await expect(dialog).toHaveScreenshot("production-result.png");
 
@@ -484,6 +492,15 @@ test("입고등록은 승인된 SectionFrame·FormGrid·취소 복원 계약을 
 
   const horizontalOverflow = await dialog.evaluate((element) => element.scrollWidth - element.clientWidth);
   expect(horizontalOverflow).toBe(0);
+
+  const addButton = dialog.getByRole("button", { name: "추가", exact: true });
+  const addButtonBox = await addButton.boundingBox();
+  const addCardBox = await addButton.locator("..").boundingBox();
+  expect(addButtonBox).not.toBeNull();
+  expect(addCardBox).not.toBeNull();
+  expect(Math.abs(addButtonBox!.y + addButtonBox!.height / 2 - (addCardBox!.y + addCardBox!.height))).toBeLessThanOrEqual(1);
+  await expect(addButton.locator('[data-mes-icon="arrow-line"]')).toHaveCount(1);
+
   await hideDevelopmentOverlay(page);
   await expect(dialog).toHaveScreenshot("receiving-pattern-pilot.png");
 

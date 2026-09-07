@@ -17,6 +17,7 @@ import { Tag } from "@/components/ui/tag";
 import { TimePicker } from "@/components/ui/time-picker";
 import {
   IconArrow,
+  IconArrowLine,
   IconDownload,
   IconFileNote,
   IconPlus,
@@ -63,6 +64,21 @@ type CenterPopupKind =
 type SidePopupKind = "production" | "receiving" | "custom" | "inspection" | "operation-log";
 export type PopupKind = CenterPopupKind | SidePopupKind;
 const RECEIVING_ACTION_TEMPLATE = createDialogActionSet("action-set.cancel-save");
+
+function BoundaryAddButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
+  return (
+    <Button
+      size="small"
+      className="absolute -bottom-4 left-1/2 w-[160px] -translate-x-1/2"
+      startIcon={<IconArrowLine size={16} className="-rotate-90" data-mes-icon="arrow-line" />}
+      onClick={onClick}
+      data-boundary-add-action
+    >
+      {children}
+    </Button>
+  );
+}
+
 type PopupPatternId =
   | "side-custom-columns"
   | "side-add-list"
@@ -521,7 +537,7 @@ function ProductionContent() {
             <LabeledControl label="저장창고"><FixtureSelect value={warehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={setWarehouse} /></LabeledControl>
             <LabeledControl label="투입품목"><FixtureInput value={inputItem} onValueChange={setInputItem} /></LabeledControl>
           </div>
-          <Button size="small" className="absolute left-1/2 top-[178px] w-[160px] -translate-x-1/2" startIcon={<IconArrow size={15} className="-rotate-90" />} onClick={addResult}>실적 추가</Button>
+          <BoundaryAddButton onClick={addResult}>실적 추가</BoundaryAddButton>
         </div>
         <div className="flex min-h-0 flex-1 flex-col gap-2.5">
           <div className="flex h-8 shrink-0 items-center justify-between"><b className="text-[16px]">생산실적 상세 리스트</b><FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" /></div>
@@ -671,7 +687,7 @@ const ReceivingContent = React.forwardRef<ReceivingContentHandle>(function Recei
       </SectionFrame>
 
       <div className="shrink-0 px-5 pt-5">
-        <div className="rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
+        <div className="relative rounded-lg bg-mes-gray-20 px-4 pb-8 pt-3">
           <div className="flex items-center justify-between">
             <b className="text-[16px]">LOT단위 품목 추가</b>
             <Button size="small" variant="fillBlack" endIcon={<IconArrow size={14} className="rotate-180" />}>리스트 조회/선택</Button>
@@ -686,7 +702,7 @@ const ReceivingContent = React.forwardRef<ReceivingContentHandle>(function Recei
             <FormFieldRow label="입고일" required><DatePicker value={receivingDate} onValueChange={setReceivingDate} separator="-" /></FormFieldRow>
             <FormFieldRow label="입고구분"><FixtureInput value="임가공" muted /></FormFieldRow>
           </FormGrid>
-          <div className="-mb-4 mt-3 flex justify-center"><Button size="small" className="w-[160px]" startIcon={<IconArrow size={15} className="-rotate-90" />} onClick={addReceivingRow}>추가</Button></div>
+          <BoundaryAddButton onClick={addReceivingRow}>추가</BoundaryAddButton>
         </div>
       </div>
 
