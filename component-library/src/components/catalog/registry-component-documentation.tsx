@@ -1,32 +1,19 @@
 import componentData from "@/design-system/registry/components.json";
+import assetManifestData from "@/design-system/registry/asset-manifest.json";
 import usageData from "@/design-system/registry/component-usage-contracts.json";
 import patternData from "@/design-system/registry/patterns.json";
 import sourceAssetData from "@/design-system/registry/source-assets.json";
-import { ContentRegionHeading } from "@/components/ui/content-region-heading";
-import { SectionHeader } from "@/components/ui/section-header";
 import { getCatalogRegistryId } from "@/lib/component-catalog-data";
 
 const componentById = new Map(componentData.components.map((component) => [component.id, component]));
 const usageById = new Map([...usageData.baselineContexts, ...usageData.contracts].map((context) => [context.componentId, context]));
 const detailedUsageById = new Map(usageData.contracts.map((contract) => [contract.componentId, contract]));
 const allPatterns = [...patternData.patterns, ...sourceAssetData.patterns];
+const manifestById = new Map(assetManifestData.assets.filter((asset) => asset.kind === "component").map((asset) => [asset.id, asset]));
 
 function List({ items, fallback }: { items?: string[]; fallback: string }) {
   const values = items?.length ? items : [fallback];
   return <ul className="list-disc space-y-1 pl-4 text-[13px] leading-5 text-mes-gray-80">{values.map((item) => <li key={item}>{item}</li>)}</ul>;
-}
-
-function HeadingPreview({ id }: { id: string }) {
-  if (id !== "content-region-heading" && id !== "section-header") return null;
-
-  return (
-    <article className="rounded-mes-panel border border-mes-gray-30 bg-white p-4">
-      <h3 className="mb-3 text-[14px] font-semibold text-mes-gray-130">기본 예시</h3>
-      {id === "content-region-heading"
-        ? <ContentRegionHeading>품목 재고 리스트</ContentRegionHeading>
-        : <SectionHeader>기본 정보</SectionHeader>}
-    </article>
-  );
 }
 
 /** 전용 데모 섹션이 없는 공개 자산의 짧은 레지스트리 문서 화면. */
@@ -36,21 +23,22 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
   if (!component) return null;
   const usage = usageById.get(component.id);
   const detailed = detailedUsageById.get(component.id);
+  const manifest = manifestById.get(component.id);
   const relatedPatterns = allPatterns.filter((pattern) => pattern.requiredComponents.includes(component.id));
-  const showRegistryHeader = component.documentationMode === "registry";
+  const symbols = manifest?.sourceFacts?.symbols ?? [];
+  const primarySymbol = symbols.find((symbol) => symbol === component.name) ?? symbols.at(-1) ?? component.name;
+  const importPath = component.source.replace(/^src\//, "@/").replace(/\.tsx$/, "");
 
   return (
     <section className="flex w-full max-w-[960px] flex-col gap-5 border-b border-mes-gray-30 pb-8" data-registry-component={component.id} data-component-context={component.id}>
-      {showRegistryHeader && <header className="border-l-4 border-mes-primary-60 pl-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-[17px] font-bold text-mes-gray-130">{component.name}</h2>
-            <span className="rounded-full bg-mes-primary-10 px-2 py-0.5 text-[11px] font-semibold text-mes-primary-70">Tier {component.tier}</span>
-            <span className="rounded-full bg-mes-success-10 px-2 py-0.5 text-[11px] font-semibold text-mes-success-70">검증 완료</span>
-          </div>
-          <p className="mt-1 text-[12px] text-mes-gray-60">{component.id} · {component.category}</p>
-        </header>}
-
-      {showRegistryHeader && <HeadingPreview id={component.id} />}
+      <article className="rounded-mes-panel border border-mes-gray-30 bg-white p-4" data-component-api={component.id}>
+        <h3 className="text-[14px] font-semibold text-mes-gray-130">사용 코드와 API</h3>
+        <pre className="mt-3 overflow-x-auto rounded-mes-control bg-mes-gray-130 px-4 py-3 text-[12px] leading-5 text-white"><code>{`import { ${primarySymbol} } from \"${importPath}\";`}</code></pre>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {(manifest?.sourceFacts?.propNames ?? []).map((prop) => <code key={prop} className="rounded bg-mes-gray-20 px-2 py-1 text-[11px] text-mes-gray-90">{prop}</code>)}
+        </div>
+        <p className="mt-3 text-[12px] text-mes-gray-60">구현: {component.source} · 상세 문서: docs/components/{component.id}.md</p>
+      </article>
 
       <header className="flex flex-wrap items-end justify-between gap-3 border-b border-mes-gray-30 pb-3">
         <div><h3 className="text-[16px] font-bold text-mes-gray-130">선택 맥락</h3><p className="mt-1 text-[12px] text-mes-gray-60">모양이 비슷한 자산이 아니라, 이 역할이 필요한지 판단하는 기준입니다.</p></div>
@@ -79,7 +67,6 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
         <article className="rounded-mes-panel border border-mes-gray-30 bg-white p-4"><h3 className="mb-2 text-[14px] font-semibold text-mes-gray-130">상태와 제약</h3><List items={[...(detailed.requiredStates ?? []), ...(detailed.constraints ?? [])]} fallback="구현의 공개 Props와 등록 화면 근거를 따릅니다." /></article>
         <article className="rounded-mes-panel border border-mes-gray-30 bg-white p-4"><h3 className="mb-2 text-[14px] font-semibold text-mes-gray-130">접근성과 근거</h3><List items={[...(detailed.accessibility ?? []), ...(detailed.evidence ?? [])]} fallback="구현에 선언된 접근성 속성을 유지하고 실제 사용 화면에서 검증합니다." /></article>
       </div>}
-      <p className="text-[12px] text-mes-gray-60">구현: {component.source} · 상세 문서: docs/components/{component.id}.md</p>
     </section>
   );
 }

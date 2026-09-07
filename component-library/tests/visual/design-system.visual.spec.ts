@@ -92,6 +92,32 @@ test("컴포넌트 개요는 역할·검증 상태·검색으로 탐색한다", 
   await expect(buttonContext.getByText("가까운 대안", { exact: true })).toBeVisible();
 });
 
+test("컴포넌트 상세는 실제 예시와 API 다음에 선택 맥락을 표시한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/components/button-size");
+  const buttonExample = page.locator('#button-size');
+  const buttonApi = page.locator('[data-component-api="button"]');
+  await expect(buttonExample).toBeVisible();
+  await expect(buttonApi).toBeVisible();
+  expect(await buttonExample.evaluate((element) => {
+    const context = document.querySelector('[data-component-context="button"]');
+    return context ? Boolean(element.compareDocumentPosition(context) & Node.DOCUMENT_POSITION_FOLLOWING) : false;
+  })).toBe(true);
+
+  await page.goto("/components/mes-product-switcher");
+  const switcherExample = page.locator('[data-component-showcase="mes-product-switcher"]');
+  const switcherApi = page.locator('[data-component-api="mes-product-switcher"]');
+  const switcherContext = page.locator('[data-component-context="mes-product-switcher"]');
+  await expect(switcherExample).toBeVisible();
+  await expect(switcherExample.getByText("실제 컴포넌트", { exact: true })).toBeVisible();
+  await expect(switcherApi).toContainText('import { MesProductSwitcher }');
+  await expect(switcherContext).toBeVisible();
+  expect(await switcherExample.evaluate((element) => {
+    const context = document.querySelector('[data-component-context="mes-product-switcher"]');
+    return context ? Boolean(element.compareDocumentPosition(context) & Node.DOCUMENT_POSITION_FOLLOWING) : false;
+  })).toBe(true);
+});
+
 test("패턴 개요와 상세에서 조합 선택 맥락을 확인한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/patterns");

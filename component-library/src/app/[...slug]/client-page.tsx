@@ -113,6 +113,7 @@ import { CandidateDecisionGallery } from "@/components/experimental";
 import { PromotedStandardCatalog } from "@/components/catalog/promoted-standard-catalog";
 import { ComponentCatalogOverview } from "@/components/catalog/component-catalog-overview";
 import { RegistryComponentDocumentation } from "@/components/catalog/registry-component-documentation";
+import { RegistryComponentShowcase } from "@/components/catalog/registry-component-showcase";
 import { PatternCatalogOverview, RegistryPatternDocumentation } from "@/components/catalog/pattern-catalog-overview";
 import { MobileCatalog } from "@/components/mobile/mobile-catalog";
 import {
@@ -2064,7 +2065,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
               </div>
               {!activeId && (activeGroup === "components" ? <ComponentCatalogOverview /> : <OverviewGrid nodes={COMPONENT_NODES} />)}
               <PromotedStandardCatalog activeId={activeId} />
-              <RegistryComponentDocumentation activeId={activeId} />
+              <RegistryComponentShowcase activeId={activeId} />
             </>
           )}
 
@@ -5478,6 +5479,8 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
           <CompletedColumnSettingsExample />
         </div>
       </Section>
+
+      {activeGroup === "components" && <RegistryComponentDocumentation activeId={activeId} />}
 
         </main>
         <RightRail items={sectionRegistry.get(activeId ?? "") ?? []} />

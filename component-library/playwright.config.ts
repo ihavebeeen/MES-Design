@@ -1,12 +1,15 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000";
+const previewURL = new URL(baseURL);
+
 export default defineConfig({
   testDir: "./tests/visual",
   fullyParallel: false,
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? "github" : "list",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL,
     colorScheme: "light",
     locale: "ko-KR",
     timezoneId: "Asia/Seoul",
@@ -28,8 +31,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev -- --hostname localhost --port 3000",
-    url: "http://localhost:3000/visual-regression/table",
+    command: `npm run dev -- --hostname ${previewURL.hostname} --port ${previewURL.port || "3000"}`,
+    url: `${baseURL}/visual-regression/table`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
