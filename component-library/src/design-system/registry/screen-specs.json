@@ -17,30 +17,71 @@
           "scrollOwner": "none"
         },
         {
-          "id": "receivingItems",
-          "title": "입고 품목",
+          "id": "receivingItemDraft",
+          "title": "LOT단위 품목 추가",
           "slot": "body",
           "frameRef": "frame.standard-section",
-          "patternRef": "section.editable-row-list",
-          "componentRefs": ["button", "input", "select"],
+          "patternRef": "section.staged-record-entry",
+          "supportingPatternRefs": ["section.form-grid"],
+          "componentRefs": ["form-grid", "button", "input", "select", "date-picker"],
           "behaviorRefs": ["row.mutation-policy"],
-          "scrollOwner": "section"
+          "scrollOwner": "none"
         },
         {
-          "id": "optionalInformation",
-          "title": "선택 항목",
+          "id": "receivingResultList",
+          "title": "입고실적 상세 리스트",
           "slot": "body",
-          "frameRef": "frame.standard-section",
-          "patternRef": "section.form-grid",
-          "componentRefs": ["form-grid", "input", "select"],
-          "behaviorRefs": [],
-          "scrollOwner": "none"
+          "patternRef": "section.added-record-list",
+          "componentRefs": ["search-input", "table", "link", "icon-button"],
+          "behaviorRefs": ["row.mutation-policy"],
+          "scrollOwner": "section"
         }
       ],
       "behaviorRefs": ["row.mutation-policy", "dismiss.restore-committed"],
       "actionSetRef": "action-set.cancel-save",
-      "constraints": ["섹션 순서는 기본정보→입고 품목→선택 항목이다.", "취소·X·Esc·backdrop은 저장 전 상태를 복원한다.", "반복 입력 행은 Table이 아니라 EditableRowGrid를 사용한다."],
+      "constraints": ["섹션 순서는 기본정보→LOT단위 품목 추가→입고실적 상세 리스트다.", "상단 작성값은 추가 동작 전까지 draft이며 추가 후 하단 목록에 확정한다.", "하단 Table은 추가된 여러 입고실적의 동일 컬럼 비교·검토를 담당한다.", "취소·X·Esc·backdrop은 저장 전 상태를 복원한다."],
       "evidence": ["Figma 11210:49261", "visual-regression/receiving-pilot"]
+    },
+    {
+      "screenId": "production-result",
+      "targetKind": "side-slide-panel",
+      "shellRef": "shell.side-slide-panel",
+      "sections": [
+        {
+          "id": "instructionInformation",
+          "title": "지시정보",
+          "slot": "body",
+          "frameRef": "frame.standard-section",
+          "patternRef": "section.form-grid",
+          "componentRefs": ["form-grid", "input", "select", "date-picker", "checkbox", "icon-button"],
+          "behaviorRefs": [],
+          "scrollOwner": "none"
+        },
+        {
+          "id": "productionResultDraft",
+          "title": "실적정보",
+          "slot": "body",
+          "frameRef": "frame.standard-section",
+          "patternRef": "section.staged-record-entry",
+          "supportingPatternRefs": ["section.form-grid"],
+          "componentRefs": ["form-grid", "button", "input", "select"],
+          "behaviorRefs": ["row.mutation-policy"],
+          "scrollOwner": "none"
+        },
+        {
+          "id": "productionResultList",
+          "title": "생산실적 상세 리스트",
+          "slot": "body",
+          "patternRef": "section.added-record-list",
+          "componentRefs": ["search-input", "table", "button", "icon-button"],
+          "behaviorRefs": ["row.mutation-policy"],
+          "scrollOwner": "section"
+        }
+      ],
+      "behaviorRefs": ["row.mutation-policy"],
+      "actionSetRef": "action-set.cancel-save",
+      "constraints": ["섹션 순서는 지시정보→실적정보→생산실적 상세 리스트다.", "실적정보의 작성값은 추가 동작 전까지 draft이며 추가 후 하단 목록에 확정한다.", "하단 Table은 추가된 여러 생산실적의 동일 컬럼 비교·검토를 담당한다."],
+      "evidence": ["Figma 11210:48851", "visual-regression/production-result"]
     },
     {
       "screenId": "batch-work-order",

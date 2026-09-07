@@ -188,16 +188,20 @@ function targetPlacementMatches(targetKind, placement) {
   return !placement || allowed[targetKind]?.has(placement);
 }
 
-function reviewPatternCandidates(draft, elementReviews, patterns) {
+function reviewPatternCandidates(draft, elementReviews, patterns, patternContracts = []) {
   const parentRefs = new Set(draft.elements.flatMap((element) => element.parentRefs ?? []));
+  const contractByPattern = new Map(patternContracts.map((entry) => [entry.patternId, entry]));
   const selectedComponents = new Set(elementReviews.flatMap((review) => [
     review.selectedComponentRef,
     ...review.exactCandidates.map((entry) => entry.componentRef),
     ...review.compatibleCandidates.map((entry) => entry.componentRef),
   ]).filter(Boolean));
   return patterns.map((pattern) => {
+    const contract = contractByPattern.get(pattern.id);
     const directParent = parentRefs.has(pattern.id);
     const matchedComponents = pattern.requiredComponents.filter((componentId) => selectedComponents.has(componentId));
+    const missingComponents = pattern.requiredComponents.filter((componentId) => !selectedComponents.has(componentId));
+    const componentCoverage = pattern.requiredComponents.length === 0 ? 0 : matchedComponents.length / pattern.requiredComponents.length;
     return {
       patternRef: pattern.id,
       name: pattern.name,
@@ -205,9 +209,31 @@ function reviewPatternCandidates(draft, elementReviews, patterns) {
       placement: pattern.placement ?? null,
       directParent,
       matchedComponents,
+      missingComponents,
+      componentCoverage: Number(componentCoverage.toFixed(2)),
       requiredComponents: pattern.requiredComponents,
       contextRules: pattern.rules,
-      score: Number(directParent) * 100 + matchedComponents.length,
+      selectionContext: contract
+        ? {
+            coverage: "detailed-contract",
+            useWhen: contract.useWhen,
+            doNotUseWhen: contract.doNotUseWhen,
+            constraints: contract.constraints,
+            behaviorTargets: contract.behaviorTargets,
+          }
+        : {
+            coverage: "pattern-rules-only",
+            useWhen: pattern.rules,
+            doNotUseWhen: [],
+            constraints: [],
+            behaviorTargets: [],
+          },
+      contextReview: directParent
+        ? missingComponents.length === 0
+          ? "explicit-parent-reference"
+          : "explicit-parent-reference-needs-component-review"
+        : "required-before-selection",
+      score: Number(directParent) * 100 + componentCoverage * 10 + matchedComponents.length,
     };
   }).filter((entry) => targetPlacementMatches(draft.targetKind, entry.placement) && (entry.directParent || entry.matchedComponents.length > 0))
     .sort((left, right) => right.score - left.score || left.patternRef.localeCompare(right.patternRef));
@@ -232,7 +258,7 @@ export function reviewScreenAssetSelection(draft, registry) {
   const contextMap = new Map(registry.componentSelectionContexts.map((entry) => [entry.componentId, entry]));
   const contractMap = new Map(registry.componentUsageContracts.map((entry) => [entry.componentId, entry]));
   const elementReviews = draft.elements.map((element) => reviewElement(element, componentMap, contextMap, contractMap));
-  const patternCandidates = reviewPatternCandidates(draft, elementReviews, registry.patterns);
+  const patternCandidates = reviewPatternCandidates(draft, elementReviews, registry.patterns, registry.patternContracts);
   const representedCategories = new Set(draft.elements.map((element) => element.category));
   const notApplicable = new Set(draft.notApplicableCategories ?? []);
   const unreviewedCategories = SEMANTIC_ASSET_CATEGORIES.filter((category) => !representedCategories.has(category) && !notApplicable.has(category));
@@ -268,7 +294,7 @@ export function reviewScreenAssetSelection(draft, registry) {
       authority: "advisory-pre-request-selection",
       automaticSelection: false,
       blockingBoundary: "invalid-input-only",
-      note: "후보는 ScreenRequest를 대신 결정하지 않는다. 확정 근거와 전체 화면 맥락을 검토해 채택한 자산만 요청에 연결한다.",
+      note: "후보는 ScreenRequest를 대신 결정하지 않는다. 컴포넌트 포함률은 탐색 순서일 뿐이며 selectionContext의 useWhen·doNotUseWhen과 전체 화면 맥락을 검토해 채택한 패턴만 요청에 연결한다.",
     },
     reviewedCategories: [...representedCategories],
     notApplicableCategories: [...notApplicable],

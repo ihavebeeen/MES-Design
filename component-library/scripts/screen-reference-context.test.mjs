@@ -25,11 +25,9 @@ test("usage references cover all desktop surfaces and point to real patterns/que
     assert.ok(c.name && c.purpose && c.relationship && c.basis);
     assert.ok(c.consider.length && c.alternatives.length);
     for (const ref of c.patternRefs) assert.ok(patterns.has(ref), `${c.id}: unknown pattern ${ref}`);
-    for (const ref of c.componentRefs ?? []) assert.ok(components.has(ref), `${c.id}: unknown component ${ref}`);
-    if (c.id.startsWith("usage.popup.")) {
-      assert.ok(c.componentRefs.length > 0, `${c.id}: component context is required`);
-      assert.ok(c.connection.length > 0, `${c.id}: component connection is required`);
-    }
+    for (const ref of c.componentRefs) assert.ok(components.has(ref), `${c.id}: unknown component ${ref}`);
+    assert.ok(c.componentRefs.length > 0, `${c.id}: component context is required`);
+    assert.ok(c.connection.length > 0, `${c.id}: component connection is required`);
     assert.equal(c.required, undefined);
     assert.equal(c.shellRef, undefined);
   }
@@ -135,6 +133,7 @@ test("explicit cross-surface references are allowed, list addition modes remain 
 test("reference corruption cannot crash screen annotation retrieval", () => {
   const invalid = structuredClone(sources);
   delete invalid.usage.contexts[0].patternRefs;
+  delete invalid.usage.contexts[1].connection;
   assert.ok(validateUsageContexts(invalid.usage).length > 0);
   const result = getRequestReferences(fixture("deterministic-side-slide"), [], invalid);
   assert.equal(result.status, "unavailable");

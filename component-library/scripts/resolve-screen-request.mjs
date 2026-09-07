@@ -258,6 +258,35 @@ export function contractFingerprint(contract) {
   return hash(payload);
 }
 
+function legacyGeneratedSections(generation) {
+  if (generation?.templateId !== "side-slide-form-editable-list.v1") return null;
+  return generation.sections.map((section) => {
+    const controls = unique((section.fields ?? section.columns ?? []).map((field) => field.control));
+    if (section.kind === "editable-row-list") {
+      return {
+        id: section.id,
+        title: section.title,
+        slot: "body",
+        frameRef: "frame.standard-section",
+        patternRef: "section.editable-row-list",
+        componentRefs: unique(["button", ...controls]),
+        behaviorRefs: ["row.mutation-policy"],
+        scrollOwner: "section",
+      };
+    }
+    return {
+      id: section.id,
+      title: section.title,
+      slot: "body",
+      frameRef: "frame.standard-section",
+      patternRef: "section.form-grid",
+      componentRefs: unique(["form-grid", ...controls]),
+      behaviorRefs: [],
+      scrollOwner: "none",
+    };
+  });
+}
+
 export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const issues = validateRequestShape(request);
   const decisionEvidence = new Map((request?.evidence?.decisions ?? []).map((entry) => [entry.id, entry]));
@@ -361,7 +390,12 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const inheritedRefs = nearestScreen?.patternRefs ?? [];
   const composition = request?.composition ?? {};
   const slide = isSlideComposition(request?.generation?.templateId);
-  const derivedSections = slide && validateGenerationSpec(request.generation).length === 0 ? slideCompositionSections(request.generation) : null;
+  const validGeneration = request?.generation && validateGenerationSpec(request.generation).length === 0;
+  const derivedSections = validGeneration
+    ? slide
+      ? slideCompositionSections(request.generation)
+      : legacyGeneratedSections(request.generation)
+    : null;
   const sections = selectedOrInherited(composition.sections, derivedSections ?? nearestScreenSpec?.sections ?? []);
   const structuredSectionRefs = unique(sections.flatMap((section) => [section.frameRef, section.patternRef, ...(section.supportingPatternRefs ?? [])]));
   const recipeRefs = unique(selectedOrInherited(composition.recipeRefs, refsByKind(inheritedRefs, patternMap, ["popup", "screen", "recipe"])));

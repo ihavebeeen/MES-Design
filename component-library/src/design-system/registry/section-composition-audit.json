@@ -18,19 +18,33 @@
     "registeredSectionPatterns": 18,
     "sectionPatternsWithSelectionContext": 18,
     "registeredScreens": 29,
-    "screensWithDetailedSpec": 4,
-    "screensMappedBySectionPattern": 23,
+    "screensWithDetailedSpec": 5,
+    "screensMappedBySectionPattern": 22,
     "screensWithExplicitLocalComposition": 2,
     "unresolvedScreens": 0,
     "figmaSourceEvidenceRecorded": 10,
     "figmaReferencesOnly": 19,
     "webReferencedScreens": 4,
-    "codeInventoryTrackedScreens": 29
+    "codeInventoryTrackedScreens": 29,
+    "screenScopedCodeEvidence": 18
   },
   "gaps": {
     "missingSectionContracts": [],
     "unresolvedScreens": [],
     "codeSourcesOutsideCompositionInventory": [],
+    "sharedSourceScreensWithoutDetailedSpec": [
+      "material-input-settings",
+      "defect-quantity-input",
+      "bom-copy",
+      "preissued-label",
+      "operation-log",
+      "custom-information",
+      "self-inspection",
+      "form-management",
+      "production-result-responsive",
+      "cavity-layout-settings",
+      "inventory-edit"
+    ],
     "note": "상세 ScreenSpec가 없는 화면은 section-pattern 연결까지만 구조화된 상태이며 픽셀 검증 완료를 뜻하지 않는다."
   },
   "sectionPatterns": [
@@ -162,7 +176,10 @@
           "SlideCompositionSectionView"
         ]
       },
-      "usedByScreens": [],
+      "usedByScreens": [
+        "production-result",
+        "receiving"
+      ],
       "detectedCodeSources": []
     },
     {
@@ -241,7 +258,10 @@
           "SlideCompositionSectionView"
         ]
       },
-      "usedByScreens": [],
+      "usedByScreens": [
+        "production-result",
+        "receiving"
+      ],
       "detectedCodeSources": []
     },
     {
@@ -1241,9 +1261,7 @@
         ]
       },
       "usedByScreens": [
-        "operation-log",
-        "production-result",
-        "receiving"
+        "operation-log"
       ],
       "detectedCodeSources": [
         "src/app/[...slug]/client-page.tsx",
@@ -1506,20 +1524,27 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
-        ],
-        "detectedSectionTitles": [
-          "복사 대상 BOM",
-          "비가동시간",
-          "시작 시간",
-          "원본 BOM 선택",
-          "종료 시간",
-          "타임테이블 (주간)",
-          "품목별 가동기록"
-        ]
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "복사 대상 BOM",
+            "비가동시간",
+            "시작 시간",
+            "원본 BOM 선택",
+            "종료 시간",
+            "타임테이블 (주간)",
+            "품목별 가동기록"
+          ]
+        }
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -1546,24 +1571,35 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "screen-spec",
+        "semanticCoverage": "ordered-sections",
         "detectedSectionSignals": [
-          "section.bulk-edit-bar",
-          "section.editable-row-list",
-          "section.form-grid",
-          "section.inspection-items",
-          "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
+          "section.search-table-composition"
         ],
         "detectedSectionTitles": [
-          "검사결과",
-          "검사항목",
-          "기본 정보",
-          "기본정보",
-          "대상정보",
-          "중량검사",
-          "지시정보"
-        ]
+          "생산계획 리스트"
+        ],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.bulk-edit-bar",
+            "section.editable-row-list",
+            "section.form-grid",
+            "section.inspection-items",
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "검사결과",
+            "검사항목",
+            "기본 정보",
+            "기본정보",
+            "대상정보",
+            "중량검사",
+            "지시정보"
+          ]
+        }
       },
       "structureLevel": "detailed-screen-spec",
       "sectionPatternRefs": [
@@ -1609,24 +1645,37 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "screen-spec",
+        "semanticCoverage": "ordered-sections",
         "detectedSectionSignals": [
           "section.bulk-edit-bar",
-          "section.editable-row-list",
-          "section.form-grid",
-          "section.inspection-items",
           "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
+          "section.search-table-composition"
         ],
         "detectedSectionTitles": [
-          "검사결과",
-          "검사항목",
-          "기본 정보",
-          "기본정보",
-          "대상정보",
-          "중량검사",
-          "지시정보"
-        ]
+          "품목 리스트"
+        ],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.bulk-edit-bar",
+            "section.editable-row-list",
+            "section.form-grid",
+            "section.inspection-items",
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "검사결과",
+            "검사항목",
+            "기본 정보",
+            "기본정보",
+            "대상정보",
+            "중량검사",
+            "지시정보"
+          ]
+        }
       },
       "structureLevel": "detailed-screen-spec",
       "sectionPatternRefs": [
@@ -1680,24 +1729,31 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.bulk-edit-bar",
-          "section.editable-row-list",
-          "section.form-grid",
-          "section.inspection-items",
-          "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
-        ],
-        "detectedSectionTitles": [
-          "검사결과",
-          "검사항목",
-          "기본 정보",
-          "기본정보",
-          "대상정보",
-          "중량검사",
-          "지시정보"
-        ]
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.bulk-edit-bar",
+            "section.editable-row-list",
+            "section.form-grid",
+            "section.inspection-items",
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "검사결과",
+            "검사항목",
+            "기본 정보",
+            "기본정보",
+            "대상정보",
+            "중량검사",
+            "지시정보"
+          ]
+        }
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -1723,20 +1779,27 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
-        ],
-        "detectedSectionTitles": [
-          "복사 대상 BOM",
-          "비가동시간",
-          "시작 시간",
-          "원본 BOM 선택",
-          "종료 시간",
-          "타임테이블 (주간)",
-          "품목별 가동기록"
-        ]
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "복사 대상 BOM",
+            "비가동시간",
+            "시작 시간",
+            "원본 BOM 선택",
+            "종료 시간",
+            "타임테이블 (주간)",
+            "품목별 가동기록"
+          ]
+        }
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -1762,20 +1825,27 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
-        ],
-        "detectedSectionTitles": [
-          "복사 대상 BOM",
-          "비가동시간",
-          "시작 시간",
-          "원본 BOM 선택",
-          "종료 시간",
-          "타임테이블 (주간)",
-          "품목별 가동기록"
-        ]
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "복사 대상 BOM",
+            "비가동시간",
+            "시작 시간",
+            "원본 BOM 선택",
+            "종료 시간",
+            "타임테이블 (주간)",
+            "품목별 가동기록"
+          ]
+        }
       },
       "structureLevel": "screen-local-explicit",
       "sectionPatternRefs": [],
@@ -1806,20 +1876,27 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
-        ],
-        "detectedSectionTitles": [
-          "복사 대상 BOM",
-          "비가동시간",
-          "시작 시간",
-          "원본 BOM 선택",
-          "종료 시간",
-          "타임테이블 (주간)",
-          "품목별 가동기록"
-        ]
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "복사 대상 BOM",
+            "비가동시간",
+            "시작 시간",
+            "원본 BOM 선택",
+            "종료 시간",
+            "타임테이블 (주간)",
+            "품목별 가동기록"
+          ]
+        }
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -1849,31 +1926,98 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "screen-spec",
+        "semanticCoverage": "ordered-sections",
         "detectedSectionSignals": [
-          "section.bulk-edit-bar",
-          "section.editable-row-list",
+          "section.added-record-list",
           "section.form-grid",
-          "section.inspection-items",
-          "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
+          "section.staged-record-entry"
         ],
         "detectedSectionTitles": [
-          "검사결과",
-          "검사항목",
-          "기본 정보",
-          "기본정보",
-          "대상정보",
-          "중량검사",
+          "생산실적 상세 리스트",
+          "실적정보",
           "지시정보"
-        ]
+        ],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.bulk-edit-bar",
+            "section.editable-row-list",
+            "section.form-grid",
+            "section.inspection-items",
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "검사결과",
+            "검사항목",
+            "기본 정보",
+            "기본정보",
+            "대상정보",
+            "중량검사",
+            "지시정보"
+          ]
+        }
       },
-      "structureLevel": "section-pattern-mapped",
+      "structureLevel": "detailed-screen-spec",
       "sectionPatternRefs": [
         "section.form-grid",
-        "section.editable-row-list"
+        "section.staged-record-entry",
+        "section.added-record-list"
       ],
-      "detailedSections": [],
+      "detailedSections": [
+        {
+          "id": "instructionInformation",
+          "title": "지시정보",
+          "patternRef": "section.form-grid",
+          "supportingPatternRefs": [],
+          "componentRefs": [
+            "form-grid",
+            "input",
+            "select",
+            "date-picker",
+            "checkbox",
+            "icon-button"
+          ],
+          "behaviorRefs": [],
+          "scrollOwner": "none"
+        },
+        {
+          "id": "productionResultDraft",
+          "title": "실적정보",
+          "patternRef": "section.staged-record-entry",
+          "supportingPatternRefs": [
+            "section.form-grid"
+          ],
+          "componentRefs": [
+            "form-grid",
+            "button",
+            "input",
+            "select"
+          ],
+          "behaviorRefs": [
+            "row.mutation-policy"
+          ],
+          "scrollOwner": "none"
+        },
+        {
+          "id": "productionResultList",
+          "title": "생산실적 상세 리스트",
+          "patternRef": "section.added-record-list",
+          "supportingPatternRefs": [],
+          "componentRefs": [
+            "search-input",
+            "table",
+            "button",
+            "icon-button"
+          ],
+          "behaviorRefs": [
+            "row.mutation-policy"
+          ],
+          "scrollOwner": "section"
+        }
+      ],
       "localComposition": null
     },
     {
@@ -1897,29 +2041,45 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "screen-spec",
+        "semanticCoverage": "ordered-sections",
         "detectedSectionSignals": [
-          "section.bulk-edit-bar",
-          "section.editable-row-list",
+          "section.added-record-list",
           "section.form-grid",
-          "section.inspection-items",
-          "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
+          "section.staged-record-entry"
         ],
         "detectedSectionTitles": [
-          "검사결과",
-          "검사항목",
-          "기본 정보",
           "기본정보",
-          "대상정보",
-          "중량검사",
-          "지시정보"
-        ]
+          "입고실적 상세 리스트",
+          "LOT단위 품목 추가"
+        ],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.bulk-edit-bar",
+            "section.editable-row-list",
+            "section.form-grid",
+            "section.inspection-items",
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "검사결과",
+            "검사항목",
+            "기본 정보",
+            "기본정보",
+            "대상정보",
+            "중량검사",
+            "지시정보"
+          ]
+        }
       },
       "structureLevel": "detailed-screen-spec",
       "sectionPatternRefs": [
         "section.form-grid",
-        "section.editable-row-list"
+        "section.staged-record-entry",
+        "section.added-record-list"
       ],
       "detailedSections": [
         {
@@ -1936,32 +2096,39 @@
           "scrollOwner": "none"
         },
         {
-          "id": "receivingItems",
-          "title": "입고 품목",
-          "patternRef": "section.editable-row-list",
-          "supportingPatternRefs": [],
+          "id": "receivingItemDraft",
+          "title": "LOT단위 품목 추가",
+          "patternRef": "section.staged-record-entry",
+          "supportingPatternRefs": [
+            "section.form-grid"
+          ],
           "componentRefs": [
+            "form-grid",
             "button",
             "input",
-            "select"
+            "select",
+            "date-picker"
+          ],
+          "behaviorRefs": [
+            "row.mutation-policy"
+          ],
+          "scrollOwner": "none"
+        },
+        {
+          "id": "receivingResultList",
+          "title": "입고실적 상세 리스트",
+          "patternRef": "section.added-record-list",
+          "supportingPatternRefs": [],
+          "componentRefs": [
+            "search-input",
+            "table",
+            "link",
+            "icon-button"
           ],
           "behaviorRefs": [
             "row.mutation-policy"
           ],
           "scrollOwner": "section"
-        },
-        {
-          "id": "optionalInformation",
-          "title": "선택 항목",
-          "patternRef": "section.form-grid",
-          "supportingPatternRefs": [],
-          "componentRefs": [
-            "form-grid",
-            "input",
-            "select"
-          ],
-          "behaviorRefs": [],
-          "scrollOwner": "none"
         }
       ],
       "localComposition": null
@@ -1983,24 +2150,31 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.bulk-edit-bar",
-          "section.editable-row-list",
-          "section.form-grid",
-          "section.inspection-items",
-          "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
-        ],
-        "detectedSectionTitles": [
-          "검사결과",
-          "검사항목",
-          "기본 정보",
-          "기본정보",
-          "대상정보",
-          "중량검사",
-          "지시정보"
-        ]
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.bulk-edit-bar",
+            "section.editable-row-list",
+            "section.form-grid",
+            "section.inspection-items",
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "검사결과",
+            "검사항목",
+            "기본 정보",
+            "기본정보",
+            "대상정보",
+            "중량검사",
+            "지시정보"
+          ]
+        }
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2030,24 +2204,31 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.bulk-edit-bar",
-          "section.editable-row-list",
-          "section.form-grid",
-          "section.inspection-items",
-          "section.query-toolbar",
-          "section.search-table-composition",
-          "section.summary"
-        ],
-        "detectedSectionTitles": [
-          "검사결과",
-          "검사항목",
-          "기본 정보",
-          "기본정보",
-          "대상정보",
-          "중량검사",
-          "지시정보"
-        ]
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.bulk-edit-bar",
+            "section.editable-row-list",
+            "section.form-grid",
+            "section.inspection-items",
+            "section.query-toolbar",
+            "section.search-table-composition",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "검사결과",
+            "검사항목",
+            "기본 정보",
+            "기본정보",
+            "대상정보",
+            "중량검사",
+            "지시정보"
+          ]
+        }
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2073,20 +2254,16 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "screen-spec",
+        "semanticCoverage": "ordered-sections",
         "detectedSectionSignals": [
-          "section.collapsible-form",
-          "section.editable-row-list",
-          "section.form-grid",
-          "section.inspection-items",
-          "section.query-toolbar",
           "section.search-table-composition",
-          "section.summary"
+          "table.grouped-list"
         ],
         "detectedSectionTitles": [
-          "검사항목",
-          "기본정보",
-          "대상정보"
-        ]
+          "생산실적 리스트"
+        ],
+        "fileLevelReference": null
       },
       "structureLevel": "detailed-screen-spec",
       "sectionPatternRefs": [
@@ -2135,11 +2312,14 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.form-grid",
           "section.inspection-items"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2165,11 +2345,14 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.before-after",
           "section.summary"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "screen-local-explicit",
       "sectionPatternRefs": [],
@@ -2196,10 +2379,13 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.inspection-items"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2227,10 +2413,13 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.form-grid"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2256,12 +2445,15 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.query-toolbar",
           "section.search-table-composition",
           "section.summary"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2287,11 +2479,14 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.query-toolbar",
           "section.search-table-composition"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2317,19 +2512,26 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.editable-row-list",
-          "section.form-grid",
-          "section.inspection-items",
-          "section.summary"
-        ],
-        "detectedSectionTitles": [
-          "검사항목",
-          "금형 정보",
-          "대상정보",
-          "배열 생성",
-          "캐비티 배열"
-        ]
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.editable-row-list",
+            "section.form-grid",
+            "section.inspection-items",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "검사항목",
+            "금형 정보",
+            "대상정보",
+            "배열 생성",
+            "캐비티 배열"
+          ]
+        }
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2356,19 +2558,26 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.editable-row-list",
-          "section.form-grid",
-          "section.inspection-items",
-          "section.summary"
-        ],
-        "detectedSectionTitles": [
-          "검사항목",
-          "금형 정보",
-          "대상정보",
-          "배열 생성",
-          "캐비티 배열"
-        ]
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.editable-row-list",
+            "section.form-grid",
+            "section.inspection-items",
+            "section.summary"
+          ],
+          "sectionTitles": [
+            "검사항목",
+            "금형 정보",
+            "대상정보",
+            "배열 생성",
+            "캐비티 배열"
+          ]
+        }
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2395,11 +2604,18 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.inspection-items",
-          "section.summary"
-        ],
-        "detectedSectionTitles": []
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.inspection-items",
+            "section.summary"
+          ],
+          "sectionTitles": []
+        }
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2425,11 +2641,14 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.query-toolbar",
           "section.search-table-composition"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2457,11 +2676,18 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
-        "detectedSectionSignals": [
-          "section.inspection-items",
-          "section.summary"
-        ],
-        "detectedSectionTitles": []
+        "attribution": "shared-source-reference-only",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [],
+        "detectedSectionTitles": [],
+        "fileLevelReference": {
+          "warning": "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+          "sectionSignals": [
+            "section.inspection-items",
+            "section.summary"
+          ],
+          "sectionTitles": []
+        }
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2487,11 +2713,14 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.query-toolbar",
           "section.search-table-composition"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2517,11 +2746,14 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.form-grid",
           "section.summary"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2547,12 +2779,15 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.inspection-items",
           "section.query-toolbar",
           "section.search-table-composition"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2579,6 +2814,8 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.bulk-edit-bar",
           "section.form-grid",
@@ -2586,7 +2823,8 @@
           "section.query-toolbar",
           "section.search-table-composition"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2615,11 +2853,14 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.form-grid",
           "section.search-table-composition"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2647,13 +2888,16 @@
       },
       "codeEvidence": {
         "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
         "detectedSectionSignals": [
           "section.bulk-edit-bar",
           "section.form-grid",
           "section.master-detail-composition",
           "section.search-table-composition"
         ],
-        "detectedSectionTitles": []
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
@@ -2665,5 +2909,5 @@
       "localComposition": null
     }
   ],
-  "fingerprint": "e10b488a4c5f4259"
+  "fingerprint": "bb7582e4bf6fd822"
 }

@@ -707,7 +707,7 @@ const ReceivingContent = React.forwardRef<ReceivingContentHandle>(function Recei
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col px-5 pt-3">
-        <div className="mb-2 flex items-center justify-between"><b className="text-[15px]">생산실적 상세 리스트</b><FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" /></div>
+        <div className="mb-2 flex items-center justify-between"><b className="text-[15px]">입고실적 상세 리스트</b><FixtureSearch value={search} onValueChange={setSearch} className="w-[200px]" /></div>
         <FixtureTable
           selectable={false}
           horizontalScroll={false}

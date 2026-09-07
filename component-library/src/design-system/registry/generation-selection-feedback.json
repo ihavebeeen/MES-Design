@@ -26,7 +26,7 @@
       "wrongAssetRefs": ["center-modal"],
       "expectedAssetRefs": ["side-slide-panel"],
       "ruleRefs": ["center-modal", "side-slide-panel"],
-      "resolution": "짧은 차단형 조회·선택은 중앙 모달, 긴 등록·편집 흐름은 우측 슬라이드로 분리했다."
+      "resolution": "작업 길이 하나로 중앙 모달과 우측 슬라이드를 나누지 않는다. 작업 목적, 정보 관계, 동시 참조 필요, 진입·종료, 저장 단위와 적용 가능한 승인 패턴을 함께 비교하고 선택 근거를 남긴다."
     },
     {
       "id": "selection-feedback.section-heading-used-as-page-band",

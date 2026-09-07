@@ -21,8 +21,8 @@ export function validateUsageContexts(data) {
     for (const key of ["componentRefs", "connection"]) {
       if (context?.[key] !== undefined && (!Array.isArray(context[key]) || context[key].some(value => typeof value !== "string" || !value.trim()))) errors.push(`Invalid context ${key}`);
     }
-    if (context?.id?.startsWith("usage.popup.") && (!context.componentRefs?.length || !context.connection?.length)) {
-      errors.push(`Popup context '${context.id}' needs componentRefs and connection`);
+    if (!context.componentRefs?.length || !context.connection?.length) {
+      errors.push(`Usage context '${context.id}' needs componentRefs and connection`);
     }
     if (ids.has(context?.id)) errors.push(`Duplicate usage context: ${context?.id}`);
     ids.add(context?.id);

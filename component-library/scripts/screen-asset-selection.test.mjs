@@ -363,5 +363,12 @@ test("컴포넌트 후보를 찾은 뒤 관련 패턴과 각 패턴의 맥락 �
   const result = reviewScreenAssetSelection(draft([riskStatus]), registry);
   assert.ok(result.patternCandidates.length > 0);
   assert.ok(result.patternCandidates.every((entry) => entry.contextRules.length > 0));
-  assert.ok(result.patternCandidates.some((entry) => entry.patternRef === "section.search-table-composition"));
+  const searchTablePattern = result.patternCandidates.find((entry) => entry.patternRef === "section.search-table-composition");
+  assert.ok(searchTablePattern);
+  assert.equal(searchTablePattern.selectionContext.coverage, "detailed-contract");
+  assert.ok(searchTablePattern.selectionContext.useWhen.length > 0);
+  assert.ok(searchTablePattern.selectionContext.doNotUseWhen.length > 0);
+  assert.equal(searchTablePattern.contextReview, "explicit-parent-reference-needs-component-review");
+  assert.equal(searchTablePattern.componentCoverage, 0);
+  assert.ok(searchTablePattern.missingComponents.length > 0);
 });

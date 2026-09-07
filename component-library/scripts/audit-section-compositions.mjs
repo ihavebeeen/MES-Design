@@ -29,6 +29,11 @@ function buildAudit() {
   const specByScreen = new Map(screenSpecs.specs.map((entry) => [entry.screenId, entry]));
   const sourceEvidenceByNode = new Map(sourceEvidence.sources.map((entry) => [entry.figmaNode, entry]));
   const inventoryBySource = new Map(compositionInventory.files.map((entry) => [normalizePath(entry.source), entry]));
+  const screenCountBySource = new Map();
+  for (const screen of screens) {
+    const source = normalizePath(screen.source);
+    screenCountBySource.set(source, (screenCountBySource.get(source) ?? 0) + 1);
+  }
 
   const screenEntries = screens.map((screen) => {
     const sectionPatternRefs = screen.patternRefs.filter((patternRef) => sectionPatterns.some((pattern) => pattern.id === patternRef));
@@ -39,6 +44,11 @@ function buildAudit() {
     const localRule = screen.stateRules.find((rule) => /로컬 조합|공용 패턴이 아니다/.test(rule));
     const source = normalizePath(screen.source);
     const codeInventory = inventoryBySource.get(source);
+    const sharedSourceFile = (screenCountBySource.get(source) ?? 0) > 1;
+    const detailedSectionSignals = spec
+      ? unique(spec.sections.flatMap((section) => [section.patternRef, ...(section.supportingPatternRefs ?? [])]))
+      : [];
+    const detailedSectionTitles = spec ? unique(spec.sections.map((section) => section.title).filter(Boolean)) : [];
     const structureLevel = spec
       ? "detailed-screen-spec"
       : sectionPatternRefs.length > 0
@@ -66,8 +76,17 @@ function buildAudit() {
       },
       codeEvidence: {
         inventoryTracked: Boolean(codeInventory),
-        detectedSectionSignals: codeInventory?.sectionCandidateSignals ?? [],
-        detectedSectionTitles: codeInventory?.sectionTitles ?? [],
+        attribution: spec ? "screen-spec" : sharedSourceFile ? "shared-source-reference-only" : "dedicated-source-file",
+        semanticCoverage: spec ? "ordered-sections" : "declared-pattern-refs-only",
+        detectedSectionSignals: spec ? detailedSectionSignals : sharedSourceFile ? [] : codeInventory?.sectionCandidateSignals ?? [],
+        detectedSectionTitles: spec ? detailedSectionTitles : sharedSourceFile ? [] : codeInventory?.sectionTitles ?? [],
+        fileLevelReference: sharedSourceFile && codeInventory
+          ? {
+              warning: "같은 파일의 다른 화면 신호가 섞일 수 있어 화면 근거로 판정하지 않는다.",
+              sectionSignals: codeInventory.sectionCandidateSignals ?? [],
+              sectionTitles: codeInventory.sectionTitles ?? [],
+            }
+          : null,
       },
       structureLevel,
       sectionPatternRefs,
@@ -121,6 +140,9 @@ function buildAudit() {
   const unresolvedScreens = screenEntries.filter((entry) => entry.structureLevel === "unresolved").map((entry) => entry.screenId);
   const missingContracts = sectionEntries.filter((entry) => entry.selectionContext === null).map((entry) => entry.patternId);
   const untrackedCodeSources = screenEntries.filter((entry) => !entry.codeEvidence.inventoryTracked).map((entry) => entry.source);
+  const sharedSourceScreensWithoutDetailedSpec = screenEntries
+    .filter((entry) => entry.codeEvidence.attribution === "shared-source-reference-only")
+    .map((entry) => entry.screenId);
   const audit = {
     schemaVersion: 1,
     policyId: "mes.section-composition-census",
@@ -149,11 +171,13 @@ function buildAudit() {
       figmaReferencesOnly: screenEntries.filter((entry) => entry.figma?.evidenceLevel === "registered-reference-only").length,
       webReferencedScreens: screenEntries.filter((entry) => entry.webEvidence.pageIds.length > 0 || entry.webEvidence.flowIds.length > 0).length,
       codeInventoryTrackedScreens: screenEntries.filter((entry) => entry.codeEvidence.inventoryTracked).length,
+      screenScopedCodeEvidence: screenEntries.filter((entry) => entry.codeEvidence.attribution !== "shared-source-reference-only").length,
     },
     gaps: {
       missingSectionContracts: missingContracts,
       unresolvedScreens,
       codeSourcesOutsideCompositionInventory: unique(untrackedCodeSources),
+      sharedSourceScreensWithoutDetailedSpec,
       note: "상세 ScreenSpec가 없는 화면은 section-pattern 연결까지만 구조화된 상태이며 픽셀 검증 완료를 뜻하지 않는다.",
     },
     sectionPatterns: sectionEntries,
@@ -177,6 +201,10 @@ if (mode === "write") {
   if (audit.gaps.missingSectionContracts.length > 0) errors.push(`선택 맥락 계약이 없는 section-pattern: ${audit.gaps.missingSectionContracts.join(", ")}`);
   if (audit.gaps.unresolvedScreens.length > 0) errors.push(`공통 또는 화면 전용 섹션 조합이 없는 화면: ${audit.gaps.unresolvedScreens.join(", ")}`);
   if (audit.gaps.codeSourcesOutsideCompositionInventory.length > 0) errors.push(`조합 코드 전수조사 범위 밖 화면 소스: ${audit.gaps.codeSourcesOutsideCompositionInventory.join(", ")}`);
+  const leakedSharedSourceEvidence = audit.screens.filter((entry) =>
+    entry.codeEvidence.attribution === "shared-source-reference-only"
+      && (entry.codeEvidence.detectedSectionSignals.length > 0 || entry.codeEvidence.detectedSectionTitles.length > 0));
+  if (leakedSharedSourceEvidence.length > 0) errors.push(`공유 파일 신호가 개별 화면 근거로 섞였습니다: ${leakedSharedSourceEvidence.map((entry) => entry.screenId).join(", ")}`);
   if (errors.length > 0) {
     console.error(["Section composition audit failed:", ...errors.map((error) => `- ${error}`)].join("\n"));
     process.exit(1);

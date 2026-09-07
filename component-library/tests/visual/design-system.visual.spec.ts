@@ -184,8 +184,9 @@ test("Tier 4·5 승격 자산은 Components·Patterns에 있고 Experimental 후
 
   await page.goto("/components/segmented-control");
   const segmented = page.locator('[data-standard-asset="segmented-control"]');
-  await segmented.getByRole("radio", { name: "비가동", exact: true }).click();
-  await expect(segmented.getByRole("radio", { name: "비가동", exact: true })).toHaveAttribute("aria-checked", "true");
+  const enabledInactiveOption = segmented.getByRole("radio", { name: "비가동", exact: true }).and(page.locator(":not(:disabled)"));
+  await enabledInactiveOption.click();
+  await expect(enabledInactiveOption).toHaveAttribute("aria-checked", "true");
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
   await page.goto("/patterns/onboarding-product-tour");

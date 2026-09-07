@@ -14,15 +14,23 @@ const first = resolveScreenRequest(request);
 const second = resolveScreenRequest(request);
 
 assert.equal(first.fingerprint, second.fingerprint, "동일 요청의 fingerprint가 달라졌습니다.");
-assert.equal(first.quality.status, "release-ready");
+assert.equal(first.quality.status, "review-ready");
 assert.equal(first.quality.blockerCount, 0);
-assert.equal(first.quality.warningCount, 0);
+assert.deepEqual(
+  first.quality.issues.map(({ code, reference }) => [code, reference]),
+  [
+    ["component.provisional", "date-picker"],
+    ["component.provisional", "link"],
+    ["component.provisional", "icon-button"],
+  ],
+  "입고 기준 화면은 정확한 조합을 사용하되 아직 확인 중인 구성요소를 숨기지 않아야 합니다.",
+);
 assert.equal(first.baseScreen.id, "receiving");
 assert.equal(first.composition.shellRef, "shell.side-slide-panel");
-assert.deepEqual(first.composition.sectionRefs, ["frame.standard-section", "section.form-grid", "section.editable-row-list"]);
+assert.deepEqual(first.composition.sectionRefs, ["frame.standard-section", "section.form-grid", "section.staged-record-entry", "section.added-record-list"]);
 assert.deepEqual(first.composition.behaviorRefs, ["row.mutation-policy", "dismiss.restore-committed"]);
 assert.equal(first.composition.actionSetRef, "action-set.cancel-save");
-assert.deepEqual(first.composition.sections.map(({ id }) => id), ["basicInformation", "receivingItems", "optionalInformation"]);
+assert.deepEqual(first.composition.sections.map(({ id }) => id), ["basicInformation", "receivingItemDraft", "receivingResultList"]);
 assert.equal(first.decisionTrace.shell.source, "screen-spec");
 assert.equal(first.decisionTrace.components.find(({ selectedId }) => selectedId === "input")?.contractCoverage, "selection-guard");
 assert.equal(first.decisionTrace.components.find(({ selectedId }) => selectedId === "input")?.evidenceRole, "reference-only");

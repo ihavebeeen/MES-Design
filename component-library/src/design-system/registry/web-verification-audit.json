@@ -1,28 +1,28 @@
 {
   "schemaVersion": 1,
-  "auditedAt": null,
-  "sourceFingerprint": "8be7c7866d4728275d55d95c4f92ae8fa9dba135b83e3ffc1f981737676833e5",
+  "auditedAt": "2026-09-07T08:25:05.688Z",
+  "sourceFingerprint": "c9fe7eb74c546e22f6eb6e1f082d3e085132f5751d90f9d1f60dae10cb1e91de",
   "browserRun": {
     "command": "npm run test:visual",
-    "result": "not-verified-for-current-source",
+    "result": "passed",
     "testCount": 95,
-    "passed": null,
-    "failed": null,
-    "durationMs": null,
-    "recordedAt": null,
-    "testInventoryFingerprint": "15511065454570fec5faeb681d08133678ab8e635e08f15b6ecd59ec03a77435",
+    "passed": 95,
+    "failed": 0,
+    "durationMs": 280658,
+    "recordedAt": "2026-09-07T08:25:05.688Z",
+    "testInventoryFingerprint": "208dd5fbde93f3c7533b24f7c949ae91b27cbde271d65b00ccafc564b35bd792",
     "includesDeferredMobile": true
   },
   "testInventory": {
     "count": 95,
     "files": {
       "tests/visual/application-flow.spec.mts": "c36c4ac6f8662bd30ccadb942e31a019e2559bcc299d82cf077945119f216dae",
-      "tests/visual/design-system.visual.spec.ts": "a8fae4cc1547807aefe842ccf3739059c47dbfbaa04ac7148a4c1f3c294e59c0",
+      "tests/visual/design-system.visual.spec.ts": "8dd3519f0a8d38f3e7ca62b58ad24ed0a5523a8465449670d3ee304726dc2821",
       "tests/visual/figma-component-defaults.spec.ts": "f9a842afc72cfef542c0e242507b6acbbbd1e66b55c7c9a1f3a1719fedf23cc3",
       "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
       "tests/visual/slide-compositions.spec.mts": "d5482978ea64784678b80cd9e77366d9d096dbdae1cceb31be9635286cbbc8b6"
     },
-    "fingerprint": "15511065454570fec5faeb681d08133678ab8e635e08f15b6ecd59ec03a77435"
+    "fingerprint": "208dd5fbde93f3c7533b24f7c949ae91b27cbde271d65b00ccafc564b35bd792"
   },
   "summary": {
     "components": {
@@ -36,18 +36,18 @@
     },
     "patterns": {
       "total": 76,
-      "usedByScreens": 49,
-      "unusedByScreens": 27,
+      "usedByScreens": 51,
+      "unusedByScreens": 25,
       "selectionContexts": 76,
       "detailedCompositionRules": 24,
-      "withVisualEvidence": 49,
+      "withVisualEvidence": 51,
       "sourceMissing": 0
     },
     "screens": {
       "total": 29,
       "interactionVerified": 29,
       "directlyVisualLinked": 29,
-      "orderedDefinitions": 4,
+      "orderedDefinitions": 5,
       "sourceMissing": 0
     }
   },
@@ -2012,15 +2012,15 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
-      "usedByScreenIds": [],
+      "usedByScreenIds": [
+        "production-result",
+        "receiving"
+      ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
-      "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
-      "outstanding": [
-        "no-screen-or-generator-usage",
-        "visual-evidence-missing"
-      ]
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
     },
     {
       "id": "section.added-record-list",
@@ -2030,15 +2030,15 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
-      "usedByScreenIds": [],
+      "usedByScreenIds": [
+        "production-result",
+        "receiving"
+      ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
-      "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
-      "outstanding": [
-        "no-screen-or-generator-usage",
-        "visual-evidence-missing"
-      ]
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
     },
     {
       "id": "section.member-selection",
@@ -2787,9 +2787,7 @@
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
-        "operation-log",
-        "production-result",
-        "receiving"
+        "operation-log"
       ],
       "generationTemplateIds": [
         "side-slide-form-editable-list.v1"
@@ -3595,11 +3593,9 @@
       "visualCaseIds": [
         "popup-production-result"
       ],
-      "hasOrderedDefinition": false,
+      "hasOrderedDefinition": true,
       "reviewState": "interaction-and-visual-covered",
-      "outstanding": [
-        "ordered-screen-definition-missing"
-      ]
+      "outstanding": []
     },
     {
       "id": "receiving",
