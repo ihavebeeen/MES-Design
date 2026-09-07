@@ -49,22 +49,26 @@ const meta: Record<string, { title: string; code: string; tier: number; kind: "�
 
 const treeNodes = [{ id: "production", label: "생산", children: [{ id: "forming", label: "성형" }, { id: "packing", label: "포장" }] }];
 
+function VariantCard({ label, children }: { label: string; children: React.ReactNode }) {
+  return <article className="flex min-h-32 min-w-0 flex-col rounded-mes-control border border-mes-gray-30 bg-white p-4"><h4 className="mb-4 text-[13px] font-semibold text-mes-gray-120">{label}</h4><div className="flex min-h-16 min-w-0 flex-1 items-center justify-center overflow-hidden">{children}</div></article>;
+}
+
 function Demo({ activeId }: { activeId: string }) {
   const [step, setStep] = React.useState(1);
   const [transfer, setTransfer] = React.useState(["b"]);
   switch (activeId) {
-    case "slider": return <Slider className="w-[360px]" defaultValue={62} />;
-    case "file-upload": return <FileUpload className="w-[420px]" helpText="허용 형식과 최대 용량은 호출 화면에서 지정합니다." />;
-    case "cascader": return <Cascader className="w-[420px]" groups={[{ id: "material", label: "원재료", items: [{ id: "sheet", label: "시트" }, { id: "resin", label: "수지" }] }, { id: "product", label: "완제품", items: [{ id: "tray", label: "트레이" }] }]} />;
-    case "tree-select": return <TreeSelect className="w-[360px]" nodes={treeNodes} />;
-    case "timeline": return <Timeline className="w-[360px]" items={[{ id: "1", time: "09:20", title: "작업 시작", detail: "성형 1호기" }, { id: "2", time: "11:40", title: "실적 등록", detail: "완료 1,200 EA" }]} />;
-    case "tree-view": return <TreeView className="w-[320px]" nodes={treeNodes} defaultExpandedIds={["production"]} />;
-    case "image-thumbnail": return <ImageThumbnail items={[{ id: "a", label: "정면" }, { id: "b", label: "측면" }, { id: "c", label: "라벨" }]} />;
-    case "search-highlight": return <p className="text-[14px] text-mes-gray-100"><SearchHighlight text="LOT-AA-11 생산 품목과 LOT-AA-12 부산물" query="LOT" /></p>;
-    case "avatar": return <div className="flex items-center gap-3"><Avatar name="이해빈" status="online" size="large" /><div><p className="text-[13px] font-semibold">이해빈</p><p className="text-[11px] text-mes-gray-60">생산관리자</p></div></div>;
-    case "progress-circle": return <ProgressCircle value={78} />;
-    case "overflow-list": return <OverflowList items={["압출", "성형", "검사", "포장", "출하"]} maxVisible={3} getKey={(item) => item} renderItem={(item) => item} />;
-    case "segmented-control": return <SegmentedControl ariaLabel="설비 상태" options={[{ value: "all", label: "전체" }, { value: "run", label: "가동" }, { value: "stop", label: "비가동" }]} />;
+    case "slider": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="기본"><Slider className="w-full max-w-[360px]" defaultValue={62} /></VariantCard><VariantCard label="값 숨김 · 비활성"><Slider className="w-full max-w-[360px]" defaultValue={35} showValue={false} disabled /></VariantCard></div>;
+    case "file-upload": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="단일 파일"><FileUpload className="w-full max-w-[420px]" helpText="PDF, JPG · 최대 10MB" /></VariantCard><VariantCard label="여러 파일 · 비활성"><FileUpload className="w-full max-w-[420px]" multiple disabled /></VariantCard></div>;
+    case "cascader": return <div className="grid gap-3"><VariantCard label="계층 탐색"><Cascader className="w-full max-w-[520px]" groups={[{ id: "material", label: "원재료", items: [{ id: "sheet", label: "시트" }, { id: "resin", label: "수지" }] }, { id: "product", label: "완제품", items: [{ id: "tray", label: "트레이" }] }]} /></VariantCard></div>;
+    case "tree-select": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="기본"><TreeSelect className="w-full max-w-[360px]" nodes={treeNodes} /></VariantCard><VariantCard label="일부 선택 불가"><TreeSelect className="w-full max-w-[360px]" nodes={[{ id: "production", label: "생산", children: [{ id: "forming", label: "성형", disabled: true }, { id: "packing", label: "포장" }] }]} /></VariantCard></div>;
+    case "timeline": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="시간 + 상세"><Timeline className="w-full max-w-[360px]" items={[{ id: "1", time: "09:20", title: "작업 시작", detail: "성형 1호기" }, { id: "2", time: "11:40", title: "실적 등록", detail: "완료 1,200 EA" }]} /></VariantCard><VariantCard label="제목만"><Timeline className="w-full max-w-[360px]" items={[{ id: "1", title: "검사 완료" }, { id: "2", title: "입고 확정" }]} /></VariantCard></div>;
+    case "tree-view": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="펼침"><TreeView className="w-full max-w-[320px]" nodes={treeNodes} defaultExpandedIds={["production"]} /></VariantCard><VariantCard label="접힘"><TreeView className="w-full max-w-[320px]" nodes={treeNodes} /></VariantCard></div>;
+    case "image-thumbnail": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="Medium"><ImageThumbnail items={[{ id: "a", label: "정면" }, { id: "b", label: "측면" }, { id: "c", label: "라벨" }]} /></VariantCard><VariantCard label="Small"><ImageThumbnail size="small" items={[{ id: "a", label: "정면" }, { id: "b", label: "측면" }]} /></VariantCard></div>;
+    case "search-highlight": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="LOT 검색"><p className="text-[14px] text-mes-gray-100"><SearchHighlight text="LOT-AA-11 생산 품목과 LOT-AA-12 부산물" query="LOT" /></p></VariantCard><VariantCard label="일치 없음"><p className="text-[14px] text-mes-gray-100"><SearchHighlight text="성형 1호기 생산실적" query="LOT" /></p></VariantCard></div>;
+    case "avatar": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="크기"><div className="flex items-end gap-3"><Avatar name="이해빈" size="small" /><Avatar name="이해빈" size="medium" /><Avatar name="이해빈" size="large" /></div></VariantCard><VariantCard label="접속 상태"><div className="flex items-center gap-3"><Avatar name="이해빈" status="online" /><Avatar name="김관리" status="offline" /></div></VariantCard></div>;
+    case "progress-circle": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="기본"><ProgressCircle value={78} /></VariantCard><VariantCard label="사용자 라벨"><ProgressCircle value={42} size={64} label="42%" /></VariantCard></div>;
+    case "overflow-list": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="넘침 있음"><OverflowList items={["압출", "성형", "검사", "포장", "출하"]} maxVisible={3} getKey={(item) => item} renderItem={(item) => item} /></VariantCard><VariantCard label="모두 표시"><OverflowList items={["압출", "성형"]} maxVisible={3} getKey={(item) => item} renderItem={(item) => item} /></VariantCard></div>;
+    case "segmented-control": return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="기본"><SegmentedControl ariaLabel="설비 상태" options={[{ value: "all", label: "전체" }, { value: "run", label: "가동" }, { value: "stop", label: "비가동" }]} /></VariantCard><VariantCard label="일부 비활성"><SegmentedControl ariaLabel="설비 상태" options={[{ value: "all", label: "전체" }, { value: "run", label: "가동" }, { value: "stop", label: "비가동", disabled: true }]} /></VariantCard></div>;
     case "workflow-stepper": return <StepperPattern className="w-[640px]" steps={["기본정보", "품목", "확인"]} currentStep={step} onStepChange={setStep} />;
     case "selection-transfer-list": return <TransferListPattern className="w-[640px]" items={[{ id: "a", label: "압출 1호기" }, { id: "b", label: "성형 1호기" }, { id: "c", label: "포장 1라인" }]} value={transfer} onValueChange={setTransfer} />;
     case "table-row-expand-detail": return <ExpandableRowPattern className="w-[640px]" defaultOpen header={<span className="text-[13px]">LOT-AA-11 · 트레이</span>} detail={<span className="text-[12px] text-mes-gray-70">생산수량 1,200 EA · 창고 A</span>} />;
@@ -89,7 +93,8 @@ export function PromotedStandardCatalog({ activeId }: { activeId?: string }) {
         </div>
         <p className="text-[12px] text-mes-gray-60">{item.code} · 표준 레지스트리 provisional</p>
       </header>
-      <div className="min-w-0 rounded-mes-control border border-mes-gray-30 bg-white p-6">
+      {item.kind === "컴포넌트" && <div><h3 className="text-[16px] font-bold text-mes-gray-130">실제 컴포넌트와 variants</h3><p className="mt-1 text-[12px] text-mes-gray-60">등록된 구현의 주요 상태와 구성을 비교합니다.</p></div>}
+      <div className={item.kind === "컴포넌트" ? "min-w-0 rounded-mes-control border border-mes-gray-30 bg-mes-gray-10 p-4" : "min-w-0 rounded-mes-control border border-mes-gray-30 bg-white p-6"}>
         <Demo activeId={activeId} />
       </div>
     </section>

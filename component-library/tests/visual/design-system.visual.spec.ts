@@ -87,8 +87,9 @@ test("컴포넌트 개요는 역할·검증 상태·검색으로 탐색한다", 
   await page.goto("/components/button-size");
   const buttonContext = page.locator('[data-component-context="button"]');
   await expect(buttonContext).toBeVisible();
+  await buttonContext.getByRole("button", { name: /선택 맥락/ }).click();
   await expect(buttonContext.getByText("사용할 때", { exact: true })).toBeVisible();
-  await expect(buttonContext.getByText("사용하지 않을 때", { exact: true })).toBeVisible();
+  await expect(buttonContext.getByText("피해야 할 때", { exact: true })).toBeVisible();
   await expect(buttonContext.getByText("가까운 대안", { exact: true })).toBeVisible();
 });
 
@@ -109,9 +110,16 @@ test("컴포넌트 상세는 실제 예시와 API 다음에 선택 맥락을 표
   const switcherApi = page.locator('[data-component-api="mes-product-switcher"]');
   const switcherContext = page.locator('[data-component-context="mes-product-switcher"]');
   await expect(switcherExample).toBeVisible();
-  await expect(switcherExample.getByText("실제 컴포넌트", { exact: true })).toBeVisible();
+  await expect(switcherExample.getByText("실제 컴포넌트와 variants", { exact: true })).toBeVisible();
+  await expect(switcherExample.getByText("펼친 사이드바", { exact: true })).toBeVisible();
+  await expect(switcherExample.getByText("접힌 사이드바", { exact: true })).toBeVisible();
   await expect(switcherApi).toContainText('import { MesProductSwitcher }');
   await expect(switcherContext).toBeVisible();
+  await expect(switcherContext.getByText("사용할 때", { exact: true })).toBeHidden();
+  await switcherContext.getByRole("button", { name: /선택 맥락/ }).click();
+  await expect(switcherContext.getByText("사용할 때", { exact: true })).toBeVisible();
+  await switcherContext.getByRole("button", { name: /내부 원장 정보/ }).click();
+  await expect(switcherContext.locator('[data-component-internal="mes-product-switcher"]')).toBeVisible();
   expect(await switcherExample.evaluate((element) => {
     const context = document.querySelector('[data-component-context="mes-product-switcher"]');
     return context ? Boolean(element.compareDocumentPosition(context) & Node.DOCUMENT_POSITION_FOLLOWING) : false;

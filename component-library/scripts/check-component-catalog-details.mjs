@@ -22,6 +22,9 @@ const missingIds = catalogIds.filter((id) => !renderedIds.has(id));
 
 assert.deepEqual(missingIds, [], `실제 컴포넌트 예시가 없는 상세 경로: ${missingIds.join(", ")}`);
 assert(registryDocumentation.includes("data-component-api={component.id}"), "상세 화면의 사용 코드/API 영역이 누락됐습니다.");
+assert(registryDocumentation.includes("<Accordion"), "선택 맥락과 내부 원장 정보는 접기 영역으로 제공해야 합니다.");
+assert(registryDocumentation.includes('id: "selection-context"'), "선택 맥락 접기 항목이 누락됐습니다.");
+assert(registryDocumentation.includes('id: "internal-registry"'), "내부 원장 정보 접기 항목이 누락됐습니다.");
 assert(
   clientPage.lastIndexOf("<RegistryComponentDocumentation") > clientPage.indexOf("<RegistryComponentShowcase"),
   "선택 맥락 문서는 실제 컴포넌트 예시보다 뒤에 렌더링해야 합니다.",
