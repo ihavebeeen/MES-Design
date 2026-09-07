@@ -59,10 +59,9 @@ test("컴포넌트 개요는 역할·성숙도·검색으로 탐색한다", asyn
   await expect(catalog.locator("[data-component-category]")).toHaveCount(componentCatalog.groups.length);
   await expect(catalog.locator("[data-component-card]")).toHaveCount(componentCatalogCardCount);
   await expect(catalog.locator("[data-component-thumbnail]")).toHaveCount(componentCatalogCardCount);
-  await expect(catalog.locator("[data-context-coverage-summary]")).toContainText("컴포넌트 맥락");
-  await expect(catalog.locator("[data-context-coverage-summary]")).toContainText("화면 근거");
-  await expect(catalog.locator('[data-component-card="button-size"]')).toContainText("주로 사용");
-  await expect(catalog.locator('[data-component-card="button-size"]')).toContainText("피할 때");
+  await expect(catalog.locator("[data-context-coverage-summary]")).toHaveCount(0);
+  await expect(catalog.locator('[data-component-card="button-size"]')).not.toContainText("주로 사용");
+  await expect(catalog.locator('[data-component-card="button-size"]')).not.toContainText("피할 때");
   const thumbnailOverflows = await catalog.locator("[data-component-thumbnail]").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
   expect(thumbnailOverflows.every((overflow) => overflow === 0)).toBe(true);
   await expect(page.getByText("티어3 — 아직 착수 전", { exact: true })).toHaveCount(0);
@@ -93,10 +92,12 @@ test("패턴 개요와 상세에서 조합 선택 맥락을 확인한다", async
   const catalog = page.locator("[data-pattern-catalog]");
   await expect(catalog).toBeVisible();
   await expect(catalog.locator("[data-pattern-card]")).toHaveCount(15);
-  await expect(catalog).toContainText("패턴 선택 맥락");
-  await expect(catalog).toContainText("연결된 화면 근거");
-  await expect(catalog.locator('[data-pattern-card="workflow-stepper"]')).toContainText("주로 사용");
-  await expect(catalog.locator('[data-pattern-card="workflow-stepper"]')).toContainText("피할 때");
+  await expect(catalog.getByText("패턴과 화면 근거 찾아보기", { exact: true })).toHaveCount(0);
+  await expect(catalog.locator('[data-pattern-card="workflow-stepper"]')).not.toContainText("주로 사용");
+  await expect(catalog.locator('[data-pattern-card="workflow-stepper"]')).not.toContainText("피할 때");
+  const groupedThumbnail = await catalog.locator('[data-pattern-thumbnail="grouped-list-screen"]').innerHTML();
+  const entityThumbnail = await catalog.locator('[data-pattern-thumbnail="completed-entity-list"]').innerHTML();
+  expect(groupedThumbnail).not.toBe(entityThumbnail);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 
   await page.goto("/patterns/workflow-stepper");
