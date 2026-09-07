@@ -95,13 +95,32 @@ test("컴포넌트 개요는 역할·검증 상태·검색으로 탐색한다", 
   await expect(buttonContext.getByText("가까운 대안", { exact: true })).toBeVisible();
 });
 
-test("컴포넌트 상세는 실제 예시와 API 다음에 선택 맥락을 표시한다", async ({ page }) => {
+test("컴포넌트 상세는 실제 예시·사용 화면·참고 코드 다음에 선택 맥락을 표시한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/components/button-size");
   const buttonExample = page.locator('#button-size');
+  const buttonScreens = page.locator('[data-component-screen-references="button"]');
   const buttonApi = page.locator('[data-component-api="button"]');
   await expect(buttonExample).toBeVisible();
+  await expect(buttonScreens).toBeVisible();
+  await expect(buttonScreens.locator('[data-screen-reference]')).toHaveCount(4);
+  await expect(buttonScreens.locator('[data-screen-reference="batch-work-order"]')).toHaveAttribute("href", "/visual-regression/batch-work-order-pilot/");
   await expect(buttonApi).toBeVisible();
+  expect(await buttonExample.evaluate((element) => {
+    const screens = document.querySelector('[data-component-screen-references="button"]');
+    return screens ? Boolean(element.compareDocumentPosition(screens) & Node.DOCUMENT_POSITION_FOLLOWING) : false;
+  })).toBe(true);
+  expect(await buttonScreens.evaluate((element) => {
+    const api = document.querySelector('[data-component-api="button"]');
+    return api ? Boolean(element.compareDocumentPosition(api) & Node.DOCUMENT_POSITION_FOLLOWING) : false;
+  })).toBe(true);
+  const [referencePage] = await Promise.all([
+    page.waitForEvent("popup"),
+    buttonScreens.locator('[data-screen-reference="batch-work-order"]').click(),
+  ]);
+  await referencePage.waitForLoadState("domcontentloaded");
+  expect(new URL(referencePage.url()).pathname).toBe("/visual-regression/batch-work-order-pilot/");
+  await referencePage.close();
   expect(await buttonExample.evaluate((element) => {
     const context = document.querySelector('[data-component-context="button"]');
     return context ? Boolean(element.compareDocumentPosition(context) & Node.DOCUMENT_POSITION_FOLLOWING) : false;
@@ -109,6 +128,7 @@ test("컴포넌트 상세는 실제 예시와 API 다음에 선택 맥락을 표
 
   await page.goto("/components/mes-product-switcher");
   const switcherExample = page.locator('[data-component-showcase="mes-product-switcher"]');
+  const switcherScreens = page.locator('[data-component-screen-references="mes-product-switcher"]');
   const switcherApi = page.locator('[data-component-api="mes-product-switcher"]');
   const switcherContext = page.locator('[data-component-context="mes-product-switcher"]');
   await expect(switcherExample).toBeVisible();
@@ -117,6 +137,7 @@ test("컴포넌트 상세는 실제 예시와 API 다음에 선택 맥락을 표
   await expect(switcherExample).toContainText("기준 확정");
   await expect(switcherExample.getByText("펼친 사이드바", { exact: true })).toBeVisible();
   await expect(switcherExample.getByText("접힌 사이드바", { exact: true })).toBeVisible();
+  await expect(switcherScreens).toContainText("현재 원장에 이 컴포넌트와 직접 연결된 화면이 없습니다.");
   await expect(switcherApi).toContainText('import { MesProductSwitcher }');
   await expect(switcherContext).toBeVisible();
   await expect(switcherContext.getByText("사용할 때", { exact: true })).toBeHidden();

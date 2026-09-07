@@ -1,3 +1,5 @@
+import NextLink from "next/link";
+import { ArrowUpRight, PanelsTopLeft } from "lucide-react";
 import componentData from "@/design-system/registry/components.json";
 import assetManifestData from "@/design-system/registry/asset-manifest.json";
 import usageData from "@/design-system/registry/component-usage-contracts.json";
@@ -6,6 +8,7 @@ import sourceAssetData from "@/design-system/registry/source-assets.json";
 import { Accordion } from "@/components/ui/accordion";
 import { getAssetScopeLabel, getAssetStatusLabel } from "@/lib/catalog-labels";
 import { getCatalogRegistryId } from "@/lib/component-catalog-data";
+import { getComponentScreenReferences } from "@/lib/component-screen-references";
 
 const componentById = new Map(componentData.components.map((component) => [component.id, component]));
 const usageById = new Map([...usageData.baselineContexts, ...usageData.contracts].map((context) => [context.componentId, context]));
@@ -27,7 +30,7 @@ function ContextBlock({ title, items, fallback }: { title: string; items?: strin
   );
 }
 
-/** 실제 예시 아래에서 참고 코드, 선택 기준, 내부 원장을 단계적으로 보여준다. */
+/** 실제 예시 아래에서 사용 화면, 참고 코드, 선택 기준, 내부 원장을 단계적으로 보여준다. */
 export function RegistryComponentDocumentation({ activeId }: { activeId?: string }) {
   const registryId = activeId ? getCatalogRegistryId(activeId) : undefined;
   const component = registryId ? componentById.get(registryId) : undefined;
@@ -40,6 +43,8 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
   const primarySymbol = symbols.find((symbol) => symbol === component.name) ?? symbols.at(-1) ?? component.name;
   const importPath = component.source.replace(/^src\//, "@/").replace(/\.tsx$/, "");
   const publicProps = manifest?.sourceFacts?.propNames ?? [];
+  const screenReferences = getComponentScreenReferences(component.id);
+  const visibleScreenReferences = screenReferences.slice(0, 4);
 
   const selectionContext = (
     <div className="grid gap-x-8 gap-y-5 py-1 md:grid-cols-2">
@@ -77,6 +82,52 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
 
   return (
     <section className="flex w-full max-w-[960px] flex-col gap-4 border-b border-mes-gray-30 pb-8" data-registry-component={component.id} data-component-context={component.id}>
+      <section className="min-w-0" data-component-screen-references={component.id}>
+        {visibleScreenReferences.length > 0 ? (
+          <>
+            <div className="mb-3 flex items-end justify-between gap-4">
+              <div>
+                <h3 className="text-[15px] font-bold text-mes-gray-130">사용 화면</h3>
+                <p className="mt-1 text-[12px] leading-5 text-mes-gray-60">이 컴포넌트가 실제로 배치된 등록 화면을 참고할 수 있습니다.</p>
+              </div>
+              <span className="shrink-0 text-[11px] font-medium text-mes-gray-60">
+                {screenReferences.length > visibleScreenReferences.length
+                  ? `대표 ${visibleScreenReferences.length}개 / 전체 ${screenReferences.length}개`
+                  : `${screenReferences.length}개`}
+              </span>
+            </div>
+            <div className="grid gap-2 md:grid-cols-2">
+              {visibleScreenReferences.map((reference) => (
+                <NextLink
+                  key={reference.id}
+                  href={reference.route}
+                  data-screen-reference={reference.id}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex min-w-0 items-center gap-3 rounded-mes-control border border-mes-gray-30 bg-white px-3 py-3 transition-colors hover:border-mes-primary-60 hover:bg-mes-primary-10"
+                >
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-mes-control bg-mes-gray-10 text-mes-gray-70 group-hover:bg-white group-hover:text-mes-primary-70">
+                    <PanelsTopLeft className="size-4" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[13px] font-semibold text-mes-gray-120">{reference.name}</span>
+                    <span className="mt-0.5 block text-[11px] text-mes-gray-60">{reference.surface}</span>
+                  </span>
+                  <ArrowUpRight className="size-4 shrink-0 text-mes-gray-50 group-hover:text-mes-primary-70" />
+                </NextLink>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <h3 className="text-[15px] font-bold text-mes-gray-130">사용 화면</h3>
+            <div className="mt-3 flex items-center gap-3 rounded-mes-control border border-dashed border-mes-gray-40 bg-mes-gray-10 px-4 py-4">
+              <PanelsTopLeft className="size-4 shrink-0 text-mes-gray-50" />
+              <p className="text-[12px] leading-5 text-mes-gray-60">현재 원장에 이 컴포넌트와 직접 연결된 화면이 없습니다.</p>
+            </div>
+          </>
+        )}
+      </section>
       <article className="flex min-w-0 flex-col gap-2 rounded-mes-control border border-mes-gray-30 bg-mes-gray-10 px-4 py-3" data-component-api={component.id}>
         <div className="flex items-center justify-between gap-3">
           <h3 className="text-[13px] font-semibold text-mes-gray-120">참고 코드</h3>
