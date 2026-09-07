@@ -59,11 +59,15 @@ test("컴포넌트 개요는 역할·성숙도·검색으로 탐색한다", asyn
   await expect(catalog.locator("[data-component-category]")).toHaveCount(componentCatalog.groups.length);
   await expect(catalog.locator("[data-component-card]")).toHaveCount(componentCatalogCardCount);
   await expect(catalog.locator("[data-component-thumbnail]")).toHaveCount(componentCatalogCardCount);
+  await expect(catalog.locator("[data-thumbnail-missing]")).toHaveCount(0);
   await expect(catalog.locator("[data-context-coverage-summary]")).toHaveCount(0);
   await expect(catalog.locator('[data-component-card="button-size"]')).not.toContainText("주로 사용");
   await expect(catalog.locator('[data-component-card="button-size"]')).not.toContainText("피할 때");
   const thumbnailOverflows = await catalog.locator("[data-component-thumbnail]").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
   expect(thumbnailOverflows.every((overflow) => overflow === 0)).toBe(true);
+  const distinctDataDisplayIds = ["overflow-list", "timeline", "alarm-list-item", "list", "descriptions", "before-after-comparison", "analytics-charts", "cavity-cell"];
+  const distinctDataDisplayMarkups = await Promise.all(distinctDataDisplayIds.map((id) => catalog.locator(`[data-component-thumbnail="${id}"]`).innerHTML()));
+  expect(new Set(distinctDataDisplayMarkups).size).toBe(distinctDataDisplayIds.length);
   await expect(page.getByText("티어3 — 아직 착수 전", { exact: true })).toHaveCount(0);
   await expect(page.getByText("티어4 — 아직 착수 전", { exact: true })).toHaveCount(0);
   await expect(page.getByText("예정", { exact: true })).toHaveCount(0);
