@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx + registered screen/section sources",
   "summary": {
     "scannedFiles": 46,
-    "totalLines": 14280,
+    "totalLines": 14281,
     "shellInstances": {
       "CenterModal": 14,
       "SideSlidePanel": 14,
@@ -488,7 +488,7 @@
       "source": "src/app/[...slug]/client-page.tsx",
       "name": "client-page.tsx",
       "observedRole": "composition-source",
-      "lines": 5489,
+      "lines": 5490,
       "exportedSymbols": [
         "Home"
       ],
@@ -3727,5 +3727,5 @@
       ]
     }
   ],
-  "fingerprint": "024e088fc42620a7"
+  "fingerprint": "c7beecab765b3921"
 }

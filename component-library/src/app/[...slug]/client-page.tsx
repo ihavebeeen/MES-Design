@@ -113,6 +113,7 @@ import { CandidateDecisionGallery } from "@/components/experimental";
 import { PromotedStandardCatalog } from "@/components/catalog/promoted-standard-catalog";
 import { ComponentCatalogOverview } from "@/components/catalog/component-catalog-overview";
 import { RegistryComponentDocumentation } from "@/components/catalog/registry-component-documentation";
+import { PatternCatalogOverview, RegistryPatternDocumentation } from "@/components/catalog/pattern-catalog-overview";
 import { MobileCatalog } from "@/components/mobile/mobile-catalog";
 import {
   IconArrow,
@@ -158,7 +159,6 @@ import {
   type SidebarNode,
   FOUNDATION_NODES,
   COMPONENT_NODES,
-  PATTERN_NODES,
   MOBILE_NODES,
   GENERATED_SCREEN_NODES,
   EXPERIMENTAL_NODES,
@@ -2083,8 +2083,9 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
                   체크리스트, 리스트 관리 화면처럼 여러 컴포넌트가 함께 쓰이는 단위.
                 </p>
               </div>
-              {!activeId && <OverviewGrid nodes={PATTERN_NODES} />}
+              {!activeId && <PatternCatalogOverview />}
               <PromotedStandardCatalog activeId={activeId} />
+              <RegistryPatternDocumentation activeId={activeId} />
             </>
           )}
 

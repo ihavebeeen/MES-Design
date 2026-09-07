@@ -59,6 +59,12 @@ const pipeline = [
 
 for (const [name, args] of pipeline) {
   if (stages.some((stage) => stage.status === "failed")) break;
+  if (name === "production-build") {
+    // The visual suites temporarily create preview routes. Next dev can retain
+    // validators for those deleted routes, so production type checking must not
+    // reuse that generated cache.
+    fs.rmSync(path.join(projectRoot, ".next", "dev"), { recursive: true, force: true });
+  }
   stages.push(run(name, args));
 }
 

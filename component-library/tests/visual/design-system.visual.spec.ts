@@ -58,6 +58,13 @@ test("컴포넌트 개요는 역할·성숙도·검색으로 탐색한다", asyn
   await expect(catalog).toBeVisible();
   await expect(catalog.locator("[data-component-category]")).toHaveCount(componentCatalog.groups.length);
   await expect(catalog.locator("[data-component-card]")).toHaveCount(componentCatalogCardCount);
+  await expect(catalog.locator("[data-component-thumbnail]")).toHaveCount(componentCatalogCardCount);
+  await expect(catalog.locator("[data-context-coverage-summary]")).toContainText("컴포넌트 맥락");
+  await expect(catalog.locator("[data-context-coverage-summary]")).toContainText("화면 근거");
+  await expect(catalog.locator('[data-component-card="button-size"]')).toContainText("주로 사용");
+  await expect(catalog.locator('[data-component-card="button-size"]')).toContainText("피할 때");
+  const thumbnailOverflows = await catalog.locator("[data-component-thumbnail]").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
+  expect(thumbnailOverflows.every((overflow) => overflow === 0)).toBe(true);
   await expect(page.getByText("티어3 — 아직 착수 전", { exact: true })).toHaveCount(0);
   await expect(page.getByText("티어4 — 아직 착수 전", { exact: true })).toHaveCount(0);
   await expect(page.getByText("예정", { exact: true })).toHaveCount(0);
@@ -70,6 +77,34 @@ test("컴포넌트 개요는 역할·성숙도·검색으로 탐색한다", asyn
   await expect(catalog.locator("[data-component-card]")).toHaveCount(2);
   await expect(catalog.locator('[data-component-card="table-parts"]')).toBeVisible();
   await expect(catalog.locator('[data-component-card="table-full"]')).toBeVisible();
+
+  await page.goto("/components/button-size");
+  const buttonContext = page.locator('[data-component-context="button"]');
+  await expect(buttonContext).toBeVisible();
+  await expect(buttonContext.getByText("사용할 때", { exact: true })).toBeVisible();
+  await expect(buttonContext.getByText("사용하지 않을 때", { exact: true })).toBeVisible();
+  await expect(buttonContext.getByText("가까운 대안", { exact: true })).toBeVisible();
+});
+
+test("패턴 개요와 상세에서 조합 선택 맥락을 확인한다", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/patterns");
+
+  const catalog = page.locator("[data-pattern-catalog]");
+  await expect(catalog).toBeVisible();
+  await expect(catalog.locator("[data-pattern-card]")).toHaveCount(15);
+  await expect(catalog).toContainText("패턴 선택 맥락");
+  await expect(catalog).toContainText("연결된 화면 근거");
+  await expect(catalog.locator('[data-pattern-card="workflow-stepper"]')).toContainText("주로 사용");
+  await expect(catalog.locator('[data-pattern-card="workflow-stepper"]')).toContainText("피할 때");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+
+  await page.goto("/patterns/workflow-stepper");
+  const context = page.locator('[data-pattern-context="workflow-stepper"]');
+  await expect(context).toBeVisible();
+  await expect(context.getByText("주로 사용할 때", { exact: true })).toBeVisible();
+  await expect(context.getByText("피할 때", { exact: true })).toBeVisible();
+  await expect(context).toContainText("workflow.stepper");
 });
 
 test("Tier 4·5 승격 자산은 Components·Patterns에 있고 Experimental 후보는 비어 있다", async ({ page }) => {
