@@ -158,7 +158,7 @@ function TeamSettingsModal({ open, onOpenChange }: TeamSettingsModalProps) {
       bodyAlign="stretch"
       scrollMode="content"
     >
-      <div data-testid="team-settings-body" className="grid h-full min-h-0 grid-cols-[240px_1040px] overflow-hidden">
+      <div data-testid="team-settings-body" data-pattern="section.master-detail-composition" className="grid h-full min-h-0 grid-cols-[240px_1040px] overflow-hidden">
         <aside data-testid="permission-group-panel" className="min-h-0 border-r border-mes-gray-30 p-5">
           <div className="mb-[10px] flex h-6 items-center gap-[10px]">
             <h2 className="flex-1 text-[16px] font-bold leading-6 text-mes-gray-130">권한 그룹</h2>
@@ -189,7 +189,7 @@ function TeamSettingsModal({ open, onOpenChange }: TeamSettingsModalProps) {
             <SearchInput value={search} onChange={setSearch} placeholder="검색어 입력.." size="compact" background="white" className="mb-0 !w-[200px]" />
           </div>
           <div className="flex min-h-0 flex-1 flex-col gap-5 px-5 pb-5 pt-4">
-            <div data-testid="team-bulk-toolbar" className="flex h-11 shrink-0 items-center justify-between rounded-mes-control border border-mes-gray-20 bg-mes-gray-20 px-[10px] py-1">
+            <div data-testid="team-bulk-toolbar" data-pattern="section.bulk-edit-bar" data-target-scope="selected" className="flex h-11 shrink-0 items-center justify-between rounded-mes-control border border-mes-gray-20 bg-mes-gray-20 px-[10px] py-1">
               <span className="flex items-center gap-2 text-[13px] font-semibold text-mes-primary-100"><IconCopy size={14} />조 정보 일괄 변경</span>
               <div className="flex items-center gap-[10px]">
                 <Select value={bulkTeam} onValueChange={setBulkTeam}>

@@ -2,24 +2,72 @@
   "schemaVersion": 1,
   "policyId": "mes.ai-composition-grammar",
   "status": "observed-not-canonical",
-  "scope": "src/components/patterns/*.tsx",
+  "scope": "src/components/patterns/*.tsx + registered screen/section sources",
   "summary": {
-    "scannedFiles": 43,
-    "totalLines": 8504,
+    "scannedFiles": 46,
+    "totalLines": 14280,
     "shellInstances": {
-      "CenterModal": 13,
-      "SideSlidePanel": 9,
-      "ConfirmDialog": 4
+      "CenterModal": 14,
+      "SideSlidePanel": 14,
+      "ConfirmDialog": 8
     },
-    "filesWithMixedSectionFrames": 2,
+    "filesWithMixedSectionFrames": 4,
     "filesWithNativeSectionOnly": 19,
-    "filesWithRoundedSectionCandidates": 24
+    "filesWithRoundedSectionCandidates": 25
   },
   "sectionCandidateSignals": [
     {
-      "id": "section.summary",
-      "fileCount": 15,
+      "id": "section.search-table-composition",
+      "fileCount": 19,
       "sources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/completed-application-patterns.tsx",
+        "src/components/patterns/completed-popup-expanded-content.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+        "src/components/patterns/equipment-inspection-records-modal.tsx",
+        "src/components/patterns/exact-form-management-screen.tsx",
+        "src/components/patterns/exact-inventory-add-modal.tsx",
+        "src/components/patterns/exact-inventory-edit-modal.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/exact-purchase-modals.tsx",
+        "src/components/patterns/material-input-information-pattern.tsx",
+        "src/components/patterns/mes-screen-fixtures.tsx",
+        "src/components/patterns/sales-transaction-statement-pattern.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/shipment-approval-pattern.tsx",
+        "src/components/patterns/side-slide-compositions.tsx",
+        "src/components/patterns/standard-price-settings-pattern.tsx",
+        "src/components/patterns/team-settings-pattern.tsx"
+      ]
+    },
+    {
+      "id": "section.query-toolbar",
+      "fileCount": 16,
+      "sources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/completed-application-patterns.tsx",
+        "src/components/patterns/completed-popup-expanded-content.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+        "src/components/patterns/equipment-inspection-records-modal.tsx",
+        "src/components/patterns/exact-form-management-screen.tsx",
+        "src/components/patterns/exact-inventory-add-modal.tsx",
+        "src/components/patterns/exact-inventory-edit-modal.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/exact-purchase-modals.tsx",
+        "src/components/patterns/material-input-information-pattern.tsx",
+        "src/components/patterns/mes-screen-fixtures.tsx",
+        "src/components/patterns/sales-transaction-statement-pattern.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/shipment-approval-pattern.tsx"
+      ]
+    },
+    {
+      "id": "section.summary",
+      "fileCount": 16,
+      "sources": [
+        "src/app/[...slug]/client-page.tsx",
         "src/components/patterns/business-operation-settings-pattern.tsx",
         "src/components/patterns/completed-application-patterns.tsx",
         "src/components/patterns/completed-popup-expanded-content.tsx",
@@ -38,29 +86,10 @@
       ]
     },
     {
-      "id": "section.search-table",
-      "fileCount": 14,
-      "sources": [
-        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
-        "src/components/patterns/equipment-inspection-records-modal.tsx",
-        "src/components/patterns/exact-form-management-screen.tsx",
-        "src/components/patterns/exact-inventory-add-modal.tsx",
-        "src/components/patterns/exact-inventory-edit-modal.tsx",
-        "src/components/patterns/exact-production-result-screen.tsx",
-        "src/components/patterns/exact-purchase-modals.tsx",
-        "src/components/patterns/material-input-information-pattern.tsx",
-        "src/components/patterns/mes-screen-fixtures.tsx",
-        "src/components/patterns/sales-transaction-statement-pattern.tsx",
-        "src/components/patterns/shipment-approval-pattern.tsx",
-        "src/components/patterns/side-slide-compositions.tsx",
-        "src/components/patterns/standard-price-settings-pattern.tsx",
-        "src/components/patterns/team-settings-pattern.tsx"
-      ]
-    },
-    {
       "id": "section.form-grid",
-      "fileCount": 11,
+      "fileCount": 12,
       "sources": [
+        "src/app/[...slug]/client-page.tsx",
         "src/components/patterns/business-operation-settings-pattern.tsx",
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/equipment-discharge-settings-pattern.tsx",
@@ -76,8 +105,9 @@
     },
     {
       "id": "section.inspection-items",
-      "fileCount": 9,
+      "fileCount": 10,
       "sources": [
+        "src/app/[...slug]/client-page.tsx",
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/equipment-inspection-records-modal.tsx",
         "src/components/patterns/inspection-criteria-pattern.tsx",
@@ -90,12 +120,42 @@
       ]
     },
     {
-      "id": "section.editable-row-list",
-      "fileCount": 3,
+      "id": "section.bulk-edit-bar",
+      "fileCount": 5,
       "sources": [
         "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+        "src/components/patterns/exact-inventory-action-modal.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/team-settings-pattern.tsx"
+      ]
+    },
+    {
+      "id": "section.editable-row-list",
+      "fileCount": 5,
+      "sources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/easy-mode-receiving-pattern.tsx",
-        "src/components/patterns/original-mes-screen-assets.tsx"
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/section-patterns.tsx"
+      ]
+    },
+    {
+      "id": "section.master-detail-composition",
+      "fileCount": 3,
+      "sources": [
+        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/team-settings-pattern.tsx"
+      ]
+    },
+    {
+      "id": "section.collapsible-form",
+      "fileCount": 2,
+      "sources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/tier3-promoted-patterns.tsx"
       ]
     },
     {
@@ -106,18 +166,26 @@
       ]
     },
     {
-      "id": "section.collapsible-form",
+      "id": "summary.result-total-card",
       "fileCount": 1,
       "sources": [
-        "src/components/patterns/tier3-promoted-patterns.tsx"
+        "src/components/patterns/section-patterns.tsx"
+      ]
+    },
+    {
+      "id": "summary.table-total-row",
+      "fileCount": 1,
+      "sources": [
+        "src/components/patterns/section-patterns.tsx"
       ]
     }
   ],
   "behaviorSignals": [
     {
       "id": "selection.enable-editor",
-      "fileCount": 17,
+      "fileCount": 18,
       "sources": [
+        "src/app/[...slug]/client-page.tsx",
         "src/components/patterns/completed-application-patterns.tsx",
         "src/components/patterns/completed-popup-expanded-content.tsx",
         "src/components/patterns/completed-popup-patterns.tsx",
@@ -139,8 +207,9 @@
     },
     {
       "id": "dismiss.restore-committed",
-      "fileCount": 12,
+      "fileCount": 13,
       "sources": [
+        "src/app/[...slug]/client-page.tsx",
         "src/components/patterns/cavity-settings-pattern.tsx",
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/easy-mode-receiving-pattern.tsx",
@@ -157,8 +226,9 @@
     },
     {
       "id": "row.add-remove",
-      "fileCount": 6,
+      "fileCount": 7,
       "sources": [
+        "src/app/[...slug]/client-page.tsx",
         "src/components/patterns/completed-popup-patterns.tsx",
         "src/components/patterns/easy-mode-receiving-pattern.tsx",
         "src/components/patterns/original-mes-screen-assets.tsx",
@@ -168,35 +238,48 @@
       ]
     },
     {
+      "id": "selection.master-detail",
+      "fileCount": 5,
+      "sources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/completed-application-patterns.tsx",
+        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/team-settings-pattern.tsx"
+      ]
+    },
+    {
+      "id": "section.toggle-collapse",
+      "fileCount": 2,
+      "sources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/tier3-promoted-patterns.tsx"
+      ]
+    },
+    {
+      "id": "table.group-selection",
+      "fileCount": 2,
+      "sources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/side-slide-compositions.tsx"
+      ]
+    },
+    {
       "id": "row.inherit-previous",
       "fileCount": 1,
       "sources": [
         "src/components/patterns/easy-mode-receiving-pattern.tsx"
       ]
-    },
-    {
-      "id": "section.toggle-collapse",
-      "fileCount": 1,
-      "sources": [
-        "src/components/patterns/tier3-promoted-patterns.tsx"
-      ]
-    },
-    {
-      "id": "selection.master-detail",
-      "fileCount": 1,
-      "sources": [
-        "src/components/patterns/completed-application-patterns.tsx"
-      ]
-    },
-    {
-      "id": "table.group-selection",
-      "fileCount": 1,
-      "sources": [
-        "src/components/patterns/side-slide-compositions.tsx"
-      ]
     }
   ],
   "reviewQueue": [
+    {
+      "source": "src/app/[...slug]/client-page.tsx",
+      "flags": [
+        "mixed-section-frame-mechanisms",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
     {
       "source": "src/components/patterns/analytics-dashboard-pattern.tsx",
       "flags": [
@@ -392,9 +475,428 @@
         "native-section-without-registered-frame",
         "rounded-wrapper-around-section-candidate"
       ]
+    },
+    {
+      "source": "src/components/ui/section-frame.tsx",
+      "flags": [
+        "mixed-section-frame-mechanisms"
+      ]
     }
   ],
   "files": [
+    {
+      "source": "src/app/[...slug]/client-page.tsx",
+      "name": "client-page.tsx",
+      "observedRole": "composition-source",
+      "lines": 5489,
+      "exportedSymbols": [
+        "Home"
+      ],
+      "shells": [
+        {
+          "id": "CenterModal",
+          "count": 1
+        },
+        {
+          "id": "SideSlidePanel",
+          "count": 5
+        },
+        {
+          "id": "ConfirmDialog",
+          "count": 4
+        }
+      ],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 5,
+        "nativeSection": 26,
+        "dividerContainer": 10,
+        "roundedContainer": 20,
+        "gray20Container": 5
+      },
+      "sectionTitles": [
+        "검사항목",
+        "기본정보",
+        "대상정보"
+      ],
+      "uiComponents": [
+        {
+          "name": "Accordion",
+          "jsxCount": 1
+        },
+        {
+          "name": "AlarmListItem",
+          "jsxCount": 4
+        },
+        {
+          "name": "Badge",
+          "jsxCount": 10
+        },
+        {
+          "name": "Blocks",
+          "jsxCount": 1
+        },
+        {
+          "name": "Breadcrumb",
+          "jsxCount": 2
+        },
+        {
+          "name": "ButtonGroup",
+          "jsxCount": 1
+        },
+        {
+          "name": "Card",
+          "jsxCount": 1
+        },
+        {
+          "name": "CardContent",
+          "jsxCount": 1
+        },
+        {
+          "name": "CardDescription",
+          "jsxCount": 1
+        },
+        {
+          "name": "CardFooter",
+          "jsxCount": 1
+        },
+        {
+          "name": "CardHeader",
+          "jsxCount": 1
+        },
+        {
+          "name": "CardTitle",
+          "jsxCount": 1
+        },
+        {
+          "name": "CenterModal",
+          "jsxCount": 1
+        },
+        {
+          "name": "Checkbox",
+          "jsxCount": 6
+        },
+        {
+          "name": "CloseButton",
+          "jsxCount": 1
+        },
+        {
+          "name": "Collapsible",
+          "jsxCount": 1
+        },
+        {
+          "name": "Combobox",
+          "jsxCount": 6
+        },
+        {
+          "name": "ConfirmDialog",
+          "jsxCount": 4
+        },
+        {
+          "name": "DatePicker",
+          "jsxCount": 4
+        },
+        {
+          "name": "DateRange",
+          "jsxCount": 1
+        },
+        {
+          "name": "DateRangePicker",
+          "jsxCount": 2
+        },
+        {
+          "name": "Descriptions",
+          "jsxCount": 1
+        },
+        {
+          "name": "Divider",
+          "jsxCount": 2
+        },
+        {
+          "name": "DropdownMenu",
+          "jsxCount": 1
+        },
+        {
+          "name": "EmptyState",
+          "jsxCount": 2
+        },
+        {
+          "name": "ErrorState",
+          "jsxCount": 1
+        },
+        {
+          "name": "Fieldset",
+          "jsxCount": 1
+        },
+        {
+          "name": "Filter",
+          "jsxCount": 3
+        },
+        {
+          "name": "Fragment",
+          "jsxCount": 1
+        },
+        {
+          "name": "Grid",
+          "jsxCount": 1
+        },
+        {
+          "name": "GroupQuery",
+          "jsxCount": 2
+        },
+        {
+          "name": "Hammer",
+          "jsxCount": 1
+        },
+        {
+          "name": "IconButton",
+          "jsxCount": 10
+        },
+        {
+          "name": "Input",
+          "jsxCount": 37
+        },
+        {
+          "name": "Label",
+          "jsxCount": 3
+        },
+        {
+          "name": "LayoutTemplate",
+          "jsxCount": 1
+        },
+        {
+          "name": "Link",
+          "jsxCount": 5
+        },
+        {
+          "name": "List",
+          "jsxCount": 1
+        },
+        {
+          "name": "ListItem",
+          "jsxCount": 3
+        },
+        {
+          "name": "LoadingOverlay",
+          "jsxCount": 1
+        },
+        {
+          "name": "LoadingSpinner",
+          "jsxCount": 3
+        },
+        {
+          "name": "Logo",
+          "jsxCount": 3
+        },
+        {
+          "name": "MultiSelectInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "Navbar",
+          "jsxCount": 1
+        },
+        {
+          "name": "NoticeBanner",
+          "jsxCount": 1
+        },
+        {
+          "name": "NotificationPanel",
+          "jsxCount": 2
+        },
+        {
+          "name": "NumberInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "PageTopTabItem",
+          "jsxCount": 6
+        },
+        {
+          "name": "Pagination",
+          "jsxCount": 1
+        },
+        {
+          "name": "Palette",
+          "jsxCount": 1
+        },
+        {
+          "name": "Panel",
+          "jsxCount": 1
+        },
+        {
+          "name": "PasswordInput",
+          "jsxCount": 1
+        },
+        {
+          "name": "Plus",
+          "jsxCount": 4
+        },
+        {
+          "name": "Popover",
+          "jsxCount": 2
+        },
+        {
+          "name": "PopoverContent",
+          "jsxCount": 2
+        },
+        {
+          "name": "PopoverTrigger",
+          "jsxCount": 2
+        },
+        {
+          "name": "Progress",
+          "jsxCount": 4
+        },
+        {
+          "name": "QuickQuery",
+          "jsxCount": 2
+        },
+        {
+          "name": "QuickQueryPresetDialog",
+          "jsxCount": 1
+        },
+        {
+          "name": "QuickQuerySlot",
+          "jsxCount": 1
+        },
+        {
+          "name": "Radio",
+          "jsxCount": 9
+        },
+        {
+          "name": "RadioChoiceDialog",
+          "jsxCount": 1
+        },
+        {
+          "name": "ScrollArea",
+          "jsxCount": 1
+        },
+        {
+          "name": "Search",
+          "jsxCount": 1
+        },
+        {
+          "name": "SearchInput",
+          "jsxCount": 8
+        },
+        {
+          "name": "Select",
+          "jsxCount": 14
+        },
+        {
+          "name": "SelectContent",
+          "jsxCount": 14
+        },
+        {
+          "name": "SelectItem",
+          "jsxCount": 26
+        },
+        {
+          "name": "SelectTrigger",
+          "jsxCount": 14
+        },
+        {
+          "name": "SelectValue",
+          "jsxCount": 14
+        },
+        {
+          "name": "Settings",
+          "jsxCount": 3
+        },
+        {
+          "name": "Sidebar",
+          "jsxCount": 2
+        },
+        {
+          "name": "SidebarSettingsIcon",
+          "jsxCount": 1
+        },
+        {
+          "name": "SideSlidePanel",
+          "jsxCount": 5
+        },
+        {
+          "name": "Skeleton",
+          "jsxCount": 7
+        },
+        {
+          "name": "Smartphone",
+          "jsxCount": 1
+        },
+        {
+          "name": "Sparkles",
+          "jsxCount": 1
+        },
+        {
+          "name": "StickyFooter",
+          "jsxCount": 1
+        },
+        {
+          "name": "StickyHeader",
+          "jsxCount": 1
+        },
+        {
+          "name": "Switch",
+          "jsxCount": 4
+        },
+        {
+          "name": "Table",
+          "jsxCount": 7
+        },
+        {
+          "name": "Tag",
+          "jsxCount": 3
+        },
+        {
+          "name": "Textarea",
+          "jsxCount": 4
+        },
+        {
+          "name": "TimePicker",
+          "jsxCount": 1
+        },
+        {
+          "name": "Toast",
+          "jsxCount": 2
+        },
+        {
+          "name": "ToggleButton",
+          "jsxCount": 1
+        },
+        {
+          "name": "Tooltip",
+          "jsxCount": 3
+        },
+        {
+          "name": "UserAccountMenu",
+          "jsxCount": 1
+        }
+      ],
+      "stateHookCount": 43,
+      "behaviorSignals": [
+        "dismiss.restore-committed",
+        "row.add-remove",
+        "section.toggle-collapse",
+        "selection.enable-editor",
+        "selection.master-detail",
+        "table.group-selection"
+      ],
+      "sectionCandidateSignals": [
+        "section.collapsible-form",
+        "section.editable-row-list",
+        "section.form-grid",
+        "section.inspection-items",
+        "section.query-toolbar",
+        "section.search-table-composition",
+        "section.summary"
+      ],
+      "reviewFlags": [
+        "mixed-section-frame-mechanisms",
+        "rounded-wrapper-around-section-candidate"
+      ]
+    },
     {
       "source": "src/components/patterns/analytics-dashboard-pattern.tsx",
       "name": "analytics-dashboard-pattern.tsx",
@@ -619,6 +1121,8 @@
         "selection.master-detail"
       ],
       "sectionCandidateSignals": [
+        "section.query-toolbar",
+        "section.search-table-composition",
         "section.summary"
       ],
       "reviewFlags": [
@@ -700,6 +1204,8 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
+        "section.query-toolbar",
+        "section.search-table-composition",
         "section.summary"
       ],
       "reviewFlags": [
@@ -710,7 +1216,7 @@
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "name": "completed-popup-patterns.tsx",
       "observedRole": "catalog-or-recipe",
-      "lines": 1034,
+      "lines": 1052,
       "exportedSymbols": [
         "PopupRenderer"
       ],
@@ -730,8 +1236,8 @@
         "patternGroupHeader": 0,
         "nativeSection": 2,
         "dividerContainer": 3,
-        "roundedContainer": 5,
-        "gray20Container": 6
+        "roundedContainer": 3,
+        "gray20Container": 4
       },
       "sectionTitles": [
         "검사결과",
@@ -811,9 +1317,12 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
+        "section.bulk-edit-bar",
         "section.editable-row-list",
         "section.form-grid",
         "section.inspection-items",
+        "section.query-toolbar",
+        "section.search-table-composition",
         "section.summary"
       ],
       "reviewFlags": [
@@ -1019,11 +1528,15 @@
       "stateHookCount": 13,
       "behaviorSignals": [
         "dismiss.restore-committed",
-        "selection.enable-editor"
+        "selection.enable-editor",
+        "selection.master-detail"
       ],
       "sectionCandidateSignals": [
+        "section.bulk-edit-bar",
         "section.form-grid",
-        "section.search-table"
+        "section.master-detail-composition",
+        "section.query-toolbar",
+        "section.search-table-composition"
       ],
       "reviewFlags": [
         "native-section-without-registered-frame",
@@ -1079,7 +1592,8 @@
       ],
       "sectionCandidateSignals": [
         "section.inspection-items",
-        "section.search-table"
+        "section.query-toolbar",
+        "section.search-table-composition"
       ],
       "reviewFlags": [
         "native-section-without-registered-frame",
@@ -1194,7 +1708,8 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
-        "section.search-table"
+        "section.query-toolbar",
+        "section.search-table-composition"
       ],
       "reviewFlags": []
     },
@@ -1255,7 +1770,9 @@
       ],
       "stateHookCount": 8,
       "behaviorSignals": [],
-      "sectionCandidateSignals": [],
+      "sectionCandidateSignals": [
+        "section.bulk-edit-bar"
+      ],
       "reviewFlags": []
     },
     {
@@ -1326,7 +1843,8 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
-        "section.search-table"
+        "section.query-toolbar",
+        "section.search-table-composition"
       ],
       "reviewFlags": [
         "rounded-wrapper-around-section-candidate"
@@ -1372,7 +1890,8 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
-        "section.search-table"
+        "section.query-toolbar",
+        "section.search-table-composition"
       ],
       "reviewFlags": [
         "rounded-wrapper-around-section-candidate"
@@ -1596,7 +2115,8 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
-        "section.search-table",
+        "section.query-toolbar",
+        "section.search-table-composition",
         "section.summary"
       ],
       "reviewFlags": []
@@ -1657,7 +2177,8 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
-        "section.search-table"
+        "section.query-toolbar",
+        "section.search-table-composition"
       ],
       "reviewFlags": [
         "rounded-wrapper-around-section-candidate"
@@ -1952,7 +2473,7 @@
       "source": "src/components/patterns/material-input-information-pattern.tsx",
       "name": "material-input-information-pattern.tsx",
       "observedRole": "composition-source",
-      "lines": 181,
+      "lines": 205,
       "exportedSymbols": [],
       "shells": [
         {
@@ -2003,7 +2524,8 @@
       "stateHookCount": 7,
       "behaviorSignals": [],
       "sectionCandidateSignals": [
-        "section.search-table"
+        "section.query-toolbar",
+        "section.search-table-composition"
       ],
       "reviewFlags": [
         "rounded-wrapper-around-section-candidate"
@@ -2105,7 +2627,8 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
-        "section.search-table"
+        "section.query-toolbar",
+        "section.search-table-composition"
       ],
       "reviewFlags": [
         "rounded-wrapper-around-section-candidate"
@@ -2434,7 +2957,8 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
-        "section.search-table",
+        "section.query-toolbar",
+        "section.search-table-composition",
         "section.summary"
       ],
       "reviewFlags": [
@@ -2445,11 +2969,14 @@
       "source": "src/components/patterns/section-patterns.tsx",
       "name": "section-patterns.tsx",
       "observedRole": "composition-source",
-      "lines": 267,
+      "lines": 388,
       "exportedSymbols": [
+        "BulkEditBar",
         "EditableRowGrid",
         "EditableRowListSection",
         "InspectionItemsSection",
+        "MasterDetailSection",
+        "QueryToolbar",
         "ResultTotalCard",
         "SearchTableSection",
         "TableTotalRow"
@@ -2459,7 +2986,7 @@
         "sectionBand": 0,
         "sectionHeader": 0,
         "patternGroupHeader": 0,
-        "nativeSection": 3,
+        "nativeSection": 4,
         "dividerContainer": 1,
         "roundedContainer": 0,
         "gray20Container": 0
@@ -2467,10 +2994,19 @@
       "sectionTitles": [],
       "uiComponents": [],
       "stateHookCount": 0,
-      "behaviorSignals": [],
+      "behaviorSignals": [
+        "selection.master-detail"
+      ],
       "sectionCandidateSignals": [
+        "section.bulk-edit-bar",
+        "section.editable-row-list",
         "section.inspection-items",
-        "section.summary"
+        "section.master-detail-composition",
+        "section.query-toolbar",
+        "section.search-table-composition",
+        "section.summary",
+        "summary.result-total-card",
+        "summary.table-total-row"
       ],
       "reviewFlags": [
         "native-section-without-registered-frame"
@@ -2542,7 +3078,8 @@
         "selection.enable-editor"
       ],
       "sectionCandidateSignals": [
-        "section.search-table"
+        "section.query-toolbar",
+        "section.search-table-composition"
       ],
       "reviewFlags": [
         "native-section-without-registered-frame",
@@ -2657,7 +3194,7 @@
       "sectionCandidateSignals": [
         "section.form-grid",
         "section.inspection-items",
-        "section.search-table",
+        "section.search-table-composition",
         "section.summary"
       ],
       "reviewFlags": [
@@ -2832,7 +3369,7 @@
       ],
       "sectionCandidateSignals": [
         "section.form-grid",
-        "section.search-table"
+        "section.search-table-composition"
       ],
       "reviewFlags": [
         "native-section-without-registered-frame",
@@ -2993,11 +3530,14 @@
       "stateHookCount": 9,
       "behaviorSignals": [
         "dismiss.restore-committed",
-        "selection.enable-editor"
+        "selection.enable-editor",
+        "selection.master-detail"
       ],
       "sectionCandidateSignals": [
+        "section.bulk-edit-bar",
         "section.form-grid",
-        "section.search-table"
+        "section.master-detail-composition",
+        "section.search-table-composition"
       ],
       "reviewFlags": [
         "native-section-without-registered-frame",
@@ -3137,7 +3677,55 @@
         "native-section-without-registered-frame",
         "rounded-wrapper-around-section-candidate"
       ]
+    },
+    {
+      "source": "src/components/ui/form-grid.tsx",
+      "name": "form-grid.tsx",
+      "observedRole": "composition-source",
+      "lines": 61,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 0,
+        "patternGroupHeader": 0,
+        "nativeSection": 0,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [],
+      "stateHookCount": 0,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": []
+    },
+    {
+      "source": "src/components/ui/section-frame.tsx",
+      "name": "section-frame.tsx",
+      "observedRole": "composition-source",
+      "lines": 63,
+      "exportedSymbols": [],
+      "shells": [],
+      "sectionFrames": {
+        "sectionBand": 0,
+        "sectionHeader": 1,
+        "patternGroupHeader": 0,
+        "nativeSection": 1,
+        "dividerContainer": 0,
+        "roundedContainer": 0,
+        "gray20Container": 0
+      },
+      "sectionTitles": [],
+      "uiComponents": [],
+      "stateHookCount": 0,
+      "behaviorSignals": [],
+      "sectionCandidateSignals": [],
+      "reviewFlags": [
+        "mixed-section-frame-mechanisms"
+      ]
     }
   ],
-  "fingerprint": "40b95d9c9fb79b52"
+  "fingerprint": "024e088fc42620a7"
 }

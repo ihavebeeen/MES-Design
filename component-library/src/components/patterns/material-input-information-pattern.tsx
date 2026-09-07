@@ -40,14 +40,25 @@ interface ByproductRecord {
   unit: string;
 }
 
+type ByproductRecordByResultId = {
+  [resultId: string]: TableRowData<ByproductRecord>[];
+};
+
 const INITIAL_INPUT_ROWS: TableRowData<InputMaterialRecord>[] = [
   { id: "input-f171b", data: { productionDate: "2025.08.25", product: "PP볼 1.3t(3호)", equipment: "A1", productionQuantity: "1,000", productLot: "LOT조회", startedAt: "11:44", endedAt: "12:44", defectQuantity: "0", material: "F171B", materialLot: "250101-VD375-P0710-001", quantityBefore: "995,155", inputQuantity: "1,000", quantityAfter: "994,155" } },
   { id: "input-qb516", data: { productionDate: "2025.08.25", product: "PP볼 1.3t(3호)", equipment: "A1", productionQuantity: "1,000", productLot: "LOT조회", startedAt: "11:44", endedAt: "12:44", defectQuantity: "0", material: "QB516", materialLot: "250101-VD375-P0710-001", quantityBefore: "1,234", inputQuantity: "1,234", quantityAfter: "0" } },
   { id: "input-box", data: { productionDate: "2025.08.25", product: "PP볼 1.3t(3호)", equipment: "A1", productionQuantity: "1,000", productLot: "LOT조회", startedAt: "11:44", endedAt: "12:44", defectQuantity: "0", material: "박스", materialLot: "250101-VD375-P0710-001", quantityBefore: "7,234", inputQuantity: "6,000", quantityAfter: "1,234" } },
 ];
 
-const BYPRODUCT_ROWS: TableRowData<ByproductRecord>[] = [
-  { id: "byproduct-ground-pp", data: { productionDate: "2025.08.25", product: "PP볼 1.3t(3호)", equipment: "A1", productionQuantity: "1,000", productLot: "250825-A1-P0130-001", byproduct: "PP 분쇄재", byproductLot: "250825-A1-GR-001", byproductQuantity: "184", unit: "kg" } },
+const BYPRODUCT_ROWS_BY_RESULT_ID: ByproductRecordByResultId = {
+  p1: [{ id: "byproduct-ground-pp", data: { productionDate: "2025.10.30", product: "더블비안코뚜껑", equipment: "성형기 1호", productionQuantity: "2,000", productLot: "250825-A1-P0130-001", byproduct: "PP 분쇄재", byproductLot: "250825-A1-GR-001", byproductQuantity: "184", unit: "kg" } }],
+  p2: [{ id: "byproduct-granules-1", data: { productionDate: "2025.10.29", product: "더블비안코뚜껑", equipment: "성형기 1호", productionQuantity: "2,000", productLot: "250825-A1-P0131-002", byproduct: "포장재 파우더", byproductLot: "250825-A1-PS-002", byproductQuantity: "23", unit: "kg" } }],
+  p4: [{ id: "byproduct-crumbs-1", data: { productionDate: "2025.10.30", product: "비비빅", equipment: "성형기 2호", productionQuantity: "2,000", productLot: "250825-A2-P0130-003", byproduct: "시작부스러기", byproductLot: "250825-A2-BR-003", byproductQuantity: "8", unit: "kg" } }],
+  p7: [{ id: "byproduct-box-1", data: { productionDate: "2025.10.27", product: "비비빅", equipment: "성형기 2호", productionQuantity: "2,000", productLot: "250825-A2-P0132-007", byproduct: "박스 잔량", byproductLot: "250825-A2-BX-007", byproductQuantity: "6", unit: "EA" } }],
+};
+
+const DEFAULT_BYPRODUCT_ROWS: TableRowData<ByproductRecord>[] = [
+  { id: "byproduct-default", data: { productionDate: "2025.08.25", product: "PP볼 1.3t(3호)", equipment: "A1", productionQuantity: "1,000", productLot: "250825-A1-P0130-001", byproduct: "PP 분쇄재", byproductLot: "250825-A1-GR-001", byproductQuantity: "184", unit: "kg" } },
 ];
 
 const FILTER_CATEGORIES: FilterCategory[] = [
@@ -95,11 +106,18 @@ const BYPRODUCT_COLUMNS: TableColumn<ByproductRecord>[] = [
   { key: "print", label: "출력", width: 100, align: "center", render: () => <TableLink>출력</TableLink> },
 ];
 
-function toCsv(inputRows: TableRowData<InputMaterialRecord>[]) {
+const formatByproductLabel = (rows: TableRowData<ByproductRecord>[]) => `${rows.length}건`;
+
+function getByproductRows(resultId?: string) {
+  if (!resultId) return DEFAULT_BYPRODUCT_ROWS;
+  return BYPRODUCT_ROWS_BY_RESULT_ID[resultId] ?? DEFAULT_BYPRODUCT_ROWS;
+}
+
+function toCsv(inputRows: TableRowData<InputMaterialRecord>[], byproductRows: TableRowData<ByproductRecord>[]) {
   const header = ["생산일자", "생산품목", "설비", "생산수량", "생산품 LOT", "생산시작시간", "생산종료시간", "불량수량", "투입품", "투입품 LOT", "투입전 수량", "투입수량", "투입 후 잔량"];
   const inputBody = inputRows.map((row) => Object.values(row.data));
   const byproductHeader = ["생산일자", "생산품목", "설비", "생산수량", "생산품 LOT", "부산물", "부산물 LOT", "부산물 수량", "단위"];
-  const byproductBody = BYPRODUCT_ROWS.map((row) => Object.values(row.data));
+  const byproductBody = byproductRows.map((row) => Object.values(row.data));
   return [header, ...inputBody, [], ["부산물 정보"], byproductHeader, ...byproductBody]
     .map((cells) => cells.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","))
     .join("\n");
@@ -108,9 +126,11 @@ function toCsv(inputRows: TableRowData<InputMaterialRecord>[]) {
 interface MaterialInputInformationModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  sourceResultId?: string;
+  sourceResultName?: string;
 }
 
-function MaterialInputInformationModal({ open, onOpenChange }: MaterialInputInformationModalProps) {
+function MaterialInputInformationModal({ open, onOpenChange, sourceResultId, sourceResultName }: MaterialInputInformationModalProps) {
   const [startDate, setStartDate] = React.useState<Date | null>(new Date(2025, 2, 30));
   const [endDate, setEndDate] = React.useState<Date | null>(new Date(2025, 2, 30));
   const [filters, setFilters] = React.useState<Record<string, string[]>>({ product: ["product-1", "product-2", "product-3", "product-4", "product-5"], productType: ["all"] });
@@ -118,6 +138,7 @@ function MaterialInputInformationModal({ open, onOpenChange }: MaterialInputInfo
   const [inputRows, setInputRows] = React.useState(INITIAL_INPUT_ROWS);
   const [status, setStatus] = React.useState("");
   const hasAddedInputRow = inputRows.length > INITIAL_INPUT_ROWS.length;
+  const byproductRows = React.useMemo(() => getByproductRows(sourceResultId), [sourceResultId]);
 
   const visibleRows = React.useMemo(() => {
     const query = search.trim().toLocaleLowerCase("ko-KR");
@@ -126,7 +147,7 @@ function MaterialInputInformationModal({ open, onOpenChange }: MaterialInputInfo
   }, [inputRows, search]);
 
   const download = () => {
-    const blob = new Blob([`\uFEFF${toCsv(visibleRows)}`], { type: "text/csv;charset=utf-8" });
+    const blob = new Blob([`\uFEFF${toCsv(visibleRows, byproductRows)}`], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -152,7 +173,7 @@ function MaterialInputInformationModal({ open, onOpenChange }: MaterialInputInfo
   );
 
   return (
-    <CenterModal open={open} onOpenChange={onOpenChange} title="투입정보" exactWidth={1536} maxHeight={680} bodyPadding="none" bodyAlign="stretch" scrollMode="content" footer={footer}>
+    <CenterModal open={open} onOpenChange={onOpenChange} title={`투입정보${sourceResultName ? ` (${sourceResultName})` : ""}`} exactWidth={1536} maxHeight={680} bodyPadding="none" bodyAlign="stretch" scrollMode="content" footer={footer}>
       <SearchTableSection
         aria-label="투입정보 목록"
         title="투입정보 리스트"
@@ -163,8 +184,11 @@ function MaterialInputInformationModal({ open, onOpenChange }: MaterialInputInfo
         table={<div data-testid="material-input-info-table-region" className={`${hasAddedInputRow ? "h-[282px]" : "h-[252px]"} overflow-hidden rounded-mes-control border border-mes-gray-30 bg-white`}>
           <Table className={`${hasAddedInputRow ? "h-[150px]" : "h-[120px]"} rounded-none border-0`} columns={INPUT_COLUMNS} rows={visibleRows} selectable={false} edgePadding={0} headerBackground="white" columnDividerMode="none" horizontalScroll={false} showMasterGroupToggles={false} />
           <SectionFrame data-candidate-pattern="section.nested-related-table" aria-label="부산물 정보" padding="standard" background="surface" className="border-t border-mes-gray-30" contentClassName="min-h-0">
-            <h4 className="text-[14px] font-semibold leading-[1.5] text-mes-gray-130">부산물 정보</h4>
-            <Table className="mt-2 h-[60px] bg-white" columns={BYPRODUCT_COLUMNS} rows={BYPRODUCT_ROWS} selectable={false} edgePadding={0} headerBackground="white" columnDividerMode="none" horizontalScroll={false} showMasterGroupToggles={false} />
+            <div className="flex items-center justify-between">
+              <h4 className="text-[14px] font-semibold leading-[1.5] text-mes-gray-130">부산물 정보</h4>
+              <span className="text-[12px] text-mes-gray-70">{formatByproductLabel(byproductRows)}</span>
+            </div>
+            <Table className="mt-2 h-[60px] bg-white" columns={BYPRODUCT_COLUMNS} rows={byproductRows} selectable={false} edgePadding={0} headerBackground="white" columnDividerMode="none" horizontalScroll={false} showMasterGroupToggles={false} />
           </SectionFrame>
         </div>}
       />

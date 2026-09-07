@@ -25,6 +25,7 @@ import generationTemplateData from "./generation-templates.json";
 import mobileAssetData from "./mobile-assets.json";
 import componentUsageContractData from "./component-usage-contracts.json";
 import patternContractData from "./pattern-contracts.json";
+import sectionCompositionAuditData from "./section-composition-audit.json";
 import screenSpecData from "./screen-specs.json";
 import webUiUsageInventoryData from "./web-ui-usage-inventory.json";
 import webFigmaReconciliationData from "./web-figma-reconciliation.json";
@@ -58,6 +59,7 @@ import type {
   MobileAssetRegistry,
   ComponentUsageContractRegistry,
   PatternUsageContractRegistry,
+  SectionCompositionAuditRegistry,
   ScreenSpecRegistry,
   WebUiUsageInventoryRegistry,
   WebFigmaReconciliationRegistry,
@@ -93,6 +95,7 @@ export const generationTemplateRegistry = generationTemplateData as GenerationTe
 export const mobileAssetRegistry = mobileAssetData as MobileAssetRegistry;
 export const componentUsageContractRegistry = componentUsageContractData as ComponentUsageContractRegistry;
 export const patternUsageContractRegistry = patternContractData as PatternUsageContractRegistry;
+export const sectionCompositionAuditRegistry = sectionCompositionAuditData as SectionCompositionAuditRegistry;
 export const screenSpecRegistry = screenSpecData as ScreenSpecRegistry;
 export const webUiUsageInventoryRegistry = webUiUsageInventoryData as WebUiUsageInventoryRegistry;
 export const webFigmaReconciliationRegistry = webFigmaReconciliationData as WebFigmaReconciliationRegistry;
@@ -138,6 +141,20 @@ export function getComponentSelectionContext(componentId: string) {
 
 export function getPatternUsageContract(patternId: string) {
   return patternUsageContractRegistry.contracts.find((contract) => contract.patternId === patternId);
+}
+
+/** 컴포넌트와 화면 사이의 공통 섹션 조합, 화면 전용 조합, 근거 상태를 조회한다. */
+export function getSectionCompositionContext(reference = "") {
+  const normalized = reference.trim().toLocaleLowerCase("ko-KR");
+  const matches = (value: unknown) => normalized !== "" && JSON.stringify(value).toLocaleLowerCase("ko-KR").includes(normalized);
+  return {
+    policy: sectionCompositionAuditRegistry.authority,
+    summary: sectionCompositionAuditRegistry.summary,
+    gaps: sectionCompositionAuditRegistry.gaps,
+    sectionPatterns: sectionCompositionAuditRegistry.sectionPatterns.filter((entry) => normalized === "" || matches(entry)),
+    screens: sectionCompositionAuditRegistry.screens.filter((entry) => normalized === "" || matches(entry)),
+    fingerprint: sectionCompositionAuditRegistry.fingerprint,
+  };
 }
 
 export function getScreenSpec(screenId: string) {
@@ -261,6 +278,7 @@ export function getScreenRequestOptions() {
       sections,
       actionSetRef,
     })),
+    sectionCompositionSummary: sectionCompositionAuditRegistry.summary,
   };
 }
 
@@ -274,6 +292,7 @@ export function getGenerationContext() {
     holds: contextRuleRegistry.holds,
     webGenerationContext: webGenerationContextRegistry,
     foundationRecipes: foundationRecipeRegistry,
+    sectionCompositions: sectionCompositionAuditRegistry,
   };
 }
 
@@ -306,6 +325,7 @@ export function getImplementationContext(screenId: string) {
     screenSpec,
     patterns,
     patternContracts: patterns.map(({ id }) => getPatternUsageContract(id)).filter(Boolean),
+    sectionCompositions: getSectionCompositionContext(screenId),
     components: componentIds.map(getComponent).filter(Boolean),
     componentSelectionContexts: componentIds.map(getComponentSelectionContext).filter(Boolean),
     componentUsageContracts: componentIds.map(getComponentUsageContract).filter(Boolean),

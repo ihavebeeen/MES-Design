@@ -195,7 +195,7 @@
     { "node": "11210:48123", "name": "공정검사 경향관리", "purpose": "검사 달성률과 측정 추이를 비교", "character": "검사 KPI와 경향 분석", "recipeRefs": ["foundation.page.operational-analysis"] },
     { "node": "11210:50866", "name": "생산계획 연동 일괄작업지시", "purpose": "계획 행을 선택해 지시 값을 입력하고 일괄 저장", "character": "선택 행 편집형 중앙 팝업", "recipeRefs": ["foundation.modal.bulk-row-work"] },
     { "node": "11210:50481", "name": "판매목표 연동 일괄출하지시", "purpose": "판매예정 행을 선택해 출하지시를 일괄 확정", "character": "선택 행 편집형 중앙 팝업", "recipeRefs": ["foundation.modal.bulk-row-work"] },
-    { "node": "11210:52026", "name": "발주 일괄등록", "purpose": "여러 품목의 발주 정보를 공통·행별로 입력", "character": "공통값 적용+행 편집 중앙 팝업", "recipeRefs": ["foundation.modal.bulk-row-work"] },
+    { "node": "20849:70791", "name": "발주 일괄등록", "purpose": "여러 품목의 발주 정보를 공통·행별로 입력", "character": "공통값 적용+행 편집 중앙 팝업", "recipeRefs": ["foundation.modal.bulk-row-work"] },
     { "node": "11210:51118", "name": "투입품목 설정/조회", "purpose": "BOM 유형을 고르고 재고 LOT와 투입수량을 선택", "character": "탐색 레일+선택 표", "recipeRefs": ["foundation.modal.reference-and-selection"] },
     { "node": "11210:49488", "name": "라벨정보 확정", "purpose": "분할 수량과 LOT 생성 방식을 확인·확정", "character": "설정 가능한 참고 표", "recipeRefs": ["foundation.modal.reference-and-selection"] },
     { "node": "11210:49627", "name": "냉각기 점검표", "purpose": "점검 이력과 측정값을 조회·선택", "character": "점검 목록 중앙 팝업", "recipeRefs": ["foundation.modal.reference-and-selection"] },

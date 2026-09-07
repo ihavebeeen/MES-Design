@@ -438,13 +438,40 @@
       "rules": ["짧은 의사결정 메시지와 확인 동작에만 사용한다."]
     },
     {
+      "id": "section.query-toolbar",
+      "name": "조회 도구 모음",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": ["filter", "search-input"],
+      "rules": ["필터·검색·빠른 조회처럼 같은 결과 집합을 갱신하는 도구를 하나의 수평 영역으로 묶는다.", "메인 페이지와 팝업의 배경·밀도 차이는 variant로 구분하고 임의 wrapper로 다시 만들지 않는다.", "존재하지 않는 조회 도구를 균형이나 장식 목적으로 추가하지 않는다."]
+    },
+    {
+      "id": "section.bulk-edit-bar",
+      "name": "복수 행 공통값 일괄 변경",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": ["button", "labeled-input", "labeled-select"],
+      "rules": ["여러 행에 같은 값을 적용하는 제목·공통 입력·적용 동작을 하나의 영역으로 묶는다.", "전체 표시 행·선택 행·명시된 대상 집합 중 적용 범위를 반드시 선언한다.", "행별 값과 공통값이 함께 있을 때 적용 우선순위와 빈 값 처리 방식을 화면 계약에서 정한다."]
+    },
+    {
+      "id": "section.master-detail-composition",
+      "name": "마스터 선택·연결 상세",
+      "kind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": [],
+      "rules": ["마스터에서 선택한 대상이 상세 영역의 내용과 가능한 행동을 결정할 때 두 영역을 함께 구성한다.", "단순히 두 영역을 나란히 보이기 위한 좌우 분할에는 사용하지 않는다.", "방향과 비율은 정보 관계·비교 필요·가용 공간을 근거로 화면에서 정한다."]
+    },
+    {
       "id": "section.search-table-composition",
       "name": "검색·필터·테이블 조합",
       "kind": "section-pattern",
       "placement": "section",
       "source": "src/components/patterns/section-patterns.tsx",
       "requiredComponents": ["filter", "search-input", "table"],
-      "rules": ["toolbar와 table의 순서, 중앙 정렬, 단일 scroll 책임을 소유한다."]
+      "rules": ["조회 도구·선택적 일괄 변경·table의 순서와 단일 scroll 책임을 소유한다.", "필터·검색은 section.query-toolbar를, 공통 행 값 변경은 section.bulk-edit-bar를 우선 사용한다.", "존재하지 않는 조회·일괄 변경 slot을 장식 목적으로 추가하지 않는다."]
     },
     {
       "id": "section.page-query-table",

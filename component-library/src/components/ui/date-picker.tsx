@@ -55,6 +55,9 @@ export interface DatePickerProps {
   iconColor?: "muted" | "default";
   /** 표 셀처럼 22px 컨트롤이 필요한 경우 사용한다. */
   size?: "default" | "small";
+  /** 선택 가능한 첫날·마지막 날(포함). 생략하면 기존처럼 날짜 제한이 없다. */
+  minDate?: Date;
+  maxDate?: Date;
 }
 
 function DatePicker({
@@ -67,14 +70,27 @@ function DatePicker({
   iconPosition = "end",
   iconColor = "muted",
   size = "default",
+  minDate,
+  maxDate,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
   const [viewDate, setViewDate] = React.useState(value ?? new Date());
 
   const weeks = buildMonthMatrix(viewDate.getFullYear(), viewDate.getMonth());
+  const dayValue = (date: Date) => new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+  const minDay = minDate ? dayValue(minDate) : -Infinity;
+  const maxDay = maxDate ? dayValue(maxDate) : Infinity;
+  const isUnavailable = (date: Date) => dayValue(date) < minDay || dayValue(date) > maxDay;
+  const previousMonthEnd = new Date(viewDate.getFullYear(), viewDate.getMonth(), 0);
+  const nextMonthStart = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1);
+  const canGoPrevious = dayValue(previousMonthEnd) >= minDay;
+  const canGoNext = dayValue(nextMonthStart) <= maxDay;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={(nextOpen) => {
+      if (nextOpen && value) setViewDate(value);
+      setOpen(nextOpen);
+    }}>
       <PopoverTrigger asChild>
         <button
           type="button"
@@ -95,10 +111,12 @@ function DatePicker({
         <div className="mb-2 flex items-center justify-between">
           <button
             type="button"
+            aria-label="이전 달"
+            disabled={!canGoPrevious}
             onClick={() =>
               setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))
             }
-            className="flex size-6 items-center justify-center rounded-mes-control-xs text-mes-gray-70 hover:bg-mes-bg-subtler"
+            className="flex size-6 items-center justify-center rounded-mes-control-xs text-mes-gray-70 hover:bg-mes-bg-subtler disabled:pointer-events-none disabled:opacity-50"
           >
             <ChevronLeft size={16} />
           </button>
@@ -107,10 +125,12 @@ function DatePicker({
           </span>
           <button
             type="button"
+            aria-label="다음 달"
+            disabled={!canGoNext}
             onClick={() =>
               setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1))
             }
-            className="flex size-6 items-center justify-center rounded-mes-control-xs text-mes-gray-70 hover:bg-mes-bg-subtler"
+            className="flex size-6 items-center justify-center rounded-mes-control-xs text-mes-gray-70 hover:bg-mes-bg-subtler disabled:pointer-events-none disabled:opacity-50"
           >
             <ChevronRight size={16} />
           </button>
@@ -127,14 +147,15 @@ function DatePicker({
               <button
                 key={i}
                 type="button"
-                disabled={!date}
+                disabled={!date || isUnavailable(date)}
+                aria-pressed={selected}
                 onClick={() => {
-                  if (!date) return;
+                  if (!date || isUnavailable(date)) return;
                   onValueChange?.(date);
                   setOpen(false);
                 }}
                 className={cn(
-                  "flex size-7 items-center justify-center rounded-mes-control-xs text-[12px]",
+                  "flex size-7 items-center justify-center rounded-mes-control-xs text-[12px] disabled:pointer-events-none disabled:text-mes-text-disabled disabled:opacity-50",
                   !date && "invisible",
                   selected
                     ? "bg-mes-bg-brand text-mes-text-inverse"

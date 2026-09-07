@@ -43,10 +43,14 @@ function extractSectionTitles(source) {
 function detectSectionCandidates(source, uiComponents) {
   const names = new Set(uiComponents.map((item) => item.name));
   const candidates = [];
+  for (const match of source.matchAll(/data-pattern=["']((?:section|summary)\.[^"']+)["']/g)) candidates.push(match[1]);
   const hasSectionFrame = /<SectionBand\b|<SectionHeader\b|<PatternGroupHeader\b|<section\b/.test(source);
   if (hasSectionFrame && /grid-cols-/.test(source) && (names.has("Input") || names.has("Select") || /<LabeledControl\b|<PatternFieldRow\b/.test(source))) candidates.push("section.form-grid");
   if ((/\baddRow\b|행 추가|항목 추가/.test(source)) && /\brows?\.map\b|\.map\(\(row/.test(source)) candidates.push("section.editable-row-list");
-  if ((names.has("SearchInput") || /<SearchInput\b/.test(source)) && (names.has("Table") || /<FixtureTable\b|<Table\b/.test(source))) candidates.push("section.search-table");
+  if (/<QueryToolbar\b/.test(source) || ((names.has("SearchInput") || /<SearchInput\b|<FixtureSearch\b/.test(source)) && /<Filter\b|<FixtureFilter\b|<GroupQuery\b/.test(source))) candidates.push("section.query-toolbar");
+  if (/<BulkEditBar\b/.test(source) || (/전체 일괄 변경|일괄 변경/.test(source) && /\bapplyBulk\b|\bapplyBatch\b/.test(source))) candidates.push("section.bulk-edit-bar");
+  if (/<MasterDetailSection\b/.test(source) || /data-pattern=["']section\.master-detail-composition["']/.test(source)) candidates.push("section.master-detail-composition");
+  if (/<SearchTableSection\b/.test(source) || ((names.has("SearchInput") || /<SearchInput\b|<FixtureSearch\b/.test(source)) && (names.has("Table") || /<FixtureTable\b|<Table\b/.test(source)))) candidates.push("section.search-table-composition");
   if (/검사항목|inspection/i.test(source) && /IconQa|QaToggle|Inspection|판정/.test(source)) candidates.push("section.inspection-items");
   if (/before-after|변경 전|변경 후|기존 정보|변경 정보/i.test(source)) candidates.push("section.before-after");
   if (/합계|총계|summary|total/i.test(source)) candidates.push("section.summary");
@@ -125,7 +129,19 @@ function aggregateSignals(files, field) {
 }
 
 function buildInventory() {
-  const paths = readdirSync(patternDirectory).filter((name) => name.endsWith(".tsx")).map((name) => join(patternDirectory, name)).sort();
+  const registryDirectory = join(root, "src", "design-system", "registry");
+  const readRegistry = (name) => JSON.parse(readFileSync(join(registryDirectory, name), "utf8"));
+  const sourceAssets = readRegistry("source-assets.json");
+  const registeredSources = [
+    ...readRegistry("screens.json").screens,
+    ...sourceAssets.screens,
+    ...readRegistry("patterns.json").patterns.filter((pattern) => pattern.kind === "section-pattern" || pattern.kind === "section-frame"),
+    ...sourceAssets.patterns.filter((pattern) => pattern.kind === "section-pattern" || pattern.kind === "section-frame"),
+  ].map((entry) => join(root, ...normalizePath(entry.source).split("/")));
+  const paths = unique([
+    ...readdirSync(patternDirectory).filter((name) => name.endsWith(".tsx")).map((name) => join(patternDirectory, name)),
+    ...registeredSources.filter((path) => existsSync(path)),
+  ]);
   const files = paths.map(inspectFile);
   const shellCounts = {};
   for (const file of files) for (const shell of file.shells) shellCounts[shell.id] = (shellCounts[shell.id] ?? 0) + shell.count;
@@ -133,7 +149,7 @@ function buildInventory() {
     schemaVersion: 1,
     policyId: "mes.ai-composition-grammar",
     status: "observed-not-canonical",
-    scope: "src/components/patterns/*.tsx",
+    scope: "src/components/patterns/*.tsx + registered screen/section sources",
     summary: {
       scannedFiles: files.length,
       totalLines: files.reduce((sum, file) => sum + file.lines, 0),

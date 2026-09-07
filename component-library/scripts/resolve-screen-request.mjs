@@ -47,6 +47,7 @@ export function readRegistryBundle() {
   const mobileAssets = readJson(join(registryDirectory, "mobile-assets.json"));
   const componentUsageContracts = readJson(join(registryDirectory, "component-usage-contracts.json"));
   const patternContracts = readJson(join(registryDirectory, "pattern-contracts.json"));
+  const sectionCompositionAudit = readJson(join(registryDirectory, "section-composition-audit.json"));
   const screenSpecs = readJson(join(registryDirectory, "screen-specs.json"));
   const webUiUsageInventory = readJson(join(registryDirectory, "web-ui-usage-inventory.json"));
   const webFigmaReconciliation = readJson(join(registryDirectory, "web-figma-reconciliation.json"));
@@ -68,6 +69,7 @@ export function readRegistryBundle() {
     ],
     componentUsageContracts: componentUsageContracts.contracts,
     patternContracts: patternContracts.contracts,
+    sectionCompositionAudit,
     screenSpecs: screenSpecs.specs,
     webUiUsageInventory,
     webFigmaReconciliation,
@@ -514,6 +516,13 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const blockers = issues.filter((entry) => entry.severity === "blocker");
   const warnings = issues.filter((entry) => entry.severity === "warning");
   const status = blockers.length > 0 ? "blocked" : warnings.length > 0 ? "review-ready" : "release-ready";
+  const selectedPatternRefSet = new Set(selectedPatternRefs);
+  const sectionCompositionContext = {
+    policy: registry.sectionCompositionAudit.authority,
+    patterns: registry.sectionCompositionAudit.sectionPatterns.filter((entry) => selectedPatternRefSet.has(entry.patternId)),
+    screens: registry.sectionCompositionAudit.screens.filter((entry) => entry.screenId === nearestScreen?.id),
+    fingerprint: registry.sectionCompositionAudit.fingerprint,
+  };
   const contract = {
     contractVersion: 1,
     request: canonicalize(request),
@@ -528,6 +537,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       componentSelectionContexts: registry.componentSelectionContexts,
       componentUsagePolicy: registry.componentUsagePolicy,
       patternContracts: registry.patternContracts,
+      sectionCompositionAudit: registry.sectionCompositionAudit,
       screenSpecs: registry.screenSpecs,
       webGenerationContext: registry.webGenerationContext,
       ...(includeReproductionAudit ? {
@@ -549,6 +559,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     implementation: {
       patterns: resolvedPatterns.map(({ id, name, kind, placement, source, rules }) => ({ id, name, kind, placement, source, rules })),
       patternContracts: resolvedPatterns.map(({ id }) => patternContractMap.get(id)).filter(Boolean),
+      sectionCompositionContext,
       hostPagePattern: hostPagePattern ? {
         id: hostPagePattern.id,
         name: hostPagePattern.name,

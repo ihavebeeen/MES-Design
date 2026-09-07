@@ -856,6 +856,33 @@ test("완성 팝업 16종은 데스크톱에서 가로 스크롤을 만들지 �
   }
 });
 
+test("발주 일괄등록 원본 화면과 상호작용", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto("/patterns/completed-popup-types");
+  await page.getByRole("button", { name: "1100 · 발주 일괄등록", exact: true }).click();
+
+  let dialog = page.getByRole("dialog", { name: "발주 일괄등록", exact: true });
+  const queryToolbar = dialog.locator('[data-pattern="section.query-toolbar"]');
+  const bulkEditBar = dialog.locator('[data-pattern="section.bulk-edit-bar"]');
+
+  expect(await dialog.boundingBox()).toEqual({ x: 410, y: 200, width: 1100, height: 680 });
+  expect(await queryToolbar.boundingBox()).toEqual({ x: 430, y: 304, width: 1060, height: 48 });
+  expect(await bulkEditBar.boundingBox()).toEqual({ x: 430, y: 368, width: 1060, height: 48 });
+  expect(await dialog.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0);
+  await expect(bulkEditBar).toHaveAttribute("data-target-scope", "selected");
+
+  const rowQuantityInputs = dialog.locator('input[inputmode="numeric"]');
+  await expect(rowQuantityInputs).toHaveCount(3);
+  await rowQuantityInputs.nth(1).fill("777");
+  await dialog.getByRole("button", { name: "취소", exact: true }).click();
+  await page.getByRole("button", { name: "1100 · 발주 일괄등록", exact: true }).click();
+
+  dialog = page.getByRole("dialog", { name: "발주 일괄등록", exact: true });
+  await expect(dialog.locator('input[inputmode="numeric"]').nth(1)).toHaveValue("0");
+  await hideDevelopmentOverlay(page);
+  await expect(dialog).toHaveScreenshot("bulk-purchase-registration.png");
+});
+
 test("팝업 취소와 X는 변경값을 버리고 닫는다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/patterns/completed-popup-types");

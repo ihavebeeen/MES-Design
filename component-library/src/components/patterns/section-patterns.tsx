@@ -3,6 +3,127 @@ import { cn } from "@/lib/utils";
 
 export type SearchTableSectionVariant = "page" | "modal" | "bulk-edit" | "grouped";
 
+export type QueryToolbarVariant = "page" | "modal" | "compact";
+
+export interface QueryToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
+  start?: React.ReactNode;
+  end?: React.ReactNode;
+  variant?: QueryToolbarVariant;
+}
+
+const queryToolbarVariantClasses: Record<QueryToolbarVariant, string> = {
+  page: "min-h-10 bg-transparent",
+  modal: "min-h-12 rounded-mes-control bg-mes-gray-20 px-3 py-2",
+  compact: "min-h-10 rounded-mes-control bg-mes-gray-20 px-2.5 py-1",
+};
+
+/** 필터·빠른 조회·검색을 한 조회 맥락으로 묶고 양쪽 슬롯의 수직 정렬을 소유한다. */
+export function QueryToolbar({ start, end, variant = "modal", className, ...props }: QueryToolbarProps) {
+  return (
+    <div
+      data-pattern="section.query-toolbar"
+      data-variant={variant}
+      className={cn("flex w-full shrink-0 items-center justify-between gap-3", queryToolbarVariantClasses[variant], className)}
+      {...props}
+    >
+      <div className="flex min-w-0 items-center gap-2.5">{start}</div>
+      <div className="ml-auto flex min-w-0 items-center gap-2.5">{end}</div>
+    </div>
+  );
+}
+
+export type BulkEditTargetScope = "all-visible" | "selected" | "explicit-set";
+export type BulkEditBarVariant = "table-header" | "compact";
+
+export interface BulkEditBarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
+  title: React.ReactNode;
+  icon?: React.ReactNode;
+  controls: React.ReactNode;
+  action: React.ReactNode;
+  targetScope: BulkEditTargetScope;
+  variant?: BulkEditBarVariant;
+  titleClassName?: string;
+  controlsClassName?: string;
+  actionClassName?: string;
+}
+
+const bulkEditBarVariantClasses: Record<BulkEditBarVariant, string> = {
+  "table-header": "min-h-[52px] border-b border-mes-gray-30 bg-mes-gray-20 px-2.5 py-2.5",
+  compact: "min-h-11 rounded-mes-control bg-mes-gray-20 px-3 py-1.5",
+};
+
+/** 여러 행에 공통값을 적용하는 영역. 실제 적용 범위는 targetScope로 반드시 노출한다. */
+export function BulkEditBar({
+  title,
+  icon,
+  controls,
+  action,
+  targetScope,
+  variant = "table-header",
+  titleClassName,
+  controlsClassName,
+  actionClassName,
+  className,
+  ...props
+}: BulkEditBarProps) {
+  return (
+    <div
+      data-pattern="section.bulk-edit-bar"
+      data-target-scope={targetScope}
+      data-variant={variant}
+      className={cn("flex w-full shrink-0 items-center gap-4", bulkEditBarVariantClasses[variant], className)}
+      {...props}
+    >
+      <div className={cn("flex min-w-0 flex-1 items-center justify-center gap-2 text-[15px] font-semibold text-mes-gray-130", titleClassName)}>
+        {icon}
+        <span>{title}</span>
+      </div>
+      <div className={cn("ml-auto flex min-w-0 items-center justify-end gap-2.5", controlsClassName)}>{controls}</div>
+      <div className={cn("shrink-0", actionClassName)}>{action}</div>
+    </div>
+  );
+}
+
+export interface MasterDetailSectionProps extends React.HTMLAttributes<HTMLElement> {
+  master: React.ReactNode;
+  detail: React.ReactNode;
+  detailTitle?: React.ReactNode;
+  orientation?: "horizontal" | "vertical";
+  masterClassName?: string;
+  detailClassName?: string;
+}
+
+/** 마스터 선택이 상세 내용을 바꾸는 관계만 소유하고, 각 영역의 실제 콘텐츠는 슬롯으로 받는다. */
+export function MasterDetailSection({
+  master,
+  detail,
+  detailTitle,
+  orientation = "horizontal",
+  masterClassName,
+  detailClassName,
+  className,
+  ...props
+}: MasterDetailSectionProps) {
+  return (
+    <section
+      data-pattern="section.master-detail-composition"
+      data-orientation={orientation}
+      className={cn(
+        "flex min-h-0 w-full",
+        orientation === "horizontal" ? "flex-row" : "flex-col",
+        className,
+      )}
+      {...props}
+    >
+      <div data-slot="master" className={cn("min-h-0 min-w-0", masterClassName)}>{master}</div>
+      <div data-slot="detail" className={cn("flex min-h-0 min-w-0 flex-1 flex-col", detailClassName)}>
+        {detailTitle !== undefined && <div className="shrink-0">{detailTitle}</div>}
+        <div className="min-h-0 flex-1">{detail}</div>
+      </div>
+    </section>
+  );
+}
+
 export interface SearchTableSectionProps extends Omit<React.HTMLAttributes<HTMLElement>, "title"> {
   title?: React.ReactNode;
   query?: React.ReactNode;

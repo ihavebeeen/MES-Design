@@ -1,42 +1,70 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-01T03:40:23.177Z",
-  "outcome": "failed",
-  "durationMs": 51112,
-  "assetManifestFingerprint": "b01c3dfb004aaa30cdff1d623d25024da1535e42db5c9c5e412a3881d1b94451",
-  "verificationSourceFingerprint": "118c1fc81fd53dd385acf791306f5d85c91d52f0b33c176fed132223dc76963b",
+  "recordedAt": "2026-09-07T02:30:08.468Z",
+  "outcome": "passed",
+  "durationMs": 520422,
+  "assetManifestFingerprint": "4bffc6ece9a68e56715db66860beb33635b9fceea3908fe73ad81ab93e88ea7c",
+  "verificationSourceFingerprint": "d92e354532a47627b170ef8cc9046007f370c5b0f7892501edf3419868061ae9",
   "testInventory": {
-    "count": 92,
+    "count": 93,
     "files": {
-      "tests/visual/application-flow.spec.mts": "e972eb78d92011e8f24b4a475837a425ac2656a9327a108abb802fe06eba4496",
-      "tests/visual/design-system.visual.spec.ts": "8da3b0bf45babf6e7e9e6d0c43cfa4df34d9c8a76a072d4a3bd7037e6f8b64e9",
+      "tests/visual/application-flow.spec.mts": "c36c4ac6f8662bd30ccadb942e31a019e2559bcc299d82cf077945119f216dae",
+      "tests/visual/design-system.visual.spec.ts": "75463ef43313c7b6ab437c9cfa899e0fb343850f965be786996884779fd26257",
       "tests/visual/figma-component-defaults.spec.ts": "f9a842afc72cfef542c0e242507b6acbbbd1e66b55c7c9a1f3a1719fedf23cc3",
       "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
-      "tests/visual/slide-compositions.spec.mts": "2c018a1a7334f1f0e0a13f7d1977b3556142863dec93841498f5d55a778a9299"
+      "tests/visual/slide-compositions.spec.mts": "d5482978ea64784678b80cd9e77366d9d096dbdae1cceb31be9635286cbbc8b6"
     },
-    "fingerprint": "ded260de66b70a48e529b12740f004441061db93adead81f657c4b6d6daedac1"
+    "fingerprint": "60eb78567bfe46a51e9b75ee3731fe3a44cf4334ec41575fe91f6ea4dca5e0b8"
   },
   "stages": [
     {
       "id": "asset-sync",
       "command": "npm run sync:assets",
       "status": "passed",
-      "durationMs": 429,
+      "durationMs": 441,
       "exitCode": 0
     },
     {
       "id": "verification-inventory",
       "command": "node scripts/audit-web-verification-coverage.mjs --write",
       "status": "passed",
-      "durationMs": 957,
+      "durationMs": 926,
       "exitCode": 0
     },
     {
       "id": "design-system-check",
       "command": "npm run check:design-system",
-      "status": "failed",
-      "durationMs": 49725,
-      "exitCode": 1
+      "status": "passed",
+      "durationMs": 45884,
+      "exitCode": 0
+    },
+    {
+      "id": "design-system-lint",
+      "command": "npm run lint:design-system",
+      "status": "passed",
+      "durationMs": 4671,
+      "exitCode": 0
+    },
+    {
+      "id": "playwright",
+      "command": "npm run test:visual -- --workers=1",
+      "status": "passed",
+      "durationMs": 449822,
+      "exitCode": 0
+    },
+    {
+      "id": "production-build",
+      "command": "npm run build",
+      "status": "passed",
+      "durationMs": 17561,
+      "exitCode": 0
+    },
+    {
+      "id": "verification-record",
+      "command": "node scripts/audit-web-verification-coverage.mjs --write --record-passed --duration-ms=449822",
+      "status": "passed",
+      "durationMs": 1117,
+      "exitCode": 0
     }
   ]
 }

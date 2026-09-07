@@ -50,7 +50,10 @@ if (stages.at(-1).status === "passed") {
 const pipeline = [
   ["design-system-check", ["run", "check:design-system"]],
   ["design-system-lint", ["run", "lint:design-system"]],
-  ["playwright", ["run", "test:visual"]],
+  // Two suites create and remove temporary Next.js app routes while they run.
+  // Keep the release gate serial so the dev compiler never reads a route while
+  // another worker is deleting its fixture directory.
+  ["playwright", ["run", "test:visual", "--", "--workers=1"]],
   ["production-build", ["run", "build"]],
 ];
 

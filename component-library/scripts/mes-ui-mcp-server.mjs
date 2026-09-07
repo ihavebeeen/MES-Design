@@ -161,6 +161,13 @@ function screenSpecEntries(registry) {
   }));
 }
 
+function sectionCompositionEntries(registry) {
+  return [
+    ...registry.sectionCompositionAudit.sectionPatterns.map((entry) => ({ ...entry, id: entry.patternId, kind: "section-composition-pattern" })),
+    ...registry.sectionCompositionAudit.screens.map((entry) => ({ ...entry, id: entry.screenId, kind: "section-composition-screen" })),
+  ];
+}
+
 export function createMesUiMcpServer() {
   const server = new McpServer({ name: "mes-ui-generator", version: "0.1.0" }, { capabilities: { tools: {} } });
 
@@ -182,6 +189,7 @@ export function createMesUiMcpServer() {
       const componentContracts = componentContractEntries(registry);
       const patternContracts = patternContractEntries(registry);
       const screenSpecs = screenSpecEntries(registry);
+      const sectionCompositions = sectionCompositionEntries(registry);
       const result = {
         counts: {
           components: registry.components.length,
@@ -191,6 +199,7 @@ export function createMesUiMcpServer() {
           componentUsageContracts: componentContracts.length,
           patternContracts: patternContracts.length,
           screenSpecs: screenSpecs.length,
+          sectionCompositions: sectionCompositions.length,
           generationTemplates: registry.generationTemplates.length,
           mobileAssets: mobile.length,
           webGenerationPageArchetypes: registry.webGenerationContext.pageArchetypes.length,
@@ -205,6 +214,7 @@ export function createMesUiMcpServer() {
         componentUsageContracts: filterDetailedEntries(componentContracts, query, limit),
         patternContracts: filterDetailedEntries(patternContracts, query, limit),
         screenSpecs: filterDetailedEntries(screenSpecs, query, limit),
+        sectionCompositions: filterDetailedEntries(sectionCompositions, query, limit),
         generationTemplates: filterEntries(registry.generationTemplates, query, limit),
         mobile: filterEntries(mobile, query, limit),
         foundationRecipes: filterDetailedEntries(registry.foundationRecipes.recipeFamilies, query, limit),

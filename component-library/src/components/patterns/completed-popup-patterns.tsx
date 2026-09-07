@@ -44,7 +44,7 @@ import {
 } from "./completed-popup-expanded-content";
 import { SourcePopupGallery } from "./source-popup-gallery";
 import { SlideCompositionCatalog } from "./slide-composition-catalog";
-import { InspectionItemsSection, ResultTotalCard, SearchTableSection } from "./section-patterns";
+import { BulkEditBar, InspectionItemsSection, QueryToolbar, ResultTotalCard, SearchTableSection } from "./section-patterns";
 import { useRowMutationPolicy, useSelectionBehavior } from "@/design-system/behavior-patterns";
 import { createDialogActionSet } from "@/design-system/action-sets";
 
@@ -92,7 +92,7 @@ const POPUPS: PopupDefinition[] = [
   { id: "details", label: "480 · 품목 상세정보", node: "11210:52744", pattern: "center-form" },
   { id: "defect", label: "600 · 불량수량 입력", node: "11210:52919", pattern: "center-table" },
   { id: "weight", label: "960 · 중량검사", node: "11210:51787", pattern: "center-form" },
-  { id: "purchase", label: "1100 · 발주 일괄등록", node: "11210:52026", pattern: "center-table" },
+  { id: "purchase", label: "1100 · 발주 일괄등록", node: "20849:70791", pattern: "center-table" },
   { id: "lookup", label: "1400 · 일괄작업지시", node: "11210:50866", pattern: "center-table" },
   { id: "material-input-setup", label: "1400 · 투입품목 설정/조회", node: "18826:60554", pattern: "center-navigation-detail" },
   { id: "bom-copy", label: "1142 · BOM 복사", node: "18962:67817", pattern: "center-dual-pane" },
@@ -329,10 +329,28 @@ function PurchaseContent() {
     return [item, "완제품", "A", "kg", selected ? <DatePicker key="date" value={draft.date} onValueChange={(value) => updateDraft(sourceIndex, "date", value)} separator="-" className="h-[22px] px-1.5 text-[12px]" /> : "", selected ? <FixtureSelect key="type" value={draft.type} options={["선택", "일반입고", "긴급입고"]} onValueChange={(value) => updateDraft(sourceIndex, "type", value)} size="small" /> : "", selected ? <FixtureInput key="qty" value={draft.quantity} onValueChange={(value) => updateDraft(sourceIndex, "quantity", value)} inputMode="numeric" size="small" /> : "", selected ? <FixtureSelect key="warehouse" value={draft.warehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={(value) => updateDraft(sourceIndex, "warehouse", value)} size="small" /> : ""];
   });
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex h-full w-full flex-col px-5 pt-4">
       <div className="flex items-center justify-between"><ContentRegionHeading>품목 리스트</ContentRegionHeading></div>
-      <div className="mt-3 flex h-12 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3"><FixtureFilter tags={[{ label: "품목", count: 5 }, { label: "품목", count: 23 }, { label: "품목: 전체보기", count: 1 }]} /><FixtureSearch value={search} onValueChange={setSearch} /></div>
-      <div className="mt-3 flex h-12 items-center gap-2.5 rounded-t-mes-control bg-mes-gray-20 px-3"><b className="flex w-[160px] shrink-0 items-center gap-1"><IconReload size={16} />전체 일괄 변경</b><InlineLabeledControl label="입고 예정일" className="w-[220px] shrink-0"><DatePicker value={bulkDate} onValueChange={setBulkDate} separator="-" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 구분" className="flex-1"><FixtureSelect value={bulkType} options={["선택", "일반입고", "긴급입고"]} onValueChange={setBulkType} className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 수량" className="flex-1"><FixtureInput value={bulkQuantity} onValueChange={setBulkQuantity} inputMode="numeric" className="h-full rounded-none border-0" /></InlineLabeledControl><InlineLabeledControl label="입고 창고" className="flex-1"><FixtureSelect value={bulkWarehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={setBulkWarehouse} className="h-full rounded-none border-0" /></InlineLabeledControl><Button size="small" className="w-[60px] shrink-0" onClick={applyBulk}>적용</Button></div>
+      <QueryToolbar
+        className="mt-3"
+        start={<FixtureFilter className="w-[395px]" tags={[{ label: "품목", count: 5 }, { label: "품목", count: 23 }, { label: "품목: 전체보기", count: 1 }]} />}
+        end={<FixtureSearch value={search} onValueChange={setSearch} />}
+      />
+      <BulkEditBar
+        className="mt-4 h-12 min-h-12 rounded-t-mes-control border-b-0 px-3 py-0"
+        title="전체 일괄 변경"
+        icon={<IconReload size={16} />}
+        targetScope="selected"
+        titleClassName="w-[160px] flex-none justify-start gap-1 text-[14px]"
+        controlsClassName="flex-1"
+        controls={<>
+          <InlineLabeledControl label="입고 예정일" className="w-[220px] shrink-0"><DatePicker value={bulkDate} onValueChange={setBulkDate} separator="-" className="h-full rounded-none border-0" /></InlineLabeledControl>
+          <InlineLabeledControl label="입고 구분" className="flex-1"><FixtureSelect value={bulkType} options={["선택", "일반입고", "긴급입고"]} onValueChange={setBulkType} className="h-full rounded-none border-0" /></InlineLabeledControl>
+          <InlineLabeledControl label="입고 수량" className="flex-1"><FixtureInput value={bulkQuantity} onValueChange={setBulkQuantity} inputMode="numeric" className="h-full rounded-none border-0" /></InlineLabeledControl>
+          <InlineLabeledControl label="입고 창고" className="flex-1"><FixtureSelect value={bulkWarehouse} options={["선택", "동진창고", "임가공창고A"]} onValueChange={setBulkWarehouse} className="h-full rounded-none border-0" /></InlineLabeledControl>
+        </>}
+        action={<Button size="small" className="w-[60px] shrink-0" onClick={applyBulk}>적용</Button>}
+      />
       <div className="min-h-0 flex-1 overflow-hidden"><FixtureTable headers={headers} rows={rows} checkedRows={visibleCheckedRows} onCheckedRowsChange={updateVisibleCheckedRows} selectionColor="black" unselectedCheckboxAppearance="grayCheck" selectionHeaderIndeterminate={false} unselectedTextTone="gray80" edgePadding={0} selectionColumnWidth={56} centerSelection columnDividers={false} horizontalScroll={false} aligns={["left", "center", "center", "center", "center", "center", "right", "center"]} /></div>
     </div>
   );
@@ -916,7 +934,7 @@ function CenterPopup({ kind, open, onOpenChange }: { kind: CenterPopupKind; open
     details: { title: "품목 상세정보", size: "compact-480", height: 436, actions: createDialogActionSet("action-set.none"), content: <DetailsContent />, bodyPadding: "horizontal" },
     defect: { title: "불량수량 입력", size: "medium-600", height: 400, actions: createDialogActionSet("action-set.save-only", { onPrimary: close }), content: <DefectContent /> },
     weight: { title: "중량검사", size: "standard-960", height: 752, actions: defaultActions, content: <WeightContent />, bodyPadding: "none", bodyAlign: "stretch" },
-    purchase: { title: "발주 일괄등록", size: "large-1100", height: 680, actions: defaultActions, content: <PurchaseContent /> },
+    purchase: { title: "발주 일괄등록", size: "large-1100", height: 680, actions: defaultActions, content: <PurchaseContent />, bodyPadding: "none", bodyAlign: "stretch" },
     lookup: { title: "생산계획(일) 연동 일괄작업지시", size: "wide-1400", height: 680, actions: defaultActions, content: <LookupWorkOrderContent />, bodyPadding: "none", scrollMode: "content", bodyAlign: "stretch", maxHeight: "none" },
     "material-input-setup": { title: "투입품목 설정/조회", size: "wide-1400", height: 800, actions: defaultActions, content: <MaterialInputSetupContent />, bodyPadding: "none", bodyAlign: "stretch", maxHeight: "calc(100vh - 32px)" },
     "bom-copy": { title: "BOM 복사", size: "wide-1142", height: 733, actions: createDialogActionSet("action-set.cancel-confirm", { onDismiss: close, onPrimary: close }), content: <BomCopyContent />, bodyPadding: "none", scrollMode: "content", bodyAlign: "stretch", maxHeight: "calc(100vh - 32px)" },

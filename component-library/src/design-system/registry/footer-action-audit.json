@@ -1,7 +1,8 @@
 {
   "schemaVersion": 1,
-  "auditState": "verified",
+  "auditState": "in-progress",
   "entries": [
+    { "sourceEvidenceId": "bulk-purchase-registration", "status": "verified", "actionSet": "action-set.cancel-save", "note": "Figma 20849:70791의 취소·저장 구성을 확인하고 취소 후 편집값 복원과 재열기 상태를 Playwright로 검증했다." },
     { "sourceEvidenceId": "mobile-design-system", "status": "not-applicable", "actionSet": "action-set.contextual", "note": "이 감사표는 웹 팝업 하단 액션의 전수 판정을 위한 것이다. 모바일 고정 CTA와 bottom sheet 액션은 mobile-assets.json의 mobile.cta 및 모바일 조합 규칙에서 별도로 관리한다." },
     { "sourceEvidenceId": "easy-mode-receiving", "status": "closed-unverified", "actionSet": "action-set.cancel-save", "note": "사용자 결정으로 현재 부분 성공 시안을 그대로 보존하고 원본 개별 대조 없이 종결했다. 표준 근거에는 포함하지 않는다." },
     { "sourceEvidenceId": "form-management-inspection-criteria", "status": "verified", "actionSet": "action-set.cancel-save", "note": "취소·저장 배치와 취소 복원 동작을 시각·상호작용 회귀로 검증했다." },

@@ -178,7 +178,7 @@ function EquipmentDischargeSettingsModal({ open, onOpenChange, initialItemId = n
         bodyAlign="stretch"
         scrollMode="content"
       >
-        <div data-testid="equipment-discharge-modal-body" className="grid h-full min-h-0 grid-cols-[611px_626px] gap-5 overflow-hidden">
+        <div data-testid="equipment-discharge-modal-body" data-pattern="section.master-detail-composition" className="grid h-full min-h-0 grid-cols-[611px_626px] gap-5 overflow-hidden">
           <section data-testid="item-list-panel" className="flex min-h-0 flex-col pl-5">
             <div className="flex h-[52px] shrink-0 items-center">
               <h2 className="text-[16px] font-bold leading-6 text-mes-gray-130">품목 리스트</h2>
@@ -221,7 +221,7 @@ function EquipmentDischargeSettingsModal({ open, onOpenChange, initialItemId = n
               <ContentRegionHeading>설비 리스트</ContentRegionHeading>
               <SearchInput value={equipmentSearch} onChange={setEquipmentSearch} placeholder="검색어 입력.." size="compact" background="white" className="!w-[200px]" />
             </div>
-            <div data-testid="equipment-batch-toolbar" className="flex h-12 shrink-0 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
+            <div data-testid="equipment-batch-toolbar" data-pattern="section.bulk-edit-bar" data-target-scope="all-visible" className="flex h-12 shrink-0 items-center justify-between rounded-mes-control bg-mes-gray-20 px-3">
               <span className="flex items-center gap-1.5 text-[14px] font-semibold text-mes-gray-130"><IconReload size={16} />전체 일괄 변경</span>
               <div className="flex items-center gap-2">
                 <Input aria-label="전체 시간당 생산량" value={batchOutput} onChange={(event) => setBatchOutput(sanitizeDecimal(event.target.value))} inputMode="decimal" disabled={!activeItem} className="w-[180px] text-right" />

@@ -70,6 +70,9 @@ try {
   const componentUsageRegistry = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/component-usage-contracts.json"), "utf8"));
   const expectedComponentContracts = componentUsageRegistry.contracts;
   const expectedComponentContexts = [...componentUsageRegistry.baselineContexts, ...componentUsageRegistry.contracts];
+  const expectedPatternContracts = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/pattern-contracts.json"), "utf8")).contracts;
+  const expectedScreenSpecs = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/screen-specs.json"), "utf8")).specs;
+  const expectedSectionCompositionAudit = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/section-composition-audit.json"), "utf8"));
   assert(catalog.counts.generationTemplates === expectedTemplates.length, "MCP 생성 템플릿 개수가 등록 원장과 다릅니다.");
   const expectedSlideIds = expectedTemplates.filter(entry => entry.id.includes("side-slide")).map(entry => entry.id).sort();
   assert(JSON.stringify(catalog.generationTemplates.map(entry => entry.id).sort()) === JSON.stringify(expectedSlideIds), "MCP 조회에서 슬라이드 조합 생성기가 누락됐습니다.");
@@ -81,14 +84,17 @@ try {
   }
   assert(catalog.counts.componentUsageContracts === expectedComponentContracts.length, "컴포넌트 사용 계약 개수가 등록 원장과 다릅니다.");
   assert(catalog.counts.componentSelectionContexts === expectedComponentContexts.length, "전체 컴포넌트 선택 맥락 개수가 등록 원장과 다릅니다.");
-  assert(catalog.counts.patternContracts === 11, "패턴 계약 개수가 예상과 다릅니다.");
-  assert(catalog.counts.screenSpecs === 3, "순서형 ScreenSpec 개수가 예상과 다릅니다.");
+  assert(catalog.counts.patternContracts === expectedPatternContracts.length, "패턴 계약 개수가 예상과 다릅니다.");
+  assert(catalog.counts.screenSpecs === expectedScreenSpecs.length, "순서형 ScreenSpec 개수가 예상과 다릅니다.");
+  assert(catalog.counts.sectionCompositions === expectedSectionCompositionAudit.sectionPatterns.length + expectedSectionCompositionAudit.screens.length, "섹션 조합 전수조사 개수가 예상과 다릅니다.");
   assert(catalog.counts.webGenerationPageArchetypes === 4, "신규 생성용 페이지 문법 수가 예상과 다릅니다.");
   assert(catalog.counts.webGenerationOverlayGrammars === 4, "신규 생성용 팝업 문법 수가 예상과 다릅니다.");
   assert(catalog.counts.webGenerationSectionRecipes === 4, "신규 생성용 섹션 문법 수가 예상과 다릅니다.");
   assert(catalog.counts.foundationRecipes === 9, "Figma 기초 화면 레시피 수가 예상과 다릅니다.");
   assert(catalog.componentUsageContracts.some((entry) => entry.componentId === "side-slide-panel" && entry.useWhen.length > 0), "MCP 목록이 컴포넌트 사용 계약 상세를 반환하지 않았습니다.");
   assert(catalog.componentSelectionContexts.some((entry) => entry.componentId === "side-slide-panel" && entry.useWhen.length > 0), "MCP 목록이 컴포넌트 선택 맥락을 반환하지 않았습니다.");
+  const bulkSectionCatalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "section.bulk-edit-bar", limit: 10 } }));
+  assert(bulkSectionCatalog.sectionCompositions.some((entry) => entry.patternId === "section.bulk-edit-bar" && entry.selectionContext?.useWhen.length > 0), "MCP 목록이 일괄 변경 섹션의 선택 맥락을 반환하지 않았습니다.");
   const listFooterCatalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "main-list-footer-actions", limit: 10 } }));
   assert(listFooterCatalog.componentUsageContracts.some((entry) => entry.componentId === "main-list-footer-actions" && entry.useWhen.length > 0), "MCP 목록이 메인 리스트 하단 액션 계약을 반환하지 않았습니다.");
   const assetMatch = structured(await client.callTool({ name: "mes_match_screen_assets", arguments: {

@@ -166,6 +166,75 @@ export interface PatternUsageContractRegistry {
   contracts: PatternUsageContractEntry[];
 }
 
+export interface SectionCompositionAuditRegistry {
+  schemaVersion: 1;
+  policyId: "mes.section-composition-census";
+  status: "structured-reference";
+  purpose: string;
+  authority: {
+    currentCode: "implementation";
+    figma: "design-source-or-registered-reference";
+    web: "reference-only";
+    rules: string[];
+  };
+  summary: {
+    registeredSectionPatterns: number;
+    sectionPatternsWithSelectionContext: number;
+    registeredScreens: number;
+    screensWithDetailedSpec: number;
+    screensMappedBySectionPattern: number;
+    screensWithExplicitLocalComposition: number;
+    unresolvedScreens: number;
+    figmaSourceEvidenceRecorded: number;
+    figmaReferencesOnly: number;
+    webReferencedScreens: number;
+    codeInventoryTrackedScreens: number;
+  };
+  gaps: {
+    missingSectionContracts: string[];
+    unresolvedScreens: string[];
+    codeSourcesOutsideCompositionInventory: string[];
+    note: string;
+  };
+  sectionPatterns: Array<{
+    patternId: string;
+    name: string;
+    source: string;
+    placement: string;
+    requiredComponents: string[];
+    selectionContext: Pick<PatternUsageContractEntry, "useWhen" | "doNotUseWhen" | "constraints" | "evidence"> | null;
+    compositionContract: Pick<PatternUsageContractEntry, "slots" | "stateModel" | "behaviorTargets" | "scrollOwner" | "implementationMarkers"> | null;
+    usedByScreens: string[];
+    detectedCodeSources: string[];
+  }>;
+  screens: Array<{
+    screenId: string;
+    name: string;
+    source: string;
+    figma: {
+      node: string;
+      evidenceLevel: "source-evidence-recorded" | "registered-reference-only";
+      sourceEvidenceId: string | null;
+      sourceEvidenceStatus: SourceEvidenceStatus | null;
+    } | null;
+    webEvidence: { role: "reference-only"; pageIds: string[]; flowIds: string[] };
+    codeEvidence: { inventoryTracked: boolean; detectedSectionSignals: string[]; detectedSectionTitles: string[] };
+    structureLevel: "detailed-screen-spec" | "section-pattern-mapped" | "screen-local-explicit" | "unresolved";
+    sectionPatternRefs: string[];
+    detailedSections: Array<{
+      id: string;
+      title: string | null;
+      patternRef: string;
+      supportingPatternRefs: string[];
+      componentRefs: string[];
+      behaviorRefs: string[];
+      scrollOwner: ScreenSectionScrollOwner;
+    }>;
+    localComposition: { scope: "screen-local"; reason: string } | null;
+  }>;
+  fingerprint: string;
+}
+
 export interface ActionSetRegistryEntry {
   id: string;
   labels: string[];

@@ -2,6 +2,29 @@
   "schemaVersion": 1,
   "sources": [
     {
+      "id": "bulk-purchase-registration",
+      "name": "발주 일괄등록",
+      "figmaNode": "20849:70791",
+      "kind": "popup-bundle",
+      "normalizedTarget": "screen.bulk-purchase-registration",
+      "status": "verified",
+      "notes": [
+        "2026-09-07 Figma 원본에서 1100×680 중앙 팝업, 품목 리스트 제목, 조회 도구 모음, 전체 일괄 변경, 선택·편집 표, 취소·저장 순서를 확인했다.",
+        "전체 일괄 변경은 독립 입력 폼이 아니라 선택 행에 공통값을 적용하는 표 전처리 섹션으로 구조화한다.",
+        "1920×1080 브라우저에서 모달 1100×680, 조회 도구 1060×48, 일괄 변경 1060×48과 가로 넘침 0을 실측했다.",
+        "행 선택·일괄 적용·취소 복원과 시각 기준 이미지를 Playwright 회귀 검사로 연결했다."
+      ],
+      "qualityGates": {
+        "designContext": true,
+        "metadataLedger": true,
+        "componentMapping": true,
+        "browserMeasurement": true,
+        "interactionTest": true,
+        "visualBaseline": true
+      },
+      "visualCaseId": "popup-bulk-purchase-registration"
+    },
+    {
       "id": "mobile-design-system",
       "name": "MES 모바일 디자인 시스템",
       "figmaNode": "9082:31842",

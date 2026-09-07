@@ -9,7 +9,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "5fa02e9ac5fb78564064ab46d3c4d3da684eb7211906115f0ad05b43f1892234",
+  "fingerprint": "4bffc6ece9a68e56715db66860beb33635b9fceea3908fe73ad81ab93e88ea7c",
   "guidancePolicy": {
     "componentSelection": {
       "contextCoverageMode": "all-components",
@@ -42,8 +42,8 @@
       "selectionContexts": 90,
       "selectionGuardContracts": 25
     },
-    "patterns": 73,
-    "screens": 28
+    "patterns": 76,
+    "screens": 29
   },
   "assets": [
     {
@@ -656,6 +656,7 @@
         "screen.entity-list",
         "screen.production-result-responsive",
         "section.added-record-list",
+        "section.bulk-edit-bar",
         "section.editable-row-list",
         "section.inspection-items",
         "section.member-selection",
@@ -1454,7 +1455,7 @@
         "popup.center.standard-price-settings"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "20e7bfcdb707397d90c85e55719b786a4bbbb6711071599228962037e3a17cf4",
+        "sourceFingerprint": "980740f95efa2535bf3800bca71f7952ecaf3904fefc2f97b4a2dc0cbdf611b2",
         "symbols": [
           "DatePickerProps",
           "DatePicker",
@@ -1472,7 +1473,9 @@
           "separator",
           "iconPosition",
           "iconColor",
-          "size"
+          "size",
+          "minDate",
+          "maxDate"
         ],
         "stateMarkers": [
           "disabled",
@@ -1481,7 +1484,10 @@
           "hover"
         ],
         "summary": "표 셀처럼 22px 컨트롤이 필요한 경우 사용한다.",
-        "aria": []
+        "aria": [
+          "aria-label",
+          "aria-pressed"
+        ]
       }
     },
     {
@@ -1521,7 +1527,8 @@
       "usageContract": null,
       "usedByPatternIds": [
         "popup.center.inventory-add",
-        "popup.center.inventory-edit"
+        "popup.center.inventory-edit",
+        "section.bulk-edit-bar"
       ],
       "sourceFacts": {
         "sourceFingerprint": "75d42b4f903a2041dfd943e7a13c086e1197e180b84c24c73a00d9c3c7fe64ef",
@@ -1580,7 +1587,8 @@
       },
       "usageContract": null,
       "usedByPatternIds": [
-        "popup.center.inventory-edit"
+        "popup.center.inventory-edit",
+        "section.bulk-edit-bar"
       ],
       "sourceFacts": {
         "sourceFingerprint": "139fff2459bf1935608b38d1688c2adede46f4a8670ad9a6a164aed6477a05a5",
@@ -2525,6 +2533,7 @@
         "screen.form-management-workflow",
         "screen.production-result-responsive",
         "section.page-query-table",
+        "section.query-toolbar",
         "section.search-table-composition"
       ],
       "sourceFacts": {
@@ -5012,6 +5021,7 @@
         "screen.form-management-workflow",
         "screen.production-result-responsive",
         "section.page-query-table",
+        "section.query-toolbar",
         "section.search-table-composition"
       ],
       "sourceFacts": {
@@ -7222,6 +7232,7 @@
       ],
       "usedByScreenIds": [
         "batch-work-order",
+        "bulk-purchase-registration",
         "defect-quantity-input",
         "preissued-label"
       ]
@@ -7612,6 +7623,7 @@
       ],
       "usedByScreenIds": [
         "batch-work-order",
+        "bulk-purchase-registration",
         "equipment-discharge-settings",
         "form-inspection-criteria",
         "receiving",
@@ -7635,6 +7647,7 @@
       "usedByScreenIds": [
         "batch-work-order",
         "bom-copy",
+        "bulk-purchase-registration",
         "cavity-layout-settings",
         "defect-quantity-input",
         "equipment-discharge-settings",
@@ -7690,6 +7703,60 @@
     },
     {
       "kind": "pattern",
+      "id": "section.query-toolbar",
+      "name": "조회 도구 모음",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": [
+        "filter",
+        "search-input"
+      ],
+      "usedByScreenIds": [
+        "batch-work-order",
+        "bulk-purchase-registration",
+        "equipment-discharge-settings",
+        "equipment-inspection-records",
+        "inventory-add",
+        "material-input-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "section.bulk-edit-bar",
+      "name": "복수 행 공통값 일괄 변경",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": [
+        "button",
+        "labeled-input",
+        "labeled-select"
+      ],
+      "usedByScreenIds": [
+        "bulk-purchase-registration",
+        "equipment-discharge-settings",
+        "inventory-add",
+        "standard-price-settings",
+        "team-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
+      "id": "section.master-detail-composition",
+      "name": "마스터 선택·연결 상세",
+      "patternKind": "section-pattern",
+      "placement": "section",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "requiredComponents": [],
+      "usedByScreenIds": [
+        "equipment-discharge-settings",
+        "standard-price-settings",
+        "team-settings"
+      ]
+    },
+    {
+      "kind": "pattern",
       "id": "section.search-table-composition",
       "name": "검색·필터·테이블 조합",
       "patternKind": "section-pattern",
@@ -7702,6 +7769,7 @@
       ],
       "usedByScreenIds": [
         "batch-work-order",
+        "bulk-purchase-registration",
         "equipment-discharge-settings",
         "equipment-inspection-records",
         "form-management",
@@ -7807,6 +7875,7 @@
       ],
       "usedByScreenIds": [
         "batch-work-order",
+        "bulk-purchase-registration",
         "equipment-discharge-settings",
         "inventory-add",
         "material-input-settings",
@@ -7883,6 +7952,7 @@
       "usedByScreenIds": [
         "batch-work-order",
         "bom-copy",
+        "bulk-purchase-registration",
         "cavity-layout-settings",
         "custom-information",
         "equipment-discharge-settings",
@@ -8305,6 +8375,7 @@
       "patternRefs": [
         "popup.center.navigation-detail",
         "shell.center-modal",
+        "section.query-toolbar",
         "section.search-table-composition",
         "selection.reveal-inline-editor",
         "action-set.cancel-save"
@@ -8319,6 +8390,24 @@
       "patternRefs": [
         "popup.center.table",
         "shell.center-modal",
+        "section.query-toolbar",
+        "section.search-table-composition",
+        "selection.reveal-inline-editor",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
+      "id": "bulk-purchase-registration",
+      "name": "발주 일괄등록",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figmaNode": "20849:70791",
+      "patternRefs": [
+        "popup.center.table",
+        "shell.center-modal",
+        "section.query-toolbar",
+        "section.bulk-edit-bar",
         "section.search-table-composition",
         "selection.reveal-inline-editor",
         "dismiss.restore-committed",
@@ -8588,6 +8677,8 @@
       "patternRefs": [
         "popup.center.inventory-add",
         "shell.center-modal",
+        "section.query-toolbar",
+        "section.bulk-edit-bar",
         "section.search-table-composition",
         "selection.reveal-inline-editor",
         "action-set.cancel-save"
@@ -8640,6 +8731,7 @@
       "patternRefs": [
         "popup.center.inspection-records",
         "shell.center-modal",
+        "section.query-toolbar",
         "section.search-table-composition",
         "selection.enable-actions"
       ]
@@ -8653,6 +8745,9 @@
       "patternRefs": [
         "popup.center.equipment-discharge-settings",
         "shell.center-modal",
+        "section.query-toolbar",
+        "section.bulk-edit-bar",
+        "section.master-detail-composition",
         "section.search-table-composition",
         "selection.master-detail",
         "selection.reveal-inline-editor",
@@ -8669,6 +8764,8 @@
       "patternRefs": [
         "popup.center.standard-price-settings",
         "shell.center-modal",
+        "section.bulk-edit-bar",
+        "section.master-detail-composition",
         "section.search-table-composition",
         "selection.master-detail",
         "selection.reveal-inline-editor",
@@ -8685,6 +8782,8 @@
       "patternRefs": [
         "popup.center.team-settings",
         "shell.center-modal",
+        "section.bulk-edit-bar",
+        "section.master-detail-composition",
         "section.search-table-composition",
         "selection.reveal-inline-editor",
         "dismiss.restore-committed",

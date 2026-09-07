@@ -4,6 +4,8 @@ let fixtures: ReturnType<typeof prepareSlideCompositionFixtures>;
 test.beforeAll(() => { fixtures = prepareSlideCompositionFixtures(); });
 test.afterAll(() => { fixtures?.cleanup(); });
 test.use({ viewport: { width: 1440, height: 900 } });
+// A fresh Next.js dev server compiles these generated routes on first access.
+test.setTimeout(60_000);
 
 for (const name of ["CustomFieldsExample", "InspectionExample", "EntryListExample", "GroupSettingsExample", "BlankRowsExample", "StagedEntryExample"]) {
   test("슬라이드 조합: " + name, async ({ page }) => {

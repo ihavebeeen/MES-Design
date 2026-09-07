@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "auditedAt": "2026-08-12",
   "screens": [
+    { "screenId": "bulk-purchase-registration", "status": "verified", "route": "/patterns/completed-popup-types", "contracts": ["조회 도구와 일괄 변경 영역의 고정 순서", "선택 행 대상 공통값 적용", "선택 행 편집", "취소 시 복원"], "tests": ["발주 일괄등록 원본 화면과 상호작용"] },
     { "screenId": "material-input-settings", "status": "verified", "route": "/visual-regression/popup", "contracts": ["검색·필터 toolbar 중앙 정렬", "행 선택 시 수량 입력 노출", "가로 overflow 없음"], "tests": ["투입품목 설정/조회 작은 화면 정렬과 편집 상태"] },
     { "screenId": "batch-work-order", "status": "verified", "route": "/visual-regression/batch-work-order-pilot", "contracts": ["행 선택 시 편집 입력 노출", "지시수량 숫자 입력", "취소 시 복원"], "tests": ["중앙 팝업 파일럿은 검색·테이블과 선택 행 편집 계약을 함께 사용한다", "팝업 취소와 X는 변경값을 버리고 닫는다"] },
     { "screenId": "defect-quantity-input", "status": "verified", "route": "/visual-regression/defect", "contracts": ["가로 overflow 없음", "불량수량 합계 즉시 재계산"], "tests": ["불량수량 입력 팝업", "불량수량 입력은 값 변경 즉시 합계를 다시 계산한다"] },

@@ -17,6 +17,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `DatePicker` | `iconPosition` | `start \| end`, 기본 `end` | 기간 조회 영역처럼 달력 아이콘이 날짜 앞에 오는 변형을 지원한다. | Figma `11210:50866` |
 | `DatePicker` | `iconColor` | `muted \| default`, 기본 `muted` | 완성 화면에서 달력 아이콘이 기본 텍스트 색인 경우를 지원한다. | Figma `11210:50866` |
 | `DatePicker` | `size` | `default \| small`, 기본 `default` | 테이블 편집 셀의 22px 날짜 입력을 공용 DatePicker로 유지한다. | Figma `18813:62490` |
+| `DatePicker` | `minDate`, `maxDate` | `Date`, 생략 시 제한 없음 | 경계일을 포함한 선택 가능 날짜 범위. 범위 밖 날짜와 이동 불가능한 월 버튼을 비활성화한다. | 사용자 요청: 종합효율 조회에서 전일·당일만 달력 선택, 2026-09-03 |
 | `Progress` | `labelTone` | `default \| danger`, 기본 `default` | 진행률 수치가 지연/오류 상태일 때 막대는 유지하고 라벨만 Danger-60으로 표시한다. | Figma `17503:85192` |
 | `Button` | `variant="loginPrimary"`, `size="login"` | 로그인 전용 48px·16px Bold 규격 | 최초 로그인 비밀번호 재설정의 전체 너비 버튼을 일반 MES 40px 액션 버튼과 구분한다. 비활성 배경은 원본 Gray-60을 유지한다. | Figma `17681:46566` |
 | `PasswordInput` | `size="login"` | 48px·16px, 기본 `default` | 로그인·비밀번호 재설정 문맥의 큰 입력 규격을 일반 MES 32px 입력과 구분한다. | Figma `17681:46541`, `17681:46551` |
@@ -59,7 +60,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `Table` | `horizontalScroll` | `boolean`, 기본 `true` | 고정 폭이 정확히 맞는 표에서 불필요한 가로 스크롤을 금지한다. | Figma `11210:50866`은 `false` |
 | `Table` | `showMasterGroupToggles` | `boolean`, 기본 `true` | 그룹 표이지만 헤더에 depth 일괄 접기 슬롯이 없는 화면에서 컬럼 시작점을 원본과 일치시킨다. | 생산실적 1280, Figma `18849:62315` |
 | `Table` | `disabledTextTone` | `gray60 \| gray80`, 기본 `gray80` | 비활성 행 텍스트 명도를 화면 실측에 맞춘다. | Figma `11210:50866`은 `gray60` |
-| `Table` | `unselectedTextTone` | `default \| gray80`, 기본 `default` | 비활성이 아닌 미선택 행의 텍스트 명도를 낮추고 선택 행과 편집 가능 상태를 구분한다. | 발주 일괄등록, Figma `11210:52026` |
+| `Table` | `unselectedTextTone` | `default \| gray80`, 기본 `default` | 비활성이 아닌 미선택 행의 텍스트 명도를 낮추고 선택 행과 편집 가능 상태를 구분한다. | 발주 일괄등록, Figma `20849:70791` |
 | `TableRowData` | `hideSelection` | `boolean`, 기본 `false` | 선택 열 폭은 유지하면서 특정 행의 체크박스만 숨긴다. | 완료된 비활성 행, Figma `11210:50866` |
 | `MobileTab` | `active` | `boolean`, 기본 `false` | mobile-tab-item의 default/active 상태를 명시하고 `aria-selected`와 시각 상태를 함께 바꾼다. | Figma `185:40778` |
 | `MobileSelect` | `state` | `default \| focus \| complete \| readonly \| disabled`, 기본 `default` | Figma Selectbox 상태를 화면별 className 덮어쓰기 없이 같은 API로 표현한다. 열림 상태는 실제 dropdown 상호작용으로 관리한다. | Figma `185:40791` |

@@ -1,0 +1,2669 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mes.section-composition-census",
+  "status": "structured-reference",
+  "purpose": "컴포넌트와 화면 사이의 반복 섹션 조합, 화면 전용 조합, 선택 맥락과 근거를 한 번에 조회한다.",
+  "authority": {
+    "currentCode": "implementation",
+    "figma": "design-source-or-registered-reference",
+    "web": "reference-only",
+    "rules": [
+      "반복되는 의미·배치·행동이 확인된 조합만 공통 section-pattern으로 유지한다.",
+      "한 화면에서만 확인된 조합은 화면 전용 조합으로 기록하고 공통 규칙으로 승격하지 않는다.",
+      "Figma node가 등록되어 있어도 source-evidence가 없으면 검증 완료로 해석하지 않는다.",
+      "실제 MES 웹 관찰은 사용 맥락 참고 자료이며 Figma와 현재 디자인 시스템을 덮어쓰지 않는다."
+    ]
+  },
+  "summary": {
+    "registeredSectionPatterns": 18,
+    "sectionPatternsWithSelectionContext": 18,
+    "registeredScreens": 29,
+    "screensWithDetailedSpec": 4,
+    "screensMappedBySectionPattern": 23,
+    "screensWithExplicitLocalComposition": 2,
+    "unresolvedScreens": 0,
+    "figmaSourceEvidenceRecorded": 10,
+    "figmaReferencesOnly": 19,
+    "webReferencedScreens": 4,
+    "codeInventoryTrackedScreens": 29
+  },
+  "gaps": {
+    "missingSectionContracts": [],
+    "unresolvedScreens": [],
+    "codeSourcesOutsideCompositionInventory": [],
+    "note": "상세 ScreenSpec가 없는 화면은 section-pattern 연결까지만 구조화된 상태이며 픽셀 검증 완료를 뜻하지 않는다."
+  },
+  "sectionPatterns": [
+    {
+      "patternId": "section.custom-field-values",
+      "name": "커스텀 필드 값",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "placement": "shared",
+      "requiredComponents": [
+        "form-grid",
+        "input",
+        "select"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "MES 공통 스키마와 구분되는 수용가·대상 유형·사용자 정의 필드를 같은 저장 단위에서 편집할 때"
+        ],
+        "doNotUseWhen": [
+          "모든 수용가에 공통인 기본정보",
+          "임의의 보조 필드를 중요도가 낮다는 이유만으로 분리할 때"
+        ],
+        "constraints": [
+          "커스텀이라는 이유로 필수성·검증·레이블 위계를 낮추지 않는다.",
+          "필드 정의와 필드 값 입력의 권한을 구분한다."
+        ],
+        "evidence": [
+          "custom-information",
+          "user-password-settings"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "fields",
+            "required": true,
+            "accepts": [
+              "form-field-row",
+              "input",
+              "select"
+            ]
+          },
+          {
+            "id": "definition-action",
+            "required": false,
+            "accepts": [
+              "button",
+              "popover"
+            ]
+          }
+        ],
+        "stateModel": [
+          "empty",
+          "editable",
+          "readonly",
+          "invalid"
+        ],
+        "behaviorTargets": [
+          "custom-field.change",
+          "custom-field.define"
+        ],
+        "scrollOwner": "section",
+        "implementationMarkers": [
+          "SlideCompositionSectionView"
+        ]
+      },
+      "usedByScreens": [],
+      "detectedCodeSources": []
+    },
+    {
+      "patternId": "section.staged-record-entry",
+      "name": "상단 작성값 추가",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "placement": "shared",
+      "requiredComponents": [
+        "form-grid",
+        "input",
+        "button"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "다음 한 건의 값을 먼저 완성한 뒤 별도 목록에 확정해서 쌓을 때"
+        ],
+        "doNotUseWhen": [
+          "빈 행을 목록 안에서 직접 추가할 때",
+          "단건 폼 저장이 화면 전체 저장과 동일할 때"
+        ],
+        "constraints": [
+          "추가 전 값은 화면 전체의 확정 데이터로 취급하지 않는다.",
+          "추가 가능 조건과 초기화 시점을 명시한다."
+        ],
+        "evidence": [
+          "receiving",
+          "production-result"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "fields",
+            "required": true,
+            "accepts": [
+              "form-grid",
+              "input",
+              "select"
+            ]
+          },
+          {
+            "id": "add-action",
+            "required": true,
+            "accepts": [
+              "button"
+            ]
+          }
+        ],
+        "stateModel": [
+          "empty",
+          "editing",
+          "invalid",
+          "ready-to-add",
+          "adding"
+        ],
+        "behaviorTargets": [
+          "draft-row.change",
+          "draft-row.validate",
+          "draft-row.commit-to-list"
+        ],
+        "scrollOwner": "none",
+        "implementationMarkers": [
+          "SlideCompositionSectionView"
+        ]
+      },
+      "usedByScreens": [],
+      "detectedCodeSources": []
+    },
+    {
+      "patternId": "section.added-record-list",
+      "name": "추가된 목록 · 직접 편집 선택",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "placement": "shared",
+      "requiredComponents": [
+        "table",
+        "button"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "같은 저장 단위에 추가된 여러 레코드를 공통 열 기준으로 검토하거나 수정할 때"
+        ],
+        "doNotUseWhen": [
+          "서버 조회 결과를 검색·정렬하는 목록",
+          "서로 다른 구조의 카드 모음"
+        ],
+        "constraints": [
+          "blank-row·entry-form·both 중 추가 방식을 화면 계약에서 지정한다.",
+          "어느 추가 경로를 사용하더라도 동일한 행 검증과 stable ID 정책을 적용한다."
+        ],
+        "evidence": [
+          "receiving",
+          "production-result",
+          "operation-log"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "header",
+            "required": false,
+            "accepts": [
+              "column-header"
+            ]
+          },
+          {
+            "id": "rows",
+            "required": true,
+            "accepts": [
+              "editable-row",
+              "table-row"
+            ]
+          },
+          {
+            "id": "row-action",
+            "required": false,
+            "accepts": [
+              "button",
+              "icon-button"
+            ]
+          },
+          {
+            "id": "empty",
+            "required": false,
+            "accepts": [
+              "empty-state"
+            ]
+          }
+        ],
+        "stateModel": [
+          "empty",
+          "populated",
+          "row-editing",
+          "row-invalid"
+        ],
+        "behaviorTargets": [
+          "row.update",
+          "row.delete",
+          "row.validate"
+        ],
+        "scrollOwner": "section",
+        "implementationMarkers": [
+          "SlideCompositionSectionView"
+        ]
+      },
+      "usedByScreens": [],
+      "detectedCodeSources": []
+    },
+    {
+      "patternId": "section.member-selection",
+      "name": "소속 사용자 선택",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "placement": "shared",
+      "requiredComponents": [
+        "table",
+        "button"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "조직·그룹·권한의 구성원 후보를 찾고 복수 선택할 때"
+        ],
+        "doNotUseWhen": [
+          "단일 담당자 하나를 Select로 지정할 때",
+          "구성원과 무관한 일반 데이터 목록"
+        ],
+        "constraints": [
+          "선택 수와 실제 적용 대상이 일치해야 한다.",
+          "빈 상태에서는 구성원을 추가하거나 선택하는 다음 행동을 명확히 제공한다."
+        ],
+        "evidence": [
+          "team-settings",
+          "user-password-settings"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "query",
+            "required": false,
+            "accepts": [
+              "search",
+              "filter"
+            ]
+          },
+          {
+            "id": "members",
+            "required": true,
+            "accepts": [
+              "table",
+              "list",
+              "checkbox"
+            ]
+          },
+          {
+            "id": "empty",
+            "required": false,
+            "accepts": [
+              "empty-state",
+              "link"
+            ]
+          }
+        ],
+        "stateModel": [
+          "empty",
+          "available",
+          "partially-selected",
+          "selected"
+        ],
+        "behaviorTargets": [
+          "member.query",
+          "member.select",
+          "member.remove"
+        ],
+        "scrollOwner": "section",
+        "implementationMarkers": [
+          "SlideCompositionSectionView"
+        ]
+      },
+      "usedByScreens": [],
+      "detectedCodeSources": []
+    },
+    {
+      "patternId": "section.permission-matrix",
+      "name": "메뉴별 권한",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "placement": "shared",
+      "requiredComponents": [
+        "table",
+        "button"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "동일한 메뉴 구조에 조회·등록·수정 같은 복수 권한을 열 기준으로 비교하고 설정할 때"
+        ],
+        "doNotUseWhen": [
+          "권한 하나만 단순 on/off할 때",
+          "메뉴 계층이 없는 일반 체크 목록"
+        ],
+        "constraints": [
+          "부모·자식 메뉴의 부분 선택 상태를 명시한다.",
+          "권한 열의 의미와 일괄 적용 범위를 화면마다 임의로 바꾸지 않는다."
+        ],
+        "evidence": [
+          "team-settings",
+          "user-password-settings"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "menu-tree",
+            "required": true,
+            "accepts": [
+              "tree",
+              "table"
+            ]
+          },
+          {
+            "id": "permissions",
+            "required": true,
+            "accepts": [
+              "checkbox",
+              "switch"
+            ]
+          },
+          {
+            "id": "bulk-action",
+            "required": false,
+            "accepts": [
+              "button"
+            ]
+          }
+        ],
+        "stateModel": [
+          "readonly",
+          "editable",
+          "partially-selected",
+          "selected"
+        ],
+        "behaviorTargets": [
+          "permission.toggle",
+          "permission.bulk-change"
+        ],
+        "scrollOwner": "section",
+        "implementationMarkers": [
+          "SlideCompositionSectionView"
+        ]
+      },
+      "usedByScreens": [],
+      "detectedCodeSources": []
+    },
+    {
+      "patternId": "section.monthly-comparison-chart",
+      "name": "월별 전년 비교 차트",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "placement": "section",
+      "requiredComponents": [],
+      "selectionContext": {
+        "useWhen": [
+          "동일 지표의 현재 기간과 비교 기간을 같은 시간축에서 확인할 때"
+        ],
+        "doNotUseWhen": [
+          "시간축이 없는 범주 비교",
+          "서로 단위가 다른 독립 지표"
+        ],
+        "constraints": [
+          "차트와 수치표는 같은 series 데이터를 사용한다.",
+          "현재·비교 기간의 선 스타일과 범례를 일치시킨다."
+        ],
+        "evidence": [
+          "process-inspection-trend"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "legend",
+            "required": true,
+            "accepts": [
+              "series-legend"
+            ]
+          },
+          {
+            "id": "chart",
+            "required": true,
+            "accepts": [
+              "line-chart",
+              "bar-chart"
+            ]
+          },
+          {
+            "id": "values",
+            "required": false,
+            "accepts": [
+              "comparison-table"
+            ]
+          }
+        ],
+        "stateModel": [
+          "loading",
+          "empty",
+          "ready",
+          "series-hidden"
+        ],
+        "behaviorTargets": [
+          "period.change",
+          "series.toggle",
+          "point.inspect"
+        ],
+        "scrollOwner": "none",
+        "implementationMarkers": [
+          "MonthlyComparisonChart"
+        ]
+      },
+      "usedByScreens": [
+        "process-inspection-trend"
+      ],
+      "detectedCodeSources": []
+    },
+    {
+      "patternId": "section.measurement-heatmap-analysis",
+      "name": "측정 목록·히트맵 분석",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "placement": "section",
+      "requiredComponents": [
+        "table",
+        "select"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "측정 목록에서 선택한 대상의 위치별 값 분포를 즉시 비교할 때"
+        ],
+        "doNotUseWhen": [
+          "위치 정보가 없는 단순 측정 목록",
+          "표의 행 선택이 복수 업무 대상을 의미할 때"
+        ],
+        "constraints": [
+          "선택 행과 heatmap 데이터는 같은 ID에서 파생한다.",
+          "빈 위치와 실제 측정 위치를 구분하며 임의 offset을 추가하지 않는다."
+        ],
+        "evidence": [
+          "process-inspection-trend"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "measurement-list",
+            "required": true,
+            "accepts": [
+              "table"
+            ]
+          },
+          {
+            "id": "heatmap",
+            "required": true,
+            "accepts": [
+              "heatmap"
+            ]
+          },
+          {
+            "id": "legend",
+            "required": true,
+            "accepts": [
+              "continuous-legend"
+            ]
+          }
+        ],
+        "stateModel": [
+          "unselected",
+          "selected",
+          "loading",
+          "empty",
+          "ready"
+        ],
+        "behaviorTargets": [
+          "measurement.select",
+          "heatmap.update",
+          "cell.inspect"
+        ],
+        "scrollOwner": "section",
+        "implementationMarkers": [
+          "MeasurementHeatmapAnalysis"
+        ]
+      },
+      "usedByScreens": [
+        "process-inspection-trend"
+      ],
+      "detectedCodeSources": []
+    },
+    {
+      "patternId": "summary.inspection-achievement-stack",
+      "name": "검사 달성률 스택",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "placement": "section",
+      "requiredComponents": [],
+      "selectionContext": {
+        "useWhen": [
+          "입고·출하·공정처럼 같은 판정 기준을 가진 여러 검사 달성률을 한 묶음으로 비교할 때"
+        ],
+        "doNotUseWhen": [
+          "서로 무관한 KPI",
+          "달성률이 아닌 절대 수량만 표시할 때"
+        ],
+        "constraints": [
+          "모든 항목은 같은 분모 정의와 색상 의미를 사용한다.",
+          "항목 수가 늘어도 영역 전체에 가로 스크롤을 만들지 않는다."
+        ],
+        "evidence": [
+          "process-inspection-trend"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "metrics",
+            "required": true,
+            "accepts": [
+              "achievement-metric"
+            ]
+          },
+          {
+            "id": "legend",
+            "required": false,
+            "accepts": [
+              "status-legend"
+            ]
+          }
+        ],
+        "stateModel": [
+          "loading",
+          "empty",
+          "ready"
+        ],
+        "behaviorTargets": [
+          "period.change",
+          "metric.inspect"
+        ],
+        "scrollOwner": "none",
+        "implementationMarkers": [
+          "InspectionAchievementStack"
+        ]
+      },
+      "usedByScreens": [
+        "process-inspection-trend"
+      ],
+      "detectedCodeSources": []
+    },
+    {
+      "patternId": "section.form-grid",
+      "name": "폼 그리드",
+      "source": "src/components/ui/form-grid.tsx",
+      "placement": "section",
+      "requiredComponents": [
+        "form-grid"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "label과 control의 반복 정렬이 필요한 입력 섹션"
+        ],
+        "doNotUseWhen": [
+          "열 비교·정렬이 핵심인 데이터 목록",
+          "반복 행 추가·삭제"
+        ],
+        "constraints": [
+          "FormGrid가 열과 gap을 소유한다.",
+          "FormFieldRow가 label·required marker·control 정렬을 소유한다."
+        ],
+        "evidence": [
+          "receiving",
+          "custom-information",
+          "cavity-layout-settings"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "fields",
+            "required": true,
+            "accepts": [
+              "form-field-row"
+            ]
+          }
+        ],
+        "stateModel": [
+          "editable",
+          "readonly",
+          "disabled",
+          "invalid"
+        ],
+        "behaviorTargets": [
+          "field.change",
+          "field.validation"
+        ],
+        "scrollOwner": "none",
+        "implementationMarkers": [
+          "FormGrid",
+          "FormFieldRow"
+        ]
+      },
+      "usedByScreens": [
+        "production-result",
+        "receiving",
+        "custom-information",
+        "form-inspection-criteria",
+        "user-password-settings",
+        "form-management",
+        "cavity-layout-settings"
+      ],
+      "detectedCodeSources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/business-operation-settings-pattern.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+        "src/components/patterns/exact-production-analytics-screen.tsx",
+        "src/components/patterns/inspection-criteria-pattern.tsx",
+        "src/components/patterns/kiosk-easy-receiving-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/side-slide-compositions.tsx",
+        "src/components/patterns/standard-price-settings-pattern.tsx",
+        "src/components/patterns/team-settings-pattern.tsx",
+        "src/components/patterns/user-password-settings-pattern.tsx"
+      ]
+    },
+    {
+      "patternId": "section.query-toolbar",
+      "name": "조회 도구 모음",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "placement": "section",
+      "requiredComponents": [
+        "filter",
+        "search-input"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "둘 이상의 조회 도구가 같은 결과 집합을 갱신하며 한 줄의 작업 영역으로 읽혀야 할 때"
+        ],
+        "doNotUseWhen": [
+          "검색 또는 필터 하나만 독립적으로 배치해도 되는 경우",
+          "서로 다른 결과 집합을 갱신하는 도구"
+        ],
+        "constraints": [
+          "start와 end를 수직 중앙 정렬한다.",
+          "page·modal·compact variant는 부모 화면의 조회 문법에 따라 선택한다.",
+          "균형을 맞추기 위해 존재하지 않는 검색·필터를 추가하지 않는다."
+        ],
+        "evidence": [
+          "material-input-settings",
+          "inventory-add",
+          "equipment-inspection-records"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "start",
+            "required": false,
+            "accepts": [
+              "filter",
+              "group-query",
+              "quick-query",
+              "query-control"
+            ]
+          },
+          {
+            "id": "end",
+            "required": false,
+            "accepts": [
+              "search",
+              "query-action"
+            ]
+          }
+        ],
+        "stateModel": [
+          "idle",
+          "querying",
+          "filtered",
+          "empty-result"
+        ],
+        "behaviorTargets": [
+          "query.change",
+          "query.submit",
+          "query.reset"
+        ],
+        "scrollOwner": "none",
+        "implementationMarkers": [
+          "QueryToolbar"
+        ]
+      },
+      "usedByScreens": [
+        "material-input-settings",
+        "batch-work-order",
+        "bulk-purchase-registration",
+        "inventory-add",
+        "equipment-inspection-records",
+        "equipment-discharge-settings"
+      ],
+      "detectedCodeSources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/completed-application-patterns.tsx",
+        "src/components/patterns/completed-popup-expanded-content.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+        "src/components/patterns/equipment-inspection-records-modal.tsx",
+        "src/components/patterns/exact-form-management-screen.tsx",
+        "src/components/patterns/exact-inventory-add-modal.tsx",
+        "src/components/patterns/exact-inventory-edit-modal.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/exact-purchase-modals.tsx",
+        "src/components/patterns/material-input-information-pattern.tsx",
+        "src/components/patterns/mes-screen-fixtures.tsx",
+        "src/components/patterns/sales-transaction-statement-pattern.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/shipment-approval-pattern.tsx"
+      ]
+    },
+    {
+      "patternId": "section.bulk-edit-bar",
+      "name": "복수 행 공통값 일괄 변경",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "placement": "section",
+      "requiredComponents": [
+        "button",
+        "labeled-input",
+        "labeled-select"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "복수 행에 같은 값을 입력하고 명시적인 적용 동작으로 반영할 때"
+        ],
+        "doNotUseWhen": [
+          "단일 레코드만 편집할 때",
+          "공통값이 즉시 모든 행에 반영되어 별도 적용 동작이 없는 경우",
+          "단순 조회 도구"
+        ],
+        "constraints": [
+          "targetScope는 all-visible·selected·explicit-set 중 하나로 선언한다.",
+          "행별 값과 충돌할 때의 우선순위를 화면 계약에서 명시한다.",
+          "제목·입력·적용 버튼은 하나의 수평 영역으로 유지하되 컨트롤 수 때문에 table 밖 전체 화면을 넘치게 하지 않는다."
+        ],
+        "evidence": [
+          "inventory-add",
+          "equipment-discharge-settings",
+          "standard-price-settings",
+          "team-settings"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "title",
+            "required": true,
+            "accepts": [
+              "section-local-title",
+              "semantic-icon"
+            ]
+          },
+          {
+            "id": "controls",
+            "required": true,
+            "accepts": [
+              "labeled-input",
+              "labeled-select",
+              "date-picker",
+              "form-control"
+            ]
+          },
+          {
+            "id": "apply-action",
+            "required": true,
+            "accepts": [
+              "button"
+            ]
+          }
+        ],
+        "stateModel": [
+          "idle",
+          "dirty",
+          "apply-enabled",
+          "apply-disabled",
+          "applied"
+        ],
+        "behaviorTargets": [
+          "bulk-value.change",
+          "bulk-value.apply"
+        ],
+        "scrollOwner": "none",
+        "implementationMarkers": [
+          "BulkEditBar"
+        ]
+      },
+      "usedByScreens": [
+        "bulk-purchase-registration",
+        "inventory-add",
+        "equipment-discharge-settings",
+        "standard-price-settings",
+        "team-settings"
+      ],
+      "detectedCodeSources": [
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+        "src/components/patterns/exact-inventory-action-modal.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/team-settings-pattern.tsx"
+      ]
+    },
+    {
+      "patternId": "section.master-detail-composition",
+      "name": "마스터 선택·연결 상세",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "placement": "section",
+      "requiredComponents": [],
+      "selectionContext": {
+        "useWhen": [
+          "한 영역에서 선택한 대상이 다른 영역의 정보·입력 가능 상태·행동을 결정할 때"
+        ],
+        "doNotUseWhen": [
+          "두 영역이 서로 독립적일 때",
+          "단순한 원본·대상 비교처럼 선택에 따른 갱신이 없을 때"
+        ],
+        "constraints": [
+          "master와 detail은 같은 선택 ID 계약을 공유한다.",
+          "가로·세로 방향과 비율은 종속 관계만이 아니라 비교 필요·정보량·가용 공간을 함께 보고 정한다.",
+          "각 영역의 스크롤 주체를 중복 지정하지 않는다."
+        ],
+        "evidence": [
+          "equipment-discharge-settings",
+          "standard-price-settings",
+          "team-settings",
+          "process-inspection-trend"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "master",
+            "required": true,
+            "accepts": [
+              "table",
+              "list",
+              "tree",
+              "selection-control"
+            ]
+          },
+          {
+            "id": "detail-title",
+            "required": false,
+            "accepts": [
+              "content-region-heading"
+            ]
+          },
+          {
+            "id": "detail",
+            "required": true,
+            "accepts": [
+              "form-grid",
+              "table",
+              "analysis",
+              "read-only-detail"
+            ]
+          }
+        ],
+        "stateModel": [
+          "unselected",
+          "selected",
+          "detail-loading",
+          "detail-ready",
+          "detail-empty"
+        ],
+        "behaviorTargets": [
+          "master.select",
+          "detail.update",
+          "detail.action"
+        ],
+        "scrollOwner": "section",
+        "implementationMarkers": [
+          "MasterDetailSection",
+          "useMasterDetailSelection"
+        ]
+      },
+      "usedByScreens": [
+        "equipment-discharge-settings",
+        "standard-price-settings",
+        "team-settings"
+      ],
+      "detectedCodeSources": [
+        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/team-settings-pattern.tsx"
+      ]
+    },
+    {
+      "patternId": "section.search-table-composition",
+      "name": "검색·필터·테이블 조합",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "placement": "section",
+      "requiredComponents": [
+        "filter",
+        "search-input",
+        "table"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "검색·필터와 정렬된 데이터 표가 하나의 조회 영역을 이룸"
+        ],
+        "doNotUseWhen": [
+          "반복 입력 행을 정렬만 하기 위한 경우",
+          "검색이나 표가 없는 폼"
+        ],
+        "constraints": [
+          "toolbar는 items-center를 소유한다.",
+          "table만 가변 영역과 스크롤을 소유한다.",
+          "존재하지 않는 slot을 장식 목적으로 만들지 않는다."
+        ],
+        "evidence": [
+          "batch-work-order",
+          "material-input-settings",
+          "grouped-production-list"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "title-query",
+            "required": false,
+            "accepts": [
+              "section-title",
+              "query-control"
+            ]
+          },
+          {
+            "id": "toolbar",
+            "required": true,
+            "accepts": [
+              "section.query-toolbar",
+              "filter",
+              "search",
+              "quick-query",
+              "group-query"
+            ]
+          },
+          {
+            "id": "bulk-action",
+            "required": false,
+            "accepts": [
+              "section.bulk-edit-bar"
+            ]
+          },
+          {
+            "id": "table",
+            "required": true,
+            "accepts": [
+              "table-model"
+            ]
+          },
+          {
+            "id": "selection-action",
+            "required": false,
+            "accepts": [
+              "selection-action-bar"
+            ]
+          },
+          {
+            "id": "footer-action",
+            "required": false,
+            "accepts": [
+              "pagination",
+              "local-action"
+            ]
+          }
+        ],
+        "stateModel": [
+          "idle",
+          "querying",
+          "empty",
+          "selected",
+          "editing"
+        ],
+        "behaviorTargets": [
+          "query.change",
+          "table.selection",
+          "table.active-row",
+          "table.inline-edit"
+        ],
+        "scrollOwner": "table",
+        "implementationMarkers": [
+          "SearchTableSection",
+          "SearchInput",
+          "Table"
+        ]
+      },
+      "usedByScreens": [
+        "material-input-settings",
+        "batch-work-order",
+        "bulk-purchase-registration",
+        "grouped-production-list",
+        "sales-transaction-statement",
+        "shipment-approval",
+        "form-management",
+        "production-result-responsive",
+        "inventory-add",
+        "inventory-edit",
+        "purchase-order-lookup",
+        "production-analytics-latest",
+        "equipment-inspection-records",
+        "equipment-discharge-settings",
+        "standard-price-settings",
+        "team-settings"
+      ],
+      "detectedCodeSources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/completed-application-patterns.tsx",
+        "src/components/patterns/completed-popup-expanded-content.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+        "src/components/patterns/equipment-inspection-records-modal.tsx",
+        "src/components/patterns/exact-form-management-screen.tsx",
+        "src/components/patterns/exact-inventory-add-modal.tsx",
+        "src/components/patterns/exact-inventory-edit-modal.tsx",
+        "src/components/patterns/exact-production-result-screen.tsx",
+        "src/components/patterns/exact-purchase-modals.tsx",
+        "src/components/patterns/material-input-information-pattern.tsx",
+        "src/components/patterns/mes-screen-fixtures.tsx",
+        "src/components/patterns/sales-transaction-statement-pattern.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/shipment-approval-pattern.tsx",
+        "src/components/patterns/side-slide-compositions.tsx",
+        "src/components/patterns/standard-price-settings-pattern.tsx",
+        "src/components/patterns/team-settings-pattern.tsx"
+      ]
+    },
+    {
+      "patternId": "section.page-query-table",
+      "name": "메인 목록 조회 도구·무한 스크롤 표",
+      "source": "src/components/patterns/entity-list-pattern.tsx",
+      "placement": "page",
+      "requiredComponents": [
+        "query-date-range",
+        "group-query",
+        "filter",
+        "quick-query",
+        "search-input",
+        "table"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "MES 전체 페이지에서 업무 엔티티를 조건 조회하고 표에서 후속 작업으로 진입"
+        ],
+        "doNotUseWhen": [
+          "중앙 모달·슬라이드 팝업 내부의 검색 목록",
+          "페이지네이션 기반 목록"
+        ],
+        "constraints": [
+          "페이지 조회 도구는 회색 section toolbar 안에 넣지 않는다.",
+          "table이 세로 무한 스크롤을 소유한다.",
+          "상세·슬라이드 팝업 진입은 행 더블클릭과 키보드 Enter를 사용한다."
+        ],
+        "evidence": [
+          "grouped-production-list",
+          "production-result-responsive"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "period-query",
+            "required": true,
+            "accepts": [
+              "date-range-picker",
+              "query-action"
+            ]
+          },
+          {
+            "id": "query-toolbar",
+            "required": true,
+            "accepts": [
+              "group-query",
+              "filter",
+              "quick-query",
+              "search"
+            ]
+          },
+          {
+            "id": "table",
+            "required": true,
+            "accepts": [
+              "table-model"
+            ]
+          }
+        ],
+        "stateModel": [
+          "idle",
+          "querying",
+          "empty",
+          "selected",
+          "editing"
+        ],
+        "behaviorTargets": [
+          "query.change",
+          "table.selection",
+          "table.active-row",
+          "table.row-open",
+          "table.inline-edit"
+        ],
+        "scrollOwner": "table",
+        "implementationMarkers": [
+          "EntityListPattern",
+          "QueryDateRange",
+          "GroupQuery",
+          "Filter",
+          "QuickQuery",
+          "SearchInput",
+          "Table",
+          "IconCopy",
+          "IconDownload"
+        ]
+      },
+      "usedByScreens": [],
+      "detectedCodeSources": []
+    },
+    {
+      "patternId": "section.editable-row-list",
+      "name": "편집 가능한 행 목록",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "placement": "section",
+      "requiredComponents": [
+        "button",
+        "input",
+        "select"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "사용자가 행을 직접 추가·수정·삭제하지만 표 탐색 기능은 필요 없음"
+        ],
+        "doNotUseWhen": [
+          "정렬·그룹·전체 선택이 필요한 데이터 표"
+        ],
+        "constraints": [
+          "헤더와 모든 행은 동일 columns 계약을 공유한다.",
+          "stable ID와 추가 조건은 row.mutation-policy에 위임한다."
+        ],
+        "evidence": [
+          "receiving",
+          "production-result",
+          "operation-log"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "entry-editor",
+            "required": false,
+            "accepts": [
+              "form-grid"
+            ]
+          },
+          {
+            "id": "header",
+            "required": false,
+            "accepts": [
+              "column-header"
+            ]
+          },
+          {
+            "id": "rows",
+            "required": true,
+            "accepts": [
+              "editable-row"
+            ]
+          },
+          {
+            "id": "add-action",
+            "required": false,
+            "accepts": [
+              "button"
+            ]
+          },
+          {
+            "id": "empty",
+            "required": false,
+            "accepts": [
+              "empty-state"
+            ]
+          }
+        ],
+        "stateModel": [
+          "empty",
+          "editing",
+          "add-blocked",
+          "add-enabled",
+          "delete-blocked",
+          "delete-enabled"
+        ],
+        "behaviorTargets": [
+          "row.add",
+          "row.update",
+          "row.delete"
+        ],
+        "scrollOwner": "section",
+        "implementationMarkers": [
+          "EditableRowListSection",
+          "EditableRowGrid"
+        ]
+      },
+      "usedByScreens": [
+        "operation-log",
+        "production-result",
+        "receiving"
+      ],
+      "detectedCodeSources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/easy-mode-receiving-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/section-patterns.tsx"
+      ]
+    },
+    {
+      "patternId": "section.inspection-items",
+      "name": "검사항목 목록",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "placement": "section",
+      "requiredComponents": [
+        "inspection-judgement",
+        "button"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "검사항목과 O·△·X 같은 판정값을 반복 입력"
+        ],
+        "doNotUseWhen": [
+          "일반 데이터 목록",
+          "단순 라디오 그룹"
+        ],
+        "constraints": [
+          "섹션 헤더는 전체 폭을 사용한다.",
+          "판정 상태와 입력 동작을 같은 state에서 관리한다."
+        ],
+        "evidence": [
+          "self-inspection",
+          "form-inspection-criteria"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "search-sort",
+            "required": false,
+            "accepts": [
+              "search",
+              "sort"
+            ]
+          },
+          {
+            "id": "bulk-judgement",
+            "required": false,
+            "accepts": [
+              "inspection-judgement"
+            ]
+          },
+          {
+            "id": "items",
+            "required": true,
+            "accepts": [
+              "inspection-row"
+            ]
+          },
+          {
+            "id": "add-action",
+            "required": false,
+            "accepts": [
+              "button"
+            ]
+          },
+          {
+            "id": "empty",
+            "required": false,
+            "accepts": [
+              "empty-state"
+            ]
+          }
+        ],
+        "stateModel": [
+          "empty",
+          "editable",
+          "readonly",
+          "bulk-selected"
+        ],
+        "behaviorTargets": [
+          "inspection.item-change",
+          "inspection.bulk-change"
+        ],
+        "scrollOwner": "section",
+        "implementationMarkers": [
+          "InspectionItemsSection"
+        ]
+      },
+      "usedByScreens": [
+        "self-inspection"
+      ],
+      "detectedCodeSources": [
+        "src/app/[...slug]/client-page.tsx",
+        "src/components/patterns/completed-popup-patterns.tsx",
+        "src/components/patterns/equipment-inspection-records-modal.tsx",
+        "src/components/patterns/inspection-criteria-pattern.tsx",
+        "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+        "src/components/patterns/original-mes-screen-assets.tsx",
+        "src/components/patterns/section-patterns.tsx",
+        "src/components/patterns/side-slide-compositions.tsx",
+        "src/components/patterns/slide-composition-catalog.tsx",
+        "src/components/patterns/source-popup-gallery.tsx"
+      ]
+    },
+    {
+      "patternId": "summary.table-total-row",
+      "name": "표 컬럼 정렬 합계행",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "placement": "section",
+      "requiredComponents": [
+        "table"
+      ],
+      "selectionContext": {
+        "useWhen": [
+          "표의 특정 열과 같은 좌표에서 합계·총계를 비교해야 할 때"
+        ],
+        "doNotUseWhen": [
+          "표 밖의 독립 결과를 강조할 때",
+          "서로 무관한 여러 KPI"
+        ],
+        "constraints": [
+          "표와 동일한 컬럼 폭 계약을 사용한다.",
+          "고정 margin이나 별도 grid로 눈대중 정렬하지 않는다."
+        ],
+        "evidence": [
+          "bom-copy",
+          "production-result-responsive"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "label",
+            "required": true,
+            "accepts": [
+              "total-label"
+            ]
+          },
+          {
+            "id": "aggregate-cells",
+            "required": true,
+            "accepts": [
+              "aggregate-value"
+            ]
+          }
+        ],
+        "stateModel": [
+          "empty",
+          "calculated"
+        ],
+        "behaviorTargets": [
+          "table.data-change",
+          "total.recalculate"
+        ],
+        "scrollOwner": "none",
+        "implementationMarkers": [
+          "TableTotalRow"
+        ]
+      },
+      "usedByScreens": [
+        "bom-copy",
+        "production-result-responsive"
+      ],
+      "detectedCodeSources": [
+        "src/components/patterns/section-patterns.tsx"
+      ]
+    },
+    {
+      "patternId": "summary.result-total-card",
+      "name": "결과 합계 카드",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "placement": "section",
+      "requiredComponents": [],
+      "selectionContext": {
+        "useWhen": [
+          "표 좌표와 무관한 하나의 계산 결과를 라벨·값·단위로 강조할 때"
+        ],
+        "doNotUseWhen": [
+          "표의 열별 합계",
+          "대시보드의 서로 다른 복수 KPI"
+        ],
+        "constraints": [
+          "tone은 결과의 의미에 따라 선택하고 장식 목적으로 primary를 사용하지 않는다.",
+          "계산식은 패턴 내부에 고정하지 않는다."
+        ],
+        "evidence": [
+          "defect-quantity-input",
+          "preissued-label"
+        ]
+      },
+      "compositionContract": {
+        "slots": [
+          {
+            "id": "label",
+            "required": true,
+            "accepts": [
+              "result-label"
+            ]
+          },
+          {
+            "id": "value",
+            "required": true,
+            "accepts": [
+              "result-value"
+            ]
+          },
+          {
+            "id": "unit",
+            "required": false,
+            "accepts": [
+              "unit"
+            ]
+          },
+          {
+            "id": "trailing",
+            "required": false,
+            "accepts": [
+              "form-control",
+              "local-action"
+            ]
+          }
+        ],
+        "stateModel": [
+          "neutral",
+          "information",
+          "danger"
+        ],
+        "behaviorTargets": [
+          "result.recalculate"
+        ],
+        "scrollOwner": "none",
+        "implementationMarkers": [
+          "ResultTotalCard"
+        ]
+      },
+      "usedByScreens": [
+        "defect-quantity-input"
+      ],
+      "detectedCodeSources": [
+        "src/components/patterns/section-patterns.tsx"
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "screenId": "material-input-settings",
+      "name": "투입품목 설정/조회",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "figma": {
+        "node": "18826:60554",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "복사 대상 BOM",
+          "비가동시간",
+          "시작 시간",
+          "원본 BOM 선택",
+          "종료 시간",
+          "타임테이블 (주간)",
+          "품목별 가동기록"
+        ]
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.query-toolbar",
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "batch-work-order",
+      "name": "생산계획(일) 연동 일괄작업지시",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figma": {
+        "node": "11210:50866",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.bulk-edit-bar",
+          "section.editable-row-list",
+          "section.form-grid",
+          "section.inspection-items",
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "검사결과",
+          "검사항목",
+          "기본 정보",
+          "기본정보",
+          "대상정보",
+          "중량검사",
+          "지시정보"
+        ]
+      },
+      "structureLevel": "detailed-screen-spec",
+      "sectionPatternRefs": [
+        "section.query-toolbar",
+        "section.search-table-composition"
+      ],
+      "detailedSections": [
+        {
+          "id": "workOrderList",
+          "title": "생산계획 리스트",
+          "patternRef": "section.search-table-composition",
+          "supportingPatternRefs": [],
+          "componentRefs": [
+            "filter",
+            "search-input",
+            "table",
+            "checkbox",
+            "input",
+            "select"
+          ],
+          "behaviorRefs": [
+            "selection.reveal-inline-editor"
+          ],
+          "scrollOwner": "table"
+        }
+      ],
+      "localComposition": null
+    },
+    {
+      "screenId": "bulk-purchase-registration",
+      "name": "발주 일괄등록",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figma": {
+        "node": "20849:70791",
+        "evidenceLevel": "source-evidence-recorded",
+        "sourceEvidenceId": "bulk-purchase-registration",
+        "sourceEvidenceStatus": "verified"
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.bulk-edit-bar",
+          "section.editable-row-list",
+          "section.form-grid",
+          "section.inspection-items",
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "검사결과",
+          "검사항목",
+          "기본 정보",
+          "기본정보",
+          "대상정보",
+          "중량검사",
+          "지시정보"
+        ]
+      },
+      "structureLevel": "detailed-screen-spec",
+      "sectionPatternRefs": [
+        "section.query-toolbar",
+        "section.bulk-edit-bar",
+        "section.search-table-composition"
+      ],
+      "detailedSections": [
+        {
+          "id": "purchaseItemList",
+          "title": "품목 리스트",
+          "patternRef": "section.search-table-composition",
+          "supportingPatternRefs": [
+            "section.query-toolbar",
+            "section.bulk-edit-bar"
+          ],
+          "componentRefs": [
+            "filter",
+            "search-input",
+            "labeled-select",
+            "labeled-input",
+            "date-picker",
+            "button",
+            "table",
+            "checkbox",
+            "input",
+            "select"
+          ],
+          "behaviorRefs": [
+            "selection.reveal-inline-editor"
+          ],
+          "scrollOwner": "table"
+        }
+      ],
+      "localComposition": null
+    },
+    {
+      "screenId": "defect-quantity-input",
+      "name": "불량수량 입력",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figma": {
+        "node": "11210:52919",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.bulk-edit-bar",
+          "section.editable-row-list",
+          "section.form-grid",
+          "section.inspection-items",
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "검사결과",
+          "검사항목",
+          "기본 정보",
+          "기본정보",
+          "대상정보",
+          "중량검사",
+          "지시정보"
+        ]
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "summary.result-total-card"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "bom-copy",
+      "name": "BOM 복사",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "figma": {
+        "node": "18962:67817",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "복사 대상 BOM",
+          "비가동시간",
+          "시작 시간",
+          "원본 BOM 선택",
+          "종료 시간",
+          "타임테이블 (주간)",
+          "품목별 가동기록"
+        ]
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "summary.table-total-row"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "preissued-label",
+      "name": "선발행 라벨 수량 확정",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "figma": {
+        "node": "18756:60803",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "복사 대상 BOM",
+          "비가동시간",
+          "시작 시간",
+          "원본 BOM 선택",
+          "종료 시간",
+          "타임테이블 (주간)",
+          "품목별 가동기록"
+        ]
+      },
+      "structureLevel": "screen-local-explicit",
+      "sectionPatternRefs": [],
+      "detailedSections": [],
+      "localComposition": {
+        "scope": "screen-local",
+        "reason": "수량 상태 카드는 이 화면의 로컬 조합이며 공용 패턴이 아니다."
+      }
+    },
+    {
+      "screenId": "operation-log",
+      "name": "운전일지 등록",
+      "source": "src/components/patterns/completed-popup-expanded-content.tsx",
+      "figma": {
+        "node": "17303:45841",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [
+          "web.operation-log"
+        ],
+        "flowIds": [
+          "flow.operation-log-create"
+        ]
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "복사 대상 BOM",
+          "비가동시간",
+          "시작 시간",
+          "원본 BOM 선택",
+          "종료 시간",
+          "타임테이블 (주간)",
+          "품목별 가동기록"
+        ]
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.editable-row-list"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "production-result",
+      "name": "생산실적 등록",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figma": {
+        "node": "11210:48851",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [
+          "web.production-result"
+        ],
+        "flowIds": [
+          "flow.production-result-create"
+        ]
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.bulk-edit-bar",
+          "section.editable-row-list",
+          "section.form-grid",
+          "section.inspection-items",
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "검사결과",
+          "검사항목",
+          "기본 정보",
+          "기본정보",
+          "대상정보",
+          "중량검사",
+          "지시정보"
+        ]
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.form-grid",
+        "section.editable-row-list"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "receiving",
+      "name": "입고등록",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figma": {
+        "node": "11210:49261",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [
+          "web.receiving"
+        ],
+        "flowIds": [
+          "flow.receiving-create"
+        ]
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.bulk-edit-bar",
+          "section.editable-row-list",
+          "section.form-grid",
+          "section.inspection-items",
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "검사결과",
+          "검사항목",
+          "기본 정보",
+          "기본정보",
+          "대상정보",
+          "중량검사",
+          "지시정보"
+        ]
+      },
+      "structureLevel": "detailed-screen-spec",
+      "sectionPatternRefs": [
+        "section.form-grid",
+        "section.editable-row-list"
+      ],
+      "detailedSections": [
+        {
+          "id": "basicInformation",
+          "title": "기본정보",
+          "patternRef": "section.form-grid",
+          "supportingPatternRefs": [],
+          "componentRefs": [
+            "form-grid",
+            "input",
+            "select"
+          ],
+          "behaviorRefs": [],
+          "scrollOwner": "none"
+        },
+        {
+          "id": "receivingItems",
+          "title": "입고 품목",
+          "patternRef": "section.editable-row-list",
+          "supportingPatternRefs": [],
+          "componentRefs": [
+            "button",
+            "input",
+            "select"
+          ],
+          "behaviorRefs": [
+            "row.mutation-policy"
+          ],
+          "scrollOwner": "section"
+        },
+        {
+          "id": "optionalInformation",
+          "title": "선택 항목",
+          "patternRef": "section.form-grid",
+          "supportingPatternRefs": [],
+          "componentRefs": [
+            "form-grid",
+            "input",
+            "select"
+          ],
+          "behaviorRefs": [],
+          "scrollOwner": "none"
+        }
+      ],
+      "localComposition": null
+    },
+    {
+      "screenId": "custom-information",
+      "name": "자주검사 — 커스텀 정보 등록 상태",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figma": {
+        "node": "11210:51570",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.bulk-edit-bar",
+          "section.editable-row-list",
+          "section.form-grid",
+          "section.inspection-items",
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "검사결과",
+          "검사항목",
+          "기본 정보",
+          "기본정보",
+          "대상정보",
+          "중량검사",
+          "지시정보"
+        ]
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.form-grid"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "self-inspection",
+      "name": "자주검사",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "figma": {
+        "node": "11210:51420",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [
+          "web.self-inspection"
+        ],
+        "flowIds": [
+          "flow.self-inspection-create"
+        ]
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.bulk-edit-bar",
+          "section.editable-row-list",
+          "section.form-grid",
+          "section.inspection-items",
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "검사결과",
+          "검사항목",
+          "기본 정보",
+          "기본정보",
+          "대상정보",
+          "중량검사",
+          "지시정보"
+        ]
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.inspection-items"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "grouped-production-list",
+      "name": "그룹화 리스트 관리 화면",
+      "source": "src/app/[...slug]/client-page.tsx",
+      "figma": {
+        "node": "17000:39999",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.collapsible-form",
+          "section.editable-row-list",
+          "section.form-grid",
+          "section.inspection-items",
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "검사항목",
+          "기본정보",
+          "대상정보"
+        ]
+      },
+      "structureLevel": "detailed-screen-spec",
+      "sectionPatternRefs": [
+        "section.search-table-composition"
+      ],
+      "detailedSections": [
+        {
+          "id": "productionList",
+          "title": "생산실적 리스트",
+          "patternRef": "section.search-table-composition",
+          "supportingPatternRefs": [
+            "table.grouped-list"
+          ],
+          "componentRefs": [
+            "sidebar",
+            "page-top-tab-item",
+            "query-date-range",
+            "group-query",
+            "filter",
+            "quick-query",
+            "search-input",
+            "table"
+          ],
+          "behaviorRefs": [
+            "selection.master-detail"
+          ],
+          "scrollOwner": "table"
+        }
+      ],
+      "localComposition": null
+    },
+    {
+      "screenId": "form-inspection-criteria",
+      "name": "양식관리 · 검사 판정 기준 설정",
+      "source": "src/components/patterns/inspection-criteria-pattern.tsx",
+      "figma": {
+        "node": "17309:159298",
+        "evidenceLevel": "source-evidence-recorded",
+        "sourceEvidenceId": "form-management-inspection-criteria",
+        "sourceEvidenceStatus": "verified"
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.form-grid",
+          "section.inspection-items"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.form-grid"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "production-quantity-reregistration",
+      "name": "총 생산수량 변경 · 투입품 재등록 확인",
+      "source": "src/components/patterns/production-quantity-reregistration-pattern.tsx",
+      "figma": {
+        "node": "19451:95617",
+        "evidenceLevel": "source-evidence-recorded",
+        "sourceEvidenceId": "production-quantity-reregistration",
+        "sourceEvidenceStatus": "verified"
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.before-after",
+          "section.summary"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "screen-local-explicit",
+      "sectionPatternRefs": [],
+      "detailedSections": [],
+      "localComposition": {
+        "scope": "screen-local",
+        "reason": "기존·변경 수량 비교는 이 recipe 내부 로컬 조합이다."
+      }
+    },
+    {
+      "screenId": "process-inspection-trend",
+      "name": "공정검사 경향관리",
+      "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
+      "figma": {
+        "node": "11751:102614",
+        "evidenceLevel": "source-evidence-recorded",
+        "sourceEvidenceId": "process-inspection-trend",
+        "sourceEvidenceStatus": "verified"
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.inspection-items"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.monthly-comparison-chart",
+        "section.measurement-heatmap-analysis",
+        "summary.inspection-achievement-stack"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "user-password-settings",
+      "name": "사용자 정보 · 비밀번호 설정",
+      "source": "src/components/patterns/user-password-settings-pattern.tsx",
+      "figma": {
+        "node": "17489:80534",
+        "evidenceLevel": "source-evidence-recorded",
+        "sourceEvidenceId": "user-password-settings",
+        "sourceEvidenceStatus": "verified"
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.form-grid"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.form-grid"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "sales-transaction-statement",
+      "name": "판매관리 · 거래명세서",
+      "source": "src/components/patterns/sales-transaction-statement-pattern.tsx",
+      "figma": {
+        "node": "17475:46145",
+        "evidenceLevel": "source-evidence-recorded",
+        "sourceEvidenceId": "sales-transaction-statement",
+        "sourceEvidenceStatus": "verified"
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "shipment-approval",
+      "name": "출하승인",
+      "source": "src/components/patterns/shipment-approval-pattern.tsx",
+      "figma": {
+        "node": "17370:46831",
+        "evidenceLevel": "source-evidence-recorded",
+        "sourceEvidenceId": "shipment-approval",
+        "sourceEvidenceStatus": "verified"
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.query-toolbar",
+          "section.search-table-composition"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "form-management",
+      "name": "양식관리",
+      "source": "src/components/patterns/original-mes-screen-assets.tsx",
+      "figma": {
+        "node": "17377:50192",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.editable-row-list",
+          "section.form-grid",
+          "section.inspection-items",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "검사항목",
+          "금형 정보",
+          "대상정보",
+          "배열 생성",
+          "캐비티 배열"
+        ]
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.search-table-composition",
+        "section.form-grid"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "production-result-responsive",
+      "name": "생산실적 반응형",
+      "source": "src/components/patterns/original-mes-screen-assets.tsx",
+      "figma": {
+        "node": "18849:62314",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.editable-row-list",
+          "section.form-grid",
+          "section.inspection-items",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [
+          "검사항목",
+          "금형 정보",
+          "대상정보",
+          "배열 생성",
+          "캐비티 배열"
+        ]
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.search-table-composition",
+        "summary.table-total-row"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "cavity-layout-settings",
+      "name": "캐비티 배열 설정",
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "figma": {
+        "node": "18795:62149",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.inspection-items",
+          "section.summary"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.form-grid"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "inventory-add",
+      "name": "재고 추가",
+      "source": "src/components/patterns/exact-inventory-add-modal.tsx",
+      "figma": {
+        "node": "18813:64179",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.query-toolbar",
+          "section.search-table-composition"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.query-toolbar",
+        "section.bulk-edit-bar",
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "inventory-edit",
+      "name": "재고편집",
+      "source": "src/components/patterns/source-popup-gallery.tsx",
+      "figma": {
+        "node": "17491:82304",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.inspection-items",
+          "section.summary"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "purchase-order-lookup",
+      "name": "발주 정보",
+      "source": "src/components/patterns/exact-purchase-modals.tsx",
+      "figma": {
+        "node": "17503:85601",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.query-toolbar",
+          "section.search-table-composition"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "production-analytics-latest",
+      "name": "생산분석 현황",
+      "source": "src/components/patterns/exact-production-analytics-screen.tsx",
+      "figma": {
+        "node": "17520:46628",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.form-grid",
+          "section.summary"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "equipment-inspection-records",
+      "name": "냉각기 점검표",
+      "source": "src/components/patterns/equipment-inspection-records-modal.tsx",
+      "figma": {
+        "node": "9873:112416",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.inspection-items",
+          "section.query-toolbar",
+          "section.search-table-composition"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.query-toolbar",
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "equipment-discharge-settings",
+      "name": "설비별 토출량 설정",
+      "source": "src/components/patterns/equipment-discharge-settings-pattern.tsx",
+      "figma": {
+        "node": "20302:68442",
+        "evidenceLevel": "source-evidence-recorded",
+        "sourceEvidenceId": "equipment-discharge-settings",
+        "sourceEvidenceStatus": "verified"
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.bulk-edit-bar",
+          "section.form-grid",
+          "section.master-detail-composition",
+          "section.query-toolbar",
+          "section.search-table-composition"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.query-toolbar",
+        "section.bulk-edit-bar",
+        "section.master-detail-composition",
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "standard-price-settings",
+      "name": "표준단가 설정",
+      "source": "src/components/patterns/standard-price-settings-pattern.tsx",
+      "figma": {
+        "node": "18753:60729",
+        "evidenceLevel": "source-evidence-recorded",
+        "sourceEvidenceId": "standard-price-settings",
+        "sourceEvidenceStatus": "verified"
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.form-grid",
+          "section.search-table-composition"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.bulk-edit-bar",
+        "section.master-detail-composition",
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
+      "screenId": "team-settings",
+      "name": "조 설정",
+      "source": "src/components/patterns/team-settings-pattern.tsx",
+      "figma": {
+        "node": "18531:57637",
+        "evidenceLevel": "source-evidence-recorded",
+        "sourceEvidenceId": "team-settings",
+        "sourceEvidenceStatus": "verified"
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "detectedSectionSignals": [
+          "section.bulk-edit-bar",
+          "section.form-grid",
+          "section.master-detail-composition",
+          "section.search-table-composition"
+        ],
+        "detectedSectionTitles": []
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.bulk-edit-bar",
+        "section.master-detail-composition",
+        "section.search-table-composition"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    }
+  ],
+  "fingerprint": "e10b488a4c5f4259"
+}

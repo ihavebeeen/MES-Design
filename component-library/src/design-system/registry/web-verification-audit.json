@@ -1,28 +1,28 @@
 {
   "schemaVersion": 1,
-  "auditedAt": null,
-  "sourceFingerprint": "fedb0e02bd0eff2d180fc52e4809168da2a71ee3a99650c558572ab1510d80c0",
+  "auditedAt": "2026-09-07T02:30:08.450Z",
+  "sourceFingerprint": "d92e354532a47627b170ef8cc9046007f370c5b0f7892501edf3419868061ae9",
   "browserRun": {
     "command": "npm run test:visual",
-    "result": "not-verified-for-current-source",
-    "testCount": 92,
-    "passed": null,
-    "failed": null,
-    "durationMs": null,
-    "recordedAt": null,
-    "testInventoryFingerprint": "78596183bb290735ad297fddeb4f091fae8d425d6c18bfd1e4e184b120e81209",
+    "result": "passed",
+    "testCount": 93,
+    "passed": 93,
+    "failed": 0,
+    "durationMs": 449822,
+    "recordedAt": "2026-09-07T02:30:08.450Z",
+    "testInventoryFingerprint": "60eb78567bfe46a51e9b75ee3731fe3a44cf4334ec41575fe91f6ea4dca5e0b8",
     "includesDeferredMobile": true
   },
   "testInventory": {
-    "count": 92,
+    "count": 93,
     "files": {
-      "tests/visual/application-flow.spec.mts": "e972eb78d92011e8f24b4a475837a425ac2656a9327a108abb802fe06eba4496",
-      "tests/visual/design-system.visual.spec.ts": "04803a2406bd410e72e7c971a199a82c3e254c7c611ec26c35030ab5de9fed8e",
+      "tests/visual/application-flow.spec.mts": "c36c4ac6f8662bd30ccadb942e31a019e2559bcc299d82cf077945119f216dae",
+      "tests/visual/design-system.visual.spec.ts": "75463ef43313c7b6ab437c9cfa899e0fb343850f965be786996884779fd26257",
       "tests/visual/figma-component-defaults.spec.ts": "f9a842afc72cfef542c0e242507b6acbbbd1e66b55c7c9a1f3a1719fedf23cc3",
       "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
-      "tests/visual/slide-compositions.spec.mts": "f971816786edc93bea1e2ffce454e0ddd34a09c2d9c2ec3e8b9020230b0309cb"
+      "tests/visual/slide-compositions.spec.mts": "d5482978ea64784678b80cd9e77366d9d096dbdae1cceb31be9635286cbbc8b6"
     },
-    "fingerprint": "78596183bb290735ad297fddeb4f091fae8d425d6c18bfd1e4e184b120e81209"
+    "fingerprint": "60eb78567bfe46a51e9b75ee3731fe3a44cf4334ec41575fe91f6ea4dca5e0b8"
   },
   "summary": {
     "components": {
@@ -35,19 +35,19 @@
       "sourceMissing": 0
     },
     "patterns": {
-      "total": 73,
-      "usedByScreens": 46,
+      "total": 76,
+      "usedByScreens": 49,
       "unusedByScreens": 27,
-      "selectionContexts": 73,
-      "detailedCompositionRules": 11,
-      "withVisualEvidence": 46,
+      "selectionContexts": 76,
+      "detailedCompositionRules": 24,
+      "withVisualEvidence": 49,
       "sourceMissing": 0
     },
     "screens": {
-      "total": 28,
-      "interactionVerified": 28,
-      "directlyVisualLinked": 28,
-      "orderedDefinitions": 3,
+      "total": 29,
+      "interactionVerified": 29,
+      "directlyVisualLinked": 29,
+      "orderedDefinitions": 4,
       "sourceMissing": 0
     }
   },
@@ -207,6 +207,7 @@
         "screen.entity-list",
         "screen.production-result-responsive",
         "section.added-record-list",
+        "section.bulk-edit-bar",
         "section.editable-row-list",
         "section.inspection-items",
         "section.member-selection",
@@ -428,7 +429,8 @@
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "popup.center.inventory-add",
-        "popup.center.inventory-edit"
+        "popup.center.inventory-edit",
+        "section.bulk-edit-bar"
       ],
       "reviewState": "approved-with-context",
       "outstanding": []
@@ -445,7 +447,8 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [
-        "popup.center.inventory-edit"
+        "popup.center.inventory-edit",
+        "section.bulk-edit-bar"
       ],
       "reviewState": "approved-with-context",
       "outstanding": []
@@ -673,6 +676,7 @@
         "screen.form-management-workflow",
         "screen.production-result-responsive",
         "section.page-query-table",
+        "section.query-toolbar",
         "section.search-table-composition"
       ],
       "reviewState": "approved-with-detailed-rule",
@@ -1341,6 +1345,7 @@
         "screen.form-management-workflow",
         "screen.production-result-responsive",
         "section.page-query-table",
+        "section.query-toolbar",
         "section.search-table-composition"
       ],
       "reviewState": "approved-with-detailed-rule",
@@ -1988,14 +1993,13 @@
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
       "reviewState": "needs-evidence",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
         "visual-evidence-missing"
       ]
@@ -2007,14 +2011,13 @@
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
       "reviewState": "needs-evidence",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
         "visual-evidence-missing"
       ]
@@ -2026,14 +2029,13 @@
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
       "reviewState": "needs-evidence",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
         "visual-evidence-missing"
       ]
@@ -2045,14 +2047,13 @@
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
       "reviewState": "needs-evidence",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
         "visual-evidence-missing"
       ]
@@ -2064,14 +2065,13 @@
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
       "reviewState": "needs-evidence",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
         "visual-evidence-missing"
       ]
@@ -2105,6 +2105,7 @@
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "batch-work-order",
+        "bulk-purchase-registration",
         "defect-quantity-input",
         "preissued-label"
       ],
@@ -2374,17 +2375,15 @@
       "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "process-inspection-trend"
       ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": true,
-      "reviewState": "covered-basic",
-      "outstanding": [
-        "detailed-composition-rule-missing"
-      ]
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
     },
     {
       "id": "section.measurement-heatmap-analysis",
@@ -2393,17 +2392,15 @@
       "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "process-inspection-trend"
       ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": true,
-      "reviewState": "covered-basic",
-      "outstanding": [
-        "detailed-composition-rule-missing"
-      ]
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
     },
     {
       "id": "summary.inspection-achievement-stack",
@@ -2412,17 +2409,15 @@
       "source": "src/components/patterns/inspection-trend-analysis-pattern.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "process-inspection-trend"
       ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": true,
-      "reviewState": "covered-basic",
-      "outstanding": [
-        "detailed-composition-rule-missing"
-      ]
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
     },
     {
       "id": "table.grouped-list",
@@ -2561,6 +2556,7 @@
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "batch-work-order",
+        "bulk-purchase-registration",
         "equipment-discharge-settings",
         "form-inspection-criteria",
         "receiving",
@@ -2594,6 +2590,7 @@
       "usedByScreenIds": [
         "batch-work-order",
         "bom-copy",
+        "bulk-purchase-registration",
         "cavity-layout-settings",
         "defect-quantity-input",
         "equipment-discharge-settings",
@@ -2669,6 +2666,68 @@
       ]
     },
     {
+      "id": "section.query-toolbar",
+      "name": "조회 도구 모음",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "sourceExists": true,
+      "hasSelectionContext": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "batch-work-order",
+        "bulk-purchase-registration",
+        "equipment-discharge-settings",
+        "equipment-inspection-records",
+        "inventory-add",
+        "material-input-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "section.bulk-edit-bar",
+      "name": "복수 행 공통값 일괄 변경",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "sourceExists": true,
+      "hasSelectionContext": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "bulk-purchase-registration",
+        "equipment-discharge-settings",
+        "inventory-add",
+        "standard-price-settings",
+        "team-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
+      "id": "section.master-detail-composition",
+      "name": "마스터 선택·연결 상세",
+      "kind": "section-pattern",
+      "source": "src/components/patterns/section-patterns.tsx",
+      "sourceExists": true,
+      "hasSelectionContext": true,
+      "hasDetailedCompositionRule": true,
+      "usedByScreenIds": [
+        "equipment-discharge-settings",
+        "standard-price-settings",
+        "team-settings"
+      ],
+      "generationTemplateIds": [],
+      "directVisualCaseIds": [],
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
+    },
+    {
       "id": "section.search-table-composition",
       "name": "검색·필터·테이블 조합",
       "kind": "section-pattern",
@@ -2678,6 +2737,7 @@
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "batch-work-order",
+        "bulk-purchase-registration",
         "equipment-discharge-settings",
         "equipment-inspection-records",
         "form-management",
@@ -2763,7 +2823,7 @@
       "source": "src/components/patterns/section-patterns.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "bom-copy",
         "production-result-responsive"
@@ -2771,10 +2831,8 @@
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": true,
-      "reviewState": "covered-basic",
-      "outstanding": [
-        "detailed-composition-rule-missing"
-      ]
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
     },
     {
       "id": "summary.result-total-card",
@@ -2783,17 +2841,15 @@
       "source": "src/components/patterns/section-patterns.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "defect-quantity-input"
       ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": true,
-      "reviewState": "covered-basic",
-      "outstanding": [
-        "detailed-composition-rule-missing"
-      ]
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
     },
     {
       "id": "selection.reveal-inline-editor",
@@ -2805,6 +2861,7 @@
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
         "batch-work-order",
+        "bulk-purchase-registration",
         "equipment-discharge-settings",
         "inventory-add",
         "material-input-settings",
@@ -2903,6 +2960,7 @@
       "usedByScreenIds": [
         "batch-work-order",
         "bom-copy",
+        "bulk-purchase-registration",
         "cavity-layout-settings",
         "custom-information",
         "equipment-discharge-settings",
@@ -3425,6 +3483,23 @@
       ],
       "visualCaseIds": [
         "popup-batch-work-order-pilot"
+      ],
+      "hasOrderedDefinition": true,
+      "reviewState": "interaction-and-visual-covered",
+      "outstanding": []
+    },
+    {
+      "id": "bulk-purchase-registration",
+      "name": "발주 일괄등록",
+      "source": "src/components/patterns/completed-popup-patterns.tsx",
+      "sourceExists": true,
+      "figmaNode": "20849:70791",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "발주 일괄등록 원본 화면과 상호작용"
+      ],
+      "visualCaseIds": [
+        "popup-bulk-purchase-registration"
       ],
       "hasOrderedDefinition": true,
       "reviewState": "interaction-and-visual-covered",

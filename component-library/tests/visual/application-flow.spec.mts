@@ -5,6 +5,8 @@ let fixtures: ReturnType<typeof prepareApplicationFlowFixtures>;
 test.beforeAll(() => { fixtures = prepareApplicationFlowFixtures(); });
 test.afterAll(() => { fixtures?.cleanup(); });
 test.use({ viewport: { width: 1440, height: 900 } });
+// A fresh Next.js dev server compiles these generated routes on first access.
+test.setTimeout(60_000);
 
 test("중앙 팝업 단독: 메인 목록 없이 열기·선택·취소·저장 확인", async ({ page }) => {
   const errors: string[] = [];
@@ -68,6 +70,8 @@ test("중앙 팝업: 배경 공통 틀·상태 보존, 취소/X/Escape, 저장 �
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto(fixtures.cases.find(entry => entry.kind === "center")!.plan.route);
+  const trigger = page.getByRole("button", { name: "품목 선택 열기", exact: true });
+  await trigger.click();
   const dialog = page.getByRole("dialog", { name: "품목 선택", exact: true });
   const host = page.locator("[data-mes-host-page]");
   await expect(dialog).toBeVisible();
@@ -78,7 +82,6 @@ test("중앙 팝업: 배경 공통 틀·상태 보존, 취소/X/Escape, 저장 �
   const box = await dialog.boundingBox();
   expect(Math.abs(box!.x + box!.width / 2 - 720)).toBeLessThan(2);
   await dialog.getByRole("button", { name: "취소", exact: true }).click();
-  const trigger = page.getByRole("button", { name: "품목 선택 열기", exact: true });
   await expect(trigger).toBeFocused();
   await page.getByPlaceholder("배경 목록 검색").fill("검증");
   await host.getByRole("checkbox").nth(1).check();
@@ -119,6 +122,7 @@ test("우측 슬라이드: 위치·배경 유지와 입력 취소·재열기", a
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto(fixtures.cases.find(entry => entry.kind === "slide")!.plan.route);
+  await page.getByRole("button", { name: "입력 팝업 열기", exact: true }).click();
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
   const box = await dialog.boundingBox();

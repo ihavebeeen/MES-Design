@@ -16,13 +16,13 @@
 ## API와 상태
 
 - 공개 심볼: `DatePickerProps`, `DatePicker`, `buildMonthMatrix`, `isSameDay`, `formatDate`, `WEEKDAYS`
-- 주요 Props: `value`, `onValueChange`, `placeholder`, `disabled`, `className`, `separator`, `iconPosition`, `iconColor`, `size`
+- 주요 Props: `value`, `onValueChange`, `placeholder`, `disabled`, `className`, `separator`, `iconPosition`, `iconColor`, `size`, `minDate`, `maxDate`
 - 상태: `disabled`, `selected`, `open`, `hover`
 - 변형: 등록된 별도 variant 없음
 
 ## 접근성과 제약
 
-- 네이티브 의미와 부모 컨텍스트의 접근 가능한 이름을 유지합니다.
+- 구현에 선언된 `aria-label`, `aria-pressed` 의미를 제거하지 않습니다.
 - 공개 Props와 구현된 상태 범위 밖으로 임의 확장하지 않습니다.
 
 ## 근거
