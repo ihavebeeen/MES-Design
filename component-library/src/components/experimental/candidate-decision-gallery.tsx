@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import registryData from "@/design-system/registry/experimental-candidates.json";
+import { getAssetScopeLabel } from "@/lib/catalog-labels";
 import { cn } from "@/lib/utils";
 
 type CandidateStatus = "promoted" | "retained" | "rejected";
@@ -128,7 +129,7 @@ function TierDecisionSection({ batch }: { batch: DecisionBatch }) {
       <header className="flex flex-wrap items-end justify-between gap-3 border-b border-mes-gray-40 pb-3">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-[18px] font-bold text-mes-gray-130">Tier {batch.tier}</h2>
+            <h2 className="text-[18px] font-bold text-mes-gray-130">{getAssetScopeLabel(batch.tier)} 후보</h2>
             <Badge variant="gray">최초 {entries.length}개</Badge>
           </div>
           <p className="mt-1 text-[12px] text-mes-gray-60">판정일 {batch.decidedAt} · {batch.id}</p>
@@ -166,7 +167,7 @@ export function CandidateDecisionGallery() {
       <div>
         <h1 className="text-[24px] font-extrabold tracking-tight text-mes-gray-130">후보 판정 현황</h1>
         <p className="mt-2 max-w-4xl text-[13px] leading-6 text-mes-gray-70">
-          Tier 3~5 최초 후보 {registry.catalog.length}개의 현재 위치를 한 화면에서 확인합니다. 이 화면은 실험 후보 JSON 원장을 직접 읽으므로 웹 표시와 파일 판정이 따로 관리되지 않습니다.
+          확장·특수·안내 단계의 최초 후보 {registry.catalog.length}개가 현재 어디에 반영됐는지 확인합니다. 이 화면은 실험 후보 JSON 원장을 직접 읽으므로 웹 표시와 파일 판정이 따로 관리되지 않습니다.
         </p>
       </div>
 
