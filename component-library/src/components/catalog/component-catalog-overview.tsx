@@ -54,10 +54,10 @@ export function ComponentCatalogOverview() {
             <Button size="xsmall" variant={activeGroup === "all" ? "fillBlack" : "lineBlacktxt"} onClick={() => setActiveGroup("all")}>전체</Button>
             {COMPONENT_CATALOG_GROUPS.map((group) => <Button key={group.id} size="xsmall" variant={activeGroup === group.id ? "fillBlack" : "lineBlacktxt"} onClick={() => setActiveGroup(group.id)}>{group.label}</Button>)}
           </div>
-          <div className="flex flex-wrap gap-1.5" aria-label="컴포넌트 성숙도 필터">
-            <Button size="xsmall" variant={maturity === "all" ? "lineMain" : "lineBlacktxt"} onClick={() => setMaturity("all")}>성숙도 전체</Button>
-            <Button size="xsmall" variant={maturity === "stable" ? "lineMain" : "lineBlacktxt"} onClick={() => setMaturity("stable")}>Stable</Button>
-            <Button size="xsmall" variant={maturity === "provisional" ? "lineMain" : "lineBlacktxt"} onClick={() => setMaturity("provisional")}>근거 보강 중</Button>
+          <div className="flex flex-wrap gap-1.5" aria-label="컴포넌트 검증 상태 필터">
+            <Button size="xsmall" variant={maturity === "all" ? "lineMain" : "lineBlacktxt"} onClick={() => setMaturity("all")}>상태 전체</Button>
+            <Button size="xsmall" variant={maturity === "stable" ? "lineMain" : "lineBlacktxt"} onClick={() => setMaturity("stable")}>검증 완료</Button>
+            <Button size="xsmall" variant={maturity === "provisional" ? "lineMain" : "lineBlacktxt"} onClick={() => setMaturity("provisional")}>확인 중</Button>
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@ export function ComponentCatalogOverview() {
                   <div className="flex h-32 items-center justify-center overflow-hidden border-b border-mes-gray-30 bg-mes-gray-10 p-3" data-component-thumbnail={id}><ComponentCatalogThumbnail id={id} groupId={group.id} /></div>
                   <div className="flex min-h-24 flex-col p-4">
                     <div className="flex items-start justify-between gap-2"><div><h4 className="text-[14px] font-bold text-mes-gray-130 group-hover:text-mes-primary-70">{label?.label ?? component?.name ?? id}</h4><p className="mt-0.5 text-[11px] text-mes-gray-60">{label?.labelEn ?? component?.name}</p></div>{TIER_BY_ID[id] && <span className="shrink-0 rounded-full bg-mes-primary-10 px-2 py-0.5 text-[10px] font-semibold text-mes-primary-70">T{TIER_BY_ID[id]}</span>}</div>
-                    <p className="mt-auto pt-3 text-[10px] font-medium text-mes-gray-60">{component?.status === "stable" ? "Stable" : "근거 보강 중"}</p>
+                    <p className="mt-auto pt-3 text-[10px] font-medium text-mes-gray-60">{component?.status === "stable" ? "검증 완료" : "확인 중"}</p>
                   </div>
                 </NextLink>
               );

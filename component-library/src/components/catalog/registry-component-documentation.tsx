@@ -45,7 +45,7 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-[17px] font-bold text-mes-gray-130">{component.name}</h2>
             <span className="rounded-full bg-mes-primary-10 px-2 py-0.5 text-[11px] font-semibold text-mes-primary-70">Tier {component.tier}</span>
-            <span className="rounded-full bg-mes-success-10 px-2 py-0.5 text-[11px] font-semibold text-mes-success-70">Stable</span>
+            <span className="rounded-full bg-mes-success-10 px-2 py-0.5 text-[11px] font-semibold text-mes-success-70">검증 완료</span>
           </div>
           <p className="mt-1 text-[12px] text-mes-gray-60">{component.id} · {component.category}</p>
         </header>}

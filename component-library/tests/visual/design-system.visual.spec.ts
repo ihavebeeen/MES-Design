@@ -50,7 +50,7 @@ test("Tier 3 승격 자산은 Components에서 정식 API로 확인한다", asyn
 
 });
 
-test("컴포넌트 개요는 역할·성숙도·검색으로 탐색한다", async ({ page }) => {
+test("컴포넌트 개요는 역할·검증 상태·검색으로 탐색한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/components");
 
@@ -61,6 +61,9 @@ test("컴포넌트 개요는 역할·성숙도·검색으로 탐색한다", asyn
   await expect(catalog.locator("[data-component-thumbnail]")).toHaveCount(componentCatalogCardCount);
   await expect(catalog.locator("[data-thumbnail-missing]")).toHaveCount(0);
   await expect(catalog.locator("[data-context-coverage-summary]")).toHaveCount(0);
+  await expect(catalog.getByRole("button", { name: "검증 완료", exact: true })).toBeVisible();
+  await expect(catalog.getByRole("button", { name: "확인 중", exact: true })).toBeVisible();
+  await expect(catalog.getByText("성숙도", { exact: false })).toHaveCount(0);
   await expect(catalog.locator('[data-component-card="button-size"]')).not.toContainText("주로 사용");
   await expect(catalog.locator('[data-component-card="button-size"]')).not.toContainText("피할 때");
   const thumbnailOverflows = await catalog.locator("[data-component-thumbnail]").evaluateAll((elements) => elements.map((element) => element.scrollWidth - element.clientWidth));
