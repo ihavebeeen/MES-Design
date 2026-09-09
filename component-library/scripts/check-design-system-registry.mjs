@@ -602,6 +602,18 @@ for (const contract of componentUsageContracts.values()) {
   }
 }
 
+const queryDateRangeContract = componentUsageContracts.get("query-date-range");
+if (!queryDateRangeContract?.allowedParents?.includes("section.page-query-table")) {
+  errors.push("component-usage-contract 'query-date-range': 메인 목록 조회 기간의 parent 맥락이 필요합니다.");
+}
+if (!queryDateRangeContract?.alternatives?.some((entry) => entry.componentId === "date-range-picker")) {
+  errors.push("component-usage-contract 'query-date-range': 저장용 날짜 범위 대안이 필요합니다.");
+}
+const storedDateRangeContext = componentBaselineContexts.get("date-range-picker");
+if (!storedDateRangeContext?.capabilities?.includes("stored-date-range-choice")) {
+  errors.push("component baseline context 'date-range-picker': 저장되는 업무 날짜 범위 맥락이 필요합니다.");
+}
+
 const feedbackPolicy = generationSelectionFeedbackRegistry.policy;
 if (feedbackPolicy?.recordOnlyObservedFailures !== true || feedbackPolicy?.singleOccurrenceDoesNotCreateGlobalRule !== true || feedbackPolicy?.runtimeWebIsReferenceOnly !== true) {
   errors.push("generation-selection-feedback: 관찰 오류만 기록하고 단건·실제 웹을 자동 표준화하지 않는 정책이 필요합니다.");
@@ -635,7 +647,14 @@ for (const contract of patternContracts.values()) {
     slotIds.add(slot.id);
   }
   for (const actionSetId of contract.allowedActionSets ?? []) if (!actionSets.has(actionSetId)) errors.push(`pattern-contract '${contract.patternId}': 미등록 action-set '${actionSetId}'를 참조합니다.`);
-  for (const screenId of [...(contract.evidence ?? []), ...(contract.goldenScreenIds ?? [])]) if (!screens.has(screenId)) errors.push(`pattern-contract '${contract.patternId}': 미등록 screen '${screenId}'를 참조합니다.`);
+  for (const screenId of [...(contract.evidence ?? []), ...(contract.goldenScreenIds ?? [])]) {
+    const screen = screens.get(screenId);
+    if (!screen) {
+      errors.push(`pattern-contract '${contract.patternId}': 미등록 screen '${screenId}'를 참조합니다.`);
+    } else if (!(screen.patternRefs ?? []).includes(contract.patternId)) {
+      errors.push(`pattern-contract '${contract.patternId}': 근거 화면 '${screenId}'의 patternRefs에 해당 패턴이 연결되지 않았습니다.`);
+    }
+  }
   if (contract.forbiddenImplementationMarkers !== undefined) {
     if (!Array.isArray(contract.forbiddenImplementationMarkers)) {
       errors.push(`pattern-contract '${contract.patternId}': forbiddenImplementationMarkers는 배열이어야 합니다.`);

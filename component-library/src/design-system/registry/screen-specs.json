@@ -112,7 +112,7 @@
           "id": "productionList",
           "title": "생산실적 리스트",
           "slot": "body",
-          "patternRef": "section.search-table-composition",
+          "patternRef": "section.page-query-table",
           "supportingPatternRefs": ["table.grouped-list"],
           "componentRefs": ["sidebar", "page-top-tab-item", "query-date-range", "group-query", "filter", "quick-query", "search-input", "table"],
           "behaviorRefs": ["selection.master-detail"],

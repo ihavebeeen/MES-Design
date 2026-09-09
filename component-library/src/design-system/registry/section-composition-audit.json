@@ -17,19 +17,22 @@
   "summary": {
     "registeredSectionPatterns": 18,
     "sectionPatternsWithSelectionContext": 18,
-    "registeredScreens": 29,
+    "registeredScreens": 30,
     "screensWithDetailedSpec": 5,
-    "screensMappedBySectionPattern": 22,
+    "screensMappedBySectionPattern": 23,
     "screensWithExplicitLocalComposition": 2,
     "unresolvedScreens": 0,
     "figmaSourceEvidenceRecorded": 10,
-    "figmaReferencesOnly": 19,
+    "figmaReferencesOnly": 20,
     "webReferencedScreens": 4,
-    "codeInventoryTrackedScreens": 29,
-    "screenScopedCodeEvidence": 18
+    "codeInventoryTrackedScreens": 30,
+    "screenScopedCodeEvidence": 19
   },
   "gaps": {
     "missingSectionContracts": [],
+    "sectionPatternsWithoutRegisteredScreen": [],
+    "entityListScreensWithoutPageQueryPattern": [],
+    "customFieldScreensWithoutSectionPattern": [],
     "unresolvedScreens": [],
     "codeSourcesOutsideCompositionInventory": [],
     "sharedSourceScreensWithoutDetailedSpec": [
@@ -110,7 +113,10 @@
           "SlideCompositionSectionView"
         ]
       },
-      "usedByScreens": [],
+      "usedByScreens": [
+        "custom-information",
+        "user-password-settings"
+      ],
       "detectedCodeSources": []
     },
     {
@@ -205,8 +211,7 @@
         ],
         "evidence": [
           "receiving",
-          "production-result",
-          "operation-log"
+          "production-result"
         ]
       },
       "compositionContract": {
@@ -286,8 +291,7 @@
           "빈 상태에서는 구성원을 추가하거나 선택하는 다음 행동을 명확히 제공한다."
         ],
         "evidence": [
-          "team-settings",
-          "user-password-settings"
+          "group-settings"
         ]
       },
       "compositionContract": {
@@ -334,7 +338,9 @@
           "SlideCompositionSectionView"
         ]
       },
-      "usedByScreens": [],
+      "usedByScreens": [
+        "group-settings"
+      ],
       "detectedCodeSources": []
     },
     {
@@ -359,8 +365,7 @@
           "권한 열의 의미와 일괄 적용 범위를 화면마다 임의로 바꾸지 않는다."
         ],
         "evidence": [
-          "team-settings",
-          "user-password-settings"
+          "group-settings"
         ]
       },
       "compositionContract": {
@@ -404,7 +409,9 @@
           "SlideCompositionSectionView"
         ]
       },
-      "usedByScreens": [],
+      "usedByScreens": [
+        "group-settings"
+      ],
       "detectedCodeSources": []
     },
     {
@@ -660,6 +667,7 @@
         "production-result",
         "receiving",
         "custom-information",
+        "group-settings",
         "form-inspection-criteria",
         "user-password-settings",
         "form-management",
@@ -884,8 +892,7 @@
         "evidence": [
           "equipment-discharge-settings",
           "standard-price-settings",
-          "team-settings",
-          "process-inspection-trend"
+          "team-settings"
         ]
       },
       "compositionContract": {
@@ -963,7 +970,8 @@
         ],
         "doNotUseWhen": [
           "반복 입력 행을 정렬만 하기 위한 경우",
-          "검색이나 표가 없는 폼"
+          "검색이나 표가 없는 폼",
+          "좌측 메뉴·상단 탭·기간·그룹화·빠른 조회·무한 스크롤을 사용하는 MES 메인 목록"
         ],
         "constraints": [
           "toolbar는 items-center를 소유한다.",
@@ -973,7 +981,7 @@
         "evidence": [
           "batch-work-order",
           "material-input-settings",
-          "grouped-production-list"
+          "inventory-add"
         ]
       },
       "compositionContract": {
@@ -1051,11 +1059,9 @@
         "material-input-settings",
         "batch-work-order",
         "bulk-purchase-registration",
-        "grouped-production-list",
         "sales-transaction-statement",
         "shipment-approval",
         "form-management",
-        "production-result-responsive",
         "inventory-add",
         "inventory-edit",
         "purchase-order-lookup",
@@ -1173,7 +1179,11 @@
           "IconDownload"
         ]
       },
-      "usedByScreens": [],
+      "usedByScreens": [
+        "grouped-production-list",
+        "sales-transaction-statement",
+        "production-result-responsive"
+      ],
       "detectedCodeSources": []
     },
     {
@@ -1198,8 +1208,6 @@
           "stable ID와 추가 조건은 row.mutation-policy에 위임한다."
         ],
         "evidence": [
-          "receiving",
-          "production-result",
           "operation-log"
         ]
       },
@@ -1293,8 +1301,7 @@
           "판정 상태와 입력 동작을 같은 state에서 관리한다."
         ],
         "evidence": [
-          "self-inspection",
-          "form-inspection-criteria"
+          "self-inspection"
         ]
       },
       "compositionContract": {
@@ -1449,8 +1456,7 @@
           "계산식은 패턴 내부에 고정하지 않는다."
         ],
         "evidence": [
-          "defect-quantity-input",
-          "preissued-label"
+          "defect-quantity-input"
         ]
       },
       "compositionContract": {
@@ -2178,7 +2184,8 @@
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
-        "section.form-grid"
+        "section.form-grid",
+        "section.custom-field-values"
       ],
       "detailedSections": [],
       "localComposition": null
@@ -2238,6 +2245,43 @@
       "localComposition": null
     },
     {
+      "screenId": "group-settings",
+      "name": "그룹설정",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "figma": {
+        "node": "11122:47785",
+        "evidenceLevel": "registered-reference-only",
+        "sourceEvidenceId": null,
+        "sourceEvidenceStatus": null
+      },
+      "webEvidence": {
+        "role": "reference-only",
+        "pageIds": [],
+        "flowIds": []
+      },
+      "codeEvidence": {
+        "inventoryTracked": true,
+        "attribution": "dedicated-source-file",
+        "semanticCoverage": "declared-pattern-refs-only",
+        "detectedSectionSignals": [
+          "section.form-grid",
+          "section.inspection-items",
+          "section.search-table-composition",
+          "section.summary"
+        ],
+        "detectedSectionTitles": [],
+        "fileLevelReference": null
+      },
+      "structureLevel": "section-pattern-mapped",
+      "sectionPatternRefs": [
+        "section.form-grid",
+        "section.member-selection",
+        "section.permission-matrix"
+      ],
+      "detailedSections": [],
+      "localComposition": null
+    },
+    {
       "screenId": "grouped-production-list",
       "name": "그룹화 리스트 관리 화면",
       "source": "src/app/[...slug]/client-page.tsx",
@@ -2257,7 +2301,7 @@
         "attribution": "screen-spec",
         "semanticCoverage": "ordered-sections",
         "detectedSectionSignals": [
-          "section.search-table-composition",
+          "section.page-query-table",
           "table.grouped-list"
         ],
         "detectedSectionTitles": [
@@ -2267,13 +2311,13 @@
       },
       "structureLevel": "detailed-screen-spec",
       "sectionPatternRefs": [
-        "section.search-table-composition"
+        "section.page-query-table"
       ],
       "detailedSections": [
         {
           "id": "productionList",
           "title": "생산실적 리스트",
-          "patternRef": "section.search-table-composition",
+          "patternRef": "section.page-query-table",
           "supportingPatternRefs": [
             "table.grouped-list"
           ],
@@ -2423,7 +2467,8 @@
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
-        "section.form-grid"
+        "section.form-grid",
+        "section.custom-field-values"
       ],
       "detailedSections": [],
       "localComposition": null
@@ -2457,6 +2502,7 @@
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
+        "section.page-query-table",
         "section.search-table-composition"
       ],
       "detailedSections": [],
@@ -2581,7 +2627,7 @@
       },
       "structureLevel": "section-pattern-mapped",
       "sectionPatternRefs": [
-        "section.search-table-composition",
+        "section.page-query-table",
         "summary.table-total-row"
       ],
       "detailedSections": [],
@@ -2909,5 +2955,5 @@
       "localComposition": null
     }
   ],
-  "fingerprint": "bb7582e4bf6fd822"
+  "fingerprint": "a2fe8f0d1172d2fa"
 }

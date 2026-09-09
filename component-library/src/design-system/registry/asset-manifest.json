@@ -9,7 +9,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "5f192807a4ca19f12d553d9c72b115d29eafc74d091a2b26541d12905d255857",
+  "fingerprint": "7db38691f312ec6b7bc7915d7068f836242958282c8217bbfcbc85bf5bbfcbe5",
   "guidancePolicy": {
     "componentSelection": {
       "contextCoverageMode": "all-components",
@@ -43,7 +43,7 @@
       "selectionGuardContracts": 25
     },
     "patterns": 76,
-    "screens": 29
+    "screens": 30
   },
   "assets": [
     {
@@ -1731,69 +1731,30 @@
       "tier": 2,
       "documentationMode": "interactive",
       "documentationFile": "docs/components/date-range-picker.md",
-      "guidanceMode": "selection-guard",
+      "guidanceMode": "selection-context",
       "selectionContext": {
         "componentId": "date-range-picker",
         "capabilities": [
-          "date-range-query"
+          "stored-date-range-choice"
         ],
         "useWhen": [
-          "조회 대상의 시작일과 종료일을 한 범위로 선택"
+          "일반 폼이나 팝업에서 시작일과 종료일을 하나의 업무 값 범위로 저장한다."
         ],
         "doNotUseWhen": [
-          "단일 날짜 업무 필드",
-          "원본에 기간 조회가 없는 화면"
+          "메인 목록의 조회 기간이거나 날짜 하루만 저장하는 경우"
         ],
         "alternatives": [
           {
-            "componentId": "input",
-            "chooseInsteadWhen": "저장되는 단일 날짜 필드이며 화면 근거가 있을 때"
-          }
-        ]
-      },
-      "usageContract": {
-        "componentId": "date-range-picker",
-        "capabilities": [
-          "date-range-query"
-        ],
-        "variants": [
-          "default"
-        ],
-        "requiredStates": [
-          "empty",
-          "complete",
-          "calendar-open"
-        ],
-        "useWhen": [
-          "조회 대상의 시작일과 종료일을 한 범위로 선택"
-        ],
-        "doNotUseWhen": [
-          "단일 날짜 업무 필드",
-          "원본에 기간 조회가 없는 화면"
-        ],
-        "allowedParents": [
-          "section.search-table-composition",
-          "screen.entity-list"
-        ],
-        "constraints": [
-          "시작일은 종료일보다 늦을 수 없다.",
-          "조회 버튼과 같은 상단 조건 영역에 배치한다."
-        ],
-        "accessibility": [
-          "시작일과 종료일 입력을 각각 식별한다.",
-          "달력 열기와 날짜 이동을 키보드로 수행할 수 있어야 한다."
-        ],
-        "evidence": [
-          "grouped-production-list",
-          "production-result-responsive"
-        ],
-        "alternatives": [
+            "componentId": "query-date-range",
+            "chooseInsteadWhen": "MES 목록이나 조회 팝업의 기간 조건일 때"
+          },
           {
-            "componentId": "input",
-            "chooseInsteadWhen": "저장되는 단일 날짜 필드이며 화면 근거가 있을 때"
+            "componentId": "date-picker",
+            "chooseInsteadWhen": "날짜 하루를 업무 값으로 저장할 때"
           }
         ]
       },
+      "usageContract": null,
       "usedByPatternIds": [
         "screen.analytics-dashboard"
       ],
@@ -5579,17 +5540,21 @@
       "documentationMode": "registry",
       "documentationRoute": "/components/query-date-range",
       "documentationFile": "docs/components/query-date-range.md",
-      "guidanceMode": "selection-context",
+      "guidanceMode": "selection-guard",
       "selectionContext": {
         "componentId": "query-date-range",
         "capabilities": [
-          "list-query-date-range"
+          "list-query-date-range",
+          "labeled-query-period"
         ],
         "useWhen": [
-          "MES 목록 조회 조건에서 시작일·종료일을 하나의 32px 기간 컨트롤로 제공한다."
+          "MES 메인 목록이나 조회 팝업에서 시작일·종료일을 하나의 조회 조건으로 변경",
+          "기간 라벨과 두 날짜 입력이 한 줄의 조회 도구로 함께 보여야 함"
         ],
         "doNotUseWhen": [
-          "업무 레코드에 저장되는 단일 날짜나 일반 폼의 날짜 범위인 경우"
+          "업무 레코드에 저장되는 단일 날짜",
+          "일반 폼에서 저장되는 날짜 범위",
+          "원본과 업무 조건에 기간 조회가 없는 화면"
         ],
         "alternatives": [
           {
@@ -5598,11 +5563,64 @@
           },
           {
             "componentId": "date-range-picker",
-            "chooseInsteadWhen": "폼에서 날짜 범위를 저장할 때"
+            "chooseInsteadWhen": "일반 폼에서 날짜 범위를 하나의 업무 값으로 저장할 때"
           }
         ]
       },
-      "usageContract": null,
+      "usageContract": {
+        "componentId": "query-date-range",
+        "capabilities": [
+          "list-query-date-range",
+          "labeled-query-period"
+        ],
+        "variants": [
+          "default"
+        ],
+        "requiredStates": [
+          "empty",
+          "complete",
+          "calendar-open"
+        ],
+        "useWhen": [
+          "MES 메인 목록이나 조회 팝업에서 시작일·종료일을 하나의 조회 조건으로 변경",
+          "기간 라벨과 두 날짜 입력이 한 줄의 조회 도구로 함께 보여야 함"
+        ],
+        "doNotUseWhen": [
+          "업무 레코드에 저장되는 단일 날짜",
+          "일반 폼에서 저장되는 날짜 범위",
+          "원본과 업무 조건에 기간 조회가 없는 화면"
+        ],
+        "allowedParents": [
+          "section.page-query-table",
+          "section.query-toolbar",
+          "section.search-table-composition",
+          "screen.entity-list"
+        ],
+        "constraints": [
+          "시작일은 종료일보다 늦을 수 없다.",
+          "메인 목록에서는 기간 라벨·시작일·종료일을 승인된 32px 조회 컨트롤로 유지한다.",
+          "조회 결과를 갱신하는 다른 도구와 같은 query state를 사용한다."
+        ],
+        "accessibility": [
+          "시작일과 종료일 입력을 각각 식별한다.",
+          "달력 열기와 날짜 이동을 키보드로 수행할 수 있어야 한다."
+        ],
+        "evidence": [
+          "grouped-production-list",
+          "production-result-responsive",
+          "equipment-inspection-records"
+        ],
+        "alternatives": [
+          {
+            "componentId": "date-picker",
+            "chooseInsteadWhen": "날짜 하루를 업무 값으로 저장할 때"
+          },
+          {
+            "componentId": "date-range-picker",
+            "chooseInsteadWhen": "일반 폼에서 날짜 범위를 하나의 업무 값으로 저장할 때"
+          }
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.inspection-records",
         "popup.center.purchase-lookup",
@@ -7114,7 +7132,9 @@
         "checkbox",
         "search-input"
       ],
-      "usedByScreenIds": []
+      "usedByScreenIds": [
+        "group-settings"
+      ]
     },
     {
       "kind": "pattern",
@@ -7130,7 +7150,9 @@
         "table",
         "checkbox"
       ],
-      "usedByScreenIds": []
+      "usedByScreenIds": [
+        "group-settings"
+      ]
     },
     {
       "kind": "pattern",
@@ -7144,7 +7166,10 @@
         "input",
         "select"
       ],
-      "usedByScreenIds": []
+      "usedByScreenIds": [
+        "custom-information",
+        "user-password-settings"
+      ]
     },
     {
       "kind": "pattern",
@@ -7190,7 +7215,9 @@
         "table",
         "button"
       ],
-      "usedByScreenIds": []
+      "usedByScreenIds": [
+        "group-settings"
+      ]
     },
     {
       "kind": "pattern",
@@ -7203,7 +7230,9 @@
         "table",
         "button"
       ],
-      "usedByScreenIds": []
+      "usedByScreenIds": [
+        "group-settings"
+      ]
     },
     {
       "kind": "pattern",
@@ -7444,7 +7473,8 @@
         "button"
       ],
       "usedByScreenIds": [
-        "grouped-production-list"
+        "grouped-production-list",
+        "sales-transaction-statement"
       ]
     },
     {
@@ -7595,6 +7625,7 @@
       ],
       "usedByScreenIds": [
         "custom-information",
+        "group-settings",
         "production-result",
         "receiving"
       ]
@@ -7614,6 +7645,7 @@
         "custom-information",
         "form-inspection-criteria",
         "form-management",
+        "group-settings",
         "production-result",
         "receiving",
         "user-password-settings"
@@ -7635,6 +7667,7 @@
         "bulk-purchase-registration",
         "equipment-discharge-settings",
         "form-inspection-criteria",
+        "group-settings",
         "receiving",
         "sales-transaction-statement",
         "shipment-approval",
@@ -7688,6 +7721,7 @@
       "usedByScreenIds": [
         "custom-information",
         "form-management",
+        "group-settings",
         "operation-log",
         "production-result",
         "receiving",
@@ -7782,12 +7816,10 @@
         "equipment-discharge-settings",
         "equipment-inspection-records",
         "form-management",
-        "grouped-production-list",
         "inventory-add",
         "inventory-edit",
         "material-input-settings",
         "production-analytics-latest",
-        "production-result-responsive",
         "purchase-order-lookup",
         "sales-transaction-statement",
         "shipment-approval",
@@ -7810,7 +7842,11 @@
         "search-input",
         "table"
       ],
-      "usedByScreenIds": []
+      "usedByScreenIds": [
+        "grouped-production-list",
+        "production-result-responsive",
+        "sales-transaction-statement"
+      ]
     },
     {
       "kind": "pattern",
@@ -7965,6 +8001,7 @@
         "equipment-discharge-settings",
         "form-inspection-criteria",
         "form-management",
+        "group-settings",
         "inventory-add",
         "material-input-settings",
         "operation-log",
@@ -8522,6 +8559,7 @@
         "shell.side-slide-panel",
         "frame.standard-section",
         "section.form-grid",
+        "section.custom-field-values",
         "action-set.cancel-save"
       ]
     },
@@ -8541,13 +8579,31 @@
     },
     {
       "kind": "screen",
+      "id": "group-settings",
+      "name": "그룹설정",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "figmaNode": "11122:47785",
+      "patternRefs": [
+        "popup.side.group-settings",
+        "recipe.side-slide-group-settings",
+        "shell.side-slide-panel",
+        "frame.standard-section",
+        "section.form-grid",
+        "section.member-selection",
+        "section.permission-matrix",
+        "dismiss.restore-committed",
+        "action-set.cancel-save"
+      ]
+    },
+    {
+      "kind": "screen",
       "id": "grouped-production-list",
       "name": "그룹화 리스트 관리 화면",
       "source": "src/app/[...slug]/client-page.tsx",
       "figmaNode": "17000:39999",
       "patternRefs": [
         "screen.entity-list",
-        "section.search-table-composition",
+        "section.page-query-table",
         "table.grouped-list",
         "selection.master-detail"
       ]
@@ -8601,6 +8657,7 @@
       "patternRefs": [
         "shell.side-slide-panel",
         "section.form-grid",
+        "section.custom-field-values",
         "shell.confirm-dialog",
         "shell.center-modal",
         "action-set.cancel-save",
@@ -8614,6 +8671,8 @@
       "source": "src/components/patterns/sales-transaction-statement-pattern.tsx",
       "figmaNode": "17475:46145",
       "patternRefs": [
+        "screen.entity-list",
+        "section.page-query-table",
         "table.grouped-list",
         "shell.center-modal",
         "section.search-table-composition",
@@ -8659,7 +8718,7 @@
       "figmaNode": "18849:62314",
       "patternRefs": [
         "screen.production-result-responsive",
-        "section.search-table-composition",
+        "section.page-query-table",
         "summary.table-total-row",
         "selection.enable-actions"
       ]

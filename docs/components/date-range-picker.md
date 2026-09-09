@@ -4,37 +4,34 @@
 
 ## 역할
 
-조회 대상의 시작일과 종료일을 한 범위로 선택
+일반 폼이나 팝업에서 시작일과 종료일을 하나의 업무 값 범위로 저장한다.
 
 ## 생성 선택 기준
 
-- 조회 대상의 시작일과 종료일을 한 범위로 선택
+- 일반 폼이나 팝업에서 시작일과 종료일을 하나의 업무 값 범위로 저장한다.
 
 선택하지 않는 경우:
-- 단일 날짜 업무 필드
-- 원본에 기간 조회가 없는 화면
+- 메인 목록의 조회 기간이거나 날짜 하루만 저장하는 경우
 
 ## API와 상태
 
 - 공개 심볼: `DateRange`, `DateRangePickerProps`, `DateRangePicker`
 - 주요 Props: `start`, `end`, `value`, `onValueChange`, `placeholder`, `disabled`, `className`
-- 상태: `empty`, `complete`, `calendar-open`
-- 변형: `default`
+- 상태: `disabled`, `open`, `hover`
+- 변형: 등록된 별도 variant 없음
 
 ## 접근성과 제약
 
-- 시작일과 종료일 입력을 각각 식별한다.
-- 달력 열기와 날짜 이동을 키보드로 수행할 수 있어야 한다.
-- 시작일은 종료일보다 늦을 수 없다.
-- 조회 버튼과 같은 상단 조건 영역에 배치한다.
+- 네이티브 의미와 부모 컨텍스트의 접근 가능한 이름을 유지합니다.
+- 공개 Props와 구현된 상태 범위 밖으로 임의 확장하지 않습니다.
 
 ## 근거
 
 - 구현: `src/components/ui/date-range-picker.tsx`
 - 웹 문서: `/components/date-range-picker`
 - 생성 선택 맥락: 적용됨
-- 상세 선택 계약: 적용됨
-- 참고 화면: `grouped-production-list`, `production-result-responsive`
-- 참고 화면의 역할: 선택 규칙을 설명하는 참고 자료이며 단독 표준 근거가 아님
+- 상세 선택 계약: 기본 맥락만 적용
+- 참고 화면: 없음
+- 참고 화면의 역할: 직접 화면 근거 없이 의미·API 맥락으로 정의
 
 이 문서는 `npm run sync:assets`로 생성합니다. 직접 수정하지 않습니다.

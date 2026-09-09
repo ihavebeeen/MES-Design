@@ -12,9 +12,9 @@
       "behaviorTargets": ["shell.dismiss", "shell.commit"],
       "scrollOwner": "shell-body",
       "allowedActionSets": ["action-set.cancel-save", "action-set.cancel-confirm", "action-set.save-only", "action-set.close-only", "action-set.cancel-select", "action-set.cancel-input"],
-      "useWhen": ["전체 컨셉과 적용 가능한 MES 계약 또는 사용자 지정이 중앙 작업 형식"],
+      "useWhen": ["검색·선택·비교·설정처럼 범위가 한정된 작업을 현재 화면 위에서 완료하고 원래 흐름으로 돌아갈 때", "업무 목적·정보 관계·저장 단위·정보량·진입 위치를 함께 검토한 결과 중앙 작업 공간이 적합할 때"],
       "doNotUseWhen": ["유지해야 할 원본/계약은 우측인데 배경 유지·건수·길이만으로 중앙으로 바꾸는 경우", "짧은 확인만 있는 confirm dialog"],
-      "constraints": ["본문만 스크롤하고 헤더와 푸터를 고정한다.", "원본 size 또는 승인 preset을 사용한다."],
+      "constraints": ["본문만 스크롤하고 헤더와 푸터를 고정한다.", "원본 size 또는 승인 preset을 사용한다.", "단일 조건으로 셸을 확정하지 않고 가까운 우측 슬라이드·확인 팝업 후보와 비교 근거를 남긴다."],
       "evidence": ["batch-work-order", "material-input-settings", "inventory-add"],
       "goldenScreenIds": ["batch-work-order"],
       "implementationMarkers": ["CenterModal"]
@@ -30,9 +30,9 @@
       "behaviorTargets": ["shell.dismiss", "shell.commit"],
       "scrollOwner": "shell-body",
       "allowedActionSets": ["action-set.cancel-save", "action-set.cancel-confirm", "action-set.save-only", "action-set.close-only"],
-      "useWhen": ["전체 컨셉과 적용 가능한 MES 계약 또는 사용자 지정이 우측 작업 형식"],
+      "useWhen": ["목록에서 이어지는 한 대상의 등록·상세·편집을 전체 높이의 연속된 작업 흐름으로 처리할 때", "기본정보와 확장정보·검사·반복 입력처럼 연결된 여러 섹션을 순서대로 살펴보고 같은 단위로 저장할 때", "업무 목적·정보 관계·저장 단위·정보량·진입 위치를 함께 검토한 결과 우측 작업 공간이 적합할 때"],
       "doNotUseWhen": ["중앙 조회 팝업", "전체 페이지"],
-      "constraints": ["우측 배치와 전체 높이를 유지한다.", "본문 섹션 순서를 ScreenSpec과 동일하게 렌더링한다."],
+      "constraints": ["우측 배치와 전체 높이를 유지한다.", "본문 섹션 순서를 ScreenSpec과 동일하게 렌더링한다.", "좌우 배치나 긴 입력 한 가지 특징만으로 셸을 확정하지 않고 중앙 팝업 후보와 비교 근거를 남긴다."],
       "evidence": ["receiving", "production-result", "operation-log"],
       "goldenScreenIds": ["receiving"],
       "implementationMarkers": ["SideSlidePanel"]
@@ -120,7 +120,7 @@
       "useWhen": ["한 영역에서 선택한 대상이 다른 영역의 정보·입력 가능 상태·행동을 결정할 때"],
       "doNotUseWhen": ["두 영역이 서로 독립적일 때", "단순한 원본·대상 비교처럼 선택에 따른 갱신이 없을 때"],
       "constraints": ["master와 detail은 같은 선택 ID 계약을 공유한다.", "가로·세로 방향과 비율은 종속 관계만이 아니라 비교 필요·정보량·가용 공간을 함께 보고 정한다.", "각 영역의 스크롤 주체를 중복 지정하지 않는다."],
-      "evidence": ["equipment-discharge-settings", "standard-price-settings", "team-settings", "process-inspection-trend"],
+      "evidence": ["equipment-discharge-settings", "standard-price-settings", "team-settings"],
       "goldenScreenIds": ["equipment-discharge-settings", "team-settings"],
       "implementationMarkers": ["MasterDetailSection", "useMasterDetailSelection"]
     },
@@ -139,10 +139,10 @@
       "scrollOwner": "table",
       "allowedActionSets": [],
       "useWhen": ["검색·필터와 정렬된 데이터 표가 하나의 조회 영역을 이룸"],
-      "doNotUseWhen": ["반복 입력 행을 정렬만 하기 위한 경우", "검색이나 표가 없는 폼"],
+      "doNotUseWhen": ["반복 입력 행을 정렬만 하기 위한 경우", "검색이나 표가 없는 폼", "좌측 메뉴·상단 탭·기간·그룹화·빠른 조회·무한 스크롤을 사용하는 MES 메인 목록"],
       "constraints": ["toolbar는 items-center를 소유한다.", "table만 가변 영역과 스크롤을 소유한다.", "존재하지 않는 slot을 장식 목적으로 만들지 않는다."],
-      "evidence": ["batch-work-order", "material-input-settings", "grouped-production-list"],
-      "goldenScreenIds": ["batch-work-order", "grouped-production-list"],
+      "evidence": ["batch-work-order", "material-input-settings", "inventory-add"],
+      "goldenScreenIds": ["batch-work-order", "inventory-add"],
       "implementationMarkers": ["SearchTableSection", "SearchInput", "Table"]
     },
     {
@@ -189,8 +189,8 @@
       "useWhen": ["사용자가 행을 직접 추가·수정·삭제하지만 표 탐색 기능은 필요 없음"],
       "doNotUseWhen": ["정렬·그룹·전체 선택이 필요한 데이터 표"],
       "constraints": ["헤더와 모든 행은 동일 columns 계약을 공유한다.", "stable ID와 추가 조건은 row.mutation-policy에 위임한다."],
-      "evidence": ["receiving", "production-result", "operation-log"],
-      "goldenScreenIds": ["receiving"],
+      "evidence": ["operation-log"],
+      "goldenScreenIds": ["operation-log"],
       "implementationMarkers": ["EditableRowListSection", "EditableRowGrid"]
     },
     {
@@ -209,7 +209,7 @@
       "useWhen": ["검사항목과 O·△·X 같은 판정값을 반복 입력"],
       "doNotUseWhen": ["일반 데이터 목록", "단순 라디오 그룹"],
       "constraints": ["섹션 헤더는 전체 폭을 사용한다.", "판정 상태와 입력 동작을 같은 state에서 관리한다."],
-      "evidence": ["self-inspection", "form-inspection-criteria"],
+      "evidence": ["self-inspection"],
       "goldenScreenIds": ["self-inspection"],
       "implementationMarkers": ["InspectionItemsSection"]
     },
@@ -262,7 +262,7 @@
       "useWhen": ["같은 저장 단위에 추가된 여러 레코드를 공통 열 기준으로 검토하거나 수정할 때"],
       "doNotUseWhen": ["서버 조회 결과를 검색·정렬하는 목록", "서로 다른 구조의 카드 모음"],
       "constraints": ["blank-row·entry-form·both 중 추가 방식을 화면 계약에서 지정한다.", "어느 추가 경로를 사용하더라도 동일한 행 검증과 stable ID 정책을 적용한다."],
-      "evidence": ["receiving", "production-result", "operation-log"],
+      "evidence": ["receiving", "production-result"],
       "goldenScreenIds": ["receiving", "production-result"],
       "implementationMarkers": ["SlideCompositionSectionView"]
     },
@@ -280,8 +280,8 @@
       "useWhen": ["조직·그룹·권한의 구성원 후보를 찾고 복수 선택할 때"],
       "doNotUseWhen": ["단일 담당자 하나를 Select로 지정할 때", "구성원과 무관한 일반 데이터 목록"],
       "constraints": ["선택 수와 실제 적용 대상이 일치해야 한다.", "빈 상태에서는 구성원을 추가하거나 선택하는 다음 행동을 명확히 제공한다."],
-      "evidence": ["team-settings", "user-password-settings"],
-      "goldenScreenIds": ["team-settings"],
+      "evidence": ["group-settings"],
+      "goldenScreenIds": ["group-settings"],
       "implementationMarkers": ["SlideCompositionSectionView"]
     },
     {
@@ -298,8 +298,8 @@
       "useWhen": ["동일한 메뉴 구조에 조회·등록·수정 같은 복수 권한을 열 기준으로 비교하고 설정할 때"],
       "doNotUseWhen": ["권한 하나만 단순 on/off할 때", "메뉴 계층이 없는 일반 체크 목록"],
       "constraints": ["부모·자식 메뉴의 부분 선택 상태를 명시한다.", "권한 열의 의미와 일괄 적용 범위를 화면마다 임의로 바꾸지 않는다."],
-      "evidence": ["team-settings", "user-password-settings"],
-      "goldenScreenIds": ["team-settings"],
+      "evidence": ["group-settings"],
+      "goldenScreenIds": ["group-settings"],
       "implementationMarkers": ["SlideCompositionSectionView"]
     },
     {
@@ -387,7 +387,7 @@
       "useWhen": ["표 좌표와 무관한 하나의 계산 결과를 라벨·값·단위로 강조할 때"],
       "doNotUseWhen": ["표의 열별 합계", "대시보드의 서로 다른 복수 KPI"],
       "constraints": ["tone은 결과의 의미에 따라 선택하고 장식 목적으로 primary를 사용하지 않는다.", "계산식은 패턴 내부에 고정하지 않는다."],
-      "evidence": ["defect-quantity-input", "preissued-label"],
+      "evidence": ["defect-quantity-input"],
       "goldenScreenIds": ["defect-quantity-input"],
       "implementationMarkers": ["ResultTotalCard"]
     },

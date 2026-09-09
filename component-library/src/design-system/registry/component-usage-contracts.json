@@ -63,7 +63,7 @@
     { "componentId": "segmented-control", "capabilities": ["exclusive-view-switch"], "useWhen": ["같은 화면·데이터의 소수 보기 모드 중 하나를 즉시 전환한다."], "doNotUseWhen": ["업무 값을 저장하거나 서로 다른 페이지·열린 업무 탭을 이동하는 경우"], "alternatives": [{ "componentId": "radio", "chooseInsteadWhen": "폼에 저장되는 단일 선택 값일 때" }, { "componentId": "page-top-tab-item", "chooseInsteadWhen": "열린 업무 화면을 전환할 때" }] },
     { "componentId": "mes-product-switcher", "capabilities": ["product-switching"], "useWhen": ["MES 공통 탐색에서 현재 제품을 식별하고 다른 제품으로 전환한다."], "doNotUseWhen": ["업무 필드의 품목·공장 등을 선택하거나 단순 로고만 표시하는 경우"], "alternatives": [{ "componentId": "logo", "chooseInsteadWhen": "제품 전환 없이 식별만 필요할 때" }, { "componentId": "select", "chooseInsteadWhen": "업무 데이터 값을 선택할 때" }] },
     { "componentId": "icon-menu", "capabilities": ["mes-icon-asset"], "useWhen": ["등록된 MES 메뉴·업무 의미와 일치하는 벡터 아이콘을 표시한다."], "doNotUseWhen": ["의미가 다른 아이콘을 장식으로 재사용하거나 동작 컴포넌트를 대신하는 경우"], "alternatives": [{ "componentId": "icon-button", "chooseInsteadWhen": "아이콘으로 실제 동작을 실행할 때" }] },
-    { "componentId": "query-date-range", "capabilities": ["list-query-date-range"], "useWhen": ["MES 목록 조회 조건에서 시작일·종료일을 하나의 32px 기간 컨트롤로 제공한다."], "doNotUseWhen": ["업무 레코드에 저장되는 단일 날짜나 일반 폼의 날짜 범위인 경우"], "alternatives": [{ "componentId": "date-picker", "chooseInsteadWhen": "날짜 하루를 업무 값으로 저장할 때" }, { "componentId": "date-range-picker", "chooseInsteadWhen": "폼에서 날짜 범위를 저장할 때" }] },
+    { "componentId": "date-range-picker", "capabilities": ["stored-date-range-choice"], "useWhen": ["일반 폼이나 팝업에서 시작일과 종료일을 하나의 업무 값 범위로 저장한다."], "doNotUseWhen": ["메인 목록의 조회 기간이거나 날짜 하루만 저장하는 경우"], "alternatives": [{ "componentId": "query-date-range", "chooseInsteadWhen": "MES 목록이나 조회 팝업의 기간 조건일 때" }, { "componentId": "date-picker", "chooseInsteadWhen": "날짜 하루를 업무 값으로 저장할 때" }] },
     { "componentId": "cavity-cell", "capabilities": ["spatial-position-cell"], "useWhen": ["캐비티 번호·선택·교환처럼 공간 배열 안의 한 위치 상태를 표현한다."], "doNotUseWhen": ["일반 표 셀이나 순서 목록의 항목인 경우"], "alternatives": [{ "componentId": "table", "chooseInsteadWhen": "공간 위치보다 행·열 값 비교가 중심일 때" }] },
     { "componentId": "sidebar", "capabilities": ["primary-mes-navigation"], "useWhen": ["MES 데스크톱 전체 페이지에서 제품의 1차 메뉴와 현재 메뉴 상태를 제공한다."], "doNotUseWhen": ["팝업 내부에 중복하거나 독립 임시 탐색 UI로 다시 만드는 경우"], "alternatives": [{ "componentId": "navbar", "chooseInsteadWhen": "별도 제품이 승인된 전역 상단 탐색 구조를 사용할 때" }] },
     { "componentId": "slider", "capabilities": ["continuous-range-choice"], "useWhen": ["정밀 숫자 입력보다 범위 안의 상대적 값 조절이 중요한 경우 사용한다."], "doNotUseWhen": ["정확한 생산·수량·단가 값을 입력하거나 유한 옵션을 고르는 경우"], "alternatives": [{ "componentId": "number-input", "chooseInsteadWhen": "정확한 숫자와 증감 조작이 필요할 때" }, { "componentId": "input", "chooseInsteadWhen": "정확한 값을 직접 입력할 때" }] },
@@ -440,18 +440,19 @@
       ]
     },
     {
-      "componentId": "date-range-picker",
-      "capabilities": ["date-range-query"],
+      "componentId": "query-date-range",
+      "capabilities": ["list-query-date-range", "labeled-query-period"],
       "variants": ["default"],
       "requiredStates": ["empty", "complete", "calendar-open"],
-      "useWhen": ["조회 대상의 시작일과 종료일을 한 범위로 선택"],
-      "doNotUseWhen": ["단일 날짜 업무 필드", "원본에 기간 조회가 없는 화면"],
-      "allowedParents": ["section.search-table-composition", "screen.entity-list"],
-      "constraints": ["시작일은 종료일보다 늦을 수 없다.", "조회 버튼과 같은 상단 조건 영역에 배치한다."],
+      "useWhen": ["MES 메인 목록이나 조회 팝업에서 시작일·종료일을 하나의 조회 조건으로 변경", "기간 라벨과 두 날짜 입력이 한 줄의 조회 도구로 함께 보여야 함"],
+      "doNotUseWhen": ["업무 레코드에 저장되는 단일 날짜", "일반 폼에서 저장되는 날짜 범위", "원본과 업무 조건에 기간 조회가 없는 화면"],
+      "allowedParents": ["section.page-query-table", "section.query-toolbar", "section.search-table-composition", "screen.entity-list"],
+      "constraints": ["시작일은 종료일보다 늦을 수 없다.", "메인 목록에서는 기간 라벨·시작일·종료일을 승인된 32px 조회 컨트롤로 유지한다.", "조회 결과를 갱신하는 다른 도구와 같은 query state를 사용한다."],
       "accessibility": ["시작일과 종료일 입력을 각각 식별한다.", "달력 열기와 날짜 이동을 키보드로 수행할 수 있어야 한다."],
-      "evidence": ["grouped-production-list", "production-result-responsive"],
+      "evidence": ["grouped-production-list", "production-result-responsive", "equipment-inspection-records"],
       "alternatives": [
-        { "componentId": "input", "chooseInsteadWhen": "저장되는 단일 날짜 필드이며 화면 근거가 있을 때" }
+        { "componentId": "date-picker", "chooseInsteadWhen": "날짜 하루를 업무 값으로 저장할 때" },
+        { "componentId": "date-range-picker", "chooseInsteadWhen": "일반 폼에서 날짜 범위를 하나의 업무 값으로 저장할 때" }
       ]
     },
     {

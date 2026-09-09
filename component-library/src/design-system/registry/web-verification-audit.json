@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
-  "auditedAt": "2026-09-09T03:51:22.720Z",
-  "sourceFingerprint": "f7c8b08dbd911366dbcba071df6102dfe189948458a0fb17cac5b5c634c16414",
+  "auditedAt": "2026-09-09T05:21:51.480Z",
+  "sourceFingerprint": "9d4df5f71104ce418faa5e7e5032e37f9f08b70d9a6a7db9492daff04fb95066",
   "browserRun": {
     "command": "npm run test:visual",
     "result": "passed",
     "testCount": 95,
     "passed": 95,
     "failed": 0,
-    "durationMs": 262620,
-    "recordedAt": "2026-09-09T03:51:22.720Z",
+    "durationMs": 259442,
+    "recordedAt": "2026-09-09T05:21:51.480Z",
     "testInventoryFingerprint": "7d0b0806a4783b1eb6d5007359a00f0c3c28e0eb2c5b719b76581b5926aff9e5",
     "includesDeferredMobile": true
   },
@@ -36,16 +36,16 @@
     },
     "patterns": {
       "total": 76,
-      "usedByScreens": 51,
-      "unusedByScreens": 25,
+      "usedByScreens": 57,
+      "unusedByScreens": 19,
       "selectionContexts": 76,
       "detailedCompositionRules": 24,
-      "withVisualEvidence": 51,
+      "withVisualEvidence": 53,
       "sourceMissing": 0
     },
     "screens": {
-      "total": 29,
-      "interactionVerified": 29,
+      "total": 30,
+      "interactionVerified": 30,
       "directlyVisualLinked": 29,
       "orderedDefinitions": 5,
       "sourceMissing": 0
@@ -497,7 +497,7 @@
       "documentationRoute": "/components/date-range-picker",
       "hasFreeformRules": false,
       "hasSelectionContext": true,
-      "hasDetailedUsageRule": true,
+      "hasDetailedUsageRule": false,
       "usedByPatternIds": [
         "screen.analytics-dashboard"
       ],
@@ -1475,7 +1475,7 @@
       "documentationRoute": "/components/query-date-range",
       "hasFreeformRules": true,
       "hasSelectionContext": true,
-      "hasDetailedUsageRule": false,
+      "hasDetailedUsageRule": true,
       "usedByPatternIds": [
         "popup.center.inspection-records",
         "popup.center.purchase-lookup",
@@ -1483,7 +1483,7 @@
         "screen.entity-list",
         "section.page-query-table"
       ],
-      "reviewState": "approved-with-context",
+      "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
     {
@@ -1956,7 +1956,9 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
-      "usedByScreenIds": [],
+      "usedByScreenIds": [
+        "group-settings"
+      ],
       "generationTemplateIds": [
         "side-slide-group-settings.v1"
       ],
@@ -1975,14 +1977,15 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
-      "usedByScreenIds": [],
+      "usedByScreenIds": [
+        "group-settings"
+      ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
       "reviewState": "needs-evidence",
       "outstanding": [
         "detailed-composition-rule-missing",
-        "no-screen-or-generator-usage",
         "visual-evidence-missing"
       ]
     },
@@ -1994,15 +1997,15 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
-      "usedByScreenIds": [],
+      "usedByScreenIds": [
+        "custom-information",
+        "user-password-settings"
+      ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
-      "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
-      "outstanding": [
-        "no-screen-or-generator-usage",
-        "visual-evidence-missing"
-      ]
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
     },
     {
       "id": "section.staged-record-entry",
@@ -2048,13 +2051,14 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
-      "usedByScreenIds": [],
+      "usedByScreenIds": [
+        "group-settings"
+      ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
       "reviewState": "needs-evidence",
       "outstanding": [
-        "no-screen-or-generator-usage",
         "visual-evidence-missing"
       ]
     },
@@ -2066,13 +2070,14 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
-      "usedByScreenIds": [],
+      "usedByScreenIds": [
+        "group-settings"
+      ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
       "reviewState": "needs-evidence",
       "outstanding": [
-        "no-screen-or-generator-usage",
         "visual-evidence-missing"
       ]
     },
@@ -2317,7 +2322,8 @@
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
       "usedByScreenIds": [
-        "grouped-production-list"
+        "grouped-production-list",
+        "sales-transaction-statement"
       ],
       "generationTemplateIds": [
         "page-entity-list.v1"
@@ -2506,6 +2512,7 @@
       "hasDetailedCompositionRule": true,
       "usedByScreenIds": [
         "custom-information",
+        "group-settings",
         "production-result",
         "receiving"
       ],
@@ -2534,6 +2541,7 @@
         "custom-information",
         "form-inspection-criteria",
         "form-management",
+        "group-settings",
         "production-result",
         "receiving",
         "user-password-settings"
@@ -2559,6 +2567,7 @@
         "bulk-purchase-registration",
         "equipment-discharge-settings",
         "form-inspection-criteria",
+        "group-settings",
         "receiving",
         "sales-transaction-statement",
         "shipment-approval",
@@ -2627,6 +2636,7 @@
       "usedByScreenIds": [
         "custom-information",
         "form-management",
+        "group-settings",
         "operation-log",
         "production-result",
         "receiving",
@@ -2741,12 +2751,10 @@
         "equipment-discharge-settings",
         "equipment-inspection-records",
         "form-management",
-        "grouped-production-list",
         "inventory-add",
         "inventory-edit",
         "material-input-settings",
         "production-analytics-latest",
-        "production-result-responsive",
         "purchase-order-lookup",
         "sales-transaction-statement",
         "shipment-approval",
@@ -2769,13 +2777,17 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
-      "usedByScreenIds": [],
+      "usedByScreenIds": [
+        "grouped-production-list",
+        "production-result-responsive",
+        "sales-transaction-statement"
+      ],
       "generationTemplateIds": [
         "page-entity-list.v1"
       ],
       "directVisualCaseIds": [],
-      "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "covered-basic",
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
       "outstanding": []
     },
     {
@@ -2964,6 +2976,7 @@
         "equipment-discharge-settings",
         "form-inspection-criteria",
         "form-management",
+        "group-settings",
         "inventory-add",
         "material-input-settings",
         "operation-log",
@@ -3650,6 +3663,24 @@
       "hasOrderedDefinition": false,
       "reviewState": "interaction-and-visual-covered",
       "outstanding": [
+        "ordered-screen-definition-missing"
+      ]
+    },
+    {
+      "id": "group-settings",
+      "name": "그룹설정",
+      "source": "src/components/patterns/side-slide-compositions.tsx",
+      "sourceExists": true,
+      "figmaNode": "11122:47785",
+      "interactionStatus": "verified",
+      "interactionTests": [
+        "슬라이드 조합: GroupSettingsExample"
+      ],
+      "visualCaseIds": [],
+      "hasOrderedDefinition": false,
+      "reviewState": "interaction-covered-visual-link-missing",
+      "outstanding": [
+        "direct-visual-case-missing",
         "ordered-screen-definition-missing"
       ]
     },

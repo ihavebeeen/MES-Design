@@ -105,7 +105,7 @@
       "problem": "메인 목록에서 기간 조회, 그룹화, 필터, 빠른 조회, 검색의 공통 조회 도구 구성을 생략했다.",
       "wrongAssetRefs": ["omitted.query-date-range", "omitted.group-query", "omitted.filter", "omitted.quick-query", "omitted.search-input"],
       "expectedAssetRefs": ["query-date-range", "group-query", "filter", "quick-query", "search-input"],
-      "ruleRefs": ["date-range-picker", "group-query", "filter", "quick-query", "search-input"],
+      "ruleRefs": ["query-date-range", "group-query", "filter", "quick-query", "search-input"],
       "resolution": "section.page-query-table 선택 계약에 다섯 조회 자산을 선언하고 생성 결과가 그 계약을 따르는지 검사한다."
     },
     {

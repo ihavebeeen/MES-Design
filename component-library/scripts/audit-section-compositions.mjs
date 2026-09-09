@@ -143,6 +143,15 @@ function buildAudit() {
   const sharedSourceScreensWithoutDetailedSpec = screenEntries
     .filter((entry) => entry.codeEvidence.attribution === "shared-source-reference-only")
     .map((entry) => entry.screenId);
+  const sectionPatternsWithoutRegisteredScreen = sectionEntries
+    .filter((entry) => entry.usedByScreens.length === 0)
+    .map((entry) => entry.patternId);
+  const entityListScreensWithoutPageQueryPattern = screens
+    .filter((screen) => screen.patternRefs.includes("screen.entity-list") && !screen.patternRefs.includes("section.page-query-table"))
+    .map((screen) => screen.id);
+  const customFieldScreensWithoutSectionPattern = screens
+    .filter((screen) => screen.stateRules.some((rule) => rule.includes("커스텀 정보")) && !screen.patternRefs.includes("section.custom-field-values"))
+    .map((screen) => screen.id);
   const audit = {
     schemaVersion: 1,
     policyId: "mes.section-composition-census",
@@ -175,6 +184,9 @@ function buildAudit() {
     },
     gaps: {
       missingSectionContracts: missingContracts,
+      sectionPatternsWithoutRegisteredScreen,
+      entityListScreensWithoutPageQueryPattern,
+      customFieldScreensWithoutSectionPattern,
       unresolvedScreens,
       codeSourcesOutsideCompositionInventory: unique(untrackedCodeSources),
       sharedSourceScreensWithoutDetailedSpec,
@@ -199,6 +211,9 @@ if (mode === "write") {
     errors.push("section-composition-audit.json이 현재 원장 및 코드와 다릅니다. npm run audit:section-compositions를 실행하세요.");
   }
   if (audit.gaps.missingSectionContracts.length > 0) errors.push(`선택 맥락 계약이 없는 section-pattern: ${audit.gaps.missingSectionContracts.join(", ")}`);
+  if (audit.gaps.sectionPatternsWithoutRegisteredScreen.length > 0) errors.push(`등록 화면 또는 근거 화면에 연결되지 않은 section-pattern: ${audit.gaps.sectionPatternsWithoutRegisteredScreen.join(", ")}`);
+  if (audit.gaps.entityListScreensWithoutPageQueryPattern.length > 0) errors.push(`메인 목록 전용 section.page-query-table이 없는 screen.entity-list 화면: ${audit.gaps.entityListScreensWithoutPageQueryPattern.join(", ")}`);
+  if (audit.gaps.customFieldScreensWithoutSectionPattern.length > 0) errors.push(`커스텀 정보 화면에 section.custom-field-values 연결이 없습니다: ${audit.gaps.customFieldScreensWithoutSectionPattern.join(", ")}`);
   if (audit.gaps.unresolvedScreens.length > 0) errors.push(`공통 또는 화면 전용 섹션 조합이 없는 화면: ${audit.gaps.unresolvedScreens.join(", ")}`);
   if (audit.gaps.codeSourcesOutsideCompositionInventory.length > 0) errors.push(`조합 코드 전수조사 범위 밖 화면 소스: ${audit.gaps.codeSourcesOutsideCompositionInventory.join(", ")}`);
   const leakedSharedSourceEvidence = audit.screens.filter((entry) =>
