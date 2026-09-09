@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -148,4 +148,12 @@ try {
   }
 } finally {
   await stopOwnedServer(ownedServer, ownedNextPid);
+  if (ownedServer) {
+    rmSync(path.join(projectRoot, ".next", "dev"), {
+      recursive: true,
+      force: true,
+      maxRetries: 10,
+      retryDelay: 200,
+    });
+  }
 }

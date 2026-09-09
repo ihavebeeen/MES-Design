@@ -87,6 +87,7 @@ function buildPlan(files) {
   let runAllMobile = false;
   let runApplicationFlow = full;
   const applicationFiles = new Set([
+    "scripts/run-affected-visual-tests.mjs", "scripts/run-visual-tests.mjs",
     "scripts/generate-screen-preview.mjs", "scripts/generate-screen-tsx.mjs", "scripts/screen-application-context.mjs",
     "scripts/generate-slide-composition.mjs", "scripts/slide-composition-contract.mjs", "scripts/sync-slide-composition-examples.mjs",
     "src/design-system/slide-composition.ts", "src/design-system/registry/slide-composition-examples.json",
@@ -167,18 +168,23 @@ printPlan(plan);
 if (planOnly || files.length === 0) process.exit(0);
 
 const playwrightCli = path.join(projectRoot, "node_modules", "@playwright", "test", "cli.js");
+const visualTestRunner = path.join(projectRoot, "scripts", "run-visual-tests.mjs");
+function runVisualTests(testArgs) {
+  run(process.execPath, [visualTestRunner, ...testArgs], { capture: false, cwd: projectRoot });
+}
+
 if (installBrowser && (plan.runAllWeb || plan.testNames.length > 0 || plan.runAllMobile || plan.runApplicationFlow)) {
   run(process.execPath, [playwrightCli, "install", "chromium"], { capture: false, cwd: projectRoot });
 }
 if (plan.runAllWeb) {
-  run(process.execPath, [playwrightCli, "test", "tests/visual/design-system.visual.spec.ts"], { capture: false, cwd: projectRoot });
+  runVisualTests(["tests/visual/design-system.visual.spec.ts"]);
 } else if (plan.testNames.length > 0) {
   const grep = plan.testNames.map(escapeRegex).join("|");
-  run(process.execPath, [playwrightCli, "test", "tests/visual/design-system.visual.spec.ts", "--grep", grep], { capture: false, cwd: projectRoot });
+  runVisualTests(["tests/visual/design-system.visual.spec.ts", "--grep", grep]);
 }
 if (plan.runAllMobile) {
-  run(process.execPath, [playwrightCli, "test", "tests/visual/mobile-design-system.spec.ts"], { capture: false, cwd: projectRoot });
+  runVisualTests(["tests/visual/mobile-design-system.spec.ts"]);
 }
 if (plan.runApplicationFlow) {
-  run(process.execPath, [playwrightCli, "test", "tests/visual/application-flow.spec.mts", "tests/visual/slide-compositions.spec.mts"], { capture: false, cwd: projectRoot });
+  runVisualTests(["tests/visual/application-flow.spec.mts", "tests/visual/slide-compositions.spec.mts"]);
 }
