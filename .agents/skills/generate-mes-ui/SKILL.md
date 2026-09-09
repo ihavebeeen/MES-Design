@@ -7,6 +7,32 @@ description: Generate, reproduce, normalize, or apply requested fixes to MES scr
 
 Create MES UI through the repository contract. Do not translate prose or Figma directly into free-form JSX.
 
+## 작업 시작 대화
+
+신규 화면 또는 화면 구조가 달라지는 요청에서는 구현보다 대화를 먼저 시작한다. 사용자가 `MES 신규 화면 제작 시작`, `새 화면 만들어줘`처럼 짧게 요청해도 같은 절차를 적용한다.
+
+1. 사용자가 이미 말한 내용을 `사용자·업무 목적·완료 단위·주요 정보·보조 정보·행동·참고 근거·미정 사항`으로 짧게 정리한다. 저장소와 연결된 근거는 읽기 전용으로 조회할 수 있다.
+2. 화면 구조, 정보 위계, 저장 범위, 선택 방식 또는 업무 행동을 바꾸는 미정 사항만 질문한다. 한 번에 서로 관련된 질문 1~3개를 묻고 답을 기다린다. 질문 도구가 있으면 짧고 서로 배타적인 선택지를 사용한다.
+3. 이미 받은 답, 등록된 공통 MES 규칙, 표준 토큰, 기본 취소 동작은 다시 묻지 않는다. 관련 없는 맥락 축을 채우기 위해 질문을 늘리지 않는다.
+4. 사용자가 `알아서 해줘`라고 답하면 작은 표현 차이는 합리적으로 결정한다. Shell, 주요/보조 정보, 다중 선택, 일괄 처리, 저장 단위처럼 업무 흐름을 바꾸는 선택은 권장안과 이유를 제시하고 확인을 받는다.
+5. 필요한 답을 받으면 구현 전에 아래 형태로 한 번만 시작 범위를 확인한다. 미정 사항이 결과를 바꾸지 않으면 `없음`으로 표시하고 바로 진행한다.
+
+   ```text
+   작업 목적:
+   주요 정보:
+   보조 정보:
+   사용자 행동:
+   제작 범위:
+   참고 근거:
+   남은 미정 사항:
+   ```
+
+6. 답이 필요한 상태에서는 JSX 작성, 임시 대체 UI 제작, Shell 확정, 생성 명령 실행을 시작하지 않는다. 구현 제약이 새로 발견되면 같은 방식으로 영향과 선택지를 설명하고 필요한 결정만 다시 묻는다.
+
+팝업의 문구 수정, 간격 조정처럼 대상과 변경 범위가 명확한 작은 수정에는 전체 시작 대화를 반복하지 않는다. 평가만 요청받은 경우에는 이 절차 대신 `audit-mes-ui`로 연결한다.
+
+이 절차는 에이전트가 지켜야 하는 대화 계약이다. 저장소 검사는 대화 자체를 감시하지 않는다. 이후 `ScreenRequest`와 resolver가 선택된 업무 행동의 근거, 미정 blocker, 자산 연결을 다시 검사하므로 질문 답변을 메모에만 남기지 말고 실행 계약에 반영한다.
+
 ## Boundary with AUDIT
 
 - This skill owns creation, reproduction, normalization, requested fixes, and the mandatory verification needed to hand off its own implementation.
