@@ -17,6 +17,7 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 - 전체 자산 조회: `component-library/src/design-system/registry/asset-manifest.json`
 - 컴포넌트 신원·상태·공개 범위: `components.json`
 - 신규 UI 컴포넌트 선택 규칙: `component-usage-contracts.json`
+- 화면·섹션·컴포넌트 선택에 공통으로 쓰는 맥락 축: `selection-context-framework.json`
 - 실제 생성 선택 오류: `generation-selection-feedback.json`
 - 패턴과 조합 계약: `patterns.json`, `pattern-contracts.json`
 - 화면 순서와 구성: `screens.json`, `screen-specs.json`
@@ -41,7 +42,7 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 - 자연어나 Figma를 바로 JSX로 옮기지 않는다. 먼저 `ScreenRequest`를 만들고 계약을 확정한다.
 - 신규 UI는 필요한 정보·행동을 먼저 분해하고 개별 MES 컴포넌트의 사용 맥락과 대조한다. 선택한 컴포넌트들이 같은 대상·비교 단위·저장 단위·작업 순서에서 연결되는 이유를 설명한 뒤 이를 지원하는 조합 문법과 Shell을 선택한다.
 - 검증 범위는 요청한 작업에 맞춘다. 팝업 자체 수정은 메인 목록을 몰라도 진행·확인할 수 있으며, 선택값 전달·저장 후 목록 반영을 요청했을 때만 해당 연결 정보가 필요하다. 무관한 미확인 정보로 전체 작업을 막거나 연동 실패를 피하려고 범위를 축소하지 않는다.
-- 신규·구조 변경은 `screen-intake-policy.json`의 질문 체계로 화면 목적·컨셉·정보 관계를 먼저 파악한다. 알려진 답은 재질문하지 않고 중요한 미정 사항만 묻는다. 배경 유지·건수 등 답 하나로 Shell이나 배치를 결정하지 않는다.
+- 신규·구조 변경은 `selection-context-framework.json`의 공통 맥락 축을 먼저 정리하고 `screen-intake-policy.json`의 연결 질문으로 중요한 미정 사항만 묻는다. 알려진 답은 재질문하지 않는다. 관련 없는 축은 비워둘 수 있으며, 배경 유지·건수 등 답 하나로 Shell이나 배치를 결정하지 않는다.
 - 원본 재현은 Figma의 콘텐츠, 위계, 상태, 배치와 측정값을 먼저 대조한다.
 - 실제 웹은 반복 사용 위치와 연결 구조의 참고 근거다. 단일 구현값을 표준으로 자동 승격하지 않는다.
 - `component-usage-contracts.json`은 모든 컴포넌트의 역할·사용 조건·비사용 조건·대안을 제공한다. 선택에 민감한 자산만 부모·상태·제약을 상세 계약으로 추가한다.

@@ -53,6 +53,7 @@ export function readRegistryBundle() {
   const webFigmaReconciliation = readJson(join(registryDirectory, "web-figma-reconciliation.json"));
   const webGenerationContext = readJson(join(registryDirectory, "web-generation-context.json"));
   const foundationRecipes = readJson(join(registryDirectory, "foundation-recipes.json"));
+  const selectionContextFramework = readJson(join(registryDirectory, "selection-context-framework.json"));
 
   return {
     components: components.components,
@@ -75,11 +76,81 @@ export function readRegistryBundle() {
     webFigmaReconciliation,
     webGenerationContext,
     foundationRecipes,
+    selectionContextFramework,
   };
 }
 
-function validateRequestShape(request) {
+function contextDimensionRefsForEvidence(evidence, framework) {
+  const byQuestion = framework.dimensions.filter((dimension) => dimension.questionRefs.includes(evidence.questionId));
+  if (!evidence.factor) return byQuestion.map(({ id }) => id);
+  return byQuestion.filter((dimension) => dimension.decisionFactors.includes(evidence.factor)).map(({ id }) => id);
+}
+
+function buildContextAssessment(request, framework) {
+  const decisions = request?.evidence?.decisions ?? [];
+  const rank = { unaddressed: -1, unresolved: 0, assumed: 1, supported: 2, confirmed: 3 };
+  const dimensions = framework.dimensions.map((dimension) => {
+    const evidence = decisions
+      .filter((entry) => contextDimensionRefsForEvidence(entry, framework).includes(dimension.id))
+      .map((entry) => ({ id: entry.id, state: entry.state, questionId: entry.questionId, decisionSubject: entry.decisionSubject ?? null, factor: entry.factor ?? null, statement: entry.statement }));
+    const state = evidence.reduce((current, entry) => rank[entry.state] > rank[current] ? entry.state : current, "unaddressed");
+    return {
+      id: dimension.id,
+      name: dimension.name,
+      state,
+      evidence,
+      unresolvedEvidenceRefs: evidence.filter((entry) => entry.state === "unresolved").map((entry) => entry.id),
+      affects: dimension.affects,
+    };
+  });
+  const dimensionMap = new Map(dimensions.map((entry) => [entry.id, entry]));
+  const decisionPolicies = framework.decisionPolicies.map((policy) => {
+    const subjectEvidence = decisions.filter((entry) =>
+      policy.decisionSubject ? entry.decisionSubject === policy.decisionSubject
+        : policy.decisionSubjectPrefix ? entry.decisionSubject?.startsWith(policy.decisionSubjectPrefix)
+          : false,
+    );
+    const usable = subjectEvidence.filter((entry) => ["confirmed", "supported"].includes(entry.state));
+    const explicit = Boolean(policy.explicitDirectionFactor && subjectEvidence.some((entry) =>
+      entry.factor === policy.explicitDirectionFactor
+      && entry.state === "confirmed"
+      && ["user-request", "functional-spec"].includes(entry.sourceType),
+    ));
+    const basisGroups = (policy.basisGroups ?? []).map((group) => ({
+      id: group.id,
+      name: group.name,
+      covered: usable.some((entry) => group.factorRefs.includes(entry.factor)),
+      evidenceRefs: usable.filter((entry) => group.factorRefs.includes(entry.factor)).map((entry) => entry.id),
+    }));
+    const relevantDimensions = (policy.relevantDimensionRefs ?? []).map((id) => dimensionMap.get(id)).filter(Boolean);
+    return {
+      id: policy.id,
+      name: policy.name,
+      enforcement: policy.enforcement,
+      evidenceRefs: subjectEvidence.map((entry) => entry.id),
+      explicit,
+      basisGroups,
+      relevantDimensions: relevantDimensions.map(({ id, name, state }) => ({ id, name, state })),
+      status: subjectEvidence.length === 0 ? "not-evaluated"
+        : explicit || (basisGroups.length > 0 && basisGroups.every(({ covered }) => covered) && usable.length >= (policy.minimumEvidence ?? 0)) ? "supported"
+          : "needs-review",
+    };
+  });
+  return {
+    frameworkId: framework.frameworkId,
+    frameworkVersion: framework.frameworkVersion,
+    dimensions,
+    decisionPolicies,
+    unresolvedRelevantDimensions: dimensions.filter(({ unresolvedEvidenceRefs }) => unresolvedEvidenceRefs.length > 0).map(({ id }) => id),
+    note: "unaddressed는 현재 요청에서 해당 축이 필요 없거나 아직 검토 대상이 되지 않았다는 뜻이며, 그 자체로 실패가 아닙니다.",
+  };
+}
+
+function validateRequestShape(request, registry) {
   const issues = [];
+  const framework = registry.selectionContextFramework;
+  const allowedDecisionFactors = new Set(framework.dimensions.flatMap((dimension) => dimension.decisionFactors));
+  const knownQuestionIds = new Set(framework.dimensions.flatMap((dimension) => dimension.questionRefs));
   for (const message of validateVerificationScope(request)) issues.push(issue("blocker", "request.verification-scope", message));
   for (const message of validateHostPage(request?.hostPage, request?.target?.kind)) issues.push(issue("blocker", "request.host-page", message));
   const checkKnownKeys = (value, allowed, path) => {
@@ -145,7 +216,7 @@ function validateRequestShape(request) {
       }
       if (!/^[a-z][A-Za-z0-9.-]*$/.test(evidence.id ?? "") || decisionEvidence.has(evidence.id)) issues.push(issue("blocker", "request.decision-evidence-id", `${path}.id는 중복 없는 판단 근거 ID여야 합니다.`));
       else decisionEvidence.set(evidence.id, evidence);
-      if (!/^[a-z][a-z0-9-]*(?:\.[a-z0-9-]+)+$/.test(evidence.questionId ?? "")) issues.push(issue("blocker", "request.decision-evidence-question", `${path}.questionId가 잘못되었습니다.`));
+      if (!/^[a-z][a-z0-9-]*(?:\.[a-z0-9-]+)+$/.test(evidence.questionId ?? "") || !knownQuestionIds.has(evidence.questionId)) issues.push(issue("blocker", "request.decision-evidence-question", `${path}.questionId가 맥락 질문 원장에 없습니다.`));
       if (!["confirmed", "supported", "assumed", "unresolved"].includes(evidence.state)) issues.push(issue("blocker", "request.decision-evidence-state", `${path}.state가 잘못되었습니다.`));
       if (!["user-request", "functional-spec", "registered-contract", "figma-source", "mes-reference", "agent-proposal"].includes(evidence.sourceType)) issues.push(issue("blocker", "request.decision-evidence-source", `${path}.sourceType이 잘못되었습니다.`));
       if (typeof evidence.sourceRef !== "string" || !evidence.sourceRef.trim() || typeof evidence.statement !== "string" || !evidence.statement.trim()) issues.push(issue("blocker", "request.decision-evidence-content", `${path}에는 sourceRef와 statement가 필요합니다.`));
@@ -154,26 +225,26 @@ function validateRequestShape(request) {
       if (evidence.sourceType === "user-request" && !/^사용자 원문:\s*["“].+["”]$/.test(evidence.sourceRef ?? "")) issues.push(issue("blocker", "request.user-quote-evidence", `${path}의 사용자 근거는 '사용자 원문: "…"' 형식의 실제 문장을 보존해야 합니다.`));
       if (evidence.sourceType === "agent-proposal" && !["assumed", "unresolved"].includes(evidence.state)) issues.push(issue("blocker", "request.agent-proposal-evidence", `${path}의 agent-proposal은 confirmed/supported 근거가 될 수 없습니다.`));
       if (evidence.decisionSubject !== undefined && !/^[a-z][a-z0-9-]*(?:\.[a-z0-9-]+)+$/.test(evidence.decisionSubject)) issues.push(issue("blocker", "request.decision-subject", `${path}.decisionSubject가 잘못되었습니다.`));
-      if (evidence.factor !== undefined && !["explicit-direction", "task-purpose", "information-role", "workflow", "information-relationship", "interaction-continuity", "space-density", "pattern-context", "selection-cardinality", "selection-result", "batch-action", "safety-reversibility"].includes(evidence.factor)) issues.push(issue("blocker", "request.decision-factor", `${path}.factor가 잘못되었습니다.`));
+      if (evidence.factor !== undefined && !allowedDecisionFactors.has(evidence.factor)) issues.push(issue("blocker", "request.decision-factor", `${path}.factor가 맥락 축 원장에 없습니다.`));
+      if (evidence.factor !== undefined && knownQuestionIds.has(evidence.questionId) && contextDimensionRefsForEvidence(evidence, framework).length === 0) issues.push(issue("blocker", "request.decision-context-mismatch", `${path}의 질문과 판단 factor가 같은 맥락 축으로 연결되지 않습니다.`));
       if (evidence.selectedOption !== undefined && (typeof evidence.selectedOption !== "string" || !evidence.selectedOption.trim())) issues.push(issue("blocker", "request.decision-option", `${path}.selectedOption은 비어 있지 않은 문자열이어야 합니다.`));
     }
   }
   if (request?.assetDecisions && request?.target?.kind !== "page") {
+    const shellPolicy = framework.decisionPolicies.find((entry) => entry.id === "screen.shell");
     const shellEvidence = [...decisionEvidence.values()].filter((entry) => entry.decisionSubject === "screen.shell" && entry.selectedOption === request.target.kind);
-    const explicitDirection = shellEvidence.some((entry) => entry.factor === "explicit-direction" && entry.state === "confirmed" && ["user-request", "functional-spec"].includes(entry.sourceType));
+    const explicitDirection = shellEvidence.some((entry) => entry.factor === shellPolicy.explicitDirectionFactor && entry.state === "confirmed" && ["user-request", "functional-spec"].includes(entry.sourceType));
     if (shellEvidence.length === 0) {
       issues.push(issue("blocker", "request.screen-direction-evidence", "팝업 유형 선택에는 target.kind와 연결된 screen.shell 근거 묶음이 필요합니다. 다른 질문의 한 문장을 팝업 유형 근거로 재사용할 수 없습니다."));
     } else if (!explicitDirection) {
       const usable = shellEvidence.filter((entry) => ["confirmed", "supported"].includes(entry.state));
       const factors = new Set(usable.map((entry) => entry.factor).filter(Boolean));
-      const hasPurposeOrFlow = ["task-purpose", "workflow"].some((factor) => factors.has(factor));
-      const hasInformationStructure = ["information-role", "information-relationship"].some((factor) => factors.has(factor));
-      const hasPresentationFit = ["interaction-continuity", "space-density", "pattern-context"].some((factor) => factors.has(factor));
-      if (usable.length < 3 || !hasPurposeOrFlow || !hasInformationStructure || !hasPresentationFit) {
+      const missingGroups = shellPolicy.basisGroups.filter((group) => !group.factorRefs.some((factor) => factors.has(factor)));
+      if (usable.length < shellPolicy.minimumEvidence || missingGroups.length > 0) {
         issues.push(issue("blocker", "request.screen-direction-basis-set", "사용자가 팝업 유형을 직접 지정하지 않았다면 업무 목적/흐름, 정보 역할/관계, 상호작용·공간·기존 패턴 적합성을 포함한 복수 근거가 필요합니다."));
       }
       const alternatives = usable.flatMap((entry) => entry.alternatives ?? []);
-      if (alternatives.length === 0) issues.push(issue("blocker", "request.screen-direction-comparison", "지원 근거로 팝업 유형을 선택할 때는 가까운 대안과 선택하지 않은 이유를 함께 남겨야 합니다."));
+      if (shellPolicy.alternativeComparison && alternatives.length === 0) issues.push(issue("blocker", "request.screen-direction-comparison", "지원 근거로 팝업 유형을 선택할 때는 가까운 대안과 선택하지 않은 이유를 함께 남겨야 합니다."));
     }
   }
   const evidenceRanks = { unresolved: 0, assumed: 1, supported: 2, confirmed: 3 };
@@ -288,7 +359,8 @@ function legacyGeneratedSections(generation) {
 }
 
 export function resolveScreenRequest(request, registry = readRegistryBundle()) {
-  const issues = validateRequestShape(request);
+  const issues = validateRequestShape(request, registry);
+  const contextAssessment = buildContextAssessment(request, registry.selectionContextFramework);
   const decisionEvidence = new Map((request?.evidence?.decisions ?? []).map((entry) => [entry.id, entry]));
   const assetSelectionReview = request?.assetDecisions
     ? reviewScreenAssetSelection({ ...request.assetDecisions, targetKind: request?.target?.kind }, registry)
@@ -507,6 +579,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
 
   const selectionSource = (explicit, structured, fallback) => explicit ? "request" : structured ? "screen-spec" : fallback;
   const decisionTrace = {
+    contextAssessment,
     applicationFrame: { requiredComponents: registry.contextRules.applicationFrame?.requiredComponents ?? [], owner: request?.target?.kind === "page" ? "target-page" : request?.hostPage ? "host-page" : "preview-frame", hostPage: request?.hostPage ?? null, hostPagePattern: hostPagePattern ? { selectedId: hostPagePattern.id, reason: "hostPage가 실행할 페이지 패턴을 명시했습니다." } : null, verification: verificationContext(request), reason: "요청한 작업 범위만 검증한다. 팝업 자체 작업은 MES 공통 미리보기 틀에서 확인할 수 있으며, 업무 페이지와의 연동 검증에만 hostPage가 필요하다." },
     webContext: {
       pageArchetype: selectedWebPageArchetype ? { selectedId: selectedWebPageArchetype.id, confidence: selectedWebPageArchetype.confidence, reason: "ScreenRequest가 신규 UI의 page 문법을 명시했습니다." } : null,
@@ -572,6 +645,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       componentUsagePolicy: registry.componentUsagePolicy,
       patternContracts: registry.patternContracts,
       sectionCompositionAudit: registry.sectionCompositionAudit,
+      selectionContextFramework: registry.selectionContextFramework,
       screenSpecs: registry.screenSpecs,
       webGenerationContext: registry.webGenerationContext,
       ...(includeReproductionAudit ? {
@@ -605,6 +679,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       } : null,
       hostPagePatternContract: hostPagePatternContract ?? null,
       components: resolvedComponents.map(({ id, name, category, source, status, rules }) => ({ id, name, category, source, status, rules: rules ?? [] })),
+      selectionContextFramework: registry.selectionContextFramework,
       componentUsagePolicy: registry.componentUsagePolicy,
       componentSelectionContexts: resolvedComponents.map(({ id }) => componentSelectionContextMap.get(id)),
       componentUsageContracts: resolvedComponents.map(({ id }) => componentUsageContractMap.get(id)).filter(Boolean),

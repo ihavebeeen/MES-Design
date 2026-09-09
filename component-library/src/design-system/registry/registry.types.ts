@@ -88,6 +88,43 @@ export interface ComponentSelectionContextEntry {
   alternatives: Array<{ componentId: string; chooseInsteadWhen: string }>;
 }
 
+export type SelectionContextState = "confirmed" | "supported" | "assumed" | "unresolved" | "conflicting" | "not-applicable" | "unaddressed";
+
+export interface SelectionContextDimension {
+  id: string;
+  name: string;
+  meaning: string;
+  questionRefs: string[];
+  decisionFactors: string[];
+  affects: Array<"screen" | "shell" | "section" | "pattern" | "component" | "behavior" | "action">;
+}
+
+export interface SelectionContextFramework {
+  schemaVersion: 1;
+  frameworkId: string;
+  frameworkVersion: string;
+  authority: "generation-decision-framework";
+  purpose: string;
+  principles: string[];
+  states: SelectionContextState[];
+  dimensions: SelectionContextDimension[];
+  decisionPolicies: Array<{
+    id: string;
+    name: string;
+    decisionSubject?: string;
+    decisionSubjectPrefix?: string;
+    enforcement: "blocker" | "review";
+    explicitDirectionFactor?: string;
+    basisGroups?: Array<{ id: string; name: string; factorRefs: string[] }>;
+    minimumEvidence?: number;
+    alternativeComparison?: boolean;
+    relevantDimensionRefs?: string[];
+  }>;
+  assetCategoryDimensions: Record<string, string[]>;
+  pipeline: string[];
+  pocChecks: string[];
+}
+
 export interface ComponentUsageContractRegistry {
   schemaVersion: 1;
   policy: {
@@ -634,6 +671,18 @@ export interface ScreenRequest {
     figmaNode?: string;
     sourceRoute?: string;
     notes?: string[];
+    decisions?: Array<{
+      id: string;
+      questionId: string;
+      state: Extract<SelectionContextState, "confirmed" | "supported" | "assumed" | "unresolved">;
+      sourceType: "user-request" | "functional-spec" | "registered-contract" | "figma-source" | "mes-reference" | "agent-proposal";
+      sourceRef: string;
+      statement: string;
+      decisionSubject?: string;
+      factor?: string;
+      selectedOption?: string;
+      alternatives?: Array<{ option: string; reason: string }>;
+    }>;
   };
   webContext?: {
     pageArchetypeRef?: string;
@@ -655,6 +704,8 @@ export interface ScreenRequest {
       selectedComponentRef?: string;
       candidateComponentRefs?: string[];
       reason?: string;
+      decisionSubject?: string;
+      evidenceRef?: string;
     }>;
   };
   composition: {

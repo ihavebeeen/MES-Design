@@ -32,6 +32,9 @@ test("의미와 parent가 일치하는 기존 자산을 후보로 제안하되 �
   assert.equal(review.recommendation.outcome, "reuse-exact");
   assert.equal(review.recommendation.componentRef, "badge");
   assert.equal(review.recommendation.automatic, false);
+  assert.equal(result.policy.contextFrameworkRef, "mes.selection-context");
+  assert.ok(review.contextDimensionRefs.includes("information-role"));
+  assert.ok(review.contextDimensionRefs.includes("state-lifecycle"));
   assert.ok(result.findings.some((entry) => entry.code === "asset-selection.exact-candidate" && entry.severity === "info"));
 });
 
@@ -318,6 +321,11 @@ test("사용자 직접 지정이 없는 Shell은 서로 다른 판단 축과 대
   };
   const result = resolveScreenRequest(request, registry);
   assert.ok(!result.quality.issues.some((entry) => entry.code.startsWith("request.screen-direction")));
+  assert.equal(result.decisionTrace.contextAssessment.frameworkId, "mes.selection-context");
+  assert.equal(result.decisionTrace.contextAssessment.decisionPolicies.find((entry) => entry.id === "screen.shell")?.status, "supported");
+  assert.equal(result.decisionTrace.contextAssessment.dimensions.find((entry) => entry.id === "workflow-sequence")?.state, "supported");
+  assert.equal(result.decisionTrace.contextAssessment.dimensions.find((entry) => entry.id === "information-relationship")?.state, "supported");
+  assert.equal(result.decisionTrace.contextAssessment.dimensions.find((entry) => entry.id === "evidence-uncertainty")?.state, "supported");
 });
 
 test("사용자가 팝업 유형을 직접 지정하면 해당 선택과 연결된 단일 명시 근거로 통과한다", () => {
@@ -339,6 +347,27 @@ test("사용자가 팝업 유형을 직접 지정하면 해당 선택과 연결�
   };
   const result = resolveScreenRequest(request, registry);
   assert.ok(!result.quality.issues.some((entry) => entry.code.startsWith("request.screen-direction")));
+});
+
+test("질문과 판단 factor가 공통 맥락 축에서 만나지 않으면 차단한다", () => {
+  const request = JSON.parse(readFileSync(join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json"), "utf8"));
+  request.assetDecisions = { schemaVersion: 1, elements: [] };
+  request.evidence = {
+    ...(request.evidence ?? {}),
+    decisions: [{
+      id: "mismatchedContext",
+      questionId: "task.selection",
+      state: "supported",
+      sourceType: "registered-contract",
+      sourceRef: "pattern-contracts.json#shell.side-slide-panel",
+      statement: "선택 수에 대한 답을 화면 밀도 근거로 잘못 사용했다.",
+      decisionSubject: "screen.shell",
+      factor: "space-density",
+      selectedOption: "side-slide-panel",
+    }],
+  };
+  const result = resolveScreenRequest(request, registry);
+  assert.ok(result.quality.issues.some((entry) => entry.code === "request.decision-context-mismatch"));
 });
 
 test("모든 등록 컴포넌트는 최소 선택 맥락을 가지며 상세 계약이 없어도 의미 후보가 된다", () => {

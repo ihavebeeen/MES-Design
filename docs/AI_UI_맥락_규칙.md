@@ -1,9 +1,9 @@
 # AI UI 맥락 규칙
 
 > 정책 ID: `mes.ai-context-rules`
-> 버전: `1.3.0`
+> 버전: `1.4.0`
 > 상태: 공통 정책 확정
-> 구조화 원본: `component-library/src/design-system/registry/context-rules.json`
+> 구조화 원본: `component-library/src/design-system/registry/selection-context-framework.json`, `context-rules.json`
 
 ## 1. 왜 별도 맥락 규칙이 필요한가
 
@@ -19,9 +19,21 @@ AI는 구현 요소를 선택하기 전에 다음을 먼저 판정한다.
 
 따라서 선택 순서는 `시각 유사성 → 팝업 유형 → 편한 컴포넌트`가 아니다. `필요한 정보·행동 → 개별 컴포넌트 맥락 대조 → 컴포넌트 연결 관계 → 이를 지원하는 패턴과 셸 → 검증 근거와 구현 참조` 순서다.
 
-### 1.1 화면을 만들기 전의 질문 체계
+### 1.1 공통 맥락 축
 
-질문 원본은 [screen-intake-policy.json](../component-library/src/design-system/registry/screen-intake-policy.json)에 둔다. 기존 생성 스킬이 구성 선택 전에 이 파일을 읽는다. 새 MD 설문이나 별도의 계획서를 만들지 않는다.
+화면·섹션·패턴·컴포넌트·동작을 서로 다른 말로 판단하지 않도록 [selection-context-framework.json](../component-library/src/design-system/registry/selection-context-framework.json)에 공통 축을 둔다.
+
+- 업무 목적, 작업 대상과 범위, 완료·저장 단위
+- 정보 역할, 정보 관계, 동시 참조 필요
+- 업무 순서, 반복 입력 방식, 비교 구조
+- 선택 수와 결과, 상태와 생명주기, 진입과 종료
+- 환경·밀도·스크롤, 근거와 불확실성
+
+모든 축을 매번 채우는 체크리스트가 아니다. 현재 자산 선택을 바꾸는 축만 확인하고, 이미 확인된 값은 재사용하며, 중요한 미정만 질문한다. 한 축이나 한 문장이 Shell·Section·Component를 단독 확정하지 않는다. Resolver는 `decisionTrace.contextAssessment`에 각 축의 근거 상태와 판단별 근거 묶음을 반환한다. `unaddressed`는 실패가 아니고, 관련된 `unresolved`와 `needs-review`만 후속 판단 대상이다.
+
+### 1.2 화면을 만들기 전의 질문 체계
+
+질문 원본은 [screen-intake-policy.json](../component-library/src/design-system/registry/screen-intake-policy.json)에 둔다. 각 질문의 `contextDimensions`가 위 공통 축과 연결된다. 기존 생성 스킬이 구성 선택 전에 두 원장을 함께 읽는다. 새 MD 설문이나 별도의 계획서를 만들지 않는다.
 
 질문은 특정 답을 특정 레이아웃으로 바꾸는 분기표가 아니다. **화면 전체의 성격을 파악한 다음, 구성에 영향을 주는 빈칸만 확인하는 체계**다.
 
@@ -53,9 +65,9 @@ AI는 구현 요소를 선택하기 전에 다음을 먼저 판정한다.
 
 확정 조건은 기존 `ScreenRequest.requirements`에, 중요한 답과 근거·가정은 `evidence.notes`에 질문 ID 및 대상 범위와 함께 기록한다. 모든 질문의 빈 레코드를 만들지 않는다. 실제 배치는 `target`, `webContext`, `composition`, 동작 설정은 `generation` 등 기존 필드에 반영한다.
 
-Resolver는 이 조건과 메모를 보존하지만 문장의 의미를 판정하거나 자동으로 동작을 구현하지 않는다. 생성 AI는 답과 구조·동작 설정이 일치하는지 확인하고, 렌더링 후에는 초점·위계·읽기 순서·밀도·정렬·여백도 검토해야 한다. 질문 기록만 존재한다는 이유로 생성 품질이 검증됐다고 말하지 않는다.
+Resolver는 `evidence.decisions`의 질문·factor·판단 대상을 공통 맥락 축과 대조하고, 서로 연결되지 않는 근거 재사용을 차단한다. 다만 자연어의 업무 의미나 좋은 배치를 자동 판정하지는 않는다. 생성 AI는 답과 구조·동작 설정이 일치하는지 확인하고, 렌더링 후에는 초점·위계·읽기 순서·밀도·정렬·여백도 검토해야 한다. 질문 기록만 존재한다는 이유로 생성 품질이 검증됐다고 말하지 않는다.
 
-### 1.2 업무 정보와 화면 위계
+### 1.3 업무 정보와 화면 위계
 
 업무 정보의 주요/보조 여부는 컴포넌트를 고르기 전에 해당 화면의 목적에 맞춰 판단한다. 기존 업무의 관계·조건을 확인할 때는 [Notion 업무 자료 조회 방법](./웹_UI_근거와_신규_생성_맥락.md)을 사용한다. 자동 입력과 읽기전용, 필수값과 항상 노출할 입력창을 동일하게 취급하지 않는다. 이 자료는 기존 질문의 답을 찾는 참고이며, 명세의 옛 배치를 강제하거나 생성기의 계약을 대신하지 않는다.
 
@@ -63,7 +75,7 @@ Resolver는 이 조건과 메모를 보존하지만 문장의 의미를 판정�
 
 `component-usage-contracts.json`은 모든 컴포넌트의 기본 선택 맥락과 선택에 민감한 자산의 상세 계약을 제공하고, `patterns.json`은 모든 패턴의 조합 맥락을 제공한다. `usage-contexts.json#assetSelectionGuide`는 여러 자산이 함께 쓰이는 대표 관계와 판단 기록 순서를 보충한다. `componentRefs`와 `connection`으로 같은 대상·비교 단위·저장 단위·작업 순서 안에서 자산이 연결되는 이유를 확인한 뒤 `patternRefs`를 비교하며, 패턴을 먼저 정한 뒤 Component를 끼워 맞추지 않는다.
 
-### 1.3 전체 페이지와 팝업 배경
+### 1.4 전체 페이지와 팝업 배경
 
 일반 MES 웹은 목록·상세·대시보드 모두 좌측 메뉴와 상단 탭을 유지한다. 공통 필수 자산은 `context-rules.json.applicationFrame`에서 관리한다. 팝업은 이 메뉴를 내부에 복제하지 않고 배경 페이지 위에 열린다.
 
@@ -73,7 +85,7 @@ Resolver는 이 조건과 메모를 보존하지만 문장의 의미를 판정�
 
 <a id="design-system-weights"></a>
 
-### 1.4 디자인 시스템 가중치 설계
+### 1.5 디자인 시스템 가중치 설계
 
 **상태: 설계 및 스킬의 요청 해석에 반영. 수치별 생성·검사 연결은 후속 작업.** 현재 실행기는 기존 MES 검사 조건을 유지한다. 아래 JSON은 다음 구현을 위한 설계 예시이며 현재 ScreenRequest 입력 필드에 추가하지 않는다.
 

@@ -155,7 +155,7 @@
         },
         "factor": {
           "enum": ["explicit-direction", "task-purpose", "information-role", "workflow", "information-relationship", "interaction-continuity", "space-density", "pattern-context", "selection-cardinality", "selection-result", "batch-action", "safety-reversibility"],
-          "description": "같은 결론을 지지하는 서로 다른 판단 축"
+          "description": "selection-context-framework.json의 공통 맥락 축에 연결되는 판단 factor"
         },
         "selectedOption": {
           "type": "string",

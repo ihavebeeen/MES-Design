@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "frameworkId": "mes.selection-context",
+  "frameworkVersion": "1.0.0",
+  "authority": "generation-decision-framework",
+  "purpose": "신규 UI를 구성하기 전에 업무와 정보의 맥락을 같은 축으로 정리하고, 그 결과를 Shell·Section·Pattern·Component·Behavior·Action 선택 근거에 연결한다.",
+  "principles": [
+    "맥락은 자산을 고른 뒤 붙이는 설명이 아니라 자산 후보를 비교하기 위한 입력이다.",
+    "어떤 축 하나도 Shell·Pattern·Component를 단독으로 확정하지 않는다. 관련 축의 조합과 가까운 대안을 함께 본다.",
+    "모든 축을 억지로 채우지 않는다. 현재 결정에 영향을 주는 축만 확인하고, 모르는 값은 unresolved로 남긴다.",
+    "기존 MES 웹과 과거 화면은 맥락을 이해하는 참고 자료다. 한 화면의 배치나 업무 규칙을 공통 기준으로 자동 승격하지 않는다.",
+    "POC는 맥락을 처음 발견하는 단계가 아니라, 미리 정리된 맥락이 올바른 질문과 자산 선택으로 이어지는지 검증하는 단계다."
+  ],
+  "states": ["confirmed", "supported", "assumed", "unresolved", "conflicting", "not-applicable", "unaddressed"],
+  "dimensions": [
+    {
+      "id": "task-purpose",
+      "name": "업무 목적",
+      "meaning": "사용자가 해결하려는 일과 완료 결과",
+      "questionRefs": ["screen.purpose", "task.find"],
+      "decisionFactors": ["task-purpose"],
+      "affects": ["screen", "shell", "section", "action"]
+    },
+    {
+      "id": "task-target-scope",
+      "name": "작업 대상과 범위",
+      "meaning": "어떤 대상 한 건·여러 건·전체에 읽기나 변경이 적용되는지",
+      "questionRefs": ["screen.purpose", "task.detail", "task.edit-scope", "task.settings"],
+      "decisionFactors": ["task-purpose", "batch-action"],
+      "affects": ["screen", "section", "component", "action"]
+    },
+    {
+      "id": "completion-save-unit",
+      "name": "완료·저장 단위",
+      "meaning": "어느 단위가 언제 확정되고 취소 시 무엇을 복원하는지",
+      "questionRefs": ["screen.workflow", "task.selection", "task.edit-scope", "task.settings", "state.commit"],
+      "decisionFactors": ["selection-result", "batch-action", "safety-reversibility"],
+      "affects": ["shell", "section", "behavior", "action"]
+    },
+    {
+      "id": "information-role",
+      "name": "정보 역할",
+      "meaning": "업무를 수행하는 주요 정보, 판단을 돕는 보조 정보, 장식·설명 정보의 구분",
+      "questionRefs": ["screen.focus", "task.comparison", "task.monitoring", "state.meaning"],
+      "decisionFactors": ["information-role"],
+      "affects": ["screen", "shell", "section", "component"]
+    },
+    {
+      "id": "information-relationship",
+      "name": "정보 관계",
+      "meaning": "정보 사이의 대등·종속·원인·결과·공통·대상별 관계",
+      "questionRefs": ["structure.relationships", "task.edit-scope", "task.dependencies", "task.comparison"],
+      "decisionFactors": ["information-relationship"],
+      "affects": ["shell", "section", "pattern", "component"]
+    },
+    {
+      "id": "simultaneous-reference",
+      "name": "동시 참조 필요",
+      "meaning": "입력·판단 중 다른 정보나 배경을 계속 함께 보아야 하는지",
+      "questionRefs": ["structure.relationships", "structure.environment", "task.detail", "task.dependencies"],
+      "decisionFactors": ["information-relationship", "interaction-continuity"],
+      "affects": ["shell", "section", "pattern"]
+    },
+    {
+      "id": "workflow-sequence",
+      "name": "업무 순서",
+      "meaning": "진입부터 확인·입력·검토·확정·후속 작업까지의 순서와 의존성",
+      "questionRefs": ["screen.workflow", "screen.focus", "task.find", "task.dependencies", "state.feedback"],
+      "decisionFactors": ["workflow", "interaction-continuity"],
+      "affects": ["screen", "shell", "section", "behavior", "action"]
+    },
+    {
+      "id": "repetition-entry-mode",
+      "name": "반복 입력 방식",
+      "meaning": "빈 행 직접 추가, 상단 작성값 확정 후 누적, 또는 두 방식의 병행 여부",
+      "questionRefs": ["structure.scale", "task.repeat-change"],
+      "decisionFactors": ["workflow", "batch-action"],
+      "affects": ["section", "pattern", "component", "behavior"]
+    },
+    {
+      "id": "comparison-structure",
+      "name": "비교 구조",
+      "meaning": "무엇을 같은 기준으로 비교하고 차이·집계·추세 중 무엇을 읽어야 하는지",
+      "questionRefs": ["structure.scale", "task.comparison"],
+      "decisionFactors": ["information-role", "information-relationship"],
+      "affects": ["section", "pattern", "component"]
+    },
+    {
+      "id": "selection-cardinality",
+      "name": "선택 수와 결과",
+      "meaning": "단일·다중 선택 여부와 선택 결과가 즉시 적용되는지 전달되는지",
+      "questionRefs": ["task.selection"],
+      "decisionFactors": ["selection-cardinality", "selection-result"],
+      "affects": ["component", "behavior", "action"]
+    },
+    {
+      "id": "state-lifecycle",
+      "name": "상태와 생명주기",
+      "meaning": "초기·선택·편집·오류·빈 상태·완료·취소에서 값과 화면이 어떻게 변하는지",
+      "questionRefs": ["task.repeat-change", "task.monitoring", "task.settings", "state.commit", "state.constraints", "state.feedback"],
+      "decisionFactors": ["selection-result", "safety-reversibility"],
+      "affects": ["component", "behavior", "action"]
+    },
+    {
+      "id": "entry-exit",
+      "name": "진입과 종료",
+      "meaning": "어디에서 어떤 대상을 가지고 들어오고, 끝난 결과가 어디로 돌아가는지",
+      "questionRefs": ["screen.workflow", "task.detail", "task.monitoring", "state.commit"],
+      "decisionFactors": ["workflow", "selection-result", "batch-action"],
+      "affects": ["screen", "shell", "behavior", "action"]
+    },
+    {
+      "id": "environment-density-scroll",
+      "name": "환경·밀도·스크롤",
+      "meaning": "기기, 화면 크기, 정보량, 긴 값과 스크롤 소유권이 구성에 미치는 영향",
+      "questionRefs": ["screen.direction", "structure.environment", "structure.scale"],
+      "decisionFactors": ["space-density", "interaction-continuity", "pattern-context"],
+      "affects": ["screen", "shell", "section", "pattern"]
+    },
+    {
+      "id": "evidence-uncertainty",
+      "name": "근거와 불확실성",
+      "meaning": "사용자 지정·명세·Figma·MES 참고·AI 가정 중 무엇에 근거하며 무엇이 아직 미정인지",
+      "questionRefs": ["screen.direction", "state.constraints", "state.meaning"],
+      "decisionFactors": ["explicit-direction", "pattern-context"],
+      "affects": ["screen", "shell", "section", "pattern", "component", "behavior", "action"]
+    }
+  ],
+  "decisionPolicies": [
+    {
+      "id": "screen.shell",
+      "name": "화면 틀 선택",
+      "decisionSubject": "screen.shell",
+      "enforcement": "blocker",
+      "explicitDirectionFactor": "explicit-direction",
+      "basisGroups": [
+        { "id": "purpose-flow", "name": "업무 목적 또는 흐름", "factorRefs": ["task-purpose", "workflow"] },
+        { "id": "information-structure", "name": "정보 역할 또는 관계", "factorRefs": ["information-role", "information-relationship"] },
+        { "id": "presentation-fit", "name": "상호작용·공간·승인 패턴 적합성", "factorRefs": ["interaction-continuity", "space-density", "pattern-context"] }
+      ],
+      "minimumEvidence": 3,
+      "alternativeComparison": true
+    },
+    {
+      "id": "section.composition",
+      "name": "섹션 조합 선택",
+      "decisionSubjectPrefix": "section.",
+      "enforcement": "review",
+      "relevantDimensionRefs": ["information-role", "information-relationship", "workflow-sequence", "repetition-entry-mode", "comparison-structure", "environment-density-scroll"]
+    },
+    {
+      "id": "component.selection",
+      "name": "컴포넌트 선택",
+      "decisionSubjectPrefix": "component.",
+      "enforcement": "review",
+      "relevantDimensionRefs": ["task-target-scope", "information-role", "information-relationship", "comparison-structure", "selection-cardinality", "state-lifecycle"]
+    },
+    {
+      "id": "behavior.selection",
+      "name": "동작 선택",
+      "decisionSubjectPrefix": "behavior.",
+      "enforcement": "review",
+      "relevantDimensionRefs": ["completion-save-unit", "workflow-sequence", "repetition-entry-mode", "selection-cardinality", "state-lifecycle", "entry-exit"]
+    },
+    {
+      "id": "action.selection",
+      "name": "액션 선택",
+      "decisionSubjectPrefix": "action.",
+      "enforcement": "review",
+      "relevantDimensionRefs": ["task-purpose", "task-target-scope", "completion-save-unit", "selection-cardinality", "state-lifecycle", "entry-exit"]
+    }
+  ],
+  "assetCategoryDimensions": {
+    "application-frame": ["task-purpose", "entry-exit", "environment-density-scroll"],
+    "navigation-query": ["task-purpose", "task-target-scope", "workflow-sequence", "environment-density-scroll"],
+    "content-structure": ["information-role", "information-relationship", "simultaneous-reference", "workflow-sequence", "comparison-structure"],
+    "data-display": ["information-role", "information-relationship", "comparison-structure", "environment-density-scroll"],
+    "status-feedback": ["information-role", "state-lifecycle", "workflow-sequence"],
+    "input-selection": ["task-target-scope", "information-relationship", "selection-cardinality", "state-lifecycle"],
+    "actions": ["task-purpose", "completion-save-unit", "state-lifecycle", "entry-exit"],
+    "overlay-behavior": ["task-purpose", "simultaneous-reference", "workflow-sequence", "entry-exit", "environment-density-scroll"]
+  },
+  "pipeline": [
+    "요청·명세·사용자 설명에서 화면의 정보와 행동을 추출한다.",
+    "현재 선택에 영향을 주는 맥락 축만 confirmed·supported·assumed·unresolved로 정리한다.",
+    "중요한 unresolved가 있으면 screen-intake-policy의 연결 질문만 묻는다.",
+    "각 의미 요소에 대해 정확한 기존 자산, 호환 가능한 자산, 신규 제안 순서로 비교한다.",
+    "컴포넌트 연결을 먼저 확인하고 이를 지원하는 Section·Pattern·Shell을 비교한다.",
+    "Resolver의 contextAssessment와 실제 구현 검사를 통과한 뒤 렌더링을 확인한다."
+  ],
+  "pocChecks": [
+    "요청에서 중요한 맥락 축이 빠지지 않고 추출됐는가",
+    "미정인 값만 질문하고 이미 알려진 값을 다시 묻지 않았는가",
+    "선택한 자산의 useWhen·doNotUseWhen·대안과 맥락 축이 서로 모순되지 않는가",
+    "하나의 근거가 다른 판단을 대신하지 않았는가",
+    "화면 전체의 정보 위계와 컴포넌트 선택이 같은 업무 목적을 향하는가",
+    "구현과 검증 결과가 선택 당시의 맥락 근거와 연결되어 있는가"
+  ]
+}

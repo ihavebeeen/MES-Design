@@ -73,6 +73,7 @@ try {
   const expectedPatternContracts = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/pattern-contracts.json"), "utf8")).contracts;
   const expectedScreenSpecs = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/screen-specs.json"), "utf8")).specs;
   const expectedSectionCompositionAudit = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/section-composition-audit.json"), "utf8"));
+  const expectedContextFramework = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/selection-context-framework.json"), "utf8"));
   assert(catalog.counts.generationTemplates === expectedTemplates.length, "MCP 생성 템플릿 개수가 등록 원장과 다릅니다.");
   const expectedSlideIds = expectedTemplates.filter(entry => entry.id.includes("side-slide")).map(entry => entry.id).sort();
   assert(JSON.stringify(catalog.generationTemplates.map(entry => entry.id).sort()) === JSON.stringify(expectedSlideIds), "MCP 조회에서 슬라이드 조합 생성기가 누락됐습니다.");
@@ -91,6 +92,9 @@ try {
   assert(catalog.counts.webGenerationOverlayGrammars === 4, "신규 생성용 팝업 문법 수가 예상과 다릅니다.");
   assert(catalog.counts.webGenerationSectionRecipes === 4, "신규 생성용 섹션 문법 수가 예상과 다릅니다.");
   assert(catalog.counts.foundationRecipes === 9, "Figma 기초 화면 레시피 수가 예상과 다릅니다.");
+  assert(catalog.counts.selectionContextDimensions === expectedContextFramework.dimensions.length, "공통 맥락 축 개수가 원장과 다릅니다.");
+  assert(catalog.counts.selectionDecisionPolicies === expectedContextFramework.decisionPolicies.length, "맥락 판단 정책 개수가 원장과 다릅니다.");
+  assert(catalog.selectionContextFramework.frameworkId === "mes.selection-context", "MCP 목록에 공통 맥락 체계가 없습니다.");
   assert(catalog.componentUsageContracts.some((entry) => entry.componentId === "side-slide-panel" && entry.useWhen.length > 0), "MCP 목록이 컴포넌트 사용 계약 상세를 반환하지 않았습니다.");
   assert(catalog.componentSelectionContexts.some((entry) => entry.componentId === "side-slide-panel" && entry.useWhen.length > 0), "MCP 목록이 컴포넌트 선택 맥락을 반환하지 않았습니다.");
   const bulkSectionCatalog = structured(await client.callTool({ name: "mes_list_design_system", arguments: { query: "section.bulk-edit-bar", limit: 10 } }));
@@ -127,6 +131,7 @@ try {
   assert(webGeneration.overlayGrammars.some((entry) => entry.id === "generation.overlay.select-then-register"), "선택 후 등록 팝업 문법을 찾지 못했습니다.");
   assert(webGeneration.foundationVisualLanguage.character.length > 0, "신규 UI 생성 맥락에 MES 시각 언어가 누락됐습니다.");
   assert(webGeneration.foundationRecipes.some((entry) => entry.id === "foundation.slide.staged-entry-list"), "생산실적과 가까운 기초 레시피를 찾지 못했습니다.");
+  assert(webGeneration.selectionContextFramework.dimensions.some((entry) => entry.id === "information-relationship"), "신규 UI 생성 맥락에 공통 정보 관계 축이 누락됐습니다.");
   assert(!("figmaReconciliation" in webGeneration), "신규 UI 생성 컨텍스트에 Figma 감사 정보가 섞였습니다.");
   const references = structured(await client.callTool({ name: "mes_get_web_generation_context", arguments: { category: "references", taskIds: ["receiving.register"], usageIds: ["usage.entry-list"], targetKind: "page" } }));
   assert(references.referenceContext.enforcement === "none", "업무/사용 맥락은 참고 전용이어야 합니다.");
@@ -142,6 +147,7 @@ try {
   const contract = structured(await client.callTool({ name: "mes_resolve_screen", arguments: { request } }));
   assert(contract.quality.status === "release-ready", `계약 상태가 release-ready가 아닙니다: ${contract.quality.status}`);
   assert(contract.decisionTrace?.shell?.selectedId === "shell.side-slide-panel", "Resolver decision trace에 선택 셸이 없습니다.");
+  assert(contract.decisionTrace?.contextAssessment?.frameworkId === "mes.selection-context", "Resolver decision trace에 공통 맥락 평가가 없습니다.");
   assert(contract.decisionTrace?.sections?.length === 3, "Resolver decision trace의 순서형 섹션이 예상과 다릅니다.");
   assert(contract.referenceContext?.enforcement === "none", "Resolver 참고 주석이 누락됐습니다.");
   const withoutReferences = structuredClone(request);

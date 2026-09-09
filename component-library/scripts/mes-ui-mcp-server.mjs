@@ -175,7 +175,7 @@ export function createMesUiMcpServer() {
     "mes_list_design_system",
     {
       title: "MES 디자인 시스템 조회",
-      description: "화면 설계 전에 등록된 MES 컴포넌트, 패턴, 사용 계약, 기초 화면 레시피, 순서형 화면 명세, 결정형 생성 템플릿을 조회합니다.",
+      description: "화면 설계 전에 등록된 MES 컴포넌트, 패턴, 공통 맥락 축, 사용 계약, 기초 화면 레시피, 순서형 화면 명세, 결정형 생성 템플릿을 조회합니다.",
       inputSchema: z.object({
         query: z.string().trim().optional().describe("ID·이름·종류 검색어"),
         limit: z.number().int().min(1).max(100).default(30),
@@ -206,6 +206,8 @@ export function createMesUiMcpServer() {
           webGenerationOverlayGrammars: registry.webGenerationContext.overlayGrammars.length,
           webGenerationSectionRecipes: registry.webGenerationContext.sectionRecipes.length,
           foundationRecipes: registry.foundationRecipes.recipeFamilies.length,
+          selectionContextDimensions: registry.selectionContextFramework.dimensions.length,
+          selectionDecisionPolicies: registry.selectionContextFramework.decisionPolicies.length,
         },
         components: filterEntries(registry.components, query, limit),
         patterns: filterEntries(registry.patterns, query, limit),
@@ -218,6 +220,7 @@ export function createMesUiMcpServer() {
         generationTemplates: filterEntries(registry.generationTemplates, query, limit),
         mobile: filterEntries(mobile, query, limit),
         foundationRecipes: filterDetailedEntries(registry.foundationRecipes.recipeFamilies, query, limit),
+        selectionContextFramework: registry.selectionContextFramework,
       };
       return toolResult("MES 디자인 시스템 조회 완료", result);
     }),
@@ -227,7 +230,7 @@ export function createMesUiMcpServer() {
     "mes_get_web_generation_context",
     {
       title: "MES 신규 UI 생성 맥락 조회",
-      description: "신규 UI의 업무 정보·정보 관계, 페이지·팝업·섹션 사용 사례와 Figma 기초 화면에서 추출한 시각·구성 레시피를 참고용으로 조회합니다. 배치·필수값을 강제하지 않습니다.",
+      description: "신규 UI의 공통 맥락 축, 업무 정보·정보 관계, 페이지·팝업·섹션 사용 사례와 Figma 기초 화면에서 추출한 시각·구성 레시피를 조회합니다. 사례는 참고용이며 배치·필수값을 강제하지 않습니다.",
       inputSchema: z.object({
         category: z.enum(["all", "pages", "overlays", "sections", "behaviors", "references"]).default("all"),
         query: z.string().trim().optional().describe("신규 화면의 업무명·화면 성격·가까운 메뉴명"),
@@ -256,6 +259,7 @@ export function createMesUiMcpServer() {
         purpose: context.purpose,
         policy: context.policy,
         decisionOrder: context.decisionOrder,
+        selectionContextFramework: registry.selectionContextFramework,
         referenceContext,
         foundationPolicy: referenceContext.foundationPolicy,
         foundationVisualLanguage: referenceContext.foundationVisualLanguage,

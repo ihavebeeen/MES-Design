@@ -257,7 +257,10 @@ export function reviewScreenAssetSelection(draft, registry) {
   const componentMap = new Map(registry.components.map((entry) => [entry.id, entry]));
   const contextMap = new Map(registry.componentSelectionContexts.map((entry) => [entry.componentId, entry]));
   const contractMap = new Map(registry.componentUsageContracts.map((entry) => [entry.componentId, entry]));
-  const elementReviews = draft.elements.map((element) => reviewElement(element, componentMap, contextMap, contractMap));
+  const elementReviews = draft.elements.map((element) => ({
+    ...reviewElement(element, componentMap, contextMap, contractMap),
+    contextDimensionRefs: registry.selectionContextFramework.assetCategoryDimensions[element.category] ?? [],
+  }));
   const patternCandidates = reviewPatternCandidates(draft, elementReviews, registry.patterns, registry.patternContracts);
   const representedCategories = new Set(draft.elements.map((element) => element.category));
   const notApplicable = new Set(draft.notApplicableCategories ?? []);
@@ -295,6 +298,7 @@ export function reviewScreenAssetSelection(draft, registry) {
       automaticSelection: false,
       blockingBoundary: "invalid-input-only",
       note: "후보는 ScreenRequest를 대신 결정하지 않는다. 컴포넌트 포함률은 탐색 순서일 뿐이며 selectionContext의 useWhen·doNotUseWhen과 전체 화면 맥락을 검토해 채택한 패턴만 요청에 연결한다.",
+      contextFrameworkRef: registry.selectionContextFramework.frameworkId,
     },
     reviewedCategories: [...representedCategories],
     notApplicableCategories: [...notApplicable],

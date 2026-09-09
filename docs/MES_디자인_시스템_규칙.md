@@ -13,7 +13,7 @@
 | Shell | 화면의 외곽 구조와 스크롤 책임 | CenterModal, SideSlidePanel |
 | Screen | Shell과 Section·Pattern을 순서대로 조합한 결과 | 입고등록, 투입정보 |
 
-화면은 컴포넌트를 임의 배치해서 만들지 않는다. 먼저 [화면 질문 체계](./AI_UI_맥락_규칙.md#11-화면을-만들기-전의-질문-체계)로 목적·정보·행동 관계를 파악한다. 각 필요 능력을 Component의 사용 맥락과 대조하고 Component들이 같은 대상·저장 단위·작업 순서에서 어떻게 연결되는지 설명한 뒤, 그 연결을 지원하는 Section·Pattern·Shell과 Behavior·ActionSet을 선택한다.
+화면은 컴포넌트를 임의 배치해서 만들지 않는다. 먼저 [공통 맥락 축과 화면 질문 체계](./AI_UI_맥락_규칙.md#11-공통-맥락-축)로 목적·정보·행동 관계를 파악한다. 각 필요 능력을 Component의 사용 맥락과 대조하고 Component들이 같은 대상·저장 단위·작업 순서에서 어떻게 연결되는지 설명한 뒤, 그 연결을 지원하는 Section·Pattern·Shell과 Behavior·ActionSet을 선택한다.
 
 ## 2. 근거 우선순위
 

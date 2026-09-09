@@ -37,6 +37,9 @@ const webUiUsageInventoryRegistry = readJson("web-ui-usage-inventory.json");
 const webFigmaReconciliationRegistry = readJson("web-figma-reconciliation.json");
 const webGenerationContextRegistry = readJson("web-generation-context.json");
 const foundationRecipeRegistry = readJson("foundation-recipes.json");
+const screenIntakePolicyRegistry = readJson("screen-intake-policy.json");
+const selectionContextFrameworkRegistry = readJson("selection-context-framework.json");
+const screenRequestSchemaRegistry = readJson("screen-request.schema.json");
 patternRegistry.patterns.push(...sourceAssetRegistry.patterns);
 screenRegistry.screens.push(...sourceAssetRegistry.screens);
 const errors = [];
@@ -96,6 +99,44 @@ checkVersion("web-ui-usage-inventory", webUiUsageInventoryRegistry);
 checkVersion("web-figma-reconciliation", webFigmaReconciliationRegistry);
 checkVersion("web-generation-context", webGenerationContextRegistry);
 checkVersion("foundation-recipes", foundationRecipeRegistry);
+checkVersion("screen-intake-policy", screenIntakePolicyRegistry);
+checkVersion("selection-context-framework", selectionContextFrameworkRegistry);
+
+const selectionContextDimensions = mapByUniqueId("selection-context-framework dimensions", selectionContextFrameworkRegistry.dimensions ?? []);
+const intakeQuestions = mapByUniqueId("screen-intake-policy questions", screenIntakePolicyRegistry.questions ?? []);
+const allowedDecisionFactors = new Set(selectionContextFrameworkRegistry.dimensions?.flatMap((entry) => entry.decisionFactors ?? []) ?? []);
+const schemaDecisionFactors = new Set(screenRequestSchemaRegistry.$defs?.decisionEvidence?.properties?.factor?.enum ?? []);
+const expectedAssetCategories = new Set(["application-frame", "navigation-query", "content-structure", "data-display", "status-feedback", "input-selection", "actions", "overlay-behavior"]);
+
+if (selectionContextFrameworkRegistry.authority !== "generation-decision-framework") errors.push("selection-context-framework: authority가 generation-decision-framework여야 합니다.");
+if (!selectionContextFrameworkRegistry.frameworkId || !selectionContextFrameworkRegistry.frameworkVersion) errors.push("selection-context-framework: frameworkId와 frameworkVersion이 필요합니다.");
+for (const dimension of selectionContextDimensions.values()) {
+  for (const field of ["name", "meaning"]) if (!dimension[field]?.trim()) errors.push(`selection-context-framework '${dimension.id}': ${field}가 필요합니다.`);
+  for (const field of ["questionRefs", "decisionFactors", "affects"]) {
+    if (!Array.isArray(dimension[field]) || dimension[field].length === 0 || new Set(dimension[field]).size !== dimension[field].length) errors.push(`selection-context-framework '${dimension.id}': ${field}는 중복 없는 배열이어야 합니다.`);
+  }
+  for (const questionRef of dimension.questionRefs ?? []) if (!intakeQuestions.has(questionRef)) errors.push(`selection-context-framework '${dimension.id}': 없는 질문 '${questionRef}'을 참조합니다.`);
+}
+for (const question of intakeQuestions.values()) {
+  if (!Array.isArray(question.contextDimensions) || question.contextDimensions.length === 0) errors.push(`screen-intake-policy '${question.id}': contextDimensions가 필요합니다.`);
+  for (const dimensionRef of question.contextDimensions ?? []) {
+    if (!selectionContextDimensions.has(dimensionRef)) errors.push(`screen-intake-policy '${question.id}': 없는 맥락 축 '${dimensionRef}'을 참조합니다.`);
+    else if (!selectionContextDimensions.get(dimensionRef).questionRefs.includes(question.id)) errors.push(`screen-intake-policy '${question.id}': '${dimensionRef}'의 역참조가 없습니다.`);
+  }
+}
+for (const [category, dimensionRefs] of Object.entries(selectionContextFrameworkRegistry.assetCategoryDimensions ?? {})) {
+  if (!expectedAssetCategories.has(category)) errors.push(`selection-context-framework: 알 수 없는 자산 범주 '${category}'입니다.`);
+  for (const dimensionRef of dimensionRefs) if (!selectionContextDimensions.has(dimensionRef)) errors.push(`selection-context-framework '${category}': 없는 맥락 축 '${dimensionRef}'을 참조합니다.`);
+}
+for (const category of expectedAssetCategories) if (!Object.hasOwn(selectionContextFrameworkRegistry.assetCategoryDimensions ?? {}, category)) errors.push(`selection-context-framework: 자산 범주 '${category}'의 맥락 연결이 없습니다.`);
+const selectionDecisionPolicies = mapByUniqueId("selection-context-framework policies", selectionContextFrameworkRegistry.decisionPolicies ?? []);
+for (const policy of selectionDecisionPolicies.values()) {
+  if (!policy.decisionSubject && !policy.decisionSubjectPrefix) errors.push(`selection-context-framework policy '${policy.id}': 판단 대상이 필요합니다.`);
+  for (const group of policy.basisGroups ?? []) for (const factor of group.factorRefs ?? []) if (!allowedDecisionFactors.has(factor)) errors.push(`selection-context-framework policy '${policy.id}': 없는 factor '${factor}'를 참조합니다.`);
+  for (const dimensionRef of policy.relevantDimensionRefs ?? []) if (!selectionContextDimensions.has(dimensionRef)) errors.push(`selection-context-framework policy '${policy.id}': 없는 맥락 축 '${dimensionRef}'을 참조합니다.`);
+}
+if (!selectionDecisionPolicies.has("screen.shell")) errors.push("selection-context-framework: screen.shell 판단 정책이 필요합니다.");
+if (allowedDecisionFactors.size !== schemaDecisionFactors.size || [...allowedDecisionFactors].some((factor) => !schemaDecisionFactors.has(factor))) errors.push("selection-context-framework: 판단 factor와 screen-request.schema.json의 factor enum이 다릅니다.");
 
 const mobileAssets = new Set([
   ...(mobileAssetRegistry.foundations ?? []).map((entry) => entry.id),
@@ -931,5 +972,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Design system registry check passed: ${components.size}/${allComponentSelectionContexts.size} component contexts, ${patterns.size} pattern contexts, ${componentUsageContracts.size} detailed component contracts, ${patternContracts.size} detailed pattern contracts, ${screens.size} screens, ${generationTemplates.size} generation templates, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates, ${webUsagePages.size} observed web pages, ${webUsageFlows.size} observed web entry flows. Project state: ${completionPolicyRegistry.projectState}, open completion blockers: ${projectCompletionBlockerCount}.`
+  `Design system registry check passed: ${components.size}/${allComponentSelectionContexts.size} component contexts, ${patterns.size} pattern contexts, ${selectionContextDimensions.size} shared context dimensions, ${selectionDecisionPolicies.size} context decision policies, ${componentUsageContracts.size} detailed component contracts, ${patternContracts.size} detailed pattern contracts, ${screens.size} screens, ${generationTemplates.size} generation templates, ${visualRegistry.cases.length} visual cases, ${sourceEvidence.size} source references, ${generatedCandidates.size} generated candidates, ${webUsagePages.size} observed web pages, ${webUsageFlows.size} observed web entry flows. Project state: ${completionPolicyRegistry.projectState}, open completion blockers: ${projectCompletionBlockerCount}.`
 );

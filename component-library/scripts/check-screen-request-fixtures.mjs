@@ -145,6 +145,7 @@ assert.ok(resolveScreenRequest(invalidTableRequest).quality.issues.some((entry) 
 // Intake is an AI-read policy, not a semantic classifier. These checks cover
 // registry integrity and request preservation, not AI question/layout quality.
 const intake = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/screen-intake-policy.json"), "utf8"));
+const contextFramework = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/selection-context-framework.json"), "utf8"));
 const intakeExamples = JSON.parse(readFileSync(join(projectRoot, "tests/fixtures/screen-intake-cases.json"), "utf8"));
 const requestSchema = JSON.parse(readFileSync(join(projectRoot, "src/design-system/registry/screen-request.schema.json"), "utf8"));
 assert.equal(intake.schemaVersion, 1);
@@ -154,8 +155,11 @@ assert.equal(intake.resolution.batchSize.max, 3);
 const stages = new Set(intake.stages.map(({ id }) => id));
 const facets = new Set(Object.keys(intake.facets));
 const questions = new Map(intake.questions.map((question) => [question.id, question]));
+const contextDimensions = new Map(contextFramework.dimensions.map((dimension) => [dimension.id, dimension]));
 assert.ok(questions.size > 0);
 assert.equal(questions.size, intake.questions.length, "Intake 질문 ID 중복");
+assert.equal(contextFramework.authority, "generation-decision-framework");
+assert.equal(contextDimensions.size, contextFramework.dimensions.length, "공통 맥락 축 ID 중복");
 
 function hasSchemaPath(schema, parts) {
   if (schema.$ref) return hasSchemaPath(requestSchema.$defs[schema.$ref.split("/").at(-1)], parts);
@@ -172,8 +176,18 @@ for (const question of questions.values()) {
   for (const field of ["answerNeeds", "lookIn", "affects", "writeTo"]) {
     assert.ok(Array.isArray(question[field]) && question[field].length > 0 && question[field].every((value) => typeof value === "string" && value.trim()), `${question.id}: ${field} 필요`);
   }
+  assert.ok(Array.isArray(question.contextDimensions) && question.contextDimensions.length > 0, `${question.id}: 공통 맥락 축 연결 필요`);
+  for (const dimensionRef of question.contextDimensions) {
+    assert.ok(contextDimensions.has(dimensionRef), `${question.id}: 없는 공통 맥락 축 ${dimensionRef}`);
+    assert.ok(contextDimensions.get(dimensionRef).questionRefs.includes(question.id), `${question.id}: 공통 맥락 축 역참조 누락 ${dimensionRef}`);
+  }
   assert.ok(Object.hasOwn(intake.questionContract.ifUnknown, question.ifUnknown), `${question.id}: 미정 처리 누락`);
   for (const target of question.writeTo) assert.ok(hasSchemaPath(requestSchema, target.split(".")), `${question.id}: 없는 ScreenRequest 경로 ${target}`);
+}
+
+for (const dimension of contextDimensions.values()) {
+  assert.ok(dimension.questionRefs.length > 0 && dimension.questionRefs.every((id) => questions.has(id)), `${dimension.id}: 질문 연결 오류`);
+  assert.ok(dimension.decisionFactors.length > 0, `${dimension.id}: 판단 factor 필요`);
 }
 
 for (const followUp of intake.followUps) {
@@ -218,6 +232,6 @@ for (const example of intakeExamples.cases) {
   assert.equal(generateScreenTsx(withAnswers), baselineSource, `${example.id}: 메모만으로 JSX가 변경됨`);
   preservedIntakeCases += 1;
 }
-console.log(`[screen:intake] 질문 ${questions.size}개 구조·참조 검사, 수동 검토 예시 ${caseIds.size}개 참조 검사, 답 보존 ${preservedIntakeCases}개 통과 (AI 질문 선택 품질 검증은 아님)`);
+console.log(`[screen:intake] 질문 ${questions.size}개와 공통 맥락 축 ${contextDimensions.size}개 연결 검사, 수동 검토 예시 ${caseIds.size}개 참조 검사, 답 보존 ${preservedIntakeCases}개 통과 (AI 질문 선택 품질 검증은 아님)`);
 
 console.log(`[screen:fixtures] 계약 정상 3개 + 차단 7개 + TSX 결정성 3개 + 미리보기 3개 통과 · ${generatedSourceFingerprint(generatedFirst).slice(0, 12)}/${generatedSourceFingerprint(centerFirst).slice(0, 12)}/${generatedSourceFingerprint(pageFirst).slice(0, 12)}`);

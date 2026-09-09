@@ -162,7 +162,7 @@ Behavior는 어떤 Section 또는 Action에 적용되는지 target을 가져야 
 
 AI는 JSX를 작성하기 전에 다음 순서를 지킨다.
 
-1. [화면 질문 체계](./AI_UI_맥락_규칙.md#11-화면을-만들기-전의-질문-체계)로 목적·컨셉·정보 관계를 파악한다. 이미 알려진 답은 활용하고 중요한 미정 사항만 질문한 뒤, 기존 ScreenRequest의 requirements·evidence.notes와 구성 필드에 반영한다.
+1. [공통 맥락 축과 화면 질문 체계](./AI_UI_맥락_규칙.md#11-공통-맥락-축)로 목적·컨셉·정보 관계를 파악한다. 이미 알려진 답은 활용하고 중요한 미정 사항만 질문한 뒤, 기존 ScreenRequest의 requirements·evidence.notes와 구성 필드에 반영한다.
 2. `select.overlay-shell`, `select.heading-context`, `select.action-role`, `select.input-control`, `select.content-boundary`, `select.table-model`, `select.scroll-owner`로 의미 역할과 부모 맥락을 판정한다.
 3. Shell, Section, Behavior, ActionSet, Component마다 의미·동작·상태·부모 맥락에 정확히 맞는 승인 자산을 조회한다.
 4. 정확한 자산이 없으면 가장 가까운 후보의 의미 역할, 동작 결과, 선택 수, 상태 모델, 접근성, 허용 부모와 정보 위계를 비교한다. 이를 보존할 수 있을 때만 `reuse`, `compose`, `extend`한다.
