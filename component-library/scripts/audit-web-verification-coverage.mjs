@@ -6,6 +6,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { generatedTextMatches } from "./generated-text.mjs";
 import { readRegistryBundle } from "./resolve-screen-request.mjs";
+import {
+  fingerprintBinaryFile,
+  fingerprintTextFile,
+  normalizeVerificationPath,
+} from "./verification-fingerprint.mjs";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(projectRoot, "..");
@@ -30,10 +35,6 @@ function fingerprint(value) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
 }
 
-function fileFingerprint(filePath) {
-  return createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
-}
-
 function walkFiles(directory) {
   if (!fs.existsSync(directory)) return [];
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -56,8 +57,8 @@ function collectTestInventory() {
   const testFiles = walkFiles(path.join(projectRoot, "tests", "visual")).filter((filePath) => /\.spec\.[cm]?ts$/.test(filePath));
   return {
     count,
-    files: Object.fromEntries(testFiles.sort().map((filePath) => [path.relative(projectRoot, filePath).replaceAll("\\", "/"), fileFingerprint(filePath)])),
-    fingerprint: fingerprint({ count, files: testFiles.sort().map((filePath) => [path.relative(projectRoot, filePath), fileFingerprint(filePath)]) }),
+    files: Object.fromEntries(testFiles.sort().map((filePath) => [normalizeVerificationPath(path.relative(projectRoot, filePath)), fingerprintTextFile(filePath)])),
+    fingerprint: fingerprint({ count, files: testFiles.sort().map((filePath) => [normalizeVerificationPath(path.relative(projectRoot, filePath)), fingerprintTextFile(filePath)]) }),
   };
 }
 
@@ -194,15 +195,15 @@ function buildAudit() {
   const registeredSourceFingerprints = Object.fromEntries(
     registeredSourcePaths.map((relativePath) => {
       const absolutePath = path.join(projectRoot, relativePath);
-      return [relativePath, fs.existsSync(absolutePath) ? fileFingerprint(absolutePath) : "missing"];
+      return [relativePath, fs.existsSync(absolutePath) ? fingerprintTextFile(absolutePath) : "missing"];
     }),
   );
   const visualTestDirectory = path.join(projectRoot, "tests", "visual");
   const visualTestFiles = walkFiles(visualTestDirectory).filter((filePath) => /\.spec\.[cm]?ts$/.test(filePath));
   const snapshotFiles = walkFiles(visualTestDirectory).filter((filePath) => filePath.includes("-snapshots") && filePath.endsWith(".png"));
   const visualEvidenceFingerprints = {
-    testSources: Object.fromEntries(visualTestFiles.sort().map((filePath) => [path.relative(projectRoot, filePath).replaceAll("\\", "/"), fileFingerprint(filePath)])),
-    snapshots: Object.fromEntries(snapshotFiles.sort().map((filePath) => [path.relative(projectRoot, filePath).replaceAll("\\", "/"), fileFingerprint(filePath)])),
+    testSources: Object.fromEntries(visualTestFiles.sort().map((filePath) => [normalizeVerificationPath(path.relative(projectRoot, filePath)), fingerprintTextFile(filePath)])),
+    snapshots: Object.fromEntries(snapshotFiles.sort().map((filePath) => [normalizeVerificationPath(path.relative(projectRoot, filePath)), fingerprintBinaryFile(filePath)])),
   };
 
   const sourceFingerprint = fingerprint({

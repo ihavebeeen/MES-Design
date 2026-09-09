@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-09T02:34:13.539Z",
+  "recordedAt": "2026-09-09T03:51:22.740Z",
   "outcome": "passed",
-  "durationMs": 320121,
+  "durationMs": 346921,
   "assetManifestFingerprint": "5f192807a4ca19f12d553d9c72b115d29eafc74d091a2b26541d12905d255857",
-  "verificationSourceFingerprint": "b71e3f00f50a5c61854ee3360a452a84db26308eab50d474b7376a0305dccfd9",
+  "verificationSourceFingerprint": "f7c8b08dbd911366dbcba071df6102dfe189948458a0fb17cac5b5c634c16414",
   "testInventory": {
     "count": 95,
     "files": {
@@ -14,56 +14,56 @@
       "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
       "tests/visual/slide-compositions.spec.mts": "42dada2890e5e05573f64abaf26f10f9129c5b89c87b8646f053e6806fd3179e"
     },
-    "fingerprint": "dd9968d0a6670dcf7bff4f3c8ea3a9158c33732e676b88d6e22eb5e69bd468fb"
+    "fingerprint": "7d0b0806a4783b1eb6d5007359a00f0c3c28e0eb2c5b719b76581b5926aff9e5"
   },
   "stages": [
     {
       "id": "asset-sync",
       "command": "npm run sync:assets",
       "status": "passed",
-      "durationMs": 467,
+      "durationMs": 518,
       "exitCode": 0
     },
     {
       "id": "verification-inventory",
       "command": "node scripts/audit-web-verification-coverage.mjs --write",
       "status": "passed",
-      "durationMs": 848,
+      "durationMs": 915,
       "exitCode": 0
     },
     {
       "id": "design-system-check",
       "command": "npm run check:design-system",
       "status": "passed",
-      "durationMs": 48484,
+      "durationMs": 54559,
       "exitCode": 0
     },
     {
       "id": "design-system-lint",
       "command": "npm run lint:design-system",
       "status": "passed",
-      "durationMs": 4139,
+      "durationMs": 4803,
       "exitCode": 0
     },
     {
       "id": "playwright",
       "command": "npm run test:visual -- --workers=1",
       "status": "passed",
-      "durationMs": 243113,
+      "durationMs": 262620,
       "exitCode": 0
     },
     {
       "id": "production-build",
       "command": "npm run build",
       "status": "passed",
-      "durationMs": 21438,
+      "durationMs": 22501,
       "exitCode": 0
     },
     {
       "id": "verification-record",
-      "command": "node scripts/audit-web-verification-coverage.mjs --write --record-passed --duration-ms=243113",
+      "command": "node scripts/audit-web-verification-coverage.mjs --write --record-passed --duration-ms=262620",
       "status": "passed",
-      "durationMs": 1033,
+      "durationMs": 1003,
       "exitCode": 0
     }
   ]
