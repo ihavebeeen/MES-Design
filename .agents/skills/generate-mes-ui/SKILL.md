@@ -1,6 +1,6 @@
 ---
 name: generate-mes-ui
-description: Generate, reproduce, normalize, or apply requested fixes to MES screens in this repository using the registered components, composition patterns, context rules, and visual evidence. Use whenever a user asks to make or change a MES page, center modal, side slide panel, confirmation dialog, table workflow, or generated-screen prototype. Do not use for evaluation-only requests; route review, critique, QA, acceptance, and promotion-readiness work to audit-mes-ui.
+description: Generate, reproduce, normalize, or apply requested fixes to MES screens in this repository using the registered components, composition patterns, context rules, and visual evidence. Use whenever a user asks to make or change a MES page, center modal, side slide panel, confirmation dialog, table workflow, or generated-screen prototype. For a new screen or structural change, begin with a concise requirements dialogue before choosing fields, CRUD scope, layout, or implementation. Do not use for evaluation-only requests; route review, critique, QA, acceptance, and promotion-readiness work to audit-mes-ui.
 ---
 
 # Generate MES UI
@@ -11,11 +11,17 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
 
 신규 화면 또는 화면 구조가 달라지는 요청에서는 구현보다 대화를 먼저 시작한다. 사용자가 `MES 신규 화면 제작 시작`, `새 화면 만들어줘`처럼 짧게 요청해도 같은 절차를 적용한다.
 
-1. 사용자가 이미 말한 내용을 `사용자·업무 목적·완료 단위·주요 정보·보조 정보·행동·참고 근거·미정 사항`으로 짧게 정리한다. 저장소와 연결된 근거는 읽기 전용으로 조회할 수 있다.
-2. 화면 구조, 정보 위계, 저장 범위, 선택 방식 또는 업무 행동을 바꾸는 미정 사항만 질문한다. 한 번에 서로 관련된 질문 1~3개를 묻고 답을 기다린다. 질문 도구가 있으면 짧고 서로 배타적인 선택지를 사용한다.
-3. 이미 받은 답, 등록된 공통 MES 규칙, 표준 토큰, 기본 취소 동작은 다시 묻지 않는다. 관련 없는 맥락 축을 채우기 위해 질문을 늘리지 않는다.
-4. 사용자가 `알아서 해줘`라고 답하면 작은 표현 차이는 합리적으로 결정한다. Shell, 주요/보조 정보, 다중 선택, 일괄 처리, 저장 단위처럼 업무 흐름을 바꾸는 선택은 권장안과 이유를 제시하고 확인을 받는다.
-5. 필요한 답을 받으면 구현 전에 아래 형태로 한 번만 시작 범위를 확인한다. 미정 사항이 결과를 바꾸지 않으면 `없음`으로 표시하고 바로 진행한다.
+1. MES 화면 요청은 이 스킬이 요구사항과 조합 판단을 먼저 담당한다. `sites-building` 같은 일반 사이트·앱 제작 스킬이 함께 적용되더라도 업무 범위와 MES 자산 선택을 대신하게 하지 않는다. 일반 제작 스킬은 ScreenRequest가 정리된 뒤 필요한 구현 보조에만 사용한다. 사용자가 배포를 요청하지 않았다면 호스팅 작업으로 전환하지 않는다.
+2. 첫 질문 전에 읽을 수 있는 범위는 `AGENTS.md`, 이 스킬, 관련 맥락 원장과 사용 근거다. 광범위한 구현 파일 조사, JSX 작성, 생성 명령, 레이아웃 확정은 답변 이후로 미룬다.
+3. 사용자가 이미 말한 내용을 `사용자·업무 목적·완료 단위·주요 정보·보조 정보·행동·참고 근거·미정 사항`으로 짧게 정리한다. 첫 사용자 응답에서는 바로 구현하겠다고 선언하거나 기존 화면 패턴에 맞추겠다고 확정하지 않는다.
+4. 먼저 다음 중 아직 모르는 업무 사실을 묻는다. 이미 제공된 항목은 건너뛴다.
+   - 누가 어느 시점에 이 화면을 사용하는가
+   - 화면에서 끝내야 하는 업무와 완료 상태는 무엇인가
+   - 조회·등록·수정·삭제·승인 등 실제로 필요한 행동은 무엇인가
+5. 위 사실이 정리되기 전에는 CRUD 범위를 `권장`으로 확정하거나 필드 목록을 `필수`로 선언하지 않는다. 예상 항목을 보여줄 때는 후보 또는 예시라고 표시한다. 이후 주요/보조 정보, 필수·선택·자동 기록 여부, 선택 방식과 화면 구조 중 결과를 바꾸는 미정 사항을 묻는다.
+6. 한 번에 서로 관련된 질문 1~3개를 묻고 답을 기다린다. 질문 도구가 있으면 짧고 서로 배타적인 선택지를 사용한다. 이미 받은 답, 등록된 공통 MES 규칙, 표준 토큰, 기본 취소 동작은 다시 묻지 않는다. 관련 없는 맥락 축을 채우기 위해 질문을 늘리지 않는다.
+7. 사용자가 `알아서 해줘`라고 답하면 작은 표현 차이는 합리적으로 결정한다. Shell, 주요/보조 정보, 다중 선택, 일괄 처리, 저장 단위처럼 업무 흐름을 바꾸는 선택은 권장안과 이유를 제시하고 확인을 받는다.
+8. 필요한 답을 받으면 구현 전에 아래 형태로 한 번만 시작 범위를 확인한다. 미정 사항이 결과를 바꾸지 않으면 `없음`으로 표시하고 바로 진행한다.
 
    ```text
    작업 목적:
@@ -27,7 +33,7 @@ Create MES UI through the repository contract. Do not translate prose or Figma d
    남은 미정 사항:
    ```
 
-6. 답이 필요한 상태에서는 JSX 작성, 임시 대체 UI 제작, Shell 확정, 생성 명령 실행을 시작하지 않는다. 구현 제약이 새로 발견되면 같은 방식으로 영향과 선택지를 설명하고 필요한 결정만 다시 묻는다.
+9. 답이 필요한 상태에서는 JSX 작성, 임시 대체 UI 제작, Shell 확정, 생성 명령 실행을 시작하지 않는다. 구현 제약이 새로 발견되면 같은 방식으로 영향과 선택지를 설명하고 필요한 결정만 다시 묻는다.
 
 팝업의 문구 수정, 간격 조정처럼 대상과 변경 범위가 명확한 작은 수정에는 전체 시작 대화를 반복하지 않는다. 평가만 요청받은 경우에는 이 절차 대신 `audit-mes-ui`로 연결한다.
 

@@ -1,7 +1,7 @@
 interface:
   display_name: "MES UI 생성"
-  short_description: "등록된 MES 규칙과 컴포넌트로 화면을 생성합니다"
-  default_prompt: "Use $generate-mes-ui to create an MES screen from my Korean requirements."
+  short_description: "업무 질문부터 시작해 MES 화면을 생성합니다"
+  default_prompt: "Use $generate-mes-ui to begin an MES screen task by asking only the material unanswered business questions before implementation."
 
 policy:
   allow_implicit_invocation: true
