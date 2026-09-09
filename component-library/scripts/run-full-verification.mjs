@@ -63,7 +63,12 @@ for (const [name, args] of pipeline) {
     // The visual suites temporarily create preview routes. Next dev can retain
     // validators for those deleted routes, so production type checking must not
     // reuse that generated cache.
-    fs.rmSync(path.join(projectRoot, ".next", "dev"), { recursive: true, force: true });
+    fs.rmSync(path.join(projectRoot, ".next", "dev"), {
+      recursive: true,
+      force: true,
+      maxRetries: 10,
+      retryDelay: 200,
+    });
   }
   stages.push(run(name, args));
 }

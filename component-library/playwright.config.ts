@@ -30,7 +30,7 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-  webServer: {
+  webServer: process.env.PLAYWRIGHT_MANAGED_SERVER === "1" ? undefined : {
     command: `npm run dev -- --hostname ${previewURL.hostname} --port ${previewURL.port || "3000"}`,
     url: `${baseURL}/visual-regression/table`,
     reuseExistingServer: !process.env.CI,

@@ -9,7 +9,8 @@ import type { NextConfig } from "next";
  * 못 찾고 대신 저장소 루트의 README.md를 Jekyll로 렌더링해서 보여주고 있었음
  * ("md파일만 나온다"는 증상의 원인).
  *
- * - `output: "export"`: `next build` 시 서버리스 정적 export(`out/`) 생성.
+ * - `output: "export"`: 배포용 `next build`에서 서버리스 정적 export(`out/`) 생성.
+ *   개발 서버에서는 동적으로 생성되는 QA 경로를 정상 감지할 수 있도록 적용하지 않음.
  * - `basePath`/`assetPrefix`: GitHub Pages 프로젝트 사이트는
  *   `https://<user>.github.io/<repo>/` 처럼 서브패스에서 서빙되므로, 절대경로로
  *   불러오는 JS/CSS/이미지가 다 깨지지 않게 저장소 이름(`MES-Design`)을 붙여줘야
@@ -21,10 +22,11 @@ import type { NextConfig } from "next";
  *   추가해도 export가 안 깨지도록 미리 꺼둠.
  */
 const isGithubPages = process.env.GITHUB_PAGES === "true";
+const isDevelopment = process.env.NODE_ENV === "development";
 const repoName = "MES-Design";
 
 const nextConfig: NextConfig = {
-  output: "export",
+  output: isDevelopment ? undefined : "export",
   basePath: isGithubPages ? `/${repoName}` : "",
   assetPrefix: isGithubPages ? `/${repoName}/` : "",
   trailingSlash: true,

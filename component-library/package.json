@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "lint:design-system": "eslint src/design-system src/components/experimental src/components/visual-tests src/components/preview src/app/visual-regression tests/visual playwright.config.ts scripts/check-design-system-registry.mjs scripts/check-experimental-registry.mjs scripts/render-experimental-decisions.mjs scripts/generated-text.mjs scripts/audit-design-values.mjs scripts/audit-composition-inventory.mjs scripts/audit-section-compositions.mjs scripts/audit-tier-coverage.mjs scripts/audit-web-verification-coverage.mjs scripts/run-affected-visual-tests.mjs scripts/screen-generation-contract.mjs scripts/screen-asset-selection.mjs scripts/screen-asset-selection.test.mjs scripts/review-screen-assets.mjs scripts/resolve-screen-request.mjs scripts/generate-screen-tsx.mjs scripts/generate-screen-preview.mjs scripts/check-screen-request-fixtures.mjs scripts/audit-screen-implementation.mjs scripts/mes-ui-mcp-server.mjs scripts/check-mes-ui-mcp.mjs scripts/check-doc-links.mjs scripts/screen-implementation-graph.mjs scripts/screen-handoff.mjs scripts/check-screen-delivery.mjs scripts/screen-application-context.mjs tests/helpers/application-flow.mjs src/components/patterns/side-slide-compositions.tsx src/components/patterns/slide-composition-catalog.tsx scripts/slide-composition-contract.mjs scripts/generate-slide-composition.mjs scripts/slide-composition.test.mjs scripts/sync-slide-composition-examples.mjs tests/helpers/slide-compositions.mjs",
+    "lint:design-system": "eslint src/design-system src/components/experimental src/components/visual-tests src/components/preview src/app/visual-regression tests/visual playwright.config.ts scripts/check-design-system-registry.mjs scripts/check-experimental-registry.mjs scripts/render-experimental-decisions.mjs scripts/generated-text.mjs scripts/audit-design-values.mjs scripts/audit-composition-inventory.mjs scripts/audit-section-compositions.mjs scripts/audit-tier-coverage.mjs scripts/audit-web-verification-coverage.mjs scripts/run-affected-visual-tests.mjs scripts/run-visual-tests.mjs scripts/screen-generation-contract.mjs scripts/screen-asset-selection.mjs scripts/screen-asset-selection.test.mjs scripts/review-screen-assets.mjs scripts/resolve-screen-request.mjs scripts/generate-screen-tsx.mjs scripts/generate-screen-preview.mjs scripts/check-screen-request-fixtures.mjs scripts/audit-screen-implementation.mjs scripts/mes-ui-mcp-server.mjs scripts/check-mes-ui-mcp.mjs scripts/check-doc-links.mjs scripts/screen-implementation-graph.mjs scripts/screen-handoff.mjs scripts/check-screen-delivery.mjs scripts/screen-application-context.mjs tests/helpers/application-flow.mjs src/components/patterns/side-slide-compositions.tsx src/components/patterns/slide-composition-catalog.tsx scripts/slide-composition-contract.mjs scripts/generate-slide-composition.mjs scripts/slide-composition.test.mjs scripts/sync-slide-composition-examples.mjs tests/helpers/slide-compositions.mjs",
     "check:patterns": "node scripts/check-pattern-component-reuse.mjs",
     "check:docs": "node scripts/check-doc-links.mjs",
     "business:context": "node scripts/business-knowledge.mjs",
@@ -42,12 +42,12 @@
     "mcp:check": "node scripts/check-mes-ui-mcp.mjs",
     "check:screen-contracts": "node scripts/check-screen-request-fixtures.mjs && node --test scripts/screen-asset-selection.test.mjs && node --test scripts/audit-entity-list-grammar.test.mjs && npm run check:screen-delivery && node --test scripts/slide-composition.test.mjs && node scripts/sync-slide-composition-examples.mjs",
     "check:design-system": "npm run check:docs && npm run check:business-knowledge && npm run check:patterns && npm run check:registry && npm run check:catalog-details && npm run check:assets && npm run check:experimental && npm run check:experimental-decisions && npm run check:design-values && npm run check:composition-inventory && npm run check:section-compositions && npm run check:tier-coverage && npm run check:web-coverage && npm run check:screen-contracts && npm run mcp:check",
-    "test:visual": "playwright test",
+    "test:visual": "node scripts/run-visual-tests.mjs",
     "test:visual:changed": "node scripts/run-affected-visual-tests.mjs",
     "verify:changed": "npm run check:registry && npm run test:visual:changed",
     "verify:full": "node scripts/run-full-verification.mjs",
-    "test:mobile:verification": "playwright test tests/visual/mobile-design-system.spec.ts --grep \"모바일 검증\"",
-    "test:visual:update": "playwright test --update-snapshots"
+    "test:mobile:verification": "node scripts/run-visual-tests.mjs tests/visual/mobile-design-system.spec.ts --grep \"모바일 검증\"",
+    "test:visual:update": "node scripts/run-visual-tests.mjs --update-snapshots"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",

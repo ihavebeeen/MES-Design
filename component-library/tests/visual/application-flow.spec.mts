@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { prepareApplicationFlowFixtures } from "../helpers/application-flow.mjs";
 
 let fixtures: ReturnType<typeof prepareApplicationFlowFixtures>;
@@ -8,10 +9,24 @@ test.use({ viewport: { width: 1440, height: 900 } });
 // A fresh Next.js dev server compiles these generated routes on first access.
 test.setTimeout(60_000);
 
+async function gotoGeneratedRoute(page: Page, route: string, readySelector = '[data-mes-application="overlay"]') {
+  await expect.poll(async () => {
+    try {
+      const status = (await page.goto(route, { waitUntil: "domcontentloaded" }))?.status() ?? 0;
+      return status === 200 && await page.locator(readySelector).count() > 0;
+    } catch {
+      return false;
+    }
+  }, {
+    message: `생성된 QA 경로가 Next.js 개발 서버에 등록되어야 합니다: ${route}`,
+    timeout: 15_000,
+  }).toBe(true);
+}
+
 test("중앙 팝업 단독: 메인 목록 없이 열기·선택·취소·저장 확인", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
-  await page.goto(fixtures.cases.find(entry => entry.kind === "center-surface")!.plan.route);
+  await gotoGeneratedRoute(page, fixtures.cases.find(entry => entry.kind === "center-surface")!.plan.route);
   const dialog = page.getByRole("dialog", { name: "품목 선택", exact: true });
   const frame = page.locator('[data-mes-preview-frame="surface"]');
   await expect(dialog).toBeVisible();
@@ -44,7 +59,7 @@ test("중앙 팝업 단독: 메인 목록 없이 열기·선택·취소·저장 
 test("우측 팝업 단독: 실제 부모 없이 우측 배치·입력 취소·재열기", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
-  await page.goto(fixtures.cases.find(entry => entry.kind === "slide-surface")!.plan.route);
+  await gotoGeneratedRoute(page, fixtures.cases.find(entry => entry.kind === "slide-surface")!.plan.route);
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
   const box = await dialog.boundingBox();
@@ -69,7 +84,7 @@ test("우측 팝업 단독: 실제 부모 없이 우측 배치·입력 취소·�
 test("중앙 팝업: 배경 공통 틀·상태 보존, 취소/X/Escape, 저장 전달", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
-  await page.goto(fixtures.cases.find(entry => entry.kind === "center")!.plan.route);
+  await gotoGeneratedRoute(page, fixtures.cases.find(entry => entry.kind === "center")!.plan.route);
   const trigger = page.getByRole("button", { name: "품목 선택 열기", exact: true });
   await trigger.click();
   const dialog = page.getByRole("dialog", { name: "품목 선택", exact: true });
@@ -121,7 +136,7 @@ test("중앙 팝업: 배경 공통 틀·상태 보존, 취소/X/Escape, 저장 �
 test("우측 슬라이드: 위치·배경 유지와 입력 취소·재열기", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
-  await page.goto(fixtures.cases.find(entry => entry.kind === "slide")!.plan.route);
+  await gotoGeneratedRoute(page, fixtures.cases.find(entry => entry.kind === "slide")!.plan.route);
   await page.getByRole("button", { name: "입력 팝업 열기", exact: true }).click();
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
@@ -158,7 +173,7 @@ test("우측 슬라이드: 위치·배경 유지와 입력 취소·재열기", a
 });
 
 test("일반 페이지: 공통 메뉴·탭과 viewport 폭 유지", async ({ page }) => {
-  await page.goto(fixtures.cases.find(entry => entry.kind === "page")!.plan.route);
+  await gotoGeneratedRoute(page, fixtures.cases.find(entry => entry.kind === "page")!.plan.route, '[aria-label="사이드바 접기"]');
   await expect(page.getByRole("button", { name: "사이드바 접기", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "북마크", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "사이드바 접기", exact: true }).click();

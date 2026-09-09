@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { prepareSlideCompositionFixtures } from "../helpers/slide-compositions.mjs";
 let fixtures: ReturnType<typeof prepareSlideCompositionFixtures>;
 test.beforeAll(() => { fixtures = prepareSlideCompositionFixtures(); });
@@ -7,13 +8,27 @@ test.use({ viewport: { width: 1440, height: 900 } });
 // A fresh Next.js dev server compiles these generated routes on first access.
 test.setTimeout(60_000);
 
+async function gotoGeneratedRoute(page: Page, route: string) {
+  await expect.poll(async () => {
+    try {
+      const status = (await page.goto(route, { waitUntil: "domcontentloaded" }))?.status() ?? 0;
+      return status === 200 && await page.locator('[data-mes-application="overlay"]').count() > 0;
+    } catch {
+      return false;
+    }
+  }, {
+    message: `생성된 QA 경로가 Next.js 개발 서버에 등록되어야 합니다: ${route}`,
+    timeout: 15_000,
+  }).toBe(true);
+}
+
 for (const name of ["CustomFieldsExample", "InspectionExample", "EntryListExample", "GroupSettingsExample", "BlankRowsExample", "StagedEntryExample"]) {
   test("슬라이드 조합: " + name, async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", e => errors.push(e.message));
     page.on("console", e => { if (e.type() === "error") errors.push(e.text()); });
     const fixture = fixtures.cases.find(entry => entry.name === name)!;
-    await page.goto(fixture.plan.route);
+    await gotoGeneratedRoute(page, fixture.plan.route);
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
     const rect = (await dialog.boundingBox())!;
