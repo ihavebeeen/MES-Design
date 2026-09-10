@@ -26,6 +26,8 @@ assert.deepEqual(
   "입고 기준 화면은 정확한 조합을 사용하되 아직 확인 중인 구성요소를 숨기지 않아야 합니다.",
 );
 assert.equal(first.baseScreen.id, "receiving");
+assert.equal(first.decisionTrace.screenRelationship.kind, "existing-screen-adaptation");
+assert.equal(first.decisionTrace.screenRelationship.baselineScreen.selectedId, "receiving");
 assert.equal(first.composition.shellRef, "shell.side-slide-panel");
 assert.deepEqual(first.composition.sectionRefs, ["frame.standard-section", "section.form-grid", "section.staged-record-entry", "section.added-record-list"]);
 assert.deepEqual(first.composition.behaviorRefs, ["row.mutation-policy", "dismiss.restore-committed"]);
@@ -56,9 +58,32 @@ const unknownField = structuredClone(request);
 unknownField.composition.visualGuess = "gray-card";
 assert.ok(resolveScreenRequest(unknownField).quality.issues.some((entry) => entry.code === "request.unknown-field"));
 
+const missingRelationship = structuredClone(request);
+delete missingRelationship.screenRelationship;
+assert.ok(resolveScreenRequest(missingRelationship).quality.issues.some((entry) => entry.code === "request.screen-relationship"));
+
+const missingMaintenanceSpec = structuredClone(request);
+missingMaintenanceSpec.screenRelationship = {
+  kind: "existing-screen-adaptation",
+  baselineScreenId: "maintenance-history",
+  baselineEvidenceRefs: ["web.maintenance-history", "flow.maintenance-create"],
+  referenceScreenIds: ["receiving"],
+  preserveScopes: ["shell", "section-structure", "component-slots", "add-remove-actions", "footer"],
+  changeScopes: ["copy", "fields", "states", "data-meaning", "aggregation"],
+};
+const missingMaintenanceContract = resolveScreenRequest(missingMaintenanceSpec);
+assert.ok(missingMaintenanceContract.quality.issues.some((entry) => entry.code === "registry.baseline-screen-spec-required"), "동일 업무 기준 화면의 ScreenSpec이 없을 때 참고 화면 대체를 차단해야 합니다.");
+assert.equal(missingMaintenanceContract.baseScreen, null, "참고 화면이 누락된 기준 화면을 대체하면 안 됩니다.");
+
+const preservedFooterDrift = structuredClone(request);
+preservedFooterDrift.composition.actionSetRef = "action-set.cancel-confirm";
+assert.ok(resolveScreenRequest(preservedFooterDrift).quality.issues.some((entry) => entry.code === "composition.baseline-preserve-drift" && entry.reference === "footer"));
+
 const generationFixturePath = join(projectRoot, "tests", "fixtures", "screen-requests", "deterministic-side-slide.json");
 const generationRequest = JSON.parse(readFileSync(generationFixturePath, "utf8"));
 const generationContract = resolveScreenRequest(generationRequest);
+assert.equal(generationContract.baseScreen, null, "참고 화면은 실행 기준 화면으로 상속되면 안 됩니다.");
+assert.deepEqual(generationContract.referenceScreens.map(({ id }) => id), ["receiving"]);
 assert.equal(generationContract.decisionTrace.webContext.overlayGrammar.selectedId, "generation.overlay.context-preserving-form");
 assert.equal(generationContract.decisionTrace.webContext.sectionRecipes[0].selectedId, "generation.section.basic-detail-list");
 assert.equal(generationContract.implementation.reproductionAuditContext, null, "신규 UI 계약에 재현·감사 정보가 섞였습니다.");
@@ -89,6 +114,11 @@ assert.ok(auditScreenImplementation(generationContract, wrongSectionOrder).findi
 const invalidGenerationRequest = structuredClone(generationRequest);
 invalidGenerationRequest.generation.panelSize = "mega";
 assert.ok(resolveScreenRequest(invalidGenerationRequest).quality.issues.some((entry) => entry.code === "request.generation"));
+
+const referenceWithoutComposition = structuredClone(generationRequest);
+referenceWithoutComposition.composition = {};
+delete referenceWithoutComposition.generation;
+assert.ok(resolveScreenRequest(referenceWithoutComposition).quality.issues.some((entry) => entry.code === "composition.reference-cannot-inherit"), "참고 화면만으로 신규 구조를 자동 상속하면 안 됩니다.");
 
 const missingWebContext = structuredClone(generationRequest);
 delete missingWebContext.webContext;
@@ -234,4 +264,4 @@ for (const example of intakeExamples.cases) {
 }
 console.log(`[screen:intake] 질문 ${questions.size}개와 공통 맥락 축 ${contextDimensions.size}개 연결 검사, 수동 검토 예시 ${caseIds.size}개 참조 검사, 답 보존 ${preservedIntakeCases}개 통과 (AI 질문 선택 품질 검증은 아님)`);
 
-console.log(`[screen:fixtures] 계약 정상 3개 + 차단 7개 + TSX 결정성 3개 + 미리보기 3개 통과 · ${generatedSourceFingerprint(generatedFirst).slice(0, 12)}/${generatedSourceFingerprint(centerFirst).slice(0, 12)}/${generatedSourceFingerprint(pageFirst).slice(0, 12)}`);
+console.log(`[screen:fixtures] 계약 정상·차단·기준/참고 분리·TSX 결정성·미리보기 회귀 통과 · ${generatedSourceFingerprint(generatedFirst).slice(0, 12)}/${generatedSourceFingerprint(centerFirst).slice(0, 12)}/${generatedSourceFingerprint(pageFirst).slice(0, 12)}`);

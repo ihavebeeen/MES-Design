@@ -157,6 +157,18 @@ try {
   assert(contract.implementation?.webGenerationContext?.policy?.authority === "observed-generation-guidance", "Resolver가 신규 UI 생성 문법을 전달하지 않았습니다.");
   assert(contract.implementation?.webGenerationContext?.overlayGrammars?.some((entry) => entry.id === "generation.overlay.select-then-register"), "Resolver가 가까운 실제 웹 팝업 문법을 전달하지 않았습니다.");
   assert(contract.implementation?.reproductionAuditContext === null, "신규 UI 계약에 재현·감사 정보가 섞였습니다.");
+  const missingBaselineRequest = structuredClone(request);
+  missingBaselineRequest.screenRelationship = {
+    kind: "existing-screen-adaptation",
+    baselineScreenId: "maintenance-history",
+    baselineEvidenceRefs: ["web.maintenance-history", "flow.maintenance-create"],
+    referenceScreenIds: ["receiving"],
+    preserveScopes: ["shell", "section-structure", "component-slots", "footer"],
+    changeScopes: ["copy", "fields", "states", "data-meaning"],
+  };
+  const missingBaselineContract = structured(await client.callTool({ name: "mes_resolve_screen", arguments: { request: missingBaselineRequest } }));
+  assert(missingBaselineContract.quality.issues.some((entry) => entry.code === "registry.baseline-screen-spec-required"), "MCP resolver가 기준 ScreenSpec 누락을 참고 화면으로 대체했습니다.");
+  assert(missingBaselineContract.baseScreen === null, "MCP resolver가 참고 화면을 기준 화면으로 승격했습니다.");
   const reproduceContract = structured(await client.callTool({ name: "mes_resolve_screen", arguments: { request: { ...request, intent: "reproduce" } } }));
   assert(reproduceContract.implementation?.reproductionAuditContext?.figmaReconciliation?.pages?.length > 0, "재현 요청에 Figma 감사 근거가 전달되지 않았습니다.");
 

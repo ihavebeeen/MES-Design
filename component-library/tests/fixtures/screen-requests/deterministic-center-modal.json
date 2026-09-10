@@ -1,9 +1,14 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "requestId": "deterministic-center-modal-fixture",
   "name": "결정적 중앙 조회 팝업 fixture",
   "intent": "new",
   "lifecycle": "draft",
+  "screenRelationship": {
+    "kind": "reference-led-new-structure",
+    "referenceScreenIds": ["batch-work-order"],
+    "changeScopes": ["copy", "fields", "composition"]
+  },
   "hostPage": {
     "sourcePath": "src/components/visual-tests/application-host-fixture.tsx",
     "componentName": "ApplicationHostFixture",
@@ -13,7 +18,6 @@
   "target": {
     "kind": "center-modal",
     "title": "품목 선택",
-    "nearestScreenId": "batch-work-order",
     "viewport": { "width": 1440, "height": 900 }
   },
   "webContext": {

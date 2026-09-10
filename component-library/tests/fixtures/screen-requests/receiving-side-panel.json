@@ -1,13 +1,18 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "requestId": "receiving-side-panel-fixture",
   "name": "입고등록 우측 슬라이드 기준 계약",
   "intent": "reproduce",
   "lifecycle": "release",
+  "screenRelationship": {
+    "kind": "existing-screen-adaptation",
+    "baselineScreenId": "receiving",
+    "preserveScopes": ["shell", "dimensions-layout", "section-structure", "component-slots", "add-remove-actions", "footer", "scroll-density"],
+    "changeScopes": []
+  },
   "target": {
     "kind": "side-slide-panel",
     "title": "입고등록",
-    "nearestScreenId": "receiving",
     "viewport": {
       "width": 1440,
       "height": 900

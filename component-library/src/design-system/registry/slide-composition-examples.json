@@ -3,16 +3,20 @@
   "role": "composition-demonstrations-not-screen-reproductions",
   "requests": [
     {
-      "schemaVersion": 1,
+      "schemaVersion": 2,
       "requestId": "slide-custom-fields-example",
       "name": "좌우 분할 · 커스텀 정보",
       "intent": "new",
       "lifecycle": "draft",
+      "screenRelationship": {
+        "kind": "reference-led-new-structure",
+        "referenceScreenIds": ["receiving"],
+        "changeScopes": ["copy", "fields", "composition"]
+      },
       "verificationScope": "surface",
       "target": {
         "kind": "side-slide-panel",
         "title": "사용자 정보",
-        "nearestScreenId": "receiving",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -97,16 +101,20 @@
       }
     },
     {
-      "schemaVersion": 1,
+      "schemaVersion": 2,
       "requestId": "slide-inspection-example",
       "name": "좌우 분할 · 검사항목",
       "intent": "new",
       "lifecycle": "draft",
+      "screenRelationship": {
+        "kind": "reference-led-new-structure",
+        "referenceScreenIds": ["self-inspection"],
+        "changeScopes": ["copy", "fields", "composition"]
+      },
       "verificationScope": "surface",
       "target": {
         "kind": "side-slide-panel",
         "title": "공정검사",
-        "nearestScreenId": "self-inspection",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -194,16 +202,20 @@
       }
     },
     {
-      "schemaVersion": 1,
+      "schemaVersion": 2,
       "requestId": "slide-entry-list-example",
       "name": "상하 분할 · 입력 + 목록",
       "intent": "new",
       "lifecycle": "draft",
+      "screenRelationship": {
+        "kind": "reference-led-new-structure",
+        "referenceScreenIds": ["production-result"],
+        "changeScopes": ["copy", "fields", "composition"]
+      },
       "verificationScope": "surface",
       "target": {
         "kind": "side-slide-panel",
         "title": "생산실적 등록",
-        "nearestScreenId": "production-result",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -341,16 +353,20 @@
       }
     },
     {
-      "schemaVersion": 1,
+      "schemaVersion": 2,
       "requestId": "slide-group-settings-example",
       "name": "특수 · 그룹설정",
       "intent": "new",
       "lifecycle": "draft",
+      "screenRelationship": {
+        "kind": "reference-led-new-structure",
+        "referenceScreenIds": ["receiving"],
+        "changeScopes": ["copy", "fields", "composition"]
+      },
       "verificationScope": "surface",
       "target": {
         "kind": "side-slide-panel",
         "title": "그룹 기본 정보",
-        "nearestScreenId": "receiving",
         "viewport": {
           "width": 1440,
           "height": 900

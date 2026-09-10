@@ -348,6 +348,30 @@ try {
     assert.equal(verifyScreenHandoff(reproductionPlan).status, "handoff-ready");
     writeScreenPreview(plan); recordScreenReview(plan, observation);
   });
+  check("기존 화면 변형은 보존 범위별 대조가 있어야 전달", () => {
+    const adaptationRequest = structuredClone(request);
+    adaptationRequest.screenRelationship = {
+      kind: "existing-screen-adaptation",
+      baselineScreenId: "receiving",
+      preserveScopes: ["shell", "footer"],
+      changeScopes: ["copy", "fields", "composition"],
+    };
+    const adaptation = resolveScreenRequest(adaptationRequest);
+    assert.equal(adaptation.quality.blockerCount, 0, JSON.stringify(adaptation.quality.issues));
+    const adaptationPlan = createScreenPreviewPlan(adaptation, sourcePath);
+    writeScreenPreview(adaptationPlan);
+    assert.throws(() => recordScreenReview(adaptationPlan, { ...observation, sourceCompared: true }), /보존 범위.*대조/);
+    assert.throws(() => recordScreenReview(adaptationPlan, { ...observation, sourceCompared: true, baselineComparisons: [
+      { scope: "shell", status: "preserved" },
+      { scope: "footer", status: "unsupported-change" },
+    ] }), /근거 없는 변경 또는 미확인/);
+    recordScreenReview(adaptationPlan, { ...observation, sourceCompared: true, baselineComparisons: [
+      { scope: "shell", status: "preserved" },
+      { scope: "footer", status: "preserved" },
+    ] });
+    assert.equal(verifyScreenHandoff(adaptationPlan).status, "handoff-ready");
+    writeScreenPreview(plan); recordScreenReview(plan, observation);
+  });
   check("CLI가 짧은 확인을 자동 기록하고 재전달에서 재사용", () => {
     assert.equal(cli("screen-handoff.mjs", [contractPath, sourcePath, "--reviewed"]).status, 0);
     const before = readFileSync(paths.visual, "utf8");

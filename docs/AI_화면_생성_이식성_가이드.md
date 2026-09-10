@@ -63,14 +63,16 @@ npm run mcp:check
 ## ScreenRequest 작성 순서
 
 1. `intent`: 원본 재현인지, 신규 생성인지, 정규화인지, 감사인지 선택합니다.
-2. `webContext`에 참고한 page archetype, overlay grammar와 section recipe를 선택적으로 기록합니다. 사례가 없거나 현재 배치와 달라도 진행할 수 있습니다. 현재 요청이 사용할 MES 자산·API·셸의 적합성은 별도로 검사합니다.
-3. `target.kind`: page / center-modal / side-slide-panel / confirm-dialog 중 업무 맥락에 맞는 셸을 선택합니다.
-4. `nearestScreenId`: 가장 가까운 기존 업무 흐름을 선택합니다.
-5. 기존 화면과 다른 부분만 `composition`에서 override합니다. 빈 객체이면 기준 화면의 조합을 그대로 상속합니다.
+2. `screenRelationship.kind`: 독립 신규, 참고 기반 신규 구조, 기존 화면 내용 변경, 기존 화면 변형 중 하나를 선택합니다.
+3. 기존 화면 변경은 `baselineScreenId`, `preserveScopes`, `changeScopes`를 기록합니다. 기준 화면만 실행 조합을 상속합니다.
+4. 참고 화면은 `referenceScreenIds`에 따로 기록합니다. 기준 ScreenSpec이 없을 때 참고 화면으로 자동 대체하지 않습니다.
+5. `webContext`에 참고한 page archetype, overlay grammar와 section recipe를 선택적으로 기록합니다.
+6. `target.kind`: page / center-modal / side-slide-panel / confirm-dialog 중 업무 맥락에 맞는 셸을 선택합니다.
+7. 기존 화면과 다른 부분만 `composition`에서 override합니다. 빈 객체이면 지정된 기준 화면의 조합을 그대로 상속합니다.
    - 대표 ScreenSpec이 있는 화면은 순서형 `composition.sections`를 상속합니다.
    - `sectionRefs`는 이 구조에서 파생되는 호환 요약이며 섹션 순서를 임의로 다시 정하는 근거가 아닙니다.
-6. 자연어 요구사항은 `requirements`에 업무 상태와 결과 중심으로 적습니다.
-7. 원본 재현은 `evidence.figmaNode`가 없으면 resolver blocker가 됩니다.
+8. 자연어 요구사항은 `requirements`에 업무 상태와 결과 중심으로 적습니다.
+9. 원본 재현은 `evidence.figmaNode`가 없으면 resolver blocker가 됩니다.
 
 예제는 `component-library/tests/fixtures/screen-requests/receiving-side-panel.json`에 있습니다.
 

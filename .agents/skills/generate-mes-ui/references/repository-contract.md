@@ -6,7 +6,7 @@ Read in this order:
 
 1. `component-library/src/design-system/registry/context-rules.json` for semantic choices.
 2. For `new`, `component-library/src/design-system/registry/web-generation-context.json` for actual-web page, overlay, section, and behavior grammar. Do not read Figma reconciliation as generation input.
-3. `component-library/src/design-system/registry/screens.json`, `screen-specs.json`, and `source-assets.json` for nearest-screen composition and ordered section instances.
+3. `component-library/src/design-system/registry/screens.json`, `screen-specs.json`, and `source-assets.json` for baseline-screen composition and ordered section instances.
 4. `component-library/src/design-system/registry/patterns.json` and `pattern-contracts.json` for shell, section, behavior, action-set, slots, state, and boundary contracts.
 5. `component-library/src/design-system/registry/components.json` and `component-usage-contracts.json` for approved implementation sources, maturity, use/exclusion conditions, parents, and alternatives.
 6. For `new`, `component-library/src/design-system/registry/foundation-recipes.json` for reference-only purpose, composition character and visual-language candidates after the task and asset connections are understood. It is not an executable template or selector. It represents a legacy design era: current registered MES component defaults, variants, states and interactions take precedence over conflicting source-frame visuals.
@@ -33,14 +33,18 @@ The final ScreenRequest may preserve adopted results in `assetDecisions`. `selec
 Choose in this order:
 
 1. `intent`: reproduce, new, normalize, or audit.
-2. Optional `webContext`: observed page/overlay/section examples to consider. Missing examples are allowed; unknown, cross-surface or single-case references produce information only, not a required exception approval.
-3. `target.kind`: page, center-modal, side-slide-panel, or confirm-dialog.
-4. `nearestScreenId`: the registered workflow with the closest semantic structure.
-5. `recipeRefs`: broad popup or page composition.
-6. `shellRef`: exactly one overlay shell, none for a page unless existing evidence says otherwise.
-7. `composition.sections`: ordered content regions, their slot, frame, primary/supporting patterns, component references, behavior targets, scroll owner, and constraints. `sectionRefs` is a compatibility summary derived from these structured sections when a ScreenSpec exists.
-8. `behaviorRefs`: selection, mutation, dismissal, and master-detail behavior.
-9. `actionSetRef`: footer action semantics.
+2. `screenRelationship.kind`: independent new, reference-led new structure, existing-screen content change, or existing-screen adaptation.
+3. For an existing-screen relationship, `baselineScreenId`, observed baseline evidence, `preserveScopes`, and `changeScopes`. The baseline is the only screen allowed to supply inherited structure. A missing baseline ScreenSpec blocks resolution.
+4. `referenceScreenIds` and reference evidence: examples consulted only for gaps outside the baseline. They never become inheritance or replace a missing baseline.
+5. Optional `webContext`: observed page/overlay/section grammar to consider. Missing examples are allowed; unknown, cross-surface or single-case references produce information only.
+6. `target.kind`: page, center-modal, side-slide-panel, or confirm-dialog.
+7. `recipeRefs`: broad popup or page composition.
+8. `shellRef`: exactly one overlay shell, none for a page unless existing evidence says otherwise.
+9. `composition.sections`: ordered content regions, their slot, frame, primary/supporting patterns, component references, behavior targets, scroll owner, and constraints. `sectionRefs` is a compatibility summary derived from these structured sections when a ScreenSpec exists.
+10. `behaviorRefs`: selection, mutation, dismissal, and master-detail behavior.
+11. `actionSetRef`: footer action semantics.
+
+The resolver compares executable preserve scopes against the baseline ScreenSpec. Shell, section structure, component slots, add/remove behaviors, Footer and scroll ownership drift become blockers. Geometry and visual density still require rendered comparison. A requested change belongs in `changeScopes` with its evidence rather than being hidden inside a preserve scope.
 
 For a popup connected to the executable `section.page-query-table` pattern, the host page remains a separately validated MES page surface. Record `hostPage.pagePatternRef` and its popup `entryBehavior`; use `row-double-click` by default. `explicit-action` is an exception and needs `entryReason` plus an `entryEvidenceRef` tied to a registered screen, functional specification, or exact user statement. `webContext` stays reference-only; overlay composition never supplies or replaces the host page's query/table grammar.
 

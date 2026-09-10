@@ -464,9 +464,15 @@ export function createMesUiMcpServer() {
     "mes_handoff_screen",
     {
       title: "MES 미리보기 전달 검사",
-      description: "요청 verificationScope의 실제 구현·렌더링·동작 확인 후 URL과 확인 범위를 반환합니다. surface는 팝업 자체(배경 미연결 허용), connected-flow는 부모 연동 포함(hostPage 필요). review는 해당 범위를 관찰한 뒤에만 전달. 원본 재현은 sourceCompared 필요. 생략하면 동일 코드/범위 기록 재사용.",
+      description: "요청 verificationScope의 실제 구현·렌더링·동작 확인 후 URL과 확인 범위를 반환합니다. 기존 화면 변경은 sourceCompared와 보존 범위별 baselineComparisons가 필요합니다. 생략하면 동일 코드/범위 기록을 재사용합니다.",
       inputSchema: z.object({ request: requestSchema, sourcePath: sourcePathSchema, review: z.object({
         reviewer: z.string().min(1), rendered: z.boolean(), interactions: z.boolean(), sourceCompared: z.boolean().optional(),
+        baselineComparisons: z.array(z.object({
+          scope: z.enum(["shell", "dimensions-layout", "section-structure", "component-slots", "add-remove-actions", "footer", "scroll-density"]),
+          status: z.enum(["preserved", "user-directed-change", "unsupported-change", "unchecked"]),
+          evidenceRef: z.string().regex(/^[a-z][A-Za-z0-9.-]*$/).optional(),
+          note: z.string().optional(),
+        }).strict()).optional(),
         viewport: z.object({ width: z.number().positive(), height: z.number().positive() }).optional(), note: z.string().optional(),
         warningResolutions: z.array(z.object({ code: z.string(), reason: z.string().min(1) })).optional(), unchecked: z.array(z.string()).optional(),
       }).strict().optional() }),

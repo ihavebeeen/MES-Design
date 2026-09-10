@@ -1,13 +1,17 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "requestId": "deterministic-entity-list-fixture",
   "name": "결정적 전체 페이지 조회 목록 fixture",
   "intent": "new",
   "lifecycle": "draft",
+  "screenRelationship": {
+    "kind": "reference-led-new-structure",
+    "referenceScreenIds": ["production-result-responsive"],
+    "changeScopes": ["copy", "fields", "composition"]
+  },
   "target": {
     "kind": "page",
     "title": "입고실적 리스트",
-    "nearestScreenId": "production-result-responsive",
     "viewport": { "width": 1920, "height": 960 }
   },
   "webContext": {

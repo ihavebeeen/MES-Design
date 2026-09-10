@@ -1,9 +1,14 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "requestId": "deterministic-receiving-fixture",
   "name": "결정적 입고 입력 생성 fixture",
   "intent": "new",
   "lifecycle": "draft",
+  "screenRelationship": {
+    "kind": "reference-led-new-structure",
+    "referenceScreenIds": ["receiving"],
+    "changeScopes": ["copy", "fields", "composition"]
+  },
   "hostPage": {
     "sourcePath": "src/components/visual-tests/application-host-fixture.tsx",
     "componentName": "ApplicationHostFixture",
@@ -13,7 +18,6 @@
   "target": {
     "kind": "side-slide-panel",
     "title": "간편 입고등록",
-    "nearestScreenId": "receiving",
     "viewport": {
       "width": 1440,
       "height": 900
@@ -31,7 +35,9 @@
     ]
   },
   "composition": {
-    "recipeRefs": ["recipe.side-slide-form-editable-list"]
+    "recipeRefs": ["recipe.side-slide-form-editable-list"],
+    "behaviorRefs": ["row.mutation-policy", "dismiss.restore-committed"],
+    "actionSetRef": "action-set.cancel-save"
   },
   "requirements": [
     "행 추가는 현재 마지막 행의 필수값이 유효할 때만 가능하다.",

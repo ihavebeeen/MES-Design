@@ -69,7 +69,39 @@ function currentAuditedImplementation(plan) {
   return { current, receipt };
 }
 
-export function sourceComparisonRequired(contract) { return contract.request?.intent !== "new"; }
+export function sourceComparisonRequired(contract) {
+  return contract.request?.intent !== "new"
+    || ["existing-screen-content-change", "existing-screen-adaptation"].includes(contract.request?.screenRelationship?.kind);
+}
+
+export function baselineComparisonScopes(contract) {
+  return ["existing-screen-content-change", "existing-screen-adaptation"].includes(contract.request?.screenRelationship?.kind)
+    ? contract.request.screenRelationship.preserveScopes ?? []
+    : [];
+}
+
+function verifyBaselineComparisons(visual, plan) {
+  const scopes = baselineComparisonScopes(plan.contract);
+  if (scopes.length === 0) return;
+  requireEvidence(plan.contract.baseScreen && plan.contract.baseScreenSpec, "기준 화면과 ScreenSpec이 현재 계약에 연결되지 않았습니다.");
+  requireEvidence(Array.isArray(visual.baselineComparisons), "기준 화면 보존 범위별 대조 결과가 필요합니다.");
+  const comparisonMap = new Map();
+  for (const comparison of visual.baselineComparisons) {
+    requireEvidence(comparison && typeof comparison.scope === "string" && !comparisonMap.has(comparison.scope), "기준 화면 대조 범위가 없거나 중복됐습니다.");
+    requireEvidence(["preserved", "user-directed-change", "unsupported-change", "unchecked"].includes(comparison.status), `기준 화면 대조 상태가 잘못됐습니다: ${comparison.scope}`);
+    comparisonMap.set(comparison.scope, comparison);
+  }
+  const decisions = new Map((plan.contract.request.evidence?.decisions ?? []).map((entry) => [entry.id, entry]));
+  for (const scope of scopes) {
+    const comparison = comparisonMap.get(scope);
+    requireEvidence(comparison, `기준 화면 보존 범위 '${scope}'를 대조하지 않았습니다.`);
+    requireEvidence(!["unsupported-change", "unchecked"].includes(comparison.status), `기준 화면 보존 범위 '${scope}'에 근거 없는 변경 또는 미확인이 남았습니다.`);
+    if (comparison.status === "user-directed-change") {
+      const evidence = decisions.get(comparison.evidenceRef);
+      requireEvidence(evidence && evidence.state === "confirmed" && ["user-request", "functional-spec"].includes(evidence.sourceType), `기준 화면 보존 범위 '${scope}'의 변경 근거가 사용자 요구나 기능명세에 연결되지 않았습니다.`);
+    }
+  }
+}
 
 function verifyObservation(visual, current, receipt, plan, base) {
   requireEvidence(typeof visual.reviewer === "string" && visual.reviewer.trim() && Number.isFinite(Date.parse(visual.comparedAt)) && Date.parse(visual.comparedAt) <= Date.now() + 5000, "실제 확인자·시각이 필요합니다.");
@@ -80,9 +112,11 @@ function verifyObservation(visual, current, receipt, plan, base) {
     requireEvidence(visual.renderFingerprint === current.renderFingerprint, "렌더링/계약이 변경됐습니다. 영향을 받은 부분을 재확인하세요.");
     requireEvidence(visual.rendered === true && visual.interactions === true, "MES 렌더링·동작 미확인/실패");
     if (sourceComparisonRequired(plan.contract)) {
-      requireEvidence(visual.sourceCompared === true, "원본 재현/정규화에는 원본 대조가 필요합니다.");
+      requireEvidence(visual.sourceCompared === true, "원본 재현/기존 화면 변경에는 원본 대조가 필요합니다.");
       const evidence = plan.contract.request.evidence;
-      requireEvidence(Boolean(evidence?.figmaNode || evidence?.sourceUrl || plan.contract.request.target.nearestScreenId), "계약에 원본 참조가 없습니다.");
+      const relationship = plan.contract.request.screenRelationship;
+      requireEvidence(Boolean(evidence?.figmaNode || evidence?.sourceRoute || relationship?.baselineScreenId || relationship?.baselineEvidenceRefs?.length), "계약에 원본 참조가 없습니다.");
+      verifyBaselineComparisons(visual, plan);
     }
     verifyArtifacts(visual.captures ?? [], base);
   } else {
@@ -115,6 +149,7 @@ export function recordScreenReview(plan, observation) {
     verification: verificationContext(plan.contract.request),
     reviewer: observation.reviewer, comparedAt: new Date().toISOString(), viewport: observation.viewport ?? plan.contract.request.target.viewport,
     rendered: observation.rendered, interactions: observation.interactions, sourceCompared: observation.sourceCompared ?? false,
+    baselineComparisons: observation.baselineComparisons ?? [],
     note: observation.note ?? "", captures: (observation.captures ?? []).map((path) => ({ path: resolve(plan.projectRoot, path), sha256: digest(readFileSync(resolve(plan.projectRoot, path))) })),
     warningResolutions: observation.warningResolutions ?? [], unchecked: observation.unchecked ?? [] };
   // Save failures too: a failed recheck must invalidate an earlier success.
@@ -138,14 +173,21 @@ async function runCli() {
   try {
     const [contractPath, sourcePath, ...args] = process.argv.slice(2);
     const visualPath = args[0] && !args[0].startsWith("--") ? args.shift() : undefined;
-    if (!contractPath || !sourcePath) throw new Error("사용법: npm run screen:handoff -- <contract.json> <screen.tsx> [--reviewed] [--source-compared] [--note 설명]");
+    if (!contractPath || !sourcePath) throw new Error("사용법: npm run screen:handoff -- <contract.json> <screen.tsx> [--reviewed] [--source-compared] [--baseline-check scope=status[:evidenceRef]] [--note 설명]");
     const flags = {};
     const warningResolutions = [];
+    const baselineComparisons = [];
     for (let i = 0; i < args.length; i += 1) {
       if (["--reviewed", "--source-compared"].includes(args[i])) flags[args[i]] = true;
       else if (args[i] === "--warning" && args[i + 1]?.includes("=")) {
         const value = args[++i]; const split = value.indexOf("=");
         warningResolutions.push({ code: value.slice(0, split), reason: value.slice(split + 1) });
+      }
+      else if (args[i] === "--baseline-check" && args[i + 1]?.includes("=")) {
+        const value = args[++i];
+        const [scope, detail] = value.split("=");
+        const [status, evidenceRef] = detail.split(":");
+        baselineComparisons.push({ scope, status, ...(evidenceRef ? { evidenceRef } : {}) });
       }
       else if (["--note", "--reviewer"].includes(args[i]) && args[i + 1]) flags[args[i]] = args[++i];
       else throw new Error(`알 수 없거나 값이 없는 옵션: ${args[i]}`);
@@ -154,8 +196,8 @@ async function runCli() {
     const plan = createScreenPreviewPlan(readJson(resolve(contractPath)), resolve(sourcePath));
     if (flags["--reviewed"]) {
       requireEvidence(!visualPath, "직접 지정한 과거 기록과 새 확인을 동시에 사용할 수 없습니다.");
-      recordScreenReview(plan, { reviewer: flags["--reviewer"] ?? "agent", rendered: true, interactions: true, sourceCompared: Boolean(flags["--source-compared"]), note: flags["--note"] ?? "", warningResolutions });
-    } else requireEvidence(!Object.keys(flags).length && !warningResolutions.length, "새 확인 옵션에는 --reviewed가 필요합니다.");
+      recordScreenReview(plan, { reviewer: flags["--reviewer"] ?? "agent", rendered: true, interactions: true, sourceCompared: Boolean(flags["--source-compared"]), baselineComparisons, note: flags["--note"] ?? "", warningResolutions });
+    } else requireEvidence(!Object.keys(flags).length && !warningResolutions.length && !baselineComparisons.length, "새 확인 옵션에는 --reviewed가 필요합니다.");
     const result = verifyScreenHandoff(plan, visualPath ? resolve(visualPath) : undefined);
     console.log(JSON.stringify({ status: result.status, verification: result.verification, fingerprint: result.fingerprint, previewUrl: plan.url, limitation: result.limitation }, null, 2));
   } catch (error) { console.error(String(error)); process.exitCode = 1; }

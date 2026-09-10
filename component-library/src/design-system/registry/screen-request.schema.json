@@ -5,13 +5,14 @@
   "description": "AI가 JSX를 작성하기 전에 확정해야 하는 MES 화면 생성 요청 계약",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "requestId", "name", "intent", "lifecycle", "target", "composition", "requirements", "output"],
+  "required": ["schemaVersion", "requestId", "name", "intent", "lifecycle", "screenRelationship", "target", "composition", "requirements", "output"],
   "properties": {
-    "schemaVersion": { "const": 1 },
+    "schemaVersion": { "const": 2 },
     "requestId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "name": { "type": "string", "minLength": 1 },
     "intent": { "enum": ["reproduce", "new", "normalize", "audit"] },
     "lifecycle": { "enum": ["draft", "release"] },
+    "screenRelationship": { "$ref": "#/$defs/screenRelationship" },
     "target": {
       "type": "object",
       "additionalProperties": false,
@@ -19,7 +20,6 @@
       "properties": {
         "kind": { "enum": ["page", "center-modal", "side-slide-panel", "confirm-dialog"] },
         "title": { "type": "string", "minLength": 1 },
-        "nearestScreenId": { "type": "string", "minLength": 1 },
         "viewport": {
           "type": "object",
           "additionalProperties": false,
@@ -137,6 +137,69 @@
     }
   },
   "$defs": {
+    "screenRelationship": {
+      "type": "object",
+      "description": "요청과 기존 화면의 관계를 먼저 확정하고 기준 화면과 참고 화면의 권한을 분리한다.",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "enum": ["independent-new", "reference-led-new-structure", "existing-screen-content-change", "existing-screen-adaptation"]
+        },
+        "baselineScreenId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "구조를 상속하고 보존 대조할 등록 화면. 참고 화면과 달리 결과를 제약한다."
+        },
+        "baselineEvidenceRefs": {
+          "$ref": "#/$defs/refList",
+          "description": "기준 화면을 확인한 실제 웹 page/flow 등 외부 근거 ID"
+        },
+        "referenceScreenIds": {
+          "$ref": "#/$defs/refList",
+          "description": "원본에 없는 문제를 해결할 때만 비교하는 등록 화면. 구조를 자동 상속하지 않는다."
+        },
+        "referenceEvidenceRefs": {
+          "$ref": "#/$defs/refList",
+          "description": "참고용 실제 웹 page/flow 등 근거 ID"
+        },
+        "preserveScopes": {
+          "type": "array",
+          "items": {
+            "enum": ["shell", "dimensions-layout", "section-structure", "component-slots", "add-remove-actions", "footer", "scroll-density"]
+          },
+          "uniqueItems": true
+        },
+        "changeScopes": {
+          "type": "array",
+          "items": {
+            "enum": ["copy", "fields", "states", "data-meaning", "aggregation", "interactions", "composition"]
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "kind": { "enum": ["existing-screen-content-change", "existing-screen-adaptation"] } },
+            "required": ["kind"]
+          },
+          "then": {
+            "required": ["baselineScreenId", "preserveScopes"],
+            "properties": { "preserveScopes": { "minItems": 1 } }
+          }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "reference-led-new-structure" } }, "required": ["kind"] },
+          "then": {
+            "anyOf": [
+              { "required": ["referenceScreenIds"], "properties": { "referenceScreenIds": { "minItems": 1 } } },
+              { "required": ["referenceEvidenceRefs"], "properties": { "referenceEvidenceRefs": { "minItems": 1 } } }
+            ]
+          }
+        }
+      ]
+    },
     "decisionEvidence": {
       "type": "object",
       "additionalProperties": false,

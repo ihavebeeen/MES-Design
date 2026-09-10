@@ -165,6 +165,7 @@ function validateRequestShape(request, registry) {
     "name",
     "intent",
     "lifecycle",
+    "screenRelationship",
     "target",
     "evidence",
     "webContext",
@@ -180,21 +181,55 @@ function validateRequestShape(request, registry) {
   for (const key of Object.keys(request ?? {})) {
     if (!topLevelKeys.has(key)) issues.push(issue("blocker", "request.unknown-field", `알 수 없는 최상위 필드 '${key}'입니다.`));
   }
-  checkKnownKeys(request?.target, new Set(["kind", "title", "nearestScreenId", "viewport"]), "target");
+  checkKnownKeys(request?.screenRelationship, new Set(["kind", "baselineScreenId", "baselineEvidenceRefs", "referenceScreenIds", "referenceEvidenceRefs", "preserveScopes", "changeScopes"]), "screenRelationship");
+  checkKnownKeys(request?.target, new Set(["kind", "title", "viewport"]), "target");
   checkKnownKeys(request?.target?.viewport, new Set(["width", "height"]), "target.viewport");
   checkKnownKeys(request?.evidence, new Set(["figmaNode", "sourceRoute", "notes", "decisions"]), "evidence");
   checkKnownKeys(request?.webContext, new Set(["pageArchetypeRef", "overlayGrammarRef", "sectionRecipeRefs"]), "webContext");
   checkKnownKeys(request?.assetDecisions, new Set(["schemaVersion", "notApplicableCategories", "elements"]), "assetDecisions");
   checkKnownKeys(request?.composition, new Set(["recipeRefs", "shellRef", "sectionRefs", "sections", "behaviorRefs", "actionSetRef"]), "composition");
   checkKnownKeys(request?.output, new Set(["route", "componentName"]), "output");
-  if (request?.schemaVersion !== 1) issues.push(issue("blocker", "request.schema-version", "schemaVersion은 1이어야 합니다."));
+  if (request?.schemaVersion !== 2) issues.push(issue("blocker", "request.schema-version", "schemaVersion은 2여야 합니다."));
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(request?.requestId ?? "")) issues.push(issue("blocker", "request.id", "requestId는 kebab-case여야 합니다."));
   if (typeof request?.name !== "string" || request.name.trim() === "") issues.push(issue("blocker", "request.name", "name이 필요합니다."));
   if (!["reproduce", "new", "normalize", "audit"].includes(request?.intent)) issues.push(issue("blocker", "request.intent", "intent 값이 잘못되었습니다."));
   if (!["draft", "release"].includes(request?.lifecycle)) issues.push(issue("blocker", "request.lifecycle", "lifecycle은 draft 또는 release여야 합니다."));
+  const relationshipKinds = new Set(["independent-new", "reference-led-new-structure", "existing-screen-content-change", "existing-screen-adaptation"]);
+  const preserveScopeValues = new Set(["shell", "dimensions-layout", "section-structure", "component-slots", "add-remove-actions", "footer", "scroll-density"]);
+  const changeScopeValues = new Set(["copy", "fields", "states", "data-meaning", "aggregation", "interactions", "composition"]);
+  const relationship = request?.screenRelationship;
+  if (!relationship || typeof relationship !== "object" || Array.isArray(relationship)) {
+    issues.push(issue("blocker", "request.screen-relationship", "기존 화면과 요청의 관계를 screenRelationship에 확정해야 합니다."));
+  } else {
+    if (!relationshipKinds.has(relationship.kind)) issues.push(issue("blocker", "request.screen-relationship-kind", "screenRelationship.kind 값이 잘못되었습니다."));
+    for (const [key, allowed] of [["preserveScopes", preserveScopeValues], ["changeScopes", changeScopeValues]]) {
+      const values = relationship[key];
+      if (values !== undefined && (!Array.isArray(values) || values.some((value) => !allowed.has(value)) || unique(values).length !== values.length)) {
+        issues.push(issue("blocker", `request.screen-relationship-${key}`, `screenRelationship.${key} 값이 잘못되었습니다.`));
+      }
+    }
+    for (const key of ["baselineEvidenceRefs", "referenceScreenIds", "referenceEvidenceRefs"]) {
+      const values = relationship[key];
+      if (values !== undefined && (!Array.isArray(values) || values.some((value) => typeof value !== "string" || !value.trim()) || unique(values).length !== values.length)) {
+        issues.push(issue("blocker", `request.screen-relationship-${key}`, `screenRelationship.${key}는 중복 없는 문자열 배열이어야 합니다.`));
+      }
+    }
+    if (relationship.baselineScreenId !== undefined && (typeof relationship.baselineScreenId !== "string" || !relationship.baselineScreenId.trim())) {
+      issues.push(issue("blocker", "request.screen-relationship-baseline", "screenRelationship.baselineScreenId는 비어 있지 않은 문자열이어야 합니다."));
+    }
+    const existingRelationship = ["existing-screen-content-change", "existing-screen-adaptation"].includes(relationship.kind);
+    if (existingRelationship && (!relationship.baselineScreenId || !Array.isArray(relationship.preserveScopes) || relationship.preserveScopes.length === 0)) {
+      issues.push(issue("blocker", "request.screen-relationship-baseline", "기존 화면 변경은 기준 화면과 한 개 이상의 보존 범위를 지정해야 합니다."));
+    }
+    if (!existingRelationship && relationship.baselineScreenId) {
+      issues.push(issue("blocker", "request.screen-relationship-baseline", "신규 구조의 참고 화면은 baselineScreenId가 아니라 referenceScreenIds에 기록해야 합니다."));
+    }
+    if (relationship.kind === "reference-led-new-structure" && !(relationship.referenceScreenIds?.length || relationship.referenceEvidenceRefs?.length)) {
+      issues.push(issue("blocker", "request.screen-relationship-reference", "참고 기반 신규 구조에는 한 개 이상의 참고 화면 또는 관찰 근거가 필요합니다."));
+    }
+  }
   if (!["page", "center-modal", "side-slide-panel", "confirm-dialog"].includes(request?.target?.kind)) issues.push(issue("blocker", "request.target-kind", "target.kind 값이 잘못되었습니다."));
   if (typeof request?.target?.title !== "string" || request.target.title.trim() === "") issues.push(issue("blocker", "request.target-title", "target.title이 필요합니다."));
-  if (request?.target?.nearestScreenId !== undefined && (typeof request.target.nearestScreenId !== "string" || request.target.nearestScreenId === "")) issues.push(issue("blocker", "request.nearest-screen", "target.nearestScreenId는 비어 있지 않은 문자열이어야 합니다."));
   if (request?.target?.viewport !== undefined && (!Number.isInteger(request.target.viewport.width) || !Number.isInteger(request.target.viewport.height) || request.target.viewport.width < 320 || request.target.viewport.height < 320)) issues.push(issue("blocker", "request.viewport", "target.viewport의 width와 height는 320 이상의 정수여야 합니다."));
   if (!request?.composition || typeof request.composition !== "object" || Array.isArray(request.composition)) issues.push(issue("blocker", "request.composition", "composition 객체가 필요합니다."));
   if (!Array.isArray(request?.requirements) || request.requirements.length === 0 || request.requirements.some((value) => typeof value !== "string" || value.trim() === "") || unique(request.requirements).length !== request.requirements.length) issues.push(issue("blocker", "request.requirements", "requirements에는 중복 없는 한 개 이상의 문장이 필요합니다."));
@@ -394,20 +429,23 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       }
     }
   }
-  const nearestScreen = request?.target?.nearestScreenId ? screenMap.get(request.target.nearestScreenId) : undefined;
-  const nearestScreenSpec = request?.target?.nearestScreenId ? screenSpecMap.get(request.target.nearestScreenId) : undefined;
-  const observedPages = request?.target?.nearestScreenId
-    ? registry.webUiUsageInventory.pages.filter((page) => page.registeredScreenId === request.target.nearestScreenId)
-    : [];
+  const relationship = request?.screenRelationship ?? {};
+  const existingRelationship = ["existing-screen-content-change", "existing-screen-adaptation"].includes(relationship.kind);
+  const baselineScreen = relationship.baselineScreenId ? screenMap.get(relationship.baselineScreenId) : undefined;
+  const baselineScreenSpec = relationship.baselineScreenId ? screenSpecMap.get(relationship.baselineScreenId) : undefined;
+  const referenceScreens = (relationship.referenceScreenIds ?? []).map((id) => screenMap.get(id)).filter(Boolean);
+  const relationshipScreenIds = new Set(unique([relationship.baselineScreenId, ...(relationship.referenceScreenIds ?? [])]));
+  const relationshipEvidenceRefs = new Set(unique([...(relationship.baselineEvidenceRefs ?? []), ...(relationship.referenceEvidenceRefs ?? [])]));
+  const observedPages = registry.webUiUsageInventory.pages.filter((page) =>
+    relationshipScreenIds.has(page.registeredScreenId) || relationshipEvidenceRefs.has(page.id),
+  );
   const observedPageIds = new Set(observedPages.map((page) => page.id));
-  const observedEntryFlows = request?.target?.nearestScreenId
-    ? registry.webUiUsageInventory.entryFlows.filter((flow) =>
-      flow.registeredScreenId === request.target.nearestScreenId || observedPageIds.has(flow.pageId),
-    )
-    : [];
+  const observedEntryFlows = registry.webUiUsageInventory.entryFlows.filter((flow) =>
+    relationshipScreenIds.has(flow.registeredScreenId) || observedPageIds.has(flow.pageId) || relationshipEvidenceRefs.has(flow.id),
+  );
   const observedFlowIds = new Set(observedEntryFlows.map((flow) => flow.id));
   const figmaReconciliationPages = registry.webFigmaReconciliation.pages.filter((page) => observedPageIds.has(page.pageId));
-  const observedSearchTerms = unique([request?.target?.nearestScreenId, nearestScreen?.name]).map((value) => value.toLocaleLowerCase("ko-KR"));
+  const observedSearchTerms = unique([relationship.baselineScreenId, baselineScreen?.name, ...referenceScreens.map((entry) => entry.name)]).map((value) => value.toLocaleLowerCase("ko-KR"));
   const observedDiscrepancies = registry.webUiUsageInventory.discrepancies.filter((entry) => {
     const serialized = JSON.stringify(entry).toLocaleLowerCase("ko-KR");
     return observedSearchTerms.some((term) => serialized.includes(term));
@@ -431,7 +469,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     nearestObservedExamples: { pages: observedPages, entryFlows: observedEntryFlows },
     coverage: registry.webGenerationContext.coverage,
   };
-  const includeReproductionAudit = ["reproduce", "audit", "normalize"].includes(request?.intent);
+  const includeReproductionAudit = ["reproduce", "audit", "normalize"].includes(request?.intent) || existingRelationship;
   const selectedWebPageArchetype = request?.webContext?.pageArchetypeRef ? webPageArchetypeMap.get(request.webContext.pageArchetypeRef) : undefined;
   const selectedWebOverlayGrammar = request?.webContext?.overlayGrammarRef ? webOverlayGrammarMap.get(request.webContext.overlayGrammarRef) : undefined;
   const selectedWebSectionRecipes = (request?.webContext?.sectionRecipeRefs ?? []).map((id) => webSectionRecipeMap.get(id)).filter(Boolean);
@@ -452,14 +490,29 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     sectionRecipes: selectedWebSectionRecipes,
   };
 
-  if (request?.target?.nearestScreenId && !nearestScreen) {
-    issues.push(issue("blocker", "registry.unknown-screen", `등록되지 않은 nearestScreenId '${request.target.nearestScreenId}'입니다.`, request.target.nearestScreenId));
+  if (relationship.baselineScreenId && !baselineScreen) {
+    issues.push(issue("blocker", "registry.unknown-baseline-screen", `등록되지 않은 기준 화면 '${relationship.baselineScreenId}'입니다.`, relationship.baselineScreenId));
   }
-  if (!request?.target?.nearestScreenId) {
-    issues.push(issue("warning", "composition.no-nearest-screen", "가장 가까운 등록 화면이 지정되지 않아 조합 판단의 재현성이 낮아집니다."));
+  for (const id of relationship.referenceScreenIds ?? []) {
+    if (!screenMap.has(id)) issues.push(issue("blocker", "registry.unknown-reference-screen", `등록되지 않은 참고 화면 '${id}'입니다.`, id));
+  }
+  const knownObservedEvidenceIds = new Set([
+    ...registry.webUiUsageInventory.pages.map((entry) => entry.id),
+    ...registry.webUiUsageInventory.entryFlows.map((entry) => entry.id),
+  ]);
+  for (const id of relationshipEvidenceRefs) {
+    if (!knownObservedEvidenceIds.has(id)) issues.push(issue("blocker", "registry.unknown-screen-evidence", `등록되지 않은 화면 관찰 근거 '${id}'입니다.`, id));
+  }
+  if (existingRelationship && relationship.baselineScreenId && !baselineScreenSpec) {
+    issues.push(issue("blocker", "registry.baseline-screen-spec-required", `기준 화면 '${relationship.baselineScreenId}'의 ScreenSpec이 없습니다. 참고 화면으로 대체하지 말고 원본을 확인해 ScreenSpec을 보강하세요.`, relationship.baselineScreenId));
+  }
+  if (existingRelationship && baselineScreenSpec && baselineScreenSpec.targetKind !== request?.target?.kind) {
+    issues.push(issue("blocker", "registry.baseline-target-mismatch", `기준 화면 '${relationship.baselineScreenId}'의 형식 '${baselineScreenSpec.targetKind}'과 요청 형식 '${request?.target?.kind}'이 다릅니다.`, relationship.baselineScreenId));
   }
 
-  const inheritedRefs = nearestScreen?.patternRefs ?? [];
+  // Only the declared baseline can supply executable inheritance. Reference
+  // screens remain evidence and can never replace a missing baseline ScreenSpec.
+  const inheritedRefs = baselineScreen?.patternRefs ?? [];
   const composition = request?.composition ?? {};
   const slide = isSlideComposition(request?.generation?.templateId);
   const validGeneration = request?.generation && validateGenerationSpec(request.generation).length === 0;
@@ -468,16 +521,60 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       ? slideCompositionSections(request.generation)
       : legacyGeneratedSections(request.generation)
     : null;
-  const sections = selectedOrInherited(composition.sections, derivedSections ?? nearestScreenSpec?.sections ?? []);
+  const sections = selectedOrInherited(composition.sections, derivedSections ?? baselineScreenSpec?.sections ?? []);
   const structuredSectionRefs = unique(sections.flatMap((section) => [section.frameRef, section.patternRef, ...(section.supportingPatternRefs ?? [])]));
   const recipeRefs = unique(selectedOrInherited(composition.recipeRefs, refsByKind(inheritedRefs, patternMap, ["popup", "screen", "recipe"])));
   const inheritedShellRefs = refsByKind(inheritedRefs, patternMap, ["shell"]);
-  const shellRef = composition.shellRef === undefined ? nearestScreenSpec?.shellRef ?? inheritedShellRefs[0] ?? expectedShells[request?.target?.kind] : composition.shellRef;
+  const shellRef = composition.shellRef === undefined ? baselineScreenSpec?.shellRef ?? inheritedShellRefs[0] ?? expectedShells[request?.target?.kind] : composition.shellRef;
   const sectionRefs = unique(selectedOrInherited(composition.sectionRefs, structuredSectionRefs.length > 0 ? structuredSectionRefs : refsByKind(inheritedRefs, patternMap, ["section-frame", "section-pattern", "table"])));
-  const behaviorRefs = unique(selectedOrInherited(composition.behaviorRefs, nearestScreenSpec?.behaviorRefs ?? refsByKind(inheritedRefs, patternMap, ["behavior"])));
+  const behaviorRefs = unique(selectedOrInherited(composition.behaviorRefs, baselineScreenSpec?.behaviorRefs ?? refsByKind(inheritedRefs, patternMap, ["behavior"])));
   const inheritedActionRefs = refsByKind(inheritedRefs, patternMap, ["action-set"]);
-  const actionSetRef = composition.actionSetRef === undefined ? nearestScreenSpec?.actionSetRef ?? inheritedActionRefs[0] : composition.actionSetRef;
+  const actionSetRef = composition.actionSetRef === undefined ? baselineScreenSpec?.actionSetRef ?? inheritedActionRefs[0] : composition.actionSetRef;
   const selectedPatternRefs = unique([...recipeRefs, shellRef, ...sectionRefs, ...behaviorRefs, actionSetRef]);
+
+  if (relationship.kind === "reference-led-new-structure") {
+    const hasExplicitComposition = Boolean(
+      request?.generation
+      || composition.sections !== undefined
+      || composition.recipeRefs !== undefined
+      || composition.sectionRefs !== undefined
+      || composition.behaviorRefs !== undefined
+      || composition.actionSetRef !== undefined,
+    );
+    if (!hasExplicitComposition) {
+      issues.push(issue("blocker", "composition.reference-cannot-inherit", "참고 화면은 신규 화면의 구조를 자동으로 공급하지 않습니다. 현재 요청의 조합을 직접 확정하세요."));
+    }
+  }
+
+  if (existingRelationship && baselineScreenSpec) {
+    const preserveScopes = new Set(relationship.preserveScopes ?? []);
+    const same = (left, right) => JSON.stringify(canonicalize(left)) === JSON.stringify(canonicalize(right));
+    const baselineSections = baselineScreenSpec.sections ?? [];
+    const structureOf = (entries) => entries.map((entry) => ({
+      id: entry.id,
+      frameRef: entry.frameRef ?? null,
+      patternRef: entry.patternRef,
+      supportingPatternRefs: entry.supportingPatternRefs ?? [],
+    }));
+    const componentSlotsOf = (entries) => entries.map((entry) => ({ id: entry.id, componentRefs: entry.componentRefs ?? [] }));
+    const actionBehaviorOf = (entries, globals) => ({
+      sections: entries.map((entry) => ({ id: entry.id, behaviorRefs: entry.behaviorRefs ?? [] })),
+      globals: globals ?? [],
+    });
+    const driftChecks = [
+      ["shell", shellRef, baselineScreenSpec.shellRef],
+      ["section-structure", structureOf(sections), structureOf(baselineSections)],
+      ["component-slots", componentSlotsOf(sections), componentSlotsOf(baselineSections)],
+      ["add-remove-actions", actionBehaviorOf(sections, behaviorRefs), actionBehaviorOf(baselineSections, baselineScreenSpec.behaviorRefs)],
+      ["footer", actionSetRef ?? null, baselineScreenSpec.actionSetRef ?? null],
+      ["scroll-density", sections.map(({ id, scrollOwner }) => ({ id, scrollOwner })), baselineSections.map(({ id, scrollOwner }) => ({ id, scrollOwner }))],
+    ];
+    for (const [scope, actual, expected] of driftChecks) {
+      if (preserveScopes.has(scope) && !same(actual, expected)) {
+        issues.push(issue("blocker", "composition.baseline-preserve-drift", `기준 화면 보존 범위 '${scope}'가 달라졌습니다. 사용자 요구로 바꾸는 범위라면 preserveScopes에서 제외하고 changeScopes와 근거에 기록하세요.`, scope));
+      }
+    }
+  }
 
   const kindContracts = [
     [recipeRefs, new Set(["popup", "screen", "recipe"]), "recipe"],
@@ -521,7 +618,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
 
   if (actionSetRef && !actionSetMap.has(actionSetRef)) issues.push(issue("blocker", "registry.unknown-action-set", `등록되지 않은 action set '${actionSetRef}'입니다.`, actionSetRef));
   if (request?.intent === "reproduce" && !request?.evidence?.figmaNode) issues.push(issue("blocker", "evidence.figma-required", "reproduce 요청에는 Figma node 근거가 필요합니다."));
-  if (request?.intent !== "reproduce" && !request?.evidence?.figmaNode) issues.push(issue("info", "evidence.no-figma", "Figma 근거가 없는 신규/감사 요청이므로 결과를 원본 검증됨으로 표시할 수 없습니다."));
+  if (request?.intent !== "reproduce" && !existingRelationship && !request?.evidence?.figmaNode) issues.push(issue("info", "evidence.no-figma", "기준 원본이 없는 신규/감사 요청이므로 결과를 원본 검증됨으로 표시할 수 없습니다."));
   if (request?.intent === "normalize" && (!Array.isArray(request.normalizationDecisions) || request.normalizationDecisions.length === 0)) {
     issues.push(issue("warning", "normalization.no-decisions", "normalize 요청에 명시적 normalizationDecisions가 없습니다."));
   }
@@ -586,10 +683,16 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       overlayGrammar: selectedWebOverlayGrammar ? { selectedId: selectedWebOverlayGrammar.id, confidence: selectedWebOverlayGrammar.confidence, reason: "ScreenRequest가 신규 UI의 overlay 흐름을 명시했습니다." } : null,
       sectionRecipes: selectedWebSectionRecipes.map((entry) => ({ selectedId: entry.id, confidence: entry.confidence, reason: "ScreenRequest가 업무 순서에 맞는 section 문법을 명시했습니다." })),
     },
-    nearestScreen: nearestScreen ? { selectedId: nearestScreen.id, reason: "요청의 nearestScreenId와 등록 업무 구조를 상속했습니다." } : { selectedId: null, reason: "가까운 등록 화면이 지정되지 않았습니다." },
+    screenRelationship: {
+      kind: relationship.kind ?? null,
+      baselineScreen: baselineScreen ? { selectedId: baselineScreen.id, reason: "보존과 원본 대조의 기준이며 실행 조합을 상속할 수 있습니다." } : null,
+      referenceScreens: referenceScreens.map((entry) => ({ selectedId: entry.id, reason: "원본에 없는 문제를 검토할 때만 참고하며 실행 조합을 상속하지 않습니다." })),
+      preserveScopes: relationship.preserveScopes ?? [],
+      changeScopes: relationship.changeScopes ?? [],
+    },
     shell: {
       selectedId: shellRef ?? null,
-      source: selectionSource(composition.shellRef !== undefined, Boolean(nearestScreenSpec), "target-default"),
+      source: selectionSource(composition.shellRef !== undefined, Boolean(baselineScreenSpec), "target-default"),
       reason: shellRef ? `target.kind '${request?.target?.kind}'와 일치하는 셸입니다.` : "page target은 overlay shell을 사용하지 않습니다.",
       excluded: Object.values(expectedShells).filter((id) => id && id !== shellRef).map((id) => ({ id, reason: `target.kind '${request?.target?.kind}'와 일치하지 않습니다.` })),
     },
@@ -600,10 +703,10 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       patternRef: section.patternRef,
       supportingPatternRefs: section.supportingPatternRefs ?? [],
       scrollOwner: section.scrollOwner,
-      reason: composition.sections !== undefined ? "요청이 순서와 슬롯을 명시했습니다." : derivedSections ? "본문 조합과 별도로 지정된 목록 추가·편집 동작에서 섹션을 구성했습니다." : "가까운 화면의 구조화된 ScreenSpec을 상속했습니다.",
+      reason: composition.sections !== undefined ? "요청이 순서와 슬롯을 명시했습니다." : derivedSections ? "본문 조합과 별도로 지정된 목록 추가·편집 동작에서 섹션을 구성했습니다." : "기준 화면의 구조화된 ScreenSpec을 상속했습니다.",
     })),
-    behaviors: behaviorRefs.map((id) => ({ id, reason: composition.behaviorRefs !== undefined ? "요청이 명시했습니다." : nearestScreenSpec ? "ScreenSpec의 상태·동작 계약을 상속했습니다." : "가까운 화면의 patternRefs를 상속했습니다." })),
-    actionSet: actionSetRef ? { selectedId: actionSetRef, reason: composition.actionSetRef !== undefined ? "요청이 명시했습니다." : nearestScreenSpec ? "ScreenSpec의 하단 동작 의미를 상속했습니다." : "가까운 화면의 action set을 상속했습니다." } : null,
+    behaviors: behaviorRefs.map((id) => ({ id, reason: composition.behaviorRefs !== undefined ? "요청이 명시했습니다." : baselineScreenSpec ? "기준 ScreenSpec의 상태·동작 계약을 상속했습니다." : "요청 조합에서 선택했습니다." })),
+    actionSet: actionSetRef ? { selectedId: actionSetRef, reason: composition.actionSetRef !== undefined ? "요청이 명시했습니다." : baselineScreenSpec ? "기준 ScreenSpec의 하단 동작 의미를 상속했습니다." : "요청 조합에서 선택했습니다." } : null,
     components: resolvedComponents.map((component) => {
       const usage = componentSelectionContextMap.get(component.id);
       const detailedContract = componentUsageContractMap.get(component.id);
@@ -627,7 +730,7 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
   const sectionCompositionContext = {
     policy: registry.sectionCompositionAudit.authority,
     patterns: registry.sectionCompositionAudit.sectionPatterns.filter((entry) => selectedPatternRefSet.has(entry.patternId)),
-    screens: registry.sectionCompositionAudit.screens.filter((entry) => entry.screenId === nearestScreen?.id),
+    screens: registry.sectionCompositionAudit.screens.filter((entry) => entry.screenId === baselineScreen?.id),
     fingerprint: registry.sectionCompositionAudit.fingerprint,
   };
   const contract = {
@@ -653,8 +756,9 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
         webFigmaReconciliation: registry.webFigmaReconciliation,
       } : {}),
     }),
-    baseScreen: nearestScreen ?? null,
-    baseScreenSpec: nearestScreenSpec ?? null,
+    baseScreen: baselineScreen ?? null,
+    baseScreenSpec: baselineScreenSpec ?? null,
+    referenceScreens,
     composition: {
       recipeRefs,
       shellRef: shellRef ?? null,

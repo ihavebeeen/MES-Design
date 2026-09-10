@@ -580,6 +580,9 @@ export interface FoundationRecipeRegistry {
 }
 
 export type ScreenRequestIntent = "reproduce" | "new" | "normalize" | "audit";
+export type ScreenRelationshipKind = "independent-new" | "reference-led-new-structure" | "existing-screen-content-change" | "existing-screen-adaptation";
+export type ScreenPreserveScope = "shell" | "dimensions-layout" | "section-structure" | "component-slots" | "add-remove-actions" | "footer" | "scroll-density";
+export type ScreenChangeScope = "copy" | "fields" | "states" | "data-meaning" | "aggregation" | "interactions" | "composition";
 export type ScreenTargetKind = "page" | "center-modal" | "side-slide-panel" | "confirm-dialog";
 export type NormalizationClassification = "source-error" | "implementation-error" | "intentional-exception" | "normalization-candidate";
 export type SemanticAssetCategory = "application-frame" | "navigation-query" | "content-structure" | "data-display" | "status-feedback" | "input-selection" | "actions" | "overlay-behavior";
@@ -646,11 +649,20 @@ export interface ScreenTemplateSearchTableSection {
 }
 
 export interface ScreenRequest {
-  schemaVersion: 1;
+  schemaVersion: 2;
   requestId: string;
   name: string;
   intent: ScreenRequestIntent;
   lifecycle: "draft" | "release";
+  screenRelationship: {
+    kind: ScreenRelationshipKind;
+    baselineScreenId?: string;
+    baselineEvidenceRefs?: string[];
+    referenceScreenIds?: string[];
+    referenceEvidenceRefs?: string[];
+    preserveScopes?: ScreenPreserveScope[];
+    changeScopes?: ScreenChangeScope[];
+  };
   verificationScope?: "surface" | "connected-flow";
   hostPage?: {
     sourcePath: string;
@@ -664,7 +676,6 @@ export interface ScreenRequest {
   target: {
     kind: ScreenTargetKind;
     title: string;
-    nearestScreenId?: string;
     viewport?: { width: number; height: number };
   };
   evidence?: {
