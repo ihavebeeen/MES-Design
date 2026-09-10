@@ -561,17 +561,6 @@
       ]
     },
     {
-      "id": "Logo",
-      "name": "Logo",
-      "kind": "component",
-      "sources": [
-        "component-library/src/components/ui/logo.tsx"
-      ],
-      "figmaNodeIds": [
-        "383:590"
-      ]
-    },
-    {
       "id": "MultiSelectInput",
       "name": "MultiSelectInput",
       "kind": "component",
@@ -580,17 +569,6 @@
       ],
       "figmaNodeIds": [
         "152:378"
-      ]
-    },
-    {
-      "id": "Navbar",
-      "name": "Navbar",
-      "kind": "component",
-      "sources": [
-        "component-library/src/components/ui/navbar.tsx"
-      ],
-      "figmaNodeIds": [
-        "386:105"
       ]
     },
     {
@@ -789,17 +767,6 @@
       ],
       "figmaNodeIds": [
         "68:121"
-      ]
-    },
-    {
-      "id": "MesProductSwitcher",
-      "name": "MesProductSwitcher",
-      "kind": "component",
-      "sources": [
-        "component-library/src/components/ui/mes-product-switcher.tsx"
-      ],
-      "figmaNodeIds": [
-        "387:101"
       ]
     },
     {

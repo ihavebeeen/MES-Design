@@ -126,29 +126,6 @@ test("컴포넌트 상세는 실제 예시·사용 화면·참고 코드 다음�
     return context ? Boolean(element.compareDocumentPosition(context) & Node.DOCUMENT_POSITION_FOLLOWING) : false;
   })).toBe(true);
 
-  await page.goto("/components/mes-product-switcher");
-  const switcherExample = page.locator('[data-component-showcase="mes-product-switcher"]');
-  const switcherScreens = page.locator('[data-component-screen-references="mes-product-switcher"]');
-  const switcherApi = page.locator('[data-component-api="mes-product-switcher"]');
-  const switcherContext = page.locator('[data-component-context="mes-product-switcher"]');
-  await expect(switcherExample).toBeVisible();
-  await expect(switcherExample.getByText("실제 컴포넌트와 variants", { exact: true })).toBeVisible();
-  await expect(switcherExample).toContainText("기본 자산");
-  await expect(switcherExample).toContainText("기준 확정");
-  await expect(switcherExample.getByText("펼친 사이드바", { exact: true })).toBeVisible();
-  await expect(switcherExample.getByText("접힌 사이드바", { exact: true })).toBeVisible();
-  await expect(switcherScreens).toContainText("현재 원장에 이 컴포넌트와 직접 연결된 화면이 없습니다.");
-  await expect(switcherApi).toContainText('import { MesProductSwitcher }');
-  await expect(switcherContext).toBeVisible();
-  await expect(switcherContext.getByText("사용할 때", { exact: true })).toBeHidden();
-  await switcherContext.getByRole("button", { name: /선택 맥락/ }).click();
-  await expect(switcherContext.getByText("사용할 때", { exact: true })).toBeVisible();
-  await switcherContext.getByRole("button", { name: /내부 원장 정보/ }).click();
-  await expect(switcherContext.locator('[data-component-internal="mes-product-switcher"]')).toBeVisible();
-  expect(await switcherExample.evaluate((element) => {
-    const context = document.querySelector('[data-component-context="mes-product-switcher"]');
-    return context ? Boolean(element.compareDocumentPosition(context) & Node.DOCUMENT_POSITION_FOLLOWING) : false;
-  })).toBe(true);
 });
 
 test("패턴 개요와 상세에서 조합 선택 맥락을 확인한다", async ({ page }) => {

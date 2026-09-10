@@ -48,7 +48,7 @@
       "label": "탐색",
       "labelEn": "Navigation",
       "description": "화면, 메뉴, 페이지와 계층 사이를 이동하는 요소",
-      "itemIds": ["page-top-tab-item", "sidebar", "mes-product-switcher", "breadcrumb", "pagination", "navbar", "tree-view", "logo", "user-account-menu", "segmented-control"]
+      "itemIds": ["page-top-tab-item", "sidebar", "breadcrumb", "pagination", "tree-view", "user-account-menu", "segmented-control"]
     },
     {
       "id": "layout",

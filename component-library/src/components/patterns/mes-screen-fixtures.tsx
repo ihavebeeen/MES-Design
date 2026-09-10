@@ -5,11 +5,9 @@ import { Filter } from "@/components/ui/filter";
 import { GroupQuery } from "@/components/ui/group-query";
 import { IconButton } from "@/components/ui/icon-button";
 import { Input, type InputProps } from "@/components/ui/input";
-import { Logo } from "@/components/ui/logo";
 import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
 import { Radio } from "@/components/ui/radio";
 import { SearchInput } from "@/components/ui/search-input";
-import { MesProductSwitcher } from "@/components/ui/mes-product-switcher";
 import {
   Select,
   SelectContent,
@@ -65,12 +63,10 @@ function MesFixtureSidebar({ dashboard = false, collapsed = false, sourceNavigat
   return (
     <Sidebar
       items={sourceNavigation ? PROCESS_TREND_NAV_ITEMS : MES_NAV_ITEMS}
-      logo={<Logo brand={sourceNavigation ? "moncat-factory" : "mes"} className="text-white" />}
       collapsed={collapsed}
       expandedKey={sourceNavigation ? "material" : dashboard ? undefined : "settings"}
       activeSubKey={sourceNavigation ? "user" : dashboard ? undefined : "user"}
       dashboardActive={dashboard}
-      productSwitcher={sourceNavigation ? <MesProductSwitcher value="MES" collapsed={collapsed} /> : undefined}
     />
   );
 }

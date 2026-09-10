@@ -548,34 +548,12 @@
       "documentationMode": "interactive"
     },
     {
-      "id": "logo",
-      "name": "Logo",
-      "category": "navigation",
-      "source": "src/components/ui/logo.tsx",
-      "status": "provisional",
-      "documentationRoute": "/components/logo",
-      "visibility": "public",
-      "tier": 2,
-      "documentationMode": "interactive"
-    },
-    {
       "id": "multi-select-input",
       "name": "MultiSelectInput",
       "category": "form",
       "source": "src/components/ui/multi-select-input.tsx",
       "status": "provisional",
       "documentationRoute": "/components/multi-select-input",
-      "visibility": "public",
-      "tier": 2,
-      "documentationMode": "interactive"
-    },
-    {
-      "id": "navbar",
-      "name": "Navbar",
-      "category": "navigation",
-      "source": "src/components/ui/navbar.tsx",
-      "status": "provisional",
-      "documentationRoute": "/components/navbar",
       "visibility": "public",
       "tier": 2,
       "documentationMode": "interactive"
@@ -798,20 +776,6 @@
       "visibility": "public",
       "tier": 4,
       "documentationMode": "interactive"
-    },
-    {
-      "id": "mes-product-switcher",
-      "name": "MesProductSwitcher",
-      "category": "navigation",
-      "source": "src/components/ui/mes-product-switcher.tsx",
-      "status": "stable",
-      "rules": [
-        "접힌 SNB에서는 MES/FEMS를 M/F로 축약한다."
-      ],
-      "visibility": "public",
-      "tier": 1,
-      "documentationMode": "registry",
-      "documentationRoute": "/components/mes-product-switcher"
     },
     {
       "id": "section-frame",

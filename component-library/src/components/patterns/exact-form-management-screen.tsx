@@ -19,7 +19,6 @@ import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { Filter, type FilterCategory } from "@/components/ui/filter";
 import { GroupQuery, type GroupQueryOption } from "@/components/ui/group-query";
-import { MesProductSwitcher } from "@/components/ui/mes-product-switcher";
 import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
 import { SearchInput } from "@/components/ui/search-input";
 import { QueryDateRange } from "@/components/ui/query-date-range";
@@ -76,7 +75,6 @@ export interface ExactFormManagementScreenProps {
 }
 
 function ExactFormManagementScreen({ onOpenEditor, onOpenCriteria }: ExactFormManagementScreenProps) {
-  const [product, setProduct] = React.useState<"MES" | "FEMS">("MES");
   const [levels, setLevels] = React.useState<(string | null)[]>([null, null, null]);
   const [filters, setFilters] = React.useState<Record<string, string[]>>({});
   const [query, setQuery] = React.useState("");
@@ -121,7 +119,6 @@ function ExactFormManagementScreen({ onOpenEditor, onOpenCriteria }: ExactFormMa
         collapsed
         activeKey="settings"
         items={NAV_ITEMS}
-        productSwitcher={<MesProductSwitcher value={product} onValueChange={setProduct} collapsed />}
       />
 
       <main className="flex min-w-0 flex-1 flex-col">

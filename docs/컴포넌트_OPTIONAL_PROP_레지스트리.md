@@ -22,7 +22,6 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `Button` | `variant="loginPrimary"`, `size="login"` | 로그인 전용 48px·16px Bold 규격 | 최초 로그인 비밀번호 재설정의 전체 너비 버튼을 일반 MES 40px 액션 버튼과 구분한다. 비활성 배경은 원본 Gray-60을 유지한다. | Figma `17681:46566` |
 | `PasswordInput` | `size="login"` | 48px·16px, 기본 `default` | 로그인·비밀번호 재설정 문맥의 큰 입력 규격을 일반 MES 32px 입력과 구분한다. | Figma `17681:46541`, `17681:46551` |
 | `PasswordInput` | `visibilityToggle` | `boolean`, 기본 `true` | 원본에 보기/숨기기 아이콘이 없는 경우 입력 외형을 임의로 추가하지 않는다. | Figma `17681:46541`, `17681:46551` |
-| `Logo` | `brand` | `mes \| moncat-factory`, 기본 `mes` | 실제 MES 애플리케이션 원본 화면의 제품 워드마크를 표시한다. | Figma `17520:46628` |
 | `SearchInput` | `iconColor` | `muted \| default`, 기본 `muted` | 검색 아이콘의 화면별 명도 차이를 기존 컴포넌트 안에서 표현한다. | Figma `11210:50866` |
 | `SearchInput` | `size` | `default \| compact`, 기본 `default` | 상단 조회 툴바의 220×32, 14px, Gray-20 검색창을 페이지 CSS 덮어쓰기 없이 재사용한다. | 양식관리 목록, Figma `17309:158828` |
 | `SearchInput` | `background` | `white \| subtle`, 기본은 size 규격에 따름 | 같은 14px compact 검색창이 흰 모달 표면과 Gray-20 조회 툴바 양쪽에 쓰이는 차이를 표현한다. | 입고검사, Figma `19768:100249` |

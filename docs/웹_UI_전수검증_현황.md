@@ -1,16 +1,16 @@
 # 웹 UI 전수검증 현황
 
-> 기록: 2026-09-10 · 현재 테스트 목록: 95개 · 결과: 95개 통과
+> 기록: 현재 소스 미검증 · 현재 테스트 목록: 95개 · 결과: 전체 검증 필요
 
 ## 이번에 확인한 범위
 
 | 구분 | 전체 | 현재 확인 결과 | 남은 확인 |
 |---|---:|---:|---:|
-| 공용 화면 요소 | 90 | 정식 42 | 검토 단계 48 |
+| 공용 화면 요소 | 87 | 정식 41 | 검토 단계 46 |
 | 화면 구성 방식 | 76 | 실제 화면 사용 57 | 화면 미사용 19 |
 | 등록 화면 | 30 | 동작 확인 30 | 직접 시각 기준 없음 1 |
 
-현재 소스 지문에서 코드·등록 정보·화면 동작과 저장된 기준 이미지를 검사했고 95개가 통과했다. 등록 화면 30개의 연결 상태도 함께 계산했다. 이는 Figma와 영구적으로 같다는 뜻이 아니며 원본 대조가 끝난 화면만 별도 검증으로 판단한다.
+현재 테스트 95개는 목록과 소스 지문만 계산한 상태다. 이 소스에 대한 전체 브라우저 검증 결과는 아직 기록되지 않았으므로 통과로 간주하지 않는다.
 
 ## 화면 30개 확인 결과
 
@@ -55,19 +55,19 @@
 
 ### 2. 아직 검토 단계인 공용 화면 요소
 
-총 48개다. 새 화면에서 사용하기 전에 원본 근거, 상태와 사용 위치를 확인해야 한다.
+총 46개다. 새 화면에서 사용하기 전에 원본 근거, 상태와 사용 위치를 확인해야 한다.
 
 - action: ButtonGroup, IconButton / CloseButton, Link, ToggleButton
 - data-display: Avatar, Descriptions, ImageThumbnail, List / ListItem, OverflowList, SearchHighlight, Timeline
 - feedback: EmptyState, ErrorState, LoadingOverlay, LoadingSpinner, ProgressCircle, Skeleton
 - form: Cascader, DatePicker, DateRangePicker, Fieldset, FileUpload, Label, MultiSelectInput, NumberInput, PasswordInput, SegmentedControl, Slider, Textarea, TimePicker, TreeSelect
 - layout: Accordion, Card, Collapsible, Divider, Container / Grid, Panel, ScrollArea, StickyHeader / StickyFooter
-- navigation: Breadcrumb, Logo, Navbar, Pagination, TreeView, UserAccountMenu
+- navigation: Breadcrumb, Pagination, TreeView, UserAccountMenu
 - overlay: DropdownMenu, Popover, Tooltip
 
 ### 3. 컴포넌트 선택 맥락
 
-전체 90개 중 90개에 역할·사용·비사용·대안 맥락이 연결돼 있다. 상세 계약은 구조·동작 선택에 민감한 25개에 추가 적용한다.
+전체 87개 중 87개에 역할·사용·비사용·대안 맥락이 연결돼 있다. 상세 계약은 구조·동작 선택에 민감한 25개에 추가 적용한다.
 
 - 맥락 누락 없음
 

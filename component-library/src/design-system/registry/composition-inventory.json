@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx + registered screen/section sources",
   "summary": {
     "scannedFiles": 46,
-    "totalLines": 14301,
+    "totalLines": 14248,
     "shellInstances": {
       "CenterModal": 14,
       "SideSlidePanel": 14,
@@ -488,7 +488,7 @@
       "source": "src/app/[...slug]/client-page.tsx",
       "name": "client-page.tsx",
       "observedRole": "composition-source",
-      "lines": 5494,
+      "lines": 5451,
       "exportedSymbols": [
         "Home"
       ],
@@ -686,15 +686,7 @@
           "jsxCount": 3
         },
         {
-          "name": "Logo",
-          "jsxCount": 3
-        },
-        {
           "name": "MultiSelectInput",
-          "jsxCount": 1
-        },
-        {
-          "name": "Navbar",
           "jsxCount": 1
         },
         {
@@ -926,7 +918,7 @@
       "source": "src/components/patterns/business-operation-settings-pattern.tsx",
       "name": "business-operation-settings-pattern.tsx",
       "observedRole": "composition-source",
-      "lines": 449,
+      "lines": 448,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -978,10 +970,6 @@
         },
         {
           "name": "Input",
-          "jsxCount": 1
-        },
-        {
-          "name": "Logo",
           "jsxCount": 1
         },
         {
@@ -1604,7 +1592,7 @@
       "source": "src/components/patterns/exact-form-management-screen.tsx",
       "name": "exact-form-management-screen.tsx",
       "observedRole": "evidence",
-      "lines": 188,
+      "lines": 185,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -1679,10 +1667,6 @@
           "jsxCount": 2
         },
         {
-          "name": "MesProductSwitcher",
-          "jsxCount": 1
-        },
-        {
           "name": "PageTopTabItem",
           "jsxCount": 3
         },
@@ -1703,7 +1687,7 @@
           "jsxCount": 1
         }
       ],
-      "stateHookCount": 7,
+      "stateHookCount": 6,
       "behaviorSignals": [
         "selection.enable-editor"
       ],
@@ -1901,7 +1885,7 @@
       "source": "src/components/patterns/exact-production-analytics-screen.tsx",
       "name": "exact-production-analytics-screen.tsx",
       "observedRole": "evidence",
-      "lines": 83,
+      "lines": 81,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -1969,14 +1953,6 @@
         },
         {
           "name": "InventoryComparisonChart",
-          "jsxCount": 1
-        },
-        {
-          "name": "Logo",
-          "jsxCount": 1
-        },
-        {
-          "name": "MesProductSwitcher",
           "jsxCount": 1
         },
         {
@@ -2535,7 +2511,7 @@
       "source": "src/components/patterns/mes-screen-fixtures.tsx",
       "name": "mes-screen-fixtures.tsx",
       "observedRole": "composition-source",
-      "lines": 328,
+      "lines": 324,
       "exportedSymbols": [],
       "shells": [],
       "sectionFrames": {
@@ -2571,14 +2547,6 @@
         },
         {
           "name": "InputProps",
-          "jsxCount": 1
-        },
-        {
-          "name": "Logo",
-          "jsxCount": 1
-        },
-        {
-          "name": "MesProductSwitcher",
           "jsxCount": 1
         },
         {
@@ -3727,5 +3695,5 @@
       ]
     }
   ],
-  "fingerprint": "729a6b94f7dc398c"
+  "fingerprint": "7987ce4ef6d1a2e2"
 }

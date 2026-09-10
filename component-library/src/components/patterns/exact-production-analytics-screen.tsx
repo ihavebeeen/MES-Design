@@ -7,8 +7,6 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Card } from "@/components/ui/card";
 import { EquipmentProductionChart, HorizontalBarChart, InventoryComparisonChart } from "@/components/ui/analytics-charts";
 import { IconButton } from "@/components/ui/icon-button";
-import { Logo } from "@/components/ui/logo";
-import { MesProductSwitcher } from "@/components/ui/mes-product-switcher";
 import { PageTopTabItem } from "@/components/ui/page-top-tab-item";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sidebar, type SidebarNavItem } from "@/components/ui/sidebar";
@@ -44,7 +42,7 @@ function ExactProductionAnalyticsScreen() {
   const rows: TableRowData<MonthlyRow>[] = MONTHLY_ROWS.map((row) => ({ id: row.id, data: row }));
 
   return <div className="flex h-[960px] w-[1920px] overflow-hidden bg-white">
-    <Sidebar items={NAV_ITEMS} logo={<Logo brand="moncat-factory" />} dashboardActive productSwitcher={<MesProductSwitcher value="MES" />} />
+    <Sidebar items={NAV_ITEMS} dashboardActive />
     <main className="flex min-w-0 flex-1 flex-col">
       <div className="flex h-[38px] shrink-0 items-center justify-between bg-black pr-3"><div className="flex h-full"><PageTopTabItem label="생산분석 현황" active /><PageTopTabItem label="거래처 등록" /><PageTopTabItem label="품목 등록" /></div><div className="flex items-center gap-1"><IconButton aria-label="알림" icon={<IconBell size={20} />} className="text-white" /><IconButton aria-label="사용자 메뉴" icon={<IconUserMono size={20} />} className="text-white" /></div></div>
       <div className="flex h-[42px] shrink-0 items-center border-b border-mes-gray-30 px-5"><strong className="text-[18px]">생산분석 현황</strong><div className="ml-auto flex items-center gap-4"><ButtonGroup>{["당월","당일"].map((item) => <Button key={item} size="toolbar" variant={period === item ? "lineBlacktxt" : "fillGray"} className="w-[76px]" onClick={() => setPeriod(item)}>{item}</Button>)}</ButtonGroup><span className="h-[14px] w-px bg-mes-gray-30" /><ButtonGroup>{["금액","수량"].map((item) => <Button key={item} size="toolbar" variant={basis === item ? "lineBlacktxt" : "fillGray"} className="w-[76px]" onClick={() => setBasis(item)}>{item}</Button>)}</ButtonGroup></div></div>

@@ -14,7 +14,6 @@ import { InspectionJudgement, type InspectionJudgementValue } from "@/components
 import { LabeledInput } from "@/components/ui/labeled-input";
 import { LabeledSelect } from "@/components/ui/labeled-select";
 import { MainListFooterActions } from "@/components/ui/main-list-footer-actions";
-import { MesProductSwitcher } from "@/components/ui/mes-product-switcher";
 import { QueryDateRange } from "@/components/ui/query-date-range";
 import { SectionFrame } from "@/components/ui/section-frame";
 import { SectionHeader } from "@/components/ui/section-header";
@@ -34,7 +33,6 @@ export const REGISTRY_SHOWCASE_IDS = [
   "labeled-input",
   "labeled-select",
   "main-list-footer-actions",
-  "mes-product-switcher",
   "query-date-range",
   "section-frame",
   "section-header",
@@ -58,7 +56,6 @@ function VariantCard({ label, description, children, wide = false }: { label: st
 }
 
 function ShowcaseDemo({ id }: { id: RegistryShowcaseId }) {
-  const [product, setProduct] = React.useState<"MES" | "FEMS">("MES");
   const [judgement, setJudgement] = React.useState<InspectionJudgementValue>("pass");
   const [warehouse, setWarehouse] = React.useState("A 창고");
   const [startDate, setStartDate] = React.useState<Date | null>(new Date(2026, 7, 1));
@@ -85,8 +82,6 @@ function ShowcaseDemo({ id }: { id: RegistryShowcaseId }) {
       return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="기본"><LabeledSelect className="w-full max-w-[360px]" label="창고" value={warehouse} options={["A 창고", "B 창고"]} onValueChange={setWarehouse} /></VariantCard><VariantCard label="비활성"><LabeledSelect className="w-full max-w-[360px]" label="창고" value="A 창고" options={["A 창고"]} disabled /></VariantCard></div>;
     case "main-list-footer-actions":
       return <div className="grid gap-3"><VariantCard label="복수 액션" description="메인 목록 우하단 정렬을 유지합니다." wide><div className="w-full border-t border-mes-gray-30 pt-4"><MainListFooterActions actions={[{ id: "edit", label: "선택 수정" }, { id: "create", label: "신규 등록" }]} /></div></VariantCard><VariantCard label="단일 액션" wide><div className="w-full border-t border-mes-gray-30 pt-4"><MainListFooterActions actions={[{ id: "create", label: "신규 등록", variant: "fillBlack" }]} /></div></VariantCard></div>;
-    case "mes-product-switcher":
-      return <div className="grid gap-3 md:grid-cols-2"><VariantCard label="펼친 사이드바"><div className="w-[220px]"><MesProductSwitcher value={product} onValueChange={setProduct} /></div></VariantCard><VariantCard label="접힌 사이드바"><MesProductSwitcher value={product} onValueChange={setProduct} collapsed /></VariantCard></div>;
     case "query-date-range":
       return <div className="grid gap-3"><VariantCard label="기본 조회 기간" wide><QueryDateRange start={startDate} end={endDate} onStartChange={setStartDate} onEndChange={setEndDate} /></VariantCard><VariantCard label="업무 라벨 변경" wide><QueryDateRange label="입고일자" start={startDate} end={endDate} onStartChange={setStartDate} onEndChange={setEndDate} /></VariantCard></div>;
     case "section-frame":

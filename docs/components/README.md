@@ -1,6 +1,6 @@
 # 컴포넌트 문서
 
-공개 88개, 내부 조립용 2개를 같은 형식으로 기록한다.
+공개 85개, 내부 조립용 2개를 같은 형식으로 기록한다.
 
 상태·Tier·공개 범위는 `components.json`, 모든 신규 UI 선택 맥락과 선택 중요 자산의 상세 계약은 `component-usage-contracts.json`, API는 실제 구현 파일에서 생성한다.
 
@@ -95,9 +95,6 @@
 ## 탐색
 
 - [Breadcrumb](./breadcrumb.md) — Tier 2, provisional
-- [Logo](./logo.md) — Tier 2, provisional
-- [MesProductSwitcher](./mes-product-switcher.md) — Tier 1, stable
-- [Navbar](./navbar.md) — Tier 2, provisional
 - [PageTopTabItem](./page-top-tab-item.md) — Tier 1, stable
 - [Pagination](./pagination.md) — Tier 2, provisional
 - [Sidebar](./sidebar.md) — Tier 1, stable

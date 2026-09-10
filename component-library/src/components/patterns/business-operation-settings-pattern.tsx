@@ -13,7 +13,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FormFieldRow, FormGrid } from "@/components/ui/form-grid";
 import { Input } from "@/components/ui/input";
-import { Logo } from "@/components/ui/logo";
 import { Radio } from "@/components/ui/radio";
 import { SectionFrame } from "@/components/ui/section-frame";
 import {
@@ -388,7 +387,7 @@ function BusinessOperationSettingsVisualFixture() {
 
   return (
     <main data-visual-test="business-operation-settings" className="flex h-screen min-h-[720px] w-full overflow-hidden bg-white">
-      <Sidebar items={NAV_ITEMS} logo={<Logo brand="mes" className="text-white" />} expandedKey="settings" activeSubKey="business-operation" />
+      <Sidebar items={NAV_ITEMS} expandedKey="settings" activeSubKey="business-operation" />
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <MesPageTabs active="업무 운영 설정" extraTabs={["사용자 설정", "생산 정보 설정"]} />
 

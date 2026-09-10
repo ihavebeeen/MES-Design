@@ -9,7 +9,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "7db38691f312ec6b7bc7915d7068f836242958282c8217bbfcbc85bf5bbfcbe5",
+  "fingerprint": "5c077937ec5dfc54f77be887e50ded86e318a2850aae43a18cff47c1c016d18f",
   "guidancePolicy": {
     "componentSelection": {
       "contextCoverageMode": "all-components",
@@ -34,12 +34,12 @@
   },
   "summary": {
     "components": {
-      "total": 90,
-      "public": 88,
+      "total": 87,
+      "public": 85,
       "internal": 2,
-      "stable": 42,
-      "provisional": 48,
-      "selectionContexts": 90,
+      "stable": 41,
+      "provisional": 46,
+      "selectionContexts": 87,
       "selectionGuardContracts": 25
     },
     "patterns": 76,
@@ -3622,55 +3622,6 @@
     },
     {
       "kind": "component",
-      "id": "logo",
-      "name": "Logo",
-      "category": "navigation",
-      "source": "src/components/ui/logo.tsx",
-      "status": "provisional",
-      "documentationRoute": "/components/logo",
-      "visibility": "public",
-      "tier": 2,
-      "documentationMode": "interactive",
-      "documentationFile": "docs/components/logo.md",
-      "guidanceMode": "selection-context",
-      "selectionContext": {
-        "componentId": "logo",
-        "capabilities": [
-          "product-identity"
-        ],
-        "useWhen": [
-          "MES 제품·브랜드 식별이 필요한 공통 탐색 영역에 표시한다."
-        ],
-        "doNotUseWhen": [
-          "장식 이미지나 업무 콘텐츠 이미지인 경우"
-        ],
-        "alternatives": [
-          {
-            "componentId": "mes-product-switcher",
-            "chooseInsteadWhen": "제품 식별과 제품 전환이 함께 필요할 때"
-          }
-        ]
-      },
-      "usageContract": null,
-      "usedByPatternIds": [],
-      "sourceFacts": {
-        "sourceFingerprint": "6c68458c9bb71fc1bce10e2ca2e2b8dd01d1a56827002f6f949f6844e394cd45",
-        "symbols": [
-          "LogoProps",
-          "Logo"
-        ],
-        "propNames": [
-          "size",
-          "brand",
-          "className"
-        ],
-        "stateMarkers": [],
-        "summary": "MES Logo/Brandmark — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Logo / Brandmark\",",
-        "aria": []
-      }
-    },
-    {
-      "kind": "component",
       "id": "multi-select-input",
       "name": "MultiSelectInput",
       "category": "form",
@@ -3726,56 +3677,6 @@
         "aria": [
           "aria-label"
         ]
-      }
-    },
-    {
-      "kind": "component",
-      "id": "navbar",
-      "name": "Navbar",
-      "category": "navigation",
-      "source": "src/components/ui/navbar.tsx",
-      "status": "provisional",
-      "documentationRoute": "/components/navbar",
-      "visibility": "public",
-      "tier": 2,
-      "documentationMode": "interactive",
-      "documentationFile": "docs/components/navbar.md",
-      "guidanceMode": "selection-context",
-      "selectionContext": {
-        "componentId": "navbar",
-        "capabilities": [
-          "global-navigation-bar"
-        ],
-        "useWhen": [
-          "제품 전역의 브랜드·주요 이동·사용자 동작을 한 줄에 제공하는 제품 구조일 때 사용한다."
-        ],
-        "doNotUseWhen": [
-          "기존 MES Sidebar와 상단 업무 탭을 임의로 대체하거나 팝업 내부에 중복하는 경우"
-        ],
-        "alternatives": [
-          {
-            "componentId": "sidebar",
-            "chooseInsteadWhen": "MES 데스크톱의 주 메뉴 탐색일 때"
-          }
-        ]
-      },
-      "usageContract": null,
-      "usedByPatternIds": [],
-      "sourceFacts": {
-        "sourceFingerprint": "71f43212db747fca2cfb7dd3d364b49a6b9b9f9531ddc4c18392f46fc6942181",
-        "symbols": [
-          "NavbarProps",
-          "Navbar"
-        ],
-        "propNames": [
-          "left",
-          "center",
-          "right",
-          "className"
-        ],
-        "stateMarkers": [],
-        "summary": "MES Navbar (상단 내비게이션 바) — Figma에 전용 컴포넌트 없음(체크리스트 티어2",
-        "aria": []
       }
     },
     {
@@ -5084,66 +4985,6 @@
     },
     {
       "kind": "component",
-      "id": "mes-product-switcher",
-      "name": "MesProductSwitcher",
-      "category": "navigation",
-      "source": "src/components/ui/mes-product-switcher.tsx",
-      "status": "stable",
-      "rules": [
-        "접힌 SNB에서는 MES/FEMS를 M/F로 축약한다."
-      ],
-      "visibility": "public",
-      "tier": 1,
-      "documentationMode": "registry",
-      "documentationRoute": "/components/mes-product-switcher",
-      "documentationFile": "docs/components/mes-product-switcher.md",
-      "guidanceMode": "selection-context",
-      "selectionContext": {
-        "componentId": "mes-product-switcher",
-        "capabilities": [
-          "product-switching"
-        ],
-        "useWhen": [
-          "MES 공통 탐색에서 현재 제품을 식별하고 다른 제품으로 전환한다."
-        ],
-        "doNotUseWhen": [
-          "업무 필드의 품목·공장 등을 선택하거나 단순 로고만 표시하는 경우"
-        ],
-        "alternatives": [
-          {
-            "componentId": "logo",
-            "chooseInsteadWhen": "제품 전환 없이 식별만 필요할 때"
-          },
-          {
-            "componentId": "select",
-            "chooseInsteadWhen": "업무 데이터 값을 선택할 때"
-          }
-        ]
-      },
-      "usageContract": null,
-      "usedByPatternIds": [],
-      "sourceFacts": {
-        "sourceFingerprint": "ebd74c18efc3cb34dd114faae8fd9bcde4cff66c6d4ec3b8c293621f54fa117c",
-        "symbols": [
-          "MesProductSwitcherProps",
-          "MesProductSwitcher"
-        ],
-        "propNames": [
-          "value",
-          "onValueChange",
-          "collapsed",
-          "className"
-        ],
-        "stateMarkers": [],
-        "summary": "MES/FEMS 제품 전환기.",
-        "aria": [
-          "aria-label",
-          "aria-pressed"
-        ]
-      }
-    },
-    {
-      "kind": "component",
       "id": "section-frame",
       "name": "SectionFrame",
       "category": "layout",
@@ -5867,12 +5708,7 @@
         "doNotUseWhen": [
           "팝업 내부에 중복하거나 독립 임시 탐색 UI로 다시 만드는 경우"
         ],
-        "alternatives": [
-          {
-            "componentId": "navbar",
-            "chooseInsteadWhen": "별도 제품이 승인된 전역 상단 탐색 구조를 사용할 때"
-          }
-        ]
+        "alternatives": []
       },
       "usageContract": null,
       "usedByPatternIds": [

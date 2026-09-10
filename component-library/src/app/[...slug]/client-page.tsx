@@ -91,11 +91,9 @@ import { Descriptions } from "@/components/ui/descriptions";
 import { DatePicker } from "@/components/ui/date-picker";
 import { DateRangePicker, type DateRange } from "@/components/ui/date-range-picker";
 import { TimePicker } from "@/components/ui/time-picker";
-import { Navbar } from "@/components/ui/navbar";
 import { Grid } from "@/components/ui/grid-container";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { StickyHeader, StickyFooter } from "@/components/ui/sticky-header-footer";
-import { Logo } from "@/components/ui/logo";
 import { UserAccountMenu } from "@/components/ui/user-account-menu";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { X } from "lucide-react";
@@ -4587,29 +4585,6 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
         </Sample>
       </Section>
 
-      <Section id="navbar" title="내비게이션 바" titleEn="Navbar">
-        <Sample
-          label="Navbar · 3-슬롯"
-          spec={[
-            { label: "Figma", value: "전용 컴포넌트 없음(판단값)" },
-            { label: "높이", value: "56px(h-14, 데모 페이지 상단바와 동일값 재사용)" },
-            { label: "패딩", value: "좌우16px(px-4)" },
-            { label: "하단 테두리", value: "1px Gray-30" },
-            { label: "슬롯 내부 gap", value: "12px(gap-3)" },
-          ]}
-        >
-          <Navbar
-            className="w-[600px]"
-            left={<Logo size="small" />}
-            right={
-              <Button size="small" variant="lineBlacktxt">
-                로그아웃
-              </Button>
-            }
-          />
-        </Sample>
-      </Section>
-
       <Section id="multi-select-input" title="다중 선택 입력" titleEn="MultiSelectInput">
         <Sample
           label="MultiSelectInput · 태그 추가/제거"
@@ -4682,24 +4657,6 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
           <div className="flex flex-col gap-1.5">
             <Label required>수량</Label>
             <Input placeholder="0" className="w-[160px]" />
-          </div>
-        </Sample>
-      </Section>
-
-      <Section id="logo" title="로고" titleEn="Logo">
-        <Sample
-          label="Logo · default/small"
-          spec={[
-            { label: "Figma", value: "실제 로고 애셋 없음, 텍스트 워드마크(판단값)" },
-            { label: "default", value: "18px bold" },
-            { label: "small", value: "14px bold" },
-            { label: "심볼", value: "\"M\" 배지 — 배경Primary-60, 흰텍스트, R값2px" },
-            { label: "심볼↔텍스트 gap", value: "6px(gap-1.5)" },
-          ]}
-        >
-          <div className="flex items-center gap-4">
-            <Logo />
-            <Logo size="small" />
           </div>
         </Sample>
       </Section>
