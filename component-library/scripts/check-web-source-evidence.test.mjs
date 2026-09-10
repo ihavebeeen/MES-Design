@@ -81,3 +81,39 @@ test("경향 관리와 생산 분석의 인라인 설정 변화가 빠지면 실
   delete evidence.interactions.pages.find((page) => page.pageId === "web.inspection-trend").stateTransitions;
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /web\.inspection-trend/);
 });
+
+test("대표 웹 대조 viewport가 1920×1080이 아니면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.comparisonProtocol.runtimeViewport.requestedWidth = 1280;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /1920×1080/);
+});
+
+test("대표 구조 대조에서 내부 실제 UI frame 근거가 빠지면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  delete evidence.reconciliation.representativeComparisons.find((item) => item.id === "main-list.production-target").figmaActualUiFrame;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /내부 실제 UI frame/);
+});
+
+test("공통 UI 디자인 차이에는 Figma 기준이 필요하다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.representativeComparisons.find((item) => item.id === "center-modal.default-warehouse").authority = "runtime";
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /Figma 기준/);
+});
+
+test("대표 대조 집계가 실제 기록과 다르면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.coverage.representativeStructureCompared = 0;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /대표 구조 대조 집계/);
+});
+
+test("설비 모니터링 후보를 찾고도 미확정 근거에서 빼면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.authority.pages.find((page) => page.pageId === "web.equipment-monitoring").candidateFrameIds = [];
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /고해상도 후보/);
+});
+
+test("KPI 메뉴 검색 결과를 본문 원본처럼 취급하지 않도록 검색 근거를 유지한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.authority.pages.find((page) => page.pageId === "web.kpi").searchMatchNodeIds = [];
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /메뉴 검색 결과/);
+});

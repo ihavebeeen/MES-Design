@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "status": "reference-in-progress",
-  "auditedAt": "2026-08-25",
-  "scope": "실제 MES 메뉴와 최신 Figma 원본 위치를 연결하는 참고 장부다. 시각 일치나 표준 승인을 의미하지 않는다.",
+  "auditedAt": "2026-09-10",
+  "scope": "실제 MES 메뉴와 최신 Figma 원본 위치, 대표 대조 결과, 남은 확인 항목을 관리한다. 전체 화면 시각 승인은 별도로 집계한다.",
   "authorities": {
     "canonicalFigmaPage": { "fileKey": "F4n5Zr04PAbiRjfIFQAo6v", "pageId": "8247:18600", "name": "- 웹 화면설계서 (최종)" },
     "historicalFigmaPage": { "fileKey": "F4n5Zr04PAbiRjfIFQAo6v", "pageId": "4431:20990", "name": "01. MES v2.0" },
@@ -49,7 +49,7 @@
     { "pageId": "web.process-inspection", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39124", "name": "공정검사 리스트", "role": "list-screen" }], "notes": [] },
     { "pageId": "web.inspection-trend", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39454", "name": "공정검사 경향관리", "role": "analysis-screen" }], "notes": [] },
 
-    { "pageId": "web.equipment-monitoring", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9138:9102", "name": "설비 모니터링", "role": "monitoring-screen" }], "notes": ["Figma 그룹에 PPT용 와이어프레임이 함께 있어 최종 디자인 프레임의 별도 판정이 필요하다."] },
+    { "pageId": "web.equipment-monitoring", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9138:9102", "name": "설비 모니터링", "role": "monitoring-screen" }, { "nodeId": "12565:31609", "name": "PLC Monitoring Dashboard Design", "role": "high-fidelity-candidate" }], "notes": ["성형기·압출기·자동화 설비 화면 후보를 찾았으나 완료·개선·실험 상태가 구분되지 않아 디자인 기준은 미확정이다."] },
     { "pageId": "web.maintenance-history", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39620", "name": "정비이력관리 리스트", "role": "list-screen" }], "notes": [] },
     { "pageId": "web.equipment-inspection", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39832", "name": "설비점검관리 리스트", "role": "list-screen" }], "notes": [] },
 
@@ -93,18 +93,101 @@
       "detail": "실제 웹에서만 발견된 구성은 신규 요구 반영일 수도, 구현 오류일 수도 있다. Figma 부재만으로 표준 승격하거나 제거하지 않는다."
     }
   ],
+  "comparisonProtocol": {
+    "runtimeViewport": { "requestedWidth": 1920, "requestedHeight": 1080 },
+    "figmaFrameRule": "2700×1500 설명 프레임 대신 내부 실제 UI frame의 크기와 node ID를 기록한다.",
+    "authoritySplit": {
+      "figma": "공통 색상·글꼴·크기·간격·배치와 완료된 개선안",
+      "runtime": "실제 사용 위치·데이터·진입 순서·선택과 편집 상태"
+    },
+    "comparisonFields": ["공통 셸", "상단 조회·필터", "테이블과 스크롤", "하단 액션", "오버레이 종류와 크기", "상태 변화"],
+    "evidenceLevels": {
+      "source-located": "비교할 Figma와 웹 위치를 찾음",
+      "structure-compared": "영역·컴포넌트·배치 관계를 대조함",
+      "visual-difference-confirmed": "크기·간격·색상 같은 시각 차이를 실측함",
+      "interaction-observed": "선택·열기·편집 뒤 상태 변화를 실제 웹에서 확인함"
+    },
+    "rule": "확인한 단계만 기록한다. 구조 대조를 픽셀 검증으로 올리거나 웹 단독 상태를 Figma 승인 상태로 올리지 않는다."
+  },
+  "representativeComparisons": [
+    {
+      "id": "main-list.production-target",
+      "pageId": "web.production-target-month",
+      "figmaActualUiFrame": { "nodeId": "9699:70287", "width": 1920, "height": 960 },
+      "runtimeViewport": { "requestedWidth": 1920, "requestedHeight": 1080 },
+      "level": "structure-compared",
+      "classification": "aligned-structure",
+      "observed": ["좌측 메뉴와 상단 탭", "조회 기간과 조회 버튼", "그룹화·필터 추가·빠른 조회", "무한 목록 테이블", "좌측 복사·다운로드와 우측 업무 액션"],
+      "remaining": ["같은 높이 기준의 픽셀 대조", "데이터 행이 있는 상태의 열 폭과 가로 스크롤"]
+    },
+    {
+      "id": "main-list.receiving-and-order-selection",
+      "pageId": "web.receiving",
+      "figmaActualUiFrame": { "nodeId": "10583:28252", "width": 1920, "height": 960 },
+      "relatedFigmaSurface": { "nodeId": "10615:37866", "surface": "center-modal", "width": 800, "height": 680 },
+      "runtimeViewport": { "requestedWidth": 1920, "requestedHeight": 1080 },
+      "level": "structure-compared",
+      "classification": "aligned-structure",
+      "observed": ["메인 목록 공통 셸", "신규 등록에서 발주 선택 중앙 모달 진입", "모달 안의 기간 조회·필터·검색·선택 테이블", "취소·선택 Footer"],
+      "remaining": ["발주 데이터 선택 뒤 등록 슬라이드로 이어지는 최신 상태의 Figma 대조"]
+    },
+    {
+      "id": "center-modal.default-warehouse",
+      "pageId": "web.warehouse",
+      "figmaActualUiFrame": { "nodeId": "16553:37111", "width": 415, "height": 314 },
+      "runtimeSurface": { "surface": "center-modal", "width": 480, "height": 271 },
+      "level": "visual-difference-confirmed",
+      "classification": "shared-ui-design-difference",
+      "authority": "figma",
+      "observed": ["같은 기능과 세 행의 기본창고 선택", "헤더·표·취소/저장 Footer", "웹과 Figma의 모달 폭·높이 차이"],
+      "remaining": []
+    },
+    {
+      "id": "analysis-dashboard.inspection-trend",
+      "pageId": "web.inspection-trend",
+      "figmaActualUiFrame": { "nodeId": "11751:102614", "width": 1920, "height": 960 },
+      "runtimeViewport": { "requestedWidth": 1920, "requestedHeight": 1080 },
+      "level": "structure-compared",
+      "classification": "aligned-structure",
+      "observed": ["반품·보류 월별 표", "자주검사 측정 데이터와 CAVITY 영역", "입고·출하·공정 검사 달성률 카드"],
+      "remaining": ["카드·차트의 세부 간격과 타이포그래피 대조"]
+    },
+    {
+      "id": "analysis-dashboard.production-analysis",
+      "pageId": "web.production-analysis",
+      "figmaActualUiFrame": { "nodeId": "11765:104957", "width": 1920, "height": 960 },
+      "runtimeViewport": { "requestedWidth": 1920, "requestedHeight": 1080 },
+      "level": "structure-compared",
+      "classification": "aligned-structure",
+      "observed": ["상단 달성률·진척률·재고·생산 현황 요약", "공정 필터와 설비/작업자 보기", "생산실적·불량유형·생산품 차트"],
+      "remaining": ["실제 데이터 길이에 따른 차트와 표의 시각 대조"]
+    },
+    {
+      "id": "table-row.warehouse-selected",
+      "pageId": "web.warehouse",
+      "runtimeState": { "action": "행 체크박스 선택", "rowClass": "selected", "cellBackground": "#E8F5FF", "relatedAction": "삭제 활성화" },
+      "level": "interaction-observed",
+      "classification": "runtime-state-observed",
+      "observed": ["체크 상태", "선택 행 전체 배경 강조", "선택 대상 작업 활성화"],
+      "remaining": ["동일 선택 상태의 Figma variant 대조"]
+    }
+  ],
   "coverage": {
     "runtimePages": 42,
     "sourceLocatedLatest": 38,
     "sourceLocatedRevision": 3,
     "sourceNotLocated": 1,
     "pixelVerified": 0,
-    "interactionVerifiedAgainstFigma": 0
+    "interactionVerifiedAgainstFigma": 0,
+    "representativeStructureCompared": 4,
+    "representativeVisualDifferencesConfirmed": 1,
+    "runtimeStatesObservedInRepresentativePass": 1
   },
   "remaining": [
-    "각 화면설계서 프레임 안의 실제 UI frame을 식별해 동일 viewport로 비교",
-    "팝업과 조건부 상태를 최신 기본안·후속 수정안·실제 웹 순서로 대조",
+    "나머지 화면은 수정되는 자산과 연결된 화면부터 실제 UI frame과 웹을 같은 기준으로 증분 대조",
+    "팝업과 조건부 상태는 최신 기본안·완료 개선안·실제 웹 순서로 증분 대조",
     "명칭 충돌과 Shell 충돌을 화면별로 판정",
-    "KPI 화면의 Figma 원본 또는 신규 요구 근거 확인"
+    "설비 모니터링 후보 6개의 최신 상태 확인",
+    "KPI 본문 화면의 Figma 원본 또는 신규 요구 근거 확인"
   ]
 }

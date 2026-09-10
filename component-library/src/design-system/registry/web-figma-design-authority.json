@@ -62,7 +62,19 @@
     { "pageId": "web.process-inspection", "baseSpecNodeId": "9171:39124", "actualUiFrameId": "9873:109840", "resolution": "base-current" },
     { "pageId": "web.inspection-trend", "baseSpecNodeId": "9171:39454", "actualUiFrameId": "11751:102614", "resolution": "base-current" },
 
-    { "pageId": "web.equipment-monitoring", "baseSpecNodeId": "9138:9102", "actualUiFrameId": null, "resolution": "unresolved", "notes": ["7_1. 모니터링 프레임을 직접 조사했으나 제목과 '미완' 표기만 있고 실제 UI 프레임은 없다.", "실제 웹의 모니터링 화면은 사용 맥락 참고 자료로만 유지하며 Figma 디자인 원본으로 확정하지 않는다."] },
+    {
+      "pageId": "web.equipment-monitoring",
+      "baseSpecNodeId": "9138:9102",
+      "actualUiFrameId": null,
+      "resolution": "unresolved",
+      "candidateFrameIds": ["12565:31609", "12565:32013", "12565:32490", "12565:33166", "12553:32004", "12553:32965"],
+      "notes": [
+        "7_1. 모니터링 프레임은 제목과 '미완' 표기만 있어 완성 원본으로 사용할 수 없다.",
+        "같은 최종 페이지 안에서 성형기·압출기·자동화 설비용 고해상도 모니터링 화면 후보 6개를 다시 찾았다.",
+        "후보가 완료안·개선안·실험안 중 무엇인지 판별할 제목과 상태 표기가 없어 최신 기준은 계속 미확정으로 둔다.",
+        "실제 웹의 모니터링 화면은 사용 맥락과 상태 확인 자료로 사용한다. 디자인 기준은 후보 상태가 확인된 뒤 확정한다."
+      ]
+    },
     { "pageId": "web.maintenance-history", "baseSpecNodeId": "9171:39620", "actualUiFrameId": "10582:51286", "resolution": "base-current" },
     { "pageId": "web.equipment-inspection", "baseSpecNodeId": "9171:39832", "actualUiFrameId": "10582:52166", "resolution": "base-current" },
 
@@ -71,7 +83,18 @@
     { "pageId": "web.equipment-operation-analysis", "baseSpecNodeId": "9171:40549", "actualUiFrameId": "11765:105582", "resolution": "base-current" },
     { "pageId": "web.forming-analysis", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "revision-only", "revisionSectionIds": ["17669:47293", "18181:127915"], "paintOrderResolution": "겹친 3차 수정 영역에서는 마지막 자식인 17377:50194 계열의 실제 보이는 프레임을 우선한다." },
     { "pageId": "web.extrusion-analysis", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "revision-only", "revisionSectionIds": ["17669:47293", "18181:127915"], "paintOrderResolution": "겹친 3차 수정 영역에서는 마지막 자식인 17377:50194 계열의 실제 보이는 프레임을 우선한다." },
-    { "pageId": "web.kpi", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "unresolved", "notes": ["웹 화면설계서 (최종) 페이지 전체에서 KPI·성과지표·성과 지표 이름과 텍스트를 검색했으나 일치 노드가 없다.", "실제 웹의 KPI 표와 편집 상태는 사용 맥락 참고 자료로만 유지하며 Figma 디자인 원본으로 확정하지 않는다."] },
+    {
+      "pageId": "web.kpi",
+      "baseSpecNodeId": null,
+      "actualUiFrameId": null,
+      "resolution": "unresolved",
+      "searchMatchNodeIds": ["I18181:128668;9873:83498;9873:83589", "I17774:52913;9873:83498;9873:83589"],
+      "notes": [
+        "최종 페이지 전체에서 KPI·성과지표·성과 지표를 다시 검색했다.",
+        "확인된 일치 노드는 다른 화면의 좌측 메뉴 안에 있는 '성과지표 KPI' 항목 2개뿐이며 KPI 본문 화면 원본은 찾지 못했다.",
+        "실제 웹의 KPI 표와 편집 상태는 사용 맥락 참고 자료로 사용한다. 본문 디자인은 Figma 원본이나 신규 승인 근거가 생긴 뒤 확정한다."
+      ]
+    },
 
     { "pageId": "web.partner", "baseSpecNodeId": "9171:40925", "actualUiFrameId": "10590:25574", "resolution": "base-current" },
     { "pageId": "web.item", "baseSpecNodeId": "9171:41055", "actualUiFrameId": "10590:26185", "resolution": "base-with-revisions", "revisionSectionIds": ["18753:60729", "18810:61615", "19029:63301"] },

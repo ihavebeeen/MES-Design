@@ -36,7 +36,8 @@
       "evidence": [
         { "pageId": "web.production-result", "transitionIndex": 0 },
         { "pageId": "web.receiving", "transitionIndex": 0 },
-        { "pageId": "web.shipment-result", "transitionIndex": 0 }
+        { "pageId": "web.shipment-result", "transitionIndex": 0 },
+        { "pageId": "web.warehouse", "transitionIndex": 0 }
       ]
     },
     {
@@ -143,7 +144,7 @@
     { "pageId": "web.item", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "품목 정보", "width": "content-50%" } }, "entries": [{ "trigger": "품목 등록", "status": "opened", "surface": "side-slide-panel", "title": "품목 정보", "width": "content-50%" }] },
     { "pageId": "web.bom", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "BOM 등록", "width": "content-50%" } }, "entries": [{ "trigger": "BOM 등록", "status": "opened", "surface": "side-slide-panel", "title": "BOM 등록", "width": "content-50%" }] },
     { "pageId": "web.special-price", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "특별단가 상세", "width": "760px" } }, "entries": [{ "trigger": "특별단가 등록", "status": "opened", "surface": "side-slide-panel", "title": "특별단가 등록", "width": "760px" }] },
-    { "pageId": "web.warehouse", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "창고 정보", "width": "content-50%" } }, "entries": [{ "trigger": "창고 등록", "status": "opened", "surface": "side-slide-panel", "title": "창고 정보", "width": "content-50%" }, { "trigger": "기본창고 설정", "status": "opened", "surface": "center-modal", "title": "기본 창고 설정", "width": "480px" }] },
+    { "pageId": "web.warehouse", "row": { "status": "selected", "selectionEffect": "행 셀 배경이 #E8F5FF로 바뀌고 삭제 액션이 활성화됨", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "창고 정보", "width": "content-50%" } }, "entries": [{ "trigger": "창고 등록", "status": "opened", "surface": "side-slide-panel", "title": "창고 정보", "width": "content-50%" }, { "trigger": "기본창고 설정", "status": "opened", "surface": "center-modal", "title": "기본 창고 설정", "width": "480px" }], "stateTransitions": [{ "before": "창고 행이 흰색 배경이고 삭제 버튼이 비활성화됨", "action": "행 체크박스 선택", "after": "선택 행의 모든 셀이 #E8F5FF 배경으로 강조되고 삭제 버튼이 활성화됨" }, { "before": "창고 목록과 하단 업무 액션이 표시됨", "action": "기본창고 설정 선택", "after": "목록 위에 480×271 중앙 모달이 열리고 입고·생산·불량 기본창고 선택과 취소·저장 액션이 표시됨" }] },
     { "pageId": "web.equipment", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "설비 정보", "width": "content-50%" } }, "entries": [{ "trigger": "설비 등록", "status": "opened", "surface": "side-slide-panel", "title": "설비 정보", "width": "content-50%" }] },
     { "pageId": "web.process", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "공정 등록", "width": "760px" } }, "entries": [{ "trigger": "공정 등록", "status": "opened", "surface": "side-slide-panel", "title": "공정 등록", "width": "760px" }] },
     { "pageId": "web.form", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "양식관리", "width": "900px" } }, "entries": [{ "trigger": "양식 등록", "status": "opened", "surface": "side-slide-panel", "title": "양식관리", "width": "900px" }] },
@@ -156,7 +157,7 @@
     "pagesWithSelectedDataRow": 35,
     "pagesBlockedByCurrentNoData": 0,
     "pagesWithoutRowDetail": 7,
-    "pagesWithStateTransitionsObserved": 11,
+    "pagesWithStateTransitionsObserved": 12,
     "writeActionsExecuted": 0
   },
   "remaining": [

@@ -29,6 +29,7 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   const reconciliationPages = uniqueMap("web-figma-reconciliation", reconciliation.pages, "pageId", errors);
   const authorityPages = uniqueMap("web-figma-design-authority", authority.pages, "pageId", errors);
   const interactionPages = uniqueMap("web-ui-interaction-audit", interactions.pages, "pageId", errors);
+  const representativeComparisons = uniqueMap("web-figma-reconciliation representativeComparisons", reconciliation.representativeComparisons, "id", errors);
   const reusableStateContexts = uniqueMap("web-ui-interaction-audit reusableStateContexts", interactions.reusableStateContexts, "id", errors);
   const screenLocalStateContexts = uniqueMap("web-ui-interaction-audit screenLocalStateContexts", interactions.screenLocalStateContexts, "id", errors);
 
@@ -40,6 +41,52 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   }
   if (!Array.isArray(authority.authorityRules) || authority.authorityRules.length < 5) {
     errors.push("web-figma-design-authority: 디자인 기준 판정 규칙이 부족합니다.");
+  }
+
+  const comparisonProtocol = reconciliation.comparisonProtocol;
+  if (comparisonProtocol?.runtimeViewport?.requestedWidth !== 1920 || comparisonProtocol?.runtimeViewport?.requestedHeight !== 1080) {
+    errors.push("web-figma-reconciliation: 실제 웹 대표 대조 viewport는 1920×1080이어야 합니다.");
+  }
+  if (!Array.isArray(comparisonProtocol?.comparisonFields) || comparisonProtocol.comparisonFields.length < 6) {
+    errors.push("web-figma-reconciliation: 셸·조회·테이블·액션·오버레이·상태 변화 대조 항목이 필요합니다.");
+  }
+  const allowedComparisonLevels = new Set(["source-located", "structure-compared", "visual-difference-confirmed", "interaction-observed"]);
+  const allowedComparisonClasses = new Set(["aligned-structure", "shared-ui-design-difference", "runtime-state-observed"]);
+  for (const comparison of representativeComparisons.values()) {
+    if (!usagePages.has(comparison.pageId)) {
+      errors.push(`web-figma-reconciliation representativeComparison '${comparison.id}': 실제 웹에 없는 '${comparison.pageId}'를 참조합니다.`);
+    }
+    if (!allowedComparisonLevels.has(comparison.level) || !allowedComparisonClasses.has(comparison.classification)) {
+      errors.push(`web-figma-reconciliation representativeComparison '${comparison.id}': 대조 단계 또는 분류가 잘못되었습니다.`);
+    }
+    if (!Array.isArray(comparison.observed) || !Array.isArray(comparison.remaining)) {
+      errors.push(`web-figma-reconciliation representativeComparison '${comparison.id}': observed와 remaining 배열이 필요합니다.`);
+    }
+    if (comparison.level !== "interaction-observed") {
+      const frame = comparison.figmaActualUiFrame;
+      if (!/^\d+:\d+$/.test(frame?.nodeId ?? "") || !Number.isFinite(frame?.width) || !Number.isFinite(frame?.height)) {
+        errors.push(`web-figma-reconciliation representativeComparison '${comparison.id}': 내부 실제 UI frame의 node ID와 크기가 필요합니다.`);
+      }
+    }
+    if (comparison.level === "visual-difference-confirmed" && comparison.classification === "shared-ui-design-difference" && comparison.authority !== "figma") {
+      errors.push(`web-figma-reconciliation representativeComparison '${comparison.id}': 공통 UI 디자인 차이는 Figma 기준을 명시해야 합니다.`);
+    }
+    if (comparison.level === "interaction-observed" && (!comparison.runtimeState?.action || !comparison.runtimeState?.relatedAction)) {
+      errors.push(`web-figma-reconciliation representativeComparison '${comparison.id}': 실제 웹 상태 변화와 연결 액션이 필요합니다.`);
+    }
+  }
+  const comparisonLevelCounts = [...representativeComparisons.values()].reduce((counts, item) => {
+    counts[item.level] = (counts[item.level] ?? 0) + 1;
+    return counts;
+  }, {});
+  if (reconciliation.coverage?.representativeStructureCompared !== (comparisonLevelCounts["structure-compared"] ?? 0)) {
+    errors.push("web-figma-reconciliation: 대표 구조 대조 집계가 실제 기록과 다릅니다.");
+  }
+  if (reconciliation.coverage?.representativeVisualDifferencesConfirmed !== (comparisonLevelCounts["visual-difference-confirmed"] ?? 0)) {
+    errors.push("web-figma-reconciliation: 대표 시각 차이 집계가 실제 기록과 다릅니다.");
+  }
+  if (reconciliation.coverage?.runtimeStatesObservedInRepresentativePass !== (comparisonLevelCounts["interaction-observed"] ?? 0)) {
+    errors.push("web-figma-reconciliation: 대표 상태 변화 집계가 실제 기록과 다릅니다.");
   }
 
   for (const pageId of usagePages.keys()) {
@@ -190,6 +237,15 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   }
   if (!warehouse?.runtimeOnlyContentExtensions?.includes("창고코드") || !warehouse?.runtimeOnlyContentExtensions?.includes("사내코드")) {
     errors.push("web.warehouse: 웹 전용 필드 확장을 디자인 차이와 분리해 기록해야 합니다.");
+  }
+
+  const monitoring = authorityPages.get("web.equipment-monitoring");
+  if (monitoring?.resolution !== "unresolved" || !Array.isArray(monitoring.candidateFrameIds) || monitoring.candidateFrameIds.length < 1) {
+    errors.push("web.equipment-monitoring: 찾은 고해상도 후보와 최신 상태 미확정을 함께 기록해야 합니다.");
+  }
+  const kpi = authorityPages.get("web.kpi");
+  if (kpi?.resolution !== "unresolved" || !Array.isArray(kpi.searchMatchNodeIds) || kpi.searchMatchNodeIds.length < 1) {
+    errors.push("web.kpi: 메뉴 검색 결과와 본문 원본 미확정을 함께 기록해야 합니다.");
   }
 
   for (const revision of authority.revisionStatuses ?? []) {
