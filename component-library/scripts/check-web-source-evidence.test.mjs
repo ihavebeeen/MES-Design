@@ -177,12 +177,12 @@ test("실제 웹 참고 전용 팝업은 Figma 원본이나 공통 권한을 가
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /웹 참고 전용/);
 });
 
-test("이름만 비슷해 의미 검토가 필요한 Figma 후보는 후보 node를 유지한다", () => {
+test("업무 의미가 달라 제외한 Figma 후보에는 node와 사유를 유지한다", () => {
   const evidence = clone(loadWebSourceEvidence());
   const mapping = evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.mappings
-    .find((item) => item.status === "candidate-needs-semantic-review");
-  mapping.figmaNodeId = null;
-  assert.match(validateWebSourceEvidence(evidence).join("\n"), /의미 검토 후보/);
+    .find((item) => item.pageId === "web.receipt-management");
+  delete mapping.rejectedFigmaCandidates[0].reason;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /업무 의미 차이/);
 });
 
 test("실제 진입 흐름과 연결되지 않은 구성 맥락 프로필을 남기면 실패한다", () => {
@@ -224,14 +224,51 @@ test("웹 전용 작업 선택 모달에 임의의 Figma 원본을 연결하면 
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /Figma 근거를 임의 연결/);
 });
 
-test("설비 모니터링 후보를 찾고도 미확정 근거에서 빼면 실패한다", () => {
+test("설비 모니터링의 설비·탭별 상태 근거가 빠지면 실패한다", () => {
   const evidence = clone(loadWebSourceEvidence());
-  evidence.authority.pages.find((page) => page.pageId === "web.equipment-monitoring").candidateFrameIds = [];
-  assert.match(validateWebSourceEvidence(evidence).join("\n"), /고해상도 후보/);
+  evidence.authority.pages.find((page) => page.pageId === "web.equipment-monitoring").resolvedSurfaces.pop();
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /상태 세트/);
 });
 
 test("KPI 메뉴 검색 결과를 본문 원본처럼 취급하지 않도록 검색 근거를 유지한다", () => {
   const evidence = clone(loadWebSourceEvidence());
   evidence.authority.pages.find((page) => page.pageId === "web.kpi").searchMatchNodeIds = [];
-  assert.match(validateWebSourceEvidence(evidence).join("\n"), /메뉴 검색 결과/);
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /웹 참고 전용/);
+});
+
+test("Figma 확정 화면과 웹 참고 전용 화면의 집계가 실제 판정과 다르면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.authority.coverage.pagesWithResolvedBaseOrRevision = 42;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /화면 집계/);
+});
+
+test("수금등록에 의미가 반대인 청구등록 원본을 다시 연결하면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  const mapping = evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.mappings
+    .find((item) => item.pageId === "web.receipt-management");
+  mapping.status = "matched";
+  mapping.figmaNodeId = "10582:56360";
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /청구등록을 수금등록 원본에서 제외/);
+});
+
+test("설비점검 Figma의 잘못된 정비이력 명칭을 숨기면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  const mapping = evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.mappings
+    .find((item) => item.pageId === "web.equipment-inspection");
+  delete mapping.sourceNamingIssue;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /원본 명칭 오류/);
+});
+
+test("출하승인을 반려 상태의 초기 프레임으로 되돌리면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.authority.pages.find((page) => page.pageId === "web.sales-management")
+    .resolvedSurfaces.find((surface) => surface.surface === "single-shipment-approval").nodeId = "9873:80644";
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /17370:46832/);
+});
+
+test("재고편집의 기본 상태와 선택 후 상태를 한 프레임으로 합치면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.authority.pages.find((page) => page.pageId === "web.inventory")
+    .resolvedSurfaces.find((surface) => surface.surface === "inventory-edit-selection-and-batch-actions").nodeId = "18813:61921";
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /기본 상태와 선택 후/);
 });

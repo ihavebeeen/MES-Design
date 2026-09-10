@@ -196,6 +196,19 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
         errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 웹 참고 전용 항목은 Figma 원본과 공통 권한을 가질 수 없습니다.`);
       }
     }
+    for (const nodeId of mapping.supportingFigmaNodeIds ?? []) {
+      if (!/^\d+:\d+$/.test(nodeId)) {
+        errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 보조 Figma node ID가 잘못되었습니다.`);
+      }
+    }
+    for (const candidate of mapping.rejectedFigmaCandidates ?? []) {
+      if (!/^\d+:\d+$/.test(candidate?.nodeId ?? "") || !candidate?.reason) {
+        errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 제외한 Figma 후보에는 node와 업무 의미 차이가 필요합니다.`);
+      }
+    }
+    if (mapping.status === "matched-with-source-naming-error" && !mapping.sourceNamingIssue) {
+      errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 원본 명칭 오류의 구체적인 내용이 필요합니다.`);
+    }
     if (mapping.status === "candidate-needs-semantic-review" && mapping.figmaNodeId === null) {
       errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 의미 검토 후보에는 후보 Figma node가 필요합니다.`);
     }
@@ -295,6 +308,9 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
     "base-current",
     "base-with-revisions",
     "completed-revision-visible",
+    "scoped-revisions-current",
+    "multi-state-current",
+    "runtime-only-reference",
     "revision-only",
     "unresolved"
   ]);
@@ -311,6 +327,19 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
     if (page.revisionSectionIds?.length > 1 && !page.baseSpecNodeId && !page.paintOrderResolution) {
       errors.push(`web-figma-design-authority '${page.pageId}': 겹친 revision 후보의 표시 순서 판정이 필요합니다.`);
     }
+  }
+  const unresolvedAuthorityPages = [...authorityPages.values()]
+    .filter((page) => page.resolution === "unresolved")
+    .map((page) => page.pageId);
+  const runtimeOnlyAuthorityPages = [...authorityPages.values()]
+    .filter((page) => page.resolution === "runtime-only-reference")
+    .map((page) => page.pageId);
+  const resolvedAuthorityPageCount = authorityPages.size - unresolvedAuthorityPages.length - runtimeOnlyAuthorityPages.length;
+  if (authority.coverage?.runtimePages !== usagePages.size ||
+      authority.coverage?.pagesWithResolvedBaseOrRevision !== resolvedAuthorityPageCount ||
+      JSON.stringify(authority.coverage?.unresolvedPages ?? []) !== JSON.stringify(unresolvedAuthorityPages) ||
+      JSON.stringify(authority.coverage?.runtimeOnlyReferencePages ?? []) !== JSON.stringify(runtimeOnlyAuthorityPages)) {
+    errors.push("web-figma-design-authority: 확정·미확정·웹 참고 전용 화면 집계가 실제 판정과 다릅니다.");
   }
 
   const allowedRowStatuses = new Set(["selected", "no-data", "not-applicable"]);
@@ -436,12 +465,45 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   }
 
   const monitoring = authorityPages.get("web.equipment-monitoring");
-  if (monitoring?.resolution !== "unresolved" || !Array.isArray(monitoring.candidateFrameIds) || monitoring.candidateFrameIds.length < 1) {
-    errors.push("web.equipment-monitoring: 찾은 고해상도 후보와 최신 상태 미확정을 함께 기록해야 합니다.");
+  const monitoringSurfaces = new Map((monitoring?.resolvedSurfaces ?? []).map((item) => [item.surface, item]));
+  const requiredMonitoringSurfaces = [
+    "molding-machine-information",
+    "molding-alarm-history",
+    "extrusion-speed-and-pressure",
+    "extrusion-temperature-information",
+    "extrusion-block-and-t-die",
+    "extrusion-alarm-history"
+  ];
+  if (monitoring?.resolution !== "multi-state-current" ||
+      requiredMonitoringSurfaces.some((surface) => !/^\d+:\d+$/.test(monitoringSurfaces.get(surface)?.nodeId ?? ""))) {
+    errors.push("web.equipment-monitoring: 성형기·압출기 종류와 탭별 Figma 화면 6개를 하나의 상태 세트로 연결해야 합니다.");
   }
   const kpi = authorityPages.get("web.kpi");
-  if (kpi?.resolution !== "unresolved" || !Array.isArray(kpi.searchMatchNodeIds) || kpi.searchMatchNodeIds.length < 1) {
-    errors.push("web.kpi: 메뉴 검색 결과와 본문 원본 미확정을 함께 기록해야 합니다.");
+  if (kpi?.resolution !== "runtime-only-reference" || kpi.actualUiFrameId !== null ||
+      !Array.isArray(kpi.searchMatchNodeIds) || kpi.searchMatchNodeIds.length < 1) {
+    errors.push("web.kpi: Figma 본문 부재와 실제 웹 참고 전용 판정을 함께 기록해야 합니다.");
+  }
+
+  const salesApproval = authorityPages.get("web.sales-management")?.resolvedSurfaces?.find((item) => item.surface === "single-shipment-approval");
+  if (salesApproval?.nodeId !== "17370:46832") {
+    errors.push("web.sales-management: 단건 출하승인은 출하승인 로직 변경 프레임 17370:46832를 사용해야 합니다.");
+  }
+  const inventory = authorityPages.get("web.inventory");
+  const inventoryDefault = inventory?.resolvedSurfaces?.find((item) => item.surface === "inventory-edit-default");
+  const inventorySelection = inventory?.resolvedSurfaces?.find((item) => item.surface === "inventory-edit-selection-and-batch-actions");
+  if (inventoryDefault?.nodeId !== "18813:61921" || inventorySelection?.nodeId !== "17491:82304") {
+    errors.push("web.inventory: 재고편집 기본 상태와 선택 후 일괄 작업 상태의 Figma 근거를 분리해야 합니다.");
+  }
+
+  const receiptFlow = flowMappings.get("web.receipt-management|미수금 행 더블클릭");
+  if (receiptFlow?.status !== "runtime-only-reference" ||
+      !receiptFlow.rejectedFigmaCandidates?.some((item) => item.nodeId === "10582:56360")) {
+    errors.push("web.receipt-management: 청구등록을 수금등록 원본에서 제외한 업무 의미 판정이 필요합니다.");
+  }
+  const equipmentInspectionFlow = flowMappings.get("web.equipment-inspection|설비점검 등록");
+  if (equipmentInspectionFlow?.status !== "matched-with-source-naming-error" ||
+      equipmentInspectionFlow.figmaNodeId !== "10619:46366") {
+    errors.push("web.equipment-inspection: 내부 점검 필드가 일치하는 10619:46366과 원본 명칭 오류를 함께 기록해야 합니다.");
   }
 
   for (const revision of authority.revisionStatuses ?? []) {

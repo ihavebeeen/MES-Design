@@ -531,9 +531,18 @@ export interface WebFigmaReconciliationRegistry {
         trigger: string;
         runtimeTitle: string;
         figmaNodeId: string | null;
-        status: "matched" | "naming-difference" | "source-unresolved" | "candidate-needs-semantic-review" | "runtime-only-reference";
+        status:
+          | "matched"
+          | "naming-difference"
+          | "matched-with-source-naming-error"
+          | "source-unresolved"
+          | "candidate-needs-semantic-review"
+          | "runtime-only-reference";
         contextProfileRef: string;
         compositionBasis: string;
+        supportingFigmaNodeIds?: string[];
+        rejectedFigmaCandidates?: Array<{ nodeId: string; reason: string }>;
+        sourceNamingIssue?: string;
       }>;
     };
     representatives: Array<{

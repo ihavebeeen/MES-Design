@@ -49,7 +49,20 @@
     { "pageId": "web.process-inspection", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39124", "name": "공정검사 리스트", "role": "list-screen" }], "notes": [] },
     { "pageId": "web.inspection-trend", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39454", "name": "공정검사 경향관리", "role": "analysis-screen" }], "notes": [] },
 
-    { "pageId": "web.equipment-monitoring", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9138:9102", "name": "설비 모니터링", "role": "monitoring-screen" }, { "nodeId": "12565:31609", "name": "PLC Monitoring Dashboard Design", "role": "high-fidelity-candidate" }], "notes": ["성형기·압출기·자동화 설비 화면 후보를 찾았으나 완료·개선·실험 상태가 구분되지 않아 디자인 기준은 미확정이다."] },
+    {
+      "pageId": "web.equipment-monitoring",
+      "classification": "source-located-latest",
+      "figmaEvidence": [
+        { "nodeId": "9138:9102", "name": "설비 모니터링", "role": "incomplete-base-shell" },
+        { "nodeId": "12565:31609", "name": "PLC Monitoring Dashboard Design", "role": "molding-machine-information" },
+        { "nodeId": "12553:32004", "name": "Alarm History", "role": "molding-alarm-history" },
+        { "nodeId": "12565:32013", "name": "PLC Monitoring Dashboard Design", "role": "extrusion-speed-and-pressure" },
+        { "nodeId": "12565:32490", "name": "PLC Monitoring Dashboard Design", "role": "extrusion-temperature-information" },
+        { "nodeId": "12565:33166", "name": "PLC Monitoring Dashboard Design", "role": "extrusion-block-and-t-die" },
+        { "nodeId": "12553:32965", "name": "Alarm History", "role": "extrusion-alarm-history" }
+      ],
+      "notes": ["고해상도 프레임 6개는 성형기·압출기의 설비 종류와 탭별 상태를 나눈 하나의 모니터링 화면 세트다. 실제 웹의 같은 전환 구조와 대조했다."]
+    },
     { "pageId": "web.maintenance-history", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39620", "name": "정비이력관리 리스트", "role": "list-screen" }], "notes": [] },
     { "pageId": "web.equipment-inspection", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:39832", "name": "설비점검관리 리스트", "role": "list-screen" }], "notes": [] },
 
@@ -58,7 +71,7 @@
     { "pageId": "web.equipment-operation-analysis", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:40549", "name": "설비 가동 분석 현황", "role": "analysis-screen" }], "notes": [] },
     { "pageId": "web.forming-analysis", "classification": "source-located-revision", "figmaEvidence": [{ "nodeId": "18181:127915", "name": "성형/압출분석", "role": "revision-section" }], "notes": ["성형과 압출이 하나의 후속 수정 섹션에 함께 있다."] },
     { "pageId": "web.extrusion-analysis", "classification": "source-located-revision", "figmaEvidence": [{ "nodeId": "18181:127915", "name": "성형/압출분석", "role": "revision-section" }], "notes": ["성형과 압출이 하나의 후속 수정 섹션에 함께 있다."] },
-    { "pageId": "web.kpi", "classification": "source-not-located", "figmaEvidence": [], "notes": ["최신 웹 화면설계서에서 KPI 또는 성과지표 명칭의 명시적 화면 원본을 찾지 못했다."] },
+    { "pageId": "web.kpi", "classification": "source-not-located", "figmaEvidence": [], "notes": ["최신 웹 화면설계서 전체 검색에서 KPI 본문 원본을 찾지 못했다. 실제 웹의 연도별 표와 읽기·편집 상태는 업무 구조 참고 자료로만 사용한다."] },
 
     { "pageId": "web.partner", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:40925", "name": "거래처 등록 리스트", "role": "list-screen" }], "notes": [] },
     { "pageId": "web.item", "classification": "source-located-latest", "figmaEvidence": [{ "nodeId": "9171:41055", "name": "품목 등록 리스트", "role": "list-screen" }], "notes": [] },
@@ -395,13 +408,24 @@
           "stateContextRefs": ["query.manage-saved-conditions"],
           "authority": "runtime-reference-only",
           "sourceDecision": "최신 Figma 페이지 전체에서 대응 팝업을 찾지 못했다. 실제 웹의 유틸리티 사례로만 유지하며 공통 표준 근거로 승격하지 않는다."
+        },
+        {
+          "id": "flow-context.receipt-entry-runtime-reference",
+          "name": "청구 건에 대한 수금 내역 등록",
+          "purpose": "이미 청구된 금액을 기준으로 실제 수금일과 수금액을 한 건 이상 기록한다.",
+          "informationRelationship": "청구금액은 수금의 기준이고 수금 행은 입금 사실이며 잔여 수금액은 두 값의 차이로 계산된다.",
+          "usageContextRefs": ["usage.edit-record", "usage.entry-list"],
+          "patternRefs": ["popup.center.form", "section.editable-row-list"],
+          "stateContextRefs": [],
+          "authority": "runtime-reference-only",
+          "sourceDecision": "Figma 청구등록은 청구액을 만드는 선행 업무라서 수금등록의 원본으로 사용할 수 없다. 수금등록은 현재 실제 웹의 업무 구조만 참고하며 공통 디자인 기준으로 승격하지 않는다."
         }
       ],
       "mappings": [
         { "pageId": "web.sales-target-month", "trigger": "판매목표 등록", "runtimeTitle": "판매목표(월) 등록", "figmaNodeId": "10582:53334", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→목표 작성→목록 추가→저장" },
         { "pageId": "web.sales-plan-day", "trigger": "판매계획 등록", "runtimeTitle": "판매계획(일) 등록", "figmaNodeId": "10582:54298", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→일별 계획 작성→목록 추가→저장" },
         { "pageId": "web.product-purchase", "trigger": "구매 등록", "runtimeTitle": "상품구매 등록", "figmaNodeId": "10582:55024", "status": "matched", "contextProfileRef": "flow-context.lookup-assisted-entry", "compositionBasis": "기본정보→구매품목 조회·선택→목록 추가→저장" },
-        { "pageId": "web.receipt-management", "trigger": "미수금 행 더블클릭", "runtimeTitle": "수금 등록", "figmaNodeId": "10582:56360", "status": "candidate-needs-semantic-review", "contextProfileRef": "flow-context.single-record-task", "compositionBasis": "웹 수금 등록과 Figma 청구등록은 이름과 금액 정보가 유사하지만 업무 방향이 달라 기준 원본 여부를 추가 판정한다." },
+        { "pageId": "web.receipt-management", "trigger": "미수금 행 더블클릭", "runtimeTitle": "수금 등록", "figmaNodeId": null, "status": "runtime-only-reference", "contextProfileRef": "flow-context.receipt-entry-runtime-reference", "compositionBasis": "청구금액을 기준으로 수금일·수금액 행을 추가하고 잔여 수금액을 계산한다. Figma 청구등록 10582:56360은 청구액을 만드는 반대 방향의 업무라 원본 후보에서 제외한다.", "rejectedFigmaCandidates": [{ "nodeId": "10582:56360", "reason": "청구등록은 판매금액에서 청구액을 생성하고, 수금등록은 생성된 청구액에 대한 입금 사실을 기록한다." }] },
         { "pageId": "web.production-target-month", "trigger": "생산목표 등록", "runtimeTitle": "생산목표(월) 등록", "figmaNodeId": "9710:73946", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→월 목표 작성→목록 추가→저장" },
         { "pageId": "web.production-target-month", "trigger": "빠른 조회 설정", "runtimeTitle": "빠른 조회 설정", "figmaNodeId": null, "status": "runtime-only-reference", "contextProfileRef": "flow-context.saved-query-runtime-reference", "compositionBasis": "최신 Figma 페이지 전체 검색에서 대응 팝업을 찾지 못해 실제 웹의 조회 조건 저장 사례로만 유지한다." },
         { "pageId": "web.production-plan-day", "trigger": "신규 등록", "runtimeTitle": "생산계획 등록", "figmaNodeId": "9742:23502", "status": "naming-difference", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "웹 제목과 Figma 생산계획(일) 등록의 기본정보·계획목록 구성 대응" },
@@ -410,7 +434,7 @@
         { "pageId": "web.production-result", "trigger": "빠른 조회 설정", "runtimeTitle": "빠른 조회 설정", "figmaNodeId": null, "status": "runtime-only-reference", "contextProfileRef": "flow-context.saved-query-runtime-reference", "compositionBasis": "최신 Figma 페이지 전체 검색에서 대응 팝업을 찾지 못해 실제 웹의 조회 조건 저장 사례로만 유지한다." },
         { "pageId": "web.operation-log", "trigger": "운전 일지 등록", "runtimeTitle": "운전일지 등록", "figmaNodeId": "19629:105853", "status": "matched", "contextProfileRef": "flow-context.time-record-entry", "compositionBasis": "기본정보→시간대→가동·비가동 기록→시간 합계→저장" },
         { "pageId": "web.self-inspection", "trigger": "신규 검사 생성", "runtimeTitle": "검사항목 선택", "figmaNodeId": "10605:36704", "status": "matched", "contextProfileRef": "flow-context.lookup-transfer", "compositionBasis": "생산지시 조회·선택→검사 화면 전달" },
-        { "pageId": "web.inventory", "trigger": "재고 편집", "runtimeTitle": "재고편집", "figmaNodeId": "10605:32164", "status": "matched", "contextProfileRef": "flow-context.multi-row-processing", "compositionBasis": "재고 목록 선택·수량 편집·삭제·저장" },
+        { "pageId": "web.inventory", "trigger": "재고 편집", "runtimeTitle": "재고편집", "figmaNodeId": "18813:61921", "status": "matched", "contextProfileRef": "flow-context.multi-row-processing", "compositionBasis": "기본 상태는 재고 목록과 닫기·재고 추가를 제공하고, 행 선택 뒤 이동·삭제 등 일괄 작업이 나타난다.", "supportingFigmaNodeIds": ["17491:82304"] },
         { "pageId": "web.label", "trigger": "신규 라벨 발행", "runtimeTitle": "라벨 생성", "figmaNodeId": "10605:34663", "status": "matched", "contextProfileRef": "flow-context.single-record-task", "compositionBasis": "LOT 정보 확인→라벨 생성 조건→저장" },
         { "pageId": "web.bom-query", "trigger": "BOM 기준 재고분석", "runtimeTitle": "BOM 기준 재고 분석", "figmaNodeId": "9873:104555", "status": "matched", "contextProfileRef": "flow-context.bounded-comparison", "compositionBasis": "생산계획 목록과 원·부자재 재고 목록 비교" },
         { "pageId": "web.purchase-order", "trigger": "발주 등록", "runtimeTitle": "발주등록", "figmaNodeId": "10605:35449", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→발주품목 작성→발주목록 추가→저장" },
@@ -420,7 +444,7 @@
         { "pageId": "web.incoming-inspection", "trigger": "입고검사 시작", "runtimeTitle": "입고검사 정보", "figmaNodeId": "10619:36602", "status": "naming-difference", "contextProfileRef": "flow-context.inspection-recording", "compositionBasis": "검사 대상정보→검사자·일시→검사항목→저장" },
         { "pageId": "web.process-inspection", "trigger": "신규 검사 생성", "runtimeTitle": "검사항목 선택", "figmaNodeId": "10619:39415", "status": "matched", "contextProfileRef": "flow-context.lookup-transfer", "compositionBasis": "생산실적 조회·선택→공정검사 화면 전달" },
         { "pageId": "web.maintenance-history", "trigger": "정비이력 등록", "runtimeTitle": "정비이력 등록", "figmaNodeId": "10619:41993", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→정비기록→투입자재 추가→상세목록→저장" },
-        { "pageId": "web.equipment-inspection", "trigger": "설비점검 등록", "runtimeTitle": "설비 점검 등록", "figmaNodeId": "10619:46366", "status": "candidate-needs-semantic-review", "contextProfileRef": "flow-context.inspection-recording", "compositionBasis": "Figma 정비이력 표면은 연결 후보이며 설비점검의 대상정보·검사항목 원본인지 추가 판정한다." },
+        { "pageId": "web.equipment-inspection", "trigger": "설비점검 등록", "runtimeTitle": "설비 점검 등록", "figmaNodeId": "10619:46366", "status": "matched-with-source-naming-error", "contextProfileRef": "flow-context.inspection-recording", "compositionBasis": "Figma 외부 프레임과 화면 제목은 정비이력으로 잘못 적혀 있으나 내부 필드는 점검양식·검사일·검사자·대상설비·검사항목으로 설비점검 등록 구조와 대응한다.", "sourceNamingIssue": "외부 프레임명과 화면 제목이 정비이력으로 표기됨" },
         { "pageId": "web.partner", "trigger": "거래처 등록", "runtimeTitle": "거래처 등록", "figmaNodeId": "10582:57655", "status": "matched", "contextProfileRef": "flow-context.base-extension", "compositionBasis": "기본정보→커스텀정보→저장" },
         { "pageId": "web.item", "trigger": "품목 등록", "runtimeTitle": "품목 정보", "figmaNodeId": "9873:92557", "status": "naming-difference", "contextProfileRef": "flow-context.base-extension", "compositionBasis": "공통정보·공정별 정보·검사 설정·커스텀정보→저장" },
         { "pageId": "web.bom", "trigger": "BOM 등록", "runtimeTitle": "BOM 등록", "figmaNodeId": "10582:58427", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→BOM 품목 추가→상세목록→저장" },
@@ -432,7 +456,7 @@
         { "pageId": "web.form", "trigger": "양식 등록", "runtimeTitle": "양식관리", "figmaNodeId": "18181:120242", "status": "naming-difference", "contextProfileRef": "flow-context.inspection-configuration", "compositionBasis": "설비·품목 기준→기본정보→검사항목 추가→저장" },
         { "pageId": "web.user", "trigger": "사용자 등록", "runtimeTitle": "사용자 정보", "figmaNodeId": "10594:34597", "status": "naming-difference", "contextProfileRef": "flow-context.base-extension", "compositionBasis": "사용자 기본정보→커스텀정보→저장" },
         { "pageId": "web.permission", "trigger": "그룹 등록", "runtimeTitle": "그룹 권한 설정", "figmaNodeId": "11122:47785", "status": "naming-difference", "contextProfileRef": "flow-context.group-permission", "compositionBasis": "그룹 기본정보→메뉴별 권한 설정→저장" },
-        { "pageId": "web.sales-management", "trigger": "행 더블클릭", "runtimeTitle": "출하승인", "figmaNodeId": "9873:80644", "status": "matched", "contextProfileRef": "flow-context.single-record-task", "compositionBasis": "선택 출하실적 확인→승인 상태 판단·확정" },
+        { "pageId": "web.sales-management", "trigger": "행 더블클릭", "runtimeTitle": "출하승인", "figmaNodeId": "17370:46832", "status": "matched", "contextProfileRef": "flow-context.single-record-task", "compositionBasis": "선택 출하실적 확인→승인대기·승인·회수 상태 판단→취소·저장. 반려 상태의 기본 프레임보다 실제 웹과 같은 후속 개선 프레임을 사용한다." },
         { "pageId": "web.outgoing-inspection", "trigger": "행 더블클릭", "runtimeTitle": "출고검사 정보", "figmaNodeId": "10619:37198", "status": "naming-difference", "contextProfileRef": "flow-context.inspection-recording", "compositionBasis": "출하검사 대상정보→검사 항목·결과 확인 및 저장" }
       ]
     },
@@ -461,11 +485,11 @@
         "id": "center.inventory-edit",
         "pageId": "web.inventory",
         "interaction": "재고 편집",
-        "figma": { "nodeId": "18813:61921", "width": 1294, "height": 745, "authority": "revision-candidate" },
+        "figma": { "nodeId": "18813:61921", "width": 1294, "height": 745, "authority": "scoped-current-revision", "state": "기본 상태; 선택·일괄 작업은 17491:82304" },
         "runtime": { "title": "재고편집", "width": 1551.5, "height": 872.7, "hasClose": true },
-        "classification": "source-resolution-needed",
-        "compositionCheck": { "items": ["재고 식별 정보", "수량·창고 편집 영역", "편집 결과 적용 액션"], "result": "source-unresolved", "notes": "기본안과 후속안 중 현재 승인안을 먼저 확정해야 내부 구성의 보존 범위를 판단할 수 있다." },
-        "decision": "크기가 아니라 최신 승인안의 내부 섹션·편집 항목·액션 구성이 확정되지 않은 상태가 핵심이다."
+        "classification": "aligned-scoped-revisions",
+        "compositionCheck": { "items": ["재고 목록과 조회 도구", "기본 상태의 닫기·재고 추가", "행 선택 뒤 일괄 이동·삭제", "선택 범위에 따른 액션 변화"], "result": "aligned", "notes": "기본 상태는 18813:61921, 선택 이후 일괄 작업 상태는 17491:82304가 각각 근거다. 후속 프레임을 하나로 덮어쓰지 않고 상태 범위별로 연결한다." },
+        "decision": "재고편집은 단일 최신 프레임이 아니라 기본 상태와 선택 후 일괄 작업 상태를 함께 가진 현재 설계로 확정한다."
       },
       {
         "id": "slide.warehouse-create",
@@ -491,11 +515,11 @@
         "id": "center.sales-approval",
         "pageId": "web.sales-management",
         "interaction": "데이터 행 더블클릭",
-        "figma": { "nodeId": "9873:80644", "width": 960, "height": 680, "authority": "base-with-revisions" },
+        "figma": { "nodeId": "17370:46832", "width": 960, "height": 680, "authority": "scoped-current-revision" },
         "runtime": { "title": "출하승인", "width": 900, "height": 786.9, "hasClose": false },
-        "classification": "source-resolution-needed",
-        "compositionCheck": { "items": ["선택 건 식별 정보", "출하실적 확인", "승인 상태 선택", "확정 Footer"], "result": "source-unresolved", "notes": "기본안과 후속 개선안 중 현재안을 확정해야 각 정보와 액션의 보존 범위를 판정할 수 있다." },
-        "decision": "팝업 크기보다 승인 대상·읽기 정보·상태 선택·확정 액션의 최신 구성이 미확정인 점을 남긴다."
+        "classification": "aligned-current-revision",
+        "compositionCheck": { "items": ["선택 건 식별 정보", "출하실적 확인", "승인대기·승인·회수 상태 선택", "취소·저장 Footer"], "result": "aligned", "notes": "실제 웹의 승인·회수 상태와 3차 수정 출하승인 프레임이 대응한다. 반려 상태를 가진 초기 프레임은 현재 승인 원본에서 제외한다." },
+        "decision": "출하승인 로직 변경 프레임 17370:46832를 단건 출하승인의 현재 기준으로 확정한다."
       },
       {
         "id": "center.production-work-selection",
@@ -580,8 +604,6 @@
     ],
     "remaining": [
       "54개 팝업 설계 프레임 중 이번 14개 팝업·상태 대표 대조에 포함하지 않은 팝업은 관련 자산이 수정될 때 같은 형식으로 증분 대조",
-      "출하승인과 재고편집의 중복·후속 Figma 프레임에서 현재 승인안을 확정",
-      "수금 등록과 청구등록, 설비점검 등록과 정비이력 후보의 업무 의미가 같은지 확정",
       "경향 관리·생산 분석의 인라인 편집 상태를 Figma 개선 프레임과 좌표·상태별로 대조",
       "Figma 원본이 없는 KPI 편집 상태는 신규 승인 근거가 생길 때까지 웹 참고 상태로 유지"
     ]
@@ -670,9 +692,7 @@
     "conditionalRepresentativesWithFigmaEvidence": 14
   },
   "remaining": [
-    "출하승인·재고편집의 현재 승인 프레임과 수금·설비점검 후보의 업무 의미 확정",
     "명칭 충돌과 master-data-list 기간 조회 영역의 충돌을 화면군 단위로 판정",
-    "설비 모니터링 후보 6개의 최신 상태 확인",
     "KPI 본문 화면의 Figma 원본 또는 신규 요구 근거 확인"
   ]
 }
