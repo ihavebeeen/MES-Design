@@ -27,6 +27,24 @@ export interface ComponentRegistry {
   components: ComponentRegistryEntry[];
 }
 
+export type ComponentStateDimensionId = "state" | "value" | "disabled" | "size" | "interaction";
+export type ComponentStateModel = Record<ComponentStateDimensionId, string[]>;
+
+export interface ComponentStateFrameworkRegistry {
+  schemaVersion: 1;
+  frameworkId: string;
+  frameworkVersion: string;
+  authority: "component-state-framework";
+  purpose: string;
+  dimensionOrder: ComponentStateDimensionId[];
+  compositionMode: "orthogonal-axes";
+  cartesianExpansion: "valid-combinations-only";
+  notApplicableValue: "not-applicable";
+  dimensions: Array<{ id: ComponentStateDimensionId; name: string; meaning: string }>;
+  rules: string[];
+  componentOverrides: Partial<Record<string, ComponentStateModel>>;
+}
+
 export interface AssetManifestRegistry {
   schemaVersion: 1;
   purpose: string;
@@ -34,6 +52,14 @@ export interface AssetManifestRegistry {
   fingerprint: string;
   guidancePolicy: {
     componentSelection: ComponentUsageContractRegistry["policy"];
+    componentState: {
+      frameworkId: string;
+      frameworkVersion: string;
+      dimensionOrder: ComponentStateDimensionId[];
+      compositionMode: ComponentStateFrameworkRegistry["compositionMode"];
+      cartesianExpansion: ComponentStateFrameworkRegistry["cartesianExpansion"];
+      rules: string[];
+    };
     selectionFeedback: { total: number; observed: number; resolved: number; dismissed: number };
   };
   summary: {
@@ -49,7 +75,7 @@ export interface AssetManifestRegistry {
     patterns: number;
     screens: number;
   };
-  assets: Array<Record<string, unknown> & { kind: "component" | "pattern" | "screen"; id: string; name: string; source: string }>;
+  assets: Array<Record<string, unknown> & { kind: "component" | "pattern" | "screen"; id: string; name: string; source: string; stateModel?: ComponentStateModel }>;
 }
 
 export interface ComponentCatalogGroup {

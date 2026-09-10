@@ -19,8 +19,6 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `DatePicker` | `size` | `default \| small`, 기본 `default` | 테이블 편집 셀의 22px 날짜 입력을 공용 DatePicker로 유지한다. | Figma `18813:62490` |
 | `DatePicker` | `minDate`, `maxDate` | `Date`, 생략 시 제한 없음 | 경계일을 포함한 선택 가능 날짜 범위. 범위 밖 날짜와 이동 불가능한 월 버튼을 비활성화한다. | 사용자 요청: 종합효율 조회에서 전일·당일만 달력 선택, 2026-09-03 |
 | `Progress` | `labelTone` | `default \| danger`, 기본 `default` | 진행률 수치가 지연/오류 상태일 때 막대는 유지하고 라벨만 Danger-60으로 표시한다. | Figma `17503:85192` |
-| `Button` | `variant="loginPrimary"`, `size="login"` | 로그인 전용 48px·16px Bold 규격 | 최초 로그인 비밀번호 재설정의 전체 너비 버튼을 일반 MES 40px 액션 버튼과 구분한다. 비활성 배경은 원본 Gray-60을 유지한다. | Figma `17681:46566` |
-| `PasswordInput` | `size="login"` | 48px·16px, 기본 `default` | 로그인·비밀번호 재설정 문맥의 큰 입력 규격을 일반 MES 32px 입력과 구분한다. | Figma `17681:46541`, `17681:46551` |
 | `PasswordInput` | `visibilityToggle` | `boolean`, 기본 `true` | 원본에 보기/숨기기 아이콘이 없는 경우 입력 외형을 임의로 추가하지 않는다. | Figma `17681:46541`, `17681:46551` |
 | `SearchInput` | `iconColor` | `muted \| default`, 기본 `muted` | 검색 아이콘의 화면별 명도 차이를 기존 컴포넌트 안에서 표현한다. | Figma `11210:50866` |
 | `SearchInput` | `size` | `default \| compact`, 기본 `default` | 상단 조회 툴바의 220×32, 14px, Gray-20 검색창을 페이지 CSS 덮어쓰기 없이 재사용한다. | 양식관리 목록, Figma `17309:158828` |

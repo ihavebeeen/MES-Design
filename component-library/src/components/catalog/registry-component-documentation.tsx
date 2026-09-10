@@ -15,6 +15,13 @@ const usageById = new Map([...usageData.baselineContexts, ...usageData.contracts
 const detailedUsageById = new Map(usageData.contracts.map((contract) => [contract.componentId, contract]));
 const allPatterns = [...patternData.patterns, ...sourceAssetData.patterns];
 const manifestById = new Map(assetManifestData.assets.filter((asset) => asset.kind === "component").map((asset) => [asset.id, asset]));
+const stateDimensionLabels = {
+  state: "State",
+  value: "Value",
+  disabled: "Disabled",
+  size: "Size",
+  interaction: "Interaction",
+} as const;
 
 function List({ items, fallback }: { items?: string[]; fallback: string }) {
   const values = items?.length ? items : [fallback];
@@ -43,6 +50,7 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
   const primarySymbol = symbols.find((symbol) => symbol === component.name) ?? symbols.at(-1) ?? component.name;
   const importPath = component.source.replace(/^src\//, "@/").replace(/\.tsx$/, "");
   const publicProps = manifest?.sourceFacts?.propNames ?? [];
+  const stateModel = manifest?.stateModel;
   const screenReferences = getComponentScreenReferences(component.id);
   const visibleScreenReferences = screenReferences.slice(0, 4);
 
@@ -73,6 +81,26 @@ export function RegistryComponentDocumentation({ activeId }: { activeId?: string
         ))}
       </dl>
       {publicProps.length > 0 && <div><h4 className="mb-2 text-[13px] font-semibold text-mes-gray-120">공개 Props</h4><div className="flex flex-wrap gap-1.5">{publicProps.map((prop) => <code key={prop} className="rounded bg-mes-gray-20 px-2 py-1 text-[11px] text-mes-gray-90">{prop}</code>)}</div></div>}
+      {stateModel && (
+        <div data-component-state-model={component.id}>
+          <div className="mb-2">
+            <h4 className="text-[13px] font-semibold text-mes-gray-120">상태 축</h4>
+            <p className="mt-0.5 text-[11px] leading-4 text-mes-gray-60">각 축은 독립적으로 조합하며 실제로 유효한 조합만 구현·검증합니다.</p>
+          </div>
+          <dl className="grid gap-2 sm:grid-cols-5">
+            {Object.entries(stateDimensionLabels).map(([dimension, label]) => (
+              <div key={dimension} className="min-w-0 rounded-mes-control border border-mes-gray-30 bg-mes-gray-10 px-2.5 py-2">
+                <dt className="text-[11px] font-semibold text-mes-gray-70">{label}</dt>
+                <dd className="mt-1 flex flex-wrap gap-1">
+                  {stateModel[dimension as keyof typeof stateModel].map((value) => (
+                    <code key={value} className="rounded bg-white px-1.5 py-0.5 text-[10px] text-mes-gray-100">{value}</code>
+                  ))}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )}
       {detailed && <div className="grid gap-x-8 gap-y-5 md:grid-cols-2">
         <ContextBlock title="상태와 제약" items={[...(detailed.requiredStates ?? []), ...(detailed.constraints ?? [])]} fallback="구현의 공개 Props와 등록 화면 근거를 따릅니다." />
         <ContextBlock title="접근성과 근거" items={[...(detailed.accessibility ?? []), ...(detailed.evidence ?? [])]} fallback="구현에 선언된 접근성 속성을 유지합니다." />

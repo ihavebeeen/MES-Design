@@ -82,7 +82,7 @@
     {
       "componentId": "button",
       "capabilities": ["semantic-action", "icon-label-action", "disabled-action"],
-      "variants": ["fillMain", "fillGray", "fillBlack", "fillRed", "lineMain", "lineBlacktxt", "opacityMain", "softMain", "softDanger", "loginPrimary"],
+      "variants": ["fillMain", "fillGray", "fillBlack", "fillRed", "lineMain", "lineBlacktxt", "opacityMain", "softMain", "softDanger"],
       "requiredStates": ["default", "hover", "disabled"],
       "useWhen": ["사용자가 즉시 실행하는 명시적 동작", "DialogFooter 또는 조회 툴바의 액션"],
       "doNotUseWhen": ["다른 화면이나 상세로 이동하는 링크 의미", "상태값을 표시하는 경우", "아이콘만 필요한 32px 이하 동작"],

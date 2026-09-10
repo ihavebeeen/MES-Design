@@ -21,5 +21,34 @@
         }
       }
     }
+  },
+  "files": {
+    "component-library/src/components/ui/logo.tsx": {
+      "sourceCommit": "c62237f86c799c84e8ead3393ced2f7e5b028983",
+      "requestId": "50d26304c7c8efebbd5ea70c161efa7959bf67a7f44f4179310d3869cd2fb27d",
+      "evidence": {
+        "reviewer": "Codex / user-authorized Figma deletion",
+        "verifiedAt": "2026-09-10T01:47:22.5331442Z",
+        "note": "Figma Logo 문서 프레임 383:590, Navigation index card 9:634, Sidebar instance 394:156을 삭제하고 전체 12개 페이지에서 Logo master/instance 및 dangling instance 0건을 확인했다. Sidebar의 일반 logo slot과 MobileHeader variant=logo는 별도 계약이라 유지했다."
+      }
+    },
+    "component-library/src/components/ui/navbar.tsx": {
+      "sourceCommit": "c62237f86c799c84e8ead3393ced2f7e5b028983",
+      "requestId": "50d26304c7c8efebbd5ea70c161efa7959bf67a7f44f4179310d3869cd2fb27d",
+      "evidence": {
+        "reviewer": "Codex / user-authorized Figma deletion",
+        "verifiedAt": "2026-09-10T01:47:22.5331442Z",
+        "note": "Figma Navbar 문서 프레임 386:105와 Navigation index card 9:641을 삭제하고 전체 12개 페이지에서 Navbar master/instance 및 dangling instance 0건을 확인했다."
+      }
+    },
+    "component-library/src/components/ui/mes-product-switcher.tsx": {
+      "sourceCommit": "c62237f86c799c84e8ead3393ced2f7e5b028983",
+      "requestId": "50d26304c7c8efebbd5ea70c161efa7959bf67a7f44f4179310d3869cd2fb27d",
+      "evidence": {
+        "reviewer": "Codex / user-authorized Figma deletion",
+        "verifiedAt": "2026-09-10T01:47:22.5331442Z",
+        "note": "Figma MesProductSwitcher 문서 프레임 387:101, Navigation index card 9:602, Sidebar instances 394:178 및 394:319를 삭제하고 전체 12개 페이지에서 master/instance 및 dangling instance 0건을 확인했다. Sidebar의 일반 productSwitcher slot은 별도 조립 계약이라 유지했다."
+      }
+    }
   }
 }

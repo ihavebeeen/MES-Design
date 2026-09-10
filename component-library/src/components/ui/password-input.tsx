@@ -12,7 +12,7 @@ import { inputVariants } from "./input";
  */
 export interface PasswordInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
-  size?: "default" | "small" | "login";
+  size?: "default" | "small";
   /** 로그인·비밀번호 재설정 원본처럼 보기/숨기기 아이콘이 없는 입력에서 false로 사용한다. */
   visibilityToggle?: boolean;
 }
@@ -20,9 +20,7 @@ export interface PasswordInputProps
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   ({ size = "default", visibilityToggle = true, className, disabled, ...props }, ref) => {
     const [visible, setVisible] = React.useState(false);
-    const inputClassName = size === "login"
-      ? "h-12 w-full rounded-mes-control border border-mes-border-default bg-white px-[10px] text-[16px] text-mes-text-default outline-none placeholder:text-mes-text-placeholder focus:border-mes-border-strong disabled:cursor-not-allowed disabled:bg-mes-bg-disabled"
-      : inputVariants({ size });
+    const inputClassName = inputVariants({ size });
     return (
       <div className={cn("relative inline-flex w-full items-center", className)}>
         <input

@@ -20,8 +20,14 @@
 
 - 공개 심볼: `SectionFrameDivider`, `SectionFramePadding`, `SectionFrameBackground`, `SectionFrameProps`, `SectionFrame`
 - 주요 Props: `title`, `action`, `divider`, `padding`, `background`, `contentClassName`, `none`, `bottom`
-- 상태: `static`
+- State: `default`
+- Value: `not-applicable`
+- Disabled: `not-applicable`
+- Size: `not-applicable`
+- Interaction: `not-applicable`
 - 변형: `surface`, `subtle`, `standard-padding`, `no-padding`, `bottom-divider`, `inline-divider`
+
+다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.
 
 ## 접근성과 제약
 

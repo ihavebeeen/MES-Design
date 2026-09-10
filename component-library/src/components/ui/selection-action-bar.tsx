@@ -18,8 +18,8 @@ function SelectionActionBar({ selectedCount, onDelete, onMove, onClear, classNam
       <span className="whitespace-nowrap text-[14px] font-medium">{selectedCount}개 선택됨</span>
       <span className="h-4 w-px bg-mes-gray-30" />
       <div className="flex gap-4">
-        <Button size="toolbar" variant="softDanger" className="w-20" onClick={onDelete}>삭제</Button>
-        <Button size="toolbar" variant="softMain" className="w-20" onClick={onMove}>이동</Button>
+        <Button size="small" variant="softDanger" className="h-[30px] w-20" onClick={onDelete}>삭제</Button>
+        <Button size="small" variant="softMain" className="h-[30px] w-20" onClick={onMove}>이동</Button>
       </div>
       <span className="h-4 w-px bg-mes-gray-30" />
       <button type="button" onClick={onClear} className="whitespace-nowrap text-[12px] text-mes-gray-60 underline">선택 초기화</button>

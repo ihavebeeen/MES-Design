@@ -6,6 +6,7 @@ const registryDirectory = join(root, "src", "design-system", "registry");
 const readJson = (name) => JSON.parse(readFileSync(join(registryDirectory, name), "utf8"));
 
 const componentRegistry = readJson("components.json");
+const componentStateFrameworkRegistry = readJson("component-state-framework.json");
 const componentCatalogRegistry = readJson("component-catalog.json");
 const patternRegistry = readJson("patterns.json");
 const screenRegistry = readJson("screens.json");
@@ -68,6 +69,7 @@ function checkSource(name, entry) {
 }
 
 checkVersion("components", componentRegistry);
+checkVersion("component-state-framework", componentStateFrameworkRegistry);
 checkVersion("component-catalog", componentCatalogRegistry);
 checkVersion("patterns", patternRegistry);
 checkVersion("screens", screenRegistry);
@@ -101,6 +103,24 @@ checkVersion("web-generation-context", webGenerationContextRegistry);
 checkVersion("foundation-recipes", foundationRecipeRegistry);
 checkVersion("screen-intake-policy", screenIntakePolicyRegistry);
 checkVersion("selection-context-framework", selectionContextFrameworkRegistry);
+
+const expectedComponentStateDimensions = ["state", "value", "disabled", "size", "interaction"];
+const componentStateDimensions = mapByUniqueId("component-state-framework dimensions", componentStateFrameworkRegistry.dimensions ?? []);
+if (componentStateFrameworkRegistry.authority !== "component-state-framework") errors.push("component-state-framework: authority가 component-state-framework여야 합니다.");
+if (!componentStateFrameworkRegistry.frameworkId || !componentStateFrameworkRegistry.frameworkVersion) errors.push("component-state-framework: frameworkId와 frameworkVersion이 필요합니다.");
+if (JSON.stringify(componentStateFrameworkRegistry.dimensionOrder) !== JSON.stringify(expectedComponentStateDimensions)) errors.push("component-state-framework: 축 순서는 state → value → disabled → size → interaction이어야 합니다.");
+if (componentStateFrameworkRegistry.compositionMode !== "orthogonal-axes") errors.push("component-state-framework: compositionMode는 orthogonal-axes여야 합니다.");
+if (componentStateFrameworkRegistry.cartesianExpansion !== "valid-combinations-only") errors.push("component-state-framework: 모든 축의 곱은 유효 조합만 확장해야 합니다.");
+if (componentStateFrameworkRegistry.notApplicableValue !== "not-applicable") errors.push("component-state-framework: 미지원 축은 not-applicable로 기록해야 합니다.");
+if (!Array.isArray(componentStateFrameworkRegistry.rules) || componentStateFrameworkRegistry.rules.length === 0) errors.push("component-state-framework: 조합 규칙이 필요합니다.");
+for (const dimensionId of expectedComponentStateDimensions) {
+  const dimension = componentStateDimensions.get(dimensionId);
+  if (!dimension) errors.push(`component-state-framework: 필수 축 '${dimensionId}'이 없습니다.`);
+  else if (!dimension.name?.trim() || !dimension.meaning?.trim()) errors.push(`component-state-framework '${dimensionId}': name과 meaning이 필요합니다.`);
+}
+for (const dimensionId of componentStateDimensions.keys()) {
+  if (!expectedComponentStateDimensions.includes(dimensionId)) errors.push(`component-state-framework: 알 수 없는 축 '${dimensionId}'입니다.`);
+}
 
 const selectionContextDimensions = mapByUniqueId("selection-context-framework dimensions", selectionContextFrameworkRegistry.dimensions ?? []);
 const intakeQuestions = mapByUniqueId("screen-intake-policy questions", screenIntakePolicyRegistry.questions ?? []);
@@ -339,6 +359,16 @@ for (const [name, registry] of proposalRegistries) {
 }
 
 const components = mapByUniqueId("components", componentRegistry.components ?? []);
+for (const [componentId, override] of Object.entries(componentStateFrameworkRegistry.componentOverrides ?? {})) {
+  if (!components.has(componentId)) errors.push(`component-state-framework '${componentId}': 미등록 component를 참조합니다.`);
+  for (const dimensionId of expectedComponentStateDimensions) {
+    const values = override[dimensionId];
+    if (!Array.isArray(values) || values.length === 0 || new Set(values).size !== values.length) errors.push(`component-state-framework '${componentId}.${dimensionId}': 중복 없는 값 배열이 필요합니다.`);
+  }
+  for (const dimensionId of Object.keys(override)) {
+    if (!expectedComponentStateDimensions.includes(dimensionId)) errors.push(`component-state-framework '${componentId}': 알 수 없는 축 '${dimensionId}'입니다.`);
+  }
+}
 const componentCatalogGroups = mapByUniqueId("component-catalog groups", componentCatalogRegistry.groups ?? []);
 const componentCatalogIds = new Set();
 const documentedComponentIds = new Set();

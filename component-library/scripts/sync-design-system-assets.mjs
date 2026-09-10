@@ -34,6 +34,17 @@ function firstSentence(value) {
   return (match?.[1] ?? clean).slice(0, 180);
 }
 
+function extractSizeValues(source) {
+  const values = [];
+  for (const match of source.matchAll(/\bsize\??:\s*((?:"[^"]+"\s*\|\s*)*"[^"]+")/g)) {
+    values.push(...[...match[1].matchAll(/"([^"]+)"/g)].map((item) => item[1]));
+  }
+  for (const match of source.matchAll(/\bsize:\s*\{\s*([\s\S]*?)\n\s*\},/g)) {
+    values.push(...[...match[1].matchAll(/^\s*([A-Za-z][A-Za-z0-9_-]*):/gm)].map((item) => item[1]));
+  }
+  return unique(values);
+}
+
 function sourceFacts(component, readSource) {
   const absolutePath = path.join(projectRoot, component.source);
   if (!fs.existsSync(absolutePath)) throw new Error(`${component.id}: 구현 파일이 없습니다 (${component.source}).`);
@@ -53,6 +64,7 @@ function sourceFacts(component, readSource) {
     ["open", /\bopen\b|aria-expanded/],
     ["error", /\berror\b|aria-invalid/],
     ["readOnly", /\breadOnly\b/],
+    ["pressed", /\bpressed\b|aria-pressed/],
     ["focus", /focus:/],
     ["hover", /hover:/],
   ].filter(([, pattern]) => pattern.test(source)).map(([name]) => name);
@@ -64,9 +76,40 @@ function sourceFacts(component, readSource) {
     symbols,
     propNames,
     stateMarkers,
+    sizeValues: extractSizeValues(source),
+    interactive: /<(?:button|input|select|textarea)\b|\bonClick\b|\bonChange\b|\btabIndex\b|\brole\s*=/.test(source),
     summary: firstSentence(comments.find((comment) => !comment.startsWith("MES ")) ?? comments[0]),
     aria: unique([...source.matchAll(/\b(aria-[a-z-]+|role)\s*=/g)].map((match) => match[1])).sort(),
   };
+}
+
+function componentStateModel(component, facts, framework) {
+  const notApplicable = framework.notApplicableValue;
+  const markers = new Set(facts.stateMarkers);
+  const props = new Set(facts.propNames);
+  const state = ["default"];
+  for (const marker of ["loading", "open", "error", "readOnly"]) if (markers.has(marker)) state.push(marker);
+
+  let value = [notApplicable];
+  if (markers.has("checked")) value = ["unchecked", "checked", ...(markers.has("indeterminate") ? ["indeterminate"] : [])];
+  else if (markers.has("pressed")) value = ["unpressed", "pressed"];
+  else if (markers.has("selected")) value = ["unselected", "selected"];
+  else if (["value", "defaultValue", "onValueChange", "onChange"].some((prop) => props.has(prop))) value = ["empty", "filled"];
+
+  const interaction = [];
+  if (facts.interactive || markers.has("hover") || markers.has("focus")) interaction.push("rest");
+  if (markers.has("hover")) interaction.push("hover");
+  if (markers.has("focus")) interaction.push("focus");
+
+  const inferred = {
+    state,
+    value,
+    disabled: markers.has("disabled") ? ["false", "true"] : [notApplicable],
+    size: facts.sizeValues.length ? facts.sizeValues : [notApplicable],
+    interaction: interaction.length ? interaction : [notApplicable],
+  };
+  const override = framework.componentOverrides?.[component.id] ?? {};
+  return Object.fromEntries(framework.dimensionOrder.map((dimension) => [dimension, unique(override[dimension] ?? inferred[dimension])]));
 }
 
 const categoryPurpose = {
@@ -93,7 +136,6 @@ function componentDocument(asset) {
   const role = firstSentence(context?.useWhen?.[0]) || firstSentence(asset.rules?.[0]) || sourceSummary || categoryPurpose[asset.category];
   const useWhen = context?.useWhen ?? asset.rules ?? [];
   const doNotUseWhen = context?.doNotUseWhen ?? [];
-  const states = contract?.requiredStates?.length ? contract.requiredStates : asset.sourceFacts.stateMarkers;
   const variants = contract?.variants ?? [];
   const accessibility = contract?.accessibility ?? [];
   const constraints = contract?.constraints ?? [];
@@ -124,8 +166,10 @@ function componentDocument(asset) {
     "",
     `- 공개 심볼: ${asset.sourceFacts.symbols.length ? asset.sourceFacts.symbols.map((item) => `\`${item}\``).join(", ") : "없음"}`,
     `- 주요 Props: ${asset.sourceFacts.propNames.length ? asset.sourceFacts.propNames.map((item) => `\`${item}\``).join(", ") : "별도 Props 선언 없음"}`,
-    `- 상태: ${states.length ? states.map((item) => `\`${item}\``).join(", ") : "정적 표시"}`,
+    ...Object.entries(asset.stateModel).map(([dimension, values]) => `- ${dimension[0].toUpperCase()}${dimension.slice(1)}: ${values.map((item) => `\`${item}\``).join(", ")}`),
     `- 변형: ${variants.length ? variants.map((item) => `\`${item}\``).join(", ") : "등록된 별도 variant 없음"}`,
+    "",
+    "다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.",
     "",
     "## 접근성과 제약",
     "",
@@ -194,6 +238,7 @@ function walkFiles(directory) {
 export function buildOutputs({ readSource = (filePath) => fs.readFileSync(filePath, "utf8") } = {}) {
   const registry = readRegistryBundle();
   const catalog = readJson("component-catalog.json");
+  const componentStateFramework = readJson("component-state-framework.json");
   const selectionFeedback = readJson("generation-selection-feedback.json");
   const contractById = new Map(registry.componentUsageContracts.map((contract) => [contract.componentId, contract]));
   const contextById = new Map(registry.componentSelectionContexts.map((context) => [context.componentId, context]));
@@ -224,6 +269,7 @@ export function buildOutputs({ readSource = (filePath) => fs.readFileSync(filePa
       guidanceMode: contractById.has(component.id) ? "selection-guard" : "selection-context",
       selectionContext: contextById.get(component.id) ?? null,
       usageContract: contractById.get(component.id) ?? null,
+      stateModel: componentStateModel(component, facts, componentStateFramework),
       usedByPatternIds: unique(patternsByComponent.get(component.id) ?? []).sort(),
       sourceFacts: facts,
     };
@@ -253,15 +299,24 @@ export function buildOutputs({ readSource = (filePath) => fs.readFileSync(filePa
     screens,
     catalog,
     componentUsagePolicy: registry.componentUsagePolicy,
+    componentStateFramework,
     selectionFeedback,
   });
   const manifest = {
     schemaVersion: 1,
     purpose: "AI와 사람이 같은 자산 상태·위치·사용 근거를 조회하는 생성 원장",
-    generatedFrom: ["components.json", "component-usage-contracts.json", "generation-selection-feedback.json", "component-catalog.json", "patterns.json + source-assets.json", "screens.json + source-assets.json"],
+    generatedFrom: ["components.json", "component-usage-contracts.json", "component-state-framework.json", "generation-selection-feedback.json", "component-catalog.json", "patterns.json + source-assets.json", "screens.json + source-assets.json"],
     fingerprint,
     guidancePolicy: {
       componentSelection: registry.componentUsagePolicy,
+      componentState: {
+        frameworkId: componentStateFramework.frameworkId,
+        frameworkVersion: componentStateFramework.frameworkVersion,
+        dimensionOrder: componentStateFramework.dimensionOrder,
+        compositionMode: componentStateFramework.compositionMode,
+        cartesianExpansion: componentStateFramework.cartesianExpansion,
+        rules: componentStateFramework.rules,
+      },
       selectionFeedback: {
         total: selectionFeedback.entries.length,
         observed: selectionFeedback.entries.filter((entry) => entry.status === "observed").length,

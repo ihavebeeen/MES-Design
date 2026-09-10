@@ -4,12 +4,13 @@
   "generatedFrom": [
     "components.json",
     "component-usage-contracts.json",
+    "component-state-framework.json",
     "generation-selection-feedback.json",
     "component-catalog.json",
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "5c077937ec5dfc54f77be887e50ded86e318a2850aae43a18cff47c1c016d18f",
+  "fingerprint": "d6b84476865cc76d467737090c00d9cfce1b495a2852da74c6c733599c3e7fba",
   "guidancePolicy": {
     "componentSelection": {
       "contextCoverageMode": "all-components",
@@ -24,6 +25,26 @@
         "공식 Figma 컴포넌트 또는 명세에서 공통 계약이 확인됨"
       ],
       "feedbackLedger": "generation-selection-feedback.json"
+    },
+    "componentState": {
+      "frameworkId": "mes.component-state-framework",
+      "frameworkVersion": "1.0.0",
+      "dimensionOrder": [
+        "state",
+        "value",
+        "disabled",
+        "size",
+        "interaction"
+      ],
+      "compositionMode": "orthogonal-axes",
+      "cartesianExpansion": "valid-combinations-only",
+      "rules": [
+        "다섯 축은 항상 같은 순서로 노출하고 지원하지 않는 축은 not-applicable로 명시한다.",
+        "Disabled=true에서는 hover·focus 같은 조작 상태를 요구하지 않는다.",
+        "Value를 State 이름으로, Disabled를 Interaction 이름으로 중복 표현하지 않는다.",
+        "모든 축의 곱을 Figma variant 수로 강제하지 않고 실제로 유효한 조합만 문서화·검증한다.",
+        "Size와 장식용 variant 또는 아이콘 배치는 상태 축과 독립적으로 유지한다."
+      ]
     },
     "selectionFeedback": {
       "total": 11,
@@ -78,6 +99,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "7db7cb47b8b37ed9949e02955ea95738d66809bf3be43c86187ca25b05157db8",
@@ -99,6 +138,8 @@
         "stateMarkers": [
           "disabled"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES Accordion — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Accordion\", 상태 \"없음\").",
         "aria": []
       }
@@ -135,6 +176,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "eb114b9eacdbbe4f8810696ed584531a553927d3ea91ed1223e83f0684109578",
@@ -159,6 +218,8 @@
         "stateMarkers": [
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "설명 아래 2번째 줄(원본 Figma \"두줄\")",
         "aria": []
       }
@@ -199,6 +260,25 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "small",
+          "medium",
+          "large"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "180705e272414afbe639560ebc519b3133f59f35896726bfeee26b5c7520dc6f",
@@ -213,6 +293,12 @@
           "status"
         ],
         "stateMarkers": [],
+        "sizeValues": [
+          "small",
+          "medium",
+          "large"
+        ],
+        "interactive": true,
         "summary": "",
         "aria": [
           "aria-label",
@@ -311,6 +397,23 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "onboarding.product-tour",
         "popup.center.purchase-lookup",
@@ -326,6 +429,8 @@
         ],
         "propNames": [],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Badge (상태 뱃지) — Figma 실측 기반",
         "aria": []
       }
@@ -425,6 +530,23 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.before-after-confirmation"
       ],
@@ -447,6 +569,8 @@
           "className"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "변경 전후 비교표 — Figma 19451:95617 하위 19483:104432 실측.",
         "aria": [
           "aria-label",
@@ -486,6 +610,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "c98fc5b25d2d2ec1dfb4cffc833668e038ad4c19d84926f9285ac263280a7a4a",
@@ -503,6 +645,8 @@
         "stateMarkers": [
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES Breadcrumb — Figma 검색(search_design_system)에서 \"breadcrumb-mid/chip\" 등 이름",
         "aria": [
           "aria-label"
@@ -568,8 +712,7 @@
           "lineBlacktxt",
           "opacityMain",
           "softMain",
-          "softDanger",
-          "loginPrimary"
+          "softDanger"
         ],
         "requiredStates": [
           "default",
@@ -618,6 +761,27 @@
             "componentId": "icon-button",
             "chooseInsteadWhen": "아이콘만으로 의미가 확정된 소형 동작일 때"
           }
+        ]
+      },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "basic",
+          "small",
+          "xsmall"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
         ]
       },
       "usedByPatternIds": [
@@ -670,7 +834,7 @@
         "workflow.stepper"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "0a0e60a4a3483a2e5bcb940f369777a1426359048195ae2a06cf37eb10952eba",
+        "sourceFingerprint": "53bdff47a0e1287881bf392f1438a17125476d052df337d0c50c07ac8f8919c4",
         "symbols": [
           "ButtonProps",
           "Button",
@@ -685,6 +849,12 @@
           "disabled",
           "hover"
         ],
+        "sizeValues": [
+          "basic",
+          "small",
+          "xsmall"
+        ],
+        "interactive": false,
         "summary": "버튼 텍스트 앞에 표시할 아이콘.",
         "aria": []
       }
@@ -721,6 +891,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "d390a4406660bbe1e63ce81cedadf8c4792e5dcf42f9a7145a57d7c438ea4aee",
@@ -729,6 +916,8 @@
         ],
         "propNames": [],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES ButtonGroup — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Button Group\", 상태 \"없음\").",
         "aria": [
           "role"
@@ -775,6 +964,26 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "unselected",
+          "selected"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "f65e8ef98a0206bf608a72eb3d4d15188a4d5130bb909c2ca8296c6a6c46aac7",
@@ -793,6 +1002,8 @@
           "className"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "두 단계의 서로 종속된 선택에만 사용한다.",
         "aria": []
       }
@@ -833,6 +1044,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "screen.analytics-dashboard"
       ],
@@ -848,6 +1076,8 @@
         ],
         "propNames": [],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Card — Figma 검색(search_design_system)에 정확히 일치하는 전용 노드를 못 찾음",
         "aria": []
       }
@@ -956,6 +1186,25 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default",
+          "open"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "dismiss.restore-committed",
         "popup.center.cavity-layout",
@@ -1010,6 +1259,8 @@
           "disabled",
           "open"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "취소·X·Esc·배경 클릭에 공통 적용되는 변경 폐기/원상복구 콜백.",
         "aria": []
       }
@@ -1111,6 +1362,27 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "unchecked",
+          "checked",
+          "indeterminate"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "small",
+          "default"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.dual-pane",
         "popup.center.inspection-records",
@@ -1150,6 +1422,11 @@
           "indeterminate",
           "focus"
         ],
+        "sizeValues": [
+          "small",
+          "default"
+        ],
+        "interactive": true,
         "summary": "일부만 선택된 상태(하위 항목 중 일부만 체크됨) — 판단 구현, 위 주석 5번 참고",
         "aria": []
       }
@@ -1186,6 +1463,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default",
+          "open"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "2d341da7d4ebc408becedc54d80fb2e0b93664363b840b8acb11fab0b3553985",
@@ -1204,6 +1499,8 @@
         "stateMarkers": [
           "open"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES Collapsible — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Collapsible\", 상태 \"없음\").",
         "aria": []
       }
@@ -1244,6 +1541,28 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default",
+          "open"
+        ],
+        "value": [
+          "unselected",
+          "selected"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "default",
+          "small"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "c5fbd8704ff1dd1c0728a9535668a0356e504ece06a34e229843e3725931eca8",
@@ -1272,6 +1591,11 @@
           "open",
           "hover"
         ],
+        "sizeValues": [
+          "default",
+          "small"
+        ],
+        "interactive": true,
         "summary": "트리거 우측 아이콘 — 기본값은 ChevronDown, 다른 아이콘으로 교체 가능(2026-07-28 추가)",
         "aria": []
       }
@@ -1367,6 +1691,25 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default",
+          "open",
+          "error"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.before-after-confirmation",
         "popup.center.equipment-discharge-settings",
@@ -1405,6 +1748,8 @@
           "open",
           "error"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "본문 아이콘 색 — error(기본, 빨강)/warning(주황)/info(파랑).",
         "aria": [
           "aria-label"
@@ -1450,6 +1795,29 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "closed",
+          "open"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "default",
+          "small"
+        ],
+        "interaction": [
+          "rest",
+          "hover",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.inventory-add",
         "popup.center.standard-price-settings"
@@ -1481,8 +1849,14 @@
           "disabled",
           "selected",
           "open",
+          "pressed",
           "hover"
         ],
+        "sizeValues": [
+          "default",
+          "small"
+        ],
+        "interactive": true,
         "summary": "표 셀처럼 22px 컨트롤이 필요한 경우 사용한다.",
         "aria": [
           "aria-label",
@@ -1525,6 +1899,25 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.inventory-add",
         "popup.center.inventory-edit",
@@ -1547,6 +1940,8 @@
         "stateMarkers": [
           "disabled"
         ],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "한 컨트롤 안에 보조 라벨과 선택값을 함께 표시하는 MES 조회/일괄변경용 Select.",
         "aria": []
       }
@@ -1586,6 +1981,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.inventory-edit",
         "section.bulk-edit-bar"
@@ -1600,6 +2012,8 @@
           "label"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "한 개의 32px 입력 컨트롤 안에 보조 라벨과 값을 배치한다.",
         "aria": []
       }
@@ -1640,11 +2054,28 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.inventory-edit"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "db1edea212d1b78ee23c1e6d642b2d374f51442c24c56a8e202a68490a5a4866",
+        "sourceFingerprint": "f7f229f3dcb03abf7aa4a5a9077a3cba23d809681dfba72dd15dd77704913992",
         "symbols": [
           "SelectionActionBarProps",
           "SelectionActionBar"
@@ -1657,6 +2088,8 @@
           "className"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "Figma node 17702:49441의 표 선택 후 플로팅 액션 바.",
         "aria": []
       }
@@ -1696,6 +2129,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "7d57f194481902e807d7bd1510da72b157696096938f7f90e1ebaa9277a4c129",
@@ -1712,6 +2162,8 @@
           "max"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "",
         "aria": [
           "aria-label",
@@ -1755,6 +2207,28 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "closed",
+          "open"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "default"
+        ],
+        "interaction": [
+          "rest",
+          "hover",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [
         "screen.analytics-dashboard"
       ],
@@ -1779,6 +2253,10 @@
           "open",
           "hover"
         ],
+        "sizeValues": [
+          "default"
+        ],
+        "interactive": true,
         "summary": "MES DateRangePicker — DatePicker(date-picker.",
         "aria": []
       }
@@ -1819,6 +2297,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "screen.master-detail",
         "table.row-expand-detail"
@@ -1838,6 +2334,8 @@
           "className"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Descriptions (상세 정보 키-값 리스트) — Figma에 전용 컴포넌트 없음(체크리스트",
         "aria": []
       }
@@ -1927,6 +2425,24 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "f6adc9450c585cf5c815dcdcad5ed717726115cfe0c67b38dfd4fbc06c529823",
@@ -1947,6 +2463,8 @@
         "stateMarkers": [
           "disabled"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "생략 시 모달 기본 순서인 fillGray / fillBlack.",
         "aria": []
       }
@@ -2030,6 +2548,24 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "e1d458ebb3c5eee5092e62e3e1a073054670e8c500d6581822381e06110c5d8a",
@@ -2052,6 +2588,8 @@
         "stateMarkers": [
           "disabled"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "생략 시 우하단 액션의 기존 순서인 fillBlack / fillMain / fillGray.",
         "aria": []
       }
@@ -2088,6 +2626,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "fdfa7fb60999571ac42e76fc276c74cdb876b39d16a26c401bbdbbca84fb3e75",
@@ -2099,6 +2654,8 @@
           "orientation"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES Divider — Figma 디자인 없음(체크리스트 티어2 \"Divider / Separator\", 상태 \"없음\").",
         "aria": [
           "aria-orientation",
@@ -2142,6 +2699,26 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default",
+          "open"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "032b25201f2eadf1caa8e341709485bcade12143923a007caa3cbcf8a0d3244c",
@@ -2166,6 +2743,8 @@
           "open",
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES DropdownMenu — Figma 검색에서 \"필터창\"/\"Links container\" 등 애매한 후보만 나오고",
         "aria": []
       }
@@ -2260,6 +2839,23 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "e487c8db19888127ded7d0f51ec4948b9aba964069a27dc1d2db1e645a6f9bf1",
@@ -2275,6 +2871,8 @@
           "className"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES EmptyState — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Empty State\", 상태 \"없음\").",
         "aria": []
       }
@@ -2315,6 +2913,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "9711d0209771b0a248851acf3c7d506a9addef625937362184d618f0b1414ed2",
@@ -2330,6 +2945,8 @@
           "className"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES ErrorState — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Error State\", 상태 \"없음\").",
         "aria": []
       }
@@ -2366,6 +2983,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "902229e83dd42cda4e2586ef23595053808a9828f72b1734e8d63ff89d79f9c1",
@@ -2377,6 +3011,8 @@
           "legend"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Fieldset — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Fieldset\", 상태 \"없음\",",
         "aria": []
       }
@@ -2479,6 +3115,27 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default",
+          "open"
+        ],
+        "value": [
+          "unchecked",
+          "checked"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.equipment-discharge-settings",
         "popup.center.inspection-records",
@@ -2526,6 +3183,8 @@
           "focus",
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "카테고리/옵션 패널의 내부 검색창 표시 여부.",
         "aria": []
       }
@@ -2570,6 +3229,27 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "no-files",
+          "files-selected"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "52053f8259405df615420b2792dee436fcef609fcfd7f6cef9a1305121511be1",
@@ -2586,6 +3266,8 @@
         "stateMarkers": [
           "disabled"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "파일 선택과 드롭을 같은 계약으로 제공하며 업로드 전송 자체는 호출부가 담당한다.",
         "aria": []
       }
@@ -2625,6 +3307,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "c10d6cbd8a43368d46dfbf2045c7165133f6acf119b6ab84783acda91df824b6",
@@ -2639,6 +3338,8 @@
           "className"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES FilterTag (필터에서 쓰는 태그/칩) — Figma 실측 기반 + 담당자 정책 결정 반영",
         "aria": [
           "aria-label"
@@ -2748,6 +3449,23 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.side.group-settings",
         "recipe.side-slide-custom-fields",
@@ -2783,6 +3501,8 @@
           "wide"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "label, required marker와 control의 수평 정렬을 한 상태에서 파생한다.",
         "aria": [
           "aria-hidden",
@@ -2823,6 +3543,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "a5b41883273a6cfa9e2e4571486866a3b80e0ee260933cc08dfc62cadd9a621e",
@@ -2836,6 +3573,8 @@
           "gap"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Container/Grid — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Grid / Container\",",
         "aria": []
       }
@@ -2921,6 +3660,26 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default",
+          "open"
+        ],
+        "value": [
+          "unselected",
+          "selected"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [
         "recipe.page-entity-list",
         "screen.entity-list",
@@ -2954,6 +3713,8 @@
           "open",
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "그룹화 가능한 필드 목록(전체 포함) — 전체 Level 공통 옵션 풀",
         "aria": [
           "aria-label",
@@ -2994,6 +3755,27 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "small",
+          "basic",
+          "xsmall"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.standard-price-settings",
         "recipe.side-slide-entry-list",
@@ -3016,6 +3798,12 @@
           "disabled",
           "hover"
         ],
+        "sizeValues": [
+          "small",
+          "basic",
+          "xsmall"
+        ],
+        "interactive": false,
         "summary": "아이콘만 있는 버튼이라 스크린리더용 라벨이 항상 필요함 — 필수 prop으로 강제",
         "aria": [
           "aria-label"
@@ -3129,6 +3917,28 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default",
+          "readOnly"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "default",
+          "small"
+        ],
+        "interaction": [
+          "rest",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.cavity-layout",
         "popup.center.dual-pane",
@@ -3166,6 +3976,11 @@
           "disabled",
           "focus"
         ],
+        "sizeValues": [
+          "default",
+          "small"
+        ],
+        "interactive": true,
         "summary": "MES Input (Textbox) — Figma 실측 기반",
         "aria": []
       }
@@ -3206,6 +4021,25 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "unselected",
+          "selected"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "small",
+          "medium"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "b55611135455a871bc760a7aa8122c812295829fe64bfbf88089ec830aad7971",
@@ -3227,6 +4061,11 @@
         "stateMarkers": [
           "selected"
         ],
+        "sizeValues": [
+          "small",
+          "medium"
+        ],
+        "interactive": true,
         "summary": "",
         "aria": [
           "aria-label",
@@ -3271,6 +4110,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "unchecked",
+          "checked"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.side.inspection-items",
         "recipe.side-slide-inspection",
@@ -3291,6 +4148,8 @@
         "stateMarkers": [
           "checked"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "Figma 자주검사 화면의 판정 4분할 입력.",
         "aria": [
           "aria-checked",
@@ -3335,6 +4194,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "b461b3fc469a9586f29bfa79d7f9ff5af9c17770ab75e78318b4f42f12c5201c",
@@ -3346,6 +4222,8 @@
           "required"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "필수 입력 표시(* 를 라벨 뒤에 danger 색으로 붙임)",
         "aria": []
       }
@@ -3444,6 +4322,24 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.purchase-lookup",
         "popup.center.team-settings"
@@ -3458,6 +4354,8 @@
         "stateMarkers": [
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Link (텍스트 링크) — Figma 디자인 없음(체크리스트 티어2 \"Link\", 상태 \"없음\" —",
         "aria": []
       }
@@ -3494,6 +4392,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "15b9266e2782ba96662bc80608211f0f75f0f923790f80d13222b31238107e5e",
@@ -3508,6 +4424,8 @@
         "stateMarkers": [
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES List — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"List\", 상태 \"없음\", 재탐색",
         "aria": []
       }
@@ -3548,6 +4466,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default",
+          "loading"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "c3bbf3434aacffff4fb133d4c5c53b09a0dffcdb8e3fef72e52f7b9c4ddf1862",
@@ -3562,6 +4498,8 @@
         "stateMarkers": [
           "loading"
         ],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES LoadingOverlay — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Loading Overlay\",",
         "aria": []
       }
@@ -3602,6 +4540,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "04935c4748134f9104dd9568a7706f317d4e64ee0cac26110f066dbee9a3cc83",
@@ -3613,6 +4568,8 @@
           "size"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES LoadingSpinner — Figma 디자인 없음(체크리스트 티어2 \"Loading Spinner\", 상태 \"없음\").",
         "aria": [
           "aria-label",
@@ -3656,6 +4613,26 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "empty",
+          "multiple-selected"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "09c2dd6b3b6cde2940986a79c52e86ccff595a74364960940749854baed3bd73",
@@ -3673,6 +4650,8 @@
         "stateMarkers": [
           "disabled"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES MultiSelectInput (다중 선택·태그 입력) — Figma에 전용 컴포넌트 없음(체크리스트",
         "aria": [
           "aria-label"
@@ -3715,6 +4694,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "704267126dbe7f0ac3c45f49cd154b80ab64eb4444e71e572a3df4cb770fb960",
@@ -3731,6 +4728,8 @@
         "stateMarkers": [
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES NoticeBanner (안내 배너, 링크 포함) — Figma 실측 기반",
         "aria": []
       }
@@ -3771,6 +4770,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "unchecked",
+          "checked"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "01c0f584045c6d6c36d27bf61116b0ce9a7688474b67a5f7c0a19654f025c837",
@@ -3795,6 +4812,8 @@
         "stateMarkers": [
           "checked"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "React key 및 클릭 핸들러 구분용 id",
         "aria": [
           "aria-label"
@@ -3879,6 +4898,28 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "default",
+          "small"
+        ],
+        "interaction": [
+          "rest",
+          "hover",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "d3e2de208b805ae8e7e5b326538a09abcad2b733af39edc2418a8e991c135908",
@@ -3901,6 +4942,11 @@
           "disabled",
           "hover"
         ],
+        "sizeValues": [
+          "default",
+          "small"
+        ],
+        "interactive": true,
         "summary": "MES NumberInput — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Number Input\", 상태",
         "aria": [
           "aria-label"
@@ -3939,6 +4985,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [
         "recipe.page-entity-list",
         "screen.entity-list",
@@ -3962,6 +5026,8 @@
         "stateMarkers": [
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "실측 3종(default/hover/active) 중 현재 열려있는 탭 표시 — 2026-07-30 정확한 값으로 교체",
         "aria": [
           "aria-label"
@@ -4008,6 +5074,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "c0411e3dc3d9150a94222e08b4c456c3287ce2a7e732a05d94362d3e60f2ab83",
@@ -4022,6 +5105,8 @@
           "renderItem"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "",
         "aria": []
       }
@@ -4058,6 +5143,25 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "765d952e3209349a7929c227da56062d68983fe400ea4d0f59dbc2af9bb36e22",
@@ -4076,6 +5180,8 @@
           "disabled",
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES Pagination — Figma 검색에서 \"NEW Pagination\"/\"NEW numbering\" 이름은 찾았으나",
         "aria": [
           "aria-label"
@@ -4118,6 +5224,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "screen.master-detail"
       ],
@@ -4128,6 +5251,8 @@
         ],
         "propNames": [],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Panel — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Panel\", 상태 \"없음\", 재탐색",
         "aria": []
       }
@@ -4164,9 +5289,31 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "default",
+          "small"
+        ],
+        "interaction": [
+          "rest",
+          "hover",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
-        "sourceFingerprint": "e60a386114b99467668e519fd3387048d65fe5b585fbcab5d8d8e31f57328b42",
+        "sourceFingerprint": "23340f708a9ee9d1f52627fe7748037d6eb581a22b8f20154bc5c0cb83243bc3",
         "symbols": [
           "PasswordInputProps",
           "PasswordInput"
@@ -4177,9 +5324,13 @@
         ],
         "stateMarkers": [
           "disabled",
-          "focus",
           "hover"
         ],
+        "sizeValues": [
+          "default",
+          "small"
+        ],
+        "interactive": true,
         "summary": "로그인·비밀번호 재설정 원본처럼 보기/숨기기 아이콘이 없는 입력에서 false로 사용한다.",
         "aria": [
           "aria-label"
@@ -4222,6 +5373,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "recipe.side-slide-inspection"
       ],
@@ -4235,6 +5403,8 @@
         ],
         "propNames": [],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Popover — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Popover\", 상태 \"없음\").",
         "aria": []
       }
@@ -4275,6 +5445,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.purchase-lookup",
         "workflow.stepper"
@@ -4291,6 +5479,8 @@
           "labelTone"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES Progress Bar (진행률 막대) — Figma 실측 기반",
         "aria": [
           "aria-valuemax",
@@ -4336,6 +5526,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "ddaad5806f7d3b191e77de2f8f5b211285a1935779a3f888bb68e5c32e130b38",
@@ -4349,6 +5557,8 @@
           "label"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "",
         "aria": [
           "aria-valuemax",
@@ -4440,6 +5650,26 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default",
+          "open",
+          "readOnly"
+        ],
+        "value": [
+          "unchecked",
+          "checked"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "recipe.page-entity-list",
         "screen.entity-list",
@@ -4483,6 +5713,8 @@
           "open",
           "readOnly"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "저장된 프리셋 최대 3개",
         "aria": [
           "aria-label"
@@ -4575,6 +5807,26 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "unchecked",
+          "checked"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "small",
+          "default"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.cavity-layout",
         "popup.center.form",
@@ -4593,6 +5845,11 @@
           "disabled",
           "checked"
         ],
+        "sizeValues": [
+          "small",
+          "default"
+        ],
+        "interactive": true,
         "summary": "MES Radio (라디오버튼) — Figma 실측 기반",
         "aria": []
       }
@@ -4633,6 +5890,26 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default",
+          "open",
+          "error"
+        ],
+        "value": [
+          "unchecked",
+          "checked"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "c0841f9bfef98ebe216bd7415535a011904302e79a142aea2f68bd2f51c59593",
@@ -4662,6 +5939,8 @@
           "open",
           "error"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "제어형 선택 인덱스.",
         "aria": [
           "aria-label"
@@ -4700,6 +5979,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "table.frozen-column-grid"
       ],
@@ -4710,6 +6006,8 @@
         ],
         "propNames": [],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES ScrollArea — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Scroll Area\", 상태",
         "aria": []
       }
@@ -4750,6 +6048,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "adfa46277517a56069b5a0b0217dc882167a96d1d1066a7e24e9da99b39cb38b",
@@ -4764,6 +6079,8 @@
           "markClassName"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "",
         "aria": []
       }
@@ -4867,6 +6184,26 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "default",
+          "compact"
+        ],
+        "interaction": [
+          "rest",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.equipment-discharge-settings",
         "popup.center.inspection-records",
@@ -4905,6 +6242,11 @@
           "background"
         ],
         "stateMarkers": [],
+        "sizeValues": [
+          "default",
+          "compact"
+        ],
+        "interactive": true,
         "summary": "화면 상단의 조밀한 조회 툴바용 규격.",
         "aria": [
           "aria-label"
@@ -4952,6 +6294,27 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "unselected",
+          "selected"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [
         "visualization.production-gantt"
       ],
@@ -4975,6 +6338,8 @@
           "selected",
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "",
         "aria": [
           "aria-checked",
@@ -5065,6 +6430,23 @@
         ],
         "alternatives": []
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "frame.standard-section",
         "popup.side.group-settings",
@@ -5094,6 +6476,8 @@
           "bottom"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Section Frame.",
         "aria": [
           "aria-label"
@@ -5191,6 +6575,23 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "frame.standard-section"
       ],
@@ -5206,6 +6607,8 @@
           "className"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "제목 옆 버튼은 28px.",
         "aria": []
       }
@@ -5297,6 +6700,23 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.equipment-discharge-settings",
         "popup.center.navigation-detail",
@@ -5313,6 +6733,8 @@
           "as"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "단일 테이블·리스트·작업영역의 이름을 배경이나 테두리 없이 표시한다.",
         "aria": []
       }
@@ -5351,6 +6773,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "fba5d9b31f2165b2abee3008252a4c8087cd26384a77cc082a5c28edc9f2029e",
@@ -5362,6 +6801,8 @@
           "size"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "Figma 생산실적 화면의 17×14 반응형 메뉴 아이콘(node 18849:64891) 원본 벡터.",
         "aria": []
       }
@@ -5462,6 +6903,23 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.inspection-records",
         "popup.center.purchase-lookup",
@@ -5484,6 +6942,8 @@
           "className"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "조회 헤더의 라벨 + 시작일 + 구분자 + 종료일 결합형 기간 입력.",
         "aria": []
       }
@@ -5523,6 +6983,25 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "unselected",
+          "selected"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "e45cf5a72f52cd4f26ab4bc7dc909d9bca18dd0ac02734655e2086fac4e40ef2",
@@ -5538,6 +7017,8 @@
           "disabled",
           "selected"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "캐비티 배열의 10×10 셀.",
         "aria": []
       }
@@ -5637,6 +7118,28 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "closed",
+          "open"
+        ],
+        "value": [
+          "empty",
+          "selected"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "default",
+          "small"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.dual-pane",
         "popup.center.form",
@@ -5680,6 +7183,11 @@
           "open",
           "hover"
         ],
+        "sizeValues": [
+          "default",
+          "small"
+        ],
+        "interactive": false,
         "summary": "트리거 우측 아이콘 — 기본값은 ChevronDown, 다른 아이콘으로 교체 가능",
         "aria": []
       }
@@ -5711,6 +7219,25 @@
         "alternatives": []
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default",
+          "open"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [
         "recipe.page-entity-list",
         "screen.entity-list",
@@ -5751,6 +7278,8 @@
           "open",
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "펼쳐진 1-depth 항목 key (없으면 전부 접힘)",
         "aria": [
           "aria-label"
@@ -5797,6 +7326,26 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "set"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "focus",
+          "drag"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "411fb04ef3074617e2e7f21b42cce6fdaf3d8395355dce722ec56b62e49b3081",
@@ -5812,6 +7361,8 @@
           "formatValue"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "연속 수치 범위를 조절하는 입력이다.",
         "aria": []
       }
@@ -5917,6 +7468,24 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default",
+          "open"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "dismiss.restore-committed",
         "popup.side.add-list",
@@ -5961,6 +7530,8 @@
         "stateMarkers": [
           "open"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "취소·X·Esc·배경 클릭에 공통 적용되는 변경 폐기/원상복구 콜백.",
         "aria": []
       }
@@ -6001,6 +7572,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "27bff4ca4f229fdd03c4b78b919542675f791037cc874bd27fb720a9c01144fc",
@@ -6014,6 +7602,8 @@
           "defaultVariants"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Skeleton — Figma 디자인 없음(체크리스트 티어2 \"Skeleton\", 상태 \"없음\").",
         "aria": []
       }
@@ -6050,6 +7640,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "c0e9512b6bf196234c34a773ef0c333f8ac780c0dea25e7f325e0cd1bdbe097c",
@@ -6059,6 +7666,8 @@
         ],
         "propNames": [],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES StickyHeader/StickyFooter — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Sticky",
         "aria": []
       }
@@ -6103,6 +7712,26 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "off",
+          "on"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "default",
+          "compact"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.standard-price-settings",
         "table.column-settings"
@@ -6120,6 +7749,11 @@
           "disabled",
           "checked"
         ],
+        "sizeValues": [
+          "default",
+          "compact"
+        ],
+        "interactive": true,
         "summary": "표준단가 카드의 단가 동기화처럼 조밀한 영역에서 쓰는 Figma 실측 26×18 규격.",
         "aria": [
           "role"
@@ -6228,6 +7862,26 @@
           }
         ]
       },
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "unchecked",
+          "checked",
+          "indeterminate"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.dual-pane",
         "popup.center.equipment-discharge-settings",
@@ -6302,6 +7956,8 @@
           "indeterminate",
           "selected"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "점검 결과표처럼 컬럼명 아래에 판정 기준을 표시하는 2단 헤더.",
         "aria": [
           "aria-label",
@@ -6346,6 +8002,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [
         "table.column-settings"
       ],
@@ -6368,6 +8041,8 @@
           "size"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "MES Tag (범용 3색 태그/칩) — Figma 실측 기반",
         "aria": []
       }
@@ -6408,6 +8083,27 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default",
+          "readOnly"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "46d3fecaa6d5dc48cd54e01c571fbe4c83ecf42350147157a41798356975b28f",
@@ -6420,6 +8116,8 @@
           "disabled",
           "focus"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES Textarea — Figma 디자인 없음(체크리스트 티어2 \"Textarea\", 상태 \"없음\").",
         "aria": []
       }
@@ -6460,6 +8158,28 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "closed",
+          "open"
+        ],
+        "value": [
+          "empty",
+          "filled"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "default"
+        ],
+        "interaction": [
+          "rest",
+          "hover",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [
         "popup.center.time-selector",
         "popup.side.time-records"
@@ -6484,6 +8204,10 @@
           "open",
           "hover"
         ],
+        "sizeValues": [
+          "default"
+        ],
+        "interactive": true,
         "summary": "MES TimePicker — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Time Picker\", 상태",
         "aria": []
       }
@@ -6528,6 +8252,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "not-applicable"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "b2d159f86276725a5b2d1d8bc97cafecc4084f1875f71946940483fde3d1a282",
@@ -6538,6 +8279,8 @@
         ],
         "propNames": [],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": false,
         "summary": "시간 순서가 의미를 갖는 변경·작업 이력을 표시한다.",
         "aria": []
       }
@@ -6578,6 +8321,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "45bedc548e10dbe289e0a5ba92aa47ef78da0607507d9620b16d0c23c182f689",
@@ -6595,6 +8355,8 @@
           "blue"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES Toast (짧게 떴다 사라지는 알림) — Figma 실측 기반",
         "aria": [
           "aria-label"
@@ -6641,6 +8403,27 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default",
+          "expanded"
+        ],
+        "value": [
+          "empty",
+          "multiple-selected"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover",
+          "focus"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "a52db8000c0991c363f5724f14a60fd3dd0adf460142c2e73b7612c563dfcb56",
@@ -6661,6 +8444,8 @@
           "checked",
           "selected"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "계층을 보면서 복수 선택한다.",
         "aria": [
           "aria-label"
@@ -6707,6 +8492,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "97e48c634d4125cf43aa69c093cb2aa440d70bbd1829bf08aa54989a5e4e2597",
@@ -6717,6 +8519,8 @@
         ],
         "propNames": [],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "읽기·탐색 목적의 계층이다.",
         "aria": []
       }
@@ -6757,6 +8561,28 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "unpressed",
+          "pressed"
+        ],
+        "disabled": [
+          "false",
+          "true"
+        ],
+        "size": [
+          "basic",
+          "small",
+          "xsmall"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "d9a641d3bd09fe563c562b14e9fe3c6943f328c52a17150e73e634b75ab6b876",
@@ -6774,8 +8600,15 @@
         ],
         "stateMarkers": [
           "disabled",
+          "pressed",
           "hover"
         ],
+        "sizeValues": [
+          "basic",
+          "small",
+          "xsmall"
+        ],
+        "interactive": true,
         "summary": "MES ToggleButton — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"Toggle Button\", 상태 \"없음\").",
         "aria": [
           "aria-pressed"
@@ -6818,6 +8651,23 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "e2ea484b2de05a1442c8674cf5cf779e51809657353e6d2d62628222e6fffd03",
@@ -6832,6 +8682,8 @@
           "className"
         ],
         "stateMarkers": [],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES Tooltip — Figma 디자인 없음(체크리스트 티어2 \"Tooltip\", 상태 \"없음\").",
         "aria": [
           "role"
@@ -6874,6 +8726,24 @@
         ]
       },
       "usageContract": null,
+      "stateModel": {
+        "state": [
+          "default"
+        ],
+        "value": [
+          "not-applicable"
+        ],
+        "disabled": [
+          "not-applicable"
+        ],
+        "size": [
+          "not-applicable"
+        ],
+        "interaction": [
+          "rest",
+          "hover"
+        ]
+      },
       "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "648a284f87562230f914ceac0eab87dfcc7b2b48ad0b70ffadc48304183bbdd6",
@@ -6889,6 +8759,8 @@
         "stateMarkers": [
           "hover"
         ],
+        "sizeValues": [],
+        "interactive": true,
         "summary": "MES UserAccountMenu — Figma에 전용 컴포넌트 없음(체크리스트 티어2 \"User / Account",
         "aria": []
       }

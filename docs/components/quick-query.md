@@ -19,8 +19,14 @@
 
 - 공개 심볼: `QuickQueryPreset`, `QuickQueryProps`, `QuickQuerySlotDetail`, `QuickQuerySlot`, `QuickQueryPresetDialogProps`, `QuickQuery`, `QuickQueryPresetDialog`
 - 주요 Props: `id`, `label`, `presets`, `activeId`, `onApply`, `onClearActive`, `onSettingsClick`, `className`, `triggerLabel`, `compact`, `grouping`, `filters`, `view`, `name`, `detail`, `open`, `onOpenChange`, `slots`, `onDelete`, `onSaveSlot`
-- 상태: `inactive`, `active`, `settings-open`
+- State: `default`, `open`, `readOnly`
+- Value: `unchecked`, `checked`
+- Disabled: `not-applicable`
+- Size: `not-applicable`
+- Interaction: `rest`
 - 변형: `default`, `compact`
+
+다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.
 
 ## 접근성과 제약
 

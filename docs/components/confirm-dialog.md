@@ -20,8 +20,14 @@
 
 - 공개 심볼: `ConfirmDialogAction`, `ConfirmDialogTone`, `ConfirmDialogProps`, `ConfirmDialog`
 - 주요 Props: `label`, `onClick`, `variant`, `error`, `warning`, `info`, `open`, `onOpenChange`, `title`, `heading`, `description`, `actions`, `tone`, `banner`, `children`, `footer`, `onCancel`, `className`
-- 상태: `closed`, `open`, `dismiss`, `confirm`
+- State: `default`, `open`, `error`
+- Value: `not-applicable`
+- Disabled: `not-applicable`
+- Size: `not-applicable`
+- Interaction: `rest`
 - 변형: `default`, `danger`, `comparison`
+
+다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.
 
 ## 접근성과 제약
 

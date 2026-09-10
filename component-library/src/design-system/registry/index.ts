@@ -1,4 +1,5 @@
 import componentData from "./components.json";
+import componentStateFrameworkData from "./component-state-framework.json";
 import assetManifestData from "./asset-manifest.json";
 import componentCatalogData from "./component-catalog.json";
 import patternData from "./patterns.json";
@@ -33,6 +34,7 @@ import webGenerationContextData from "./web-generation-context.json";
 import foundationRecipeData from "./foundation-recipes.json";
 import type {
   ComponentRegistry,
+  ComponentStateFrameworkRegistry,
   AssetManifestRegistry,
   ComponentCatalogRegistry,
   PatternRegistry,
@@ -70,6 +72,7 @@ import type {
 export type * from "./registry.types";
 
 export const componentRegistry = componentData as ComponentRegistry;
+export const componentStateFrameworkRegistry = componentStateFrameworkData as ComponentStateFrameworkRegistry;
 export const assetManifestRegistry = assetManifestData as AssetManifestRegistry;
 export const componentCatalogRegistry = componentCatalogData as ComponentCatalogRegistry;
 export const patternRegistry = { schemaVersion: 1, patterns: [...patternData.patterns, ...sourceAssetData.patterns] } as PatternRegistry;

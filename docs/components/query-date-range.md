@@ -20,8 +20,14 @@ MES 메인 목록이나 조회 팝업에서 시작일·종료일을 하나의 �
 
 - 공개 심볼: `QueryDateRangeProps`, `QueryDateRange`
 - 주요 Props: `label`, `start`, `end`, `onStartChange`, `onEndChange`, `className`
-- 상태: `empty`, `complete`, `calendar-open`
+- State: `default`
+- Value: `not-applicable`
+- Disabled: `not-applicable`
+- Size: `not-applicable`
+- Interaction: `not-applicable`
 - 변형: `default`
+
+다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.
 
 ## 접근성과 제약
 

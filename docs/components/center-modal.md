@@ -20,8 +20,14 @@
 
 - 공개 심볼: `CenterModalSize`, `CenterModalProps`, `CenterModal`, `centerModalSizeClasses`
 - 주요 Props: `open`, `onOpenChange`, `title`, `children`, `cancelLabel`, `onCancel`, `confirmLabel`, `onConfirm`, `size`, `actions`, `footer`, `headerDivider`, `bodyPadding`, `scrollMode`, `bodyAlign`, `exactWidth`, `exactHeight`, `maxHeight`, `contentClassName`, `className`
-- 상태: `closed`, `open`, `dismiss`, `confirm`
+- State: `default`, `open`
+- Value: `not-applicable`
+- Disabled: `false`, `true`
+- Size: `not-applicable`
+- Interaction: `rest`
 - 변형: `compact-400`, `compact-480`, `medium-600`, `standard-960`, `wide-1024`, `large-1100`, `wide-1142`, `wide-1400`
+
+다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.
 
 ## 접근성과 제약
 

@@ -17,8 +17,14 @@ MES 데스크톱 전체 페이지에서 제품의 1차 메뉴와 현재 메뉴 �
 
 - 공개 심볼: `SidebarSubItem`, `SidebarNavItem`, `SidebarProps`, `Sidebar`, `SidebarSettingsIcon`
 - 주요 Props: `key`, `label`, `icon`, `children`, `items`, `expandedKey`, `onExpandedKeyChange`, `activeKey`, `activeSubKey`, `onSubItemClick`, `onItemClick`, `favorited`, `onFavoriteClick`, `onDashboardClick`, `dashboardActive`, `collapsed`, `onCollapseClick`, `onManualClick`, `onLogoutClick`, `logo`
-- 상태: `open`, `hover`
+- State: `default`, `open`
+- Value: `not-applicable`
+- Disabled: `not-applicable`
+- Size: `not-applicable`
+- Interaction: `rest`, `hover`
 - 변형: 등록된 별도 variant 없음
+
+다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.
 
 ## 접근성과 제약
 

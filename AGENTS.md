@@ -17,6 +17,7 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 - 전체 자산 조회: `component-library/src/design-system/registry/asset-manifest.json`
 - 컴포넌트 신원·상태·공개 범위: `components.json`
 - 신규 UI 컴포넌트 선택 규칙: `component-usage-contracts.json`
+- 컴포넌트 상태 축과 조합 규칙: `component-state-framework.json`
 - 화면·섹션·컴포넌트 선택에 공통으로 쓰는 맥락 축: `selection-context-framework.json`
 - 실제 생성 선택 오류: `generation-selection-feedback.json`
 - 패턴과 조합 계약: `patterns.json`, `pattern-contracts.json`
@@ -82,6 +83,7 @@ Figma와 실제 MES 화면에서 반복되는 디자인을 토큰, 컴포넌트,
 ## 컴포넌트 변경
 
 - 공개 자산은 `components.json`에 `visibility`, `tier`, `documentationMode`, `documentationRoute`를 기록한다.
+- 상태는 `component-state-framework.json`에 따라 `State`, `Value`, `Disabled`, `Size`, `Interaction`으로 분리한다. 다섯 축의 단순 곱을 variant 개수로 만들지 않고 실제 유효 조합만 구현·검증한다.
 - 신규 UI의 자산 선택 결과를 바꾸는 사용 맥락이 달라질 때만 `component-usage-contracts.json`을 갱신한다.
 - optional prop을 추가하거나 의미를 바꾸면 `docs/컴포넌트_OPTIONAL_PROP_레지스트리.md`도 갱신한다.
 - `src/components/ui`의 활성 파일은 모두 레지스트리에 등록한다.

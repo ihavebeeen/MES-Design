@@ -21,8 +21,14 @@
 
 - 공개 심볼: `InputProps`, `Input`, `inputVariants`
 - 주요 Props: 별도 Props 선언 없음
-- 상태: `default`, `focus`, `complete`, `readonly`, `disabled`
+- State: `default`, `readOnly`
+- Value: `empty`, `filled`
+- Disabled: `false`, `true`
+- Size: `default`, `small`
+- Interaction: `rest`, `focus`
 - 변형: `default`, `small`
+
+다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.
 
 ## 접근성과 제약
 

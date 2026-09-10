@@ -87,7 +87,7 @@ Figma API가 다음 조건 미충족을 반환했다.
 - 컴포넌트 후보: `DialogHeader`, `MobileCompactField`
 - 패턴 후보: `MobileFormSection`, `MobileInspectionQuestionList`, `MobileTwoDepthMenu`, `MobileDateNavigator`
 - 이관 제외 후보: `MobileDevice`, `*Preview`, visual-test 전용 자산
-- Figma에 추가 검토할 Button 코드 전용값: `softMain`, `softDanger`, `loginPrimary`, `toolbar`, `login`
+- Figma에 추가 검토할 Button 코드 전용값: `softMain`, `softDanger`
 
 새 컴포넌트나 variant는 “코드에 존재한다”만으로 승인하지 않는다. 실제 반복 근거와 기존 패턴으로 표현할 수 없는 이유가 있어야 한다.
 

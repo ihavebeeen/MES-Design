@@ -258,14 +258,14 @@ export function PasswordResetLoginForm({ onComplete }: { onComplete?: () => void
             </label>
             <label className="flex flex-col gap-2 text-[14px] font-medium leading-[21px] text-mes-gray-130">
               <span>새 비밀번호 <span className="font-semibold text-mes-danger-60">*</span></span>
-              <PasswordInput size="login" visibilityToggle={false} aria-label="새 비밀번호" placeholder="새 비밀번호 입력" value={password} onChange={(event) => setPassword(event.target.value)} />
+              <PasswordInput size="default" visibilityToggle={false} aria-label="새 비밀번호" placeholder="새 비밀번호 입력" value={password} onChange={(event) => setPassword(event.target.value)} className="[&>input]:h-12 [&>input]:text-[16px]" />
             </label>
             <label className="flex flex-col gap-2 text-[14px] font-medium leading-[21px] text-mes-gray-130">
               <span>새 비밀번호 확인 <span className="font-semibold text-mes-danger-60">*</span></span>
-              <PasswordInput size="login" visibilityToggle={false} aria-label="새 비밀번호 확인" placeholder="새 비밀번호 재입력" value={confirmation} onChange={(event) => setConfirmation(event.target.value)} />
+              <PasswordInput size="default" visibilityToggle={false} aria-label="새 비밀번호 확인" placeholder="새 비밀번호 재입력" value={confirmation} onChange={(event) => setConfirmation(event.target.value)} className="[&>input]:h-12 [&>input]:text-[16px]" />
               {mismatch && <span role="alert" className="text-[14px] font-normal leading-[21px] text-mes-danger-60">비밀번호가 일치하지 않습니다.</span>}
             </label>
-            <Button type="submit" size="login" variant="loginPrimary" className="mt-0 w-full" disabled={!canSubmit}>비밀번호 변경</Button>
+            <Button type="submit" size="basic" variant="fillBlack" className="mt-0 h-12 w-full text-[16px] font-bold disabled:bg-mes-gray-60 disabled:text-white" disabled={!canSubmit}>비밀번호 변경</Button>
           </form>
         </div>
       </div>

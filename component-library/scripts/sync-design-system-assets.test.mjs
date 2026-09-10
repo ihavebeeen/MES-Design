@@ -8,6 +8,34 @@ import { buildOutputs } from "./sync-design-system-assets.mjs";
 const digest = (value) => createHash("sha256").update(value).digest("hex");
 const readLf = (filePath) => normalizeLineEndings(readFileSync(filePath, "utf8"));
 const baseline = buildOutputs({ readSource: readLf });
+const dimensions = ["state", "value", "disabled", "size", "interaction"];
+
+test("every component exposes the five independent state dimensions", () => {
+  for (const component of baseline.components) {
+    assert.deepEqual(Object.keys(component.stateModel), dimensions, component.id);
+    for (const dimension of dimensions) {
+      assert.ok(component.stateModel[dimension].length > 0, `${component.id}.${dimension}`);
+    }
+  }
+});
+
+test("core controls keep value, disabled, size, and interaction separate", () => {
+  const byId = new Map(baseline.components.map((component) => [component.id, component]));
+  assert.deepEqual(byId.get("button").stateModel, {
+    state: ["default"],
+    value: ["not-applicable"],
+    disabled: ["false", "true"],
+    size: ["basic", "small", "xsmall"],
+    interaction: ["rest", "hover"],
+  });
+  assert.deepEqual(byId.get("input").stateModel.value, ["empty", "filled"]);
+  assert.deepEqual(byId.get("checkbox").stateModel.value, ["unchecked", "checked", "indeterminate"]);
+  assert.deepEqual(byId.get("date-picker").stateModel.value, ["empty", "filled"]);
+  assert.deepEqual(byId.get("tree-select").stateModel.value, ["empty", "multiple-selected"]);
+  assert.deepEqual(byId.get("segmented-control").stateModel.value, ["unselected", "selected"]);
+  const buttonDocument = [...baseline.docs].find(([filePath]) => filePath.endsWith("button.md"))?.[1];
+  assert.match(buttonDocument, /- State:.*\n- Value:.*\n- Disabled:.*\n- Size:.*\n- Interaction:/);
+});
 
 test("component fingerprints use the LF source representation", () => {
   for (const component of baseline.components) {

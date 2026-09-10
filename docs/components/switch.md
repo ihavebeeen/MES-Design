@@ -17,8 +17,14 @@
 
 - 공개 심볼: `SwitchProps`, `Switch`
 - 주요 Props: `size`
-- 상태: `disabled`, `checked`
+- State: `default`
+- Value: `off`, `on`
+- Disabled: `false`, `true`
+- Size: `default`, `compact`
+- Interaction: `rest`
 - 변형: 등록된 별도 variant 없음
+
+다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.
 
 ## 접근성과 제약
 

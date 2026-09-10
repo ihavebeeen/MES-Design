@@ -19,8 +19,14 @@
 
 - 공개 심볼: `SearchInputProps`, `SearchInput`
 - 주요 Props: `value`, `onChange`, `placeholder`, `className`, `width`, `iconColor`, `size`, `background`
-- 상태: `empty`, `value`, `focus`
+- State: `default`
+- Value: `empty`, `filled`
+- Disabled: `not-applicable`
+- Size: `default`, `compact`
+- Interaction: `rest`, `focus`
 - 변형: `default`, `compact`, `fixed`, `fill`, `white`, `subtle`
+
+다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.
 
 ## 접근성과 제약
 

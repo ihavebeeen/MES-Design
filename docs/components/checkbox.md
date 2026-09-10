@@ -20,8 +20,14 @@
 
 - 공개 심볼: `CheckboxColor`, `CheckboxUncheckedAppearance`, `CheckboxProps`, `Checkbox`
 - 주요 Props: `main`, `gray`, `black`, `color`, `indeterminate`, `size`, `uncheckedAppearance`, `shape`
-- 상태: `unchecked`, `checked`, `indeterminate`, `disabled`
+- State: `default`
+- Value: `unchecked`, `checked`, `indeterminate`
+- Disabled: `false`, `true`
+- Size: `small`, `default`
+- Interaction: `rest`
 - 변형: `main`, `gray`, `black`, `outline`, `grayCheck`
+
+다섯 축은 독립적으로 조합하며, 모든 경우의 수를 별도 variant로 만들지 않고 실제 유효 조합만 구현·검증합니다.
 
 ## 접근성과 제약
 

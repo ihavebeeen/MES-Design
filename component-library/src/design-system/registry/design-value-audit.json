@@ -8,8 +8,8 @@
   },
   "summary": {
     "scannedFiles": 131,
-    "totalOccurrences": 3673,
-    "arbitraryUtilities": 1297,
+    "totalOccurrences": 3669,
+    "arbitraryUtilities": 1299,
     "hardcodedColors": 68,
     "reviewCandidates": 0,
     "unregisteredCandidates": 0
@@ -17,20 +17,20 @@
   "layers": {
     "canonical": {
       "files": 84,
-      "occurrences": 1237,
-      "arbitraryUtilities": 422,
+      "occurrences": 1225,
+      "arbitraryUtilities": 419,
       "hardcodedColors": 21
     },
     "pattern": {
       "files": 33,
-      "occurrences": 2002,
-      "arbitraryUtilities": 662,
+      "occurrences": 2008,
+      "arbitraryUtilities": 665,
       "hardcodedColors": 43
     },
     "evidence": {
       "files": 9,
-      "occurrences": 434,
-      "arbitraryUtilities": 213,
+      "occurrences": 436,
+      "arbitraryUtilities": 215,
       "hardcodedColors": 4
     }
   },
@@ -98,10 +98,10 @@
       },
       {
         "value": "16px",
-        "count": 165,
+        "count": 164,
         "arbitraryCount": 0,
         "layers": {
-          "canonical": 26,
+          "canonical": 25,
           "pattern": 120,
           "evidence": 19
         },
@@ -110,30 +110,30 @@
           "src/components/ui/accordion.tsx:67",
           "src/components/ui/alarm-list-item.tsx:58",
           "src/components/ui/alarm-list-item.tsx:67",
-          "src/components/ui/button.tsx:52",
-          "src/components/ui/button.tsx:56",
+          "src/components/ui/button.tsx:51",
           "src/components/ui/card.tsx:26",
-          "src/components/ui/card.tsx:53"
+          "src/components/ui/card.tsx:53",
+          "src/components/ui/card.tsx:61"
         ]
       },
       {
         "value": "10px",
-        "count": 140,
-        "arbitraryCount": 67,
+        "count": 138,
+        "arbitraryCount": 66,
         "layers": {
-          "canonical": 41,
+          "canonical": 39,
           "pattern": 76,
           "evidence": 23
         },
         "examples": [
-          "src/components/ui/button.tsx:53",
-          "src/components/ui/button.tsx:55",
+          "src/components/ui/button.tsx:52",
           "src/components/ui/center-modal.tsx:161",
           "src/components/ui/confirm-dialog.tsx:141",
           "src/components/ui/descriptions.tsx:32",
           "src/components/ui/dialog-footer.tsx:33",
           "src/components/ui/form-grid.tsx:19",
-          "src/components/ui/input.tsx:27"
+          "src/components/ui/input.tsx:27",
+          "src/components/ui/labeled-select.tsx:30"
         ]
       },
       {
@@ -229,7 +229,7 @@
           "src/components/ui/confirm-dialog.tsx:164",
           "src/components/ui/confirm-dialog.tsx:185",
           "src/components/ui/grid-container.tsx:35",
-          "src/components/ui/password-input.tsx:32",
+          "src/components/ui/password-input.tsx:30",
           "src/components/ui/sidebar.tsx:404",
           "src/components/patterns/completed-application-patterns.tsx:313",
           "src/components/patterns/completed-application-patterns.tsx:313"
@@ -590,22 +590,22 @@
     "radius": [
       {
         "value": "rounded-mes-control",
-        "count": 111,
+        "count": 108,
         "arbitraryCount": 0,
         "layers": {
-          "canonical": 48,
+          "canonical": 45,
           "pattern": 58,
           "evidence": 5
         },
         "examples": [
           "src/components/ui/accordion.tsx:45",
           "src/components/ui/before-after-comparison.tsx:30",
+          "src/components/ui/button.tsx:51",
           "src/components/ui/button.tsx:52",
-          "src/components/ui/button.tsx:53",
-          "src/components/ui/button.tsx:55",
-          "src/components/ui/button.tsx:56",
           "src/components/ui/card.tsx:16",
-          "src/components/ui/cascader.tsx:31"
+          "src/components/ui/cascader.tsx:31",
+          "src/components/ui/combobox.tsx:161",
+          "src/components/ui/combobox.tsx:189"
         ]
       },
       {
@@ -619,7 +619,7 @@
         "examples": [
           "src/components/ui/alarm-list-item.tsx:63",
           "src/components/ui/badge.tsx:39",
-          "src/components/ui/button.tsx:54",
+          "src/components/ui/button.tsx:53",
           "src/components/ui/date-picker.tsx:119",
           "src/components/ui/date-picker.tsx:133",
           "src/components/ui/date-picker.tsx:158",
@@ -823,10 +823,10 @@
     "typography": [
       {
         "value": "14px",
-        "count": 135,
-        "arbitraryCount": 135,
+        "count": 134,
+        "arbitraryCount": 134,
         "layers": {
-          "canonical": 48,
+          "canonical": 47,
           "pattern": 71,
           "evidence": 16
         },
@@ -835,10 +835,10 @@
           "src/components/ui/alarm-list-item.tsx:68",
           "src/components/ui/before-after-comparison.tsx:41",
           "src/components/ui/before-after-comparison.tsx:43",
-          "src/components/ui/button.tsx:53",
-          "src/components/ui/button.tsx:55",
+          "src/components/ui/button.tsx:52",
           "src/components/ui/cavity-cell.tsx:13",
-          "src/components/ui/collapsible.tsx:46"
+          "src/components/ui/collapsible.tsx:46",
+          "src/components/ui/confirm-dialog.tsx:174"
         ]
       },
       {
@@ -894,7 +894,7 @@
           "src/components/ui/alarm-list-item.tsx:69",
           "src/components/ui/analytics-charts.tsx:19",
           "src/components/ui/badge.tsx:39",
-          "src/components/ui/button.tsx:54",
+          "src/components/ui/button.tsx:53",
           "src/components/ui/date-picker.tsx:158",
           "src/components/ui/date-range-picker.tsx:122",
           "src/components/ui/file-upload.tsx:38",
@@ -903,22 +903,22 @@
       },
       {
         "value": "16px",
-        "count": 53,
-        "arbitraryCount": 53,
+        "count": 54,
+        "arbitraryCount": 54,
         "layers": {
-          "canonical": 11,
-          "pattern": 37,
+          "canonical": 9,
+          "pattern": 40,
           "evidence": 5
         },
         "examples": [
-          "src/components/ui/button.tsx:56",
           "src/components/ui/confirm-dialog.tsx:170",
           "src/components/ui/content-region-heading.tsx:12",
           "src/components/ui/notification-panel.tsx:139",
           "src/components/ui/notification-panel.tsx:163",
-          "src/components/ui/password-input.tsx:24",
           "src/components/ui/quick-query.tsx:291",
-          "src/components/ui/quick-query.tsx:305"
+          "src/components/ui/quick-query.tsx:305",
+          "src/components/ui/radio-choice-dialog.tsx:138",
+          "src/components/ui/radio-choice-dialog.tsx:153"
         ]
       },
       {
@@ -931,7 +931,7 @@
           "evidence": 4
         },
         "examples": [
-          "src/components/ui/button.tsx:52",
+          "src/components/ui/button.tsx:51",
           "src/components/ui/card.tsx:37",
           "src/components/ui/empty-state.tsx:28",
           "src/components/ui/error-state.tsx:35",
@@ -1194,7 +1194,7 @@
           "src/components/ui/analytics-charts.tsx:38",
           "src/components/ui/analytics-charts.tsx:38",
           "src/components/ui/avatar.tsx:11",
-          "src/components/ui/button.tsx:53",
+          "src/components/ui/button.tsx:52",
           "src/components/ui/confirm-dialog.tsx:149",
           "src/components/ui/filter.tsx:149",
           "src/components/ui/filter.tsx:227",
@@ -1203,22 +1203,22 @@
       },
       {
         "value": "48px",
-        "count": 41,
+        "count": 42,
         "arbitraryCount": 0,
         "layers": {
-          "canonical": 3,
-          "pattern": 31,
+          "canonical": 1,
+          "pattern": 34,
           "evidence": 7
         },
         "examples": [
-          "src/components/ui/button.tsx:56",
           "src/components/ui/image-thumbnail.tsx:59",
-          "src/components/ui/password-input.tsx:24",
           "src/components/patterns/completed-application-patterns.tsx:84",
           "src/components/patterns/completed-application-patterns.tsx:92",
           "src/components/patterns/completed-application-patterns.tsx:142",
           "src/components/patterns/completed-application-patterns.tsx:151",
-          "src/components/patterns/completed-application-patterns.tsx:313"
+          "src/components/patterns/completed-application-patterns.tsx:313",
+          "src/components/patterns/completed-application-patterns.tsx:313",
+          "src/components/patterns/completed-popup-expanded-content.tsx:121"
         ]
       },
       {
@@ -1252,7 +1252,7 @@
         "examples": [
           "src/components/ui/analytics-charts.tsx:18",
           "src/components/ui/badge.tsx:39",
-          "src/components/ui/button.tsx:54",
+          "src/components/ui/button.tsx:53",
           "src/components/ui/filter-tag.tsx:48",
           "src/components/ui/group-query.tsx:120",
           "src/components/ui/icon-button.tsx:38",
@@ -1320,6 +1320,26 @@
         ]
       },
       {
+        "value": "30px",
+        "count": 20,
+        "arbitraryCount": 20,
+        "layers": {
+          "canonical": 12,
+          "pattern": 3,
+          "evidence": 5
+        },
+        "examples": [
+          "src/components/ui/before-after-comparison.tsx:31",
+          "src/components/ui/before-after-comparison.tsx:40",
+          "src/components/ui/progress.tsx:40",
+          "src/components/ui/query-date-range.tsx:21",
+          "src/components/ui/query-date-range.tsx:23",
+          "src/components/ui/selection-action-bar.tsx:21",
+          "src/components/ui/selection-action-bar.tsx:22",
+          "src/components/ui/sidebar.tsx:241"
+        ]
+      },
+      {
         "value": "40px",
         "count": 20,
         "arbitraryCount": 0,
@@ -1331,7 +1351,7 @@
         "examples": [
           "src/components/ui/analytics-charts.tsx:38",
           "src/components/ui/avatar.tsx:11",
-          "src/components/ui/button.tsx:52",
+          "src/components/ui/button.tsx:51",
           "src/components/ui/icon-button.tsx:36",
           "src/components/ui/skeleton.tsx:16",
           "src/components/ui/slider.tsx:43",
@@ -1396,26 +1416,6 @@
           "src/components/ui/section-header.tsx:14",
           "src/components/ui/section-header.tsx:15",
           "src/components/ui/tree-select.tsx:32"
-        ]
-      },
-      {
-        "value": "30px",
-        "count": 17,
-        "arbitraryCount": 17,
-        "layers": {
-          "canonical": 11,
-          "pattern": 3,
-          "evidence": 3
-        },
-        "examples": [
-          "src/components/ui/before-after-comparison.tsx:31",
-          "src/components/ui/before-after-comparison.tsx:40",
-          "src/components/ui/button.tsx:55",
-          "src/components/ui/progress.tsx:40",
-          "src/components/ui/query-date-range.tsx:21",
-          "src/components/ui/query-date-range.tsx:23",
-          "src/components/ui/sidebar.tsx:241",
-          "src/components/ui/table.tsx:420"
         ]
       },
       {
@@ -4363,5 +4363,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "342f0adbd8f06991"
+  "fingerprint": "4f56fb8d5099f0eb"
 }
