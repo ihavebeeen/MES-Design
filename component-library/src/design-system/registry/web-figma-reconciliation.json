@@ -234,6 +234,141 @@
       "Figma 실제 UI frame이 확정되지 않은 5개 실제 웹 화면의 원본 또는 신규 승인 근거 확보"
     ]
   },
+  "conditionalStateComparisonPass": {
+    "status": "representative-overlays-and-states-compared",
+    "performedAt": "2026-09-10",
+    "scope": "기본 화면 위에 열리는 대표 슬라이드·중앙 모달과 선택 상태를 실제 웹에서 다시 열고 Figma 원본·완료 개선안과 대조했다.",
+    "runtimeViewport": {
+      "requested": { "width": 1920, "height": 1080 },
+      "observedCss": { "width": 1939, "height": 1090, "devicePixelRatio": 0.99 },
+      "rule": "브라우저가 보고한 CSS viewport 차이는 보정하지 않고 요청값과 실측값을 함께 남긴다."
+    },
+    "figmaPopupInventory": {
+      "pageId": "8247:18600",
+      "specFramesInspected": 54,
+      "surfacesInspected": 57,
+      "sizeFamilies": [
+        { "size": "900×960", "count": 15 },
+        { "size": "760×960", "count": 10 },
+        { "size": "1400×680", "count": 6 },
+        { "size": "960×680", "count": 4 },
+        { "size": "480×436", "count": 4 },
+        { "size": "400×908", "count": 2 },
+        { "size": "600×652", "count": 2 },
+        { "size": "960×752", "count": 2 },
+        { "size": "960×960", "count": 2 },
+        { "size": "1100×680", "count": 2 },
+        { "size": "600×444", "count": 1 },
+        { "size": "1456×680", "count": 1 },
+        { "size": "480×240", "count": 1 },
+        { "size": "480×292", "count": 1 },
+        { "size": "1400×706", "count": 1 },
+        { "size": "400×272", "count": 1 },
+        { "size": "414×541", "count": 1 },
+        { "size": "360×960", "count": 1 }
+      ],
+      "decision": "팝업을 중앙/슬라이드 두 종류로만 일반화하지 않는다. 정보량·업무 흐름·내부 조합과 연결된 실제 크기군을 비교한다."
+    },
+    "representatives": [
+      {
+        "id": "slide.sales-target-entry",
+        "pageId": "web.sales-target-month",
+        "interaction": "판매목표 등록",
+        "figma": { "nodeId": "10582:53334", "width": 900, "height": 960, "authority": "base-current" },
+        "runtime": { "title": "판매목표(월) 등록", "width": 944.7, "height": 1052.9, "hasClose": true },
+        "classification": "shared-ui-design-difference",
+        "decision": "기본정보→작성 영역→추가→목록→Footer 순서는 대응한다. 폭과 높이는 Figma 기준과 다르다."
+      },
+      {
+        "id": "slide.label-create",
+        "pageId": "web.label",
+        "interaction": "신규 라벨 발행",
+        "figma": { "nodeId": "10605:34663", "width": 360, "height": 960, "authority": "base-current" },
+        "runtime": { "title": "라벨 생성", "width": 415.7, "height": 1052.9, "hasClose": true },
+        "classification": "shared-ui-design-difference",
+        "decision": "좁은 단일 폼 슬라이드라는 역할은 대응하지만 실제 웹 폭이 더 넓다."
+      },
+      {
+        "id": "center.inventory-edit",
+        "pageId": "web.inventory",
+        "interaction": "재고 편집",
+        "figma": { "nodeId": "18813:61921", "width": 1294, "height": 745, "authority": "revision-candidate" },
+        "runtime": { "title": "재고편집", "width": 1551.5, "height": 872.7, "hasClose": true },
+        "classification": "needs-reconciliation",
+        "decision": "기본안 1400×680과 후속안 1294×745가 함께 있어 최신 승인 상태를 확정한 뒤 크기를 판정한다. 실제 웹은 80% viewport 크기로 더 크다."
+      },
+      {
+        "id": "slide.warehouse-create",
+        "pageId": "web.warehouse",
+        "interaction": "창고 등록",
+        "figma": { "nodeId": "16553:37460", "width": 760, "height": 960, "authority": "completed-revision" },
+        "runtime": { "title": "창고 정보", "width": 944.7, "height": 1052.9, "hasClose": false },
+        "classification": "shared-ui-design-difference",
+        "decision": "완료 개선안의 기본정보·기본창고·커스텀정보 구조를 기준으로 사용한다. 실제 웹의 폭과 닫기 X 누락을 구현 차이로 기록한다."
+      },
+      {
+        "id": "center.default-warehouse",
+        "pageId": "web.warehouse",
+        "interaction": "기본창고 설정",
+        "figma": { "nodeId": "16553:37111", "width": 415, "height": 314, "authority": "completed-revision" },
+        "runtime": { "title": "기본 창고 설정", "width": 480, "height": 271.5, "hasClose": false },
+        "classification": "shared-ui-design-difference",
+        "decision": "세 종류 기본창고 선택과 Footer는 대응한다. 모달 크기와 닫기 X가 다르다."
+      },
+      {
+        "id": "center.sales-approval",
+        "pageId": "web.sales-management",
+        "interaction": "데이터 행 더블클릭",
+        "figma": { "nodeId": "9873:80644", "width": 960, "height": 680, "authority": "base-with-revisions" },
+        "runtime": { "title": "출하승인", "width": 900, "height": 786.9, "hasClose": false },
+        "classification": "needs-reconciliation",
+        "decision": "출하실적 확인과 승인 상태 선택 역할은 대응한다. 후속 개선안 중 현재안을 확정한 뒤 크기와 닫기 동작을 판정한다."
+      },
+      {
+        "id": "center.production-work-selection",
+        "pageId": "web.production-result",
+        "interaction": "생산실적 등록",
+        "figma": null,
+        "runtime": { "title": "작업 선택", "width": 1357.6, "height": 872.7, "hasClose": true },
+        "classification": "runtime-only-new-structure",
+        "decision": "최종 Figma 페이지에서 '작업 선택'과 같은 생산지시 선택 모달을 찾지 못했다. 생산실적 슬라이드의 대체 원본으로 사용하지 않고 별도 확인 대상으로 둔다."
+      },
+      {
+        "id": "slide.production-result-entry",
+        "pageId": "web.production-result",
+        "interaction": "작업 선택 확정",
+        "figma": { "nodeId": "19079:63364", "width": 1080, "height": 960, "authority": "revision-with-related-updates" },
+        "runtime": { "title": "생산실적 등록", "width": 1133.6, "height": 1052.9, "hasClose": true },
+        "classification": "needs-reconciliation",
+        "decision": "지시정보→실적정보→추가→상세 목록 구조와 임시 저장은 Figma 개선 근거가 있다. 작업 선택 선행 모달은 별도 근거가 없고 슬라이드 폭도 다르다."
+      },
+      {
+        "id": "slide.operation-log-entry",
+        "pageId": "web.operation-log",
+        "interaction": "운전 일지 등록",
+        "figma": { "nodeId": "19629:105853", "width": 900, "height": 830, "authority": "completed-revision-visible" },
+        "runtime": { "title": "운전일지 등록", "width": 940, "height": 1052.9, "hasClose": true },
+        "classification": "shared-ui-design-difference",
+        "decision": "기본정보와 좌측 타임테이블·우측 가동/비가동 기록·하단 시간 합계 구조는 대응한다. 실제 웹이 전체 높이 슬라이드로 늘어났다."
+      },
+      {
+        "id": "state.list-selection-and-session-row",
+        "pageId": "web.receiving",
+        "interaction": "선택·편집·이번 세션 추가 행",
+        "figma": { "nodeId": "18985:62891", "authority": "completed-shared-slide-revision", "state": "이번 세션에 추가한 행은 main 10 #EFF8FF와 좌측 바로 표시" },
+        "runtime": { "state": "일반 선택은 #E8F5FF, 기존 상세 편집 행은 연한 노란색으로 관찰됨" },
+        "classification": "state-semantics-difference",
+        "decision": "일반 선택·이번 세션 추가·기존 행 편집 상태를 같은 강조로 합치지 않는다. 노란색 편집 상태는 Figma 공통 근거가 확인되기 전까지 웹 관찰값으로만 유지한다."
+      }
+    ],
+    "remaining": [
+      "54개 팝업 설계 프레임 중 이번 대표 대조에 포함하지 않은 팝업은 관련 자산이 수정될 때 같은 형식으로 증분 대조",
+      "출하승인과 재고편집의 중복·후속 Figma 프레임에서 현재 승인안을 확정",
+      "생산실적의 작업 선택 모달과 실제 웹에만 있는 팝업의 디자인 승인 근거 확인",
+      "경향 관리·생산 분석의 인라인 편집 상태를 Figma 개선 프레임과 좌표·상태별로 대조",
+      "Figma 원본이 없는 KPI 편집 상태는 신규 승인 근거가 생길 때까지 웹 참고 상태로 유지"
+    ]
+  },
   "representativeComparisons": [
     {
       "id": "main-list.production-target",
@@ -309,7 +444,13 @@
     "runtimeStatesObservedInRepresentativePass": 1,
     "detailedFigmaFramesInspected": 37,
     "detailedRuntimePagesInspected": 37,
-    "detailedFamiliesInspected": 4
+    "detailedFamiliesInspected": 4,
+    "figmaPopupSpecFramesInspected": 54,
+    "figmaPopupSurfacesInspected": 57,
+    "conditionalRepresentativesCompared": 10,
+    "runtimeOverlaySurfacesMeasured": 9,
+    "stateComparisonsRecorded": 1,
+    "conditionalRepresentativesWithFigmaEvidence": 9
   },
   "remaining": [
     "37개 기본 화면의 팝업과 조건부 상태를 최신 기본안·완료 개선안·실제 웹 순서로 상세 대조",

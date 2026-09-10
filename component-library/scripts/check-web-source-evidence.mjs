@@ -99,6 +99,56 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
       reconciliation.coverage?.detailedFamiliesInspected !== detailedFamilies.size) {
     errors.push("web-figma-reconciliation: 상세 대조 집계가 실제 기록과 다릅니다.");
   }
+  const conditionalComparison = reconciliation.conditionalStateComparisonPass;
+  const conditionalRepresentatives = uniqueMap(
+    "web-figma-reconciliation conditionalStateComparisonPass.representatives",
+    conditionalComparison?.representatives,
+    "id",
+    errors
+  );
+  if (conditionalComparison?.status !== "representative-overlays-and-states-compared") {
+    errors.push("web-figma-reconciliation: 팝업·상태 상세 대조 상태가 필요합니다.");
+  }
+  if (conditionalComparison?.runtimeViewport?.requested?.width !== 1920 ||
+      conditionalComparison?.runtimeViewport?.requested?.height !== 1080) {
+    errors.push("web-figma-reconciliation: 팝업·상태 대조 viewport는 1920×1080이어야 합니다.");
+  }
+  const popupInventory = conditionalComparison?.figmaPopupInventory;
+  const popupFamilySurfaceCount = (popupInventory?.sizeFamilies ?? []).reduce((sum, family) => sum + (family.count ?? 0), 0);
+  if (!Number.isInteger(popupInventory?.specFramesInspected) || !Number.isInteger(popupInventory?.surfacesInspected) ||
+      popupInventory.specFramesInspected < 1 || popupInventory.surfacesInspected < 1 ||
+      popupFamilySurfaceCount !== popupInventory.surfacesInspected) {
+    errors.push("web-figma-reconciliation: Figma 팝업 전수 조사 집계가 실제 크기군 기록과 다릅니다.");
+  }
+  for (const comparison of conditionalRepresentatives.values()) {
+    if (!usagePages.has(comparison.pageId)) {
+      errors.push(`web-figma-reconciliation conditional comparison '${comparison.id}': 실제 웹에 없는 '${comparison.pageId}'를 참조합니다.`);
+    }
+    if (!comparison.interaction || !comparison.classification || !comparison.decision) {
+      errors.push(`web-figma-reconciliation conditional comparison '${comparison.id}': 상호작용·분류·판정이 필요합니다.`);
+    }
+    if (comparison.figma && !/^\d+:\d+$/.test(comparison.figma.nodeId ?? "")) {
+      errors.push(`web-figma-reconciliation conditional comparison '${comparison.id}': Figma node ID가 잘못되었습니다.`);
+    }
+    if (comparison.classification === "runtime-only-new-structure" && comparison.figma !== null) {
+      errors.push(`web-figma-reconciliation conditional comparison '${comparison.id}': 웹 전용 신규 구조는 Figma 근거를 임의 연결할 수 없습니다.`);
+    }
+  }
+  const conditionalItems = [...conditionalRepresentatives.values()];
+  const measuredOverlayCount = conditionalItems.filter((item) => Number.isFinite(item.runtime?.width) && Number.isFinite(item.runtime?.height)).length;
+  const stateComparisonCount = conditionalItems.filter((item) => item.id.startsWith("state.")).length;
+  const withFigmaEvidenceCount = conditionalItems.filter((item) => item.figma !== null && item.figma !== undefined).length;
+  if (reconciliation.coverage?.figmaPopupSpecFramesInspected !== popupInventory?.specFramesInspected ||
+      reconciliation.coverage?.figmaPopupSurfacesInspected !== popupInventory?.surfacesInspected ||
+      reconciliation.coverage?.conditionalRepresentativesCompared !== conditionalItems.length ||
+      reconciliation.coverage?.runtimeOverlaySurfacesMeasured !== measuredOverlayCount ||
+      reconciliation.coverage?.stateComparisonsRecorded !== stateComparisonCount ||
+      reconciliation.coverage?.conditionalRepresentativesWithFigmaEvidence !== withFigmaEvidenceCount) {
+    errors.push("web-figma-reconciliation: 팝업·상태 상세 대조 집계가 실제 기록과 다릅니다.");
+  }
+  if (!Array.isArray(conditionalComparison?.remaining) || conditionalComparison.remaining.length === 0) {
+    errors.push("web-figma-reconciliation: 팝업·상태 상세 대조의 남은 항목이 필요합니다.");
+  }
   const allowedComparisonLevels = new Set(["source-located", "structure-compared", "visual-difference-confirmed", "interaction-observed"]);
   const allowedComparisonClasses = new Set(["aligned-structure", "shared-ui-design-difference", "runtime-state-observed"]);
   for (const comparison of representativeComparisons.values()) {

@@ -126,6 +126,29 @@ test("상세 대조 집계가 실제 화면군과 다르면 실패한다", () =>
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /상세 대조 집계/);
 });
 
+test("팝업 상세 대조 대표 항목이 빠지면 집계 불일치로 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.conditionalStateComparisonPass.representatives =
+    evidence.reconciliation.conditionalStateComparisonPass.representatives.filter((item) => item.id !== "center.production-work-selection");
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /팝업·상태 상세 대조 집계/);
+});
+
+test("Figma 팝업 크기군 합계가 조사 surface 수와 다르면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.conditionalStateComparisonPass.figmaPopupInventory.surfacesInspected = 999;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /Figma 팝업 전수 조사 집계/);
+});
+
+test("웹 전용 작업 선택 모달에 임의의 Figma 원본을 연결하면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.conditionalStateComparisonPass.representatives
+    .find((item) => item.id === "center.production-work-selection").figma = {
+      nodeId: "19079:63364",
+      authority: "guessed"
+    };
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /Figma 근거를 임의 연결/);
+});
+
 test("설비 모니터링 후보를 찾고도 미확정 근거에서 빼면 실패한다", () => {
   const evidence = clone(loadWebSourceEvidence());
   evidence.authority.pages.find((page) => page.pageId === "web.equipment-monitoring").candidateFrameIds = [];

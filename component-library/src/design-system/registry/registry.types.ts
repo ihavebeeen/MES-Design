@@ -492,6 +492,45 @@ export interface WebFigmaReconciliationRegistry {
     unpairedRuntimePages: string[];
     remaining: string[];
   };
+  conditionalStateComparisonPass: {
+    status: "representative-overlays-and-states-compared";
+    performedAt: string;
+    scope: string;
+    runtimeViewport: {
+      requested: { width: number; height: number };
+      observedCss: { width: number; height: number; devicePixelRatio: number };
+      rule: string;
+    };
+    figmaPopupInventory: {
+      pageId: string;
+      specFramesInspected: number;
+      surfacesInspected: number;
+      sizeFamilies: Array<{ size: string; count: number }>;
+      decision: string;
+    };
+    representatives: Array<{
+      id: string;
+      pageId: string;
+      interaction: string;
+      figma: null | {
+        nodeId: string;
+        width?: number;
+        height?: number;
+        authority: string;
+        state?: string;
+      };
+      runtime: {
+        title?: string;
+        width?: number;
+        height?: number;
+        hasClose?: boolean;
+        state?: string;
+      };
+      classification: string;
+      decision: string;
+    }>;
+    remaining: string[];
+  };
   coverage: {
     runtimePages: number;
     sourceLocatedLatest: number;
@@ -505,6 +544,12 @@ export interface WebFigmaReconciliationRegistry {
     detailedFigmaFramesInspected: number;
     detailedRuntimePagesInspected: number;
     detailedFamiliesInspected: number;
+    figmaPopupSpecFramesInspected: number;
+    figmaPopupSurfacesInspected: number;
+    conditionalRepresentativesCompared: number;
+    runtimeOverlaySurfacesMeasured: number;
+    stateComparisonsRecorded: number;
+    conditionalRepresentativesWithFigmaEvidence: number;
   };
   remaining: string[];
 }
