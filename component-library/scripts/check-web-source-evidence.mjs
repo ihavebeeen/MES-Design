@@ -127,15 +127,26 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   const openedEntryFlows = [...interactionPages.values()].flatMap((page) =>
     (page.entries ?? []).filter((entry) => entry.status === "opened").map((entry) => ({ pageId: page.pageId, trigger: entry.trigger }))
   );
+  const entryPageIds = new Set(openedEntryFlows.map((flow) => flow.pageId));
+  const rowOnlyFlows = [...interactionPages.values()]
+    .filter((page) => page.row?.doubleClick?.status === "opened" && !entryPageIds.has(page.pageId))
+    .map((page) => ({ pageId: page.pageId, trigger: "행 더블클릭" }));
+  const expectedPopupFlows = [...openedEntryFlows, ...rowOnlyFlows];
   const flowMappings = uniqueMap(
     "web-figma-reconciliation runtimeEntryFlowCoverage.mappings",
     (conditionalComparison?.runtimeEntryFlowCoverage?.mappings ?? []).map((item) => ({ ...item, key: `${item.pageId}|${item.trigger}` })),
     "key",
     errors
   );
-  for (const flow of openedEntryFlows) {
+  for (const flow of expectedPopupFlows) {
     const key = `${flow.pageId}|${flow.trigger}`;
     if (!flowMappings.has(key)) errors.push(`web-figma-reconciliation: 실제 웹 팝업 진입 '${key}'의 Figma 구성 대조가 빠졌습니다.`);
+  }
+  const mappedPageIds = new Set([...flowMappings.values()].map((item) => item.pageId));
+  for (const page of interactionPages.values()) {
+    if (page.row?.doubleClick?.status === "opened" && !mappedPageIds.has(page.pageId)) {
+      errors.push(`web-figma-reconciliation: '${page.pageId}'의 행 더블클릭 상세 구성 대조가 빠졌습니다.`);
+    }
   }
   for (const mapping of flowMappings.values()) {
     if (!mapping.runtimeTitle || !mapping.status || !mapping.compositionBasis ||
@@ -143,7 +154,7 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
       errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 원본 연결과 내부 구성 판정이 필요합니다.`);
     }
   }
-  if (conditionalComparison?.runtimeEntryFlowCoverage?.observedFlowCount !== openedEntryFlows.length || flowMappings.size !== openedEntryFlows.length) {
+  if (conditionalComparison?.runtimeEntryFlowCoverage?.observedFlowCount !== expectedPopupFlows.length || flowMappings.size !== expectedPopupFlows.length) {
     errors.push("web-figma-reconciliation: 실제 웹 팝업 진입 흐름 집계가 현재 상호작용 원장과 다릅니다.");
   }
   for (const comparison of conditionalRepresentatives.values()) {

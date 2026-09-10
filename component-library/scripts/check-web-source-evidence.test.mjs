@@ -145,6 +145,13 @@ test("실제 웹 팝업 진입 흐름의 Figma 연결이 빠지면 실패한다"
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /팝업 진입.*Figma 구성 대조|팝업 진입 흐름 집계/);
 });
 
+test("행 더블클릭 상세 화면도 같은 업무의 Figma 구성 근거가 필요하다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.mappings =
+    evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.mappings.filter((item) => item.pageId !== "web.item");
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /web\.item.*행 더블클릭 상세 구성 대조/);
+});
+
 test("Figma 팝업 크기군 합계가 조사 surface 수와 다르면 실패한다", () => {
   const evidence = clone(loadWebSourceEvidence());
   evidence.reconciliation.conditionalStateComparisonPass.figmaPopupInventory.surfacesInspected = 999;

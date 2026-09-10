@@ -275,7 +275,7 @@
       "decision": "팝업을 중앙/슬라이드 두 종류로만 일반화하지 않는다. 정보량·업무 흐름·내부 조합과 연결된 실제 크기군을 비교한다."
     },
     "runtimeEntryFlowCoverage": {
-      "observedFlowCount": 34,
+      "observedFlowCount": 36,
       "mappings": [
         { "pageId": "web.sales-target-month", "trigger": "판매목표 등록", "runtimeTitle": "판매목표(월) 등록", "figmaNodeId": "10582:53334", "status": "matched", "compositionBasis": "기본정보→목표 작성→목록 추가→저장" },
         { "pageId": "web.sales-plan-day", "trigger": "판매계획 등록", "runtimeTitle": "판매계획(일) 등록", "figmaNodeId": "10582:54298", "status": "matched", "compositionBasis": "기본정보→일별 계획 작성→목록 추가→저장" },
@@ -311,6 +311,8 @@
         { "pageId": "web.form", "trigger": "양식 등록", "runtimeTitle": "양식관리", "figmaNodeId": "18181:120242", "status": "naming-difference", "compositionBasis": "설비·품목 기준→기본정보→검사항목 추가→저장" },
         { "pageId": "web.user", "trigger": "사용자 등록", "runtimeTitle": "사용자 정보", "figmaNodeId": "10594:34597", "status": "naming-difference", "compositionBasis": "사용자 기본정보→커스텀정보→저장" },
         { "pageId": "web.permission", "trigger": "그룹 등록", "runtimeTitle": "그룹 권한 설정", "figmaNodeId": "11122:47785", "status": "naming-difference", "compositionBasis": "그룹 기본정보→메뉴별 권한 설정→저장" }
+        ,{ "pageId": "web.sales-management", "trigger": "행 더블클릭", "runtimeTitle": "출하승인", "figmaNodeId": "9873:80644", "status": "matched", "compositionBasis": "선택 출하실적 확인→승인 상태 판단·확정" }
+        ,{ "pageId": "web.outgoing-inspection", "trigger": "행 더블클릭", "runtimeTitle": "출고검사 정보", "figmaNodeId": "10619:37198", "status": "naming-difference", "compositionBasis": "출하검사 대상정보→검사 항목·결과 확인 및 저장" }
       ]
     },
     "representatives": [
