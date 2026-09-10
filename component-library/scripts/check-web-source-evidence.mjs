@@ -124,6 +124,28 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
       popupFamilySurfaceCount !== popupInventory.surfacesInspected) {
     errors.push("web-figma-reconciliation: Figma 팝업 전수 조사 집계가 실제 크기군 기록과 다릅니다.");
   }
+  const openedEntryFlows = [...interactionPages.values()].flatMap((page) =>
+    (page.entries ?? []).filter((entry) => entry.status === "opened").map((entry) => ({ pageId: page.pageId, trigger: entry.trigger }))
+  );
+  const flowMappings = uniqueMap(
+    "web-figma-reconciliation runtimeEntryFlowCoverage.mappings",
+    (conditionalComparison?.runtimeEntryFlowCoverage?.mappings ?? []).map((item) => ({ ...item, key: `${item.pageId}|${item.trigger}` })),
+    "key",
+    errors
+  );
+  for (const flow of openedEntryFlows) {
+    const key = `${flow.pageId}|${flow.trigger}`;
+    if (!flowMappings.has(key)) errors.push(`web-figma-reconciliation: 실제 웹 팝업 진입 '${key}'의 Figma 구성 대조가 빠졌습니다.`);
+  }
+  for (const mapping of flowMappings.values()) {
+    if (!mapping.runtimeTitle || !mapping.status || !mapping.compositionBasis ||
+        (mapping.figmaNodeId !== null && !/^\d+:\d+$/.test(mapping.figmaNodeId))) {
+      errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 원본 연결과 내부 구성 판정이 필요합니다.`);
+    }
+  }
+  if (conditionalComparison?.runtimeEntryFlowCoverage?.observedFlowCount !== openedEntryFlows.length || flowMappings.size !== openedEntryFlows.length) {
+    errors.push("web-figma-reconciliation: 실제 웹 팝업 진입 흐름 집계가 현재 상호작용 원장과 다릅니다.");
+  }
   for (const comparison of conditionalRepresentatives.values()) {
     if (!usagePages.has(comparison.pageId)) {
       errors.push(`web-figma-reconciliation conditional comparison '${comparison.id}': 실제 웹에 없는 '${comparison.pageId}'를 참조합니다.`);

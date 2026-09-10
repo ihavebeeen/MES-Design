@@ -139,6 +139,12 @@ test("팝업의 내부 구성요소 대조가 빠지면 실패한다", () => {
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /내부 구성요소 대조 결과/);
 });
 
+test("실제 웹 팝업 진입 흐름의 Figma 연결이 빠지면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.mappings.pop();
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /팝업 진입.*Figma 구성 대조|팝업 진입 흐름 집계/);
+});
+
 test("Figma 팝업 크기군 합계가 조사 surface 수와 다르면 실패한다", () => {
   const evidence = clone(loadWebSourceEvidence());
   evidence.reconciliation.conditionalStateComparisonPass.figmaPopupInventory.surfacesInspected = 999;
@@ -147,8 +153,10 @@ test("Figma 팝업 크기군 합계가 조사 surface 수와 다르면 실패한
 
 test("웹 전용 작업 선택 모달에 임의의 Figma 원본을 연결하면 실패한다", () => {
   const evidence = clone(loadWebSourceEvidence());
-  evidence.reconciliation.conditionalStateComparisonPass.representatives
-    .find((item) => item.id === "center.production-work-selection").figma = {
+  const comparison = evidence.reconciliation.conditionalStateComparisonPass.representatives
+    .find((item) => item.id === "center.production-work-selection");
+  comparison.classification = "runtime-only-new-structure";
+  comparison.figma = {
       nodeId: "19079:63364",
       authority: "guessed"
     };

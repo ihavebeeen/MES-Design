@@ -513,6 +513,17 @@ export interface WebFigmaReconciliationRegistry {
       sizeFamilies: Array<{ size: string; count: number }>;
       decision: string;
     };
+    runtimeEntryFlowCoverage: {
+      observedFlowCount: number;
+      mappings: Array<{
+        pageId: string;
+        trigger: string;
+        runtimeTitle: string;
+        figmaNodeId: string | null;
+        status: "matched" | "naming-difference" | "source-unresolved";
+        compositionBasis: string;
+      }>;
+    };
     representatives: Array<{
       id: string;
       pageId: string;
