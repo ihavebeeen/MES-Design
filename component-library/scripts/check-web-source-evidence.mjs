@@ -29,6 +29,8 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   const reconciliationPages = uniqueMap("web-figma-reconciliation", reconciliation.pages, "pageId", errors);
   const authorityPages = uniqueMap("web-figma-design-authority", authority.pages, "pageId", errors);
   const interactionPages = uniqueMap("web-ui-interaction-audit", interactions.pages, "pageId", errors);
+  const reusableStateContexts = uniqueMap("web-ui-interaction-audit reusableStateContexts", interactions.reusableStateContexts, "id", errors);
+  const screenLocalStateContexts = uniqueMap("web-ui-interaction-audit screenLocalStateContexts", interactions.screenLocalStateContexts, "id", errors);
 
   if (authority.figmaSearch?.status !== "page-sections-inspected") {
     errors.push("web-figma-design-authority: 최신 Figma 페이지 전체 섹션 조사 상태가 필요합니다.");
@@ -112,6 +114,46 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
     }
   }
 
+  const minimumDistinctScreens = interactions.contextPromotionPolicy?.minimumDistinctScreens;
+  if (!Number.isInteger(minimumDistinctScreens) || minimumDistinctScreens < 2) {
+    errors.push("web-ui-interaction-audit: 공통 상태 맥락의 최소 화면 근거는 2개 이상이어야 합니다.");
+  }
+  if (!Array.isArray(interactions.contextPromotionPolicy?.requiredMatch) || interactions.contextPromotionPolicy.requiredMatch.length < 3) {
+    errors.push("web-ui-interaction-audit: 공통 상태 맥락으로 묶을 행동·목적·결과 기준이 필요합니다.");
+  }
+  for (const context of reusableStateContexts.values()) {
+    if (!context.name || !context.useWhen || !context.result || !Array.isArray(context.evidence)) {
+      errors.push(`web-ui-interaction-audit reusableStateContext '${context.id}': name·useWhen·result·evidence가 필요합니다.`);
+      continue;
+    }
+    const evidencePageIds = new Set(context.evidence.map((entry) => entry.pageId));
+    if (evidencePageIds.size < minimumDistinctScreens) {
+      errors.push(`web-ui-interaction-audit reusableStateContext '${context.id}': 서로 다른 화면 ${minimumDistinctScreens}개 이상의 근거가 필요합니다.`);
+    }
+    for (const evidence of context.evidence) {
+      const page = interactionPages.get(evidence.pageId);
+      if (!page) {
+        errors.push(`web-ui-interaction-audit reusableStateContext '${context.id}': 없는 화면 '${evidence.pageId}'를 참조합니다.`);
+        continue;
+      }
+      if (!Number.isInteger(evidence.transitionIndex) || !page.stateTransitions?.[evidence.transitionIndex]) {
+        errors.push(`web-ui-interaction-audit reusableStateContext '${context.id}': '${evidence.pageId}'의 상태 변화 근거가 없습니다.`);
+      }
+    }
+  }
+  for (const context of screenLocalStateContexts.values()) {
+    const page = interactionPages.get(context.pageId);
+    if (!page || !context.reason || !Array.isArray(context.evidence) || context.evidence.length === 0) {
+      errors.push(`web-ui-interaction-audit screenLocalStateContext '${context.id}': 화면·사유·근거가 필요합니다.`);
+      continue;
+    }
+    for (const evidence of context.evidence) {
+      if (!Number.isInteger(evidence.transitionIndex) || !page.stateTransitions?.[evidence.transitionIndex]) {
+        errors.push(`web-ui-interaction-audit screenLocalStateContext '${context.id}': 상태 변화 근거가 없습니다.`);
+      }
+    }
+  }
+
   if (interactions.source?.mode !== "read-only-ui-inspection" || interactions.coverage?.writeActionsExecuted !== 0) {
     errors.push("web-ui-interaction-audit: 읽기 전용 조사에서 저장·삭제·승인 확정 이력이 없어야 합니다.");
   }
@@ -135,7 +177,7 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   if (interactions.coverage?.pagesWithStateTransitionsObserved !== stateTransitionPageCount) {
     errors.push("web-ui-interaction-audit: 상태 변화 확인 화면 수가 실제 기록과 다릅니다.");
   }
-  for (const pageId of ["web.receiving", "web.production-result", "web.shipment-result", "web.material-input-analysis", "web.lot-trace", "web.kpi"]) {
+  for (const pageId of ["web.receiving", "web.production-result", "web.shipment-result", "web.material-input-analysis", "web.lot-trace", "web.inspection-trend", "web.production-analysis", "web.kpi"]) {
     if (!interactionPages.get(pageId)?.stateTransitions?.length) {
       errors.push(`web-ui-interaction-audit '${pageId}': 선택·전달·편집 상태 변화 기록이 필요합니다.`);
     }

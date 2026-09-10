@@ -61,3 +61,23 @@ test("상태 변화 화면 집계가 실제 기록과 다르면 실패한다", (
   evidence.interactions.coverage.pagesWithStateTransitionsObserved = 0;
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /상태 변화 확인 화면 수/);
 });
+
+test("한 화면의 상태 변화를 공통 맥락으로 승격하면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.interactions.reusableStateContexts[0].evidence = [
+    evidence.interactions.reusableStateContexts[0].evidence[0]
+  ];
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /서로 다른 화면 2개 이상/);
+});
+
+test("공통 상태 맥락이 실제 화면의 상태 변화와 연결되지 않으면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.interactions.reusableStateContexts[0].evidence[0].transitionIndex = 99;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /상태 변화 근거가 없습니다/);
+});
+
+test("경향 관리와 생산 분석의 인라인 설정 변화가 빠지면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  delete evidence.interactions.pages.find((page) => page.pageId === "web.inspection-trend").stateTransitions;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /web\.inspection-trend/);
+});

@@ -22,6 +22,83 @@
     "action": "사용자가 수행한 조회·선택·열기 조작",
     "after": "조작 뒤 바뀐 강조·활성·표시·전달 상태"
   },
+  "contextPromotionPolicy": {
+    "minimumDistinctScreens": 2,
+    "requiredMatch": ["같은 사용자 행동", "같은 상태 변화 목적", "같은 시각 또는 동작 결과"],
+    "singleScreenRule": "한 화면에서만 확인한 상태 변화는 해당 화면의 근거로 유지한다."
+  },
+  "reusableStateContexts": [
+    {
+      "id": "selection.enable-related-actions",
+      "name": "행 선택 후 관련 작업 활성화",
+      "useWhen": "사용자가 선택한 행을 대상으로 삭제·출력·다음 단계 작업을 수행할 때",
+      "result": "선택 행을 연한 파란색으로 구분하고 해당 행에 적용되는 작업을 활성화한다.",
+      "evidence": [
+        { "pageId": "web.production-result", "transitionIndex": 0 },
+        { "pageId": "web.receiving", "transitionIndex": 0 },
+        { "pageId": "web.shipment-result", "transitionIndex": 0 }
+      ]
+    },
+    {
+      "id": "selection.transfer-to-work-surface",
+      "name": "선택 대상을 다음 작업 화면으로 전달",
+      "useWhen": "목록이나 선택 모달에서 고른 대상이 등록 화면의 기준 정보가 될 때",
+      "result": "선택을 확정하면 대상의 식별 정보와 업무 기준값을 다음 작업 화면에 전달한다.",
+      "evidence": [
+        { "pageId": "web.production-result", "transitionIndex": 2 },
+        { "pageId": "web.receiving", "transitionIndex": 3 },
+        { "pageId": "web.shipment-result", "transitionIndex": 2 }
+      ]
+    },
+    {
+      "id": "selection.update-dependent-region",
+      "name": "선택에 따라 연결 영역 갱신",
+      "useWhen": "한 목록의 선택 대상에 따라 다른 영역의 상세 내용이 달라질 때",
+      "result": "선택된 기준 대상을 유지한 채 연결 영역만 해당 대상의 정보로 갱신한다.",
+      "evidence": [
+        { "pageId": "web.material-input-analysis", "transitionIndex": 0 },
+        { "pageId": "web.lot-trace", "transitionIndex": 0 }
+      ]
+    },
+    {
+      "id": "editing.highlight-active-detail-row",
+      "name": "편집 중인 상세 행 구분",
+      "useWhen": "기존 기록의 상세 목록에서 현재 편집 대상 행을 구분해야 할 때",
+      "result": "현재 편집 중인 상세 행을 연한 노란색으로 구분한다.",
+      "evidence": [
+        { "pageId": "web.receiving", "transitionIndex": 1 },
+        { "pageId": "web.shipment-result", "transitionIndex": 1 }
+      ]
+    },
+    {
+      "id": "settings.expand-inline-editor",
+      "name": "요약 영역 안에서 설정 편집",
+      "useWhen": "현재 지표를 보면서 기준값만 짧게 조정하는 설정일 때",
+      "result": "설정 버튼이 있던 요약 영역 안에 시스템 값·사용자 값 선택과 입력·적용 컨트롤을 펼친다.",
+      "evidence": [
+        { "pageId": "web.inspection-trend", "transitionIndex": 0 },
+        { "pageId": "web.production-analysis", "transitionIndex": 0 }
+      ]
+    },
+    {
+      "id": "query.manage-saved-conditions",
+      "name": "빠른 조회 조건 관리",
+      "useWhen": "메인 목록의 그룹화·필터·표 설정 조합을 다시 사용할 수 있게 저장할 때",
+      "result": "빠른 조회 설정 중앙 모달에서 세 개의 저장 슬롯과 각 슬롯의 현재 조건 저장 상태를 관리한다.",
+      "evidence": [
+        { "pageId": "web.production-target-month", "transitionIndex": 0 },
+        { "pageId": "web.production-result", "transitionIndex": 3 }
+      ]
+    }
+  ],
+  "screenLocalStateContexts": [
+    {
+      "id": "web.kpi.edit-and-restore",
+      "pageId": "web.kpi",
+      "reason": "읽기 표 전체를 편집 상태로 전환하고 취소로 복원하는 방식은 현재 KPI 화면에서만 확인했다.",
+      "evidence": [{ "transitionIndex": 0 }, { "transitionIndex": 1 }]
+    }
+  ],
   "pages": [
     { "pageId": "web.sales-target-month", "row": { "status": "selected", "queryRange": "2026-07~2026-09", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "판매목표(월) 수정", "width": "content-50%" } }, "entries": [{ "trigger": "판매목표 등록", "status": "opened", "surface": "side-slide-panel", "title": "판매목표(월) 등록", "width": "content-50%" }] },
     { "pageId": "web.sales-plan-day", "row": { "status": "selected", "queryRange": "2026-07~2026-09", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "판매계획(일) 수정", "width": "content-50%" } }, "entries": [{ "trigger": "판매계획 등록", "status": "opened", "surface": "side-slide-panel", "title": "판매계획(일) 등록", "width": "content-50%" }] },
@@ -29,10 +106,10 @@
     { "pageId": "web.sales-management", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "center-modal", "title": "출하승인", "width": "900px" } }, "entries": [{ "trigger": "승인·청구 확정", "status": "not-invoked" }] },
     { "pageId": "web.receipt-management", "row": { "status": "selected", "queryRange": "2026-05~2026-09", "doubleClick": { "status": "opened", "surface": "center-modal", "title": "수금 등록", "width": "810px" } }, "entries": [{ "trigger": "미수금 행 더블클릭", "status": "opened", "surface": "center-modal", "title": "수금 등록", "width": "810px" }], "stateTransitions": [{ "before": "미수금 행 선택 전, 수금 등록 창 닫힘", "action": "행 선택 후 더블클릭", "after": "수금일·수금액 반복 행과 청구금액·잔여 수금액을 가진 중앙 모달이 열림" }] },
 
-    { "pageId": "web.production-target-month", "row": { "status": "selected", "queryRange": "2026-01~2026-09", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "생산목표(월) 수정", "width": "content-55%" } }, "entries": [{ "trigger": "생산목표 등록", "status": "opened", "surface": "side-slide-panel", "title": "생산목표(월) 등록", "width": "content-55%" }] },
+    { "pageId": "web.production-target-month", "row": { "status": "selected", "queryRange": "2026-01~2026-09", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "생산목표(월) 수정", "width": "content-55%" } }, "entries": [{ "trigger": "생산목표 등록", "status": "opened", "surface": "side-slide-panel", "title": "생산목표(월) 등록", "width": "content-55%" }, { "trigger": "빠른 조회 설정", "status": "opened", "surface": "center-modal", "title": "빠른 조회 설정", "width": "486px" }], "stateTransitions": [{ "before": "메인 목록 상단에 빠른 조회 슬롯과 설정 버튼이 표시됨", "action": "빠른 조회 설정 선택", "after": "세 개의 저장 슬롯과 기존 조건 요약·삭제·현재 조건 저장을 관리하는 중앙 모달이 열림" }] },
     { "pageId": "web.production-plan-day", "row": { "status": "selected", "queryRange": "2026-05~2026-09", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "생산계획 수정", "width": "content-50%" } }, "entries": [{ "trigger": "신규 등록", "status": "opened", "surface": "side-slide-panel", "title": "생산계획 등록", "width": "content-50%" }] },
     { "pageId": "web.production-order", "row": { "status": "selected", "queryRange": "2026-01~2026-09", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "생산지시 수정", "width": "content-50%" } }, "entries": [{ "trigger": "생산지시 등록", "status": "opened", "surface": "side-slide-panel", "title": "생산지시 등록", "width": "content-50%" }] },
-    { "pageId": "web.production-result", "row": { "status": "selected", "queryRange": "2026-08~2026-09", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "생산실적 등록", "width": "content-75%" } }, "entries": [{ "trigger": "생산실적 등록", "status": "opened", "surface": "center-modal", "title": "작업 선택", "width": "viewport-70%", "nextStep": "선택한 생산지시의 설비·지시일·품목·지시수량을 생산실적 등록 슬라이드로 전달" }], "stateTransitions": [{ "before": "생산실적 행 미선택, 삭제 비활성", "action": "메인 행 체크박스 선택", "after": "선택 행이 연한 파란색으로 강조되고 삭제가 활성화됨" }, { "before": "작업 선택 모달의 생산지시 미선택", "action": "생산지시 행 선택", "after": "행이 연한 파란색으로 강조되고 체크박스가 진하게 표시되며 선택 버튼이 활성화됨" }, { "before": "생산지시 선택 모달", "action": "선택 확정", "after": "생산실적 등록 슬라이드가 열리고 선택한 설비·지시일·품목·지시수량이 읽기 정보로 전달됨" }] },
+    { "pageId": "web.production-result", "row": { "status": "selected", "queryRange": "2026-08~2026-09", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "생산실적 등록", "width": "content-75%" } }, "entries": [{ "trigger": "생산실적 등록", "status": "opened", "surface": "center-modal", "title": "작업 선택", "width": "viewport-70%", "nextStep": "선택한 생산지시의 설비·지시일·품목·지시수량을 생산실적 등록 슬라이드로 전달" }, { "trigger": "빠른 조회 설정", "status": "opened", "surface": "center-modal", "title": "빠른 조회 설정", "width": "486px" }], "stateTransitions": [{ "before": "생산실적 행 미선택, 삭제 비활성", "action": "메인 행 체크박스 선택", "after": "선택 행이 연한 파란색으로 강조되고 삭제가 활성화됨" }, { "before": "작업 선택 모달의 생산지시 미선택", "action": "생산지시 행 선택", "after": "행이 연한 파란색으로 강조되고 체크박스가 진하게 표시되며 선택 버튼이 활성화됨" }, { "before": "생산지시 선택 모달", "action": "선택 확정", "after": "생산실적 등록 슬라이드가 열리고 선택한 설비·지시일·품목·지시수량이 읽기 정보로 전달됨" }, { "before": "메인 목록 상단에 빠른 조회 슬롯과 설정 버튼이 표시됨", "action": "빠른 조회 설정 선택", "after": "세 개의 저장 슬롯과 현재 조건 저장을 관리하는 중앙 모달이 열림" }] },
     { "pageId": "web.operation-log", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "운전일지 수정", "width": "940px" } }, "entries": [{ "trigger": "운전 일지 등록", "status": "opened", "surface": "side-slide-panel", "title": "운전일지 등록", "width": "940px" }] },
     { "pageId": "web.self-inspection", "row": { "status": "selected", "queryRange": "2026-05~2026-09", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "자주검사 정보", "width": "content-50%" } }, "entries": [{ "trigger": "신규 검사 생성", "status": "opened", "surface": "center-modal", "title": "검사항목 선택", "width": "1160px" }] },
 
@@ -49,14 +126,14 @@
     { "pageId": "web.incoming-inspection", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "입고검사 정보", "width": "849px" } }, "entries": [{ "trigger": "입고검사 시작", "status": "opened", "surface": "side-slide-panel", "title": "입고검사 정보", "width": "849px" }] },
     { "pageId": "web.outgoing-inspection", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "출고검사 정보", "width": "849px" } }, "entries": [] },
     { "pageId": "web.process-inspection", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "공정검사 정보", "width": "849px" } }, "entries": [{ "trigger": "신규 검사 생성", "status": "opened", "surface": "center-modal", "title": "검사항목 선택", "width": "1160px" }] },
-    { "pageId": "web.inspection-trend", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "반품 건수 전년도 설정", "status": "no-overlay", "result": "인라인 입력 상태" }, { "trigger": "보류 건수 전년도 설정", "status": "no-overlay", "result": "인라인 입력 상태" }] },
+    { "pageId": "web.inspection-trend", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "반품 건수 전년도 설정", "status": "no-overlay", "result": "해당 지표 영역을 월별 기준값 편집 상태로 전환" }, { "trigger": "보류 건수 전년도 설정", "status": "no-overlay", "result": "해당 지표 영역을 월별 기준값 편집 상태로 전환" }], "stateTransitions": [{ "before": "반품 건수의 올해·전년도 월별 표와 전년도 설정 버튼이 표시됨", "action": "반품 건수 전년도 설정 선택", "after": "같은 지표 영역에 시스템 설정값·사용자 설정값 라디오, 전년도 12개월 입력, 적용 버튼이 펼쳐지고 설정 버튼은 설정 닫기로 바뀜" }] },
 
     { "pageId": "web.equipment-monitoring", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "성형기정보", "status": "no-overlay", "result": "화면 내부 상태 변화" }, { "trigger": "알람이력", "status": "no-overlay", "result": "화면 내부 상태 변화" }] },
     { "pageId": "web.maintenance-history", "row": { "status": "selected", "queryRange": "2026-01~2026-09", "selectionEffect": "선택 행 연한 파란색 강조·삭제 활성화", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "정비이력 편집", "width": "content-50%" } }, "entries": [{ "trigger": "정비이력 등록", "status": "opened", "surface": "side-slide-panel", "title": "정비이력 등록", "width": "content-50%" }], "stateTransitions": [{ "before": "정비이력 행 미선택, 삭제 비활성", "action": "행 선택 후 더블클릭", "after": "선택 행이 강조되고 정비이력 편집 슬라이드에 기본정보·정비기록·투입자재가 표시됨" }] },
     { "pageId": "web.equipment-inspection", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "설비 점검 수정", "width": "content-50%" } }, "entries": [{ "trigger": "설비점검 등록", "status": "opened", "surface": "side-slide-panel", "title": "설비 점검 등록", "width": "content-50%" }] },
 
     { "pageId": "web.lot-trace", "row": { "status": "selected", "queryRange": "2026-05~2026-09", "selectionEffect": "하단 투입품목 상세가 선택 LOT 기준으로 갱신", "doubleClick": { "status": "no-overlay", "result": "상세는 더블클릭이 아니라 체크박스 단일 선택으로 갱신" } }, "entries": [], "stateTransitions": [{ "before": "하단에 상단 LOT 선택 안내가 표시됨", "action": "상단 LOT 행 체크박스 선택", "after": "하단 투입품목 상세가 해당 LOT 기준으로 갱신되며 연결 자료가 없으면 빈 결과를 표시함" }] },
-    { "pageId": "web.production-analysis", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "판매 계획 목표 설정", "status": "no-overlay", "result": "분석 화면 내부 입력 상태" }, { "trigger": "생산 계획 목표 설정", "status": "no-overlay", "result": "분석 화면 내부 입력 상태" }] },
+    { "pageId": "web.production-analysis", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "판매 계획 목표 설정", "status": "no-overlay", "result": "달성률 카드 내부 기준값 편집 상태" }, { "trigger": "생산 계획 목표 설정", "status": "no-overlay", "result": "진척률 카드 내부 기준값 편집 상태" }], "stateTransitions": [{ "before": "당월 판매 계획 달성률과 목표 설정 버튼이 요약 카드에 표시됨", "action": "판매 계획 목표 설정 선택", "after": "같은 카드 안에 시스템 설정값·사용자 설정값 라디오, 목표값 입력, 적용 버튼이 펼쳐지고 설정 버튼은 설정 닫기로 바뀜. 시스템 설정값을 선택한 상태에서는 사용자 목표값 입력이 비활성화됨" }] },
     { "pageId": "web.equipment-operation-analysis", "row": { "status": "not-applicable", "result": "월별 설비 가동 현황 행은 조회 요약이며 별도 선택·상세 진입이 없음" }, "entries": [{ "trigger": "공정 선택", "status": "no-overlay", "result": "월별 설비 가동 현황과 요약 지표를 화면 안에서 갱신" }] },
     { "pageId": "web.forming-analysis", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "생산분석/불량분석", "status": "no-overlay", "result": "화면 내부 보기 전환" }] },
     { "pageId": "web.extrusion-analysis", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "생산분석/불량분석", "status": "no-overlay", "result": "화면 내부 보기 전환" }] },
@@ -79,11 +156,11 @@
     "pagesWithSelectedDataRow": 35,
     "pagesBlockedByCurrentNoData": 0,
     "pagesWithoutRowDetail": 7,
-    "pagesWithStateTransitionsObserved": 8,
+    "pagesWithStateTransitionsObserved": 11,
     "writeActionsExecuted": 0
   },
   "remaining": [
-    "경향 관리와 생산 분석의 설정 버튼은 인라인 변화 전후의 필드·배치 차이를 별도 캡처로 대조한다.",
+    "경향 관리의 보류 건수 설정과 생산 분석의 생산 계획 목표 설정은 같은 인라인 편집 문법인지 수정 시 증분 확인한다.",
     "이번에 상태 변화를 상세 기록하지 않은 기존 확인 화면은 수정·재검증 시 같은 before-action-after 형식으로 보강한다."
   ]
 }
