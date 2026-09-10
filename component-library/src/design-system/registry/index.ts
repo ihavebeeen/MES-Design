@@ -29,6 +29,7 @@ import patternContractData from "./pattern-contracts.json";
 import sectionCompositionAuditData from "./section-composition-audit.json";
 import screenSpecData from "./screen-specs.json";
 import webUiUsageInventoryData from "./web-ui-usage-inventory.json";
+import webUiInteractionAuditData from "./web-ui-interaction-audit.json";
 import webFigmaReconciliationData from "./web-figma-reconciliation.json";
 import webGenerationContextData from "./web-generation-context.json";
 import foundationRecipeData from "./foundation-recipes.json";
@@ -101,6 +102,7 @@ export const patternUsageContractRegistry = patternContractData as PatternUsageC
 export const sectionCompositionAuditRegistry = sectionCompositionAuditData as SectionCompositionAuditRegistry;
 export const screenSpecRegistry = screenSpecData as ScreenSpecRegistry;
 export const webUiUsageInventoryRegistry = webUiUsageInventoryData as WebUiUsageInventoryRegistry;
+export const webUiInteractionAuditRegistry = webUiInteractionAuditData;
 export const webFigmaReconciliationRegistry = webFigmaReconciliationData as WebFigmaReconciliationRegistry;
 export const webGenerationContextRegistry = webGenerationContextData as WebGenerationContextRegistry;
 export const foundationRecipeRegistry = foundationRecipeData as FoundationRecipeRegistry;
@@ -195,6 +197,16 @@ export function getWebGenerationContext(reference = "") {
   );
   const flowIds = new Set(flows.map((flow) => flow.id));
   const observedArchetypeRefs = new Set(pages.map((page) => page.archetypeRef));
+  const runtimeFlowCoverage = webFigmaReconciliationRegistry.conditionalStateComparisonPass.runtimeEntryFlowCoverage;
+  const observedCompositionExamples = runtimeFlowCoverage.mappings.filter((mapping) =>
+    normalized === "" || pageIds.has(mapping.pageId) || matches(mapping),
+  );
+  const observedCompositionProfileRefs = new Set(observedCompositionExamples.map((mapping) => mapping.contextProfileRef));
+  const observedStateContextRefs = new Set(
+    runtimeFlowCoverage.contextProfiles
+      .filter((profile) => observedCompositionProfileRefs.has(profile.id))
+      .flatMap((profile) => profile.stateContextRefs),
+  );
   return {
     status: webGenerationContextRegistry.status,
     purpose: webGenerationContextRegistry.purpose,
@@ -210,6 +222,14 @@ export function getWebGenerationContext(reference = "") {
       normalized === "" || entry.evidenceFlowIds.some((id) => flowIds.has(id)) || matches(entry),
     ),
     behaviorRules: webGenerationContextRegistry.behaviorRules.filter((entry) => normalized === "" || matches(entry)),
+    observedCompositionContexts: runtimeFlowCoverage.contextProfiles.filter((profile) =>
+      normalized === "" || observedCompositionProfileRefs.has(profile.id) || matches(profile),
+    ),
+    observedCompositionExamples,
+    stateInterpretationPolicy: webUiInteractionAuditRegistry.stateInterpretationPolicy,
+    observedStateContexts: webUiInteractionAuditRegistry.reusableStateContexts.filter((context) =>
+      normalized === "" || observedStateContextRefs.has(context.id) || matches(context),
+    ),
     foundationRecipes: getFoundationRecipes(reference),
     foundationVisualLanguage: foundationRecipeRegistry.visualLanguage,
     nearestObservedExamples: { pages, entryFlows: flows },

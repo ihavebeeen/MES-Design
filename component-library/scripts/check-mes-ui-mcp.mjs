@@ -129,6 +129,10 @@ try {
   assert(webGeneration.policy.authority === "observed-generation-guidance", "신규 UI 생성 문법의 권한이 잘못 노출됐습니다.");
   assert(webGeneration.nearestObservedExamples.pages.some((entry) => entry.id === "web.production-result"), "생산실적과 가까운 실제 웹 예시를 찾지 못했습니다.");
   assert(webGeneration.overlayGrammars.some((entry) => entry.id === "generation.overlay.select-then-register"), "선택 후 등록 팝업 문법을 찾지 못했습니다.");
+  assert(webGeneration.observedCompositionContexts.some((entry) => entry.id === "flow-context.lookup-transfer"), "생산실적의 실제 구성 맥락을 찾지 못했습니다.");
+  assert(webGeneration.observedCompositionExamples.some((entry) => entry.pageId === "web.production-result" && entry.contextProfileRef === "flow-context.lookup-transfer"), "실제 팝업 진입과 구성 맥락 연결이 누락됐습니다.");
+  assert(webGeneration.stateInterpretationPolicy.independentRoles.some((entry) => entry.startsWith("selected:")), "선택과 편집 상태를 구분하는 규칙이 누락됐습니다.");
+  assert(webGeneration.observedStateContexts.some((entry) => entry.id === "selection.transfer-to-work-surface"), "생산실적의 선택 전달 상태 맥락이 누락됐습니다.");
   assert(webGeneration.foundationVisualLanguage.character.length > 0, "신규 UI 생성 맥락에 MES 시각 언어가 누락됐습니다.");
   assert(webGeneration.foundationRecipes.some((entry) => entry.id === "foundation.slide.staged-entry-list"), "생산실적과 가까운 기초 레시피를 찾지 못했습니다.");
   assert(webGeneration.selectionContextFramework.dimensions.some((entry) => entry.id === "information-relationship"), "신규 UI 생성 맥락에 공통 정보 관계 축이 누락됐습니다.");
@@ -156,6 +160,8 @@ try {
   assert(noReferenceContract.quality.blockerCount === 0, "참고 사례 미선택을 MCP Resolver가 차단했습니다.");
   assert(contract.implementation?.webGenerationContext?.policy?.authority === "observed-generation-guidance", "Resolver가 신규 UI 생성 문법을 전달하지 않았습니다.");
   assert(contract.implementation?.webGenerationContext?.overlayGrammars?.some((entry) => entry.id === "generation.overlay.select-then-register"), "Resolver가 가까운 실제 웹 팝업 문법을 전달하지 않았습니다.");
+  assert(contract.implementation?.webGenerationContext?.observedCompositionContexts?.some((entry) => entry.id === "flow-context.lookup-transfer"), "Resolver가 실제 구성 맥락을 전달하지 않았습니다.");
+  assert(contract.implementation?.webGenerationContext?.observedStateContexts?.some((entry) => entry.id === "selection.transfer-to-work-surface"), "Resolver가 연결된 상태 변화 맥락을 전달하지 않았습니다.");
   assert(contract.implementation?.reproductionAuditContext === null, "신규 UI 계약에 재현·감사 정보가 섞였습니다.");
   const missingBaselineRequest = structuredClone(request);
   missingBaselineRequest.screenRelationship = {

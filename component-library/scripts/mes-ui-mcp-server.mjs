@@ -251,6 +251,14 @@ export function createMesUiMcpServer() {
       const pageIds = new Set(pages.map((page) => page.id));
       const flows = inventory.entryFlows.filter((flow) => pageIds.has(flow.pageId) || matches(flow));
       const flowIds = new Set(flows.map((flow) => flow.id));
+      const runtimeFlowCoverage = registry.webFigmaReconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage;
+      const observedCompositionExamples = runtimeFlowCoverage.mappings.filter((mapping) => pageIds.has(mapping.pageId) || matches(mapping));
+      const observedCompositionProfileRefs = new Set(observedCompositionExamples.map((mapping) => mapping.contextProfileRef));
+      const observedStateContextRefs = new Set(
+        runtimeFlowCoverage.contextProfiles
+          .filter((profile) => observedCompositionProfileRefs.has(profile.id))
+          .flatMap((profile) => profile.stateContextRefs),
+      );
       const archetypeRefs = new Set(pages.map((page) => page.archetypeRef));
       const select = (entries, evidence = () => false) => entries.filter((entry) => matches(entry) || evidence(entry)).slice(0, limit);
       const referenceContext = getScreenReferences({ query, targetKind, taskIds, usageIds, limit: Math.min(limit, 6) });
@@ -268,6 +276,14 @@ export function createMesUiMcpServer() {
         overlayGrammars: category === "all" || category === "overlays" ? select(context.overlayGrammars, (entry) => entry.evidenceFlowIds.some((id) => flowIds.has(id))) : [],
         sectionRecipes: category === "all" || category === "sections" ? select(context.sectionRecipes, (entry) => entry.evidenceFlowIds.some((id) => flowIds.has(id))) : [],
         behaviorRules: category === "all" || category === "behaviors" ? select(context.behaviorRules) : [],
+        observedCompositionContexts: category === "all" || category === "overlays" || category === "sections"
+          ? runtimeFlowCoverage.contextProfiles.filter((profile) => observedCompositionProfileRefs.has(profile.id) || matches(profile)).slice(0, limit)
+          : [],
+        observedCompositionExamples: observedCompositionExamples.slice(0, limit),
+        stateInterpretationPolicy: registry.webUiInteractionAudit.stateInterpretationPolicy,
+        observedStateContexts: category === "all" || category === "behaviors"
+          ? registry.webUiInteractionAudit.reusableStateContexts.filter((context) => observedStateContextRefs.has(context.id) || matches(context)).slice(0, limit)
+          : [],
         nearestObservedExamples: { pages: pages.slice(0, limit), entryFlows: flows.slice(0, limit) },
         coverage: context.coverage,
       });

@@ -23,7 +23,7 @@ function uniqueMap(label, items, key, errors) {
   return map;
 }
 
-export function validateWebSourceEvidence({ usage, reconciliation, authority, interactions }) {
+export function validateWebSourceEvidence({ usage, reconciliation, authority, interactions, usageContexts, patterns }) {
   const errors = [];
   const usagePages = uniqueMap("web-ui-usage-inventory", usage.pages, "id", errors);
   const reconciliationPages = uniqueMap("web-figma-reconciliation", reconciliation.pages, "pageId", errors);
@@ -32,6 +32,8 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   const representativeComparisons = uniqueMap("web-figma-reconciliation representativeComparisons", reconciliation.representativeComparisons, "id", errors);
   const reusableStateContexts = uniqueMap("web-ui-interaction-audit reusableStateContexts", interactions.reusableStateContexts, "id", errors);
   const screenLocalStateContexts = uniqueMap("web-ui-interaction-audit screenLocalStateContexts", interactions.screenLocalStateContexts, "id", errors);
+  const usageContextIds = new Set((usageContexts?.contexts ?? []).map((item) => item.id));
+  const patternIds = new Set((patterns?.patterns ?? []).map((item) => item.id));
 
   if (authority.figmaSearch?.status !== "page-sections-inspected") {
     errors.push("web-figma-design-authority: 최신 Figma 페이지 전체 섹션 조사 상태가 필요합니다.");
@@ -132,6 +134,36 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
     .filter((page) => page.row?.doubleClick?.status === "opened" && !entryPageIds.has(page.pageId))
     .map((page) => ({ pageId: page.pageId, trigger: "행 더블클릭" }));
   const expectedPopupFlows = [...openedEntryFlows, ...rowOnlyFlows];
+  const flowContextProfiles = uniqueMap(
+    "web-figma-reconciliation runtimeEntryFlowCoverage.contextProfiles",
+    conditionalComparison?.runtimeEntryFlowCoverage?.contextProfiles,
+    "id",
+    errors
+  );
+  const referencedFlowContextProfiles = new Set();
+  for (const profile of flowContextProfiles.values()) {
+    if (!profile.name || !profile.purpose || !profile.informationRelationship ||
+        !Array.isArray(profile.usageContextRefs) || profile.usageContextRefs.length === 0 ||
+        !Array.isArray(profile.patternRefs) || profile.patternRefs.length === 0 ||
+        !Array.isArray(profile.stateContextRefs)) {
+      errors.push(`web-figma-reconciliation flow context '${profile.id}': 목적·정보 관계·자산 연결이 필요합니다.`);
+      continue;
+    }
+    for (const ref of profile.usageContextRefs) {
+      if (!usageContextIds.has(ref)) errors.push(`web-figma-reconciliation flow context '${profile.id}': 알 수 없는 usage context '${ref}'`);
+    }
+    for (const ref of profile.patternRefs) {
+      if (!patternIds.has(ref)) errors.push(`web-figma-reconciliation flow context '${profile.id}': 알 수 없는 pattern '${ref}'`);
+    }
+    for (const ref of profile.stateContextRefs) {
+      if (!reusableStateContexts.has(ref) && !screenLocalStateContexts.has(ref)) {
+        errors.push(`web-figma-reconciliation flow context '${profile.id}': 알 수 없는 state context '${ref}'`);
+      }
+    }
+    if (profile.authority === "runtime-reference-only" && !profile.sourceDecision) {
+      errors.push(`web-figma-reconciliation flow context '${profile.id}': 웹 참고 전용 분류에는 원본 검색 판정이 필요합니다.`);
+    }
+  }
   const flowMappings = uniqueMap(
     "web-figma-reconciliation runtimeEntryFlowCoverage.mappings",
     (conditionalComparison?.runtimeEntryFlowCoverage?.mappings ?? []).map((item) => ({ ...item, key: `${item.pageId}|${item.trigger}` })),
@@ -149,10 +181,27 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
     }
   }
   for (const mapping of flowMappings.values()) {
-    if (!mapping.runtimeTitle || !mapping.status || !mapping.compositionBasis ||
+    if (!mapping.runtimeTitle || !mapping.status || !mapping.compositionBasis || !mapping.contextProfileRef ||
         (mapping.figmaNodeId !== null && !/^\d+:\d+$/.test(mapping.figmaNodeId))) {
       errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 원본 연결과 내부 구성 판정이 필요합니다.`);
     }
+    if (!flowContextProfiles.has(mapping.contextProfileRef)) {
+      errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 알 수 없는 구성 맥락 '${mapping.contextProfileRef}'`);
+    } else {
+      referencedFlowContextProfiles.add(mapping.contextProfileRef);
+    }
+    if (mapping.status === "runtime-only-reference") {
+      const profile = flowContextProfiles.get(mapping.contextProfileRef);
+      if (mapping.figmaNodeId !== null || profile?.authority !== "runtime-reference-only") {
+        errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 웹 참고 전용 항목은 Figma 원본과 공통 권한을 가질 수 없습니다.`);
+      }
+    }
+    if (mapping.status === "candidate-needs-semantic-review" && mapping.figmaNodeId === null) {
+      errors.push(`web-figma-reconciliation runtime flow '${mapping.key}': 의미 검토 후보에는 후보 Figma node가 필요합니다.`);
+    }
+  }
+  for (const profileId of flowContextProfiles.keys()) {
+    if (!referencedFlowContextProfiles.has(profileId)) errors.push(`web-figma-reconciliation flow context '${profileId}': 연결된 실제 웹 진입 흐름이 없습니다.`);
   }
   if (conditionalComparison?.runtimeEntryFlowCoverage?.observedFlowCount !== expectedPopupFlows.length || flowMappings.size !== expectedPopupFlows.length) {
     errors.push("web-figma-reconciliation: 실제 웹 팝업 진입 흐름 집계가 현재 상호작용 원장과 다릅니다.");
@@ -309,6 +358,12 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   if (!Array.isArray(interactions.contextPromotionPolicy?.requiredMatch) || interactions.contextPromotionPolicy.requiredMatch.length < 3) {
     errors.push("web-ui-interaction-audit: 공통 상태 맥락으로 묶을 행동·목적·결과 기준이 필요합니다.");
   }
+  const stateInterpretationPolicy = interactions.stateInterpretationPolicy;
+  if (!stateInterpretationPolicy?.purpose || !Array.isArray(stateInterpretationPolicy.independentRoles) ||
+      stateInterpretationPolicy.independentRoles.length < 5 || !Array.isArray(stateInterpretationPolicy.rules) ||
+      stateInterpretationPolicy.rules.length < 5) {
+    errors.push("web-ui-interaction-audit: 선택·편집·추가·비활성·불러오기 상태를 구분하는 해석 규칙이 필요합니다.");
+  }
   for (const context of reusableStateContexts.values()) {
     if (!context.name || !context.useWhen || !context.result || !Array.isArray(context.evidence)) {
       errors.push(`web-ui-interaction-audit reusableStateContext '${context.id}': name·useWhen·result·evidence가 필요합니다.`);
@@ -403,7 +458,9 @@ export function loadWebSourceEvidence() {
     usage: readJson("web-ui-usage-inventory.json"),
     reconciliation: readJson("web-figma-reconciliation.json"),
     authority: readJson("web-figma-design-authority.json"),
-    interactions: readJson("web-ui-interaction-audit.json")
+    interactions: readJson("web-ui-interaction-audit.json"),
+    usageContexts: readJson("usage-contexts.json"),
+    patterns: readJson("patterns.json")
   };
 }
 

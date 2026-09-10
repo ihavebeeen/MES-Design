@@ -22,6 +22,23 @@
     "action": "사용자가 수행한 조회·선택·열기 조작",
     "after": "조작 뒤 바뀐 강조·활성·표시·전달 상태"
   },
+  "stateInterpretationPolicy": {
+    "purpose": "같은 색이나 행 강조를 모양만으로 묶지 않고 사용자의 행동과 다음 결과로 구분한다.",
+    "independentRoles": [
+      "selected: 다음 작업의 대상 범위를 표시",
+      "active-edit: 현재 수정 중인 기존 레코드를 표시",
+      "session-added: 이번 작업에서 새로 추가되어 아직 전체 저장 전인 레코드를 표시",
+      "disabled: 업무 조건상 현재 실행할 수 없는 조작을 표시",
+      "loading-or-unavailable: 처리 중이거나 자료를 불러오지 못한 상태를 표시"
+    ],
+    "rules": [
+      "selected·active-edit·session-added는 동시에 존재할 수 있는 독립 상태로 모델링한다.",
+      "색상은 상태의 결과 표현이며 상태 이름이나 업무 의미를 대신하지 않는다.",
+      "disabled와 loading-or-unavailable은 원인과 복구 방법이 다르므로 같은 상태로 합치지 않는다.",
+      "선택 이후 버튼 활성화·상세 갱신·다음 화면 전달 중 어떤 결과가 이어지는지 함께 기록한다.",
+      "Figma는 승인된 상태 외형을, 실제 웹은 대표 사용 장면과 전후 변화를 확인하는 근거로 사용한다."
+    ]
+  },
   "contextPromotionPolicy": {
     "minimumDistinctScreens": 2,
     "requiredMatch": ["같은 사용자 행동", "같은 상태 변화 목적", "같은 시각 또는 동작 결과"],

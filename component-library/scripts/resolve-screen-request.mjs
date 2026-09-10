@@ -50,6 +50,7 @@ export function readRegistryBundle() {
   const sectionCompositionAudit = readJson(join(registryDirectory, "section-composition-audit.json"));
   const screenSpecs = readJson(join(registryDirectory, "screen-specs.json"));
   const webUiUsageInventory = readJson(join(registryDirectory, "web-ui-usage-inventory.json"));
+  const webUiInteractionAudit = readJson(join(registryDirectory, "web-ui-interaction-audit.json"));
   const webFigmaReconciliation = readJson(join(registryDirectory, "web-figma-reconciliation.json"));
   const webGenerationContext = readJson(join(registryDirectory, "web-generation-context.json"));
   const foundationRecipes = readJson(join(registryDirectory, "foundation-recipes.json"));
@@ -73,6 +74,7 @@ export function readRegistryBundle() {
     sectionCompositionAudit,
     screenSpecs: screenSpecs.specs,
     webUiUsageInventory,
+    webUiInteractionAudit,
     webFigmaReconciliation,
     webGenerationContext,
     foundationRecipes,
@@ -451,6 +453,14 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
     return observedSearchTerms.some((term) => serialized.includes(term));
   });
   const observedArchetypeRefs = new Set(observedPages.map((page) => page.archetypeRef));
+  const runtimeFlowCoverage = registry.webFigmaReconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage;
+  const observedCompositionExamples = runtimeFlowCoverage.mappings.filter((mapping) => observedPageIds.has(mapping.pageId));
+  const observedCompositionProfileRefs = new Set(observedCompositionExamples.map((mapping) => mapping.contextProfileRef));
+  const observedStateContextRefs = new Set(
+    runtimeFlowCoverage.contextProfiles
+      .filter((profile) => observedCompositionProfileRefs.has(profile.id))
+      .flatMap((profile) => profile.stateContextRefs),
+  );
   const generationGuidance = {
     status: registry.webGenerationContext.status,
     purpose: registry.webGenerationContext.purpose,
@@ -466,6 +476,14 @@ export function resolveScreenRequest(request, registry = readRegistryBundle()) {
       ? registry.webGenerationContext.sectionRecipes.filter((entry) => entry.evidenceFlowIds.some((id) => observedFlowIds.has(id)))
       : registry.webGenerationContext.sectionRecipes,
     behaviorRules: registry.webGenerationContext.behaviorRules,
+    observedCompositionContexts: observedCompositionProfileRefs.size > 0
+      ? runtimeFlowCoverage.contextProfiles.filter((profile) => observedCompositionProfileRefs.has(profile.id))
+      : runtimeFlowCoverage.contextProfiles,
+    observedCompositionExamples,
+    stateInterpretationPolicy: registry.webUiInteractionAudit.stateInterpretationPolicy,
+    observedStateContexts: observedStateContextRefs.size > 0
+      ? registry.webUiInteractionAudit.reusableStateContexts.filter((context) => observedStateContextRefs.has(context.id))
+      : registry.webUiInteractionAudit.reusableStateContexts,
     nearestObservedExamples: { pages: observedPages, entryFlows: observedEntryFlows },
     coverage: registry.webGenerationContext.coverage,
   };

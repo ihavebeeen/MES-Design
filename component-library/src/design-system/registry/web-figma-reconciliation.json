@@ -276,43 +276,164 @@
     },
     "runtimeEntryFlowCoverage": {
       "observedFlowCount": 36,
+      "contextProfiles": [
+        {
+          "id": "flow-context.staged-record-entry",
+          "name": "기본정보를 기준으로 여러 건을 작성·누적",
+          "purpose": "공통 기준을 먼저 정하고 반복 레코드를 추가한 뒤 한 저장 단위로 확정한다.",
+          "informationRelationship": "기본정보는 목록 전체에, 작성값은 다음 한 건에, 누적 목록은 저장할 각 행에 귀속된다.",
+          "usageContextRefs": ["usage.edit-record", "usage.entry-list"],
+          "patternRefs": ["section.form-grid", "section.staged-record-entry", "section.added-record-list"],
+          "stateContextRefs": ["selection.enable-related-actions"]
+        },
+        {
+          "id": "flow-context.lookup-assisted-entry",
+          "name": "현재 입력 중 필요한 대상을 조회해 추가",
+          "purpose": "등록 내용을 작성하면서 품목·발주 등 연결 대상을 조회하고 같은 저장 단위에 포함한다.",
+          "informationRelationship": "조회 결과는 독립 결과가 아니라 현재 작성 중인 레코드의 식별값과 판단 근거가 된다.",
+          "usageContextRefs": ["usage.edit-record", "usage.select-return", "usage.entry-list"],
+          "patternRefs": ["section.form-grid", "section.search-table-composition", "section.added-record-list"],
+          "stateContextRefs": ["selection.transfer-to-work-surface"]
+        },
+        {
+          "id": "flow-context.lookup-transfer",
+          "name": "선행 대상을 선택해 다음 작업으로 전달",
+          "purpose": "등록 또는 검사를 시작하기 전에 기준이 될 지시·발주·실적을 선택한다.",
+          "informationRelationship": "선택 목록은 후보 비교를 담당하고 확정한 행의 정보가 후속 작업 화면의 기준값이 된다.",
+          "usageContextRefs": ["usage.select-return"],
+          "patternRefs": ["recipe.center-modal-search-table", "selection.enable-actions", "selection.transfer-list"],
+          "stateContextRefs": ["selection.enable-related-actions", "selection.transfer-to-work-surface"]
+        },
+        {
+          "id": "flow-context.single-record-task",
+          "name": "한 대상의 짧은 등록·설정·확정",
+          "purpose": "대상 하나의 값이나 상태를 확인하고 하나의 결과로 저장한다.",
+          "informationRelationship": "식별 정보와 편집값, 결과를 확정하는 액션이 같은 대상에 귀속된다.",
+          "usageContextRefs": ["usage.edit-record"],
+          "patternRefs": ["section.form-grid"],
+          "stateContextRefs": []
+        },
+        {
+          "id": "flow-context.multi-row-processing",
+          "name": "복수 행 선택·편집·일괄 처리",
+          "purpose": "같은 열 기준으로 여러 행을 비교하고 선택한 범위만 수정하거나 처리한다.",
+          "informationRelationship": "행 선택이 편집 가능 상태와 적용 대상, 하단 액션의 활성 범위를 결정한다.",
+          "usageContextRefs": ["usage.popup.multi-record-processing"],
+          "patternRefs": ["popup.center.table", "selection.reveal-inline-editor", "selection.enable-actions"],
+          "stateContextRefs": ["selection.enable-related-actions"]
+        },
+        {
+          "id": "flow-context.bounded-comparison",
+          "name": "현재 업무를 보조하는 제한된 비교·분석",
+          "purpose": "현재 대상과 연결된 두 결과 집합을 비교해 판단을 돕는다.",
+          "informationRelationship": "기준 목록과 계산·파생 목록이 같은 대상을 서로 다른 관점에서 설명한다.",
+          "usageContextRefs": ["usage.popup.source-target-comparison"],
+          "patternRefs": ["popup.center.dual-pane"],
+          "stateContextRefs": ["selection.update-dependent-region"]
+        },
+        {
+          "id": "flow-context.inspection-recording",
+          "name": "대상 정보에 근거한 검사·판정",
+          "purpose": "검사 대상을 식별하고 해당 기준의 항목별 측정·판정 결과를 남긴다.",
+          "informationRelationship": "대상 정보는 검사 기준을 정하고 검사항목은 실제 수행·판정 결과를 가진다.",
+          "usageContextRefs": ["usage.inspection", "usage.edit-record"],
+          "patternRefs": ["section.form-grid", "section.inspection-items"],
+          "stateContextRefs": []
+        },
+        {
+          "id": "flow-context.base-extension",
+          "name": "공통 기본정보와 대상별 확장정보",
+          "purpose": "MES 공통 속성과 수용가·대상 유형별 추가 속성을 같은 저장 단위에서 편집한다.",
+          "informationRelationship": "두 영역은 중요도 차이가 아니라 정의 주체와 적용 범위가 다르다.",
+          "usageContextRefs": ["usage.edit-record", "usage.custom-values"],
+          "patternRefs": ["section.form-grid", "section.custom-field-values"],
+          "stateContextRefs": []
+        },
+        {
+          "id": "flow-context.inspection-configuration",
+          "name": "검사 대상과 판정 기준 구성",
+          "purpose": "검사를 수행할 대상 범위와 검사항목·입력 방식·판정 조건을 설정한다.",
+          "informationRelationship": "대상 선택이 적용할 검사항목을 정하고 항목 유형이 뒤의 조건 입력을 바꾼다.",
+          "usageContextRefs": ["usage.inspection", "usage.popup.inspection-criteria"],
+          "patternRefs": ["section.inspection-items", "popup.center.inspection-criteria"],
+          "stateContextRefs": []
+        },
+        {
+          "id": "flow-context.group-permission",
+          "name": "그룹과 메뉴별 권한 설정",
+          "purpose": "그룹 속성과 구성원·메뉴별 권한을 하나의 설정 결과로 저장한다.",
+          "informationRelationship": "그룹, 구성원 집합, 메뉴별 권한은 서로 다른 대상이며 그룹 설정 결과로 연결된다.",
+          "usageContextRefs": ["usage.group-permissions"],
+          "patternRefs": ["section.member-selection", "section.permission-matrix"],
+          "stateContextRefs": ["selection.enable-related-actions"]
+        },
+        {
+          "id": "flow-context.time-record-entry",
+          "name": "시간 구간과 가동 기록 누적",
+          "purpose": "시간대별 가동·비가동 기록을 작성하고 전체 시간 관계를 함께 확인한다.",
+          "informationRelationship": "각 시간 구간은 개별 기록에 속하며 합계와 시간표는 전체 운전일지를 설명한다.",
+          "usageContextRefs": ["usage.popup.time-work", "usage.entry-list"],
+          "patternRefs": ["popup.side.time-records", "section.editable-row-list"],
+          "stateContextRefs": []
+        },
+        {
+          "id": "flow-context.bulk-value-entry",
+          "name": "공통값 입력과 복수 행 일괄 반영",
+          "purpose": "공통 조건을 작성하고 여러 대상에 같은 값을 적용한 뒤 결과를 검토한다.",
+          "informationRelationship": "공통 입력은 선택 집합에 작용하며 적용내역은 행별 결과를 보여준다.",
+          "usageContextRefs": ["usage.edit-record", "usage.popup.multi-record-processing"],
+          "patternRefs": ["section.bulk-edit-bar", "section.added-record-list"],
+          "stateContextRefs": ["selection.enable-related-actions"]
+        },
+        {
+          "id": "flow-context.saved-query-runtime-reference",
+          "name": "빠른 조회 조건 저장",
+          "purpose": "메인 목록의 조회 조건 조합을 다시 사용할 수 있도록 저장한다.",
+          "informationRelationship": "저장 슬롯은 현재 그룹화·필터·표 설정 조합을 참조한다.",
+          "usageContextRefs": ["usage.page-list"],
+          "patternRefs": ["popup.center.form"],
+          "stateContextRefs": ["query.manage-saved-conditions"],
+          "authority": "runtime-reference-only",
+          "sourceDecision": "최신 Figma 페이지 전체에서 대응 팝업을 찾지 못했다. 실제 웹의 유틸리티 사례로만 유지하며 공통 표준 근거로 승격하지 않는다."
+        }
+      ],
       "mappings": [
-        { "pageId": "web.sales-target-month", "trigger": "판매목표 등록", "runtimeTitle": "판매목표(월) 등록", "figmaNodeId": "10582:53334", "status": "matched", "compositionBasis": "기본정보→목표 작성→목록 추가→저장" },
-        { "pageId": "web.sales-plan-day", "trigger": "판매계획 등록", "runtimeTitle": "판매계획(일) 등록", "figmaNodeId": "10582:54298", "status": "matched", "compositionBasis": "기본정보→일별 계획 작성→목록 추가→저장" },
-        { "pageId": "web.product-purchase", "trigger": "구매 등록", "runtimeTitle": "상품구매 등록", "figmaNodeId": "10582:55024", "status": "matched", "compositionBasis": "기본정보→구매품목 조회·선택→목록 추가→저장" },
-        { "pageId": "web.receipt-management", "trigger": "미수금 행 더블클릭", "runtimeTitle": "수금 등록", "figmaNodeId": "10582:56360", "status": "naming-difference", "compositionBasis": "웹 수금 등록과 Figma 청구등록의 대상·금액·확정 구성을 추가 판정" },
-        { "pageId": "web.production-target-month", "trigger": "생산목표 등록", "runtimeTitle": "생산목표(월) 등록", "figmaNodeId": "9710:73946", "status": "matched", "compositionBasis": "기본정보→월 목표 작성→목록 추가→저장" },
-        { "pageId": "web.production-target-month", "trigger": "빠른 조회 설정", "runtimeTitle": "빠른 조회 설정", "figmaNodeId": null, "status": "source-unresolved", "compositionBasis": "조회 조건 저장 모달의 대응 Figma 표면 미확정" },
-        { "pageId": "web.production-plan-day", "trigger": "신규 등록", "runtimeTitle": "생산계획 등록", "figmaNodeId": "9742:23502", "status": "naming-difference", "compositionBasis": "웹 제목과 Figma 생산계획(일) 등록의 기본정보·계획목록 구성 대응" },
-        { "pageId": "web.production-order", "trigger": "생산지시 등록", "runtimeTitle": "생산지시 등록", "figmaNodeId": "9742:64383", "status": "naming-difference", "compositionBasis": "웹 생산지시와 Figma 작업지시의 기본정보·지시작성·목록 구성 대응" },
-        { "pageId": "web.production-result", "trigger": "생산실적 등록", "runtimeTitle": "작업 선택", "figmaNodeId": "9802:68519", "status": "naming-difference", "compositionBasis": "생산지시 목록에서 실적등록 대상을 선택해 후속 슬라이드로 전달" },
-        { "pageId": "web.production-result", "trigger": "빠른 조회 설정", "runtimeTitle": "빠른 조회 설정", "figmaNodeId": null, "status": "source-unresolved", "compositionBasis": "조회 조건 저장 모달의 대응 Figma 표면 미확정" },
-        { "pageId": "web.operation-log", "trigger": "운전 일지 등록", "runtimeTitle": "운전일지 등록", "figmaNodeId": "19629:105853", "status": "matched", "compositionBasis": "기본정보→시간대→가동·비가동 기록→시간 합계→저장" },
-        { "pageId": "web.self-inspection", "trigger": "신규 검사 생성", "runtimeTitle": "검사항목 선택", "figmaNodeId": "10605:36704", "status": "matched", "compositionBasis": "생산지시 조회·선택→검사 화면 전달" },
-        { "pageId": "web.inventory", "trigger": "재고 편집", "runtimeTitle": "재고편집", "figmaNodeId": "10605:32164", "status": "matched", "compositionBasis": "재고 목록 선택·수량 편집·삭제·저장" },
-        { "pageId": "web.label", "trigger": "신규 라벨 발행", "runtimeTitle": "라벨 생성", "figmaNodeId": "10605:34663", "status": "matched", "compositionBasis": "LOT 정보 확인→라벨 생성 조건→저장" },
-        { "pageId": "web.bom-query", "trigger": "BOM 기준 재고분석", "runtimeTitle": "BOM 기준 재고 분석", "figmaNodeId": "9873:104555", "status": "matched", "compositionBasis": "생산계획 목록과 원·부자재 재고 목록 비교" },
-        { "pageId": "web.purchase-order", "trigger": "발주 등록", "runtimeTitle": "발주등록", "figmaNodeId": "10605:35449", "status": "matched", "compositionBasis": "기본정보→발주품목 작성→발주목록 추가→저장" },
-        { "pageId": "web.receiving", "trigger": "신규 등록", "runtimeTitle": "발주 선택", "figmaNodeId": "10615:37866", "status": "naming-difference", "compositionBasis": "발주 조회·선택→입고등록 슬라이드 전달" },
-        { "pageId": "web.shipment-order", "trigger": "긴급 출하지시 등록", "runtimeTitle": "출하지시 등록", "figmaNodeId": "10618:33497", "status": "matched", "compositionBasis": "기본정보→출하지시 품목 작성→목록 추가→저장" },
-        { "pageId": "web.shipment-result", "trigger": "출하실적 등록", "runtimeTitle": "출하지시 정보", "figmaNodeId": "10635:48189", "status": "matched", "compositionBasis": "출하지시 조회·선택→출하실적 슬라이드 전달" },
-        { "pageId": "web.incoming-inspection", "trigger": "입고검사 시작", "runtimeTitle": "입고검사 정보", "figmaNodeId": "10619:36602", "status": "naming-difference", "compositionBasis": "검사 대상정보→검사자·일시→검사항목→저장" },
-        { "pageId": "web.process-inspection", "trigger": "신규 검사 생성", "runtimeTitle": "검사항목 선택", "figmaNodeId": "10619:39415", "status": "matched", "compositionBasis": "생산실적 조회·선택→공정검사 화면 전달" },
-        { "pageId": "web.maintenance-history", "trigger": "정비이력 등록", "runtimeTitle": "정비이력 등록", "figmaNodeId": "10619:41993", "status": "matched", "compositionBasis": "기본정보→정비기록→투입자재 추가→상세목록→저장" },
-        { "pageId": "web.equipment-inspection", "trigger": "설비점검 등록", "runtimeTitle": "설비 점검 등록", "figmaNodeId": "10619:46366", "status": "naming-difference", "compositionBasis": "Figma 정비이력 표면과 웹 설비점검 등록의 대상정보·검사항목 구성을 추가 판정" },
-        { "pageId": "web.partner", "trigger": "거래처 등록", "runtimeTitle": "거래처 등록", "figmaNodeId": "10582:57655", "status": "matched", "compositionBasis": "기본정보→커스텀정보→저장" },
-        { "pageId": "web.item", "trigger": "품목 등록", "runtimeTitle": "품목 정보", "figmaNodeId": "9873:92557", "status": "naming-difference", "compositionBasis": "공통정보·공정별 정보·검사 설정·커스텀정보→저장" },
-        { "pageId": "web.bom", "trigger": "BOM 등록", "runtimeTitle": "BOM 등록", "figmaNodeId": "10582:58427", "status": "matched", "compositionBasis": "기본정보→BOM 품목 추가→상세목록→저장" },
-        { "pageId": "web.special-price", "trigger": "특별단가 등록", "runtimeTitle": "특별단가 등록", "figmaNodeId": "10582:63530", "status": "matched", "compositionBasis": "기본정보→단가 작성·일괄등록→적용내역→저장" },
-        { "pageId": "web.warehouse", "trigger": "창고 등록", "runtimeTitle": "창고 정보", "figmaNodeId": "16553:37460", "status": "naming-difference", "compositionBasis": "기본정보→기본창고 설정→커스텀정보→저장" },
-        { "pageId": "web.warehouse", "trigger": "기본창고 설정", "runtimeTitle": "기본 창고 설정", "figmaNodeId": "16553:37111", "status": "matched", "compositionBasis": "입고·생산·불량 기본창고 선택→저장" },
-        { "pageId": "web.equipment", "trigger": "설비 등록", "runtimeTitle": "설비 정보", "figmaNodeId": "20254:71982", "status": "naming-difference", "compositionBasis": "공통 설비정보→공정별 설정→품목별 설정→저장" },
-        { "pageId": "web.process", "trigger": "공정 등록", "runtimeTitle": "공정 등록", "figmaNodeId": "19414:94157", "status": "matched", "compositionBasis": "기본정보→공정 설정→품목 추가·목록→저장" },
-        { "pageId": "web.form", "trigger": "양식 등록", "runtimeTitle": "양식관리", "figmaNodeId": "18181:120242", "status": "naming-difference", "compositionBasis": "설비·품목 기준→기본정보→검사항목 추가→저장" },
-        { "pageId": "web.user", "trigger": "사용자 등록", "runtimeTitle": "사용자 정보", "figmaNodeId": "10594:34597", "status": "naming-difference", "compositionBasis": "사용자 기본정보→커스텀정보→저장" },
-        { "pageId": "web.permission", "trigger": "그룹 등록", "runtimeTitle": "그룹 권한 설정", "figmaNodeId": "11122:47785", "status": "naming-difference", "compositionBasis": "그룹 기본정보→메뉴별 권한 설정→저장" }
-        ,{ "pageId": "web.sales-management", "trigger": "행 더블클릭", "runtimeTitle": "출하승인", "figmaNodeId": "9873:80644", "status": "matched", "compositionBasis": "선택 출하실적 확인→승인 상태 판단·확정" }
-        ,{ "pageId": "web.outgoing-inspection", "trigger": "행 더블클릭", "runtimeTitle": "출고검사 정보", "figmaNodeId": "10619:37198", "status": "naming-difference", "compositionBasis": "출하검사 대상정보→검사 항목·결과 확인 및 저장" }
+        { "pageId": "web.sales-target-month", "trigger": "판매목표 등록", "runtimeTitle": "판매목표(월) 등록", "figmaNodeId": "10582:53334", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→목표 작성→목록 추가→저장" },
+        { "pageId": "web.sales-plan-day", "trigger": "판매계획 등록", "runtimeTitle": "판매계획(일) 등록", "figmaNodeId": "10582:54298", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→일별 계획 작성→목록 추가→저장" },
+        { "pageId": "web.product-purchase", "trigger": "구매 등록", "runtimeTitle": "상품구매 등록", "figmaNodeId": "10582:55024", "status": "matched", "contextProfileRef": "flow-context.lookup-assisted-entry", "compositionBasis": "기본정보→구매품목 조회·선택→목록 추가→저장" },
+        { "pageId": "web.receipt-management", "trigger": "미수금 행 더블클릭", "runtimeTitle": "수금 등록", "figmaNodeId": "10582:56360", "status": "candidate-needs-semantic-review", "contextProfileRef": "flow-context.single-record-task", "compositionBasis": "웹 수금 등록과 Figma 청구등록은 이름과 금액 정보가 유사하지만 업무 방향이 달라 기준 원본 여부를 추가 판정한다." },
+        { "pageId": "web.production-target-month", "trigger": "생산목표 등록", "runtimeTitle": "생산목표(월) 등록", "figmaNodeId": "9710:73946", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→월 목표 작성→목록 추가→저장" },
+        { "pageId": "web.production-target-month", "trigger": "빠른 조회 설정", "runtimeTitle": "빠른 조회 설정", "figmaNodeId": null, "status": "runtime-only-reference", "contextProfileRef": "flow-context.saved-query-runtime-reference", "compositionBasis": "최신 Figma 페이지 전체 검색에서 대응 팝업을 찾지 못해 실제 웹의 조회 조건 저장 사례로만 유지한다." },
+        { "pageId": "web.production-plan-day", "trigger": "신규 등록", "runtimeTitle": "생산계획 등록", "figmaNodeId": "9742:23502", "status": "naming-difference", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "웹 제목과 Figma 생산계획(일) 등록의 기본정보·계획목록 구성 대응" },
+        { "pageId": "web.production-order", "trigger": "생산지시 등록", "runtimeTitle": "생산지시 등록", "figmaNodeId": "9742:64383", "status": "naming-difference", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "웹 생산지시와 Figma 작업지시의 기본정보·지시작성·목록 구성 대응" },
+        { "pageId": "web.production-result", "trigger": "생산실적 등록", "runtimeTitle": "작업 선택", "figmaNodeId": "9802:68519", "status": "naming-difference", "contextProfileRef": "flow-context.lookup-transfer", "compositionBasis": "생산지시 목록에서 실적등록 대상을 선택해 후속 슬라이드로 전달" },
+        { "pageId": "web.production-result", "trigger": "빠른 조회 설정", "runtimeTitle": "빠른 조회 설정", "figmaNodeId": null, "status": "runtime-only-reference", "contextProfileRef": "flow-context.saved-query-runtime-reference", "compositionBasis": "최신 Figma 페이지 전체 검색에서 대응 팝업을 찾지 못해 실제 웹의 조회 조건 저장 사례로만 유지한다." },
+        { "pageId": "web.operation-log", "trigger": "운전 일지 등록", "runtimeTitle": "운전일지 등록", "figmaNodeId": "19629:105853", "status": "matched", "contextProfileRef": "flow-context.time-record-entry", "compositionBasis": "기본정보→시간대→가동·비가동 기록→시간 합계→저장" },
+        { "pageId": "web.self-inspection", "trigger": "신규 검사 생성", "runtimeTitle": "검사항목 선택", "figmaNodeId": "10605:36704", "status": "matched", "contextProfileRef": "flow-context.lookup-transfer", "compositionBasis": "생산지시 조회·선택→검사 화면 전달" },
+        { "pageId": "web.inventory", "trigger": "재고 편집", "runtimeTitle": "재고편집", "figmaNodeId": "10605:32164", "status": "matched", "contextProfileRef": "flow-context.multi-row-processing", "compositionBasis": "재고 목록 선택·수량 편집·삭제·저장" },
+        { "pageId": "web.label", "trigger": "신규 라벨 발행", "runtimeTitle": "라벨 생성", "figmaNodeId": "10605:34663", "status": "matched", "contextProfileRef": "flow-context.single-record-task", "compositionBasis": "LOT 정보 확인→라벨 생성 조건→저장" },
+        { "pageId": "web.bom-query", "trigger": "BOM 기준 재고분석", "runtimeTitle": "BOM 기준 재고 분석", "figmaNodeId": "9873:104555", "status": "matched", "contextProfileRef": "flow-context.bounded-comparison", "compositionBasis": "생산계획 목록과 원·부자재 재고 목록 비교" },
+        { "pageId": "web.purchase-order", "trigger": "발주 등록", "runtimeTitle": "발주등록", "figmaNodeId": "10605:35449", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→발주품목 작성→발주목록 추가→저장" },
+        { "pageId": "web.receiving", "trigger": "신규 등록", "runtimeTitle": "발주 선택", "figmaNodeId": "10615:37866", "status": "naming-difference", "contextProfileRef": "flow-context.lookup-transfer", "compositionBasis": "발주 조회·선택→입고등록 슬라이드 전달" },
+        { "pageId": "web.shipment-order", "trigger": "긴급 출하지시 등록", "runtimeTitle": "출하지시 등록", "figmaNodeId": "10618:33497", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→출하지시 품목 작성→목록 추가→저장" },
+        { "pageId": "web.shipment-result", "trigger": "출하실적 등록", "runtimeTitle": "출하지시 정보", "figmaNodeId": "10635:48189", "status": "matched", "contextProfileRef": "flow-context.lookup-transfer", "compositionBasis": "출하지시 조회·선택→출하실적 슬라이드 전달" },
+        { "pageId": "web.incoming-inspection", "trigger": "입고검사 시작", "runtimeTitle": "입고검사 정보", "figmaNodeId": "10619:36602", "status": "naming-difference", "contextProfileRef": "flow-context.inspection-recording", "compositionBasis": "검사 대상정보→검사자·일시→검사항목→저장" },
+        { "pageId": "web.process-inspection", "trigger": "신규 검사 생성", "runtimeTitle": "검사항목 선택", "figmaNodeId": "10619:39415", "status": "matched", "contextProfileRef": "flow-context.lookup-transfer", "compositionBasis": "생산실적 조회·선택→공정검사 화면 전달" },
+        { "pageId": "web.maintenance-history", "trigger": "정비이력 등록", "runtimeTitle": "정비이력 등록", "figmaNodeId": "10619:41993", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→정비기록→투입자재 추가→상세목록→저장" },
+        { "pageId": "web.equipment-inspection", "trigger": "설비점검 등록", "runtimeTitle": "설비 점검 등록", "figmaNodeId": "10619:46366", "status": "candidate-needs-semantic-review", "contextProfileRef": "flow-context.inspection-recording", "compositionBasis": "Figma 정비이력 표면은 연결 후보이며 설비점검의 대상정보·검사항목 원본인지 추가 판정한다." },
+        { "pageId": "web.partner", "trigger": "거래처 등록", "runtimeTitle": "거래처 등록", "figmaNodeId": "10582:57655", "status": "matched", "contextProfileRef": "flow-context.base-extension", "compositionBasis": "기본정보→커스텀정보→저장" },
+        { "pageId": "web.item", "trigger": "품목 등록", "runtimeTitle": "품목 정보", "figmaNodeId": "9873:92557", "status": "naming-difference", "contextProfileRef": "flow-context.base-extension", "compositionBasis": "공통정보·공정별 정보·검사 설정·커스텀정보→저장" },
+        { "pageId": "web.bom", "trigger": "BOM 등록", "runtimeTitle": "BOM 등록", "figmaNodeId": "10582:58427", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→BOM 품목 추가→상세목록→저장" },
+        { "pageId": "web.special-price", "trigger": "특별단가 등록", "runtimeTitle": "특별단가 등록", "figmaNodeId": "10582:63530", "status": "matched", "contextProfileRef": "flow-context.bulk-value-entry", "compositionBasis": "기본정보→단가 작성·일괄등록→적용내역→저장" },
+        { "pageId": "web.warehouse", "trigger": "창고 등록", "runtimeTitle": "창고 정보", "figmaNodeId": "16553:37460", "status": "naming-difference", "contextProfileRef": "flow-context.base-extension", "compositionBasis": "기본정보→기본창고 설정→커스텀정보→저장" },
+        { "pageId": "web.warehouse", "trigger": "기본창고 설정", "runtimeTitle": "기본 창고 설정", "figmaNodeId": "16553:37111", "status": "matched", "contextProfileRef": "flow-context.single-record-task", "compositionBasis": "입고·생산·불량 기본창고 선택→저장" },
+        { "pageId": "web.equipment", "trigger": "설비 등록", "runtimeTitle": "설비 정보", "figmaNodeId": "20254:71982", "status": "naming-difference", "contextProfileRef": "flow-context.base-extension", "compositionBasis": "공통 설비정보→공정별 설정→품목별 설정→저장" },
+        { "pageId": "web.process", "trigger": "공정 등록", "runtimeTitle": "공정 등록", "figmaNodeId": "19414:94157", "status": "matched", "contextProfileRef": "flow-context.staged-record-entry", "compositionBasis": "기본정보→공정 설정→품목 추가·목록→저장" },
+        { "pageId": "web.form", "trigger": "양식 등록", "runtimeTitle": "양식관리", "figmaNodeId": "18181:120242", "status": "naming-difference", "contextProfileRef": "flow-context.inspection-configuration", "compositionBasis": "설비·품목 기준→기본정보→검사항목 추가→저장" },
+        { "pageId": "web.user", "trigger": "사용자 등록", "runtimeTitle": "사용자 정보", "figmaNodeId": "10594:34597", "status": "naming-difference", "contextProfileRef": "flow-context.base-extension", "compositionBasis": "사용자 기본정보→커스텀정보→저장" },
+        { "pageId": "web.permission", "trigger": "그룹 등록", "runtimeTitle": "그룹 권한 설정", "figmaNodeId": "11122:47785", "status": "naming-difference", "contextProfileRef": "flow-context.group-permission", "compositionBasis": "그룹 기본정보→메뉴별 권한 설정→저장" },
+        { "pageId": "web.sales-management", "trigger": "행 더블클릭", "runtimeTitle": "출하승인", "figmaNodeId": "9873:80644", "status": "matched", "contextProfileRef": "flow-context.single-record-task", "compositionBasis": "선택 출하실적 확인→승인 상태 판단·확정" },
+        { "pageId": "web.outgoing-inspection", "trigger": "행 더블클릭", "runtimeTitle": "출고검사 정보", "figmaNodeId": "10619:37198", "status": "naming-difference", "contextProfileRef": "flow-context.inspection-recording", "compositionBasis": "출하검사 대상정보→검사 항목·결과 확인 및 저장" }
       ]
     },
     "representatives": [
@@ -458,9 +579,9 @@
       }
     ],
     "remaining": [
-      "54개 팝업 설계 프레임 중 이번 13개 오버레이 대표 대조에 포함하지 않은 팝업은 관련 자산이 수정될 때 같은 형식으로 증분 대조",
+      "54개 팝업 설계 프레임 중 이번 14개 팝업·상태 대표 대조에 포함하지 않은 팝업은 관련 자산이 수정될 때 같은 형식으로 증분 대조",
       "출하승인과 재고편집의 중복·후속 Figma 프레임에서 현재 승인안을 확정",
-      "실제 웹 진입 34건 중 Figma 표면이 미확정인 빠른 조회 설정 2건의 승인 근거 확인",
+      "수금 등록과 청구등록, 설비점검 등록과 정비이력 후보의 업무 의미가 같은지 확정",
       "경향 관리·생산 분석의 인라인 편집 상태를 Figma 개선 프레임과 좌표·상태별로 대조",
       "Figma 원본이 없는 KPI 편집 상태는 신규 승인 근거가 생길 때까지 웹 참고 상태로 유지"
     ]
@@ -549,7 +670,7 @@
     "conditionalRepresentativesWithFigmaEvidence": 14
   },
   "remaining": [
-    "37개 기본 화면의 팝업과 조건부 상태를 최신 기본안·완료 개선안·실제 웹 순서로 상세 대조",
+    "출하승인·재고편집의 현재 승인 프레임과 수금·설비점검 후보의 업무 의미 확정",
     "명칭 충돌과 master-data-list 기간 조회 영역의 충돌을 화면군 단위로 판정",
     "설비 모니터링 후보 6개의 최신 상태 확인",
     "KPI 본문 화면의 Figma 원본 또는 신규 요구 근거 확인"

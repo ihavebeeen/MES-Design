@@ -515,12 +515,24 @@ export interface WebFigmaReconciliationRegistry {
     };
     runtimeEntryFlowCoverage: {
       observedFlowCount: number;
+      contextProfiles: Array<{
+        id: string;
+        name: string;
+        purpose: string;
+        informationRelationship: string;
+        usageContextRefs: string[];
+        patternRefs: string[];
+        stateContextRefs: string[];
+        authority?: "runtime-reference-only";
+        sourceDecision?: string;
+      }>;
       mappings: Array<{
         pageId: string;
         trigger: string;
         runtimeTitle: string;
         figmaNodeId: string | null;
-        status: "matched" | "naming-difference" | "source-unresolved";
+        status: "matched" | "naming-difference" | "source-unresolved" | "candidate-needs-semantic-review" | "runtime-only-reference";
+        contextProfileRef: string;
         compositionBasis: string;
       }>;
     };

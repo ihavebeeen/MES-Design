@@ -62,6 +62,12 @@ test("상태 변화 화면 집계가 실제 기록과 다르면 실패한다", (
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /상태 변화 확인 화면 수/);
 });
 
+test("선택·편집·세션 추가 상태를 하나로 합치면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.interactions.stateInterpretationPolicy.independentRoles = ["selected", "disabled"];
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /상태를 구분하는 해석 규칙/);
+});
+
 test("한 화면의 상태 변화를 공통 맥락으로 승격하면 실패한다", () => {
   const evidence = clone(loadWebSourceEvidence());
   evidence.interactions.reusableStateContexts[0].evidence = [
@@ -143,6 +149,54 @@ test("실제 웹 팝업 진입 흐름의 Figma 연결이 빠지면 실패한다"
   const evidence = clone(loadWebSourceEvidence());
   evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.mappings.pop();
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /팝업 진입.*Figma 구성 대조|팝업 진입 흐름 집계/);
+});
+
+test("팝업 진입 흐름이 구성 맥락과 연결되지 않으면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  delete evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.mappings[0].contextProfileRef;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /구성 맥락|원본 연결과 내부 구성 판정/);
+});
+
+test("구성 맥락의 사용 사례·패턴·상태 참조가 실제 원장과 다르면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  const profile = evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.contextProfiles[0];
+  profile.usageContextRefs = ["usage.unknown"];
+  profile.patternRefs = ["pattern.unknown"];
+  profile.stateContextRefs = ["state.unknown"];
+  const errors = validateWebSourceEvidence(evidence).join("\n");
+  assert.match(errors, /알 수 없는 usage context/);
+  assert.match(errors, /알 수 없는 pattern/);
+  assert.match(errors, /알 수 없는 state context/);
+});
+
+test("실제 웹 참고 전용 팝업은 Figma 원본이나 공통 권한을 가질 수 없다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  const mapping = evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.mappings
+    .find((item) => item.status === "runtime-only-reference");
+  mapping.figmaNodeId = "10582:53334";
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /웹 참고 전용/);
+});
+
+test("이름만 비슷해 의미 검토가 필요한 Figma 후보는 후보 node를 유지한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  const mapping = evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.mappings
+    .find((item) => item.status === "candidate-needs-semantic-review");
+  mapping.figmaNodeId = null;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /의미 검토 후보/);
+});
+
+test("실제 진입 흐름과 연결되지 않은 구성 맥락 프로필을 남기면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.conditionalStateComparisonPass.runtimeEntryFlowCoverage.contextProfiles.push({
+    id: "flow-context.orphan",
+    name: "연결 없음",
+    purpose: "검사 사례",
+    informationRelationship: "검사 관계",
+    usageContextRefs: ["usage.edit-record"],
+    patternRefs: ["section.form-grid"],
+    stateContextRefs: []
+  });
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /연결된 실제 웹 진입 흐름이 없습니다/);
 });
 
 test("행 더블클릭 상세 화면도 같은 업무의 Figma 구성 근거가 필요하다", () => {
