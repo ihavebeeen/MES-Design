@@ -496,6 +496,11 @@ export interface WebFigmaReconciliationRegistry {
     status: "representative-overlays-and-states-compared";
     performedAt: string;
     scope: string;
+    comparisonPolicy: {
+      primary: string[];
+      secondary: string[];
+      pixelDifferenceRule: string;
+    };
     runtimeViewport: {
       requested: { width: number; height: number };
       observedCss: { width: number; height: number; devicePixelRatio: number };
@@ -527,6 +532,11 @@ export interface WebFigmaReconciliationRegistry {
         state?: string;
       };
       classification: string;
+      compositionCheck: {
+        items: string[];
+        result: "aligned" | "difference" | "source-unresolved";
+        notes: string;
+      };
       decision: string;
     }>;
     remaining: string[];

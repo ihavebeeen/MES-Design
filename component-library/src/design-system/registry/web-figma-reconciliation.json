@@ -238,6 +238,11 @@
     "status": "representative-overlays-and-states-compared",
     "performedAt": "2026-09-10",
     "scope": "기본 화면 위에 열리는 대표 슬라이드·중앙 모달과 선택 상태를 실제 웹에서 다시 열고 Figma 원본·완료 개선안과 대조했다.",
+    "comparisonPolicy": {
+      "primary": ["팝업을 연 업무 목적", "섹션의 역할과 순서", "필드와 읽기 정보의 역할", "추가·삭제·선택 방식", "테이블과 목록 구성", "Footer 액션", "상태 전환"],
+      "secondary": ["팝업 실측 폭과 높이", "viewport별 여백"],
+      "pixelDifferenceRule": "폭·높이 수치만 다르면 구현 차이로 판정하지 않는다. 내부 요소가 잘리거나 역할·배치·조작성이 바뀔 때만 디자인 차이로 다룬다."
+    },
     "runtimeViewport": {
       "requested": { "width": 1920, "height": 1080 },
       "observedCss": { "width": 1939, "height": 1090, "devicePixelRatio": 0.99 },
@@ -276,8 +281,9 @@
         "interaction": "판매목표 등록",
         "figma": { "nodeId": "10582:53334", "width": 900, "height": 960, "authority": "base-current" },
         "runtime": { "title": "판매목표(월) 등록", "width": 944.7, "height": 1052.9, "hasClose": true },
-        "classification": "shared-ui-design-difference",
-        "decision": "기본정보→작성 영역→추가→목록→Footer 순서는 대응한다. 폭과 높이는 Figma 기준과 다르다."
+        "classification": "aligned-composition",
+        "compositionCheck": { "items": ["기본정보", "목표 작성 영역", "목록 확정 추가", "판매목표 상세 목록", "취소·저장 Footer"], "result": "aligned", "notes": "작성값을 목록에 쌓은 뒤 저장하는 흐름과 섹션 순서가 대응한다." },
+        "decision": "내부 구성과 업무 흐름이 대응한다. 실측 크기 차이는 구성 훼손이 없어 허용한다."
       },
       {
         "id": "slide.label-create",
@@ -285,8 +291,9 @@
         "interaction": "신규 라벨 발행",
         "figma": { "nodeId": "10605:34663", "width": 360, "height": 960, "authority": "base-current" },
         "runtime": { "title": "라벨 생성", "width": 415.7, "height": 1052.9, "hasClose": true },
-        "classification": "shared-ui-design-difference",
-        "decision": "좁은 단일 폼 슬라이드라는 역할은 대응하지만 실제 웹 폭이 더 넓다."
+        "classification": "aligned-composition",
+        "compositionCheck": { "items": ["라벨 발행 대상 정보", "발행 수량 입력", "미리보기·확정 액션"], "result": "aligned", "notes": "좁은 단일 작업 슬라이드의 정보와 액션 흐름이 대응한다." },
+        "decision": "내부 구성은 대응한다. 폭 차이만으로 오류로 분류하지 않는다."
       },
       {
         "id": "center.inventory-edit",
@@ -294,8 +301,9 @@
         "interaction": "재고 편집",
         "figma": { "nodeId": "18813:61921", "width": 1294, "height": 745, "authority": "revision-candidate" },
         "runtime": { "title": "재고편집", "width": 1551.5, "height": 872.7, "hasClose": true },
-        "classification": "needs-reconciliation",
-        "decision": "기본안 1400×680과 후속안 1294×745가 함께 있어 최신 승인 상태를 확정한 뒤 크기를 판정한다. 실제 웹은 80% viewport 크기로 더 크다."
+        "classification": "source-resolution-needed",
+        "compositionCheck": { "items": ["재고 식별 정보", "수량·창고 편집 영역", "편집 결과 적용 액션"], "result": "source-unresolved", "notes": "기본안과 후속안 중 현재 승인안을 먼저 확정해야 내부 구성의 보존 범위를 판단할 수 있다." },
+        "decision": "크기가 아니라 최신 승인안의 내부 섹션·편집 항목·액션 구성이 확정되지 않은 상태가 핵심이다."
       },
       {
         "id": "slide.warehouse-create",
@@ -303,8 +311,9 @@
         "interaction": "창고 등록",
         "figma": { "nodeId": "16553:37460", "width": 760, "height": 960, "authority": "completed-revision" },
         "runtime": { "title": "창고 정보", "width": 944.7, "height": 1052.9, "hasClose": false },
-        "classification": "shared-ui-design-difference",
-        "decision": "완료 개선안의 기본정보·기본창고·커스텀정보 구조를 기준으로 사용한다. 실제 웹의 폭과 닫기 X 누락을 구현 차이로 기록한다."
+        "classification": "implementation-element-difference",
+        "compositionCheck": { "items": ["창고 기본정보", "기본창고 설정 진입", "커스텀정보", "취소·저장 Footer", "닫기 액션"], "result": "difference", "notes": "업무 섹션은 대응하고 웹 전용 필드는 내용 확장이다. 완료 개선안에 있는 닫기 X가 실제 웹에 없다." },
+        "decision": "내부 업무 구성은 대응한다. 확인할 구현 차이는 팝업 폭이 아니라 닫기 액션 누락이다."
       },
       {
         "id": "center.default-warehouse",
@@ -312,8 +321,9 @@
         "interaction": "기본창고 설정",
         "figma": { "nodeId": "16553:37111", "width": 415, "height": 314, "authority": "completed-revision" },
         "runtime": { "title": "기본 창고 설정", "width": 480, "height": 271.5, "hasClose": false },
-        "classification": "shared-ui-design-difference",
-        "decision": "세 종류 기본창고 선택과 Footer는 대응한다. 모달 크기와 닫기 X가 다르다."
+        "classification": "implementation-element-difference",
+        "compositionCheck": { "items": ["입고 기본창고", "생산 기본창고", "불량 기본창고", "취소·저장 Footer", "닫기 액션"], "result": "difference", "notes": "세 선택 행과 저장 흐름은 대응하며 완료 개선안에 있는 닫기 X가 실제 웹에 없다." },
+        "decision": "업무 구성은 대응한다. 닫기 액션 누락만 구현 차이로 기록한다."
       },
       {
         "id": "center.sales-approval",
@@ -321,8 +331,9 @@
         "interaction": "데이터 행 더블클릭",
         "figma": { "nodeId": "9873:80644", "width": 960, "height": 680, "authority": "base-with-revisions" },
         "runtime": { "title": "출하승인", "width": 900, "height": 786.9, "hasClose": false },
-        "classification": "needs-reconciliation",
-        "decision": "출하실적 확인과 승인 상태 선택 역할은 대응한다. 후속 개선안 중 현재안을 확정한 뒤 크기와 닫기 동작을 판정한다."
+        "classification": "source-resolution-needed",
+        "compositionCheck": { "items": ["선택 건 식별 정보", "출하실적 확인", "승인 상태 선택", "확정 Footer"], "result": "source-unresolved", "notes": "기본안과 후속 개선안 중 현재안을 확정해야 각 정보와 액션의 보존 범위를 판정할 수 있다." },
+        "decision": "팝업 크기보다 승인 대상·읽기 정보·상태 선택·확정 액션의 최신 구성이 미확정인 점을 남긴다."
       },
       {
         "id": "center.production-work-selection",
@@ -331,7 +342,8 @@
         "figma": null,
         "runtime": { "title": "작업 선택", "width": 1357.6, "height": 872.7, "hasClose": true },
         "classification": "runtime-only-new-structure",
-        "decision": "최종 Figma 페이지에서 '작업 선택'과 같은 생산지시 선택 모달을 찾지 못했다. 생산실적 슬라이드의 대체 원본으로 사용하지 않고 별도 확인 대상으로 둔다."
+        "compositionCheck": { "items": ["생산지시 조회 조건", "생산지시 선택 테이블", "취소·선택 Footer", "선택 행 전달"], "result": "source-unresolved", "notes": "실제 웹의 내부 흐름은 관찰했으나 대응하는 Figma 원본을 찾지 못했다." },
+        "decision": "생산실적 슬라이드나 다른 업무 선택 모달을 대체 원본으로 사용하지 않고 별도 승인 대상으로 둔다."
       },
       {
         "id": "slide.production-result-entry",
@@ -339,8 +351,9 @@
         "interaction": "작업 선택 확정",
         "figma": { "nodeId": "19079:63364", "width": 1080, "height": 960, "authority": "revision-with-related-updates" },
         "runtime": { "title": "생산실적 등록", "width": 1133.6, "height": 1052.9, "hasClose": true },
-        "classification": "needs-reconciliation",
-        "decision": "지시정보→실적정보→추가→상세 목록 구조와 임시 저장은 Figma 개선 근거가 있다. 작업 선택 선행 모달은 별도 근거가 없고 슬라이드 폭도 다르다."
+        "classification": "composition-partially-aligned",
+        "compositionCheck": { "items": ["생산지시 읽기 정보", "실적 작성 영역", "임시저장·목록 추가", "생산실적 상세 목록", "취소·저장 Footer"], "result": "aligned", "notes": "슬라이드 내부 흐름과 임시저장 개선안은 대응한다. 선행 작업 선택 모달의 원본만 별도 미확정이다." },
+        "decision": "슬라이드 내부 구성은 대응한다. 선행 모달의 근거 부족을 슬라이드 자체 오류와 섞지 않는다."
       },
       {
         "id": "slide.operation-log-entry",
@@ -348,8 +361,9 @@
         "interaction": "운전 일지 등록",
         "figma": { "nodeId": "19629:105853", "width": 900, "height": 830, "authority": "completed-revision-visible" },
         "runtime": { "title": "운전일지 등록", "width": 940, "height": 1052.9, "hasClose": true },
-        "classification": "shared-ui-design-difference",
-        "decision": "기본정보와 좌측 타임테이블·우측 가동/비가동 기록·하단 시간 합계 구조는 대응한다. 실제 웹이 전체 높이 슬라이드로 늘어났다."
+        "classification": "aligned-composition",
+        "compositionCheck": { "items": ["운전일지 기본정보", "시간대 타임테이블", "가동·비가동 기록", "시간 합계", "취소·저장 Footer"], "result": "aligned", "notes": "읽기 기준과 기록 영역의 관계, 좌우 배치와 하단 합계가 대응한다." },
+        "decision": "내부 구성은 대응한다. 높이 차이만으로 오류로 분류하지 않는다."
       },
       {
         "id": "slide.maintenance-entry",
@@ -357,8 +371,9 @@
         "interaction": "정비이력 등록",
         "figma": { "nodeId": "10619:41993", "width": 900, "height": 960, "authority": "base-current" },
         "runtime": { "title": "정비이력 등록", "width": 839.7, "height": 1052.9, "hasClose": true },
-        "classification": "shared-ui-design-difference",
-        "decision": "기본정보·정비기록·투입자재 작성·상세 목록 순서는 대응한다. 실제 웹은 내용 영역의 50% 폭을 사용해 Figma보다 좁다."
+        "classification": "aligned-composition",
+        "compositionCheck": { "items": ["정비 기본정보", "정비기록과 비용 요약", "투입자재 작성", "투입자재 상세 목록", "취소·저장 Footer"], "result": "aligned", "notes": "기초정보를 작성하고 투입자재를 목록에 쌓아 저장하는 순서와 구성요소가 대응한다." },
+        "decision": "내부 구성은 대응한다. 반응형 폭 차이는 구성 훼손이 없어 허용한다."
       },
       {
         "id": "slide.item-entry",
@@ -366,8 +381,9 @@
         "interaction": "품목 등록",
         "figma": { "nodeId": "9873:92557", "width": 760, "height": 960, "authority": "base-with-revisions" },
         "runtime": { "title": "품목 정보", "width": 839.7, "height": 1052.9, "hasClose": false },
-        "classification": "needs-reconciliation",
-        "decision": "공통정보·사출정보·커스텀정보의 역할과 좌우 구성은 대응한다. 실제 웹의 폭과 닫기 X 누락은 디자인 차이이며, 표준단가 관련 완료 개선안은 해당 영역에만 합성해야 한다."
+        "classification": "implementation-element-difference",
+        "compositionCheck": { "items": ["품목 공통정보", "공정별 품목정보", "수용가별 커스텀정보", "표준단가 설정 진입", "취소·저장 Footer", "닫기 액션"], "result": "difference", "notes": "정보 영역의 역할은 대응한다. 실제 웹에는 닫기 X가 없으며 표준단가 완료 개선안은 해당 부분에만 적용해야 한다." },
+        "decision": "내부 섹션 구성은 대응한다. 닫기 액션 누락과 개선안의 국소 적용 여부를 확인 대상으로 둔다."
       },
       {
         "id": "center.shipment-order-selection",
@@ -375,8 +391,9 @@
         "interaction": "출하실적 등록",
         "figma": { "nodeId": "10635:48189", "width": 800, "height": 680, "authority": "base-with-revisions" },
         "runtime": { "title": "출하지시 정보", "width": 883, "height": 680 },
-        "classification": "shared-ui-design-difference",
-        "decision": "출하지시를 조회하고 한 건을 선택해 등록 슬라이드로 넘기는 선행 모달 역할은 대응한다. 실제 웹 폭이 더 넓다."
+        "classification": "aligned-composition",
+        "compositionCheck": { "items": ["출하지시 조회 조건", "출하지시 목록", "진행 상태", "취소·선택 Footer", "선택 건 전달"], "result": "aligned", "notes": "등록 대상을 조회·선택하고 후속 슬라이드로 전달하는 흐름이 대응한다." },
+        "decision": "내부 구성과 연결 흐름은 대응한다. 폭 차이는 오류로 분류하지 않는다."
       },
       {
         "id": "center.inspection-item-selection",
@@ -384,8 +401,9 @@
         "interaction": "신규 검사 생성",
         "figma": { "nodeId": "10605:36704", "width": 960, "height": 682, "authority": "base-current" },
         "runtime": { "title": "검사항목 선택", "width": 1160, "height": 680 },
-        "classification": "shared-ui-design-difference",
-        "decision": "생산지시 목록을 조회·선택해 검사 화면으로 넘기는 역할과 내부 테이블은 대응한다. 실제 웹은 같은 정보량에서 Figma보다 200px 넓다."
+        "classification": "aligned-composition",
+        "compositionCheck": { "items": ["생산지시 조회 조건", "검사 대상 선택 테이블", "생산·품목 식별 정보", "취소·선택 Footer", "선택 건 전달"], "result": "aligned", "notes": "검사 대상을 조회·선택해 검사 정보 화면으로 넘기는 흐름과 구성요소가 대응한다." },
+        "decision": "내부 구성과 연결 흐름은 대응한다. 폭 차이는 오류로 분류하지 않는다."
       },
       {
         "id": "state.list-selection-and-session-row",
@@ -394,7 +412,8 @@
         "figma": { "nodeId": "18985:62891", "authority": "completed-shared-slide-revision", "state": "이번 세션에 추가한 행은 main 10 #EFF8FF와 좌측 바로 표시" },
         "runtime": { "state": "일반 선택은 #E8F5FF, 기존 상세 편집 행은 연한 노란색으로 관찰됨" },
         "classification": "state-semantics-difference",
-        "decision": "일반 선택·이번 세션 추가·기존 행 편집 상태를 같은 강조로 합치지 않는다. 노란색 편집 상태는 Figma 공통 근거가 확인되기 전까지 웹 관찰값으로만 유지한다."
+        "compositionCheck": { "items": ["행 선택 상태", "이번 세션 추가 상태", "기존 행 편집 상태", "상태별 후속 액션"], "result": "difference", "notes": "각 강조는 서로 다른 행동 결과를 나타낸다. Figma에는 세션 추가 파란 강조 근거가 있고 웹의 노란 편집 강조는 공통 원본 근거가 없다." },
+        "decision": "선택·추가·편집 상태를 같은 강조로 합치지 않는다. 노란 편집 상태는 Figma 공통 근거가 확인되기 전까지 웹 관찰값으로만 유지한다."
       }
     ],
     "remaining": [

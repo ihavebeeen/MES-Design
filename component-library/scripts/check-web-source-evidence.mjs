@@ -109,6 +109,10 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   if (conditionalComparison?.status !== "representative-overlays-and-states-compared") {
     errors.push("web-figma-reconciliation: 팝업·상태 상세 대조 상태가 필요합니다.");
   }
+  if (!Array.isArray(conditionalComparison?.comparisonPolicy?.primary) || conditionalComparison.comparisonPolicy.primary.length < 5 ||
+      !Array.isArray(conditionalComparison?.comparisonPolicy?.secondary) || !conditionalComparison.comparisonPolicy.pixelDifferenceRule) {
+    errors.push("web-figma-reconciliation: 팝업 대조는 내부 구성 우선순위와 픽셀 차이 판정 규칙이 필요합니다.");
+  }
   if (conditionalComparison?.runtimeViewport?.requested?.width !== 1920 ||
       conditionalComparison?.runtimeViewport?.requested?.height !== 1080) {
     errors.push("web-figma-reconciliation: 팝업·상태 대조 viewport는 1920×1080이어야 합니다.");
@@ -126,6 +130,11 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
     }
     if (!comparison.interaction || !comparison.classification || !comparison.decision) {
       errors.push(`web-figma-reconciliation conditional comparison '${comparison.id}': 상호작용·분류·판정이 필요합니다.`);
+    }
+    if (!Array.isArray(comparison.compositionCheck?.items) || comparison.compositionCheck.items.length < 3 ||
+        !new Set(["aligned", "difference", "source-unresolved"]).has(comparison.compositionCheck?.result) ||
+        !comparison.compositionCheck?.notes) {
+      errors.push(`web-figma-reconciliation conditional comparison '${comparison.id}': 내부 구성요소 대조 결과가 필요합니다.`);
     }
     if (comparison.figma && !/^\d+:\d+$/.test(comparison.figma.nodeId ?? "")) {
       errors.push(`web-figma-reconciliation conditional comparison '${comparison.id}': Figma node ID가 잘못되었습니다.`);

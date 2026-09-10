@@ -133,6 +133,12 @@ test("팝업 상세 대조 대표 항목이 빠지면 집계 불일치로 실패
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /팝업·상태 상세 대조 집계/);
 });
 
+test("팝업의 내부 구성요소 대조가 빠지면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  delete evidence.reconciliation.conditionalStateComparisonPass.representatives[0].compositionCheck;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /내부 구성요소 대조 결과/);
+});
+
 test("Figma 팝업 크기군 합계가 조사 surface 수와 다르면 실패한다", () => {
   const evidence = clone(loadWebSourceEvidence());
   evidence.reconciliation.conditionalStateComparisonPass.figmaPopupInventory.surfacesInspected = 999;
