@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "status": "authority-resolution-in-progress",
+  "auditedAt": "2026-09-10",
+  "scope": "실제 MES와 Figma 원본이 다를 때 어떤 근거를 디자인 기준으로 사용할지 정한다.",
+  "figmaSearch": {
+    "fileKey": "F4n5Zr04PAbiRjfIFQAo6v",
+    "pageId": "8247:18600",
+    "pageName": "- 웹 화면설계서 (최종)",
+    "sectionCountInspected": 112,
+    "status": "page-sections-inspected",
+    "notes": [
+      "기본 화면설계서와 우측 개선 섹션을 함께 조사했다.",
+      "후속 개선안은 위치나 node ID 크기만으로 최신이라고 판정하지 않는다.",
+      "겹친 섹션은 Figma 자식 순서와 실제 보이는 프레임을 확인해 기준을 정한다."
+    ]
+  },
+  "authorityRules": [
+    "같은 UI가 Figma와 실제 웹에 모두 있고 디자인이 다르면 현재 Figma 원본을 따른다.",
+    "실제 웹에만 추가된 필드나 데이터는 기존 디자인을 재사용한 내용 확장인지 먼저 판정한다.",
+    "내용 확장은 별도 디자인 결함으로 분류하지 않는다.",
+    "새 모달·새 패널·새 배치처럼 새로운 시각 구조는 Figma 근거를 다시 찾는다.",
+    "완료 표시가 있는 개선 섹션은 같은 기능의 기본 화면보다 우선한다.",
+    "초안·미진행·후순위·POC 섹션은 완료 원본을 덮어쓰지 않는다.",
+    "Figma에서 찾지 못했다는 판정은 최신 페이지의 전체 섹션 검색 뒤에만 사용한다.",
+    "실제 웹은 필드·데이터·진입 흐름을 확인하는 근거이며 공통 디자인의 단독 기준으로 승격하지 않는다."
+  ],
+  "differenceClasses": {
+    "shared-ui-design-difference": "Figma와 웹에 같은 UI가 있으나 색상·크기·간격·배치·표현이 다름. Figma가 디자인 기준이다.",
+    "runtime-only-content-extension": "웹에만 필드·열·데이터가 추가됐고 기존 컴포넌트와 배치를 사용함. 업무 내용 확장으로 기록한다.",
+    "runtime-only-new-structure": "웹에만 새 모달·패널·조합·레이아웃이 있음. Figma 근거 또는 별도 승인 전까지 디자인 기준으로 사용하지 않는다.",
+    "figma-only-planned": "Figma에는 있으나 웹에서 확인되지 않은 예정 또는 개선 디자인이다.",
+    "superseded-figma": "같은 기능의 완료된 후속 디자인이 있어 더 이상 기준으로 사용하지 않는 Figma 원본이다.",
+    "unresolved": "원본 상태나 기능 대응 관계를 더 확인해야 한다."
+  },
+  "pages": [
+    { "pageId": "web.sales-target-month", "baseSpecNodeId": "9171:27626", "actualUiFrameId": "10590:27514", "resolution": "base-current" },
+    { "pageId": "web.sales-plan-day", "baseSpecNodeId": "9171:28350", "actualUiFrameId": "10590:28158", "resolution": "base-current" },
+    { "pageId": "web.product-purchase", "baseSpecNodeId": "9171:28580", "actualUiFrameId": "10590:28736", "resolution": "base-current" },
+    { "pageId": "web.sales-management", "baseSpecNodeId": "9171:28931", "actualUiFrameId": "10590:29284", "resolution": "base-with-revisions", "revisionSectionIds": ["16748:39665", "17475:46145", "17370:46831", "17373:48960"] },
+    { "pageId": "web.receipt-management", "baseSpecNodeId": "9171:28113", "actualUiFrameId": "10590:30112", "resolution": "base-current" },
+
+    { "pageId": "web.production-target-month", "baseSpecNodeId": "9171:27768", "actualUiFrameId": "9699:70287", "resolution": "base-current" },
+    { "pageId": "web.production-plan-day", "baseSpecNodeId": "9156:29023", "actualUiFrameId": "9737:24794", "resolution": "base-current" },
+    { "pageId": "web.production-order", "baseSpecNodeId": "9156:28678", "actualUiFrameId": "9742:23961", "resolution": "base-with-revisions", "revisionSectionIds": ["17425:48116"] },
+    { "pageId": "web.production-result", "baseSpecNodeId": "9156:28561", "actualUiFrameId": "9742:65685", "resolution": "base-with-revisions", "revisionSectionIds": ["17362:47340", "17425:46907", "17425:47832", "18795:62149", "18826:60553", "18826:62322", "19098:65080", "19237:111421", "19451:95617", "20799:71355"] },
+    { "pageId": "web.operation-log", "baseSpecNodeId": "9171:26728", "actualUiFrameId": "10542:15737", "resolution": "completed-revision-visible", "revisionSectionIds": ["17303:45841", "17768:52892", "19629:105844"], "paintOrderResolution": "겹친 3차 수정 영역에서는 마지막 자식인 17377:50194 계열의 실제 보이는 프레임을 우선한다." },
+    { "pageId": "web.self-inspection", "baseSpecNodeId": "9156:29742", "actualUiFrameId": "10545:16812", "resolution": "base-current" },
+
+    { "pageId": "web.inventory", "baseSpecNodeId": "9171:27084", "actualUiFrameId": "10549:19796", "resolution": "base-with-revisions", "revisionSectionIds": ["17486:51087", "17491:82304", "18813:64179"] },
+    { "pageId": "web.label", "baseSpecNodeId": "9171:27436", "actualUiFrameId": "13608:34674", "resolution": "base-with-revisions", "revisionSectionIds": ["17425:46907", "19956:67709"] },
+    { "pageId": "web.bom-query", "baseSpecNodeId": "9171:29222", "actualUiFrameId": "9873:103748", "resolution": "base-with-revisions", "revisionSectionIds": ["16471:41362", "17529:47946", "20208:69257"] },
+    { "pageId": "web.material-input-analysis", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "revision-only", "revisionSectionIds": ["17475:46146", "18181:123202"], "paintOrderResolution": "원료투입분석 화면 근거와 메뉴 레벨 변경 근거를 역할별로 함께 사용하며, 메뉴 변경안이 화면 내부 구성을 대체하지 않는다." },
+
+    { "pageId": "web.purchase-order", "baseSpecNodeId": "9171:29458", "actualUiFrameId": "10583:27521", "resolution": "base-with-revisions", "revisionSectionIds": ["17538:103184", "17872:53733"] },
+    { "pageId": "web.receiving", "baseSpecNodeId": "9171:29807", "actualUiFrameId": "10583:28252", "resolution": "base-with-revisions", "revisionSectionIds": ["17503:85601"] },
+    { "pageId": "web.shipment-order", "baseSpecNodeId": "9171:30274", "actualUiFrameId": "16571:37230", "resolution": "base-with-revisions", "revisionSectionIds": ["17370:46831"] },
+    { "pageId": "web.shipment-result", "baseSpecNodeId": "9171:30627", "actualUiFrameId": "10590:24911", "resolution": "base-with-revisions", "revisionSectionIds": ["16876:40254"] },
+
+    { "pageId": "web.incoming-inspection", "baseSpecNodeId": "9171:32307", "actualUiFrameId": "10583:25086", "resolution": "base-current" },
+    { "pageId": "web.outgoing-inspection", "baseSpecNodeId": "9171:36246", "actualUiFrameId": "10583:24332", "resolution": "base-current" },
+    { "pageId": "web.process-inspection", "baseSpecNodeId": "9171:39124", "actualUiFrameId": "9873:109840", "resolution": "base-current" },
+    { "pageId": "web.inspection-trend", "baseSpecNodeId": "9171:39454", "actualUiFrameId": "11751:102614", "resolution": "base-current" },
+
+    { "pageId": "web.equipment-monitoring", "baseSpecNodeId": "9138:9102", "actualUiFrameId": null, "resolution": "unresolved", "notes": ["PPT용 와이어프레임과 최종 디자인 후보가 함께 있어 내부 실제 UI frame을 더 판정해야 한다."] },
+    { "pageId": "web.maintenance-history", "baseSpecNodeId": "9171:39620", "actualUiFrameId": "10582:51286", "resolution": "base-current" },
+    { "pageId": "web.equipment-inspection", "baseSpecNodeId": "9171:39832", "actualUiFrameId": "10582:52166", "resolution": "base-current" },
+
+    { "pageId": "web.lot-trace", "baseSpecNodeId": "9171:40053", "actualUiFrameId": "9873:113074", "resolution": "base-current" },
+    { "pageId": "web.production-analysis", "baseSpecNodeId": "9171:40379", "actualUiFrameId": "11765:104957", "resolution": "base-with-revisions", "revisionSectionIds": ["17531:48207"] },
+    { "pageId": "web.equipment-operation-analysis", "baseSpecNodeId": "9171:40549", "actualUiFrameId": "11765:105582", "resolution": "base-current" },
+    { "pageId": "web.forming-analysis", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "revision-only", "revisionSectionIds": ["17669:47293", "18181:127915"], "paintOrderResolution": "겹친 3차 수정 영역에서는 마지막 자식인 17377:50194 계열의 실제 보이는 프레임을 우선한다." },
+    { "pageId": "web.extrusion-analysis", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "revision-only", "revisionSectionIds": ["17669:47293", "18181:127915"], "paintOrderResolution": "겹친 3차 수정 영역에서는 마지막 자식인 17377:50194 계열의 실제 보이는 프레임을 우선한다." },
+    { "pageId": "web.kpi", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "unresolved", "notes": ["최신 웹 화면설계서 전체 섹션에서 성과지표 KPI의 명시 원본을 찾지 못했다."] },
+
+    { "pageId": "web.partner", "baseSpecNodeId": "9171:40925", "actualUiFrameId": "10590:25574", "resolution": "base-current" },
+    { "pageId": "web.item", "baseSpecNodeId": "9171:41055", "actualUiFrameId": "10590:26185", "resolution": "base-with-revisions", "revisionSectionIds": ["18753:60729", "18810:61615", "19029:63301"] },
+    { "pageId": "web.bom", "baseSpecNodeId": "9184:23132", "actualUiFrameId": "10590:26799", "resolution": "base-with-revisions", "revisionSectionIds": ["18810:61615"] },
+    { "pageId": "web.special-price", "baseSpecNodeId": "9184:23262", "actualUiFrameId": "10571:22511", "resolution": "base-current" },
+    {
+      "pageId": "web.warehouse",
+      "baseSpecNodeId": "9184:23987",
+      "actualUiFrameId": "10571:23229",
+      "resolution": "completed-revision-visible",
+      "revisionSectionIds": ["16471:41363"],
+      "resolvedSurfaces": [
+        { "surface": "warehouse-create-slide", "nodeId": "16553:37460", "authority": "figma" },
+        { "surface": "default-warehouse-modal", "nodeId": "16553:37111", "authority": "figma" },
+        { "surface": "default-warehouse-error-dialog", "nodeId": "16553:37842", "authority": "figma" }
+      ],
+      "runtimeOnlyContentExtensions": ["창고코드", "사내코드", "수불 우선순위"],
+      "runtimeDifference": {
+        "subject": "기본 창고 설정 중앙 모달",
+        "classification": "shared-ui-design-difference",
+        "figmaNodeId": "16553:37111",
+        "rule": "동일 모달의 디자인은 완료된 Figma 개선안을 따른다. 웹 전용 필드는 기존 폼 디자인을 재사용한 내용 확장으로 별도 기록한다."
+      }
+    },
+    { "pageId": "web.equipment", "baseSpecNodeId": "9184:24260", "actualUiFrameId": "10571:24079", "resolution": "base-current" },
+    { "pageId": "web.process", "baseSpecNodeId": "9184:24392", "actualUiFrameId": "10571:24824", "resolution": "base-current" },
+    { "pageId": "web.form", "baseSpecNodeId": "9184:24585", "actualUiFrameId": "10571:25402", "resolution": "base-with-revisions", "revisionSectionIds": ["17377:50192"] },
+    { "pageId": "web.user", "baseSpecNodeId": "9184:24717", "actualUiFrameId": "10571:26032", "resolution": "base-with-revisions", "revisionSectionIds": ["17489:80534"] },
+    { "pageId": "web.permission", "baseSpecNodeId": "10968:38010", "actualUiFrameId": "10968:38098", "resolution": "base-with-revisions", "revisionSectionIds": ["17196:43442", "20006:99855"] }
+  ],
+  "revisionStatuses": [
+    { "nodeId": "16471:41363", "name": "창고 정보 표기 개선안 - 화면 교체 완료", "status": "completed", "mayOverrideBase": true },
+    { "nodeId": "19029:63301", "name": "LOT 선택 삭제 -> 미진행", "status": "not-implemented", "mayOverrideBase": false },
+    { "nodeId": "18810:61615", "name": "BOM 복사-후순위", "status": "deferred", "mayOverrideBase": false },
+    { "nodeId": "19483:104429", "name": "화면 불필요. 미진행", "status": "not-implemented", "mayOverrideBase": false },
+    { "nodeId": "20799:71355", "name": "생산실적 부산물 POC", "status": "poc", "mayOverrideBase": false }
+  ],
+  "coverage": {
+    "runtimePages": 42,
+    "pagesWithResolvedBaseOrRevision": 40,
+    "unresolvedPages": ["web.equipment-monitoring", "web.kpi"],
+    "explicitCompletedRevisionCases": ["web.warehouse"]
+  }
+}

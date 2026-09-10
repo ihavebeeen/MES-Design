@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "status": "observed-in-progress",
+  "auditedAt": "2026-09-10",
+  "source": {
+    "environment": "development-mes",
+    "path": "/dongjin",
+    "mode": "read-only-ui-inspection",
+    "actionsAllowed": ["조회", "행 선택", "그룹 펼침", "행 더블클릭", "등록·편집·설정 화면 열기", "취소로 닫기"],
+    "actionsExcluded": ["저장", "삭제 확정", "승인 확정", "실제 데이터 생성"]
+  },
+  "statusDefinitions": {
+    "opened": "대상 화면을 열어 surface와 제목을 확인함",
+    "selected": "실제 데이터 행의 체크박스 선택 상태를 확인함",
+    "no-data": "현재 조회 조건에 데이터 행이 없어 행 동작을 확인하지 못함",
+    "no-overlay": "동작 뒤 중앙 모달이나 슬라이드가 열리지 않음. 인라인 변화 또는 동작 없음으로 후속 판정함",
+    "not-applicable": "행 상세 또는 별도 진입이 없는 분석·현황 화면",
+    "not-invoked": "데이터 변경 위험이 있는 확정 액션이라 열지 않음"
+  },
+  "pages": [
+    { "pageId": "web.sales-target-month", "row": { "status": "no-data" }, "entries": [{ "trigger": "판매목표 등록", "status": "opened", "surface": "side-slide-panel", "title": "판매목표(월) 등록", "width": "content-50%" }] },
+    { "pageId": "web.sales-plan-day", "row": { "status": "no-data" }, "entries": [{ "trigger": "판매계획 등록", "status": "opened", "surface": "side-slide-panel", "title": "판매계획(일) 등록", "width": "content-50%" }] },
+    { "pageId": "web.product-purchase", "row": { "status": "no-data" }, "entries": [{ "trigger": "구매 등록", "status": "opened", "surface": "side-slide-panel", "title": "상품구매 등록", "width": "content-50%" }] },
+    { "pageId": "web.sales-management", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "center-modal", "title": "출하승인", "width": "900px" } }, "entries": [{ "trigger": "승인·청구 확정", "status": "not-invoked" }] },
+    { "pageId": "web.receipt-management", "row": { "status": "no-data" }, "entries": [] },
+
+    { "pageId": "web.production-target-month", "row": { "status": "no-data" }, "entries": [{ "trigger": "생산목표 등록", "status": "opened", "surface": "side-slide-panel", "title": "생산목표(월) 등록", "width": "content-55%" }] },
+    { "pageId": "web.production-plan-day", "row": { "status": "no-data" }, "entries": [{ "trigger": "신규 등록", "status": "opened", "surface": "side-slide-panel", "title": "생산계획 등록", "width": "content-50%" }] },
+    { "pageId": "web.production-order", "row": { "status": "no-data" }, "entries": [{ "trigger": "생산지시 등록", "status": "opened", "surface": "side-slide-panel", "title": "생산지시 등록", "width": "content-50%" }] },
+    { "pageId": "web.production-result", "row": { "status": "no-data" }, "entries": [{ "trigger": "생산실적 등록", "status": "opened", "surface": "center-modal", "title": "작업 선택", "width": "viewport-70%", "nextStep": "작업 선택 뒤 생산실적 등록 슬라이드" }] },
+    { "pageId": "web.operation-log", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "운전일지 수정", "width": "940px" } }, "entries": [{ "trigger": "운전 일지 등록", "status": "opened", "surface": "side-slide-panel", "title": "운전일지 등록", "width": "940px" }] },
+    { "pageId": "web.self-inspection", "row": { "status": "no-data" }, "entries": [{ "trigger": "신규 검사 생성", "status": "opened", "surface": "center-modal", "title": "검사항목 선택", "width": "1160px" }] },
+
+    { "pageId": "web.inventory", "row": { "status": "selected", "groupExpanded": true, "doubleClick": { "status": "opened", "surface": "center-modal", "title": "재고편집", "width": "viewport-80%" } }, "entries": [{ "trigger": "재고 편집", "status": "opened", "surface": "center-modal", "title": "재고편집", "width": "viewport-80%" }] },
+    { "pageId": "web.label", "row": { "status": "no-data" }, "entries": [{ "trigger": "신규 라벨 발행", "status": "opened", "surface": "side-slide-panel", "title": "라벨 생성", "width": "374px" }] },
+    { "pageId": "web.bom-query", "row": { "status": "selected", "doubleClick": { "status": "no-overlay" } }, "entries": [{ "trigger": "BOM 기준 재고분석", "status": "opened", "surface": "center-modal", "title": "BOM 기준 재고 분석", "width": "1000px" }] },
+    { "pageId": "web.material-input-analysis", "row": { "status": "no-data" }, "entries": [] },
+
+    { "pageId": "web.purchase-order", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "발주등록", "width": "content-50%" } }, "entries": [{ "trigger": "발주 등록", "status": "opened", "surface": "side-slide-panel", "title": "발주등록", "width": "content-50%" }] },
+    { "pageId": "web.receiving", "row": { "status": "no-data" }, "entries": [{ "trigger": "신규 등록", "status": "opened", "surface": "center-modal", "title": "발주 선택", "width": "viewport-50%", "nextStep": "발주 선택 뒤 입고 등록 슬라이드" }] },
+    { "pageId": "web.shipment-order", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "출하지시 수정", "width": "content-55%" } }, "entries": [{ "trigger": "긴급 출하지시 등록", "status": "opened", "surface": "side-slide-panel", "title": "출하지시 등록", "width": "content-55%" }] },
+    { "pageId": "web.shipment-result", "row": { "status": "no-data" }, "entries": [{ "trigger": "출하실적 등록", "status": "opened", "surface": "center-modal", "title": "출하지시 정보", "width": "883px" }] },
+
+    { "pageId": "web.incoming-inspection", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "입고검사 정보", "width": "849px" } }, "entries": [{ "trigger": "입고검사 시작", "status": "opened", "surface": "side-slide-panel", "title": "입고검사 정보", "width": "849px" }] },
+    { "pageId": "web.outgoing-inspection", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "출고검사 정보", "width": "849px" } }, "entries": [] },
+    { "pageId": "web.process-inspection", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "공정검사 정보", "width": "849px" } }, "entries": [{ "trigger": "신규 검사 생성", "status": "opened", "surface": "center-modal", "title": "검사항목 선택", "width": "1160px" }] },
+    { "pageId": "web.inspection-trend", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "반품 건수 전년도 설정", "status": "no-overlay", "result": "인라인 입력 상태" }, { "trigger": "보류 건수 전년도 설정", "status": "no-overlay", "result": "인라인 입력 상태" }] },
+
+    { "pageId": "web.equipment-monitoring", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "성형기정보", "status": "no-overlay", "result": "화면 내부 상태 변화" }, { "trigger": "알람이력", "status": "no-overlay", "result": "화면 내부 상태 변화" }] },
+    { "pageId": "web.maintenance-history", "row": { "status": "no-data" }, "entries": [{ "trigger": "정비이력 등록", "status": "opened", "surface": "side-slide-panel", "title": "정비이력 등록", "width": "content-50%" }] },
+    { "pageId": "web.equipment-inspection", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "설비 점검 수정", "width": "content-50%" } }, "entries": [{ "trigger": "설비점검 등록", "status": "opened", "surface": "side-slide-panel", "title": "설비 점검 등록", "width": "content-50%" }] },
+
+    { "pageId": "web.lot-trace", "row": { "status": "no-data" }, "entries": [] },
+    { "pageId": "web.production-analysis", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "판매 계획 목표 설정", "status": "no-overlay", "result": "분석 화면 내부 입력 상태" }, { "trigger": "생산 계획 목표 설정", "status": "no-overlay", "result": "분석 화면 내부 입력 상태" }] },
+    { "pageId": "web.equipment-operation-analysis", "row": { "status": "no-data" }, "entries": [] },
+    { "pageId": "web.forming-analysis", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "생산분석/불량분석", "status": "no-overlay", "result": "화면 내부 보기 전환" }] },
+    { "pageId": "web.extrusion-analysis", "row": { "status": "not-applicable" }, "entries": [{ "trigger": "생산분석/불량분석", "status": "no-overlay", "result": "화면 내부 보기 전환" }] },
+    { "pageId": "web.kpi", "row": { "status": "no-data" }, "entries": [] },
+
+    { "pageId": "web.partner", "row": { "status": "selected", "selectionEffect": "삭제 액션 활성화", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "거래처 등록", "width": "content-50%" } }, "entries": [{ "trigger": "거래처 등록", "status": "opened", "surface": "side-slide-panel", "title": "거래처 등록", "width": "content-50%" }] },
+    { "pageId": "web.item", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "품목 정보", "width": "content-50%" } }, "entries": [{ "trigger": "품목 등록", "status": "opened", "surface": "side-slide-panel", "title": "품목 정보", "width": "content-50%" }] },
+    { "pageId": "web.bom", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "BOM 등록", "width": "content-50%" } }, "entries": [{ "trigger": "BOM 등록", "status": "opened", "surface": "side-slide-panel", "title": "BOM 등록", "width": "content-50%" }] },
+    { "pageId": "web.special-price", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "특별단가 상세", "width": "760px" } }, "entries": [{ "trigger": "특별단가 등록", "status": "opened", "surface": "side-slide-panel", "title": "특별단가 등록", "width": "760px" }] },
+    { "pageId": "web.warehouse", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "창고 정보", "width": "content-50%" } }, "entries": [{ "trigger": "창고 등록", "status": "opened", "surface": "side-slide-panel", "title": "창고 정보", "width": "content-50%" }, { "trigger": "기본창고 설정", "status": "opened", "surface": "center-modal", "title": "기본 창고 설정", "width": "480px" }] },
+    { "pageId": "web.equipment", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "설비 정보", "width": "content-50%" } }, "entries": [{ "trigger": "설비 등록", "status": "opened", "surface": "side-slide-panel", "title": "설비 정보", "width": "content-50%" }] },
+    { "pageId": "web.process", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "공정 등록", "width": "760px" } }, "entries": [{ "trigger": "공정 등록", "status": "opened", "surface": "side-slide-panel", "title": "공정 등록", "width": "760px" }] },
+    { "pageId": "web.form", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "양식관리", "width": "900px" } }, "entries": [{ "trigger": "양식 등록", "status": "opened", "surface": "side-slide-panel", "title": "양식관리", "width": "900px" }] },
+    { "pageId": "web.user", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "사용자 정보", "width": "content-50%" } }, "entries": [{ "trigger": "사용자 등록", "status": "opened", "surface": "side-slide-panel", "title": "사용자 정보", "width": "content-50%" }] },
+    { "pageId": "web.permission", "row": { "status": "selected", "doubleClick": { "status": "opened", "surface": "side-slide-panel", "title": "그룹 권한 설정", "width": "content-60%" } }, "entries": [{ "trigger": "그룹 등록", "status": "opened", "surface": "side-slide-panel", "title": "그룹 권한 설정", "width": "content-60%" }] }
+  ],
+  "coverage": {
+    "mainMenuPages": 42,
+    "pagesObserved": 42,
+    "pagesWithSelectedDataRow": 20,
+    "pagesBlockedByCurrentNoData": 17,
+    "pagesWithoutRowDetail": 5,
+    "writeActionsExecuted": 0
+  },
+  "remaining": [
+    "현재 데이터가 없어 확인하지 못한 행 더블클릭은 데이터가 생겼을 때 다시 확인한다.",
+    "발주 선택 뒤 입고 등록, 작업 선택 뒤 생산실적 등록처럼 다음 단계 데이터가 필요한 흐름을 이어서 확인한다.",
+    "인라인 변화로 기록한 설정 버튼은 변화 전후의 필드·배치 차이를 별도 캡처로 대조한다."
+  ]
+}
