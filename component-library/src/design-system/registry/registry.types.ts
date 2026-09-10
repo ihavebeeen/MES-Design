@@ -460,6 +460,38 @@ export interface WebFigmaReconciliationRegistry {
     classification: "needs-reconciliation" | "comparison-constraint" | "runtime-supplement" | "authority-constraint";
     detail: string;
   }>;
+  detailedComparisonPass: {
+    status: "base-screen-structure-and-style-compared";
+    performedAt: string;
+    method: string[];
+    familyCoverage: Array<{
+      family: "standard-date-list" | "master-data-list" | "split-explorer" | "analysis-dashboard";
+      pageIds: string[];
+      figmaShellState: string;
+      runtimeShellState: string;
+      result: string;
+    }>;
+    sharedFindings: Array<{
+      id: string;
+      classification: string;
+      appliesTo: string;
+      figma: string;
+      runtime: string;
+      authority: string;
+      decision: string;
+    }>;
+    screenExceptions: Array<{
+      id: string;
+      pageIds: string[];
+      classification: string;
+      figma?: string;
+      runtime?: string;
+      authority?: string;
+      reason?: string;
+    }>;
+    unpairedRuntimePages: string[];
+    remaining: string[];
+  };
   coverage: {
     runtimePages: number;
     sourceLocatedLatest: number;
@@ -467,6 +499,12 @@ export interface WebFigmaReconciliationRegistry {
     sourceNotLocated: number;
     pixelVerified: number;
     interactionVerifiedAgainstFigma: number;
+    representativeStructureCompared: number;
+    representativeVisualDifferencesConfirmed: number;
+    runtimeStatesObservedInRepresentativePass: number;
+    detailedFigmaFramesInspected: number;
+    detailedRuntimePagesInspected: number;
+    detailedFamiliesInspected: number;
   };
   remaining: string[];
 }

@@ -50,6 +50,55 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   if (!Array.isArray(comparisonProtocol?.comparisonFields) || comparisonProtocol.comparisonFields.length < 6) {
     errors.push("web-figma-reconciliation: 셸·조회·테이블·액션·오버레이·상태 변화 대조 항목이 필요합니다.");
   }
+  const detailedComparison = reconciliation.detailedComparisonPass;
+  const detailedPageIds = new Set();
+  const detailedFamilies = uniqueMap(
+    "web-figma-reconciliation detailedComparisonPass.familyCoverage",
+    detailedComparison?.familyCoverage,
+    "family",
+    errors
+  );
+  for (const family of detailedFamilies.values()) {
+    if (!Array.isArray(family.pageIds) || family.pageIds.length === 0 || !family.figmaShellState || !family.runtimeShellState || !family.result) {
+      errors.push(`web-figma-reconciliation detailed family '${family.family}': 화면·셸 상태·결과가 필요합니다.`);
+      continue;
+    }
+    for (const pageId of family.pageIds) {
+      if (detailedPageIds.has(pageId)) errors.push(`web-figma-reconciliation detailed comparison: '${pageId}'가 여러 화면군에 중복됩니다.`);
+      detailedPageIds.add(pageId);
+      if (!usagePages.has(pageId)) errors.push(`web-figma-reconciliation detailed comparison: 실제 웹에 없는 '${pageId}'를 참조합니다.`);
+    }
+  }
+  const resolvedFramePageIds = new Set(
+    [...authorityPages.values()].filter((page) => /^\d+:\d+$/.test(page.actualUiFrameId ?? "")).map((page) => page.pageId)
+  );
+  for (const pageId of resolvedFramePageIds) {
+    if (!detailedPageIds.has(pageId)) errors.push(`web-figma-reconciliation detailed comparison: 실제 UI frame이 있는 '${pageId}'가 상세 대조에서 빠졌습니다.`);
+  }
+  for (const pageId of detailedPageIds) {
+    if (!resolvedFramePageIds.has(pageId)) errors.push(`web-figma-reconciliation detailed comparison: '${pageId}'에는 확정된 실제 UI frame이 없습니다.`);
+  }
+  const unpairedRuntimePages = new Set(detailedComparison?.unpairedRuntimePages ?? []);
+  const expectedUnpairedRuntimePages = new Set([...usagePages.keys()].filter((pageId) => !resolvedFramePageIds.has(pageId)));
+  for (const pageId of expectedUnpairedRuntimePages) {
+    if (!unpairedRuntimePages.has(pageId)) errors.push(`web-figma-reconciliation detailed comparison: 원본 frame 미확정 화면 '${pageId}'가 분리 목록에서 빠졌습니다.`);
+  }
+  for (const pageId of unpairedRuntimePages) {
+    if (!expectedUnpairedRuntimePages.has(pageId)) errors.push(`web-figma-reconciliation detailed comparison: '${pageId}'는 원본 frame 미확정 화면이 아닙니다.`);
+  }
+  if (!Array.isArray(detailedComparison?.method) || detailedComparison.method.length < 3) {
+    errors.push("web-figma-reconciliation detailed comparison: 대조 방법이 필요합니다.");
+  }
+  if (!Array.isArray(detailedComparison?.sharedFindings) || detailedComparison.sharedFindings.length === 0 ||
+      !Array.isArray(detailedComparison?.screenExceptions) || detailedComparison.screenExceptions.length === 0 ||
+      !Array.isArray(detailedComparison?.remaining) || detailedComparison.remaining.length === 0) {
+    errors.push("web-figma-reconciliation detailed comparison: 공통 차이·화면 예외·남은 대조가 필요합니다.");
+  }
+  if (reconciliation.coverage?.detailedFigmaFramesInspected !== resolvedFramePageIds.size ||
+      reconciliation.coverage?.detailedRuntimePagesInspected !== detailedPageIds.size ||
+      reconciliation.coverage?.detailedFamiliesInspected !== detailedFamilies.size) {
+    errors.push("web-figma-reconciliation: 상세 대조 집계가 실제 기록과 다릅니다.");
+  }
   const allowedComparisonLevels = new Set(["source-located", "structure-compared", "visual-difference-confirmed", "interaction-observed"]);
   const allowedComparisonClasses = new Set(["aligned-structure", "shared-ui-design-difference", "runtime-state-observed"]);
   for (const comparison of representativeComparisons.values()) {

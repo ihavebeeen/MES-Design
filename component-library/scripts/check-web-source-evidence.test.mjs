@@ -106,6 +106,26 @@ test("대표 대조 집계가 실제 기록과 다르면 실패한다", () => {
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /대표 구조 대조 집계/);
 });
 
+test("실제 UI frame이 있는 화면이 상세 대조에서 빠지면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  const family = evidence.reconciliation.detailedComparisonPass.familyCoverage.find((item) => item.family === "master-data-list");
+  family.pageIds = family.pageIds.filter((pageId) => pageId !== "web.item");
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /web\.item.*상세 대조에서 빠졌습니다/);
+});
+
+test("원본 frame 미확정 화면이 분리 목록에서 빠지면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.detailedComparisonPass.unpairedRuntimePages =
+    evidence.reconciliation.detailedComparisonPass.unpairedRuntimePages.filter((pageId) => pageId !== "web.kpi");
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /web\.kpi.*분리 목록에서 빠졌습니다/);
+});
+
+test("상세 대조 집계가 실제 화면군과 다르면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.reconciliation.coverage.detailedRuntimePagesInspected = 0;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /상세 대조 집계/);
+});
+
 test("설비 모니터링 후보를 찾고도 미확정 근거에서 빼면 실패한다", () => {
   const evidence = clone(loadWebSourceEvidence());
   evidence.authority.pages.find((page) => page.pageId === "web.equipment-monitoring").candidateFrameIds = [];

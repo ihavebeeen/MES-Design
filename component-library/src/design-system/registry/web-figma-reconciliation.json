@@ -109,6 +109,131 @@
     },
     "rule": "확인한 단계만 기록한다. 구조 대조를 픽셀 검증으로 올리거나 웹 단독 상태를 Figma 승인 상태로 올리지 않는다."
   },
+  "detailedComparisonPass": {
+    "status": "base-screen-structure-and-style-compared",
+    "performedAt": "2026-09-10",
+    "method": [
+      "Figma의 2700×1500 설명 프레임 안에서 1920×960 실제 UI frame을 다시 찾았다.",
+      "실제 웹은 1920×1080 viewport를 요청하고 Figma frame과 같은 좌측 메뉴 접힘·펼침 상태로 맞췄다.",
+      "화면 제목, 조회·필터 영역, 표와 스크롤, 하단 액션, 공통 셸을 화면별로 실측했다.",
+      "팝업과 행 선택·편집 같은 조건부 상태는 별도 상세 대조 대상으로 남겼다."
+    ],
+    "familyCoverage": [
+      {
+        "family": "standard-date-list",
+        "pageIds": [
+          "web.sales-target-month", "web.sales-plan-day", "web.product-purchase", "web.sales-management", "web.receipt-management",
+          "web.production-target-month", "web.production-plan-day", "web.production-order", "web.production-result", "web.operation-log", "web.self-inspection",
+          "web.inventory", "web.label", "web.purchase-order", "web.receiving", "web.shipment-order", "web.shipment-result",
+          "web.incoming-inspection", "web.outgoing-inspection", "web.process-inspection", "web.maintenance-history", "web.equipment-inspection"
+        ],
+        "figmaShellState": "SNB-hide 62px",
+        "runtimeShellState": "접힌 좌측 메뉴",
+        "result": "공통 영역 구성은 일치하며 제목·조회 버튼·좌측 하단 액션에서 반복 시각 차이를 확인했다."
+      },
+      {
+        "family": "master-data-list",
+        "pageIds": [
+          "web.partner", "web.item", "web.bom", "web.special-price", "web.warehouse",
+          "web.equipment", "web.process", "web.form", "web.user", "web.permission"
+        ],
+        "figmaShellState": "SNB-hide 62px",
+        "runtimeShellState": "접힌 좌측 메뉴",
+        "result": "목록·필터·하단 업무 액션은 같은 틀을 사용한다. Figma의 기간 조회 영역이 실제 웹에서는 전부 빠져 있어 판정이 필요하다."
+      },
+      {
+        "family": "split-explorer",
+        "pageIds": ["web.bom-query", "web.lot-trace"],
+        "figmaShellState": "SNB-active 260px",
+        "runtimeShellState": "펼친 좌측 메뉴",
+        "result": "펼친 메뉴와 2열 탐색·추적 구조는 일치한다. 제목 타이포그래피 차이는 일반 목록과 동일하게 반복된다."
+      },
+      {
+        "family": "analysis-dashboard",
+        "pageIds": ["web.inspection-trend", "web.production-analysis", "web.equipment-operation-analysis"],
+        "figmaShellState": "SNB-active 260px",
+        "runtimeShellState": "펼친 좌측 메뉴",
+        "result": "카드·표·차트 중심의 대시보드 구성이 대응된다. 본문 데이터와 차트 상태의 픽셀 대조는 남아 있다."
+      }
+    ],
+    "sharedFindings": [
+      {
+        "id": "list.title-typography",
+        "classification": "shared-ui-design-difference",
+        "appliesTo": "standard-date-list, master-data-list, split-explorer",
+        "figma": "대부분 x=82 또는 펼친 메뉴에서 x=280, y=49, 18px, #011327",
+        "runtime": "대부분 x=66 또는 펼친 메뉴에서 x=276, y=51, 15px, #4B4E5C",
+        "authority": "figma",
+        "decision": "코드 자산의 화면 제목 기준은 Figma 값으로 유지하고 실제 웹 차이는 구현 차이 후보로 기록한다."
+      },
+      {
+        "id": "list.query-button",
+        "classification": "shared-ui-design-difference",
+        "appliesTo": "standard-date-list",
+        "figma": "x=1773, y=46, 50×32, #1573FB, radius 4",
+        "runtime": "x=1787, y=46, 56×32, #1573FB, radius 4",
+        "authority": "figma",
+        "decision": "색상과 높이는 일치하며 폭과 우측 배치는 차이로 유지한다."
+      },
+      {
+        "id": "list.left-footer-actions",
+        "classification": "shared-ui-design-difference",
+        "appliesTo": "standard-date-list와 일부 master-data-list",
+        "figma": "복사 텍스트 x=114, 다운로드 Button 91×32, 하단 y=921~953",
+        "runtime": "접힌 메뉴에서 복사 Button x=60·80×32, 다운로드 x=150·100×32, viewport 하단 y=1047",
+        "authority": "figma",
+        "decision": "서로 다른 viewport 높이 때문에 y는 직접 판정하지 않고 좌측 여백과 버튼 폭을 차이로 기록한다."
+      },
+      {
+        "id": "list.horizontal-overflow",
+        "classification": "aligned-structure",
+        "appliesTo": "이번에 실측한 37개 기본 화면",
+        "figma": "각 실제 UI frame 안에서 본문이 프레임 폭을 벗어나지 않음",
+        "runtime": "body 가로 넘침 없음, 확인한 표의 clientWidth와 scrollWidth가 동일",
+        "authority": "shared",
+        "decision": "현재 기본 상태에는 페이지 전체 가로 스크롤이 없다. 데이터 길이와 팝업 상태는 별도로 확인한다."
+      }
+    ],
+    "screenExceptions": [
+      {
+        "id": "master-list.query-region-missing",
+        "pageIds": ["web.partner", "web.item", "web.bom", "web.special-price", "web.warehouse", "web.equipment", "web.process", "web.form", "web.user", "web.permission"],
+        "figma": "조회기준일자·달력·조회·설정 영역이 존재함",
+        "runtime": "기간 조회와 조회 버튼이 없고 설정 버튼만 존재함",
+        "classification": "needs-reconciliation",
+        "reason": "업무상 기간 조회가 필요 없는 변경인지, 실제 웹 누락인지 화면군 단위 판정이 필요하다."
+      },
+      {
+        "id": "master-list.left-footer-missing",
+        "pageIds": ["web.form", "web.user", "web.permission"],
+        "figma": "복사·다운로드 하단 액션이 존재함",
+        "runtime": "복사·다운로드가 보이지 않음",
+        "classification": "shared-ui-design-difference",
+        "authority": "figma"
+      },
+      {
+        "id": "screen-title.naming-drift",
+        "pageIds": ["web.sales-plan-day", "web.product-purchase", "web.production-target-month", "web.production-plan-day", "web.production-order", "web.production-result", "web.label", "web.purchase-order", "web.maintenance-history", "web.equipment-inspection", "web.form", "web.permission"],
+        "classification": "needs-reconciliation",
+        "reason": "Figma frame 이름·Figma 화면 제목·실제 웹 메뉴명·실제 웹 화면 제목 중 둘 이상이 다르다. 디자인 판정과 별도로 제품 용어를 확정해야 한다."
+      },
+      {
+        "id": "figma-node-name.production-result",
+        "pageIds": ["web.production-result"],
+        "classification": "source-error-candidate",
+        "reason": "실제 UI frame 이름은 생산계획(일) 리스트지만 내부 제목은 생산실적 리스트다. 내부 화면 제목을 원본 식별 기준으로 사용한다."
+      }
+    ],
+    "unpairedRuntimePages": [
+      "web.material-input-analysis", "web.equipment-monitoring", "web.forming-analysis", "web.extrusion-analysis", "web.kpi"
+    ],
+    "remaining": [
+      "37개 화면의 팝업·슬라이드·행 선택·편집 상태를 대응 Figma frame과 상세 대조",
+      "표에 긴 데이터가 있는 상태의 열 폭·말줄임·테이블 내부 가로 스크롤 대조",
+      "분석 화면의 카드·차트·타이포그래피 픽셀 대조",
+      "Figma 실제 UI frame이 확정되지 않은 5개 실제 웹 화면의 원본 또는 신규 승인 근거 확보"
+    ]
+  },
   "representativeComparisons": [
     {
       "id": "main-list.production-target",
@@ -181,12 +306,14 @@
     "interactionVerifiedAgainstFigma": 0,
     "representativeStructureCompared": 4,
     "representativeVisualDifferencesConfirmed": 1,
-    "runtimeStatesObservedInRepresentativePass": 1
+    "runtimeStatesObservedInRepresentativePass": 1,
+    "detailedFigmaFramesInspected": 37,
+    "detailedRuntimePagesInspected": 37,
+    "detailedFamiliesInspected": 4
   },
   "remaining": [
-    "나머지 화면은 수정되는 자산과 연결된 화면부터 실제 UI frame과 웹을 같은 기준으로 증분 대조",
-    "팝업과 조건부 상태는 최신 기본안·완료 개선안·실제 웹 순서로 증분 대조",
-    "명칭 충돌과 Shell 충돌을 화면별로 판정",
+    "37개 기본 화면의 팝업과 조건부 상태를 최신 기본안·완료 개선안·실제 웹 순서로 상세 대조",
+    "명칭 충돌과 master-data-list 기간 조회 영역의 충돌을 화면군 단위로 판정",
     "설비 모니터링 후보 6개의 최신 상태 확인",
     "KPI 본문 화면의 Figma 원본 또는 신규 요구 근거 확인"
   ]
