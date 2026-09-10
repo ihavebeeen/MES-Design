@@ -352,6 +352,42 @@
         "decision": "기본정보와 좌측 타임테이블·우측 가동/비가동 기록·하단 시간 합계 구조는 대응한다. 실제 웹이 전체 높이 슬라이드로 늘어났다."
       },
       {
+        "id": "slide.maintenance-entry",
+        "pageId": "web.maintenance-history",
+        "interaction": "정비이력 등록",
+        "figma": { "nodeId": "10619:41993", "width": 900, "height": 960, "authority": "base-current" },
+        "runtime": { "title": "정비이력 등록", "width": 839.7, "height": 1052.9, "hasClose": true },
+        "classification": "shared-ui-design-difference",
+        "decision": "기본정보·정비기록·투입자재 작성·상세 목록 순서는 대응한다. 실제 웹은 내용 영역의 50% 폭을 사용해 Figma보다 좁다."
+      },
+      {
+        "id": "slide.item-entry",
+        "pageId": "web.item",
+        "interaction": "품목 등록",
+        "figma": { "nodeId": "9873:92557", "width": 760, "height": 960, "authority": "base-with-revisions" },
+        "runtime": { "title": "품목 정보", "width": 839.7, "height": 1052.9, "hasClose": false },
+        "classification": "needs-reconciliation",
+        "decision": "공통정보·사출정보·커스텀정보의 역할과 좌우 구성은 대응한다. 실제 웹의 폭과 닫기 X 누락은 디자인 차이이며, 표준단가 관련 완료 개선안은 해당 영역에만 합성해야 한다."
+      },
+      {
+        "id": "center.shipment-order-selection",
+        "pageId": "web.shipment-result",
+        "interaction": "출하실적 등록",
+        "figma": { "nodeId": "10635:48189", "width": 800, "height": 680, "authority": "base-with-revisions" },
+        "runtime": { "title": "출하지시 정보", "width": 883, "height": 680 },
+        "classification": "shared-ui-design-difference",
+        "decision": "출하지시를 조회하고 한 건을 선택해 등록 슬라이드로 넘기는 선행 모달 역할은 대응한다. 실제 웹 폭이 더 넓다."
+      },
+      {
+        "id": "center.inspection-item-selection",
+        "pageId": "web.self-inspection",
+        "interaction": "신규 검사 생성",
+        "figma": { "nodeId": "10605:36704", "width": 960, "height": 682, "authority": "base-current" },
+        "runtime": { "title": "검사항목 선택", "width": 1160, "height": 680 },
+        "classification": "shared-ui-design-difference",
+        "decision": "생산지시 목록을 조회·선택해 검사 화면으로 넘기는 역할과 내부 테이블은 대응한다. 실제 웹은 같은 정보량에서 Figma보다 200px 넓다."
+      },
+      {
         "id": "state.list-selection-and-session-row",
         "pageId": "web.receiving",
         "interaction": "선택·편집·이번 세션 추가 행",
@@ -362,7 +398,7 @@
       }
     ],
     "remaining": [
-      "54개 팝업 설계 프레임 중 이번 대표 대조에 포함하지 않은 팝업은 관련 자산이 수정될 때 같은 형식으로 증분 대조",
+      "54개 팝업 설계 프레임 중 이번 13개 오버레이 대표 대조에 포함하지 않은 팝업은 관련 자산이 수정될 때 같은 형식으로 증분 대조",
       "출하승인과 재고편집의 중복·후속 Figma 프레임에서 현재 승인안을 확정",
       "생산실적의 작업 선택 모달과 실제 웹에만 있는 팝업의 디자인 승인 근거 확인",
       "경향 관리·생산 분석의 인라인 편집 상태를 Figma 개선 프레임과 좌표·상태별로 대조",
@@ -447,10 +483,10 @@
     "detailedFamiliesInspected": 4,
     "figmaPopupSpecFramesInspected": 54,
     "figmaPopupSurfacesInspected": 57,
-    "conditionalRepresentativesCompared": 10,
-    "runtimeOverlaySurfacesMeasured": 9,
+    "conditionalRepresentativesCompared": 14,
+    "runtimeOverlaySurfacesMeasured": 13,
     "stateComparisonsRecorded": 1,
-    "conditionalRepresentativesWithFigmaEvidence": 9
+    "conditionalRepresentativesWithFigmaEvidence": 13
   },
   "remaining": [
     "37개 기본 화면의 팝업과 조건부 상태를 최신 기본안·완료 개선안·실제 웹 순서로 상세 대조",
