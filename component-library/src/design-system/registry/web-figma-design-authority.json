@@ -62,7 +62,7 @@
     { "pageId": "web.process-inspection", "baseSpecNodeId": "9171:39124", "actualUiFrameId": "9873:109840", "resolution": "base-current" },
     { "pageId": "web.inspection-trend", "baseSpecNodeId": "9171:39454", "actualUiFrameId": "11751:102614", "resolution": "base-current" },
 
-    { "pageId": "web.equipment-monitoring", "baseSpecNodeId": "9138:9102", "actualUiFrameId": null, "resolution": "unresolved", "notes": ["PPT용 와이어프레임과 최종 디자인 후보가 함께 있어 내부 실제 UI frame을 더 판정해야 한다."] },
+    { "pageId": "web.equipment-monitoring", "baseSpecNodeId": "9138:9102", "actualUiFrameId": null, "resolution": "unresolved", "notes": ["7_1. 모니터링 프레임을 직접 조사했으나 제목과 '미완' 표기만 있고 실제 UI 프레임은 없다.", "실제 웹의 모니터링 화면은 사용 맥락 참고 자료로만 유지하며 Figma 디자인 원본으로 확정하지 않는다."] },
     { "pageId": "web.maintenance-history", "baseSpecNodeId": "9171:39620", "actualUiFrameId": "10582:51286", "resolution": "base-current" },
     { "pageId": "web.equipment-inspection", "baseSpecNodeId": "9171:39832", "actualUiFrameId": "10582:52166", "resolution": "base-current" },
 
@@ -71,7 +71,7 @@
     { "pageId": "web.equipment-operation-analysis", "baseSpecNodeId": "9171:40549", "actualUiFrameId": "11765:105582", "resolution": "base-current" },
     { "pageId": "web.forming-analysis", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "revision-only", "revisionSectionIds": ["17669:47293", "18181:127915"], "paintOrderResolution": "겹친 3차 수정 영역에서는 마지막 자식인 17377:50194 계열의 실제 보이는 프레임을 우선한다." },
     { "pageId": "web.extrusion-analysis", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "revision-only", "revisionSectionIds": ["17669:47293", "18181:127915"], "paintOrderResolution": "겹친 3차 수정 영역에서는 마지막 자식인 17377:50194 계열의 실제 보이는 프레임을 우선한다." },
-    { "pageId": "web.kpi", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "unresolved", "notes": ["최신 웹 화면설계서 전체 섹션에서 성과지표 KPI의 명시 원본을 찾지 못했다."] },
+    { "pageId": "web.kpi", "baseSpecNodeId": null, "actualUiFrameId": null, "resolution": "unresolved", "notes": ["웹 화면설계서 (최종) 페이지 전체에서 KPI·성과지표·성과 지표 이름과 텍스트를 검색했으나 일치 노드가 없다.", "실제 웹의 KPI 표와 편집 상태는 사용 맥락 참고 자료로만 유지하며 Figma 디자인 원본으로 확정하지 않는다."] },
 
     { "pageId": "web.partner", "baseSpecNodeId": "9171:40925", "actualUiFrameId": "10590:25574", "resolution": "base-current" },
     { "pageId": "web.item", "baseSpecNodeId": "9171:41055", "actualUiFrameId": "10590:26185", "resolution": "base-with-revisions", "revisionSectionIds": ["18753:60729", "18810:61615", "19029:63301"] },

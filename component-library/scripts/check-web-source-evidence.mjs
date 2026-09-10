@@ -76,6 +76,7 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
 
   const allowedRowStatuses = new Set(["selected", "no-data", "not-applicable"]);
   const allowedEntryStatuses = new Set(["opened", "no-overlay", "not-invoked"]);
+  const allowedDoubleClickStatuses = new Set(["opened", "no-overlay"]);
   for (const page of interactionPages.values()) {
     if (!allowedRowStatuses.has(page.row?.status)) {
       errors.push(`web-ui-interaction-audit '${page.pageId}': 알 수 없는 row.status '${page.row?.status}'`);
@@ -85,6 +86,12 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
     }
     if (page.row?.status === "no-data" && page.row.doubleClick) {
       errors.push(`web-ui-interaction-audit '${page.pageId}': 데이터가 없는데 더블클릭 통과를 기록할 수 없습니다.`);
+    }
+    if (page.row?.doubleClick && !allowedDoubleClickStatuses.has(page.row.doubleClick.status)) {
+      errors.push(`web-ui-interaction-audit '${page.pageId}': 알 수 없는 더블클릭 결과 '${page.row.doubleClick.status}'`);
+    }
+    if (page.row?.doubleClick?.status === "opened" && (!page.row.doubleClick.surface || !page.row.doubleClick.title || !page.row.doubleClick.width)) {
+      errors.push(`web-ui-interaction-audit '${page.pageId}': 더블클릭으로 열린 화면의 surface·title·width가 필요합니다.`);
     }
     if (!Array.isArray(page.entries)) {
       errors.push(`web-ui-interaction-audit '${page.pageId}': entries 배열이 필요합니다.`);
@@ -96,6 +103,11 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
       }
       if (entry.status === "opened" && (!entry.surface || !entry.title || !entry.width)) {
         errors.push(`web-ui-interaction-audit '${page.pageId}' '${entry.trigger}': 열린 화면의 surface·title·width가 필요합니다.`);
+      }
+    }
+    for (const transition of page.stateTransitions ?? []) {
+      if (!transition.before || !transition.action || !transition.after) {
+        errors.push(`web-ui-interaction-audit '${page.pageId}': 상태 변화에는 before·action·after가 모두 필요합니다.`);
       }
     }
   }
@@ -118,6 +130,15 @@ export function validateWebSourceEvidence({ usage, reconciliation, authority, in
   }
   if (interactions.coverage?.pagesWithoutRowDetail !== (rowStatusCounts["not-applicable"] ?? 0)) {
     errors.push("web-ui-interaction-audit: 행 상세 비적용 화면 수가 실제 기록과 다릅니다.");
+  }
+  const stateTransitionPageCount = [...interactionPages.values()].filter((page) => page.stateTransitions?.length > 0).length;
+  if (interactions.coverage?.pagesWithStateTransitionsObserved !== stateTransitionPageCount) {
+    errors.push("web-ui-interaction-audit: 상태 변화 확인 화면 수가 실제 기록과 다릅니다.");
+  }
+  for (const pageId of ["web.receiving", "web.production-result", "web.shipment-result", "web.material-input-analysis", "web.lot-trace", "web.kpi"]) {
+    if (!interactionPages.get(pageId)?.stateTransitions?.length) {
+      errors.push(`web-ui-interaction-audit '${pageId}': 선택·전달·편집 상태 변화 기록이 필요합니다.`);
+    }
   }
 
   const warehouse = authorityPages.get("web.warehouse");

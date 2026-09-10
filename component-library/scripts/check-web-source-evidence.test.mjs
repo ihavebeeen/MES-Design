@@ -38,8 +38,8 @@ test("미진행·후순위·POC 수정안은 기본 원본을 덮어쓸 수 없�
 
 test("데이터가 없는 행에 더블클릭 성공을 기록하면 실패한다", () => {
   const evidence = clone(loadWebSourceEvidence());
-  const page = evidence.interactions.pages.find((item) => item.pageId === "web.receiving");
-  page.row.doubleClick = { status: "opened", surface: "side-slide-panel" };
+  const page = evidence.interactions.pages.find((item) => item.pageId === "web.item");
+  page.row.status = "no-data";
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /데이터가 없는데/);
 });
 
@@ -47,4 +47,17 @@ test("행 조사 집계가 실제 기록과 다르면 실패한다", () => {
   const evidence = clone(loadWebSourceEvidence());
   evidence.interactions.coverage.pagesWithSelectedDataRow = 0;
   assert.match(validateWebSourceEvidence(evidence).join("\n"), /선택한 데이터 행 수/);
+});
+
+test("상태 변화 기록에 전후 상태가 빠지면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  const receiving = evidence.interactions.pages.find((item) => item.pageId === "web.receiving");
+  delete receiving.stateTransitions[0].after;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /before·action·after/);
+});
+
+test("상태 변화 화면 집계가 실제 기록과 다르면 실패한다", () => {
+  const evidence = clone(loadWebSourceEvidence());
+  evidence.interactions.coverage.pagesWithStateTransitionsObserved = 0;
+  assert.match(validateWebSourceEvidence(evidence).join("\n"), /상태 변화 확인 화면 수/);
 });
