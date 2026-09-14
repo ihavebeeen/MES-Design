@@ -41,11 +41,13 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `CenterModal`, `SideSlidePanel` | `onCancel` dismiss 계약 | `() => void` | 취소·X·Esc·배경 클릭이 동일한 콜백을 실행한다. 저장 전 임시 상태의 폐기 또는 원본 스냅샷 복원은 이 콜백에서 수행하고 컨테이너가 이어서 닫힘 상태를 반영한다. | 공통 팝업 상호작용 규칙 |
 | `ConfirmDialog` | `children`, `footer`, `onCancel`, `className` | `ReactNode`, `ReactNode`, `() => void`, `string` | 기존 12px radius·52px 헤더·그림자·dismiss 계약은 재사용하면서 변경 전후 비교표처럼 전용 본문과 푸터가 필요한 확인 팝업을 합성한다. `onCancel`은 X·Esc·배경 클릭의 공통 변경 폐기 지점이다. | 총생산수량 변경 확인, Figma `19363:63770` |
 | `Table` | `activeId` | `string \| null`, 기본 `undefined` | 체크 상태와 별도로 활성 행을 지정한다. 생략하면 실제 선택 행이 활성 행 배경을 가진다. | 완성 화면 상태 분리용 |
-| `Table` | `activeRowAppearance` | `subtle \| solid`, 기본 `subtle` | 일반 선택 행의 옅은 배경과, 흰 글자·Primary-60으로 표시하는 강한 활성 행을 구분한다. | 공정검사 경향관리, Figma `11751:102729` |
+| `Table` | `activeRowAppearance` | `subtle \| strong-subtle \| solid`, 기본 `subtle` | 일반 선택 행의 옅은 배경, 선택과 독립된 진한 옅은 배경, 흰 글자·Primary-60의 강한 활성 행을 구분한다. | 공정검사 경향관리·표준단가 설정, Figma `11751:102729`, `16938:42501` |
+| `Table` | `disabled` | `boolean`, 기본 `false` | 표 전체를 조회 전용 비활성 상태로 바꾸고 헤더·그룹·행 조작을 함께 막는다. | Figma Table 상태표 `9873:83780` |
+| `Table` | `hoverRowAppearance` | `none \| subtle`, 기본 `subtle` | 행 자체가 열리거나 활성화되는 표에서 hover를 Gray-20으로 표시한다. 활성·선택·비활성 배경은 유지한다. | Figma Table 상태표 `9873:83780` |
 | `Table` | `onActiveIdChange` | `(id: string) => void`, 기본 `undefined` | 체크 상태를 바꾸지 않고 행 본문 클릭·Enter·Space로 활성 master 행을 변경한다. 입력·체크 컨트롤 클릭은 활성화를 전파하지 않는다. | `selection.master-detail` Behavior |
 | `Table` | `onRowDoubleClick` | `(id: string) => void`, 기본 `undefined` | 메인 목록에서 행 단일 클릭 선택과 레코드 열기를 분리한다. 마우스 더블클릭 또는 키보드 Enter로 해당 행의 상세·슬라이드 팝업을 연다. 행 내부 버튼·입력·체크박스에서는 호출하지 않는다. | MES 메인 목록 → 상세 팝업 진입 규칙 |
 | `Table` | `selectionColor` | `main \| gray \| black`, 기본 `black` | 선택된 체크박스 색을 지정한다. | MES Checkbox 색 variant |
-| `Table` | `unselectedCheckboxAppearance` | `outline \| grayCheck`, 기본 `outline` | 미선택 행을 회색 체크로 표시하는 MES 표 상태를 지원한다. | 일괄작업지시, Figma `20274:73333` |
+| `Table` | `unselectedCheckboxAppearance` | `outline \| grayCheck`, 기본 `grayCheck` | MES 표의 기본 미선택 행을 회색 체크로 표시한다. 비어 있는 선택 상자가 확인된 화면만 `outline`을 명시한다. | 생산실적, 일괄작업지시, Figma `16938:42501`, `20274:73333` |
 | `Table` | `selectionHeaderIndeterminate` | `boolean`, 기본 `true` | 일부 행 선택 시 헤더에 부분선택 표시를 쓸지 결정한다. 회색=미선택 규칙을 쓰는 일괄작업지시는 `false`다. | 일괄작업지시, Figma `20274:73333` |
 | `Table` | `edgePadding` | `number`, 기본 `20` | 표 전체 좌우 내부 여백을 화면 실측에 맞춘다. | Figma `11210:50866`은 `0` |
 | `Table` | `selectionColumnWidth` | `number`, 기본 `40` | 선택 열의 전체 폭을 헤더·데이터·그룹·총계 행에 동일 적용한다. | Figma `11210:50866`은 `56` |
@@ -59,6 +61,7 @@ TypeScript interface가 실제 계약의 원본이며, 이 문서는 AI와 사�
 | `Table` | `disabledTextTone` | `gray60 \| gray80`, 기본 `gray80` | 비활성 행 텍스트 명도를 화면 실측에 맞춘다. | Figma `11210:50866`은 `gray60` |
 | `Table` | `unselectedTextTone` | `default \| gray80`, 기본 `default` | 비활성이 아닌 미선택 행의 텍스트 명도를 낮추고 선택 행과 편집 가능 상태를 구분한다. | 발주 일괄등록, Figma `20849:70791` |
 | `TableRowData` | `hideSelection` | `boolean`, 기본 `false` | 선택 열 폭은 유지하면서 특정 행의 체크박스만 숨긴다. | 완료된 비활성 행, Figma `11210:50866` |
+| `TableRowData` | `disabledColumnKeys` | `string[]`, 기본 없음 | 행 전체를 막지 않고 지정한 컬럼의 정보만 비활성 명도로 표시한다. | Figma Table `disable - 부분`, `9873:83780` |
 | `MobileTab` | `active` | `boolean`, 기본 `false` | mobile-tab-item의 default/active 상태를 명시하고 `aria-selected`와 시각 상태를 함께 바꾼다. | Figma `185:40778` |
 | `MobileSelect` | `state` | `default \| focus \| complete \| readonly \| disabled`, 기본 `default` | Figma Selectbox 상태를 화면별 className 덮어쓰기 없이 같은 API로 표현한다. 열림 상태는 실제 dropdown 상호작용으로 관리한다. | Figma `185:40791` |
 | `MobileSelect` | `mobileSize` | `default \| small`, 기본 `default` | 모바일 Selectbox의 두 크기를 명시한다. | Figma `185:40791` |

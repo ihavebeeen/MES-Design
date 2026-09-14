@@ -242,11 +242,11 @@
       "componentId": "table",
       "capabilities": ["aligned-columns", "row-selection", "grouping", "totals", "inline-editing"],
       "variants": ["flat", "grouped", "selectable", "readonly", "inline-edit"],
-      "requiredStates": ["default", "selected", "active", "disabled", "empty"],
+      "requiredStates": ["default", "hover", "selected", "active", "cell-disabled", "row-disabled", "table-disabled", "empty"],
       "useWhen": ["열 정렬이 중요한 복수 행 비교", "스캔·정렬·선택·그룹 집계가 필요한 목록"],
       "doNotUseWhen": ["몇 개의 독립 입력 행을 정렬하기 위한 용도", "카드형 정보가 더 자연스러운 비정형 내용"],
       "allowedParents": ["section.search-table-composition", "section.added-record-list", "table.grouped-list", "popup.center.table", "screen.entity-list"],
-      "constraints": ["header·group·row·totals는 선택열과 컬럼 폭 배열을 공유한다.", "가로 스크롤 허용 여부와 scroll owner를 화면 계약에 명시한다.", "선택·활성·편집 상태를 서로 다른 하드코딩 index로 관리하지 않는다."],
+      "constraints": ["header·group·row·totals는 선택열과 컬럼 폭 배열을 공유한다.", "가로 스크롤 허용 여부와 scroll owner를 화면 계약에 명시한다.", "선택·활성·편집 상태를 서로 다른 하드코딩 index로 관리하지 않는다.", "비활성 행은 전체선택 대상에서 제외하고 표 전체 비활성은 헤더·그룹·행 조작을 함께 막는다.", "일부 셀 비활성은 행 선택·활성 상태와 분리해 해당 셀의 정보 명도만 낮춘다."],
       "accessibility": ["헤더와 셀의 의미 관계를 유지한다.", "행 선택과 활성 행 조작을 키보드로 수행할 수 있어야 한다."],
       "evidence": ["batch-work-order", "material-input-settings", "grouped-production-list"],
       "alternatives": [

@@ -10,7 +10,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "d6b84476865cc76d467737090c00d9cfce1b495a2852da74c6c733599c3e7fba",
+  "fingerprint": "c93ed4043177e31605de7cd120d0cfd9388fc6eef510cbc9d1f7d6d32995100f",
   "guidancePolicy": {
     "componentSelection": {
       "contextCoverageMode": "all-components",
@@ -7772,7 +7772,8 @@
         "header, group, row, totals는 동일한 선택열·토글열·컬럼 폭 배열을 공유한다.",
         "행 선택은 Checkbox 상태, 활성 행 배경, 조건부 편집 컨트롤을 동일 state에서 파생한다.",
         "MES 테이블 기본 선택 색은 black이고 미선택 외형은 grayCheck다.",
-        "헤더 배경은 기본 gray10을 유지하고 원본이 흰색인 화면에서만 headerBackground=white를 사용한다."
+        "헤더 배경은 기본 gray10을 유지하고 원본이 흰색인 화면에서만 headerBackground=white를 사용한다.",
+        "행 hover, 활성 행, 일부 셀 비활성, 행 비활성, 표 전체 비활성은 서로 덮어쓰지 않도록 우선순위를 유지한다."
       ],
       "visibility": "public",
       "tier": 1,
@@ -7821,9 +7822,12 @@
         ],
         "requiredStates": [
           "default",
+          "hover",
           "selected",
           "active",
-          "disabled",
+          "cell-disabled",
+          "row-disabled",
+          "table-disabled",
           "empty"
         ],
         "useWhen": [
@@ -7844,7 +7848,9 @@
         "constraints": [
           "header·group·row·totals는 선택열과 컬럼 폭 배열을 공유한다.",
           "가로 스크롤 허용 여부와 scroll owner를 화면 계약에 명시한다.",
-          "선택·활성·편집 상태를 서로 다른 하드코딩 index로 관리하지 않는다."
+          "선택·활성·편집 상태를 서로 다른 하드코딩 index로 관리하지 않는다.",
+          "비활성 행은 전체선택 대상에서 제외하고 표 전체 비활성은 헤더·그룹·행 조작을 함께 막는다.",
+          "일부 셀 비활성은 행 선택·활성 상태와 분리해 해당 셀의 정보 명도만 낮춘다."
         ],
         "accessibility": [
           "헤더와 셀의 의미 관계를 유지한다.",
@@ -7879,7 +7885,8 @@
           "not-applicable"
         ],
         "interaction": [
-          "rest"
+          "rest",
+          "hover"
         ]
       },
       "usedByPatternIds": [
@@ -7920,7 +7927,7 @@
         "table.row-expand-detail"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "d227be482519cb234f80ca36c66e683cfdc652123f4641cfeabf9879aa83e6a8",
+        "sourceFingerprint": "70527ce947b9e287250159e1229f5e52cb919b1b8004be69a50b102e034409cb",
         "symbols": [
           "TableColumn",
           "TableRowData",
@@ -7939,6 +7946,7 @@
           "data",
           "isNew",
           "disabled",
+          "disabledColumnKeys",
           "hideSelection",
           "summary",
           "rows",
@@ -7947,19 +7955,20 @@
           "columns",
           "selectedIds",
           "activeId",
-          "activeRowAppearance",
-          "selectedRowAppearance"
+          "activeRowAppearance"
         ],
         "stateMarkers": [
           "disabled",
           "checked",
           "indeterminate",
-          "selected"
+          "selected",
+          "hover"
         ],
         "sizeValues": [],
         "interactive": true,
         "summary": "점검 결과표처럼 컬럼명 아래에 판정 기준을 표시하는 2단 헤더.",
         "aria": [
+          "aria-disabled",
           "aria-label",
           "aria-selected",
           "role"

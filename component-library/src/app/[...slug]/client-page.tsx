@@ -1505,6 +1505,8 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
   const [miniGroup3SelectedIds, setMiniGroup3SelectedIds] = useState<string[]>([]);
   const [miniColSelectedIds, setMiniColSelectedIds] = useState<string[]>([]);
   const [miniTotalsSelectedIds, setMiniTotalsSelectedIds] = useState<string[]>([]);
+  const [miniStateSelectedIds, setMiniStateSelectedIds] = useState<string[]>(["f1"]);
+  const [miniActiveId, setMiniActiveId] = useState<string | null>("f1");
 
   // 2026-08-04 — "한 페이지에 스크롤 개길게 하지 말고 분할하자, 브레드크럼으로" 요청 반영.
   // 기존엔 스크롤 위치를 IntersectionObserver로 관찰해 activeId를 추적했는데(스크롤 스파이),
@@ -3262,6 +3264,32 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
             onSelectedIdsChange={setMiniTotalsSelectedIds}
             totals={{ qty: (1200 + 980 + 2000).toLocaleString("ko-KR") }}
           />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · hover / active / 셀 일부 비활성 / 행 전체 비활성
+          </span>
+          <Table
+            columns={flatColumns}
+            rows={[
+              flatRows[0],
+              { ...flatRows[1], disabledColumnKeys: ["shift", "manager"] },
+              { ...flatRows[2], disabled: true },
+            ]}
+            selectedIds={miniStateSelectedIds}
+            activeId={miniActiveId}
+            selectedRowAppearance="subtle"
+            onSelectedIdsChange={setMiniStateSelectedIds}
+            onActiveIdChange={setMiniActiveId}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-[11px] leading-none text-mes-gray-70">
+            Table · 표 전체 비활성
+          </span>
+          <Table columns={flatColumns} rows={flatRows.slice(0, 2)} selectedIds={["f1"]} disabled />
         </div>
       </section>
 

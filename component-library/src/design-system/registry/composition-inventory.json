@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx + registered screen/section sources",
   "summary": {
     "scannedFiles": 46,
-    "totalLines": 14248,
+    "totalLines": 14276,
     "shellInstances": {
       "CenterModal": 14,
       "SideSlidePanel": 14,
@@ -488,7 +488,7 @@
       "source": "src/app/[...slug]/client-page.tsx",
       "name": "client-page.tsx",
       "observedRole": "composition-source",
-      "lines": 5451,
+      "lines": 5479,
       "exportedSymbols": [
         "Home"
       ],
@@ -835,7 +835,7 @@
         },
         {
           "name": "Table",
-          "jsxCount": 7
+          "jsxCount": 9
         },
         {
           "name": "Tag",
@@ -866,7 +866,7 @@
           "jsxCount": 1
         }
       ],
-      "stateHookCount": 43,
+      "stateHookCount": 45,
       "behaviorSignals": [
         "dismiss.restore-committed",
         "row.add-remove",
@@ -3695,5 +3695,5 @@
       ]
     }
   ],
-  "fingerprint": "7987ce4ef6d1a2e2"
+  "fingerprint": "82dc7ebea3d21622"
 }

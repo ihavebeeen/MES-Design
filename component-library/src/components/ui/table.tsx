@@ -192,6 +192,8 @@ export interface TableRowData<T> {
   /** 이번 세션(또는 최근)에 추가/변경된 행 — 좌측에 빨간 점 + 진한 구분선 */
   isNew?: boolean;
   disabled?: boolean;
+  /** 행은 유지하면서 일부 셀만 비활성 정보로 표시한다. key는 TableColumn.key와 일치해야 한다. */
+  disabledColumnKeys?: string[];
   /** 선택 열의 폭은 유지하되 해당 행의 체크박스만 숨긴다. */
   hideSelection?: boolean;
 }
@@ -219,6 +221,10 @@ export interface TableProps<T> {
   activeRowAppearance?: "subtle" | "strong-subtle" | "solid";
   /** activeId가 별도로 있어도 체크된 행의 Primary-20 배경을 유지해야 하는 경우 사용한다. */
   selectedRowAppearance?: "none" | "subtle";
+  /** 표 전체를 조회 전용 비활성 상태로 전환한다. 헤더·행·그룹 조작을 함께 막는다. */
+  disabled?: boolean;
+  /** 행 자체가 열리는 표의 hover 표현. 비활성·활성 행보다 우선하지 않는다. */
+  hoverRowAppearance?: "none" | "subtle";
   /** 표 안 체크박스의 기본 색. 활성 행은 원본 화면처럼 black을 우선한다. */
   selectionColor?: CheckboxColor;
   /** 미선택 체크박스 외형. MES 표에서는 회색 체크형을 사용한다. */
@@ -281,12 +287,12 @@ const NEW_DOT_GAP_FROM_CHECKBOX = 10;
 /** 그룹(재귀) 하위의 모든 리프 행 id를 모음 — 그룹 체크박스 전체/부분 선택 판정용 */
 function collectGroupRowIds<T>(group: TableGroup<T>): string[] {
   if (group.groups) return group.groups.flatMap(collectGroupRowIds);
-  return (group.rows ?? []).map((r) => r.id);
+  return (group.rows ?? []).filter((r) => !r.disabled).map((r) => r.id);
 }
 
 function collectAllRowIds<T>(groups?: TableGroup<T>[], rows?: TableRowData<T>[]): string[] {
   if (groups) return groups.flatMap(collectGroupRowIds);
-  return (rows ?? []).map((r) => r.id);
+  return (rows ?? []).filter((r) => !r.disabled).map((r) => r.id);
 }
 
 /** 그룹 트리의 최대 깊이(1부터, 그룹이 없으면 0) — 헤더의 depth별 일괄 접기 버튼 개수 산정용 */
@@ -368,6 +374,8 @@ function DataRow<T>({
   unselectedTextTone,
   activeRowAppearance,
   selectedRowAppearance,
+  tableDisabled,
+  hoverRowAppearance,
 }: {
   row: TableRowData<T>;
   columns: TableColumn<T>[];
@@ -388,25 +396,32 @@ function DataRow<T>({
   unselectedTextTone: "default" | "gray80";
   activeRowAppearance: "subtle" | "strong-subtle" | "solid";
   selectedRowAppearance: "none" | "subtle";
+  tableDisabled: boolean;
+  hoverRowAppearance: "none" | "subtle";
 }) {
+  const isRowDisabled = tableDisabled || row.disabled === true;
   const dividerColor = isActive || row.isNew ? "border-mes-border-default" : "border-mes-gray-40";
+  const isInteractive = Boolean(onActivate || onOpen);
   return (
     <div
       role={onActivate || onOpen ? "row" : undefined}
-      tabIndex={(onActivate || onOpen) && !row.disabled ? 0 : undefined}
+      tabIndex={isInteractive && !isRowDisabled ? 0 : undefined}
       aria-selected={onActivate ? isActive : undefined}
+      aria-disabled={isInteractive ? isRowDisabled : undefined}
+      data-table-row={row.id}
+      data-row-disabled={isRowDisabled || undefined}
       onClick={(event) => {
-        if (!onActivate || row.disabled) return;
+        if (!onActivate || isRowDisabled) return;
         if ((event.target as HTMLElement).closest("button, input, [role='checkbox']")) return;
         onActivate(row.id);
       }}
       onDoubleClick={(event) => {
-        if (!onOpen || row.disabled) return;
+        if (!onOpen || isRowDisabled) return;
         if ((event.target as HTMLElement).closest("button, input, [role='checkbox']")) return;
         onOpen(row.id);
       }}
       onKeyDown={(event) => {
-        if (row.disabled) return;
+        if (isRowDisabled) return;
         if (event.key === "Enter" && onOpen) {
           event.preventDefault();
           onOpen(row.id);
@@ -420,15 +435,17 @@ function DataRow<T>({
         "flex h-[30px] shrink-0 items-center border-b border-solid border-mes-border-default",
         // 8차 후속: 담당자가 "비활성화는 텍스트 Gray-80, 배경 Gray-10"이라고 정확한 값을
         // 줘서 기존 opacity-50 판단값을 교체함. 배경은 선택 여부보다 disabled가 우선.
-        row.disabled
+        isRowDisabled
           ? "bg-mes-gray-10"
           : isActive
             ? activeRowAppearance === "solid" ? "bg-mes-primary-60" : activeRowAppearance === "strong-subtle" ? "bg-mes-primary-30" : "bg-mes-primary-20"
             : isSelected && selectedRowAppearance === "subtle"
               ? "bg-mes-primary-20"
             : "bg-white",
-        row.disabled && "pointer-events-none",
-        (onActivate || onOpen) && !row.disabled && "cursor-pointer"
+        hoverRowAppearance === "subtle" && isInteractive && !isRowDisabled && !isActive &&
+          !(isSelected && selectedRowAppearance === "subtle") && "hover:bg-mes-gray-20",
+        isRowDisabled && "pointer-events-none",
+        isInteractive && !isRowDisabled && "cursor-pointer"
       )}
       style={{ paddingInline: edgePadding }}
     >
@@ -446,7 +463,7 @@ function DataRow<T>({
               onChange={() => onToggle(row.id)}
               color={isActive ? "black" : selectionColor}
               uncheckedAppearance={unselectedCheckboxAppearance}
-              disabled={row.disabled}
+              disabled={isRowDisabled}
             />
           )}
           {row.isNew && (
@@ -462,28 +479,32 @@ function DataRow<T>({
       {masterToggleAreaWidth > 0 && (
         <div className="h-full shrink-0" style={{ width: masterToggleAreaWidth }} />
       )}
-      {columns.map((col, i) => (
-        <Cell
-          key={col.key}
-          column={col}
-          className={cn(columnDividers && i < columns.length - 1 && `border-r border-dashed ${dividerColor}`)}
-        >
-          <span
-            className={cn(
-              "w-full truncate text-[14px] font-normal leading-[1.3]",
-              isActive && activeRowAppearance === "solid"
-                ? "text-white"
-                : row.disabled
-                ? disabledTextTone === "gray60" ? "text-mes-gray-60" : "text-mes-gray-80"
-                : !isActive && unselectedTextTone === "gray80"
-                  ? "text-mes-gray-80"
-                  : "text-mes-text-default"
-            )}
+      {columns.map((col, i) => {
+        const isCellDisabled = isRowDisabled || row.disabledColumnKeys?.includes(col.key) === true;
+        return (
+          <Cell
+            key={col.key}
+            column={col}
+            className={cn(columnDividers && i < columns.length - 1 && `border-r border-dashed ${dividerColor}`)}
           >
-            {col.render ? col.render(row.data) : (row.data as Record<string, React.ReactNode>)[col.key]}
-          </span>
-        </Cell>
-      ))}
+            <span
+              data-cell-disabled={isCellDisabled || undefined}
+              className={cn(
+                "w-full truncate text-[14px] font-normal leading-[1.3]",
+                isActive && activeRowAppearance === "solid" && !isCellDisabled
+                  ? "text-white"
+                  : isCellDisabled
+                    ? disabledTextTone === "gray60" ? "text-mes-gray-60" : "text-mes-gray-80"
+                    : !isActive && unselectedTextTone === "gray80"
+                      ? "text-mes-gray-80"
+                      : "text-mes-text-default"
+              )}
+            >
+              {col.render ? col.render(row.data) : (row.data as Record<string, React.ReactNode>)[col.key]}
+            </span>
+          </Cell>
+        );
+      })}
     </div>
   );
 }
@@ -504,6 +525,8 @@ function GroupHeaderRow<T>({
   unselectedCheckboxAppearance,
   edgePadding,
   selectionColumnWidth,
+  disabled,
+  hasSelectableRows,
 }: {
   group: TableGroup<T>;
   columns: TableColumn<T>[];
@@ -520,6 +543,8 @@ function GroupHeaderRow<T>({
   unselectedCheckboxAppearance: CheckboxUncheckedAppearance;
   edgePadding: number;
   selectionColumnWidth: number;
+  disabled: boolean;
+  hasSelectableRows: boolean;
 }) {
   return (
     <div
@@ -531,7 +556,7 @@ function GroupHeaderRow<T>({
           className="flex h-full shrink-0 items-center"
           style={{ width: selectionColumnWidth }}
         >
-          <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color={selectionColor} uncheckedAppearance={unselectedCheckboxAppearance} />
+          <Checkbox checked={checked} indeterminate={indeterminate} onChange={onToggleSelect} color={selectionColor} uncheckedAppearance={unselectedCheckboxAppearance} disabled={disabled || !hasSelectableRows} />
         </div>
       )}
       {/* 6차: 헤더의 depth별 마스터 토글 버튼과 "같은 x 위치"에 오도록, 이 영역을 헤더와
@@ -552,8 +577,9 @@ function GroupHeaderRow<T>({
                   <button
                     type="button"
                     onClick={onToggleCollapse}
+                    disabled={disabled}
                     aria-label={`${group.label} ${isCollapsed ? "펼치기" : "접기"}`}
-                    className="flex size-[22px] shrink-0 items-center justify-center rounded-mes-control-sm border border-mes-gray-50 bg-mes-gray-0"
+                    className="flex size-[22px] shrink-0 items-center justify-center rounded-mes-control-sm border border-mes-gray-50 bg-mes-gray-0 disabled:cursor-not-allowed disabled:border-mes-gray-30 disabled:text-mes-gray-60"
                   >
                     <IconArrow
                       size={12}
@@ -579,7 +605,8 @@ function GroupHeaderRow<T>({
             <button
               type="button"
               onClick={onToggleCollapse}
-              className="relative z-10 cursor-pointer whitespace-nowrap text-[14px] font-medium leading-[1.5] text-mes-text-default"
+              disabled={disabled}
+              className="relative z-10 cursor-pointer whitespace-nowrap text-[14px] font-medium leading-[1.5] text-mes-text-default disabled:cursor-not-allowed disabled:text-mes-gray-60"
               style={{ paddingLeft: depth * 12 }}
             >
               {group.label}
@@ -606,6 +633,8 @@ function TotalsRow<T>({
   selectable,
   edgePadding,
   selectionColumnWidth,
+  disabled,
+  disabledTextTone,
 }: {
   columns: TableColumn<T>[];
   totals?: Record<string, React.ReactNode>;
@@ -613,6 +642,8 @@ function TotalsRow<T>({
   selectable: boolean;
   edgePadding: number;
   selectionColumnWidth: number;
+  disabled: boolean;
+  disabledTextTone: "gray60" | "gray80";
 }) {
   if (!totals) return null;
   return (
@@ -630,14 +661,14 @@ function TotalsRow<T>({
         i === 0 ? (
           // 6차: 그룹 라벨과 같은 이유로 "총계" 라벨도 컬럼 align과 무관하게 좌측 고정
           <Cell key={col.key} column={{ ...col, align: "left" }} className="overflow-visible">
-            <span className="whitespace-nowrap text-[14px] font-semibold leading-[1.5] text-mes-text-default">
+            <span className={cn("whitespace-nowrap text-[14px] font-semibold leading-[1.5]", disabled ? disabledTextTone === "gray60" ? "text-mes-gray-60" : "text-mes-gray-80" : "text-mes-text-default")}>
               총계
             </span>
           </Cell>
         ) : (
           <Cell key={col.key} column={col}>
             {totals[col.key] !== undefined && (
-              <span className="w-full truncate text-right text-[14px] font-semibold leading-[1.5] text-mes-text-default">
+              <span className={cn("w-full truncate text-right text-[14px] font-semibold leading-[1.5]", disabled ? disabledTextTone === "gray60" ? "text-mes-gray-60" : "text-mes-gray-80" : "text-mes-text-default")}>
                 {totals[col.key]}
               </span>
             )}
@@ -676,6 +707,8 @@ function renderGroupNode<T>({
   unselectedTextTone,
   activeRowAppearance,
   selectedRowAppearance,
+  disabled,
+  hoverRowAppearance,
 }: {
   group: TableGroup<T>;
   depth: number;
@@ -701,6 +734,8 @@ function renderGroupNode<T>({
   unselectedTextTone: "default" | "gray80";
   activeRowAppearance: "subtle" | "strong-subtle" | "solid";
   selectedRowAppearance: "none" | "subtle";
+  disabled: boolean;
+  hoverRowAppearance: "none" | "subtle";
 }): React.ReactNode {
   const isCollapsed = collapsed[group.id] ?? group.defaultExpanded === false;
   const rowIds = collectGroupRowIds(group);
@@ -727,11 +762,13 @@ function renderGroupNode<T>({
         unselectedCheckboxAppearance={unselectedCheckboxAppearance}
         edgePadding={edgePadding}
         selectionColumnWidth={selectionColumnWidth}
+        disabled={disabled}
+        hasSelectableRows={rowIds.length > 0}
       />
       {!isCollapsed &&
         (group.groups
           ? group.groups.map((sub) =>
-              renderGroupNode({
+              renderGroupNode<T>({
                 group: sub,
                 depth: depth + 1,
                 columns,
@@ -756,6 +793,8 @@ function renderGroupNode<T>({
                 unselectedTextTone,
                 activeRowAppearance,
                 selectedRowAppearance,
+                disabled,
+                hoverRowAppearance,
               })
             )
           : (group.rows ?? []).map((row) => (
@@ -780,6 +819,8 @@ function renderGroupNode<T>({
                 unselectedTextTone={unselectedTextTone}
                 activeRowAppearance={activeRowAppearance}
                 selectedRowAppearance={selectedRowAppearance}
+                tableDisabled={disabled}
+                hoverRowAppearance={hoverRowAppearance}
               />
             )))}
     </React.Fragment>
@@ -794,8 +835,10 @@ function Table<T>({
   activeId,
   activeRowAppearance = "subtle",
   selectedRowAppearance = "none",
+  disabled = false,
+  hoverRowAppearance = "subtle",
   selectionColor = "black",
-  unselectedCheckboxAppearance = "outline",
+  unselectedCheckboxAppearance = "grayCheck",
   selectionHeaderIndeterminate = true,
   edgePadding = 20,
   selectionColumnWidth = CHECKBOX_COLUMN_WIDTH,
@@ -817,22 +860,22 @@ function Table<T>({
   className,
 }: TableProps<T>) {
   const [collapsed, setCollapsed] = React.useState<Record<string, boolean>>({});
-  const allIds = React.useMemo(() => collectAllRowIds(groups, rows), [groups, rows]);
+  const allIds = React.useMemo(() => disabled ? [] : collectAllRowIds(groups, rows), [disabled, groups, rows]);
   const allSelected = allIds.length > 0 && allIds.every((id) => selectedIds.includes(id));
   const someSelected = !allSelected && allIds.some((id) => selectedIds.includes(id));
 
   const toggleAll = () => {
-    if (!onSelectedIdsChange) return;
+    if (disabled || !onSelectedIdsChange) return;
     onSelectedIdsChange(allSelected ? [] : allIds);
   };
   const toggleOne = (id: string) => {
-    if (!onSelectedIdsChange) return;
+    if (disabled || !onSelectedIdsChange) return;
     onSelectedIdsChange(
       selectedIds.includes(id) ? selectedIds.filter((v) => v !== id) : [...selectedIds, id]
     );
   };
   const toggleGroup = (rowIds: string[], nextChecked: boolean) => {
-    if (!onSelectedIdsChange) return;
+    if (disabled || !onSelectedIdsChange) return;
     if (nextChecked) {
       onSelectedIdsChange(Array.from(new Set([...selectedIds, ...rowIds])));
     } else {
@@ -840,6 +883,7 @@ function Table<T>({
     }
   };
   const toggleCollapse = (groupId: string, currentlyCollapsed: boolean) => {
+    if (disabled) return;
     setCollapsed((prev) => ({ ...prev, [groupId]: !currentlyCollapsed }));
   };
   /** 2026-07-28 3차 피드백(4): depth 하나를 통째로 접거나 펼침 — 하나라도 펼쳐져 있으면
@@ -884,7 +928,7 @@ function Table<T>({
                   {selectionHeaderLabel}
                 </span>
               ) : (
-                <Checkbox checked={allSelected} indeterminate={selectionHeaderIndeterminate && someSelected} onChange={toggleAll} color={selectionColor} uncheckedAppearance={unselectedCheckboxAppearance} />
+                <Checkbox checked={allSelected} indeterminate={selectionHeaderIndeterminate && someSelected} onChange={toggleAll} color={selectionColor} uncheckedAppearance={unselectedCheckboxAppearance} disabled={disabled || allIds.length === 0} />
               )}
             </div>
           )}
@@ -910,8 +954,9 @@ function Table<T>({
                   <button
                     type="button"
                     onClick={() => toggleAllAtDepth(depth)}
+                    disabled={disabled}
                     title={`${depth + 1}단 전체 ${anyExpanded ? "접기" : "펼치기"}`}
-                    className="flex size-[22px] shrink-0 items-center justify-center rounded-mes-control-sm border border-mes-gray-50 bg-mes-gray-0"
+                    className="flex size-[22px] shrink-0 items-center justify-center rounded-mes-control-sm border border-mes-gray-50 bg-mes-gray-0 disabled:cursor-not-allowed disabled:border-mes-gray-30 disabled:text-mes-gray-60"
                   >
                     <IconArrow
                       size={12}
@@ -944,7 +989,7 @@ function Table<T>({
               {hasHeaderDetails ? (
                 col.headerDetail !== undefined ? (
                   <span className="flex h-full w-full flex-col">
-                    <span className="flex h-[42px] items-center justify-center px-1 text-center text-[13px] font-semibold leading-[1.3] text-mes-text-default">
+                    <span className={cn("flex h-[42px] items-center justify-center px-1 text-center text-[13px] font-semibold leading-[1.3]", disabled ? "text-mes-gray-60" : "text-mes-text-default")}>
                       {col.label}
                     </span>
                     <span className="flex h-[22px] items-center justify-center border-t border-mes-border-default bg-mes-gray-20 px-1 text-center text-[13px] font-medium leading-[1.3] text-mes-gray-80">
@@ -952,12 +997,12 @@ function Table<T>({
                     </span>
                   </span>
                 ) : (
-                  <span className="flex h-full w-full items-center justify-center px-1 text-center text-[13px] font-semibold leading-[1.3] text-mes-text-default">
+                  <span className={cn("flex h-full w-full items-center justify-center px-1 text-center text-[13px] font-semibold leading-[1.3]", disabled ? "text-mes-gray-60" : "text-mes-text-default")}>
                     {col.label}
                   </span>
                 )
               ) : (
-                <span className="w-full truncate text-[13px] font-semibold leading-[1.3] text-mes-text-default">
+                <span className={cn("w-full truncate text-[13px] font-semibold leading-[1.3]", disabled ? "text-mes-gray-60" : "text-mes-text-default")}>
                   {col.label}
                 </span>
               )}
@@ -993,6 +1038,8 @@ function Table<T>({
                 unselectedTextTone,
                 activeRowAppearance,
                 selectedRowAppearance,
+                disabled,
+                hoverRowAppearance,
               })
             )
           : (rows ?? []).map((row) => (
@@ -1017,10 +1064,12 @@ function Table<T>({
                 unselectedTextTone={unselectedTextTone}
                 activeRowAppearance={activeRowAppearance}
                 selectedRowAppearance={selectedRowAppearance}
+                tableDisabled={disabled}
+                hoverRowAppearance={hoverRowAppearance}
               />
             ))}
 
-        <TotalsRow columns={columns} totals={totals} masterToggleAreaWidth={masterToggleAreaWidth} selectable={selectable} edgePadding={edgePadding} selectionColumnWidth={selectionColumnWidth} />
+        <TotalsRow columns={columns} totals={totals} masterToggleAreaWidth={masterToggleAreaWidth} selectable={selectable} edgePadding={edgePadding} selectionColumnWidth={selectionColumnWidth} disabled={disabled} disabledTextTone={disabledTextTone} />
       </div>
     </div>
   );

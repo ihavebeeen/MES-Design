@@ -1058,6 +1058,35 @@ test("테이블 행 선택 상호작용", async ({ page }) => {
   await expect(page.locator('[data-visual-test="table"]')).toHaveScreenshot("grouped-table-row-selected.png");
 });
 
+test("테이블 상태 조합", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/visual-regression/table");
+  const fixture = page.locator('[data-visual-test="table-states"]');
+  await expect(fixture).toBeVisible();
+  await hideDevelopmentOverlay(page);
+  await expect(fixture).toHaveScreenshot("table-state-matrix.png");
+});
+
+test("테이블 hover와 비활성 상태가 우선순위를 지킨다", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/visual-regression/table");
+
+  const hoverRow = page.locator('[data-table-row="hover-row"]');
+  await hoverRow.hover();
+  await expect(hoverRow).toHaveCSS("background-color", "rgb(239, 242, 248)");
+
+  const disabledRow = page.locator('[data-table-row="row-disabled"]');
+  await disabledRow.hover({ force: true });
+  await expect(disabledRow).toHaveCSS("background-color", "rgb(248, 250, 252)");
+  await expect(disabledRow).toHaveAttribute("aria-disabled", "true");
+
+  const partialDisabled = page.locator('[data-table-row="partial-disabled"]');
+  await expect(partialDisabled.locator('[data-cell-disabled="true"]')).toHaveCount(2);
+
+  const tableDisabledRow = page.locator('[data-table-row="table-disabled-row"]');
+  await expect(tableDisabledRow).toHaveAttribute("aria-disabled", "true");
+});
+
 test("불량수량 입력은 값 변경 즉시 합계를 다시 계산한다", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/visual-regression/defect");

@@ -68,3 +68,92 @@ export function RepresentativeTable() {
     </section>
   );
 }
+
+interface StateRow {
+  state: string;
+  item: string;
+  quantity: number;
+}
+
+const stateColumns: TableColumn<StateRow>[] = [
+  { key: "state", label: "상태", width: 120 },
+  { key: "item", label: "품목", width: { min: 220, grow: 1 } },
+  { key: "quantity", label: "수량", width: 100, align: "right", render: (row) => row.quantity.toLocaleString("ko-KR") },
+];
+
+const noop = () => {};
+
+export function RepresentativeTableStates() {
+  return (
+    <section data-visual-test="table-states" className="w-[1160px] bg-white p-8">
+      <div className="mb-4">
+        <h1 className="text-[18px] font-bold text-mes-gray-130">Table 상태 비교</h1>
+        <p className="mt-1 text-[13px] text-mes-gray-80">Figma Table 상태표의 hover·active·부분 비활성·전체 비활성 기준</p>
+      </div>
+      <div className="grid grid-cols-2 gap-5">
+        <div className="flex flex-col gap-2">
+          <span className="text-[12px] font-semibold text-mes-gray-80">기본 · hover</span>
+          <Table
+            columns={stateColumns}
+            rows={[{ id: "hover-row", data: { state: "기본", item: "비비빅", quantity: 1200 } }]}
+            selectedIds={[]}
+            onSelectedIdsChange={noop}
+            onActiveIdChange={noop}
+            horizontalScroll={false}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-[12px] font-semibold text-mes-gray-80">active · type 1</span>
+          <Table
+            columns={stateColumns}
+            rows={[{ id: "active-subtle", data: { state: "활성", item: "찰옥수수", quantity: 980 } }]}
+            selectedIds={["active-subtle"]}
+            activeId="active-subtle"
+            onSelectedIdsChange={noop}
+            onActiveIdChange={noop}
+            horizontalScroll={false}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-[12px] font-semibold text-mes-gray-80">active · type 2</span>
+          <Table
+            columns={stateColumns}
+            rows={[{ id: "active-solid", data: { state: "활성", item: "수박바", quantity: 2000 } }]}
+            selectedIds={["active-solid"]}
+            activeId="active-solid"
+            activeRowAppearance="solid"
+            onSelectedIdsChange={noop}
+            onActiveIdChange={noop}
+            horizontalScroll={false}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-[12px] font-semibold text-mes-gray-80">일부 셀 · 행 전체 비활성</span>
+          <Table
+            columns={stateColumns}
+            rows={[
+              { id: "partial-disabled", data: { state: "부분 비활성", item: "더블비안코", quantity: 1500 }, disabledColumnKeys: ["state", "item"] },
+              { id: "row-disabled", data: { state: "행 비활성", item: "누가바", quantity: 800 }, disabled: true },
+            ]}
+            selectedIds={[]}
+            onSelectedIdsChange={noop}
+            onActiveIdChange={noop}
+            horizontalScroll={false}
+          />
+        </div>
+        <div className="col-span-2 flex flex-col gap-2">
+          <span className="text-[12px] font-semibold text-mes-gray-80">표 전체 비활성</span>
+          <Table
+            columns={stateColumns}
+            rows={[{ id: "table-disabled-row", data: { state: "전체 비활성", item: "메로나", quantity: 1100 } }]}
+            selectedIds={["table-disabled-row"]}
+            onSelectedIdsChange={noop}
+            onActiveIdChange={noop}
+            disabled
+            horizontalScroll={false}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -8,7 +8,7 @@
   },
   "summary": {
     "scannedFiles": 131,
-    "totalOccurrences": 3669,
+    "totalOccurrences": 3679,
     "arbitraryUtilities": 1299,
     "hardcodedColors": 68,
     "reviewCandidates": 0,
@@ -17,7 +17,7 @@
   "layers": {
     "canonical": {
       "files": 84,
-      "occurrences": 1225,
+      "occurrences": 1235,
       "arbitraryUtilities": 419,
       "hardcodedColors": 21
     },
@@ -192,7 +192,7 @@
           "src/components/ui/file-upload.tsx:44",
           "src/components/ui/inspection-judgement.tsx:37",
           "src/components/ui/slider.tsx:41",
-          "src/components/ui/table.tsx:938",
+          "src/components/ui/table.tsx:983",
           "src/components/ui/timeline.tsx:12"
         ]
       },
@@ -1032,11 +1032,11 @@
           "src/components/ui/before-after-comparison.tsx:34",
           "src/components/ui/before-after-comparison.tsx:41",
           "src/components/ui/before-after-comparison.tsx:43",
-          "src/components/ui/table.tsx:473",
-          "src/components/ui/table.tsx:883",
-          "src/components/ui/table.tsx:947",
-          "src/components/ui/table.tsx:950",
-          "src/components/ui/table.tsx:955"
+          "src/components/ui/table.tsx:493",
+          "src/components/ui/table.tsx:927",
+          "src/components/ui/table.tsx:992",
+          "src/components/ui/table.tsx:995",
+          "src/components/ui/table.tsx:1000"
         ]
       },
       {
@@ -1491,7 +1491,7 @@
           "src/components/ui/sidebar.tsx:273",
           "src/components/ui/sidebar.tsx:305",
           "src/components/ui/sidebar.tsx:361",
-          "src/components/ui/table.tsx:947",
+          "src/components/ui/table.tsx:992",
           "src/components/patterns/analytics-dashboard-pattern.tsx:47",
           "src/components/patterns/business-operation-settings-pattern.tsx:403"
         ]
@@ -1801,7 +1801,7 @@
         "examples": [
           "src/components/ui/image-thumbnail.tsx:59",
           "src/components/ui/sidebar.tsx:231",
-          "src/components/ui/table.tsx:870",
+          "src/components/ui/table.tsx:914",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:127",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:131",
           "src/components/patterns/kiosk-easy-receiving-pattern.tsx:140",
@@ -2547,7 +2547,7 @@
         },
         "examples": [
           "src/components/ui/progress.tsx:48",
-          "src/components/ui/table.tsx:455"
+          "src/components/ui/table.tsx:472"
         ]
       },
       {
@@ -3987,7 +3987,7 @@
           "evidence": 1
         },
         "examples": [
-          "src/components/ui/table.tsx:263",
+          "src/components/ui/table.tsx:269",
           "src/components/patterns/exact-production-result-screen.tsx:111"
         ]
       },
@@ -4124,7 +4124,7 @@
           "canonical": 1
         },
         "examples": [
-          "src/components/ui/table.tsx:263"
+          "src/components/ui/table.tsx:269"
         ]
       },
       {
@@ -4157,7 +4157,7 @@
           "canonical": 1
         },
         "examples": [
-          "src/components/ui/table.tsx:263"
+          "src/components/ui/table.tsx:269"
         ]
       },
       {
@@ -4363,5 +4363,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "4f56fb8d5099f0eb"
+  "fingerprint": "cdf16df776fda82f"
 }
