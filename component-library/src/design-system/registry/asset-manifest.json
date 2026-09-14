@@ -10,7 +10,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "d2abf0807264857cb244b8a89105985616a899adcfdf1d9ab8c67ca778236963",
+  "fingerprint": "8e39afb4e50ed50fb75f9c3ff202f0e7f2fedf308d10b1ec11c6c43367dc2124",
   "guidancePolicy": {
     "componentSelection": {
       "contextCoverageMode": "all-components",
@@ -8150,10 +8150,11 @@
           "time-of-day-choice"
         ],
         "useWhen": [
-          "업무 기록의 시각 또는 시작·종료 시간을 직접 선택한다."
+          "독립된 시각 하나를 제한된 옵션에서 직접 선택한다."
         ],
         "doNotUseWhen": [
-          "날짜만 필요하거나 이미 계산된 시간을 표시하는 경우"
+          "날짜만 필요하거나 이미 계산된 시간을 표시하는 경우",
+          "운전일지처럼 시작·종료 일시를 휠로 선택하고 두 값에서 작업시간을 계산하는 경우"
         ],
         "alternatives": [
           {
@@ -8189,10 +8190,7 @@
           "focus"
         ]
       },
-      "usedByPatternIds": [
-        "popup.center.time-selector",
-        "popup.side.time-records"
-      ],
+      "usedByPatternIds": [],
       "sourceFacts": {
         "sourceFingerprint": "b6c9e9b98ad5a6a82d25760a12c3eed5425b8731c24ddb12d913e232714ca31d",
         "symbols": [
@@ -9042,10 +9040,11 @@
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
       "requiredComponents": [
         "center-modal",
-        "button",
-        "time-picker"
+        "button"
       ],
-      "usedByScreenIds": []
+      "usedByScreenIds": [
+        "operation-log"
+      ]
     },
     {
       "kind": "pattern",
@@ -9111,7 +9110,6 @@
         "side-slide-panel",
         "button",
         "input",
-        "time-picker",
         "table"
       ],
       "usedByScreenIds": [
@@ -9798,7 +9796,9 @@
       "requiredComponents": [
         "button"
       ],
-      "usedByScreenIds": []
+      "usedByScreenIds": [
+        "operation-log"
+      ]
     },
     {
       "kind": "pattern",
@@ -10224,10 +10224,12 @@
       "figmaNode": "17303:45841",
       "patternRefs": [
         "popup.side.time-records",
+        "popup.center.time-selector",
         "shell.side-slide-panel",
         "section.editable-row-list",
         "row.mutation-policy",
-        "action-set.cancel-save"
+        "action-set.cancel-save",
+        "action-set.cancel-input"
       ]
     },
     {

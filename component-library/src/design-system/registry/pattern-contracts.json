@@ -436,6 +436,242 @@
       "evidence": ["receiving", "batch-work-order", "team-settings"],
       "goldenScreenIds": ["receiving", "batch-work-order"],
       "implementationMarkers": ["useCommittedDraft"]
+    },
+    {
+      "patternId": "popup.side.group-settings",
+      "slots": [
+        { "id": "basic-information", "required": true, "accepts": ["form-section"] },
+        { "id": "member-selection", "required": true, "accepts": ["member-selection"] },
+        { "id": "permission-matrix", "required": true, "accepts": ["permission-matrix"] }
+      ],
+      "stateModel": ["closed", "open", "edited", "saving"],
+      "behaviorTargets": ["member.select", "permission.change", "group.save"],
+      "scrollOwner": "shell-body",
+      "allowedActionSets": ["action-set.cancel-save"],
+      "useWhen": ["그룹 기본정보와 소속 사용자, 메뉴 권한을 하나의 저장 단위로 편집할 때"],
+      "doNotUseWhen": ["일반 행 추가 목록이나 단순 사용자 선택만 필요한 경우"],
+      "constraints": ["기본정보·사용자·권한의 역할을 분리하고 하나의 임의 표로 합치지 않는다."],
+      "evidence": ["group-settings"],
+      "goldenScreenIds": ["group-settings"],
+      "implementationMarkers": ["SlideCompositionSectionView"]
+    },
+    {
+      "patternId": "popup.center.form",
+      "slots": [
+        { "id": "subject-context", "required": false, "accepts": ["read-only-context"] },
+        { "id": "form", "required": true, "accepts": ["form-section"] },
+        { "id": "footer", "required": true, "accepts": ["action-set"] }
+      ],
+      "stateModel": ["closed", "open", "edited", "committing"],
+      "behaviorTargets": ["form.change", "form.cancel", "form.commit"],
+      "scrollOwner": "shell-body",
+      "allowedActionSets": ["action-set.cancel-save", "action-set.cancel-confirm", "action-set.cancel-input"],
+      "useWhen": ["현재 화면 위에서 한 대상의 제한된 입력·설정·확인을 끝낼 때"],
+      "doNotUseWhen": ["목록 맥락을 계속 보며 긴 편집을 해야 하거나 단순 확인 문구만 필요한 경우"],
+      "constraints": ["읽기 정보는 대상 식별이나 입력 판단에 필요한 경우에만 포함한다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["CenterPopup"]
+    },
+    {
+      "patternId": "popup.center.time-selector",
+      "slots": [
+        { "id": "start-time", "required": true, "accepts": ["time-wheel"] },
+        { "id": "end-time", "required": true, "accepts": ["time-wheel"] },
+        { "id": "calculated-duration", "required": true, "accepts": ["calculated-result"] },
+        { "id": "footer", "required": true, "accepts": ["action-set"] }
+      ],
+      "stateModel": ["closed", "open", "selecting", "calculated", "committing"],
+      "behaviorTargets": ["start.change", "end.change", "duration.recalculate", "time.commit"],
+      "scrollOwner": "none",
+      "allowedActionSets": ["action-set.cancel-input"],
+      "useWhen": ["시작·종료 일시를 함께 선택하고 두 값에서 계산된 작업시간을 확인한 뒤 입력할 때"],
+      "doNotUseWhen": ["하나의 시각만 고르거나 시간 형식의 자유 입력만 필요한 경우"],
+      "constraints": ["시작·종료 선택과 계산 결과는 같은 상태에서 파생하며 일반 30분 드롭다운으로 대체하지 않는다."],
+      "evidence": ["operation-log"],
+      "goldenScreenIds": ["operation-log"],
+      "implementationMarkers": ["TimeSelectionContent"]
+    },
+    {
+      "patternId": "screen.master-detail",
+      "slots": [
+        { "id": "master", "required": true, "accepts": ["list", "table"] },
+        { "id": "detail", "required": true, "accepts": ["detail-panel"] }
+      ],
+      "stateModel": ["unselected", "selected", "detail-loading", "detail-ready"],
+      "behaviorTargets": ["master.select", "detail.update"],
+      "scrollOwner": "section",
+      "allowedActionSets": [],
+      "useWhen": ["한 영역에서 고른 대상이 인접한 영역의 상세 내용과 행동을 바꿀 때"],
+      "doNotUseWhen": ["두 영역이 독립적이거나 상세가 별도 업무 화면으로 이동해야 하는 경우"],
+      "constraints": ["상세 내용은 현재 선택한 대상 ID에서 파생하고 빈 선택 상태를 제공한다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["MasterDetailPattern"]
+    },
+    {
+      "patternId": "table.column-settings",
+      "slots": [
+        { "id": "column-list", "required": true, "accepts": ["column-setting-row"] },
+        { "id": "footer", "required": false, "accepts": ["action-set"] }
+      ],
+      "stateModel": ["open", "edited", "reordered", "committed"],
+      "behaviorTargets": ["column.visibility", "column.total", "column.reorder", "settings.commit"],
+      "scrollOwner": "section",
+      "allowedActionSets": ["action-set.cancel-save", "action-set.save-only"],
+      "useWhen": ["사용자가 표의 표시 여부·합계 열·순서를 조절해야 할 때"],
+      "doNotUseWhen": ["업무상 고정된 열만 있거나 표 데이터 자체를 편집하는 경우"],
+      "constraints": ["필수 열은 표시와 위치를 잠그고 조정 가능한 열과 시각적으로 구분한다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["TableColumnSettings"]
+    },
+    {
+      "patternId": "action-set.cancel-input",
+      "slots": [
+        { "id": "cancel", "required": true, "accepts": ["secondary-action"] },
+        { "id": "input", "required": true, "accepts": ["primary-action"] }
+      ],
+      "stateModel": ["idle", "committing"],
+      "behaviorTargets": ["input.cancel", "input.commit"],
+      "scrollOwner": "none",
+      "allowedActionSets": [],
+      "useWhen": ["보조 입력 팝업의 값을 취소하거나 상위 편집 흐름에 반영할 때"],
+      "doNotUseWhen": ["업무 레코드를 최종 저장하거나 단순 조회 팝업을 닫는 경우"],
+      "constraints": ["입력은 현재 선택값을 상위 초안에 반영하고 취소는 반영 없이 닫는다."],
+      "evidence": ["operation-log"],
+      "goldenScreenIds": ["operation-log"],
+      "implementationMarkers": ["TimeSelectionContent"]
+    },
+    {
+      "patternId": "workflow.stepper",
+      "slots": [{ "id": "steps", "required": true, "accepts": ["ordered-step"] }],
+      "stateModel": ["current", "completed", "blocked"],
+      "behaviorTargets": ["step.change"],
+      "scrollOwner": "none",
+      "allowedActionSets": [],
+      "useWhen": ["이전 단계 완료 여부가 다음 단계 진행에 영향을 주는 순차 업무일 때"],
+      "doNotUseWhen": ["보기 전환이나 단순 진행률 표시인 경우"],
+      "constraints": ["단계 순서와 이동 가능 조건을 업무 흐름에서 전달한다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["StepperPattern"]
+    },
+    {
+      "patternId": "selection.transfer-list",
+      "slots": [
+        { "id": "available", "required": true, "accepts": ["selectable-list"] },
+        { "id": "transfer-actions", "required": true, "accepts": ["move-action"] },
+        { "id": "selected", "required": true, "accepts": ["selectable-list"] }
+      ],
+      "stateModel": ["idle", "selected-left", "selected-right", "transferred"],
+      "behaviorTargets": ["item.select", "item.add", "item.remove"],
+      "scrollOwner": "section",
+      "allowedActionSets": [],
+      "useWhen": ["한정된 후보를 두 상태 사이에서 명시적으로 이동해야 할 때"],
+      "doNotUseWhen": ["단일 값이나 매우 많은 원격 데이터를 검색해 선택하는 경우"],
+      "constraints": ["양쪽 목록에서 같은 항목 ID를 공유하고 중복 선택을 만들지 않는다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["TransferListPattern"]
+    },
+    {
+      "patternId": "table.row-expand-detail",
+      "slots": [
+        { "id": "summary-row", "required": true, "accepts": ["table-row"] },
+        { "id": "detail-row", "required": true, "accepts": ["detail-content"] }
+      ],
+      "stateModel": ["collapsed", "expanded"],
+      "behaviorTargets": ["row.toggle"],
+      "scrollOwner": "table",
+      "allowedActionSets": [],
+      "useWhen": ["행의 핵심 열을 유지하면서 보조 상세를 바로 아래에서 확인할 때"],
+      "doNotUseWhen": ["편집량이 많거나 독립 URL·지속 작업 공간이 필요한 경우"],
+      "constraints": ["상세 행은 상위 행 ID와 연결하고 표의 열 정렬을 깨지 않는다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["ExpandableRowPattern"]
+    },
+    {
+      "patternId": "table.frozen-column-grid",
+      "slots": [{ "id": "grid", "required": true, "accepts": ["table-grid"] }],
+      "stateModel": ["idle", "scrolled"],
+      "behaviorTargets": ["grid.scroll"],
+      "scrollOwner": "table",
+      "allowedActionSets": [],
+      "useWhen": ["가로 스크롤 중에도 식별 기준 열을 계속 확인해야 할 때"],
+      "doNotUseWhen": ["열 수를 줄이거나 너비를 조정해 가로 넘침을 해소할 수 있는 경우"],
+      "constraints": ["고정 열 위치와 누적 너비는 같은 컬럼 정의에서 계산한다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["FrozenColumnGridPattern"]
+    },
+    {
+      "patternId": "table.grouped-header-grid",
+      "slots": [
+        { "id": "group-header", "required": true, "accepts": ["column-group"] },
+        { "id": "leaf-header", "required": true, "accepts": ["table-column"] },
+        { "id": "body", "required": true, "accepts": ["table-row"] }
+      ],
+      "stateModel": ["ready"],
+      "behaviorTargets": ["column-group.read"],
+      "scrollOwner": "table",
+      "allowedActionSets": [],
+      "useWhen": ["여러 하위 열이 하나의 상위 의미를 공유할 때"],
+      "doNotUseWhen": ["한 단계 열 제목만으로 의미가 충분한 경우"],
+      "constraints": ["상위 colspan과 하위 열 수를 같은 그룹 정의에서 계산한다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["GroupedHeaderGridPattern"]
+    },
+    {
+      "patternId": "visualization.process-flow",
+      "slots": [{ "id": "process-steps", "required": true, "accepts": ["ordered-process-step"] }],
+      "stateModel": ["idle", "current", "completed", "blocked"],
+      "behaviorTargets": ["process.select", "process.current-change"],
+      "scrollOwner": "none",
+      "allowedActionSets": [],
+      "useWhen": ["공정 순서와 현재 위치를 함께 이해해야 할 때"],
+      "doNotUseWhen": ["업무 순서가 없거나 장식용 흐름만 필요한 경우"],
+      "constraints": ["실제 공정 단계와 현재 위치를 외부 데이터로 받는다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["ProcessFlowPattern"]
+    },
+    {
+      "patternId": "visualization.production-gantt",
+      "slots": [
+        { "id": "time-scale", "required": true, "accepts": ["time-axis"] },
+        { "id": "resources", "required": true, "accepts": ["resource-row"] },
+        { "id": "schedules", "required": true, "accepts": ["schedule-bar"] }
+      ],
+      "stateModel": ["loading", "empty", "ready", "scale-changed"],
+      "behaviorTargets": ["scale.change", "schedule.inspect"],
+      "scrollOwner": "section",
+      "allowedActionSets": [],
+      "useWhen": ["설비·라인별 생산 계획의 시작과 종료를 같은 시간축에서 비교할 때"],
+      "doNotUseWhen": ["작업 순서나 수량 목록만 확인하면 되는 경우"],
+      "constraints": ["일정 막대는 실제 시작·종료값에서 계산하고 임의 위치를 만들지 않는다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["ProductionGanttPattern"]
+    },
+    {
+      "patternId": "onboarding.product-tour",
+      "slots": [
+        { "id": "target", "required": true, "accepts": ["anchored-target"] },
+        { "id": "guidance", "required": true, "accepts": ["tour-step"] }
+      ],
+      "stateModel": ["closed", "active", "completed", "dismissed"],
+      "behaviorTargets": ["tour.next", "tour.previous", "tour.dismiss", "tour.complete"],
+      "scrollOwner": "none",
+      "allowedActionSets": [],
+      "useWhen": ["새 기능을 처음 접한 사용자가 순서대로 조작 위치를 익혀야 할 때"],
+      "doNotUseWhen": ["한 번의 짧은 설명이나 상시 안내만 필요한 경우"],
+      "constraints": ["각 단계는 실제 화면 대상에 연결하고 사용자가 언제든 종료할 수 있게 한다."],
+      "evidence": [],
+      "goldenScreenIds": [],
+      "implementationMarkers": ["ProductTourPattern"]
     }
   ]
 }

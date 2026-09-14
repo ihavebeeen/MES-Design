@@ -70,7 +70,11 @@ function buildAudit() {
   const registry = readRegistryBundle();
   const visualCases = readJson("visual-regression.json").cases;
   const interactionScreens = readJson("interaction-audit.json").screens;
+  const provisionalComponentReviews = readJson("provisional-component-review.json").reviews;
+  const patternSourceEvidence = readJson("pattern-source-evidence.json").entries;
   const interactionByScreen = new Map(interactionScreens.map((entry) => [entry.screenId, entry]));
+  const provisionalReviewByComponent = new Map(provisionalComponentReviews.map((entry) => [entry.componentId, entry]));
+  const sourceEvidenceByPattern = new Map(patternSourceEvidence.map((entry) => [entry.patternId, entry]));
   const componentContracts = new Set(registry.componentUsageContracts.map((entry) => entry.componentId));
   const componentContexts = new Set(registry.componentSelectionContexts.map((entry) => entry.componentId));
   const patternContracts = new Set(registry.patternContracts.map((entry) => entry.patternId));
@@ -112,9 +116,13 @@ function buildAudit() {
     const usedByPatternIds = unique(componentsByPattern.get(component.id) ?? []).sort();
     const hasUsageContract = componentContracts.has(component.id);
     const hasSelectionContext = componentContexts.has(component.id);
+    const sourceReview = provisionalReviewByComponent.get(component.id) ?? null;
     const outstanding = [];
     if (!existsFromProject(component.source)) outstanding.push("source-missing");
-    if (component.status === "provisional") outstanding.push("needs-approval-evidence");
+    if (component.status === "provisional" && !sourceReview) outstanding.push("source-classification-missing");
+    if (sourceReview?.decision === "revise") outstanding.push("source-revision-required");
+    if (sourceReview?.reviewClass === "unverified-general-ui") outstanding.push("representative-source-pending");
+    if (sourceReview?.reviewClass === "approved-new") outstanding.push("representative-usage-pending");
     if (!component.documentationRoute) outstanding.push("documentation-route-missing");
     if (!hasSelectionContext) outstanding.push("selection-context-missing");
     if (usedByPatternIds.length === 0) outstanding.push("no-registered-pattern-usage");
@@ -130,7 +138,16 @@ function buildAudit() {
       hasSelectionContext,
       hasDetailedUsageRule: hasUsageContract,
       usedByPatternIds,
-      reviewState: component.status === "stable" && hasUsageContract ? "approved-with-detailed-rule" : component.status === "stable" && hasSelectionContext ? "approved-with-context" : "needs-review",
+      sourceReview,
+      reviewState: component.status === "stable" && hasUsageContract
+        ? "approved-with-detailed-rule"
+        : component.status === "stable" && hasSelectionContext
+          ? "approved-with-context"
+          : sourceReview?.decision === "revise"
+            ? "source-revision-required"
+            : sourceReview
+              ? "classified-provisional"
+              : "needs-review",
       outstanding,
     };
   });
@@ -141,11 +158,14 @@ function buildAudit() {
     const directVisualCaseIds = unique(directVisualByPattern.get(pattern.id) ?? []).sort();
     const hasDetailedRule = patternContracts.has(pattern.id);
     const hasVisualEvidence = directVisualCaseIds.length > 0 || indirectlyVisualPatterns.has(pattern.id);
+    const sourceEvidence = sourceEvidenceByPattern.get(pattern.id) ?? null;
+    const hasRecordedSourceEvidence = Boolean(sourceEvidence);
     const outstanding = [];
     if (!existsFromProject(pattern.source)) outstanding.push("source-missing");
     if (!hasDetailedRule) outstanding.push("detailed-composition-rule-missing");
     if (usedByScreenIds.length === 0 && generationTemplateIds.length === 0) outstanding.push("no-screen-or-generator-usage");
-    if (!hasVisualEvidence && generationTemplateIds.length === 0) outstanding.push("visual-evidence-missing");
+    if (!hasVisualEvidence && generationTemplateIds.length === 0 && !hasRecordedSourceEvidence) outstanding.push("visual-evidence-missing");
+    if (sourceEvidence?.evidenceKind === "user-approved-new" || sourceEvidence?.evidenceKind === "user-requested-new") outstanding.push("representative-usage-pending");
     return {
       id: pattern.id,
       name: pattern.name,
@@ -154,11 +174,20 @@ function buildAudit() {
       sourceExists: existsFromProject(pattern.source),
       hasSelectionContext: Boolean(pattern.rules?.length),
       hasDetailedCompositionRule: hasDetailedRule,
+      sourceEvidence,
       usedByScreenIds,
       generationTemplateIds,
       directVisualCaseIds,
       hasIndirectScreenVisualEvidence: indirectlyVisualPatterns.has(pattern.id),
-      reviewState: hasDetailedRule && hasVisualEvidence ? "detailed-and-screen-covered" : hasVisualEvidence || generationTemplateIds.length > 0 ? "covered-basic" : "needs-evidence",
+      reviewState: hasDetailedRule && hasVisualEvidence
+        ? "detailed-and-screen-covered"
+        : hasDetailedRule && hasRecordedSourceEvidence
+          ? "detailed-with-recorded-basis"
+          : hasVisualEvidence || generationTemplateIds.length > 0
+            ? "covered-basic"
+            : hasRecordedSourceEvidence
+              ? "recorded-basis-needs-contract"
+              : "needs-evidence",
       outstanding,
     };
   });
@@ -213,6 +242,8 @@ function buildAudit() {
     componentUsageContracts: registry.componentUsageContracts,
     componentSelectionContexts: registry.componentSelectionContexts,
     patternContracts: registry.patternContracts,
+    provisionalComponentReviews,
+    patternSourceEvidence,
     screenSpecs: registry.screenSpecs,
     visualCases,
     interactionScreens,
@@ -265,6 +296,8 @@ function buildAudit() {
         total: components.length,
         stable: components.filter((entry) => entry.status === "stable").length,
         provisional: components.filter((entry) => entry.status === "provisional").length,
+        provisionalClassified: components.filter((entry) => entry.status === "provisional" && entry.sourceReview).length,
+        revisionRequired: components.filter((entry) => entry.reviewState === "source-revision-required").length,
         documented: components.filter((entry) => entry.documentationRoute).length,
         selectionContexts: components.filter((entry) => entry.hasSelectionContext).length,
         detailedUsageRules: components.filter((entry) => entry.hasDetailedUsageRule).length,
@@ -276,6 +309,7 @@ function buildAudit() {
         unusedByScreens: patterns.filter((entry) => entry.usedByScreenIds.length === 0).length,
         selectionContexts: patterns.filter((entry) => entry.hasSelectionContext).length,
         detailedCompositionRules: patterns.filter((entry) => entry.hasDetailedCompositionRule).length,
+        withRecordedSourceEvidence: patterns.filter((entry) => entry.sourceEvidence).length,
         withVisualEvidence: patterns.filter((entry) => entry.directVisualCaseIds.length > 0 || entry.hasIndirectScreenVisualEvidence).length,
         sourceMissing: patterns.filter((entry) => !entry.sourceExists).length,
       },
@@ -294,10 +328,18 @@ function buildAudit() {
 }
 
 function renderMarkdown(audit) {
+  const componentReviewLabels = {
+    "partial-source-match": "원본 일부 일치",
+    "source-conflict": "원본과 구현 충돌",
+    "derived-existing-ui": "기존 MES에서 추출",
+    "approved-new": "승인된 신규 자산",
+    "unverified-general-ui": "원본 근거 미확인",
+    unclassified: "미분류",
+  };
   const missingVisual = audit.screens.filter((entry) => entry.visualCaseIds.length === 0);
   const provisionalComponents = audit.components.filter((entry) => entry.status === "provisional");
+  const provisionalByReviewClass = Object.groupBy(provisionalComponents, (entry) => entry.sourceReview?.reviewClass ?? "unclassified");
   const componentsWithoutContexts = audit.components.filter((entry) => !entry.hasSelectionContext);
-  const patternsWithoutRules = audit.patterns.filter((entry) => !entry.hasDetailedCompositionRule);
   const unusedPatterns = audit.patterns.filter((entry) => entry.usedByScreenIds.length === 0 && entry.generationTemplateIds.length === 0);
   const browserVerified = audit.browserRun.result === "passed";
   const recordedDate = audit.browserRun.recordedAt ? audit.browserRun.recordedAt.slice(0, 10) : "현재 소스 미검증";
@@ -334,9 +376,11 @@ function renderMarkdown(audit) {
     "",
     "### 2. 아직 검토 단계인 공용 화면 요소",
     "",
-    `총 ${provisionalComponents.length}개다. 새 화면에서 사용하기 전에 원본 근거, 상태와 사용 위치를 확인해야 한다.`,
+    `총 ${provisionalComponents.length}개이며 ${audit.summary.components.provisionalClassified}개를 근거 종류별로 분류했다. 이 중 원본과 현재 구현이 충돌하거나 일부만 일치해 수정이 필요한 자산은 ${audit.summary.components.revisionRequired}개다.`,
     "",
-    ...Object.entries(Object.groupBy(provisionalComponents, (entry) => entry.category)).sort(([left], [right]) => left.localeCompare(right)).map(([category, entries]) => `- ${category}: ${entries.map((entry) => entry.name).join(", ")}`),
+    "| 분류 | 자산 | 다음 처리 |",
+    "|---|---|---|",
+    ...Object.entries(provisionalByReviewClass).sort(([left], [right]) => left.localeCompare(right)).map(([reviewClass, entries]) => `| ${escapeCell(componentReviewLabels[reviewClass] ?? reviewClass)} | ${escapeCell(entries.map((entry) => entry.name).join(", "))} | ${entries.some((entry) => entry.sourceReview?.decision === "revise") ? "원본에 맞춰 수정 후 재검증" : "사용 범위를 유지하고 대표 화면에서 재검증"} |`),
     "",
     "### 3. 컴포넌트 선택 맥락",
     "",
@@ -346,7 +390,7 @@ function renderMarkdown(audit) {
     "",
     "### 4. 패턴 맥락과 상세 실행 계약",
     "",
-    `전체 ${audit.summary.patterns.total}개 패턴에 조합 맥락이 있다. 그중 ${audit.summary.patterns.detailedCompositionRules}개는 슬롯·스크롤·구현 marker까지 자동 검사하며, 나머지 ${patternsWithoutRules.length}개는 맥락 후보로 사용하되 필요할 때만 실행 계약을 추가한다.`,
+    `전체 ${audit.summary.patterns.total}개 패턴에 조합 맥락이 있다. ${audit.summary.patterns.detailedCompositionRules}개에는 슬롯·상태·스크롤·행동 구성이 정리돼 있고, 화면 연결이 약했던 패턴 ${audit.summary.patterns.withRecordedSourceEvidence}개에는 Figma·실제 웹·신규 승인 중 어떤 근거로 유지하는지 기록했다.`,
     "",
     "### 5. 실제 화면이나 생성 방식에서 사용되지 않는 구성",
     "",

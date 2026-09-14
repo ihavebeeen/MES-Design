@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
-  "auditedAt": "2026-09-14T05:25:16.265Z",
-  "sourceFingerprint": "0fcb58a9ef09cc6ca3441c413f71542f66c8af7dc2bbe5ded455efd13b053233",
+  "auditedAt": "2026-09-14T06:40:00.618Z",
+  "sourceFingerprint": "6eb3fb6b4074ce2293e39141a9e8d9a7028b5e733a4a42c01aa6ed7c70c5eeb7",
   "browserRun": {
     "command": "npm run test:visual",
     "result": "passed",
     "testCount": 98,
     "passed": 98,
     "failed": 0,
-    "durationMs": 252304,
-    "recordedAt": "2026-09-14T05:25:16.265Z",
+    "durationMs": 347101,
+    "recordedAt": "2026-09-14T06:40:00.618Z",
     "testInventoryFingerprint": "a93f3b0abc7a6545d4eaefe66bfb86ccb3875b9bcc9cd2bca162ec5a92e4f288",
     "includesDeferredMobile": true
   },
@@ -29,6 +29,8 @@
       "total": 87,
       "stable": 41,
       "provisional": 46,
+      "provisionalClassified": 46,
+      "revisionRequired": 2,
       "documented": 85,
       "selectionContexts": 87,
       "detailedUsageRules": 25,
@@ -36,11 +38,12 @@
     },
     "patterns": {
       "total": 76,
-      "usedByScreens": 57,
-      "unusedByScreens": 19,
+      "usedByScreens": 59,
+      "unusedByScreens": 17,
       "selectionContexts": 76,
-      "detailedCompositionRules": 24,
-      "withVisualEvidence": 53,
+      "detailedCompositionRules": 38,
+      "withRecordedSourceEvidence": 16,
+      "withVisualEvidence": 55,
       "sourceMissing": 0
     },
     "screens": {
@@ -64,9 +67,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "accordion",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "MES 전용 원본 없이 일반 접기 목록으로 구현했다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -82,6 +91,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": [
         "no-registered-pattern-usage"
@@ -99,9 +109,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "avatar",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier4-user-review-2026-08-19",
+        "finding": "사용자 승인으로 정식 후보에 편입했다. 실제 사용 화면과 상태 기준은 아직 없다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -122,6 +139,7 @@
         "popup.center.standard-price-settings",
         "popup.center.team-settings"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -139,6 +157,7 @@
       "usedByPatternIds": [
         "popup.center.before-after-confirmation"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -154,9 +173,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "breadcrumb",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "이름 후보만 확인했고 실제 MES 노드와 사용 화면을 대조하지 못했다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -220,6 +245,7 @@
         "visualization.process-flow",
         "workflow.stepper"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -235,9 +261,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "button-group",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "기존 Button을 이어 붙이는 일반 조합이며 MES 사용 위치가 확인되지 않았다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -253,9 +285,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "cascader",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "finding": "사용자 승인으로 정식 후보에 편입했다. 두 단계 종속 선택에만 사용한다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -273,9 +312,15 @@
       "usedByPatternIds": [
         "screen.analytics-dashboard"
       ],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "card",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "대시보드 영역에 사용 중이지만 독립 Card 원본과 상태를 아직 확정하지 않았다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence"
+        "representative-source-pending"
       ]
     },
     {
@@ -309,6 +354,7 @@
         "screen.form-management-workflow",
         "shell.center-modal"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -338,6 +384,7 @@
         "table.column-settings",
         "table.grouped-list"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -353,9 +400,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "collapsible",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "단일 접기 영역으로 구현했으며 MES 대표 사용 화면이 없다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -371,6 +424,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": [
         "no-registered-pattern-usage"
@@ -393,6 +447,7 @@
         "popup.center.standard-price-settings",
         "shell.confirm-dialog"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -411,9 +466,23 @@
         "popup.center.inventory-add",
         "popup.center.standard-price-settings"
       ],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "date-picker",
+        "reviewClass": "partial-source-match",
+        "decision": "revise",
+        "figmaNodeRefs": [
+          "10583:28261",
+          "10583:28266"
+        ],
+        "webPageRefs": [
+          "web.receiving",
+          "web.operation-log"
+        ],
+        "finding": "32px 날짜 입력과 달력 아이콘은 확인했다. 실제 웹은 브라우저 날짜 선택을 사용하며 현재 코드의 자체 달력 팝업은 원본 근거가 없다."
+      },
+      "reviewState": "source-revision-required",
       "outstanding": [
-        "needs-approval-evidence"
+        "source-revision-required"
       ]
     },
     {
@@ -432,6 +501,7 @@
         "popup.center.inventory-edit",
         "section.bulk-edit-bar"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": []
     },
@@ -450,6 +520,7 @@
         "popup.center.inventory-edit",
         "section.bulk-edit-bar"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": []
     },
@@ -467,6 +538,7 @@
       "usedByPatternIds": [
         "popup.center.inventory-edit"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": []
     },
@@ -482,6 +554,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": [
         "no-registered-pattern-usage"
@@ -501,9 +574,15 @@
       "usedByPatternIds": [
         "screen.analytics-dashboard"
       ],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "date-range-picker",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "저장되는 날짜 범위를 위한 신규 조합이다. 메인 조회기간은 QueryDateRange를 사용한다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence"
+        "representative-source-pending"
       ]
     },
     {
@@ -521,9 +600,15 @@
         "screen.master-detail",
         "table.row-expand-detail"
       ],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "descriptions",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "키·값 상세 목록의 일반 표현이며 MES 원본 사용 화면을 확정하지 않았다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence"
+        "representative-source-pending"
       ]
     },
     {
@@ -538,6 +623,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": [
         "no-registered-pattern-usage"
@@ -555,6 +641,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": [
         "no-registered-pattern-usage"
@@ -572,9 +659,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "divider",
+        "reviewClass": "derived-existing-ui",
+        "decision": "keep-provisional",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "finding": "화면과 팝업의 반복 구분선 토큰을 방향만 가진 자산으로 분리했다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
         "no-registered-pattern-usage"
       ]
     },
@@ -590,9 +684,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "dropdown-menu",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "Popover와 옵션 목록을 조합한 일반 메뉴다. 실제 메뉴 사례 대조가 남았다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -608,9 +708,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "empty-state",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "빈 결과 역할은 필요하지만 MES의 실제 문구·아이콘·행동 사례 대조가 남았다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -626,9 +732,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "error-state",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "오류 결과 역할은 필요하지만 MES 원본 오류 상태 근거가 없다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -644,9 +756,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "fieldset",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "관련 입력을 묶는 일반 구조이며 MES 화면에서의 제목·테두리 사용 기준이 없다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -679,6 +797,7 @@
         "section.query-toolbar",
         "section.search-table-composition"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -694,9 +813,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "file-upload",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "finding": "사용자 승인으로 정식 후보에 편입했다. 실제 업로드 업무 화면 근거가 남았다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -712,6 +838,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": [
         "documentation-route-missing",
@@ -740,6 +867,7 @@
         "section.form-grid",
         "section.staged-record-entry"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -755,9 +883,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "grid-container",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "문서 화면용 일반 레이아웃 wrapper 성격이 강해 업무 UI 사용 범위를 제한한다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -779,6 +913,7 @@
         "screen.production-result-responsive",
         "section.page-query-table"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -798,10 +933,19 @@
         "recipe.side-slide-entry-list",
         "table.column-settings"
       ],
-      "reviewState": "needs-review",
-      "outstanding": [
-        "needs-approval-evidence"
-      ]
+      "sourceReview": {
+        "componentId": "icon-button",
+        "reviewClass": "derived-existing-ui",
+        "decision": "keep-provisional",
+        "figmaNodeRefs": [],
+        "webPageRefs": [
+          "web.receiving",
+          "web.warehouse"
+        ],
+        "finding": "팝업 닫기, 테이블 행 동작, 상단 도구 등 반복 사용 위치에서 추출했다."
+      },
+      "reviewState": "classified-provisional",
+      "outstanding": []
     },
     {
       "id": "input",
@@ -839,6 +983,7 @@
         "section.editable-row-list",
         "section.staged-record-entry"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -854,9 +999,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "image-thumbnail",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "finding": "사용자 승인으로 정식 후보에 편입했다. 대표 사용 화면이 생기면 크기·선택 상태를 확정한다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -876,6 +1028,7 @@
         "recipe.side-slide-inspection",
         "section.inspection-items"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": []
     },
@@ -891,9 +1044,21 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "label",
+        "reviewClass": "derived-existing-ui",
+        "decision": "keep-provisional",
+        "figmaNodeRefs": [
+          "11210:51434",
+          "11210:51464"
+        ],
+        "webPageRefs": [
+          "web.operation-log"
+        ],
+        "finding": "폼 행의 라벨과 필수 표시를 공용화했다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
         "no-registered-pattern-usage"
       ]
     },
@@ -912,10 +1077,16 @@
         "popup.center.purchase-lookup",
         "popup.center.team-settings"
       ],
-      "reviewState": "needs-review",
-      "outstanding": [
-        "needs-approval-evidence"
-      ]
+      "sourceReview": {
+        "componentId": "link",
+        "reviewClass": "derived-existing-ui",
+        "decision": "keep-provisional",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "finding": "기존 화면의 텍스트 링크 표현을 공용화했으며 단독 상태 대조가 남았다."
+      },
+      "reviewState": "classified-provisional",
+      "outstanding": []
     },
     {
       "id": "list",
@@ -929,9 +1100,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "list",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "표가 필요 없는 일반 목록이며 MES 대표 사용 화면이 없다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -947,9 +1124,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "loading-overlay",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "부분 영역 로딩 표현으로 구현했으며 실제 웹 상태를 아직 수집하지 않았다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -965,9 +1148,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "loading-spinner",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "일반 회전 로더이며 MES 원본 크기·색상·배치 근거가 없다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -983,9 +1172,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "multi-select-input",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "태그형 복수 선택을 조합했으며 실제 MES 입력 사례가 없다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1001,6 +1196,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": [
         "no-registered-pattern-usage"
@@ -1018,6 +1214,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": [
         "no-registered-pattern-usage"
@@ -1035,9 +1232,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": true,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "number-input",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "증감 버튼이 있는 숫자 입력은 MES 원본에서 확인되지 않았다. 일반 숫자 입력과 구분해 사용한다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1057,6 +1260,7 @@
         "screen.entity-list",
         "screen.form-management-workflow"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": []
     },
@@ -1072,9 +1276,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "overflow-list",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier4-user-review-2026-08-19",
+        "finding": "사용자 승인으로 정식 후보에 편입했다. 좁은 공간의 항목 축약 용도로 제한한다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1090,9 +1301,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "pagination",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "MES 메인 목록에는 사용하지 않는다. 제한된 팝업·로컬 목록의 실제 사례가 확인될 때만 사용한다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1110,9 +1327,15 @@
       "usedByPatternIds": [
         "screen.master-detail"
       ],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "panel",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "그림자가 있는 일반 부유 영역이며 구체적인 MES 사용 위치가 없다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence"
+        "representative-source-pending"
       ]
     },
     {
@@ -1127,9 +1350,18 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "password-input",
+        "reviewClass": "derived-existing-ui",
+        "decision": "keep-provisional",
+        "figmaNodeRefs": [],
+        "webPageRefs": [
+          "web.user"
+        ],
+        "finding": "로그인·비밀번호 설정 입력에서 파생했으며 보기 버튼 유무를 화면별로 구분한다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
         "no-registered-pattern-usage"
       ]
     },
@@ -1147,10 +1379,18 @@
       "usedByPatternIds": [
         "recipe.side-slide-inspection"
       ],
-      "reviewState": "needs-review",
-      "outstanding": [
-        "needs-approval-evidence"
-      ]
+      "sourceReview": {
+        "componentId": "popover",
+        "reviewClass": "derived-existing-ui",
+        "decision": "keep-provisional",
+        "figmaNodeRefs": [],
+        "webPageRefs": [
+          "web.receiving"
+        ],
+        "finding": "그룹화·필터·선택 목록의 떠 있는 패널 동작을 받치는 내부 공용 자산이다."
+      },
+      "reviewState": "classified-provisional",
+      "outstanding": []
     },
     {
       "id": "progress",
@@ -1167,6 +1407,7 @@
         "popup.center.purchase-lookup",
         "workflow.stepper"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": []
     },
@@ -1182,9 +1423,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "progress-circle",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier4-user-review-2026-08-19",
+        "finding": "사용자 승인으로 정식 후보에 편입했다. 원형 진행률이 실제 비교에 필요한 화면 근거가 남았다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1204,6 +1452,7 @@
         "screen.entity-list",
         "section.page-query-table"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -1223,6 +1472,7 @@
         "popup.center.form",
         "screen.form-management-workflow"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -1238,6 +1488,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": [
         "no-registered-pattern-usage"
@@ -1257,10 +1508,18 @@
       "usedByPatternIds": [
         "table.frozen-column-grid"
       ],
-      "reviewState": "needs-review",
-      "outstanding": [
-        "needs-approval-evidence"
-      ]
+      "sourceReview": {
+        "componentId": "scroll-area",
+        "reviewClass": "derived-existing-ui",
+        "decision": "keep-provisional",
+        "figmaNodeRefs": [],
+        "webPageRefs": [
+          "web.receiving"
+        ],
+        "finding": "표와 팝업 본문의 스크롤 영역에서 반복되는 최소 동작을 분리했다."
+      },
+      "reviewState": "classified-provisional",
+      "outstanding": []
     },
     {
       "id": "search-highlight",
@@ -1274,9 +1533,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "search-highlight",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "finding": "사용자 승인으로 정식 후보에 편입했고 후속 수정이 예정되어 있다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1312,6 +1578,7 @@
         "section.query-toolbar",
         "section.search-table-composition"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -1329,9 +1596,16 @@
       "usedByPatternIds": [
         "visualization.production-gantt"
       ],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "segmented-control",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier4-user-review-2026-08-19",
+        "finding": "상호배타 단일 선택 역할로 승인됐다. ButtonGroup과 ToggleButton의 역할을 대신하지 않는다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence"
+        "representative-usage-pending"
       ]
     },
     {
@@ -1354,6 +1628,7 @@
         "recipe.side-slide-group-settings",
         "recipe.side-slide-inspection"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -1371,6 +1646,7 @@
       "usedByPatternIds": [
         "frame.standard-section"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -1391,6 +1667,7 @@
         "popup.center.table",
         "recipe.side-slide-entry-list"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -1406,6 +1683,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": [
         "documentation-route-missing",
@@ -1430,6 +1708,7 @@
         "screen.entity-list",
         "section.page-query-table"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -1445,6 +1724,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": [
         "no-registered-pattern-usage"
@@ -1482,6 +1762,7 @@
         "section.editable-row-list",
         "section.measurement-heatmap-analysis"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -1501,6 +1782,7 @@
         "screen.entity-list",
         "screen.form-management-workflow"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": []
     },
@@ -1516,9 +1798,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "slider",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "finding": "연속 범위 조절 자산으로 승인됐다. 정확한 수치 입력이 우선이면 NumberInput을 사용한다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1548,6 +1837,7 @@
         "screen.form-management-workflow",
         "shell.side-slide-panel"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -1563,9 +1853,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "skeleton",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "일반 로딩 자리표시자이며 실제 MES 로딩 화면 근거가 없다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1581,9 +1877,19 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "sticky-header-footer",
+        "reviewClass": "derived-existing-ui",
+        "decision": "keep-provisional",
+        "figmaNodeRefs": [],
+        "webPageRefs": [
+          "web.receiving",
+          "web.operation-log"
+        ],
+        "finding": "긴 팝업에서 본문만 스크롤하고 헤더·하단 행동을 유지하는 구조에서 추출했다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
         "no-registered-pattern-usage"
       ]
     },
@@ -1602,6 +1908,7 @@
         "popup.center.standard-price-settings",
         "table.column-settings"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": []
     },
@@ -1653,6 +1960,7 @@
         "table.grouped-list",
         "table.row-expand-detail"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-detailed-rule",
       "outstanding": []
     },
@@ -1670,6 +1978,7 @@
       "usedByPatternIds": [
         "table.column-settings"
       ],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": []
     },
@@ -1685,9 +1994,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "textarea",
+        "reviewClass": "derived-existing-ui",
+        "decision": "keep-provisional",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "finding": "여러 줄 메모 입력을 Input 시각 규칙으로 확장했다. 대표 원본 상태 대조가 남았다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
         "no-registered-pattern-usage"
       ]
     },
@@ -1702,13 +2018,23 @@
       "hasFreeformRules": false,
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
-      "usedByPatternIds": [
-        "popup.center.time-selector",
-        "popup.side.time-records"
-      ],
-      "reviewState": "needs-review",
+      "usedByPatternIds": [],
+      "sourceReview": {
+        "componentId": "time-picker",
+        "reviewClass": "source-conflict",
+        "decision": "revise",
+        "figmaNodeRefs": [
+          "17309:156861"
+        ],
+        "webPageRefs": [
+          "web.operation-log"
+        ],
+        "finding": "운전일지의 시간 선택은 시작·종료 휠과 계산 결과를 가진 중앙 팝업이다. 현재 30분 단위 드롭다운을 이 근거로 사용할 수 없다."
+      },
+      "reviewState": "source-revision-required",
       "outstanding": [
-        "needs-approval-evidence"
+        "source-revision-required",
+        "no-registered-pattern-usage"
       ]
     },
     {
@@ -1723,9 +2049,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "timeline",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "finding": "시간 순서가 판단에 필요한 이력 표현으로 승인됐다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1741,6 +2074,7 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
+      "sourceReview": null,
       "reviewState": "approved-with-context",
       "outstanding": [
         "no-registered-pattern-usage"
@@ -1758,9 +2092,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "tree-select",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "finding": "계층을 보며 복수 선택하는 자산으로 승인됐다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1776,9 +2117,16 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "tree-view",
+        "reviewClass": "approved-new",
+        "decision": "keep-provisional",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "finding": "읽기·탐색용 계층 자산으로 승인됐다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-usage-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1794,9 +2142,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "toggle-button",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "독립 on/off 버튼으로 구현했으며 상호배타 선택에는 SegmentedControl을 사용한다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1812,9 +2166,15 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "tooltip",
+        "reviewClass": "unverified-general-ui",
+        "decision": "keep-provisional",
+        "finding": "단순 설명용 경량 구현이며 실제 MES 표시 지연·가림·터치 조건이 확인되지 않았다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
+        "representative-source-pending",
         "no-registered-pattern-usage"
       ]
     },
@@ -1830,9 +2190,19 @@
       "hasSelectionContext": true,
       "hasDetailedUsageRule": false,
       "usedByPatternIds": [],
-      "reviewState": "needs-review",
+      "sourceReview": {
+        "componentId": "user-account-menu",
+        "reviewClass": "derived-existing-ui",
+        "decision": "keep-provisional",
+        "figmaNodeRefs": [],
+        "webPageRefs": [
+          "web.receiving",
+          "web.warehouse"
+        ],
+        "finding": "MES 공통 상단 사용자 메뉴의 반복 구조를 DropdownMenu와 사용자 아이콘으로 조합했다."
+      },
+      "reviewState": "classified-provisional",
       "outstanding": [
-        "needs-approval-evidence",
         "no-registered-pattern-usage"
       ]
     }
@@ -1846,6 +2216,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [],
       "generationTemplateIds": [
         "side-slide-custom-fields.v1"
@@ -1865,6 +2236,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [],
       "generationTemplateIds": [
         "side-slide-inspection.v1"
@@ -1884,6 +2256,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [],
       "generationTemplateIds": [
         "side-slide-entry-list.v1"
@@ -1903,6 +2276,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "group-settings"
       ],
@@ -1923,18 +2297,26 @@
       "source": "src/components/patterns/side-slide-compositions.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "popup.side.group-settings",
+        "evidenceKind": "figma-and-web",
+        "figmaNodeRefs": [
+          "11122:47785"
+        ],
+        "webPageRefs": [
+          "web.permission"
+        ],
+        "summary": "그룹 기본정보, 소속 사용자, 메뉴별 권한을 한 저장 단위로 다루는 우측 슬라이드다."
+      },
       "usedByScreenIds": [
         "group-settings"
       ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
-      "outstanding": [
-        "detailed-composition-rule-missing",
-        "visual-evidence-missing"
-      ]
+      "reviewState": "detailed-with-recorded-basis",
+      "outstanding": []
     },
     {
       "id": "section.custom-field-values",
@@ -1944,6 +2326,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "custom-information",
         "user-password-settings"
@@ -1962,6 +2345,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "production-result",
         "receiving"
@@ -1980,6 +2364,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "production-result",
         "receiving"
@@ -1998,16 +2383,23 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "section.member-selection",
+        "evidenceKind": "figma-screen",
+        "figmaNodeRefs": [
+          "11122:47785"
+        ],
+        "webPageRefs": [],
+        "summary": "그룹에 포함할 사용자를 찾고 복수 선택하는 구역이다."
+      },
       "usedByScreenIds": [
         "group-settings"
       ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
-      "outstanding": [
-        "visual-evidence-missing"
-      ]
+      "reviewState": "detailed-with-recorded-basis",
+      "outstanding": []
     },
     {
       "id": "section.permission-matrix",
@@ -2017,16 +2409,23 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "section.permission-matrix",
+        "evidenceKind": "figma-screen",
+        "figmaNodeRefs": [
+          "11122:47785"
+        ],
+        "webPageRefs": [],
+        "summary": "메뉴 계층과 조회·등록·수정 권한을 같은 행에서 비교하고 설정한다."
+      },
       "usedByScreenIds": [
         "group-settings"
       ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
-      "outstanding": [
-        "visual-evidence-missing"
-      ]
+      "reviewState": "detailed-with-recorded-basis",
+      "outstanding": []
     },
     {
       "id": "popup.center.form",
@@ -2035,16 +2434,24 @@
       "source": "src/components/patterns/completed-popup-patterns.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "popup.center.form",
+        "evidenceKind": "derived-composition",
+        "figmaNodeRefs": [
+          "11210:52919",
+          "17309:159298"
+        ],
+        "webPageRefs": [],
+        "summary": "한 대상의 제한된 입력·설정·확인을 현재 화면 위에서 끝내는 중앙 작업 공간이다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
-        "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "no-screen-or-generator-usage"
       ]
     },
     {
@@ -2055,6 +2462,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "batch-work-order",
         "bulk-purchase-registration",
@@ -2077,6 +2485,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "bom-copy"
       ],
@@ -2096,6 +2505,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "material-input-settings"
       ],
@@ -2114,17 +2524,27 @@
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
-      "usedByScreenIds": [],
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "popup.center.time-selector",
+        "evidenceKind": "figma-and-web",
+        "figmaNodeRefs": [
+          "17309:156861",
+          "17768:51611"
+        ],
+        "webPageRefs": [
+          "web.operation-log"
+        ],
+        "summary": "시작·종료 일시를 휠로 고르고 계산된 분 단위 결과를 확인한 뒤 입력한다."
+      },
+      "usedByScreenIds": [
+        "operation-log"
+      ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
-      "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
-      "outstanding": [
-        "detailed-composition-rule-missing",
-        "no-screen-or-generator-usage",
-        "visual-evidence-missing"
-      ]
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
     },
     {
       "id": "popup.side.add-list",
@@ -2134,6 +2554,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "production-result",
         "receiving"
@@ -2154,6 +2575,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "custom-information"
       ],
@@ -2173,6 +2595,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "self-inspection"
       ],
@@ -2192,6 +2615,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "operation-log"
       ],
@@ -2211,6 +2635,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [],
       "generationTemplateIds": [
         "side-slide-form-editable-list.v1"
@@ -2230,6 +2655,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [],
       "generationTemplateIds": [
         "center-modal-search-table.v1"
@@ -2249,6 +2675,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [],
       "generationTemplateIds": [
         "page-entity-list.v1"
@@ -2268,6 +2695,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "grouped-production-list",
         "sales-transaction-statement"
@@ -2289,16 +2717,24 @@
       "source": "src/components/patterns/master-detail-pattern.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "screen.master-detail",
+        "evidenceKind": "derived-composition",
+        "figmaNodeRefs": [
+          "18813:61921",
+          "18756:60803"
+        ],
+        "webPageRefs": [],
+        "summary": "한 영역의 선택이 다른 영역의 상세 내용과 행동을 바꾸는 화면 구조다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
-        "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "no-screen-or-generator-usage"
       ]
     },
     {
@@ -2309,6 +2745,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "process-inspection-trend",
         "production-analytics-latest"
@@ -2329,6 +2766,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "process-inspection-trend"
       ],
@@ -2346,6 +2784,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "process-inspection-trend"
       ],
@@ -2363,6 +2802,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "process-inspection-trend"
       ],
@@ -2380,6 +2820,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "grouped-production-list",
         "sales-transaction-statement"
@@ -2400,16 +2841,22 @@
       "source": "src/components/patterns/table-column-settings.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "table.column-settings",
+        "evidenceKind": "user-requested-new",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "summary": "표시·합계·순서를 조정하고 업무상 필수 열을 잠그는 신규 설정 패턴이다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "representative-usage-pending"
       ]
     },
     {
@@ -2420,6 +2867,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "form-inspection-criteria"
       ],
@@ -2439,6 +2887,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "production-quantity-reregistration"
       ],
@@ -2458,6 +2907,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "custom-information",
         "group-settings",
@@ -2484,6 +2934,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "cavity-layout-settings",
         "custom-information",
@@ -2510,6 +2961,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "batch-work-order",
         "bulk-purchase-registration",
@@ -2544,6 +2996,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "batch-work-order",
         "bom-copy",
@@ -2581,6 +3034,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "custom-information",
         "form-management",
@@ -2611,6 +3065,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "production-quantity-reregistration",
         "user-password-settings"
@@ -2631,6 +3086,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "batch-work-order",
         "bulk-purchase-registration",
@@ -2653,6 +3109,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "bulk-purchase-registration",
         "equipment-discharge-settings",
@@ -2674,6 +3131,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "equipment-discharge-settings",
         "standard-price-settings",
@@ -2693,6 +3151,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "batch-work-order",
         "bulk-purchase-registration",
@@ -2725,6 +3184,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "grouped-production-list",
         "production-result-responsive",
@@ -2746,6 +3206,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "operation-log"
       ],
@@ -2765,6 +3226,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "self-inspection"
       ],
@@ -2782,6 +3244,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "bom-copy",
         "production-result-responsive"
@@ -2800,6 +3263,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "defect-quantity-input"
       ],
@@ -2817,6 +3281,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "batch-work-order",
         "bulk-purchase-registration",
@@ -2842,6 +3307,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "bom-copy",
         "equipment-inspection-records",
@@ -2870,6 +3336,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "equipment-discharge-settings",
         "grouped-production-list",
@@ -2892,6 +3359,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": true,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "defect-quantity-input",
         "operation-log",
@@ -2915,6 +3383,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "batch-work-order",
         "bom-copy",
@@ -2960,6 +3429,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "standard-price-settings"
       ],
@@ -2979,6 +3449,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "defect-quantity-input"
       ],
@@ -2998,6 +3469,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "inventory-edit"
       ],
@@ -3017,6 +3489,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "purchase-order-lookup"
       ],
@@ -3035,17 +3508,26 @@
       "source": "src/design-system/action-sets.ts",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
-      "usedByScreenIds": [],
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "action-set.cancel-input",
+        "evidenceKind": "figma-and-web",
+        "figmaNodeRefs": [
+          "17309:156988"
+        ],
+        "webPageRefs": [
+          "web.operation-log"
+        ],
+        "summary": "보조 입력값을 취소하거나 상위 편집 흐름에 반영한다."
+      },
+      "usedByScreenIds": [
+        "operation-log"
+      ],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
-      "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
-      "outstanding": [
-        "detailed-composition-rule-missing",
-        "no-screen-or-generator-usage",
-        "visual-evidence-missing"
-      ]
+      "hasIndirectScreenVisualEvidence": true,
+      "reviewState": "detailed-and-screen-covered",
+      "outstanding": []
     },
     {
       "id": "action-set.close-reregister",
@@ -3055,6 +3537,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "production-quantity-reregistration"
       ],
@@ -3073,16 +3556,23 @@
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "workflow.stepper",
+        "evidenceKind": "user-approved-new",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "summary": "이전 단계의 완료가 다음 단계 진행에 영향을 주는 흐름이다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "representative-usage-pending"
       ]
     },
     {
@@ -3092,16 +3582,23 @@
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "selection.transfer-list",
+        "evidenceKind": "user-approved-new",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "summary": "한정된 후보를 두 상태 사이에서 명시적으로 이동한다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "representative-usage-pending"
       ]
     },
     {
@@ -3111,16 +3608,23 @@
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "table.row-expand-detail",
+        "evidenceKind": "user-approved-new",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "summary": "행의 핵심 열을 유지한 채 보조 상세를 바로 아래에서 확인한다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "representative-usage-pending"
       ]
     },
     {
@@ -3130,16 +3634,23 @@
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "table.frozen-column-grid",
+        "evidenceKind": "user-approved-new",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "summary": "가로 스크롤 중 식별 기준 열을 유지한다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "representative-usage-pending"
       ]
     },
     {
@@ -3149,16 +3660,23 @@
       "source": "src/components/patterns/tier3-promoted-patterns.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "table.grouped-header-grid",
+        "evidenceKind": "user-approved-new",
+        "decisionBatchRef": "tier3-user-review-2026-08-19",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "summary": "여러 하위 열이 공유하는 상위 의미를 2단 헤더로 표현한다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "representative-usage-pending"
       ]
     },
     {
@@ -3168,16 +3686,23 @@
       "source": "src/components/patterns/process-flow-pattern.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "visualization.process-flow",
+        "evidenceKind": "user-approved-new",
+        "decisionBatchRef": "tier4-user-review-2026-08-19",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "summary": "공정 순서와 현재 위치가 업무 판단에 필요한 경우 사용한다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "representative-usage-pending"
       ]
     },
     {
@@ -3187,16 +3712,23 @@
       "source": "src/components/patterns/production-gantt-pattern.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "visualization.production-gantt",
+        "evidenceKind": "user-approved-new",
+        "decisionBatchRef": "tier4-user-review-2026-08-19",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "summary": "설비·라인별 생산 계획의 시작과 종료를 같은 시간축에서 비교한다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "representative-usage-pending"
       ]
     },
     {
@@ -3206,16 +3738,23 @@
       "source": "src/components/patterns/product-tour-pattern.tsx",
       "sourceExists": true,
       "hasSelectionContext": true,
-      "hasDetailedCompositionRule": false,
+      "hasDetailedCompositionRule": true,
+      "sourceEvidence": {
+        "patternId": "onboarding.product-tour",
+        "evidenceKind": "user-approved-new",
+        "decisionBatchRef": "tier5-user-review-2026-08-19",
+        "figmaNodeRefs": [],
+        "webPageRefs": [],
+        "summary": "새 기능을 순서대로 안내해야 하는 경우 사용한다."
+      },
       "usedByScreenIds": [],
       "generationTemplateIds": [],
       "directVisualCaseIds": [],
       "hasIndirectScreenVisualEvidence": false,
-      "reviewState": "needs-evidence",
+      "reviewState": "detailed-with-recorded-basis",
       "outstanding": [
-        "detailed-composition-rule-missing",
         "no-screen-or-generator-usage",
-        "visual-evidence-missing"
+        "representative-usage-pending"
       ]
     },
     {
@@ -3226,6 +3765,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "form-management"
       ],
@@ -3245,6 +3785,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "production-result-responsive"
       ],
@@ -3264,6 +3805,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "cavity-layout-settings"
       ],
@@ -3283,6 +3825,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "inventory-add"
       ],
@@ -3302,6 +3845,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "inventory-edit"
       ],
@@ -3321,6 +3865,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "purchase-order-lookup"
       ],
@@ -3340,6 +3885,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "equipment-inspection-records"
       ],
@@ -3359,6 +3905,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "equipment-discharge-settings"
       ],
@@ -3378,6 +3925,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "standard-price-settings"
       ],
@@ -3397,6 +3945,7 @@
       "sourceExists": true,
       "hasSelectionContext": true,
       "hasDetailedCompositionRule": false,
+      "sourceEvidence": null,
       "usedByScreenIds": [
         "team-settings"
       ],

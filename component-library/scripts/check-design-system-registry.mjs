@@ -31,6 +31,8 @@ const generationTemplateRegistry = readJson("generation-templates.json");
 const mobileAssetRegistry = readJson("mobile-assets.json");
 const mobileVerificationRegistry = readJson("mobile-verification-contracts.json");
 const componentUsageContractRegistry = readJson("component-usage-contracts.json");
+const provisionalComponentReviewRegistry = readJson("provisional-component-review.json");
+const patternSourceEvidenceRegistry = readJson("pattern-source-evidence.json");
 const generationSelectionFeedbackRegistry = readJson("generation-selection-feedback.json");
 const patternContractRegistry = readJson("pattern-contracts.json");
 const screenSpecRegistry = readJson("screen-specs.json");
@@ -94,6 +96,8 @@ checkVersion("generation-templates", generationTemplateRegistry);
 checkVersion("mobile-assets", mobileAssetRegistry);
 checkVersion("mobile-verification-contracts", mobileVerificationRegistry);
 checkVersion("component-usage-contracts", componentUsageContractRegistry);
+checkVersion("provisional-component-review", provisionalComponentReviewRegistry);
+checkVersion("pattern-source-evidence", patternSourceEvidenceRegistry);
 checkVersion("generation-selection-feedback", generationSelectionFeedbackRegistry);
 checkVersion("pattern-contracts", patternContractRegistry);
 checkVersion("screen-specs", screenSpecRegistry);
@@ -407,6 +411,35 @@ const webUsagePages = mapByUniqueId("web-ui-usage-inventory pages", webUiUsageIn
 const webUsageFlows = mapByUniqueId("web-ui-usage-inventory entry flows", webUiUsageInventoryRegistry.entryFlows ?? []);
 const webUsageConnections = mapByUniqueId("web-ui-usage-inventory connections", webUiUsageInventoryRegistry.connectedObservations ?? []);
 const webUsageDiscrepancies = mapByUniqueId("web-ui-usage-inventory discrepancies", webUiUsageInventoryRegistry.discrepancies ?? []);
+const provisionalComponentReviews = mapByUniqueId("provisional-component-review", (provisionalComponentReviewRegistry.reviews ?? []).map((entry) => ({ ...entry, id: entry.componentId })));
+const patternSourceEvidence = mapByUniqueId("pattern-source-evidence", (patternSourceEvidenceRegistry.entries ?? []).map((entry) => ({ ...entry, id: entry.patternId })));
+
+const allowedComponentReviewClasses = new Set(Object.keys(provisionalComponentReviewRegistry.reviewClasses ?? {}));
+const allowedComponentReviewDecisions = new Set(Object.keys(provisionalComponentReviewRegistry.decisions ?? {}));
+for (const [componentId, component] of components) {
+  const review = provisionalComponentReviews.get(componentId);
+  if (component.status === "provisional" && !review) errors.push(`provisional-component-review: provisional component '${componentId}'의 분류가 없습니다.`);
+  if (component.status !== "provisional" && review) errors.push(`provisional-component-review: stable component '${componentId}'를 임시 자산으로 분류했습니다.`);
+}
+for (const review of provisionalComponentReviews.values()) {
+  if (!components.has(review.componentId)) errors.push(`provisional-component-review '${review.componentId}': 미등록 component를 참조합니다.`);
+  if (!allowedComponentReviewClasses.has(review.reviewClass)) errors.push(`provisional-component-review '${review.componentId}': reviewClass '${review.reviewClass}'가 잘못되었습니다.`);
+  if (!allowedComponentReviewDecisions.has(review.decision)) errors.push(`provisional-component-review '${review.componentId}': decision '${review.decision}'가 잘못되었습니다.`);
+  if (!review.finding?.trim()) errors.push(`provisional-component-review '${review.componentId}': finding이 필요합니다.`);
+  for (const nodeRef of review.figmaNodeRefs ?? []) if (!/^\d+:\d+$/.test(nodeRef)) errors.push(`provisional-component-review '${review.componentId}': Figma node '${nodeRef}' 형식이 잘못되었습니다.`);
+  for (const pageRef of review.webPageRefs ?? []) if (!webUsagePages.has(pageRef)) errors.push(`provisional-component-review '${review.componentId}': 미등록 web page '${pageRef}'를 참조합니다.`);
+  if (review.reviewClass === "approved-new" && !review.decisionBatchRef) errors.push(`provisional-component-review '${review.componentId}': 승인 batch 근거가 필요합니다.`);
+}
+
+const allowedPatternEvidenceKinds = new Set(Object.keys(patternSourceEvidenceRegistry.evidenceKinds ?? {}));
+for (const evidence of patternSourceEvidence.values()) {
+  if (!patterns.has(evidence.patternId)) errors.push(`pattern-source-evidence '${evidence.patternId}': 미등록 pattern을 참조합니다.`);
+  if (!allowedPatternEvidenceKinds.has(evidence.evidenceKind)) errors.push(`pattern-source-evidence '${evidence.patternId}': evidenceKind '${evidence.evidenceKind}'가 잘못되었습니다.`);
+  if (!evidence.summary?.trim()) errors.push(`pattern-source-evidence '${evidence.patternId}': summary가 필요합니다.`);
+  for (const nodeRef of evidence.figmaNodeRefs ?? []) if (!/^\d+:\d+$/.test(nodeRef)) errors.push(`pattern-source-evidence '${evidence.patternId}': Figma node '${nodeRef}' 형식이 잘못되었습니다.`);
+  for (const pageRef of evidence.webPageRefs ?? []) if (!webUsagePages.has(pageRef)) errors.push(`pattern-source-evidence '${evidence.patternId}': 미등록 web page '${pageRef}'를 참조합니다.`);
+  if (evidence.evidenceKind === "user-approved-new" && !evidence.decisionBatchRef) errors.push(`pattern-source-evidence '${evidence.patternId}': 승인 batch 근거가 필요합니다.`);
+}
 
 if (foundationRecipeRegistry.policyId !== "mes.figma-foundation-recipes") errors.push("foundation-recipes: policyId가 잘못되었습니다.");
 if (foundationRecipeRegistry.authority !== "reference-only" || foundationRecipeRegistry.status !== "active") errors.push("foundation-recipes: reference-only active 원장이어야 합니다.");

@@ -7,7 +7,7 @@
 | 구분 | 전체 | 현재 확인 결과 | 남은 확인 |
 |---|---:|---:|---:|
 | 공용 화면 요소 | 87 | 정식 41 | 검토 단계 46 |
-| 화면 구성 방식 | 76 | 실제 화면 사용 57 | 화면 미사용 19 |
+| 화면 구성 방식 | 76 | 실제 화면 사용 59 | 화면 미사용 17 |
 | 등록 화면 | 30 | 동작 확인 30 | 직접 시각 기준 없음 1 |
 
 현재 소스 지문에서 코드·등록 정보·화면 동작과 저장된 기준 이미지를 검사했고 98개가 통과했다. 등록 화면 30개의 연결 상태도 함께 계산했다. 이는 Figma와 영구적으로 같다는 뜻이 아니며 원본 대조가 끝난 화면만 별도 검증으로 판단한다.
@@ -55,15 +55,15 @@
 
 ### 2. 아직 검토 단계인 공용 화면 요소
 
-총 46개다. 새 화면에서 사용하기 전에 원본 근거, 상태와 사용 위치를 확인해야 한다.
+총 46개이며 46개를 근거 종류별로 분류했다. 이 중 원본과 현재 구현이 충돌하거나 일부만 일치해 수정이 필요한 자산은 2개다.
 
-- action: ButtonGroup, IconButton / CloseButton, Link, ToggleButton
-- data-display: Avatar, Descriptions, ImageThumbnail, List / ListItem, OverflowList, SearchHighlight, Timeline
-- feedback: EmptyState, ErrorState, LoadingOverlay, LoadingSpinner, ProgressCircle, Skeleton
-- form: Cascader, DatePicker, DateRangePicker, Fieldset, FileUpload, Label, MultiSelectInput, NumberInput, PasswordInput, SegmentedControl, Slider, Textarea, TimePicker, TreeSelect
-- layout: Accordion, Card, Collapsible, Divider, Container / Grid, Panel, ScrollArea, StickyHeader / StickyFooter
-- navigation: Breadcrumb, Pagination, TreeView, UserAccountMenu
-- overlay: DropdownMenu, Popover, Tooltip
+| 분류 | 자산 | 다음 처리 |
+|---|---|---|
+| 승인된 신규 자산 | Avatar, Cascader, FileUpload, ImageThumbnail, OverflowList, ProgressCircle, SearchHighlight, SegmentedControl, Slider, Timeline, TreeSelect, TreeView | 사용 범위를 유지하고 대표 화면에서 재검증 |
+| 기존 MES에서 추출 | Divider, IconButton / CloseButton, Label, Link, PasswordInput, Popover, ScrollArea, StickyHeader / StickyFooter, Textarea, UserAccountMenu | 사용 범위를 유지하고 대표 화면에서 재검증 |
+| 원본 일부 일치 | DatePicker | 원본에 맞춰 수정 후 재검증 |
+| 원본과 구현 충돌 | TimePicker | 원본에 맞춰 수정 후 재검증 |
+| 원본 근거 미확인 | Accordion, Breadcrumb, ButtonGroup, Card, Collapsible, DateRangePicker, Descriptions, DropdownMenu, EmptyState, ErrorState, Fieldset, Container / Grid, List / ListItem, LoadingOverlay, LoadingSpinner, MultiSelectInput, NumberInput, Pagination, Panel, Skeleton, ToggleButton, Tooltip | 사용 범위를 유지하고 대표 화면에서 재검증 |
 
 ### 3. 컴포넌트 선택 맥락
 
@@ -73,17 +73,15 @@
 
 ### 4. 패턴 맥락과 상세 실행 계약
 
-전체 76개 패턴에 조합 맥락이 있다. 그중 24개는 슬롯·스크롤·구현 marker까지 자동 검사하며, 나머지 52개는 맥락 후보로 사용하되 필요할 때만 실행 계약을 추가한다.
+전체 76개 패턴에 조합 맥락이 있다. 38개에는 슬롯·상태·스크롤·행동 구성이 정리돼 있고, 화면 연결이 약했던 패턴 16개에는 Figma·실제 웹·신규 승인 중 어떤 근거로 유지하는지 기록했다.
 
 ### 5. 실제 화면이나 생성 방식에서 사용되지 않는 구성
 
-총 13개다. 삭제 대상으로 단정하지 않고 독립 예시인지, 향후 사용 예정인지, 과거 잔여물인지 판정해야 한다.
+총 11개다. 삭제 대상으로 단정하지 않고 독립 예시인지, 향후 사용 예정인지, 과거 잔여물인지 판정해야 한다.
 
 - 중앙 · 단건 정보·처리 (popup.center.form)
-- 중앙 · 시간 휠 + 계산 (popup.center.time-selector)
 - 마스터-디테일 화면 (screen.master-detail)
 - 테이블 컬럼 설정 (table.column-settings)
-- 취소·입력 동작 세트 (action-set.cancel-input)
 - 단계 진행 (workflow.stepper)
 - 이중 목록 이동 (selection.transfer-list)
 - 행 상세 펼침 (table.row-expand-detail)

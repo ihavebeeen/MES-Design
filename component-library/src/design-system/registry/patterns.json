@@ -227,8 +227,8 @@
       "kind": "popup",
       "placement": "center",
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
-      "requiredComponents": ["center-modal", "button", "time-picker"],
-      "rules": ["시작·종료 시간과 계산된 분 단위 결과를 같은 상태에서 파생한다."]
+      "requiredComponents": ["center-modal", "button"],
+      "rules": ["시작·종료 시간과 계산된 분 단위 결과를 같은 상태에서 파생한다.", "운전일지의 시간 휠은 원자형 TimePicker 드롭다운과 다른 패턴이다."]
     },
     {
       "id": "popup.side.add-list",
@@ -263,8 +263,8 @@
       "kind": "popup",
       "placement": "right-slide",
       "source": "src/components/patterns/completed-popup-expanded-content.tsx",
-      "requiredComponents": ["side-slide-panel", "button", "input", "time-picker", "table"],
-      "rules": ["운전일지는 중앙 모달이 아니라 우측 슬라이드 팝업이다.", "시간대별 일지와 가동·비가동 기록을 좌우로 나눈다."]
+      "requiredComponents": ["side-slide-panel", "button", "input", "table"],
+      "rules": ["운전일지는 중앙 모달이 아니라 우측 슬라이드 팝업이다.", "시간대별 일지와 가동·비가동 기록을 좌우로 나눈다.", "시간 선택은 내부 중앙 시간 휠 패턴으로 열며 원자형 TimePicker 드롭다운으로 대체하지 않는다."]
     },
     {
       "id": "recipe.side-slide-form-editable-list",

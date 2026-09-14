@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-09-14",
+  "scope": "components.json의 provisional 컴포넌트를 근거 종류와 다음 조치로 분류한다.",
+  "reviewClasses": {
+    "partial-source-match": "원본에서 역할과 닫힌 상태는 확인했으나 현재 구현의 일부 상태가 원본과 다르다.",
+    "source-conflict": "같은 이름의 원본 사용 흐름과 현재 구현 방식이 다르다.",
+    "derived-existing-ui": "실제 MES 화면이나 기존 공용 코드에 반복된 구성을 추출했다.",
+    "approved-new": "원본 MES에 없지만 디자인 시스템 담당자가 신규 정식 후보로 승인했다.",
+    "unverified-general-ui": "일반 UI로 구현했으며 MES 원본 또는 실제 사용 근거를 아직 확인하지 못했다."
+  },
+  "decisions": {
+    "revise": "근거와 충돌하는 부분을 수정한 뒤 다시 검증한다.",
+    "keep-provisional": "사용 범위를 제한하고 대표 사용 화면이 생길 때 재검증한다."
+  },
+  "reviews": [
+    { "componentId": "date-picker", "reviewClass": "partial-source-match", "decision": "revise", "figmaNodeRefs": ["10583:28261", "10583:28266"], "webPageRefs": ["web.receiving", "web.operation-log"], "finding": "32px 날짜 입력과 달력 아이콘은 확인했다. 실제 웹은 브라우저 날짜 선택을 사용하며 현재 코드의 자체 달력 팝업은 원본 근거가 없다." },
+    { "componentId": "time-picker", "reviewClass": "source-conflict", "decision": "revise", "figmaNodeRefs": ["17309:156861"], "webPageRefs": ["web.operation-log"], "finding": "운전일지의 시간 선택은 시작·종료 휠과 계산 결과를 가진 중앙 팝업이다. 현재 30분 단위 드롭다운을 이 근거로 사용할 수 없다." },
+
+    { "componentId": "icon-button", "reviewClass": "derived-existing-ui", "decision": "keep-provisional", "figmaNodeRefs": [], "webPageRefs": ["web.receiving", "web.warehouse"], "finding": "팝업 닫기, 테이블 행 동작, 상단 도구 등 반복 사용 위치에서 추출했다." },
+    { "componentId": "link", "reviewClass": "derived-existing-ui", "decision": "keep-provisional", "figmaNodeRefs": [], "webPageRefs": [], "finding": "기존 화면의 텍스트 링크 표현을 공용화했으며 단독 상태 대조가 남았다." },
+    { "componentId": "password-input", "reviewClass": "derived-existing-ui", "decision": "keep-provisional", "figmaNodeRefs": [], "webPageRefs": ["web.user"], "finding": "로그인·비밀번호 설정 입력에서 파생했으며 보기 버튼 유무를 화면별로 구분한다." },
+    { "componentId": "popover", "reviewClass": "derived-existing-ui", "decision": "keep-provisional", "figmaNodeRefs": [], "webPageRefs": ["web.receiving"], "finding": "그룹화·필터·선택 목록의 떠 있는 패널 동작을 받치는 내부 공용 자산이다." },
+    { "componentId": "scroll-area", "reviewClass": "derived-existing-ui", "decision": "keep-provisional", "figmaNodeRefs": [], "webPageRefs": ["web.receiving"], "finding": "표와 팝업 본문의 스크롤 영역에서 반복되는 최소 동작을 분리했다." },
+    { "componentId": "sticky-header-footer", "reviewClass": "derived-existing-ui", "decision": "keep-provisional", "figmaNodeRefs": [], "webPageRefs": ["web.receiving", "web.operation-log"], "finding": "긴 팝업에서 본문만 스크롤하고 헤더·하단 행동을 유지하는 구조에서 추출했다." },
+    { "componentId": "textarea", "reviewClass": "derived-existing-ui", "decision": "keep-provisional", "figmaNodeRefs": [], "webPageRefs": [], "finding": "여러 줄 메모 입력을 Input 시각 규칙으로 확장했다. 대표 원본 상태 대조가 남았다." },
+    { "componentId": "user-account-menu", "reviewClass": "derived-existing-ui", "decision": "keep-provisional", "figmaNodeRefs": [], "webPageRefs": ["web.receiving", "web.warehouse"], "finding": "MES 공통 상단 사용자 메뉴의 반복 구조를 DropdownMenu와 사용자 아이콘으로 조합했다." },
+    { "componentId": "label", "reviewClass": "derived-existing-ui", "decision": "keep-provisional", "figmaNodeRefs": ["11210:51434", "11210:51464"], "webPageRefs": ["web.operation-log"], "finding": "폼 행의 라벨과 필수 표시를 공용화했다." },
+    { "componentId": "divider", "reviewClass": "derived-existing-ui", "decision": "keep-provisional", "figmaNodeRefs": [], "webPageRefs": [], "finding": "화면과 팝업의 반복 구분선 토큰을 방향만 가진 자산으로 분리했다." },
+
+    { "componentId": "avatar", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier4-user-review-2026-08-19", "finding": "사용자 승인으로 정식 후보에 편입했다. 실제 사용 화면과 상태 기준은 아직 없다." },
+    { "componentId": "cascader", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier3-user-review-2026-08-19", "finding": "사용자 승인으로 정식 후보에 편입했다. 두 단계 종속 선택에만 사용한다." },
+    { "componentId": "file-upload", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier3-user-review-2026-08-19", "finding": "사용자 승인으로 정식 후보에 편입했다. 실제 업로드 업무 화면 근거가 남았다." },
+    { "componentId": "image-thumbnail", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier3-user-review-2026-08-19", "finding": "사용자 승인으로 정식 후보에 편입했다. 대표 사용 화면이 생기면 크기·선택 상태를 확정한다." },
+    { "componentId": "overflow-list", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier4-user-review-2026-08-19", "finding": "사용자 승인으로 정식 후보에 편입했다. 좁은 공간의 항목 축약 용도로 제한한다." },
+    { "componentId": "progress-circle", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier4-user-review-2026-08-19", "finding": "사용자 승인으로 정식 후보에 편입했다. 원형 진행률이 실제 비교에 필요한 화면 근거가 남았다." },
+    { "componentId": "search-highlight", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier3-user-review-2026-08-19", "finding": "사용자 승인으로 정식 후보에 편입했고 후속 수정이 예정되어 있다." },
+    { "componentId": "segmented-control", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier4-user-review-2026-08-19", "finding": "상호배타 단일 선택 역할로 승인됐다. ButtonGroup과 ToggleButton의 역할을 대신하지 않는다." },
+    { "componentId": "slider", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier3-user-review-2026-08-19", "finding": "연속 범위 조절 자산으로 승인됐다. 정확한 수치 입력이 우선이면 NumberInput을 사용한다." },
+    { "componentId": "timeline", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier3-user-review-2026-08-19", "finding": "시간 순서가 판단에 필요한 이력 표현으로 승인됐다." },
+    { "componentId": "tree-select", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier3-user-review-2026-08-19", "finding": "계층을 보며 복수 선택하는 자산으로 승인됐다." },
+    { "componentId": "tree-view", "reviewClass": "approved-new", "decision": "keep-provisional", "decisionBatchRef": "tier3-user-review-2026-08-19", "finding": "읽기·탐색용 계층 자산으로 승인됐다." },
+
+    { "componentId": "accordion", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "MES 전용 원본 없이 일반 접기 목록으로 구현했다." },
+    { "componentId": "breadcrumb", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "이름 후보만 확인했고 실제 MES 노드와 사용 화면을 대조하지 못했다." },
+    { "componentId": "button-group", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "기존 Button을 이어 붙이는 일반 조합이며 MES 사용 위치가 확인되지 않았다." },
+    { "componentId": "card", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "대시보드 영역에 사용 중이지만 독립 Card 원본과 상태를 아직 확정하지 않았다." },
+    { "componentId": "collapsible", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "단일 접기 영역으로 구현했으며 MES 대표 사용 화면이 없다." },
+    { "componentId": "date-range-picker", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "저장되는 날짜 범위를 위한 신규 조합이다. 메인 조회기간은 QueryDateRange를 사용한다." },
+    { "componentId": "descriptions", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "키·값 상세 목록의 일반 표현이며 MES 원본 사용 화면을 확정하지 않았다." },
+    { "componentId": "dropdown-menu", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "Popover와 옵션 목록을 조합한 일반 메뉴다. 실제 메뉴 사례 대조가 남았다." },
+    { "componentId": "empty-state", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "빈 결과 역할은 필요하지만 MES의 실제 문구·아이콘·행동 사례 대조가 남았다." },
+    { "componentId": "error-state", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "오류 결과 역할은 필요하지만 MES 원본 오류 상태 근거가 없다." },
+    { "componentId": "fieldset", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "관련 입력을 묶는 일반 구조이며 MES 화면에서의 제목·테두리 사용 기준이 없다." },
+    { "componentId": "grid-container", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "문서 화면용 일반 레이아웃 wrapper 성격이 강해 업무 UI 사용 범위를 제한한다." },
+    { "componentId": "list", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "표가 필요 없는 일반 목록이며 MES 대표 사용 화면이 없다." },
+    { "componentId": "loading-overlay", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "부분 영역 로딩 표현으로 구현했으며 실제 웹 상태를 아직 수집하지 않았다." },
+    { "componentId": "loading-spinner", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "일반 회전 로더이며 MES 원본 크기·색상·배치 근거가 없다." },
+    { "componentId": "multi-select-input", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "태그형 복수 선택을 조합했으며 실제 MES 입력 사례가 없다." },
+    { "componentId": "number-input", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "증감 버튼이 있는 숫자 입력은 MES 원본에서 확인되지 않았다. 일반 숫자 입력과 구분해 사용한다." },
+    { "componentId": "pagination", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "MES 메인 목록에는 사용하지 않는다. 제한된 팝업·로컬 목록의 실제 사례가 확인될 때만 사용한다." },
+    { "componentId": "panel", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "그림자가 있는 일반 부유 영역이며 구체적인 MES 사용 위치가 없다." },
+    { "componentId": "skeleton", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "일반 로딩 자리표시자이며 실제 MES 로딩 화면 근거가 없다." },
+    { "componentId": "toggle-button", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "독립 on/off 버튼으로 구현했으며 상호배타 선택에는 SegmentedControl을 사용한다." },
+    { "componentId": "tooltip", "reviewClass": "unverified-general-ui", "decision": "keep-provisional", "finding": "단순 설명용 경량 구현이며 실제 MES 표시 지연·가림·터치 조건이 확인되지 않았다." }
+  ]
+}
