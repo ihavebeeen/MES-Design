@@ -1048,6 +1048,28 @@ test("그룹화 테이블 핵심 상태", async ({ page }) => {
   await expect(fixture).toHaveScreenshot("grouped-table-core-states.png");
 });
 
+test("입력창 기본·포커스·읽기전용·비활성 상태", async ({ page }) => {
+  await page.setViewportSize({ width: 960, height: 720 });
+  await page.goto("/visual-regression/input");
+
+  const fixture = page.locator('[data-visual-test="input-states"]');
+  const focused = fixture.locator('[data-input-state="focus"]');
+  await expect(fixture).toBeVisible();
+  await focused.focus();
+
+  await expect(focused).toHaveCSS("border-color", "rgb(1, 19, 39)");
+  await expect(focused).toHaveCSS("color", "rgb(153, 163, 184)");
+  await expect(fixture.locator('[data-input-state="readonly"]')).toHaveCSS("background-color", "rgb(239, 242, 248)");
+  await expect(fixture.locator('[data-input-state="readonly"]')).toHaveCSS("color", "rgb(1, 19, 39)");
+  await expect(fixture.locator('[data-input-state="disabled"]')).toHaveCSS("background-color", "rgb(228, 231, 238)");
+  await expect(fixture.locator('[data-input-state="disabled"]')).toHaveCSS("color", "rgb(132, 145, 167)");
+  await expect(fixture.locator('[data-input-state="default-empty"]')).toHaveCSS("height", "32px");
+  await expect(fixture.locator('[data-input-state="small-empty"]')).toHaveCSS("height", "22px");
+
+  await hideDevelopmentOverlay(page);
+  await expect(fixture).toHaveScreenshot("input-state-matrix.png");
+});
+
 test("테이블 행 선택 상호작용", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/visual-regression/table");

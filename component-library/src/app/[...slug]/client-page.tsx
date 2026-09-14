@@ -2922,6 +2922,16 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
           <Input defaultValue="내용" className="w-[200px]" />
         </Sample>
         <Sample
+          label="Input · Focus"
+          spec={[
+            { label: "테두리", value: "Gray-130(border-strong)" },
+            { label: "입력 중 텍스트", value: "Gray-60(text-placeholder)" },
+            { label: "확인", value: "입력창을 클릭하거나 Tab 키로 이동" },
+          ]}
+        >
+          <Input defaultValue="입력 중" className="w-[200px]" />
+        </Sample>
+        <Sample
           label="Input · Readonly"
           spec={[
             { label: "패딩/테두리/R값", value: "동일" },
@@ -2938,7 +2948,7 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
             { label: "커서", value: "not-allowed" },
           ]}
         >
-          <Input placeholder="내용 입력" disabled className="w-[200px]" />
+          <Input defaultValue="내용" disabled className="w-[200px]" />
         </Sample>
         <Sample
           label="Input · Small(placeholder)"
@@ -2957,6 +2967,18 @@ export default function Home({ routeOverride }: { routeOverride?: string[] } = {
           spec={[{ label: "패딩/R값/폰트", value: "small placeholder와 동일" }]}
         >
           <Input size="small" defaultValue="내용" className="w-[200px]" />
+        </Sample>
+        <Sample
+          label="Input · Small(readonly)"
+          spec={[{ label: "배경/텍스트", value: "Gray-20 / Gray-130" }]}
+        >
+          <Input size="small" readOnly defaultValue="내용" className="w-[200px]" />
+        </Sample>
+        <Sample
+          label="Input · Small(disabled)"
+          spec={[{ label: "배경/텍스트", value: "Gray-30 / Gray-70" }]}
+        >
+          <Input size="small" disabled defaultValue="내용" className="w-[200px]" />
         </Sample>
       </Section>
 

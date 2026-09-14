@@ -10,7 +10,7 @@
     "patterns.json + source-assets.json",
     "screens.json + source-assets.json"
   ],
-  "fingerprint": "c93ed4043177e31605de7cd120d0cfd9388fc6eef510cbc9d1f7d6d32995100f",
+  "fingerprint": "d2abf0807264857cb244b8a89105985616a899adcfdf1d9ab8c67ca778236963",
   "guidancePolicy": {
     "componentSelection": {
       "contextCoverageMode": "all-components",
@@ -3965,7 +3965,7 @@
         "section.staged-record-entry"
       ],
       "sourceFacts": {
-        "sourceFingerprint": "63d390917527ed066043639c24c56a9fe31b52f29cf0ca675f934c70fa807e27",
+        "sourceFingerprint": "5f7823a4aceb197cea27e9acc728c3082992d0a0721d71fc7d3df6f7b33cedbf",
         "symbols": [
           "InputProps",
           "Input",

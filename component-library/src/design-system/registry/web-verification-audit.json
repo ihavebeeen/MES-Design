@@ -1,28 +1,28 @@
 {
   "schemaVersion": 1,
-  "auditedAt": null,
-  "sourceFingerprint": "25c655ecd7310d38c2eb5e3ee4fe324d6191b9d7183faf7f5493d8d9f35475f0",
+  "auditedAt": "2026-09-14T05:25:16.265Z",
+  "sourceFingerprint": "0fcb58a9ef09cc6ca3441c413f71542f66c8af7dc2bbe5ded455efd13b053233",
   "browserRun": {
     "command": "npm run test:visual",
-    "result": "not-verified-for-current-source",
-    "testCount": 97,
-    "passed": null,
-    "failed": null,
-    "durationMs": null,
-    "recordedAt": null,
-    "testInventoryFingerprint": "4bba9b8c74d672e921654416864c660f5c3bfeccc9cceea68d0e7a77c0fa731e",
+    "result": "passed",
+    "testCount": 98,
+    "passed": 98,
+    "failed": 0,
+    "durationMs": 252304,
+    "recordedAt": "2026-09-14T05:25:16.265Z",
+    "testInventoryFingerprint": "a93f3b0abc7a6545d4eaefe66bfb86ccb3875b9bcc9cd2bca162ec5a92e4f288",
     "includesDeferredMobile": true
   },
   "testInventory": {
-    "count": 97,
+    "count": 98,
     "files": {
-      "tests/visual/application-flow.spec.mts": "f0fd0679a47c41a60ca34bb6f67fb33a06d8523c3d03c52139f6c448aee020ac",
-      "tests/visual/design-system.visual.spec.ts": "cc007fbe41e5768323e1235eb9d3408c7b2d98cf52be0d8c0f7da1e772e0c60f",
+      "tests/visual/application-flow.spec.mts": "51812eb32ada2bff9e286aaa0be49fccb819ee424aaec73e67e4714c625845d7",
+      "tests/visual/design-system.visual.spec.ts": "2f7e54d9cb10d214e80a7ffbbbad012ac5d4875169691d836aea53dcb247b119",
       "tests/visual/figma-component-defaults.spec.ts": "f9a842afc72cfef542c0e242507b6acbbbd1e66b55c7c9a1f3a1719fedf23cc3",
-      "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
+      "tests/visual/mobile-design-system.spec.ts": "7c92aa55fa9dee0702a77b4772da16bb5c5e0aa72084f468b9d6c6ed6fb40750",
       "tests/visual/slide-compositions.spec.mts": "42dada2890e5e05573f64abaf26f10f9129c5b89c87b8646f053e6806fd3179e"
     },
-    "fingerprint": "4bba9b8c74d672e921654416864c660f5c3bfeccc9cceea68d0e7a77c0fa731e"
+    "fingerprint": "a93f3b0abc7a6545d4eaefe66bfb86ccb3875b9bcc9cd2bca162ec5a92e4f288"
   },
   "summary": {
     "components": {

@@ -130,6 +130,15 @@ function buildPlan(files) {
     if (screenIds.has(screen.screenId)) for (const name of screen.tests) testNames.add(name);
   }
   for (const visualCase of visualCases) {
+    if (visualCase.componentId && componentIds.has(visualCase.componentId)) {
+      if (visualCase.testName) {
+        testNames.add(visualCase.testName);
+        continue;
+      }
+      const mapped = visualTestNames.get(visualCase.snapshot);
+      if (mapped) testNames.add(mapped.testName);
+      continue;
+    }
     if (!visualCase.screenId || !screenIds.has(visualCase.screenId)) continue;
     if (visualCase.testName) {
       testNames.add(visualCase.testName);

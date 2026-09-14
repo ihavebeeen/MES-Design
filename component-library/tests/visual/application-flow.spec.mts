@@ -21,6 +21,13 @@ async function gotoGeneratedRoute(page: Page, route: string, readySelector = '[d
     message: `생성된 QA 경로가 Next.js 개발 서버에 등록되어야 합니다: ${route}`,
     timeout: 15_000,
   }).toBe(true);
+
+  const overlay = page.locator('[data-mes-application="overlay"]');
+  if (await overlay.count()) {
+    await expect(overlay).toHaveAttribute("data-mes-preview-ready", "true", { timeout: 15_000 });
+  } else {
+    await expect(page.locator("html")).toHaveAttribute("data-mes-preview-ready", "true", { timeout: 15_000 });
+  }
 }
 
 test("중앙 팝업 단독: 메인 목록 없이 열기·선택·취소·저장 확인", async ({ page }) => {

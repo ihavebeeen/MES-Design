@@ -14,12 +14,17 @@ type StructuralContract = {
   style?: ContractStyle;
 };
 
+async function gotoHydrated(page: import("@playwright/test").Page, path: string) {
+  await page.goto(path);
+  await expect(page.locator("html")).toHaveAttribute("data-mes-hydrated", "true", { timeout: 15_000 });
+}
+
 async function expectStructuralContract(
   page: import("@playwright/test").Page,
   frame: (typeof mobileVerification.frames)[number],
 ) {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto(frame.path);
+  await gotoHydrated(page, frame.path);
 
   const root = page.locator(frame.frameSelector);
   expect(await root.boundingBox()).toEqual({ x: 0, y: 0, width: 375, height: 812 });
@@ -59,7 +64,7 @@ async function expectStructuralContract(
 
 async function expectFigmaFrame(page: import("@playwright/test").Page, path: string, selector: string, snapshot: string, currentGuard: number) {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto(path);
+  await gotoHydrated(page, path);
   const frame = page.locator(selector);
   const box = await frame.boundingBox();
   expect(box).toEqual({ x: 0, y: 0, width: 375, height: 812 });
@@ -76,7 +81,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("Mobile 탭은 전용 컴포넌트 상태와 정적 경로를 제공한다", async ({ page }) => {
-  await page.goto("/mobile/mobile-components");
+  await gotoHydrated(page, "/mobile/mobile-components");
 
   await expect(page.getByRole("link", { name: "Mobile", exact: true })).toHaveClass(/bg-mes-bg-subtle/);
   await expect(page.getByRole("heading", { name: "Button", exact: true })).toBeVisible();
@@ -117,7 +122,7 @@ test("Mobile 탭은 전용 컴포넌트 상태와 정적 경로를 제공한다"
 });
 
 test("대표 원본 화면 목록과 기존 1× 호환 기준을 유지한다", async ({ page }) => {
-  await page.goto("/mobile/mobile-screens");
+  await gotoHydrated(page, "/mobile/mobile-screens");
 
   await expect(page.getByRole("link", { name: "원본 화면 Source Screens" }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "팝업 자산 Popup Assets" }).first()).toBeVisible();
@@ -150,7 +155,7 @@ test.describe("모바일 검증 2 · Figma 2×와 Chromium 2× 렌더링 비교"
   for (const frame of mobileVerification.frames) {
     test(`${frame.id} 텍스트·SVG 가장자리 포함 픽셀 차이`, async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 812 });
-      await page.goto(frame.path);
+      await gotoHydrated(page, frame.path);
       await expect(page).toHaveScreenshot(frame.raster.snapshot, {
         scale: "device",
         threshold: mobileVerification.policy.raster.comparisonThreshold,
@@ -163,19 +168,19 @@ test.describe("모바일 검증 2 · Figma 2×와 Chromium 2× 렌더링 비교"
 test("모바일 검증 3 · 계약 등록 화면의 클릭·입력·선택 계약", async ({ page }) => {
   const executed = new Set<string>();
 
-  await page.goto("/visual-regression/mobile-source/home");
+  await gotoHydrated(page, "/visual-regression/mobile-source/home");
   const homeMenu = page.getByRole("button", { name: "생산관리", exact: true });
   await homeMenu.click();
   await expect(homeMenu).toHaveAttribute("aria-pressed", "true");
   executed.add("home-menu-selection");
 
-  await page.goto("/visual-regression/mobile-source/receiving-list");
+  await gotoHydrated(page, "/visual-regression/mobile-source/receiving-list");
   const receivingRows = page.locator('[data-mobile-source-screen="receiving-list"] main button');
   await receivingRows.nth(1).click();
   await expect(receivingRows.nth(1)).toHaveClass(/ring-2/);
   executed.add("receiving-row-selection");
 
-  await page.goto("/visual-regression/mobile-source/production-entry");
+  await gotoHydrated(page, "/visual-regression/mobile-source/production-entry");
   const production = page.locator('[data-mobile-source-screen="production-entry"]');
   const completion = production.getByRole("checkbox");
   await expect(completion).toBeChecked();
@@ -187,7 +192,7 @@ test("모바일 검증 3 · 계약 등록 화면의 클릭·입력·선택 계�
   await expect(quantity).toHaveValue("1000000");
   executed.add("production-quantity-edit");
 
-  await page.goto("/visual-regression/mobile-source/all-menu");
+  await gotoHydrated(page, "/visual-regression/mobile-source/all-menu");
   const allMenu = page.locator('[data-mobile-source-screen="all-menu"]');
   await expect(allMenu.getByRole("button", { name: "생산관리", exact: true })).toHaveAttribute("aria-pressed", "true");
   await allMenu.getByRole("button", { name: "품질검사", exact: true }).click();
@@ -196,7 +201,7 @@ test("모바일 검증 3 · 계약 등록 화면의 클릭·입력·선택 계�
   await expect(allMenu.getByRole("navigation", { name: "세부 업무" })).toContainText("공정검사");
   executed.add("secondary-menu-content-change");
 
-  await page.goto("/visual-regression/mobile-source/appearance-inspection");
+  await gotoHydrated(page, "/visual-regression/mobile-source/appearance-inspection");
   const inspection = page.locator('[data-mobile-source-screen="appearance-inspection"]');
   await inspection.getByRole("button", { name: "초기화", exact: true }).click();
   await expect(inspection.getByRole("button", { name: "결로/플러그자국/밀착 양호", exact: true }).first()).toHaveAttribute("aria-pressed", "false");
@@ -211,7 +216,7 @@ test("모바일 검증 3 · 계약 등록 화면의 클릭·입력·선택 계�
   await expect(firstJudgement).toHaveAttribute("aria-pressed", "false");
   executed.add("single-judgement");
 
-  await page.goto("/visual-regression/mobile-source/day-log");
+  await gotoHydrated(page, "/visual-regression/mobile-source/day-log");
   const dayLog = page.locator('[data-mobile-source-screen="day-log"]');
   await dayLog.getByRole("radio", { name: "야간", exact: true }).click();
   await expect(dayLog.getByRole("radio", { name: "야간", exact: true })).toHaveAttribute("aria-checked", "true");
@@ -227,7 +232,7 @@ test("모바일 검증 3 · 계약 등록 화면의 클릭·입력·선택 계�
   await expect(moldChange).toHaveValue("100");
   executed.add("day-log-cancel-restore");
 
-  await page.goto("/visual-regression/mobile-source/receiving-result");
+  await gotoHydrated(page, "/visual-regression/mobile-source/receiving-result");
   const receivingResult = page.locator('[data-mobile-remaining-screen="receiving-result"]');
   const receivingQuantity = receivingResult.getByRole("textbox").first();
   await receivingQuantity.fill("320");
@@ -239,7 +244,7 @@ test("모바일 검증 3 · 계약 등록 화면의 클릭·입력·선택 계�
   await expect(receivingCompletion).not.toBeChecked();
   executed.add("receiving-result-completion-toggle");
 
-  await page.goto("/visual-regression/mobile-source/maintenance-form");
+  await gotoHydrated(page, "/visual-regression/mobile-source/maintenance-form");
   const maintenance = page.locator('[data-mobile-remaining-screen="maintenance-form"]');
   const manager = maintenance.getByRole("textbox", { name: "담당자", exact: true });
   await manager.fill("이수현");
@@ -264,7 +269,7 @@ test("모바일 검증 3 · 계약 등록 화면의 클릭·입력·선택 계�
   await expect(maintenance.getByRole("status")).toHaveText("원인분석 메모 입력 상태");
   executed.add("maintenance-memo-open");
 
-  await page.goto("/visual-regression/mobile-source/weight-inspection");
+  await gotoHydrated(page, "/visual-regression/mobile-source/weight-inspection");
   const weight = page.locator('[data-mobile-remaining-screen="weight-inspection"]');
   const manualMode = weight.getByRole("radio", { name: "사용자 설정", exact: true });
   await manualMode.click();
@@ -288,7 +293,7 @@ test("모바일 검증 3 · 계약 등록 화면의 클릭·입력·선택 계�
 });
 
 test("팝업 자산은 Figma 대표 프레임 3종을 375×812로 재현하고 상호작용한다", async ({ page }) => {
-  await page.goto("/mobile/mobile-popup-assets");
+  await gotoHydrated(page, "/mobile/mobile-popup-assets");
   await expect(page.getByRole("heading", { name: "원본 팝업 검수 현황" })).toBeVisible();
   await expect(page.getByText("16 frames", { exact: true })).toBeVisible();
 
@@ -301,7 +306,7 @@ test("팝업 자산은 Figma 대표 프레임 3종을 375×812로 재현하고 �
     await expectFigmaFrame(page, item.path, item.selector, item.snapshot, item.currentGuard);
   }
 
-  await page.goto("/visual-regression/mobile-source/personnel-popup");
+  await gotoHydrated(page, "/visual-regression/mobile-source/personnel-popup");
   const personnel = page.locator('[data-mobile-popup-screen="personnel"]');
   await personnel.getByRole("button", { name: "김수현", exact: true }).click();
   await expect(personnel.getByRole("button", { name: "김수현", exact: true })).toHaveClass(/bg-mes-bg-strong/);
@@ -328,7 +333,7 @@ test("남은 모바일 메인 원본 13종은 고정 viewport와 무가로스크
     await expectFigmaFrame(page, `/visual-regression/mobile-source/${id}`, `[data-mobile-remaining-screen="${id}"]`, snapshot, 0.06);
   }
 
-  await page.goto("/visual-regression/mobile-source/receiving-result");
+  await gotoHydrated(page, "/visual-regression/mobile-source/receiving-result");
   const receiving = page.locator('[data-mobile-remaining-screen="receiving-result"]');
   const receivingQuantity = receiving.getByRole("textbox").first();
   await receivingQuantity.fill("320");
@@ -337,19 +342,19 @@ test("남은 모바일 메인 원본 13종은 고정 viewport와 무가로스크
   await receiving.getByRole("checkbox").click();
   await expect(receiving.getByRole("checkbox")).not.toBeChecked();
 
-  await page.goto("/visual-regression/mobile-source/hourly-notes");
+  await gotoHydrated(page, "/visual-regression/mobile-source/hourly-notes");
   const hourlyValue = page.locator('[data-mobile-remaining-screen="hourly-notes"] input').first();
   await hourlyValue.fill("설비 점검");
   await expect(hourlyValue).toHaveValue("설비 점검");
 
-  await page.goto("/visual-regression/mobile-source/maintenance-form");
+  await gotoHydrated(page, "/visual-regression/mobile-source/maintenance-form");
   const maintenance = page.locator('[data-mobile-remaining-screen="maintenance-form"]');
   await maintenance.getByRole("textbox", { name: "담당자", exact: true }).fill("이수현");
   await maintenance.getByRole("textbox", { name: "시작시간", exact: true }).fill("09:00");
   await maintenance.getByRole("textbox", { name: "종료시간", exact: true }).fill("10:00");
   await expect(maintenance.getByRole("textbox", { name: "담당자", exact: true })).toHaveValue("이수현");
 
-  await page.goto("/visual-regression/mobile-source/weight-inspection");
+  await gotoHydrated(page, "/visual-regression/mobile-source/weight-inspection");
   const weight = page.locator('[data-mobile-remaining-screen="weight-inspection"]');
   await weight.getByRole("textbox", { name: "배열넘버", exact: true }).fill("15");
   await weight.getByRole("textbox", { name: "결과값", exact: true }).fill("98.7");
@@ -378,7 +383,7 @@ test("남은 모바일 팝업 원본 13종은 유형별 위치와 입력 계약�
     await expectFigmaFrame(page, `/visual-regression/mobile-source/${id}`, `[data-mobile-remaining-popup="${id}"]`, snapshot, guard);
   }
 
-  await page.goto("/visual-regression/mobile-source/production-quantity-mode-popup");
+  await gotoHydrated(page, "/visual-regression/mobile-source/production-quantity-mode-popup");
   const modePopup = page.locator('[data-mobile-remaining-popup="production-quantity-mode-popup"]');
   await modePopup.getByText("자동계산", { exact: true }).click();
   await expect(modePopup.getByRole("checkbox").nth(1)).toBeChecked();

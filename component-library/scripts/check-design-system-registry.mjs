@@ -969,8 +969,11 @@ for (const visualCase of visualRegistry.cases ?? []) {
   if (!visualCase.snapshot?.endsWith(".png")) {
     errors.push(`visual case '${visualCase.id}': snapshot은 png 파일이어야 합니다.`);
   }
-  if (!visualCase.screenId && !visualCase.patternId && !visualCase.candidateId && !visualCase.mobileAssetId) {
-    errors.push(`visual case '${visualCase.id}': screenId, patternId, candidateId 또는 mobileAssetId가 필요합니다.`);
+  if (!visualCase.componentId && !visualCase.screenId && !visualCase.patternId && !visualCase.candidateId && !visualCase.mobileAssetId) {
+    errors.push(`visual case '${visualCase.id}': componentId, screenId, patternId, candidateId 또는 mobileAssetId가 필요합니다.`);
+  }
+  if (visualCase.componentId && !components.has(visualCase.componentId)) {
+    errors.push(`visual case '${visualCase.id}': 미등록 component '${visualCase.componentId}'를 참조합니다.`);
   }
   if (visualCase.screenId && !screens.has(visualCase.screenId)) {
     errors.push(`visual case '${visualCase.id}': 미등록 screen '${visualCase.screenId}'를 참조합니다.`);

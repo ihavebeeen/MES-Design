@@ -5,7 +5,7 @@
   "scope": "src/components/patterns/*.tsx + registered screen/section sources",
   "summary": {
     "scannedFiles": 46,
-    "totalLines": 14276,
+    "totalLines": 14298,
     "shellInstances": {
       "CenterModal": 14,
       "SideSlidePanel": 14,
@@ -488,7 +488,7 @@
       "source": "src/app/[...slug]/client-page.tsx",
       "name": "client-page.tsx",
       "observedRole": "composition-source",
-      "lines": 5479,
+      "lines": 5501,
       "exportedSymbols": [
         "Home"
       ],
@@ -655,7 +655,7 @@
         },
         {
           "name": "Input",
-          "jsxCount": 37
+          "jsxCount": 40
         },
         {
           "name": "Label",
@@ -3695,5 +3695,5 @@
       ]
     }
   ],
-  "fingerprint": "82dc7ebea3d21622"
+  "fingerprint": "64849cbf69cf5c59"
 }

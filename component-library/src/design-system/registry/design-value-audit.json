@@ -8,8 +8,8 @@
   },
   "summary": {
     "scannedFiles": 131,
-    "totalOccurrences": 3679,
-    "arbitraryUtilities": 1299,
+    "totalOccurrences": 3683,
+    "arbitraryUtilities": 1300,
     "hardcodedColors": 68,
     "reviewCandidates": 0,
     "unregisteredCandidates": 0
@@ -17,8 +17,8 @@
   "layers": {
     "canonical": {
       "files": 84,
-      "occurrences": 1235,
-      "arbitraryUtilities": 419,
+      "occurrences": 1239,
+      "arbitraryUtilities": 420,
       "hardcodedColors": 21
     },
     "pattern": {
@@ -863,10 +863,10 @@
       },
       {
         "value": "1.5",
-        "count": 85,
-        "arbitraryCount": 85,
+        "count": 86,
+        "arbitraryCount": 86,
         "layers": {
-          "canonical": 52,
+          "canonical": 53,
           "pattern": 32,
           "evidence": 1
         },
@@ -4363,5 +4363,5 @@
     ]
   },
   "reviewCandidates": [],
-  "fingerprint": "cdf16df776fda82f"
+  "fingerprint": "5a9eedf471ca7226"
 }

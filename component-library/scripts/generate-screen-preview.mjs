@@ -35,7 +35,7 @@ export function generateScreenPreviewSource(contract, componentImport) {
   if (errors.length) throw new Error(errors.join(" "));
 
   if (targetKind === "page") {
-    return `import { ${componentName} } from ${JSON.stringify(componentImport)};\n\nexport default function GeneratedScreenPreviewPage() {\n  return <${componentName} />;\n}\n`;
+    return `"use client";\n\nimport * as React from "react";\nimport { ${componentName} } from ${JSON.stringify(componentImport)};\n\nexport default function GeneratedScreenPreviewPage() {\n  React.useEffect(() => {\n    document.documentElement.dataset.mesPreviewReady = "true";\n    return () => { delete document.documentElement.dataset.mesPreviewReady; };\n  }, []);\n  return <${componentName} />;\n}\n`;
   }
 
   if (!["center-modal", "side-slide-panel", "confirm-dialog"].includes(targetKind)) {
@@ -54,11 +54,13 @@ import { ${componentName} } from ${JSON.stringify(componentImport)};
 
 export default function GeneratedScreenPreviewPage() {
   const [open, setOpen] = React.useState(${verification.scope === "connected-flow" ? "false" : "true"});
+  const [previewReady, setPreviewReady] = React.useState(false);
   ${host ? 'const [saved, setSaved] = React.useState<{ version: number; data: unknown }>({ version: 0, data: undefined });' : ''}
   const trigger = React.useRef<HTMLButtonElement>(null);
+  React.useEffect(() => { setPreviewReady(true); }, []);
   React.useEffect(() => { if (!open) trigger.current?.focus(); }, [open]);
   return (
-    <main data-mes-application="overlay" data-mes-verification-scope=${JSON.stringify(verification.scope)} data-mes-parent-integration=${JSON.stringify(verification.parentIntegration)} className="min-h-screen bg-white">
+    <main data-mes-application="overlay" data-mes-preview-ready={previewReady ? "true" : "false"} data-mes-verification-scope=${JSON.stringify(verification.scope)} data-mes-parent-integration=${JSON.stringify(verification.parentIntegration)} className="min-h-screen bg-white">
       <div ${host ? `data-mes-host-page=${JSON.stringify(host.componentName)}` : 'data-mes-preview-frame="surface"'} aria-hidden={open || undefined} inert={open || undefined}>
         <HostPage
           overlayActions={<Button ref={trigger} variant="fillMain" disabled={open} onClick={() => setOpen(true)}>{${JSON.stringify(host?.triggerLabel ?? "팝업 다시 열기")}}</Button>}

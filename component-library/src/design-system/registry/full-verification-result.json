@@ -1,69 +1,69 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-10T00:19:13.077Z",
+  "recordedAt": "2026-09-14T05:25:16.283Z",
   "outcome": "passed",
-  "durationMs": 401602,
-  "assetManifestFingerprint": "7db38691f312ec6b7bc7915d7068f836242958282c8217bbfcbc85bf5bbfcbe5",
-  "verificationSourceFingerprint": "9d4df5f71104ce418faa5e7e5032e37f9f08b70d9a6a7db9492daff04fb95066",
+  "durationMs": 329824,
+  "assetManifestFingerprint": "d2abf0807264857cb244b8a89105985616a899adcfdf1d9ab8c67ca778236963",
+  "verificationSourceFingerprint": "0fcb58a9ef09cc6ca3441c413f71542f66c8af7dc2bbe5ded455efd13b053233",
   "testInventory": {
-    "count": 95,
+    "count": 98,
     "files": {
-      "tests/visual/application-flow.spec.mts": "f0fd0679a47c41a60ca34bb6f67fb33a06d8523c3d03c52139f6c448aee020ac",
-      "tests/visual/design-system.visual.spec.ts": "8dd3519f0a8d38f3e7ca62b58ad24ed0a5523a8465449670d3ee304726dc2821",
+      "tests/visual/application-flow.spec.mts": "51812eb32ada2bff9e286aaa0be49fccb819ee424aaec73e67e4714c625845d7",
+      "tests/visual/design-system.visual.spec.ts": "2f7e54d9cb10d214e80a7ffbbbad012ac5d4875169691d836aea53dcb247b119",
       "tests/visual/figma-component-defaults.spec.ts": "f9a842afc72cfef542c0e242507b6acbbbd1e66b55c7c9a1f3a1719fedf23cc3",
-      "tests/visual/mobile-design-system.spec.ts": "c78f303464b7c20df2776f16d49817330c5ef829da38874cefcc3e87dc08de14",
+      "tests/visual/mobile-design-system.spec.ts": "7c92aa55fa9dee0702a77b4772da16bb5c5e0aa72084f468b9d6c6ed6fb40750",
       "tests/visual/slide-compositions.spec.mts": "42dada2890e5e05573f64abaf26f10f9129c5b89c87b8646f053e6806fd3179e"
     },
-    "fingerprint": "7d0b0806a4783b1eb6d5007359a00f0c3c28e0eb2c5b719b76581b5926aff9e5"
+    "fingerprint": "a93f3b0abc7a6545d4eaefe66bfb86ccb3875b9bcc9cd2bca162ec5a92e4f288"
   },
   "stages": [
     {
       "id": "asset-sync",
       "command": "npm run sync:assets",
       "status": "passed",
-      "durationMs": 680,
+      "durationMs": 440,
       "exitCode": 0
     },
     {
       "id": "verification-inventory",
       "command": "node scripts/audit-web-verification-coverage.mjs --write",
       "status": "passed",
-      "durationMs": 1053,
+      "durationMs": 939,
       "exitCode": 0
     },
     {
       "id": "design-system-check",
       "command": "npm run check:design-system",
       "status": "passed",
-      "durationMs": 69602,
+      "durationMs": 49122,
       "exitCode": 0
     },
     {
       "id": "design-system-lint",
       "command": "npm run lint:design-system",
       "status": "passed",
-      "durationMs": 5810,
+      "durationMs": 4888,
       "exitCode": 0
     },
     {
       "id": "playwright",
       "command": "npm run test:visual -- --workers=1",
       "status": "passed",
-      "durationMs": 287199,
+      "durationMs": 252304,
       "exitCode": 0
     },
     {
       "id": "production-build",
       "command": "npm run build",
       "status": "passed",
-      "durationMs": 34230,
+      "durationMs": 21117,
       "exitCode": 0
     },
     {
       "id": "verification-record",
-      "command": "node scripts/audit-web-verification-coverage.mjs --write --record-passed --duration-ms=287199",
+      "command": "node scripts/audit-web-verification-coverage.mjs --write --record-passed --duration-ms=252304",
       "status": "passed",
-      "durationMs": 3026,
+      "durationMs": 1013,
       "exitCode": 0
     }
   ]

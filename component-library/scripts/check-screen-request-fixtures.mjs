@@ -158,7 +158,8 @@ assert.doesNotMatch(pageFirst, /<SearchTableSection/);
 assert.doesNotMatch(pageFirst, /<Pagination/);
 assert.equal(auditScreenImplementation(pageContract, pageFirst).blockerCount, 0);
 const pagePreview = generateScreenPreviewSource(pageContract, "@/generated/deterministic-receiving-list-page");
-assert.doesNotMatch(pagePreview, /"use client"/);
+assert.match(pagePreview, /"use client"/);
+assert.match(pagePreview, /mesPreviewReady/);
 assert.match(pagePreview, /return <DeterministicReceivingListPage \/>/);
 
 const invalidPreviewRoute = structuredClone(generationContract);
